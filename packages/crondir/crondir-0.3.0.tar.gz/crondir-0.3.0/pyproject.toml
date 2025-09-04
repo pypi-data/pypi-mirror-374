@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crondir"
+description = "A user-space cron.d directory"
+dynamic = ["version"]
+authors = [
+    { name="Richard Terry", email="code@radiac.net" },
+]
+license = "BSD-3-Clause"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.9"
+dependencies = ["click"]
+
+[project.scripts]
+crondir = "crondir.commands:invoke"
+
+[project.urls]
+Homepage = "https://radiac.net/projects/crondir/"
+Documentation = "https://github.com/radiac/crondir"
+Changelog = "https://crondir.readthedocs.io/en/latest/changelog.html"
+Repository = "https://github.com/radiac/crondir"
+Issues = "https://github.com/radiac/crondir/issues"
+
+[tool.setuptools]
+packages = ["crondir"]
+
+[tool.setuptools.dynamic]
+version = {attr = "crondir.__version__"}
+
+[tool.pytest.ini_options]
+addopts = "--cov=crondir --cov-report=term --cov-report=html"
+testpaths = [
+    "crondir",
+    "tests",
+]
+pythonpath = ["."]
+
+[tool.coverage.run]
+source = ["crondir"]
+
+[tool.ruff]
+line-length = 88
+lint.select = ["E", "F"]
+lint.ignore = [
+    "E501",  # line length
+]
+exclude = [
+    ".git",
+    "dist",
+]
