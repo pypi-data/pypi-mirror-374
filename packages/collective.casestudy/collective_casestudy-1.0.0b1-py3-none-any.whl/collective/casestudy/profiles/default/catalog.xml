@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object name="portal_catalog">
+
+  <index meta_type="FieldIndex"
+         name="industry"
+  >
+    <indexed_attr value="industry" />
+  </index>
+
+  <index meta_type="KeywordIndex"
+         name="usages"
+  >
+    <indexed_attr value="usages" />
+  </index>
+
+  <index meta_type="KeywordIndex"
+         name="versions"
+  >
+    <indexed_attr value="versions" />
+  </index>
+
+  <index meta_type="KeywordIndex"
+         name="providers"
+  >
+    <indexed_attr value="providers" />
+  </index>
+
+  <index meta_type="KeywordIndex"
+         name="services"
+  >
+    <indexed_attr value="services" />
+  </index>
+
+  <index meta_type="FieldIndex"
+         name="country"
+  >
+    <indexed_attr value="country" />
+  </index>
+
+  <column value="country" />
+  <column value="industry" />
+  <column value="usages" />
+  <column value="versions" />
+  <column value="services" />
+
+</object>
