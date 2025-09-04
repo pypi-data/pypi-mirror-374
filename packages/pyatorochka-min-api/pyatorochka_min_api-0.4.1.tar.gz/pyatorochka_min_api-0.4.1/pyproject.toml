@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools >= 77.0.3", "requests"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "pyatorochka-min-api"
+version = "0.4.1"
+authors = [
+  { name="Zavorateam", email="renovvrhelp@gmail.com" },
+]
+description = "Minimal Python Api for shop Pyatyorochka"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://github.com/zavorateam/pyatorochka-min-api"
+Issues = "https://github.com/zavorateam/pyatorochka-min-api/issues"
