@@ -1,0 +1,291 @@
+Metadata-Version: 2.1
+Name: dg_zoo_server
+Version: 0.3.0
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi<1.0,>=0.114.1
+Requires-Dist: uvicorn<1.0,>=0.30.6
+Requires-Dist: pydantic<3.0,>=2.9.1
+Requires-Dist: aiorwlock<2.0,>=1.4.0
+Requires-Dist: aiofiles<25.0,>=24.1.0
+Requires-Dist: base58<3.0,>=2.1.1
+Requires-Dist: python-multipart<1.0,>=0.0.9
+Provides-Extra: build
+Requires-Dist: fastapi<1.0,>=0.114.1; extra == "build"
+Requires-Dist: uvicorn<1.0,>=0.30.6; extra == "build"
+Requires-Dist: pydantic<3.0,>=2.9.1; extra == "build"
+Requires-Dist: aiorwlock<2.0,>=1.4.0; extra == "build"
+Requires-Dist: aiofiles<25.0,>=24.1.0; extra == "build"
+Requires-Dist: base58<3.0,>=2.1.1; extra == "build"
+Requires-Dist: python-multipart<1.0,>=0.0.9; extra == "build"
+Requires-Dist: build<2.0,>=1.2.2; extra == "build"
+Requires-Dist: pytest<9.0,>=8.3.3; extra == "build"
+Requires-Dist: coverage<8.0,>=7.6.1; extra == "build"
+Requires-Dist: httpx<1.0,>=0.27.2; extra == "build"
+Requires-Dist: mypy<2.0,>=1.11.2; extra == "build"
+Requires-Dist: flake8<8.0,>=7.1.1; extra == "build"
+
+# dg_zoo_server - DeGirum Model Zoo Server
+
+Model zoo server, which is API-compatible with [DeGirum DeLight Cloud Platform](https://cs.degirum.com) 
+and can be used instead of it in PySDK.
+
+## Installation and Startup<a id="installation-and-startup"></a>
+
+`dg_zoo_server` is distributed as Python package and can be installed by running 
+`pip install dg_zoo_server`
+
+Once installed, you can run it by executing `dg_zoo_server` command from the terminal,
+assuming your prepared your local model zoo directory which your `dg_zoo_server` 
+instance will serve according to rules [described below](#model-zoo-directory-structure).
+
+Command-line parameters (all of them are optional):
+
+| Argument | Description | Default |
+|----------|-------------|---------|
+|`--port PORT` | Port number to run the server on | `8878` |
+|`--zoo ZOO`   | Model zoo root directory to serve (see details [below](#model-zoo-directory-structure))| `./zoo` |
+|`--reload`    | Auto-reload server sources on change | disabled |
+
+If you prefer to run the server programmatically from the Python code, you can do it this way
+(command line arguments are given as an example):
+
+```Python
+import dg_zoo_server
+
+dg_zoo_server.serverStart("--port 80 --zoo ./myzoo")
+```
+
+## Model Zoo Directory Structure<a id="model-zoo-directory-structure"></a>
+
+The model zoo root directory, which you pass as `--zoo` command line argument,
+has the following structure:
+
+- `tokens.json` file located just in the model zoo root directory, containing
+token information (this file is optional; more on that [below](#token-file-structure));
+
+- first-level subdirectories of zoo root directory represent *organizations* - entities,
+which can have multiple model zoos;
+
+    *Note: The notion of organization is inherited from
+    DeGirum DeLight cloud platform, where they correspond to real organizations.
+    In the case of local zoo server the notion of organization is left for API compatibility
+    reasons: it is mere a way or logically grouping multiple model zoos and has nothing to 
+    do with permissions.*
+
+- second-level subdirectories (subdirectories in the organization directories) represent 
+individual *model zoos* - collections of AI models;
+
+- each model zoo subdirectory may contain a list of model .zip archives. Each such
+.zip archive represents one model. 
+
+For example:
+
+```
+myzoo/
+    tokens.json
+    degirum/
+        public/
+            model1.zip
+            model2.zip
+        private/
+            model3.zip
+            model4.zip
+```
+
+The model archive must adhere to the following rules:
+
+- it must have a name which matches the model name;
+
+- the archive must contain the top-level directory named as the model name;
+
+- inside that top-level directory in the archive, there must be the following 
+model files:
+
+    - model parameters JSON file, named as the model name;
+    - model binary file, named as the model name; its extension is
+    model-specific and depends on the model inference runtime;
+
+- additionally, there can be the following optional files:
+
+    - label dictionary JSON file, referenced from the model parameters JSON file;
+    - model README.MD markdown text file, containing model description.
+
+For example:
+
+```
+yolo_v5s_coco--512x512_quant_n2x_orca1_1.zip:
+    yolo_v5s_coco--512x512_quant_n2x_orca1_1\
+        yolo_v5s_coco--512x512_quant_n2x_orca1_1.json
+        yolo_v5s_coco--512x512_quant_n2x_orca1_1.n2x
+        labels_coco_80.json
+        README.md
+```
+
+If you download a model archive directly from cs.degirum.com it will already have the required structure.
+
+
+## Token File Structure<a id="token-file-structure"></a>
+
+The `tokens.json` file, which is located just in the model zoo root directory,
+contains the information about access tokens, which are used to give granular
+access to model zoos served by Model Zoo Server.
+
+Such tokens can be used in PySDK instead of Cloud API access tokens, when 
+you work with locally served model zoos. More on that [below](#working-with-model-zoo-server).
+
+Tokens are passed in the HTTP header to all [REST API](#rest-api) routes to protect
+those routes from unauthorized use. 
+
+Tokens are divided into two categories: admin tokens and regular tokens:
+
+- admin tokens give access to all [REST API](#rest-api) routes and to all model zoos
+for both read and write access;
+
+- regular tokens give only read access only to [model zoo API](#zoo-management-api)
+and only to model zoos, which a particular regular token has access to.
+
+The structure of the token JSON file is the following:
+
+```
+{
+  "<token1>": {
+    "is_admin": <true/false>,
+    "zoos": ["<org1>/<zoo1>", ...]
+  },
+  ...
+}
+```
+
+Top-level dictionary contains token entries, keyed by token value.
+Each token entry is an object with two keys:
+
+- `"is_admin"` is a boolean value which is `true` for tokens with admin rights, 
+and `false` otherwise;
+
+- `"zoos"` is a list of model zoo names, this token has access to.
+Each model zoo is represented as a string containing organization name and zoo name, 
+separated with a slash, for example `"org1/zoo1"`. 
+
+The `tokens.json` file is optional - you may start Model Zoo Server without that file.
+In this case there will be no tokens defined, and all Model Zoo Server routes will
+fail with `401 Unauthorized` error except the only route `POST /zoo/v1/public/tokens`,
+which will generate initial admin token without any tokens passed in the header.
+Once that initial admin token is generated, it will not be possible to call that route 
+without a token again.
+
+To deploy tokens you have two choices:
+
+1. Prepare proper `tokens.json` file yourself in advance and manually put in the model zoo root directory 
+before starting the Model Zoo Server.
+2. Use [token management API](#token-management-api) to generate tokens in runtime. This can be done either 
+using `curl` utility or by writing simple Python script using `requests` package.
+
+
+## Working with Model Zoo Server<a id="working-with-model-zoo-server"></a>
+
+Imagine you run Model Zoo Server on some node in your LAN with some IP address, 
+for example `192.168.1.123`, and want to work with this local zoo server instead of
+DeGirum cloud zoo server. Imagine you started your Model Zoo Server to serve
+a model zoo, which contains organization directory `org1` and zoo subdirectory `zoo1` 
+inside that organization directory.
+
+Then, if you want to inference models from that zoo, you can do it the following way:
+
+```
+import degirum as dg
+zoo = dg.connect(dg.LOCAL, "http://192.168.1.123/org1/zoo1", token="<token>")
+print(zoo.list_models())
+```
+
+Here you specify zoo URL in a form `http://<hostname>/<org>/<zoo>` where 
+`<hostname>` is the name of the host in your LAN running Model Zoo Server, 
+`<org>` is the name of the organization directory, and `<zoo>` is the name
+of zoo subdirectory.
+
+You also specify `<token>`, which has permissions to work with that zoo.
+
+You can connect to both local inference engine and to AI server inference engine.
+
+To work with local inference engine you pass `dg.LOCAL` parameter to the 
+`dg.connect()` call. In this case the inference engine will run directly in
+the current process on your host. Your host must have access to Model Zoo Server
+host in order to download models.
+
+To work with AI server inference engine, you first start AI server on some host 
+in your LAN - it can be the same host, which runs Model Zoo Server, or it can be
+different host. Then you pass the hostname/IP address of the AI server host to
+the `dg.connect()` call. In this case, the AI server host must have access to
+the Model Zoo Server host in order to download models.
+
+## REST API<a id="rest-api"></a>
+
+REST API of the running instance of Model Zoo Server can be obtained by 
+opening `/docs` URL path of that running instance in your browser. 
+
+OpenAPI JSON schema of Model Zoo Server REST API is available by `/openapi.json` URL path.
+
+The following sections only list all available REST API routes. The detailed information about
+parameters and responses can be obtained by opening `/docs` URL path.
+
+
+### Token Management API<a id="token-management-api"></a>
+
+#### **GET** `/zoo/v1/public/tokens` 
+
+Get token info.
+
+#### **POST** `/zoo/v1/public/tokens` 
+
+Create new token. Bearer token must have admin rights except when called on empty
+`tokens.json` file.
+
+#### **DELETE** `/zoo/v1/public/tokens` 
+
+Delete existing token. Bearer token must have admin rights.
+
+#### **POST** `/zoo/v1/public/tokens/{organization}/{zoo_name}` 
+
+Give existing token access to provided zoo. Bearer token must have admin rights.
+
+#### **DELETE** `/zoo/v1/public/tokens/{organization}/{zoo_name}` 
+
+Remove access to provided zoo for existing token. Bearer token must have admin rights.
+
+
+### Zoo Management API<a id="zoo-management-api"></a>
+
+#### **GET** `/zoo/v1/public/zoos/{organization}`
+
+Query the list of all model zoo URLs available to operate for the given token in given organization.
+
+#### **GET** `/zoo/v1/public/models/{organization}/{zoo_name}`
+
+Query the list of models and their attributes available in the given model zoo.
+
+#### **GET** `/zoo/v1/public/models/{organization}/{zoo_name}/{model}/check`
+
+Check if the given model has specified checksum.
+
+#### **GET** `/zoo/v1/public/models/{organization}/{zoo_name}/{model}/dictionary`
+
+Query the class label dictionary of the given model.
+
+#### **GET** `/zoo/v1/public/models/{organization}/{zoo_name}/{model}/readme`
+
+Query the contents of `README.md` file of the given model.
+
+#### **GET** `/zoo/v1/public/models/{organization}/{zoo_name}/{model}/info`
+
+Query all the properties of the given model.
+
+#### **GET** `/zoo/v1/public/models/{organization}/{zoo_name}/{model}`
+
+Download model .zip archive.
+
+#### **POST** `/zoo/v1/public/models/{organization}/{zoo_name}`
+
+Upload model .zip archive. Bearer token must have admin rights.
+
+#### **DELETE** `/zoo/v1/public/models/{organization}/{zoo_name}/{model}`
+
+Delete given model from the zoo. Bearer token must have admin rights.
