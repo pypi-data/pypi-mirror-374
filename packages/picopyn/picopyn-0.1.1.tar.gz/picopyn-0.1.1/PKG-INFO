@@ -1,0 +1,165 @@
+Metadata-Version: 2.1
+Name: picopyn
+Version: 0.1.1
+Summary: Async connector for working with the distributed Picodata database.
+Author-email: Asya Lomakina <a.lomakina@picodata.io>, Igor Kuznetsov <i.kuznetsov@picodata.io>, Dmitriy Кoltsov <dkoltsov@picodata.io>
+License: BSD-2-Clause
+Project-URL: Homepage, https://git.picodata.io/solution/picopyn
+Keywords: database,picodata
+Classifier: Programming Language :: Python :: 3.9
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Database
+Classifier: Framework :: AsyncIO
+Requires-Python: ==3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: AUTHORS.md
+Requires-Dist: async-timeout==5.0.1
+Requires-Dist: asyncpg==0.30.0
+Requires-Dist: typing_extensions==4.12.2; python_version == "3.9"
+Provides-Extra: gssauth
+Requires-Dist: gssapi; platform_system != "Windows" and extra == "gssauth"
+Requires-Dist: sspilib; platform_system == "Windows" and extra == "gssauth"
+Provides-Extra: test
+Requires-Dist: pytest==8.3.5; extra == "test"
+Requires-Dist: pytest-asyncio==0.25.3; extra == "test"
+Requires-Dist: ruff==0.11.13; extra == "test"
+Requires-Dist: mypy==1.16.0; extra == "test"
+Requires-Dist: black==25.1.0; extra == "test"
+Provides-Extra: docs
+Requires-Dist: pdoc==15.0.4; extra == "docs"
+Requires-Dist: pyright==1.1.396; extra == "docs"
+
+# Picopyn - Picodata python driver
+
+**Picopyn** is a Python package for working with the distributed Picodata database. It's built on top of the [asyncpg](https://github.com/MagicStack/asyncpg) package.
+
+## Features
+* Connection pooling with configurable pool size
+* Optional automatic node discovery
+* Pluggable load-balancing strategies
+* Fully asynchronous API
+
+## Navigation
+* [Installation](#install-driver)
+* [Quickstart](#simple-start)
+* [Development](#dev)
+* [Benchmark](#bench)
+
+## <a name="install-driver"></a>Install
+
+Install from source:
+
+``` sh
+git clone https://git.picodata.io/solution/picopyn.git
+cd picopyn
+make install
+```
+
+## <a name="simple-start"></a>Quickstart
+
+```python
+import asyncio
+from picopyn import Client
+
+async def main():
+    # create and connect client to the picodata cluster
+    client = Client(dsn="postgresql://admin:pass@localhost:5432")
+    await client.connect()
+
+    # execute DDL operations
+    await client.execute('''
+        CREATE TABLE "warehouse" (id INTEGER NOT NULL, item TEXT NOT NULL, PRIMARY KEY (id)) USING memtx DISTRIBUTED BY (id) OPTION (TIMEOUT = 3.0);
+    ''')
+
+    # execute DML operations
+    await client.execute('INSERT INTO \"warehouse\" VALUES ($1::int, $2::varchar)', 1, "test")
+    rows = await client.fetch('SELECT * FROM \"warehouse\"')
+    print(rows)
+
+    await client.close()
+
+asyncio.run(main())
+```
+
+## <a name="dev"></a>Development
+
+Install development dependencies
+```bash
+pip install -r requirements-dev.txt
+```
+
+### Documentation
+
+To update documentation:
+```bash
+make gen-doc
+```
+
+To view documentation:
+```bash
+make doc
+```
+
+### How to write code
+
+We use several tools to ensure code style and type safety.
+* ruff — code style, lint checks and automatic lint fixing
+* mypy — static type checking
+* black — code formatting
+
+To check code style and static types:
+```bash
+make lint
+````
+
+To automatically fix formatting and style issues:
+
+```bash
+make fmt
+```
+
+### How to test
+
+Run the test suite:
+
+```bash
+make test
+```
+
+This will:
+
+1. Start required test containers (Picodata cluster and test-runner) using Docker Compose
+
+2. Execute tests using pytest
+
+
+### How to debug
+
+Do not forget run environment via `make env`
+
+For debugging purposes:
+
+1. Open a bash shell in the test container:
+
+```bash
+make shell
+```
+
+2. For interactive Python (with asyncio support) run inside of container:
+
+```bash
+python -m asyncio
+```
+
+3. To connect directly to Picodata:
+
+```bash
+picodata admin tmp/picodata-1-1/admin.sock
+```
+## <a name="bench"></a>Benchmark
+
+Benchmark instructions and usage examples are available [here](benchmark/README.md).

@@ -1,0 +1,86 @@
+[project]
+name = "picopyn"
+version = "0.1.1"
+description = "Async connector for working with the distributed Picodata database."
+authors = [
+    { name = "Asya Lomakina", email = "a.lomakina@picodata.io" },
+    { name = "Igor Kuznetsov", email = "i.kuznetsov@picodata.io" },
+    { name = "Dmitriy Кoltsov", email = "dkoltsov@picodata.io" }
+]
+license = {text = "BSD-2-Clause"}
+requires-python = '==3.9'
+readme = "README.md"
+keywords = [
+    "database",
+    "picodata"
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3.9",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Database",
+    "Framework :: AsyncIO"
+]
+
+dependencies = [
+    "async-timeout==5.0.1",
+    "asyncpg==0.30.0",
+    "typing_extensions==4.12.2; python_version == '3.9'",
+]
+
+[project.urls]
+Homepage = "https://git.picodata.io/solution/picopyn"
+
+
+[build-system]
+requires = ["setuptools>=60.0.0"]
+build-backend = "setuptools.build_meta"
+
+
+
+[project.optional-dependencies]
+gssauth = [
+    'gssapi; platform_system != "Windows"',
+    'sspilib; platform_system == "Windows"',
+]
+test = [
+    'pytest==8.3.5',
+    'pytest-asyncio==0.25.3',
+    'ruff==0.11.13',
+    'mypy==1.16.0',
+    'black==25.1.0',
+]
+docs = [
+    'pdoc==15.0.4',
+    'pyright==1.1.396'
+]
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"
+asyncio_mode = "auto"
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "C90", "UP", "N", "SIM", "TID"]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["picopyn"]
+combine-as-imports = true
+
+[tool.mypy]
+python_version = 3.11
+strict = true
+ignore_missing_imports = true
+allow_untyped_decorators = true
+disallow_untyped_calls = true
