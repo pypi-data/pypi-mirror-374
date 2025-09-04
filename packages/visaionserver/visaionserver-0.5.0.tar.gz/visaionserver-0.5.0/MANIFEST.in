@@ -1,0 +1,6 @@
+include LICENSE README.md
+recursive-include dist/visaionserver *.py *.yaml *.jpg *.png *.css *.js *.ico *.html *.sql
+recursive-include dist/visaionserver/static *
+recursive-include dist/pyarmor_runtime_000000 *.py *.pyd *.so *.dll *.dylib
+global-exclude *.py[cod] __pycache__
+global-include dist/pyarmor_runtime_000000/*.so dist/pyarmor_runtime_000000/*.dll dist/pyarmor_runtime_000000/*.dylib dist/pyarmor_runtime_000000/*.pyd

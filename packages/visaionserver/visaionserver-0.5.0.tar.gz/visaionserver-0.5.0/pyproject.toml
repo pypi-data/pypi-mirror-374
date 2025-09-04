@@ -1,0 +1,103 @@
+# VisAIon
+
+# Overview:
+# This pyproject.toml file manages the build, packaging, and distribution of the visaionserver library.
+# It defines essential project metadata, dependencies, and settings used to develop and deploy the library.
+
+# Key Sections:
+# - [build-system]: Specifies the build requirements and backend (e.g., setuptools, wheel).
+# - [project]: Includes details like name, version, description, authors, dependencies and more.
+# - [project.optional-dependencies]: Provides additional, optional packages for extended features.
+# - [tool.*]: Configures settings for various tools (pytest, yapf, etc.) used in the project.
+
+# Installation:
+# The visaion library can be installed using the command: 'pip install visaionserver'
+# For development purposes, you can install the package in editable mode with: 'pip install -e .'
+# This approach allows for real-time code modifications without the need for re-installation.
+
+# Documentation:
+# TODO
+
+[build-system]
+requires = ["setuptools>=70.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# Project settings -----------------------------------------------------------------------------------------------------
+[project]
+name = "visaionserver"
+version = "0.5.0"  # 使用静态版本号替代动态版本, x.y.z中z为0表示不加密, 1表示加密
+description = "visaion is a deeplearningplatform for detection, segmentation, classification."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { "text" = "AGPL-3.0" }
+keywords = ["machine-learning", "deep-learning", "computer-vision", "ML", "DL", "AI"]
+authors = [
+    { name = "Felix Fu", email = "alanmathisonturing@163.com" },
+    { name = "Wei Wei", email = "alanmathisonturing@163.com" },
+]
+maintainers = [
+    { name = "Felix Fu", email = "alanmathisonturing@163.com" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+]
+
+# Required dependencies ------------------------------------------------------------------------------------------------
+dependencies = [
+    "py-cpuinfo>=9.0.0",    # display CPU info
+    "psutil>=6.1.1",        # system utilization
+    "fastapi==0.115.7",
+    "uvicorn==0.34.0",
+    "pynvml==12.0.0",
+    "cos-python-sdk-v5==1.9.33",
+    "sqlalchemy==2.0.31",
+    "aiosqlite==0.20.0",
+    "python-jose==3.3.0",
+    "APScheduler==3.11.0",
+    "email-validator==2.2.0",
+    "passlib==1.7.4",
+    "greenlet==3.1.1",
+    "bcrypt==4.2.1",
+    "Pillow==11.1.0",
+    "python-multipart==0.0.20",
+    "pytz==2025.1",
+    "pywin32==308;sys_platform=='win32'",
+    "sqlmodel==0.0.24",
+    "alembic==1.15.1"
+]
+
+# Optional dependencies ------------------------------------------------------------------------------------------------
+
+[project.scripts]
+visaion = "visaionserver.script:entrypoint"
+
+# Tools settings -------------------------------------------------------------------------------------------------------
+[tool.setuptools]  # configuration specific to the `setuptools` build backend.
+packages = { find = { where = ["dist"] } }
+package-dir = { "" = "dist" }
+package-data = { "visaionserver" = ["**/*.yaml", "**/*.jpg", "**/*.png", "**/*.css", "**/*.js", "**/*.ico", "**/*.html", "**/*.sql", "static/**/*"], "pyarmor_runtime_000000" = ["__init__.py","pyarmor_runtime.so", "pyarmor_runtime.pyd", "*.pyd", "*.so", "*.dll", "*.dylib"]}
+include-package-data = true
+
+[tool.pytest.ini_options]
+addopts = "--doctest-modules --durations=30 --color=yes"
+markers = [
+    "slow: skip slow tests unless --slow is set",
+]
+norecursedirs = [".git", "dist", "build", "test"]
