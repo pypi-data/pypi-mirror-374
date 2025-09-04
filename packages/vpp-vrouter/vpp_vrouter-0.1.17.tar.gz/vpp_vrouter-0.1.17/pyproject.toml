@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "vpp-vrouter"
+version = "0.1.17"
+description = "vRouter with VPP"
+authors = ["Filip Gschwandtner <filip.gschwandtner@pantheon.tech>", "Phan Dang <phan.dang@usdatanetworks.com>"]
+packages = [
+    {include = "vpp_vrouter", from = "."},
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+dataclasses-json = "0.5.7"
+jsonrpclib = "0.2.1"
+marshmallow = "3.19.0"
+marshmallow-dataclass = "8.5.13"
+marshmallow-enum = "1.5.1"
+mypy-extensions = "1.0.0"
+numpy = "1.24.2"
+packaging = "23.1"
+Pyro5 = "5.14"
+pyroute2 = "0.7.9"
+serpent = "1.41"
+sudo = "1.0.0"
+typing-inspect = "0.8.0"
+typing-extensions = "4.5.0"
+vpp-papi = "2.0.0"
+python-json-logger = "^2.0.7"
+
+[tool.poetry.group.dev.dependencies]
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+vrouter = "vpp_vrouter.server.server:cli"
