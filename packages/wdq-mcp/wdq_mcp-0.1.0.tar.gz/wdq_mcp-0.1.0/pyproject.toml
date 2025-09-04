@@ -1,0 +1,94 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wdq-mcp"
+version = "0.1.0"
+description = "五洞桥社区'小五微网共治共享'微网实格管理智慧平台 MCP 服务包"
+readme = "README.md"
+requires-python = ">=3.8"
+
+authors = [
+    {name = "wifiming", email = "sir@wifiming.com"},
+]
+maintainers = [
+    {name = "wifiming", email = "sir@wifiming.com"},
+]
+keywords = [
+    "wudongqiao",
+    "五洞桥",
+    'wdq',
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: Other/Proprietary License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Office/Business :: Groupware",
+]
+dependencies = [
+    "mcp[cli]>=1.13.1",
+    "requests>=2.31.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/wifiming/wdq-mcp"
+Repository = "https://github.com/wifiming/wdq-mcp.git"
+Issues = "https://github.com/wifiming/wdq-mcp/issues"
+Documentation = "https://github.com/wifiming/wdq-mcp#readme"
+
+[project.scripts]
+wdq-mcp = "wdq_mcp:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["wdq_mcp"]
+force-include = {}
+exclude = ["LICENSE"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/wdq_mcp",
+    "/README.md",
+    "/LICENSE",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --cov=wdq_mcp"
+testpaths = [
+    "tests",
+]
