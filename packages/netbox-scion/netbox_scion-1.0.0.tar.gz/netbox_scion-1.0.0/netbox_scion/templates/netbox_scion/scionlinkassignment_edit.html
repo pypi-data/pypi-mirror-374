@@ -1,0 +1,174 @@
+{% extends 'generic/object_edit.html' %}
+{% load helpers form_helpers %}
+
+{% block form %}
+    <div class="panel panel-default">
+        <div class="panel-heading"><strong>SCION Link Assignment</strong></div>
+        <div class="panel-body">
+            {% render_field form.isd_as %}
+            {% render_field form.core %}
+            {% render_field form.interface_id %}
+            {% render_field form.relationship %}
+            {% render_field form.customer_name %}
+            {% render_field form.customer_id %}
+            {% render_field form.zendesk_ticket %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+{{ block.super }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const isdasField = document.getElementById('id_isd_as');
+    const coreField = document.getElementById('id_core');
+    
+    if (!isdasField || !coreField) {
+        return;
+    }
+    
+    let isdasTomSelect = null;
+    let coreTomSelect = null;
+    
+    // Wait for Tom Select to initialize
+    setTimeout(() => {
+        if (window.TomSelect) {
+            isdasTomSelect = isdasField.tomselect;
+            coreTomSelect = coreField.tomselect;
+        }
+    }, 100);
+    
+    function updateCoreOptions(isdasId) {
+        if (!isdasId) {
+            if (coreTomSelect) {
+                coreTomSelect.clear();
+                coreTomSelect.clearOptions();
+                coreTomSelect.addOption({value: '', text: '--- Select ISD-AS first ---'});
+                coreTomSelect.disable();
+            } else {
+                coreField.innerHTML = '<option value="">--- Select ISD-AS first ---</option>';
+                coreField.disabled = true;
+            }
+            return;
+        }
+        
+        // Show loading state
+        if (coreTomSelect) {
+            coreTomSelect.clear();
+            coreTomSelect.clearOptions();
+            coreTomSelect.addOption({value: '', text: 'Loading cores...'});
+            coreTomSelect.disable();
+        } else {
+            coreField.innerHTML = '<option value="">Loading cores...</option>';
+            coreField.disabled = true;
+        }
+        
+        const ajaxUrl = '{% url "plugins:netbox_scion:isdas_cores_ajax" %}?isdas_id=' + isdasId;
+        
+        fetch(ajaxUrl)
+            .then(response => response.json())
+            .then(data => {
+                if (data.cores && data.cores.length > 0) {
+                    if (coreTomSelect) {
+                        coreTomSelect.clear();
+                        coreTomSelect.clearOptions();
+                        coreTomSelect.addOption({value: '', text: '--- Select Core ---'});
+                        
+                        data.cores.forEach(core => {
+                            coreTomSelect.addOption({value: core, text: core});
+                        });
+                        
+                        coreTomSelect.enable();
+                    } else {
+                        // Clear all existing options completely
+                        coreField.innerHTML = '';
+                        while (coreField.firstChild) {
+                            coreField.removeChild(coreField.firstChild);
+                        }
+                        
+                        const emptyOption = document.createElement('option');
+                        emptyOption.value = '';
+                        emptyOption.textContent = '--- Select Core ---';
+                        coreField.appendChild(emptyOption);
+                        
+                        data.cores.forEach(core => {
+                            const option = document.createElement('option');
+                            option.value = core;
+                            option.textContent = core;
+                            coreField.appendChild(option);
+                        });
+                        
+                        coreField.disabled = false;
+                        
+                        // Force Tom Select refresh if it exists
+                        setTimeout(() => {
+                            if (coreField.tomselect) {
+                                coreField.tomselect.clear();
+                                coreField.tomselect.clearOptions();
+                                coreField.tomselect.addOption({value: '', text: '--- Select Core ---'});
+                                data.cores.forEach(core => {
+                                    coreField.tomselect.addOption({value: core, text: core});
+                                });
+                                coreField.tomselect.sync();
+                            }
+                        }, 100);
+                    }
+                } else {
+                    if (coreTomSelect) {
+                        coreTomSelect.clear();
+                        coreTomSelect.clearOptions();
+                        coreTomSelect.addOption({value: '', text: 'No cores available'});
+                        coreTomSelect.disable();
+                    } else {
+                        coreField.innerHTML = '<option value="">No cores available</option>';
+                        coreField.disabled = true;
+                    }
+                }
+            })
+            .catch(error => {
+                if (coreTomSelect) {
+                    coreTomSelect.clear();
+                    coreTomSelect.clearOptions();
+                    coreTomSelect.addOption({value: '', text: 'Error loading cores'});
+                    coreTomSelect.disable();
+                } else {
+                    coreField.innerHTML = '<option value="">Error loading cores</option>';
+                    coreField.disabled = true;
+                }
+            });
+    }
+    
+    function setupChangeListener() {
+        if (isdasTomSelect) {
+            isdasTomSelect.on('change', function(value) {
+                updateCoreOptions(value);
+            });
+        } else {
+            isdasField.addEventListener('change', function() {
+                updateCoreOptions(this.value);
+            });
+        }
+    }
+    
+    // Set up change listener after Tom Select initialization
+    setTimeout(() => {
+        setupChangeListener();
+        
+        const currentValue = isdasTomSelect ? isdasTomSelect.getValue() : isdasField.value;
+        if (currentValue) {
+            updateCoreOptions(currentValue);
+        } else {
+            if (coreTomSelect) {
+                coreTomSelect.clear();
+                coreTomSelect.clearOptions();
+                coreTomSelect.addOption({value: '', text: '--- Select ISD-AS first ---'});
+                coreTomSelect.disable();
+            } else {
+                coreField.innerHTML = '<option value="">--- Select ISD-AS first ---</option>';
+                coreField.disabled = true;
+            }
+        }
+    }, 200);
+});
+</script>
+{% endblock %}

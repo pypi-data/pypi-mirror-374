@@ -1,0 +1,152 @@
+Metadata-Version: 2.4
+Name: netbox-scion
+Version: 1.0.0
+Summary: NetBox plugin for managing SCION Links Assignment
+Author: SCION Plugin Team
+Author-email: contact@example.com
+Keywords: netbox netbox-plugin scion
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Framework :: Django
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: summary
+
+# NetBox SCION Plugin
+
+A comprehensive NetBox plugin for managing SCION (Scalability, Control, and Isolation On Next-generation networks) infrastructure.
+
+## 🚀 Quick Start
+
+### Prerequisites
+- NetBox deployment using netbox-docker
+- Docker and Docker Compose
+
+### Installation
+1. Copy the deployment files to your netbox-docker directory:
+```bash
+cp -r deployment/* /path/to/your/netbox-docker/
+```
+
+2. Update your `docker-compose.yml` to use the custom Dockerfile:
+```yaml
+services:
+  netbox:
+    build:
+      context: .
+      dockerfile: Dockerfile.netbox-fixed
+```
+
+3. Add to your NetBox `plugins.py` file:
+```python
+PLUGINS = [
+    'netbox_scion',
+    # Your existing plugins...
+]
+```
+
+4. Add to your `env/netbox.env`:
+```bash
+PLUGINS_REQUIREMENTS=netbox_scion
+```
+
+5. Deploy:
+```bash
+cd /path/to/your/netbox-docker
+docker-compose down
+docker-compose build --no-cache netbox
+docker-compose up -d
+```
+
+See [deployment/README.md](deployment/README.md) for detailed instructions.
+
+## 🏗️ Features
+
+### Organizations
+- Manage SCION organizations with short and full names
+- Description and metadata fields
+- REST API and export capabilities
+
+### ISD-ASes (Isolation Domain - Autonomous System)
+- ISD-AS identifier management with regex validation (`^\d+-[0-9a-f]{1,4}:[0-9a-f]{1,4}:[0-9a-f]{1,4}$`)
+- Organization association
+- Core nodes list support
+- Detailed descriptions
+
+### SCION Link Assignments
+- Interface assignment management (interface_id per ISD-AS must be unique)
+- Customer information (ID and name)
+- Zendesk ticket integration
+- Advanced filtering and search capabilities
+
+## 🎯 Navigation
+
+Plugin appears under the "Plugins" section in NetBox sidebar with:
+- Organizations
+- ISD-ASes
+- SCION Link Assignments
+
+## 🔧 API Endpoints
+
+- Organizations: `/api/plugins/scion/organizations/`
+- ISD-ASes: `/api/plugins/scion/isd-ases/`
+- Link Assignments: `/api/plugins/scion/link-assignments/`
+
+All endpoints support full CRUD operations with filtering, pagination, and export.
+
+## 📁 Development
+
+### Project Structure
+```
+netbox_scion/
+├── __init__.py              # Plugin configuration
+├── models.py                # Data models
+├── forms.py                 # Web forms
+├── views.py                 # Web views
+├── urls.py                  # URL routing
+├── api/                     # REST API
+├── templates/               # HTML templates
+├── migrations/              # Database migrations
+└── static/                  # CSS/JS assets
+```
+
+### Local Development
+```bash
+# Install in development mode
+pip install -e .
+
+# Run migrations
+python manage.py migrate
+
+# Create wheel package
+python setup.py bdist_wheel
+```
+
+## 🐛 Support
+
+For issues, please check:
+1. Plugin installation: `docker exec netbox /opt/netbox/venv/bin/pip list | grep netbox-scion`
+2. Configuration: Plugin in `PLUGINS` list and `PLUGINS_REQUIREMENTS`
+3. Migrations: Auto-handled by custom entrypoint script
+4. Restart NetBox container if needed
+
+## 📝 License
+
+Apache License 2.0

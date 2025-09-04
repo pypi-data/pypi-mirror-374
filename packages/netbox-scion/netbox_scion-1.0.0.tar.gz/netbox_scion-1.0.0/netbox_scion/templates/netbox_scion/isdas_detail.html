@@ -1,0 +1,83 @@
+{% extends 'generic/object.html' %}
+{% load helpers %}
+{% load buttons %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  <li class="breadcrumb-item active">{{ object }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col col-md-6">
+        <div class="card">
+            <h5 class="card-header">ISD-AS</h5>
+            <div class="card-body">
+                <table class="table table-hover attr-table">
+                    <tr>
+                        <th scope="row">ISD-AS</th>
+                        <td>{{ object.isd_as }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Organization</th>
+                        <td><a href="{% url 'plugins:netbox_scion:organization' object.organization.pk %}">{{ object.organization }}</a></td>
+                    </tr>
+                    {% if object.description %}
+                    <tr>
+                        <th scope="row">Description</th>
+                        <td>{{ object.description|linebreaksbr }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if object.cores %}
+                    <tr>
+                        <th scope="row">Core Nodes</th>
+                        <td>
+                            {% for core in object.cores %}
+                                <span class="badge badge-secondary">{{ core }}</span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+        {% include 'inc/panels/custom_fields.html' %}
+        {% include 'inc/panels/tags.html' %}
+        {% include 'inc/panels/comments.html' %}
+    </div>
+    <div class="col col-md-6">
+        <div class="card">
+            <h5 class="card-header">
+                SCION Link Assignments
+                <div class="card-actions">
+                    <a href="{% url 'plugins:netbox_scion:scionlinkassignment_add' %}?isd_as={{ object.pk }}" class="btn btn-primary btn-sm">
+                        <i class="mdi mdi-plus-thick"></i> Add
+                    </a>
+                </div>
+            </h5>
+            <div class="card-body">
+                {% if object.link_assignments.exists %}
+                <table class="table table-hover">
+                    <tr>
+                        <th>Interface</th>
+                        <th>Core</th>
+                        <th>Customer</th>
+                        <th>Zendesk</th>
+                    </tr>
+                    {% for assignment in object.link_assignments.all %}
+                    <tr>
+                        <td><a href="{% url 'plugins:netbox_scion:scionlinkassignment' assignment.pk %}">{{ assignment.interface_id }}</a></td>
+                        <td>{{ assignment.core }}</td>
+                        <td>{{ assignment.customer_name }}</td>
+                        <td><a href="{{ assignment.get_zendesk_url }}" target="_blank">{{ assignment.zendesk_ticket }}</a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                <span class="text-muted">None</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
