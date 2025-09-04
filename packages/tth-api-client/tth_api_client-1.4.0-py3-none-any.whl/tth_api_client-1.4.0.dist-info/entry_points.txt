@@ -1,0 +1,5 @@
+[console_scripts]
+tth-upload = tth.uploader.manual_uploader:manual_upload
+
+[pytest11]
+name_of_plugin = tth.uploader.plugin

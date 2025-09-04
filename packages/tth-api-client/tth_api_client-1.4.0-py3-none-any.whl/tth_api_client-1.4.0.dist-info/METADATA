@@ -1,0 +1,66 @@
+Metadata-Version: 2.1
+Name: tth-api-client
+Version: 1.4.0
+Summary: Typhoon Test Hub API client library
+Home-page: https://github.com/typhoon-hil
+Author: Typhoon HIL
+Author-email: vanja.mijatov@typhoon-hil.com
+Classifier: Framework :: Pytest
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: Other/Proprietary License
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Testing
+Classifier: Topic :: Utilities
+Requires-Python: >=3.8,<3.15
+Description-Content-Type: text/markdown
+Requires-Dist: allure-pytest
+Requires-Dist: requests >=2.28.0
+Requires-Dist: requests-toolbelt >=1.0.0
+
+# Description
+
+Typhoon Test Hub API Client (tth-api-client) provides a set of functions for interacting with Typhoon Test Hub API.
+
+# Requirements
+
+Library depends on several packages that will be automatically installed when you perform
+installation using pip.
+
+# Installation
+
+Package is available on PyPI.
+
+**To install tth-api-client library, use:**
+
+```
+pip install tth-api-client
+```
+
+**To install specific version, use:**
+
+```
+pip install tth-api-client==<desired version>
+```
+
+**To upgrade to the newest version, use:**
+
+```
+pip install tth-api-client --upgrade
+```
+
+# Documentation
+
+Documentation about the library can be found on the [following page](https://www.typhoon-hil.com/documentation/tth_api_client).
