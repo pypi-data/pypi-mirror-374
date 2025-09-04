@@ -1,0 +1,44 @@
+[project]
+name = "dmx-compressor"
+version = "0.1.10"
+description = "d-Matrix Compressor"
+readme = "README.md"
+authors = [
+        {name="Tristan Webb", email= "twebb@d-matrix.ai"},
+        {name="Xin Wang", email= "xwang@d-matrix.ai"},
+        {name="Michael Klachko", email= "mklachko@d-matrix.ai"},
+        {name="Sayeh Sharify", email= "sayehs@d-matrix.ai"},
+        {name="Wanzin Yazar", email="wyazar@d-matrix.ai"},
+        {name="Zifei Xu", email="xuzifei@d-matrix.ai"},
+        {name="Hesham Mostafa",email="hmostafa@d-matrix.ai"}]
+
+
+[tool.poetry]
+include = [{ path = "tests", format = "sdist" }]
+packages = [
+    { include = "dmx/compressor", from = "src" },
+    { include = "mltools", from = "src" },
+]
+
+[tool.poetry.dependencies]
+datasets = ">=2.0"
+numpy = ">1.0"
+bidict = ">=0.22,<1.0"
+parse = "^1.19"
+evaluate=">=0.4.1,<0.5"
+graphviz="^0.21"
+pptree = "^3.1"
+pytest = "^8.0"
+python = ">=3.8"
+tqdm = "^4.0"
+transformers = ">=4.35.0,<4.50.0"
+torch = "^2.7"
+tabulate = "^0.9.0"
+torchvision = ">=0.22,<1.0"
+diffusers = ">0.25,<1.0"
+accelerate = "^1.5"
+scikit-optimize = "0.10.2"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
