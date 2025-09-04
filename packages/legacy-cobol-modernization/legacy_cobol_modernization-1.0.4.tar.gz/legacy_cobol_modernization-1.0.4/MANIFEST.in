@@ -1,0 +1,26 @@
+# Include documentation and license files
+include README.md
+include LICENSE
+include requirements.txt
+include pyproject.toml
+
+# Include test files (for development installations)
+include test_*.py
+include generate_golden_master.py
+include golden_master.json
+
+# Include COBOL source files (for reference)
+include *.cob
+
+# Exclude unnecessary files
+exclude *.pyc
+exclude __pycache__
+exclude .pytest_cache
+exclude .coverage
+exclude htmlcov
+exclude .git*
+exclude .github
+recursive-exclude * __pycache__
+recursive-exclude * *.pyc
+recursive-exclude * *.pyo
+recursive-exclude * .DS_Store
