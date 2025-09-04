@@ -1,0 +1,11 @@
+include st_tschart/__init__.py
+recursive-include st_tschart/frontend/build *
+exclude st_tschart/frontend/node_modules
+recursive-exclude st_tschart/frontend/node_modules *
+recursive-exclude st_tschart/frontend/src *
+exclude st_tschart/frontend/package.json
+exclude st_tschart/frontend/package-lock.json
+exclude st_tschart/frontend/tsconfig.json
+exclude st_tschart/frontend/tsconfig.node.json
+exclude st_tschart/frontend/vite.config.ts
+exclude st_tschart/frontend/index.html
