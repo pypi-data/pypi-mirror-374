@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+  <div class="page-header d-print-none">
+    <div class="container-xl">
+      <div class="row g-2 align-items-center">
+        <div class="col">
+          <h1 class="page-title">{{ model_name|default:"Items" }} List</h1>
+        </div>
+        <div class="col-auto ms-auto d-print-none">
+          <div class="btn-list">
+            <a href="{% url 'create_url' %}" class="btn btn-primary d-none d-sm-inline-block">
+              <i class="ti ti-plus me-1"></i>
+              Create {{ model_name|default:"Item" }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+<div class="container-xl">
+  <div class="row row-deck row-cards">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">{{ model_name|default:"Items" }} List</h3>
+          <div class="card-actions">
+            <div class="input-group">
+              <input type="search" class="form-control" placeholder="Search..." />
+              <button class="btn" type="button">
+                <i class="ti ti-search"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table card-table table-vcenter text-nowrap datatable">
+            <thead>
+              <tr>
+                {% for field_name in field_names %}
+                <th>{{ field_name|title }}</th>
+                {% endfor %}
+                <th class="w-1">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{% for item in object_list %}}
+              <tr>
+                {% for field_name in field_names %}
+                <td>{{{{ item.{{ field_name }} }}}}</td>
+                {% endfor %}
+                <td>
+                  <div class="btn-list flex-nowrap">
+                    <a href="{{% url 'detail_url' item.pk %}}" class="btn btn-sm btn-outline-primary">
+                      View
+                    </a>
+                    <a href="{{% url 'edit_url' item.pk %}}" class="btn btn-sm btn-outline-secondary">
+                      Edit
+                    </a>
+                    <a href="{{% url 'delete_url' item.pk %}}" class="btn btn-sm btn-outline-danger">
+                      Delete
+                    </a>
+                  </div>
+                </td>
+              </tr>
+              {{% empty %}}
+              <tr>
+                <td colspan="{{ field_names|length|add:1 }}" class="text-center text-secondary">
+                  No {{ model_name|default:"items" }} found.
+                </td>
+              </tr>
+              {{% endfor %}}
+            </tbody>
+          </table>
+        </div>
+        
+        {% if paginated %}
+        <div class="card-footer d-flex align-items-center">
+          <p class="m-0 text-secondary">
+            Showing <span>{{{{ page_obj.start_index }}}}</span> to <span>{{{{ page_obj.end_index }}}}</span>
+            of <span>{{{{ page_obj.paginator.count }}}}</span> entries
+          </p>
+          <ul class="pagination m-0 ms-auto">
+            {{% if page_obj.has_previous %}}
+              <li class="page-item">
+                <a class="page-link" href="?page={{{{ page_obj.previous_page_number }}}}">
+                  <i class="ti ti-chevron-left"></i>
+                  prev
+                </a>
+              </li>
+            {{% endif %}}
+            {{% if page_obj.has_next %}}
+              <li class="page-item">
+                <a class="page-link" href="?page={{{{ page_obj.next_page_number }}}}">
+                  next
+                  <i class="ti ti-chevron-right"></i>
+                </a>
+              </li>
+            {{% endif %}}
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

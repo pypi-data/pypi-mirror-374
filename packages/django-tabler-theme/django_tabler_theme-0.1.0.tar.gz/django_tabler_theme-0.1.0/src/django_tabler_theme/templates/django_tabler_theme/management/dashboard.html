@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+  <div class="page-header d-print-none">
+    <div class="container-xl">
+      <div class="row g-2 align-items-center">
+        <div class="col">
+          <h1 class="page-title">Dashboard</h1>
+          <div class="page-subtitle">{{ subtitle|default:"Overview and key metrics" }}</div>
+        </div>
+        <div class="col-auto ms-auto d-print-none">
+          <div class="btn-list">
+            <a href="#" class="btn btn-outline-primary">
+              <i class="ti ti-download me-1"></i>
+              Export
+            </a>
+            <a href="#" class="btn btn-primary">
+              <i class="ti ti-plus me-1"></i>
+              Add new
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+<div class="container-xl">
+  <!-- Stats Row -->
+  <div class="row row-deck row-cards">
+    <div class="col-sm-6 col-lg-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="subheader">Total Users</div>
+            <div class="ms-auto lh-1">
+              <div class="dropdown">
+                <a class="dropdown-toggle text-secondary" href="#" data-bs-toggle="dropdown">
+                  <i class="ti ti-dots-vertical"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                  <a class="dropdown-item" href="#">View details</a>
+                  <a class="dropdown-item" href="#">Export data</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="h1 mb-3">{{ total_users|default:"1,234" }}</div>
+          <div class="d-flex mb-2">
+            <div class="flex-fill">
+              <div class="progress progress-sm">
+                <div class="progress-bar bg-primary" style="width: 75%" role="progressbar"></div>
+              </div>
+            </div>
+            <div class="ms-auto">
+              <span class="text-green d-inline-flex align-items-center lh-1">
+                12%
+                <i class="ti ti-trending-up ms-1"></i>
+              </span>
+            </div>
+          </div>
+          <div class="text-secondary">12% more than last month</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-sm-6 col-lg-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="subheader">Revenue</div>
+          </div>
+          <div class="h1 mb-3">${{ revenue|default:"12,345" }}</div>
+          <div class="d-flex mb-2">
+            <div class="flex-fill">
+              <div class="progress progress-sm">
+                <div class="progress-bar bg-success" style="width: 60%" role="progressbar"></div>
+              </div>
+            </div>
+            <div class="ms-auto">
+              <span class="text-green d-inline-flex align-items-center lh-1">
+                8%
+                <i class="ti ti-trending-up ms-1"></i>
+              </span>
+            </div>
+          </div>
+          <div class="text-secondary">8% more than last month</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-sm-6 col-lg-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="subheader">Orders</div>
+          </div>
+          <div class="h1 mb-3">{{ orders|default:"567" }}</div>
+          <div class="d-flex mb-2">
+            <div class="flex-fill">
+              <div class="progress progress-sm">
+                <div class="progress-bar bg-warning" style="width: 45%" role="progressbar"></div>
+              </div>
+            </div>
+            <div class="ms-auto">
+              <span class="text-red d-inline-flex align-items-center lh-1">
+                -3%
+                <i class="ti ti-trending-down ms-1"></i>
+              </span>
+            </div>
+          </div>
+          <div class="text-secondary">3% less than last month</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-sm-6 col-lg-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="subheader">Conversion Rate</div>
+          </div>
+          <div class="h1 mb-3">{{ conversion_rate|default:"2.3" }}%</div>
+          <div class="d-flex mb-2">
+            <div class="flex-fill">
+              <div class="progress progress-sm">
+                <div class="progress-bar bg-info" style="width: 23%" role="progressbar"></div>
+              </div>
+            </div>
+            <div class="ms-auto">
+              <span class="text-green d-inline-flex align-items-center lh-1">
+                5%
+                <i class="ti ti-trending-up ms-1"></i>
+              </span>
+            </div>
+          </div>
+          <div class="text-secondary">5% more than last month</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Charts Row -->
+  <div class="row row-deck row-cards">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Analytics Overview</h3>
+        </div>
+        <div class="card-body">
+          <div id="chart-placeholder" style="height: 300px; background: #f8f9fa; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #6c757d;">
+            Chart placeholder - integrate with your preferred charting library
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Recent Activity</h3>
+        </div>
+        <div class="list-group list-group-flush">
+          <div class="list-group-item">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <span class="status-dot status-dot-animated bg-red d-block"></span>
+              </div>
+              <div class="col text-truncate">
+                <a href="#" class="text-body d-block">New user registered</a>
+                <div class="d-block text-secondary text-truncate mt-n1">
+                  John Doe joined the platform
+                </div>
+              </div>
+              <div class="col-auto">
+                <a href="#" class="list-group-item-actions">
+                  <i class="ti ti-chevron-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="list-group-item">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <span class="status-dot status-dot-animated bg-green d-block"></span>
+              </div>
+              <div class="col text-truncate">
+                <a href="#" class="text-body d-block">Order completed</a>
+                <div class="d-block text-secondary text-truncate mt-n1">
+                  Order #1234 has been fulfilled
+                </div>
+              </div>
+              <div class="col-auto">
+                <a href="#" class="list-group-item-actions">
+                  <i class="ti ti-chevron-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="list-group-item">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <span class="status-dot status-dot-animated bg-blue d-block"></span>
+              </div>
+              <div class="col text-truncate">
+                <a href="#" class="text-body d-block">System update</a>
+                <div class="d-block text-secondary text-truncate mt-n1">
+                  Application updated to v2.1.0
+                </div>
+              </div>
+              <div class="col-auto">
+                <a href="#" class="list-group-item-actions">
+                  <i class="ti ti-chevron-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
