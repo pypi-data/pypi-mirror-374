@@ -1,0 +1,5 @@
+[console_scripts]
+samba-container = sambacc.commands.main:main
+samba-dc-container = sambacc.commands.dcmain:main
+samba-remote-control = sambacc.commands.remotecontrol.main:main
+samba-satellite = sambacc.commands.satellite.__main__:main

@@ -1,0 +1,14 @@
+ARG SAMBACC_BASE_IMAGE='registry.fedoraproject.org/fedora:41'
+FROM $SAMBACC_BASE_IMAGE
+
+
+COPY build.sh /usr/local/bin/build.sh
+
+# Set SAMBACC_MINIMAL to yes to build a container that only contains the
+# build.sh script on top of the base image. When called, build.sh will
+# automatically install the dependency packages. Installing packages on every
+# run can be slow, especially if you are hacking on the code or tests, so we
+# install those dependencies proactively by default.
+ARG SAMBACC_MINIMAL=no
+RUN if [ "$SAMBACC_MINIMAL" != "yes" ]; then /usr/local/bin/build.sh --install ; fi
+ENTRYPOINT ["/usr/local/bin/build.sh"]
