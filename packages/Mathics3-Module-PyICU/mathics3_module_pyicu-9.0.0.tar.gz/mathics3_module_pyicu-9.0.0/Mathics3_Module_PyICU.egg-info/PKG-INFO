@@ -1,0 +1,67 @@
+Metadata-Version: 2.4
+Name: Mathics3-Module-PyICU
+Version: 9.0.0
+Summary: Mathics3 Hello, World! module
+Maintainer-email: Mathics Group <mathics-devel@googlegroups.com>
+License-Expression: GPL-3.0-or-later
+Project-URL: Homepage, https://github.com/Mathics3/Mathics3-Module-PyICU
+Project-URL: Downloads, https://github.com/Mathics3/Mathics-Module-PyICU/releases
+Keywords: Mathematica,Wolfram,Interpreter,Shell,Math,CAS
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Software Development :: Interpreters
+Requires-Python: >=3.10
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Requires-Dist: Mathics3-Module-Base>=9.0.0
+Requires-Dist: Mathics3>=9.0.0
+Requires-Dist: PyICU>=2.9
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Dynamic: license-file
+
+Mathics3 Module for ICU — International Components for Unicode
+
+Functions that provide information from the `Python ICU library <https://pypi.org/project/pyicu/>`_.
+
+Example Session
+---------------
+
+::
+
+   $ mathicsscript
+   In[1]:= LoadModule["pymathics.icu"]
+   Out[1]= pymathics.icu
+
+   In[2]= Alphabet["Croatian"]
+   Out[2]= {a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, r, s, t, u, v, z, ć, č, đ, š, ž, dž, lj, nj}
+
+   In[3]:= $Language
+   Out[3]= "English"
+
+   In[4]:= Alphabet[]
+   Out[4]= {a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z}
+
+   In[5]:= $Language="German"
+   Out[5]= "German"
+
+   In[6]:= Alphabet[]
+   Out[6]= {a, ä, b, c, d, e, f, g, h, i, j, k, l, m, n, o, ö, p, q, r, s, ß, t, u, ü, v, w, x, y, z}
+
+   In[7]:= AlphabeticOrder["Papá", "Papagayo", "Spanish"]
+   Out[7]= 1
+
+   In[8]:= AlphabeticOrder["Papá", "Papa", "Spanish"]
+   Out[8]= -1
+
+   In[8]:= AlphabeticOrder["Papá", ""Papá", "Spanish"]
+   Out[8]= 0
