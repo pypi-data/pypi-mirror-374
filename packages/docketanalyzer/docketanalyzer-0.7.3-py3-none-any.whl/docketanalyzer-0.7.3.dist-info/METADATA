@@ -1,0 +1,90 @@
+Metadata-Version: 2.4
+Name: docketanalyzer
+Version: 0.7.3
+Author: Nathan Dahlberg
+License-File: LICENSE
+Requires-Python: >=3.11
+Requires-Dist: awscli>=1.38.11
+Requires-Dist: boto3>=1.37.11
+Requires-Dist: elasticsearch==8.12.1
+Requires-Dist: litellm>=1.63.6
+Requires-Dist: pandas>=2.2.3
+Requires-Dist: pathlib>=1.0.1
+Requires-Dist: peewee>=3.17.9
+Requires-Dist: psycopg2-binary>=2.9.10
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: redis>=6.2.0
+Requires-Dist: regex>=2.5.148
+Requires-Dist: requests>=2.32.3
+Requires-Dist: ruff>=0.9.10
+Requires-Dist: simplejson>=3.19.3
+Requires-Dist: tomli-w>=1.2.0
+Requires-Dist: tomli>=2.2.1
+Requires-Dist: tqdm>=4.66.2
+Requires-Dist: twine>=4.0.0
+Provides-Extra: all
+Requires-Dist: datasets>=3.6.0; extra == 'all'
+Requires-Dist: dill; extra == 'all'
+Requires-Dist: doclayout-yolo; extra == 'all'
+Requires-Dist: huggingface-hub; extra == 'all'
+Requires-Dist: juriscraper>=2.6.55; extra == 'all'
+Requires-Dist: pymupdf; extra == 'all'
+Requires-Dist: runpod; extra == 'all'
+Requires-Dist: scikit-learn>=1.7.0; extra == 'all'
+Requires-Dist: selenium>=4.18.1; extra == 'all'
+Requires-Dist: surya-ocr>=0.14.6; extra == 'all'
+Requires-Dist: transformers[torch]>=4.53.0; extra == 'all'
+Requires-Dist: uv; extra == 'all'
+Requires-Dist: uvicorn; extra == 'all'
+Provides-Extra: dev
+Requires-Dist: build>=1.0.0; extra == 'dev'
+Requires-Dist: mkdocs-material>=9.0.0; extra == 'dev'
+Requires-Dist: mkdocs-pygments>=0.0.2; extra == 'dev'
+Requires-Dist: mkdocs>=1.5.0; extra == 'dev'
+Requires-Dist: mkdocstrings[python]>=0.24.0; extra == 'dev'
+Requires-Dist: pytest-cov>=4.0; extra == 'dev'
+Requires-Dist: pytest>=8.3.5; extra == 'dev'
+Provides-Extra: ml
+Requires-Dist: datasets>=3.6.0; extra == 'ml'
+Requires-Dist: scikit-learn>=1.7.0; extra == 'ml'
+Requires-Dist: transformers[torch]>=4.53.0; extra == 'ml'
+Provides-Extra: ocr
+Requires-Dist: dill; extra == 'ocr'
+Requires-Dist: doclayout-yolo; extra == 'ocr'
+Requires-Dist: huggingface-hub; extra == 'ocr'
+Requires-Dist: pymupdf; extra == 'ocr'
+Requires-Dist: runpod; extra == 'ocr'
+Requires-Dist: surya-ocr>=0.14.6; extra == 'ocr'
+Requires-Dist: uv; extra == 'ocr'
+Requires-Dist: uvicorn; extra == 'ocr'
+Provides-Extra: pacer
+Requires-Dist: juriscraper>=2.6.55; extra == 'pacer'
+Requires-Dist: selenium>=4.18.1; extra == 'pacer'
+Description-Content-Type: text/markdown
+
+# Docket Analyzer
+
+Docket Analyzer is a AI toolkit for working with federal court dockets.
+
+Install docketanalyzer with pip:
+
+```bash
+pip install 'docketanalyzer[all]'
+```
+
+Then run the interactive configuration script:
+
+```bash
+da configure
+```
+
+Alternatively, you can install just the core package and/or specific extensions:
+
+```bash
+pip install docketanalyzer
+pip install 'docketanalyzer[ml]'
+pip install 'docketanalyzer[pacer]'
+```
+
+See [documentation](https://docs.docketanalyzer.com)
+for tutorials and API reference.
