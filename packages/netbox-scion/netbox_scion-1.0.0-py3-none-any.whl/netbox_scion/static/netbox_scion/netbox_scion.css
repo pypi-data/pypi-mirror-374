@@ -1,0 +1,35 @@
+/* NetBox SCION Plugin Custom Styles */
+
+/* Fix menu behavior - keep expanded state until manually collapsed */
+.nav-sidebar .nav-item.has-children.show .nav-link[data-bs-toggle="collapse"] {
+    position: relative;
+}
+
+/* Ensure SCION menu stays expanded when clicked */
+.nav-sidebar .nav-item.has-children.show .collapse.show {
+    display: block !important;
+}
+
+/* Fix plugin menu item styling to match NetBox defaults */
+.nav-sidebar .nav-item .nav-link {
+    color: inherit;
+}
+
+/* Ensure add buttons match NetBox styling */
+.nav-sidebar .nav-item .btn-sm {
+    padding: 0.125rem 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+
+/* Fix menu item hover states */
+.nav-sidebar .nav-item .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: inherit;
+}
+
+/* Persistent menu state */
+.nav-sidebar .nav-item.show > .nav-link[data-bs-toggle="collapse"]::after {
+    transform: rotate(90deg);
+}

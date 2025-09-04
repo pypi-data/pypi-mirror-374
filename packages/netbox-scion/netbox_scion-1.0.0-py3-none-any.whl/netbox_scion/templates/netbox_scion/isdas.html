@@ -1,0 +1,68 @@
+{% extends 'generic/object_list.html' %}
+{% load render_table from django_tables2 %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col col-md-6">
+        <div class="card">
+            <h5 class="card-header">ISD-AS</h5>
+            <div class="card-body">
+                <table class="table table-hover attr-table">
+                    <tr>
+                        <th scope="row">ISD-AS</th>
+                        <td>{{ object.isd_as }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Organization</th>
+                        <td><a href="{% url 'plugins:netbox_scion:organization' object.organization.pk %}">{{ object.organization.short_name }}</a></td>
+                    </tr>
+                    {% if object.description %}
+                    <tr>
+                        <th scope="row">Description</th>
+                        <td>{{ object.description|linebreaksbr }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if object.cores %}
+                    <tr>
+                        <th scope="row">Cores</th>
+                        <td>{{ object.cores_display }}</td>
+                    </tr>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if object.link_assignments.exists %}
+<div class="row">
+    <div class="col col-md-12">
+        <div class="card">
+            <h5 class="card-header">Link Assignments ({{ object.link_assignments.count }})</h5>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Interface ID</th>
+                            <th>Customer ID</th>
+                            <th>Customer Name</th>
+                            <th>Zendesk Ticket</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for assignment in object.link_assignments.all %}
+                        <tr>
+                            <td><a href="{% url 'plugins:netbox_scion:scionlinkassignment' assignment.pk %}">{{ assignment.interface_id }}</a></td>
+                            <td>{{ assignment.customer_id }}</td>
+                            <td>{{ assignment.customer_name }}</td>
+                            <td><a href="{{ assignment.get_zendesk_url }}" target="_blank">{{ assignment.zendesk_ticket }}</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
