@@ -1,0 +1,56 @@
+Metadata-Version: 2.4
+Name: armada_client
+Version: 0.4.13
+Summary: Armada gRPC API python client
+Author-email: G-Research Open Source Software <armada@armadaproject.io>
+License: Apache Software License
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: grpcio==1.68.1
+Requires-Dist: grpcio-tools==1.68.1
+Requires-Dist: mypy-protobuf>=3.6.0
+Requires-Dist: protobuf>=5.28.1
+Provides-Extra: format
+Requires-Dist: black>=23.7.0; extra == "format"
+Requires-Dist: flake8>=7.0.0; extra == "format"
+Requires-Dist: pylint>=2.17.5; extra == "format"
+Provides-Extra: docs
+Requires-Dist: sphinx==7.1.2; extra == "docs"
+Requires-Dist: sphinx-jekyll-builder==0.3.0; extra == "docs"
+Requires-Dist: sphinx-toolbox==3.2.0b1; extra == "docs"
+Requires-Dist: sphinx-markdown-builder==0.5.5; extra == "docs"
+Provides-Extra: test
+Requires-Dist: pytest==7.3.1; extra == "test"
+Requires-Dist: coverage==6.5.0; extra == "test"
+Requires-Dist: pytest-asyncio==0.21.1; extra == "test"
+
+# Armada Python Client
+<hr />
+
+The Armada Python client wraps the gRPC services defined in `submit.proto` and `events.proto`.
+
+It supports the following Armada features:
+- submitting, cancelling, and re-prioritising jobs, and
+- watching for job events.
+
+## Installation
+
+> **These instructions are intended for end-users.** If you wish to develop against armada_client, please see our **[documentation on contributing](CONTRIBUTING.md )**
+
+### PyPI
+
+The Armada python client is available from [armada_client](https://pypi.org/project/armada-client/). It can be installed
+with `pip install armada-client`. Documentation and examples of how to use the python can be found on the
+[Armada libraries webpage](https://armadaproject.io/libraries). 
+
+### Build from Git
+Building from Git is a multi-step process unlike many other Python projects. This project extensively uses generated
+code, which is not committed into the repository.
+
+Before beginning, ensure you have:
+- A working docker client, or docker-compatible client available under `docker`.
+- Network access to fetch docker images and go dependencies.
+
+To generate all needed code, and install the python client:
+1) From the root of the repository, run `mage buildPython`
+2) Install the client using `pip install client/python`. It's strongly recommended you do this inside a virtualenv.
