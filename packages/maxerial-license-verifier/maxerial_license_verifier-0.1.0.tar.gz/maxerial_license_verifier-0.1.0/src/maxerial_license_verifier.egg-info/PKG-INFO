@@ -1,0 +1,20 @@
+Metadata-Version: 2.4
+Name: maxerial-license-verifier
+Version: 0.1.0
+Summary: Client library to verify maXerial licenses via a local activation server and check licensed features.
+Author-email: maXerial <filip.dobrosavljevic@maxerial.io>
+License: MIT
+Project-URL: Homepage, https://pypi.org/project/maxerial-license-verifier/
+Project-URL: Source, https://github.com/maxerial/maxerial-license-verifier
+Keywords: license,activation,verification,maxerial
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: requests>=2.31.0
+
+# maXerial-license-verification-python
+A Python package for the communication interface between dockerized Python environments and the maXerial license activation server.

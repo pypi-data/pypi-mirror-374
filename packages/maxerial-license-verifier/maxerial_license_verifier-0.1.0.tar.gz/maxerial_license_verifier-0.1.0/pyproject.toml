@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "maxerial-license-verifier"
+version = "0.1.0"
+description = "Client library to verify maXerial licenses via a local activation server and check licensed features."
+readme = "README.md"
+authors = [
+  { name = "maXerial", email = "filip.dobrosavljevic@maxerial.io" }
+]
+license = { text = "MIT" }
+requires-python = ">=3.8"
+keywords = ["license", "activation", "verification", "maxerial"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+dependencies = [
+  "requests>=2.31.0"
+]
+
+[project.urls]
+Homepage = "https://pypi.org/project/maxerial-license-verifier/"
+Source = "https://github.com/maxerial/maxerial-license-verifier"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
