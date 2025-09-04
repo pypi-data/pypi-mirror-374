@@ -1,0 +1,76 @@
+Metadata-Version: 2.4
+Name: simularium_readdy_models
+Version: 1.0.0
+Summary: Tools for building computational biology models in ReaDDy.
+Author-email: Blair Lyons <blair208@gmail.com>
+License: Apache Software License 2.0
+Project-URL: Homepage, https://github.com/simularium/readdy-models
+Project-URL: Bug Tracker, https://github.com/simularium/readdy-models/issues
+Project-URL: Documentation, https://simularium.github.io/readdy-models
+Project-URL: User Support, https://github.com/simularium/readdy-models/issues
+Classifier: Development Status :: 4 - Beta
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: pandas
+Requires-Dist: simulariumio>=1.11.0
+Provides-Extra: lint
+Requires-Dist: black>=22.3.0; extra == "lint"
+Requires-Dist: check-manifest>=0.48; extra == "lint"
+Requires-Dist: ruff>=0.0.216; extra == "lint"
+Requires-Dist: mypy>=0.790; extra == "lint"
+Requires-Dist: pre-commit>=2.20.0; extra == "lint"
+Provides-Extra: test
+Requires-Dist: coverage>=5.1; extra == "test"
+Requires-Dist: pytest>=5.4.3; extra == "test"
+Requires-Dist: pytest-cov>=2.9.0; extra == "test"
+Requires-Dist: pytest-raises>=0.11; extra == "test"
+Provides-Extra: docs
+Requires-Dist: m2r2>=0.2.7; extra == "docs"
+Requires-Dist: Sphinx>=4.0.0; extra == "docs"
+Requires-Dist: furo>=2022.4.7; extra == "docs"
+Requires-Dist: numpydoc; extra == "docs"
+Requires-Dist: sphinx-copybutton; extra == "docs"
+Requires-Dist: docutils<0.19,>=0.18; extra == "docs"
+Provides-Extra: dev
+Requires-Dist: ipython>=8.4.0; extra == "dev"
+Provides-Extra: example
+Requires-Dist: psutil; extra == "example"
+Requires-Dist: awscli; extra == "example"
+Requires-Dist: boto3; extra == "example"
+Requires-Dist: openpyxl; extra == "example"
+Dynamic: license-file
+
+# Simularium ReaDDy Models
+Tools for building computational biology models and example models from the Simularium project. Includes coarse-grained monomer [ReaDDy](https://readdy.github.io/) models for actin, microtubules, and kinesin.
+
+---
+
+## Quickstart
+
+See [examples/README.md](examples/README.md) to run example actin, microtubules, or kinesin models either locally or on AWS with Docker.
+
+## Installation
+
+**Development Head:** `pip install git+https://github.com/simularium/simularium_readdy_models.git`<br>
+
+### Development Install with `conda`:
+
+(`conda` is currently required to install `readdy`.)
+
+1. Create a virtual environment with conda-specific dependencies: `conda env create -f environment.yml`
+2. Activate the environment: `conda activate readdy_models`
+3. Install just command runner: `conda install -c conda-forge just`
+3. Install remaining dependencies: `just install`
+
+## Development
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for information related to developing the code.
+

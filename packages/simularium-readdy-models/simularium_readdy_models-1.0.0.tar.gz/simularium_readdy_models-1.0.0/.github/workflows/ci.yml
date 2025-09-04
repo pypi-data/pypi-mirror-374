@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  # Check that all files listed in manifest make it into build
+  check-manifest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+      - run: pip install check-manifest && check-manifest
+
+  # Check linting, formating, types, etc.
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+    - uses: extractions/setup-just@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install .[lint]
+    - name: Lint
+      run: just lint
+
+  # Publish to PyPI if lint and manifest checks passed
+  publish:
+    if: "success() && startsWith(github.ref, 'refs/tags/')"
+    needs: [check-manifest, lint]
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build wheel
+    - name: Build Package
+      run: |
+        python -m build
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_TOKEN }}
