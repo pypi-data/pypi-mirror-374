@@ -1,0 +1,14 @@
+{% ckan_extends %}
+
+{% block primary_content %}
+    {% if request.args.get('collection_info') %}
+        <div class="module">
+            {% snippet "snippets/related_collection.html", collection_info=request.args.get('collection_info') %}
+        </div>
+    {% endif %}
+
+    {{ super() }}
+
+{% endblock %}
+
+{{ super() }}
