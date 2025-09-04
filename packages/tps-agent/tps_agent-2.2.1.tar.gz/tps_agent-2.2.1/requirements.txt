@@ -1,0 +1,10 @@
+# TPS Agent - Core Dependencies
+# Minimal dependencies for basic functionality
+
+# Core dependencies (always required)
+requests>=2.25.0,<3.0.0
+
+# Optional dependencies - install via extras_require
+# pip install tps-agent[postgresql]  -> psycopg2-binary>=2.9.0
+# pip install tps-agent[prometheus]  -> prometheus_client>=0.16.0
+# pip install tps-agent[all]         -> all optional dependencies
