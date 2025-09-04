@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyham40k"
+version = "1.0.0"
+description = "pyham40k (pyham) - to overanalyze your Warhammer 40k 10e gameplay"
+requires-python = ">=3.12"
+authors = [{name = "Cat Gamer", email = "catgamer702@gmail.com"}]
+license = {text = "MIT"}
+readme = "README.md"
+dependencies = [
+    "markdown-it-py==4.0.0",
+    "mdurl==0.1.2",
+    "Pygments==2.19.2",
+    "rich==14.1.0",
+]
+
+[project.scripts]
+pyham = "pyham40k.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
