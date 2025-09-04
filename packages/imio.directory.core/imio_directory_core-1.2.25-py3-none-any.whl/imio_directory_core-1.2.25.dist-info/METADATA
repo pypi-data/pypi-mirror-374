@@ -1,0 +1,641 @@
+Metadata-Version: 2.4
+Name: imio.directory.core
+Version: 1.2.25
+Summary: Core product for iMio contacts Directory websites
+Home-page: https://github.com/imio/imio.directory.core
+Author: Christophe Boulanger
+Author-email: christophe.boulanger@imio.be
+License: GPL version 2
+Project-URL: PyPI, https://pypi.python.org/pypi/imio.directory.core
+Project-URL: Source, https://github.com/imio/imio.directory.core
+Project-URL: Tracker, https://github.com/imio/imio.directory.core/issues
+Keywords: Python Plone CMS
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Plone
+Classifier: Framework :: Plone :: Addon
+Classifier: Framework :: Plone :: 6.0
+Classifier: Framework :: Plone :: 6.1
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: GNU General Public License v2 (GPLv2)
+Requires-Python: >=3.10
+License-File: LICENSE.GPL
+License-File: LICENSE.rst
+Requires-Dist: setuptools
+Requires-Dist: z3c.jbot
+Requires-Dist: z3c.unconfigure
+Requires-Dist: plone.api>=1.8.4
+Requires-Dist: plone.gallery
+Requires-Dist: plone.restapi
+Requires-Dist: plone.app.dexterity
+Requires-Dist: plone.app.discussion
+Requires-Dist: plone.app.imagecropping
+Requires-Dist: pandas
+Requires-Dist: collective.taxonomy
+Requires-Dist: embeddify
+Requires-Dist: imio.smartweb.common
+Requires-Dist: imio.smartweb.locales
+Requires-Dist: collective.instancebehavior
+Requires-Dist: collective.z3cform.datagridfield>=2.0
+Requires-Dist: collective.geolocationbehavior
+Requires-Dist: collective.monkeypatcher
+Requires-Dist: collective.schedulefield
+Requires-Dist: vobject
+Provides-Extra: test
+Requires-Dist: plone.app.testing; extra == "test"
+Requires-Dist: plone.testing>=5.0.0; extra == "test"
+Requires-Dist: plone.app.contenttypes; extra == "test"
+Requires-Dist: plone.app.robotframework[debug]; extra == "test"
+Requires-Dist: requests-mock; extra == "test"
+Requires-Dist: beautifulsoup4; extra == "test"
+Requires-Dist: plone.restapi[test]; extra == "test"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+.. This README is meant for consumption by humans and pypi. Pypi can render rst files so please do not use Sphinx features.
+   If you want to learn more about writing documentation, please check out: http://docs.plone.org/about/documentation_styleguide.html
+   This text does not appear on pypi or github. It is a comment.
+
+.. image:: https://github.com/IMIO/imio.directory.core/workflows/Tests/badge.svg
+    :target: https://github.com/IMIO/imio.directory.core/actions?query=workflow%3ATests
+    :alt: CI Status
+
+.. image:: https://coveralls.io/repos/github/IMIO/imio.directory.core/badge.svg?branch=main
+    :target: https://coveralls.io/github/IMIO/imio.directory.core?branch=main
+    :alt: Coveralls
+
+.. image:: https://img.shields.io/pypi/v/imio.directory.core.svg
+    :target: https://pypi.python.org/pypi/imio.directory.core/
+    :alt: Latest Version
+
+.. image:: https://img.shields.io/pypi/status/imio.directory.core.svg
+    :target: https://pypi.python.org/pypi/imio.directory.core
+    :alt: Egg Status
+
+.. image:: https://img.shields.io/pypi/pyversions/imio.directory.core.svg?style=plastic   :alt: Supported - Python Versions
+
+.. image:: https://img.shields.io/pypi/l/imio.directory.core.svg
+    :target: https://pypi.python.org/pypi/imio.directory.core/
+    :alt: License
+
+
+===================
+imio.directory.core
+===================
+
+Directory product for 'Contacts authentic source' website
+
+
+Features
+--------
+
+This products contains two content types: Entity & Contact.
+
+An entity is bound to one or more belgian zip codes and contains editable geolocated contacts.
+
+A contact can be exported to a vcard file using an object action.
+
+This directory product is made to be used only by editors, to build the authentic source.
+The website is then queried (RESTAPI) from other iMio websites.
+Contacts are displayed in those sites by `imio.smartweb.core <https://github.com/IMIO/imio.smartweb.core>`_ contact section.
+
+
+Examples
+--------
+
+- https://annuaire.enwallonie.be
+
+
+Documentation
+-------------
+
+Contact can be import from a CSV file via an action on the right Entity.
+CSV Delimiter is ";"? and columns must be :
+
+================  ============================================================
+Column Index      Data
+================  ============================================================
+00                contact type
+01                title
+02                subtitle
+03                description
+04                street
+05                number
+06                complement
+07                zipcode
+08                city
+09                country
+10                vat number
+11                latitude
+12                longitude
+13                phone label 1
+14                phone type 1
+15                phone number 1
+16                phone label 2
+17                phone type 2
+18                phone number 2
+19                phone label 3
+20                phone type 3
+21                phone number 3
+22                mail label 1
+23                mail type 1
+24                mail address 1
+25                mail label 2
+26                mail type 2
+27                mail address 2
+28                mail label 3
+29                mail type 3
+30                mail address 3
+31                url type 1
+32                url link 1
+33                url type 2
+34                url link 2
+35                url type 3
+36                url link 3
+37                topic 1
+38                topic 2
+39                topic 3
+40                category 1
+41                category 2
+42                category 3
+43                facility 1
+44                facility 2
+45                facility 3
+46                iam 1
+47                iam 2
+48                iam 3
+================  ============================================================
+
+
+Translations
+------------
+
+This product has been translated into
+
+- French
+
+The translation domain is ``imio.smartweb`` and the translations are stored in `imio.smartweb.locales <https://github.com/IMIO/imio.smartweb.locales>`_ package.
+
+
+Installation
+------------
+
+Install imio.directory.core by adding it to your buildout::
+
+    [buildout]
+
+    ...
+
+    eggs =
+
+  imio.directory.core
+
+
+and then running ``bin/buildout``
+
+
+Contribute
+----------
+
+- Issue Tracker: https://github.com/collective/imio.directory.core/issues
+- Source Code: https://github.com/collective/imio.directory.core
+
+
+License
+-------
+
+The project is licensed under the GPLv2.
+
+
+Contributors
+============
+
+- Christophe Boulanger, christophe.boulanger@imio.be
+- Laurent Lasudry, laurent.lasudry@affinitic.be
+
+
+Changelog
+=========
+
+
+1.2.25 (2025-09-04)
+-------------------
+
+- SUP-45951 : add review_state and url to csv export view
+  [remdub]
+
+
+1.2.24 (2025-08-25)
+-------------------
+
+- WEB-4057 : Enhance ergonomics of the schedule field
+  [boulch]
+
+
+1.2.23 (2025-07-29)
+-------------------
+
+- WEB-4265 : Add new terms in facilities vocabulary
+  [remdub]
+
+
+1.2.22 (2025-07-24)
+-------------------
+
+- WEB-4286 : Missing catch when trying to geocode contact with default coordinates
+  [remdub]
+
+
+1.2.21 (2025-07-24)
+-------------------
+
+- WEB-4286 : Fix geolocation for contacts with default coordinates
+  [remdub]
+
+
+1.2.20 (2025-06-25)
+-------------------
+
+- WEB-4278 : Create translated (de) contact categories vocabulary for e-guichet (citizen project)
+  [boulch]
+
+- WEB-4278 : Create translated (de) factilities vocabulary for e-guichet (citizen project)
+  [boulch]
+
+- WEB-4278 : Create translated (de) contact types vocabulary for e-guichet (citizen project)
+  [boulch]
+
+
+1.2.19 (2025-05-06)
+-------------------
+
+- Upgrade dev environment to Plone 6.1-latest
+  [remdub]
+
+- Add tests for Plone 6.1-latest and add Python 3.13
+  [remdub]
+
+
+1.2.18 (2025-01-29)
+-------------------
+
+- Update Python classifiers to be compatible with Python 3.12
+  [remdub]
+
+- Migrate to Plone 6.0.14
+  [boulch]
+
+
+1.2.17 (2025-01-07)
+-------------------
+
+- WEB-4153 : Add a new cacheRuleset to use with our custom rest endpoints
+  [remdub]
+
+
+1.2.16 (2024-08-05)
+-------------------
+
+- WEB-4027 : Add "Linkedin" as a new type of site term
+  [boulch]
+
+- WEB-4088 : Fix missing include package .rest. we couldn't directly call @odwb endpoints.
+  [boulch]
+
+
+1.2.15 (2024-07-01)
+-------------------
+
+- WEB-4088 : Add after commit hook to reduce bad image upload to odwb because of the transaction speed
+  New contact hasn't time to go from private to published state ?!
+  [boulch]
+
+
+1.2.14 (2024-06-28)
+-------------------
+
+- WEB-4088 : Rename some fields to match with odwb dataset
+  [boulch]
+
+- GHA tests on Python 3.8 3.9 and 3.10
+  [remdub]
+
+1.2.13 (2024-06-06)
+-------------------
+
+- Geocode contact only if longitude and latitude are empty on csv import
+  [laulaz, remdub]
+
+
+1.2.12 (2024-05-27)
+-------------------
+
+- Fix upgrade step
+  [boulch]
+
+
+1.2.11 (2024-05-27)
+-------------------
+
+- WEB-4088 : Add some odwb endpoints (for contacts , for entities)
+  Cover use case for sending data in odwb for a staging environment
+  [boulch]
+
+- Fix Topics in SearchableText translated indexes
+  [laulaz]
+
+
+1.2.10 (2024-04-10)
+-------------------
+
+- WEB-4095 : Use "|" separator instead of "," when exporting contacts to csv file
+  [boulch]
+
+
+1.2.9 (2024-02-27)
+------------------
+
+- WEB-4072, WEB-4073 : Enable solr.fields behavior on some content types
+  [remdub]
+
+- WEB-4006 : Exclude some content types from search results
+  [remdub]
+
+
+1.2.8 (2024-02-12)
+------------------
+
+- MWEBRCHA-14 : Add view to export contacts to csv file
+  [boulch]
+
+
+1.2.7 (2024-02-02)
+------------------
+
+- SUP-34841 : Fix contact serializer when contact hasn't schedule
+  [boulch]
+
+
+1.2.6 (2024-01-31)
+------------------
+
+- WEB-4006 : Also reindex solr on SearchableText upgrade step
+  [remdub]
+
+
+1.2.5 (2024-01-31)
+------------------
+
+- WEB-4006 : Add mail and phone labels in SearchableText
+  [remdub]
+
+
+1.2.4 (2024-01-17)
+------------------
+
+- WEB-4052 : If all values in schedule are "" then we set "table_date" to None
+  [boulch]
+
+
+1.2.3 (2024-01-09)
+------------------
+
+- WEB-4041 : Handle new "carre" scale
+  [boulch]
+
+- WEB-4007 : Update contact serializer and use ContactProperties to get well formated schedule
+  and help displaying schedule in REACT directory view
+  [boulch]
+
+
+1.2.2 (2023-11-20)
+------------------
+
+- WEB-4018 : Add three new terms in facitilites vocabulary
+  [boulch]
+
+- Fix missing values for topics / iam lists (causing `None` in REST views filters)
+  See https://github.com/collective/collective.solr/issues/366
+  [laulaz]
+
+
+1.2.1 (2023-10-26)
+------------------
+
+- Remove logo field from cropping editor
+  [laulaz]
+
+
+1.2 (2023-10-25)
+----------------
+
+- WEB-3985 : Use new portrait / paysage scales & logic
+  [boulch, laulaz]
+
+- WEB-3985 : Remove old cropping information when image changes
+  [boulch, laulaz]
+
+
+1.1.11 (2023-10-25)
+-------------------
+
+- MWEBITTA-21 : Add entities subscribing to share all contacts
+  [boulch, laulaz]
+
+
+1.1.10 (2023-10-09)
+-------------------
+
+- WEB-3918 : Add missing DE translations for contact_category taxonomy
+  [laulaz]
+
+- Update contact_category taxonomy data to reflect production site data
+  [laulaz]
+
+
+1.1.9 (2023-05-26)
+------------------
+
+- Fix condition when facing `Missing.Value` to avoid traceback in serializer
+  [laulaz]
+
+- WEB-3918 : Add missing DE translations for contact_category taxonomy
+  [laulaz]
+
+- Migrate to Plone 6.0.4
+  [boulch]
+
+- Update contact_category taxonomy data to reflect production site data
+  [laulaz]
+
+
+1.1.8 (2023-03-31)
+------------------
+
+- WEB-3909 : Add upgrade step to fix wrongly stored datagrid fields values
+  [laulaz]
+
+
+1.1.7 (2023-03-17)
+------------------
+
+- Fix non empty fields check after Datagridfield update
+  [laulaz]
+
+
+1.1.6 (2023-03-16)
+------------------
+
+- Define non empty fields for choices in contact Datagridfield rows & fix labels
+  [laulaz]
+
+
+1.1.5 (2023-03-15)
+------------------
+
+- Fix "required field" errors in empty Datagridfield rows
+  [laulaz]
+
+
+1.1.4 (2023-03-13)
+------------------
+
+- Add warning message if images are too small to be cropped
+  [laulaz]
+
+- Migrate to Plone 6.0.2
+  [boulch]
+
+
+1.1.3 (2023-02-28)
+------------------
+
+- Avoid auto-appending new lines to Datagrid fields when clicked
+  [laulaz]
+
+- Fix reindex after cut / copy / paste in some cases
+  [laulaz]
+
+- Add DE translations in contact_category taxonomy
+  [laulaz]
+
+
+1.1.2 (2023-02-20)
+------------------
+
+- Remove unused title_fr and description_fr metadatas
+  [laulaz]
+
+- Remove SearchableText_fr (Solr will use SearchableText for FR)
+  [laulaz]
+
+
+1.1.1 (2023-01-12)
+------------------
+
+- Add taxonomy_contact_category_for_filtering index to allow complex queries
+  from smartweb directory views
+  [laulaz]
+
+- Add new descriptions metadatas and SearchableText indexes for multilingual
+  [laulaz]
+
+
+1.1 (2022-12-20)
+----------------
+
+- Update to Plone 6.0.0 final
+  [boulch]
+
+- Add eea.faceted.navigable behavior on Entity type
+  [laulaz]
+
+
+1.0 (2022-11-15)
+----------------
+
+- Add multilingual features: New fields, vocabularies translations, restapi serializer
+  [laulaz]
+
+
+1.0a7 (2022-10-28)
+------------------
+
+- Fix translation
+  [boulch]
+
+- WEB-3762 : Reorder contact fields to encourage good completion + add some fields descriptions
+  [boulch]
+
+
+1.0a6 (2022-10-21)
+------------------
+
+- WEB-3770 : Force include_items in serializer to True to get files and pictures included in contact
+  [boulch]
+
+- Add eea.faceted.navigable behavior on Entity type
+  [laulaz]
+
+
+1.0a5 (2022-08-09)
+------------------
+
+- WEB-3726 : Add subjects (keyword) in SearchableText
+  [boulch]
+
+
+1.0a4 (2022-07-14)
+------------------
+
+- Update contact_category taxonomy data to reflect production site data
+  [laulaz]
+
+- [WEBMIGP5-36] Add new vocabulary terms in imio.directory.vocabulary.SiteTypes (Instagram, Pinterest, Youtube)
+  [boulch]
+
+- It's not allowed to put Images or Files in imio.directory.Entity
+  [boulch]
+
+
+1.0a3 (2022-05-03)
+------------------
+
+- Use unique urls for images scales to ease caching
+  [boulch]
+
+- Use common.interfaces.ILocalManagerAware to mark a locally manageable content
+  [boulch]
+
+
+1.0a2 (2022-02-11)
+------------------
+
+- Add more checks / automatic corrections in contacts CSV import
+  [laulaz]
+
+- Update buildout to use Plone 6.0.0a3 packages versions
+  [boulch]
+
+
+1.0a1 (2022-01-25)
+------------------
+
+- Initial release.
+  [boulch]
