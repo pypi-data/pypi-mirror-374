@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "aidlc-dashboard": {
+      "command": "python3",
+      "args": ["-m", "aidlc_mcp_tools.server"],
+      "cwd": "/Users/yoreland/QDev/AIDLC-workshop/mcp-tools",
+      "env": {
+        "AIDLC_DASHBOARD_URL": "http://44.253.157.102:8000/api",
+        "AIDLC_TIMEOUT": "10"
+      }
+    }
+  }
+}
