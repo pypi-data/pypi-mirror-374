@@ -1,0 +1,94 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    name: Build and Publish to PyPI
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+
+    - name: Install build dependencies
+      run: |
+        uv sync --all-extras --dev
+
+    - name: Run full test suite
+      run: |
+        uv run ruff check .
+        uv run ruff format --check .
+        uv run mypy sq3m/
+        uv run pytest -v --cov=sq3m --cov-fail-under=80
+
+    - name: Build package
+      run: |
+        uv build
+
+    - name: Verify package contents
+      run: |
+        ls -la dist/
+        uv pip install dist/*.whl
+        uv run python -c "import sq3m; print(f'Successfully installed sq3m v{sq3m.__version__}')"
+
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
+        verbose: true
+        verify-metadata: true
+        skip-existing: false
+        print-hash: true
+
+  create-github-release:
+    runs-on: ubuntu-latest
+    name: Create GitHub Release
+    needs: build-and-publish
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Get tag
+      id: tag
+      run: echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+    - name: Generate changelog
+      id: changelog
+      run: |
+        # Get the previous tag
+        PREV_TAG=$(git tag --sort=-version:refname | sed -n '2p')
+        if [ -z "$PREV_TAG" ]; then
+          PREV_TAG=$(git rev-list --max-parents=0 HEAD)
+        fi
+
+        # Generate changelog
+        echo "## 🚀 What's Changed" > CHANGELOG.md
+        echo "" >> CHANGELOG.md
+        git log --pretty=format:"- %s (%h)" $PREV_TAG..${{ steps.tag.outputs.tag }} >> CHANGELOG.md
+        echo "" >> CHANGELOG.md
+        echo "" >> CHANGELOG.md
+        echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/$PREV_TAG...${{ steps.tag.outputs.tag }}" >> CHANGELOG.md
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.tag.outputs.tag }}
+        name: Release ${{ steps.tag.outputs.tag }}
+        body_path: CHANGELOG.md
+        draft: false
+        prerelease: false
+        generate_release_notes: true

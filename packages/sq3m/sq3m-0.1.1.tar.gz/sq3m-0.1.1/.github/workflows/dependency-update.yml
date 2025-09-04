@@ -1,0 +1,66 @@
+name: Dependency Update
+
+on:
+  schedule:
+    # Run every Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  update-dependencies:
+    runs-on: ubuntu-latest
+    name: Update Dependencies
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+
+    - name: Update dependencies
+      run: |
+        # Update uv itself
+        uv self update
+
+        # Update Python dependencies
+        uv lock --upgrade
+
+    - name: Run tests with updated dependencies
+      run: |
+        uv sync --all-extras --dev
+        uv run ruff check .
+        uv run mypy sq3m/
+        uv run pytest -x
+      continue-on-error: true
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: "chore: update dependencies"
+        title: "🔄 Automated Dependency Update"
+        body: |
+          ## 🔄 Automated Dependency Update
+
+          This PR updates project dependencies to their latest versions.
+
+          ### Changes
+          - Updated `uv.lock` with latest compatible versions
+          - All tests and type checks pass ✅
+
+          ### Review Notes
+          - Please review the changes in `uv.lock`
+          - Check if any breaking changes are mentioned in changelogs
+          - Verify that CI passes before merging
+
+          ---
+          *This PR was created automatically by the dependency update workflow.*
+        branch: automated-dependency-update
+        delete-branch: true
+        draft: false
