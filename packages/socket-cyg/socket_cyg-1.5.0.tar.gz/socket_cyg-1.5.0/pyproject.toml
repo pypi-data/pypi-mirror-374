@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "socket-cyg"
+version = "1.5.0"
+description = "CYG socket 封装"
+authors = ["LiuWei <183074632@qq.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.8,<=3.13"
+
+
+[[tool.poetry.source]]
+name = "tsinghua"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+priority = "primary"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
