@@ -1,0 +1,98 @@
+[project]
+name = "homalos-ctp"
+dynamic = ["version"]
+description = "CTP Python API extension module construction."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Lumosylva", email = "donnymoving@gmail.com" },
+]
+requires-python = ">=3.13"
+dependencies = [
+    "hatch>=1.14.1",
+    "meson-python>=0.18.0",
+    "pybind11>=3.0.1",
+    "pybind11-stubgen>=2.5.5",
+    "twine>=6.1.0",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Natural Language :: Chinese (Simplified)",
+]
+
+keywords = ["ctp", "quantitative", "trading", "investment"]
+
+[project.urls]
+Homepage = "https://github.com/Homalos/ctp"
+Repository = "https://github.com/Homalos/ctp"
+Documentation = "https://github.com/Homalos/README.md"
+Issues = "https://github.com/Homalos/ctp/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "ctp/__version__.py"
+pattern = "__version__ = ['\"](?P<version>[^'\"]+)['\"]"
+
+# 平台标签推断
+[tool.hatch.build.hooks.custom]
+# 指定 hatch_build.py 中定义的钩子类
+path = "hatch_build.py"
+# 钩子类的名称
+class-name = "CustomBuildHook"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "ctp",
+    "build.py",
+    "demo.py",
+    "LICENSE",
+    "meson.build",
+    "README.md",
+    "README_CN.md",
+    "docs"
+]
+# 显式指定要包含的文件模式
+artifacts = [
+    "ctp/api/*.pyd",
+    "ctp/api/*.so",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "ctp",
+    "build.py",
+    "demo.py",
+    "LICENSE",
+    "meson.build",
+    "README.md",
+    "README_CN.md",
+    "docs"
+]
+# 排除不需要的文件
+exclude = [
+    "ctp/api/__pycache__",
+    "**/*.pyc",
+    "/build",
+    "/con",
+    "**/__pycache__",
+    "**/*.pyc",
+]
+# 显式指定要包含的文件模式
+artifacts = [
+    "ctp/api/*.pyd",
+    "ctp/api/*.so",
+]
