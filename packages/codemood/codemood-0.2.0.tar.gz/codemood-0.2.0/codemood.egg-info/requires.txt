@@ -1,0 +1,10 @@
+transformers>=4.40.0
+huggingface_hub>=0.23.0
+matplotlib
+torch>=1.9.0
+
+[dev]
+pytest>=6.0
+flake8>=4.0.0
+black>=22.0.0
+mypy>=0.950

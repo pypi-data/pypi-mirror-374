@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "codemood"
+version = "0.2.0"
+description = "Advanced Code Mood Analyzer with sentiment analysis, optimization suggestions, custom model training, and comprehensive code quality assessment"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Omkar Palika", email = "palikaomkar.22.cse@anits.edu.in" }
+]
+keywords = ["code", "sentiment", "analysis", "optimization", "AI", "machine-learning", "code-quality", "security", "performance"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+dependencies = [
+    "transformers>=4.40.0",
+    "huggingface_hub>=0.23.0",
+    "matplotlib",
+    "torch>=1.9.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/OmkarPalika/codemood"
+Issues = "https://github.com/OmkarPalika/codemood/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "flake8>=4.0.0",
+    "black>=22.0.0",
+    "mypy>=0.950"
+]
+
+[tool.pylance]
+stubPath = "codemood/_stubs"
+
+[tool.setuptools.packages.find]
+where = ["."]
