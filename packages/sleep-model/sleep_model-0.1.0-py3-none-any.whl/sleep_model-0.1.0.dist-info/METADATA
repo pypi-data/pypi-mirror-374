@@ -1,0 +1,93 @@
+Metadata-Version: 2.1
+Name: sleep_model
+Version: 0.1.0
+Summary: Your package description
+Author: Peiqin Shi
+Project-URL: Homepage, https://github.com/PeiqinShi/Sleep-model
+Project-URL: Bug-Tracker, https://github.com/PeiqinShi/Sleep-model/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: deepchem==2.7.1
+Requires-Dist: pandas>=2.0.3
+Requires-Dist: pubchempy==1.0.4
+Requires-Dist: pycirclize==1.6.0
+Requires-Dist: rdkit==2023.3.1
+Requires-Dist: requests>=2.25.0
+Requires-Dist: seaborn>=0.13.2
+Requires-Dist: xgboost==1.7.6
+Requires-Dist: scikit-learn==1.0.2
+
+# Machine Learning-Guided Mapping Sleep-Promoting Volatiles in Aromatic Plants
+
+## Project Description
+Project Description:
+This repository presents an advanced machine learning pipeline for identifying sleep-promoting volatile organic compounds (VOCs) from aromatic plants. 
+![image](https://github.com/user-attachments/assets/2fbe4d84-0f63-40aa-b340-3f0d605319bc)
+
+
+
+## Installation
+
+## Dependency
+The code has been tested in the following environment:
+
+|  Package    | Version  |
+|  ----  | ----  |
+| Python  | 3.8.16 |
+| conda  | 23.5.0 |
+| RDKit  | 2023.3.1 |
+
+# How to Use
+
+## Installation
+```python
+# Use the yaml environment file on the GitHub homepage to directly copy the current environment
+conda env create -f environment.yaml -n sleep_model
+conda activate sleep_model
+conda install jupyter notebook
+conda install ipykernel
+python -m ipykernel install --user --name sleep_model --display-name   "sleep_model"
+jupyter notebook
+```
+## File Structure
+```
+├── data/                   # Input data files
+├── data_analysis/          # Data processing and analysis
+├── models/                 # Pretrained base model files for Stacking model training
+│   ├── RF/
+│   │   ├── rf_MACCSkeys_random_0.ipynb
+│   │   ├── rf_RDkit_random_0.ipynb
+│   ├── SVM/
+│   │   ├── svm_MACCSkeys_random_3.ipynb
+│   ├── XGB/
+│   │   ├── xgb_MACCSkeys_random_0.ipynb
+│   │── stacking_predict.ipynb
+├── predict_smiles.py 
+└── README.md
+
+These four models are the base models that we use to train the final stacking model.
+```
+## Predicting
+```bash
+python predict_smiles.py --smiles "CC(=O)OC1=CC=CC=C1C(=O)O"
+```
+
+### Batch prediction from CSV
+Predict for a CSV file containing a SMILES column (default column name: `SMILES`):
+```bash
+python predict_smiles.py --csv path/to/input.csv --out path/to/output.csv
+```
+
+Customize the SMILES column name and file encoding if needed:
+```bash
+python predict_smiles.py \
+  --csv path/to/input.csv \
+  --out path/to/output.csv \
+  --smiles-column SMILES \
+  --input-encoding utf-8
+```
+
+The output CSV includes: `smiles`, `prediction`, `probability`, and base-model probabilities (`rf_maccs_p0/p1`, `rf_rdkit_p0/p1`, `svm_maccs_p0/p1`, `xgb_maccs_p0/p1`).
