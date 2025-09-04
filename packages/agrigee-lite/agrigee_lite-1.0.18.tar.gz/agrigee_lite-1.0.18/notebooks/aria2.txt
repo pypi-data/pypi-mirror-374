@@ -1,0 +1,1 @@
+aria2c --enable-rpc=true --rpc-listen-port=6800 --rpc-allow-origin-all=true --continue=true --max-concurrent-downloads=50 --max-connection-per-server=1 --split=1 --min-split-size=100M --timeout=120 --connect-timeout=60 --max-tries=0 --retry-wait=10 --always-resume=true --auto-file-renaming=false --file-allocation=none --max-file-not-found=0 --log=aria2.log --log-level=notice
