@@ -1,0 +1,32 @@
+Metadata-Version: 2.4
+Name: multiscale_actin
+Version: 1.0.0
+Home-page: 
+Author: Blair Lyons
+Author-email: blair208@gmail.com
+License: Apache Software License 2.0
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: vivarium-core
+Requires-Dist: process-bigraph
+Requires-Dist: simularium-readdy-models
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+
+# Multiscale-actin
+
+A Vivarium wrapper for ReaDDy actin models.
+
+## Installation
+
+Install conda: https://docs.conda.io/en/latest/miniconda.html
+(`conda` is currently required to install `readdy`.)
+
+1. Create a virtual environment with conda-specific dependencies: `conda env create -f environment.yml`
+2. Activate the environment: `conda activate multiscale-actin`
+3. Install with pip dependencies: `pip install multiscale_actin` (or install in editable mode: `pip install -e .`)
