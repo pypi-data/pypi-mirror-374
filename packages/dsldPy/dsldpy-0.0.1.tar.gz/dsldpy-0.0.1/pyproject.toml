@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dsldPy"
+version = "0.0.1"
+description = "Python wrappers around the R 'dsld' package via rpy2"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+  { name = "Aditya Mittal" }
+]
+license = "MIT"
+keywords = ["dsld", "fairness", "causal", "rpy2", "R"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+  "Topic :: Scientific/Engineering",
+]
+dependencies = [
+  "pandas>=1.1",
+  "numpy>=1.20",
+  "Pillow>=8",
+  "pyreadr>=0.4",
+  "rpy2>=3.5",
+  "plotly>=5",
+  "ipython>=7",
+]
+
+[project.urls]
+Homepage = "https://example.com/dsldPy"
+Issues = "https://example.com/dsldPy/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

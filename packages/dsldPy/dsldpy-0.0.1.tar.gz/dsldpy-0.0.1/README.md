@@ -1,0 +1,135 @@
+# dsldPy — Python Interface to DSLD
+
+Statistical and graphical tools for detecting and measuring discrimination and bias in data, exposed to Python via rpy2. dsldPy wraps the R package dsld with a Python-friendly API while using the same underlying, well-tested R implementations.
+
+- Quarto Book (concepts and examples): https://htmlpreview.github.io/?https://github.com/matloff/dsldBook/blob/main/_book/index.html
+- Research Paper (implementation details): https://arxiv.org/abs/2411.04228
+
+## Overview
+
+DSLD supports two complementary workflows:
+
+- Estimation analysis: quantify possible discrimination by estimating effects of a sensitive variable S on an outcome Y, while adjusting for confounders C.
+- Prediction analysis (fair ML): build predictive models that limit the influence of S and its proxies O, trading off fairness and utility.
+
+dsldPy provides wrappers for both, including visualization helpers. Most functions accept pandas DataFrame input; rpy2 handles conversion to R data.frames internally.
+
+## Prerequisites
+
+- R installed and on PATH (R 4.x recommended)
+- R package dsld installed (CRAN or GitHub)
+- Python 3.8+
+
+Install dsld in R:
+
+```r
+install.packages("dsld")
+## or latest development version
+# install.packages("remotes")
+remotes::install_github("matloff/dsld", force = TRUE)
+```
+
+Tip: Ensure rpy2 can find R. From a terminal: `R RHOME` should print your R home. If Python cannot find R, set `R_HOME` in your environment per rpy2’s documentation.
+
+## Installation
+
+Install the Python package from this repository (subdirectory `inst`):
+
+```bash
+# from repo root
+pip install ./inst            # regular install
+# or
+pip install -e ./inst         # editable install for development
+```
+
+Install directly from GitHub:
+
+```bash
+pip install "git+https://github.com/matloff/dsld@main#subdirectory=inst"
+```
+
+This installs dsldPy and its Python dependencies (pandas, numpy, rpy2, etc.). You still need R and the dsld R package installed, as noted above.
+
+## Quickstart
+
+Below are minimal end-to-end examples using the dsld R dataset `svcensus`.
+
+Load data into Python (via rpy2) and run a confounder-adjusted linear model:
+
+```python
+import pandas as pd
+from rpy2.robjects import r
+from rpy2.robjects.packages import importr
+from dsldPy import dsldPyLinear, dsldPyLinearSummary
+
+# load R data into the R session
+dsld = importr('dsld')
+r('data(svcensus)')
+svcensus_r = r['svcensus']            # R data.frame
+
+# fit: Y = wageinc, S = gender, adjust for confounders automatically
+model = dsldPyLinear(svcensus_r, 'wageinc', 'gender', interactions=False)
+dsldPyLinearSummary(model)            # prints coefficient table and S comparisons
+```
+
+Build a fair KNN model that limits a proxy’s influence (e.g., occupation):
+
+```python
+from dsldPy import dsldPyQeFairKNN, dsldPyQeFairML_Predict
+from rpy2.robjects import r
+
+r('data(svcensus)')
+svcensus_r = r['svcensus']
+
+# Reduce proxy impact by de-weighting a feature (e.g., 'occ') to 0.2
+res = dsldPyQeFairKNN(
+    svcensus_r,
+    yName='wageinc',
+    sNames='gender',
+    deweightPars={'occ': 0.2},
+    k=25,
+    scaleX=True,
+)
+
+print('Train accuracy:', res['train_accuracy'])
+print('Fairness correlations:', res['train_correlations'])
+
+# Predict on held-out data (same schema as training data)
+pred = dsldPyQeFairML_Predict(res, svcensus_r)
+print('Test correlations:', pred['test_correlations'])
+```
+
+## Available Wrappers (selected)
+
+- Analytical: `dsldPyLinear`, `dsldPyLogit` (+ `Summary`, `Coef`, `Vcov`, `Predict`), `dsldPyML`, `dsldPyMatchedATE`, `dsldPyTakeALookAround`, `dsldPyConfounders`, `dsldPyCHunting`, `dsldPyOHunting`
+- Fair ML: `dsldPyFrrm`, `dsldPyFgrrm`, `dsldPyNclm`, `dsldPyZlm`, `dsldPyZlrm`, `dsldPyQeFairKNN`, `dsldPyQeFairRF`, `dsldPyQeFairRidgeLin`, `dsldPyQeFairRidgeLog`, `dsldPyFairML_Predict`, `dsldPyFairUtils`, `dsldPyQeFairML_Predict`
+- Graphical: `dsldPyFreqPCoord`, `dsldPyScatterPlot3D`, `dsldPyConditDisparity`, `dsldPyDensitybyS`, `dsldPyFrequencybyS`, `dsldPyIamb`
+
+Function names mirror the R package; arguments are standard Python types (pandas DataFrames, dicts, bools, etc.). Internally, rpy2 converts to/from R objects.
+
+## Examples
+
+Jupyter notebooks are available in this repository:
+
+- `inst/examples/graphical.ipynb`
+- `inst/examples/tabular.ipynb`
+- `inst/examples/machine_learning.ipynb`
+
+These demonstrate end-to-end workflows for estimation and fair ML, including parameter tuning with `dsldPyFairUtils`.
+
+## Troubleshooting
+
+- rpy2 cannot find R: confirm `R RHOME` works; if not, add R to PATH or set `R_HOME`. See rpy2 docs for your OS.
+- dsld not installed in R: run `install.packages("dsld")` in an R session.
+- Dataset conversions: wrappers accept either pandas DataFrames or R data.frames; if needed, see utilities in `dsldPy.Utils` for explicit conversions.
+
+## Authors
+
+- Norm Matloff
+- Aditya Mittal
+- Taha Abdullah
+- Arjun Ashok
+- Shubhada Martha
+- Billy Ouattara
+- Jonathan Tran
+- Brandon Zarate
