@@ -1,0 +1,502 @@
+## VS Code & Copilot Integration Tips
+
+To get the most out of flowscribe with Copilot and VS Code:
+
+- Enable Copilot Chat’s workspace access and relevant tools (search, codebase, changes, problems).
+- Keep artifacts in `./.autodev/` so they’re easy to find.
+- Use consistent flow names so Copilot can locate code by name.
+- Start with `.autodev/ask.md` for Copilot prompts, then `.autodev/summary.md`, then tail `.autodev/trace.jsonl`.
+- Use the flow catalog (`flows.yaml`) to map flows to code and document intent.
+- For best results, pin `.autodev/copilot_init.md` open in VS Code and paste it into Copilot Chat when you start a session.
+
+-- Add more integration tips as your workflow evolves.
+
+# flowscribe
+
+> **Flow-first runtime tracing** — mark your logic with success/failure checkpoints, capture a structured timeline, and auto-generate a Copilot-ready summary.
+
+[![CI](https://github.com/yourusername/flowscribe/actions/workflows/ci.yml/badge.svg)](https://github.com/yourusername/flowscribe/actions/workflows/ci.yml)
+[![PyPI Version](https://img.shields.io/pypi/v/flowscribe.svg)](https://pypi.org/project/flowscribe/) <!-- -- if not published yet -->
+[![Python Versions](https://img.shields.io/pypi/pyversions/flowscribe.svg)](https://pypi.org/project/flowscribe/) <!-- -- update if not on PyPI -->
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+---
+
+## Installation
+
+```bash
+pip install flowscribe  # -- if/when published to PyPI
+# or from source:
+pip install .
+```
+
+## Quickstart
+
+```python
+from flowscribe.core import Session, Event
+
+session = Session(app_name="my-app", mode="dev", tags=["demo"])
+flow = session.start_flow("demo/flow")
+flow.add_event(Event(event_type="checkpoint", flow_id=flow.flow_id, step="start", evidence={"count": 1}))
+session.end_session()
+```
+
+---
+
+## Contributing
+
+We welcome issues and PRs! Please follow standard Python code style (PEP8). For major changes, open an issue first to discuss what you’d like to change.
+
+-- Add code of conduct, contributing guide, or contact info if needed.
+
+---
+
+## Changelog / Versioning
+
+-- Add CHANGELOG.md or release notes as the project matures.
+
+---
+
+
+## Contact / Support
+
+Thank you for your interest in flowscribe!
+
+If you have questions, ideas, or want to contribute, you are very welcome to open an issue or pull request.
+
+We’re excited to have you join the project—community contributions and feedback are always appreciated!
+
+---
+
+---
+
+## TL;DR
+
+* 🧭 **Flow-first:** You name flows (e.g., `data/fetch/minute_candles`, `orders/submit`) and steps.
+* ✅ **Explicit intent:** You decide what counts as *success* or *failure* (not just “no exception”).
+* 📜 **Structured events:** Checkpoints, successes, failures, exceptions, metrics — each with file/line/tags/evidence.
+* 📂 **Pluggable outputs:** Console (human), JSONL (AI/tools), SQLite (optional) — summarized into Markdown.
+* 🤝 **Copilot integration:** End-of-run **summary** and **ask-prompt** files so Copilot can explain failures and propose fixes/tests.
+* 🔒 **Safe by design:** Redacts secrets, caps payload sizes, fails safe (never crashes your app).
+
+---
+
+## Why (Motivation)
+
+Debugging complex systems often devolves into print spam, log-diving, or stepping through code that doesn’t reflect real production flows. **flowscribe** replaces that chaos with a small number of **intentional markers** that tell a truthful story of what happened — and packages the story into **human-readable** and **AI-ready** artifacts.
+
+---
+
+## Design Principles
+
+* **Fail-safe:** Tracing must never take down your app.
+* **Lightweight:** Minimal overhead and dependencies.
+* **Intent over noise:** A few high-signal markers beat verbose logs.
+* **Human + machine:** Console summarizes for humans; JSONL is for tools/AI.
+* **Privacy-first:** Redact sensitive data; keep traces local by default.
+
+---
+
+## Mental Model & Glossary
+
+* **Session:** One program run (unique run_id + metadata like mode/tags).
+* **Flow:** Named unit of work (e.g., `indicators/ema/compute`).
+* **Step:** Sub-action inside a flow (e.g., `validate`, `fetch`, `compute`).
+* **Event:** A fact about a step/flow (`checkpoint`, `success`, `failure`, `exception`, `metric`, `summary`).
+* **Link:** Relationships across flows/threads/processes (parent/child, caused_by, correlation keys).
+* **Tags:** Free-form labels for slicing (e.g., `AAPL`, `phase5`, `sim`).
+
+---
+
+## How It Works (Runtime Behavior)
+
+1. **Start a session** (app name, run mode, tags, git SHA recorded).
+2. **User-placed markers** record the path taken: checkpoints, successes, failures, exceptions, metrics.
+3. **Context is automatic**: file path, line number, function, thread; optional evidence (counts, shapes, IDs, hashes).
+4. **Sinks persist** the timeline (Console, JSONL; SQLite optional).
+5. **End-of-run artifacts** are written:
+
+   * `./.autodev/summary.md` — narrative overview
+   * `./.autodev/ask.md` — Copilot-ready prompt
+   * `./.autodev/trace.jsonl` — full machine-readable timeline
+
+> Artifacts can be written per-run at `./.autodev/runs/<run_id>/` with `./.autodev/latest` pointing to the most recent.
+
+---
+
+## Flow‑First Tracing (Naming & Linking)
+
+### Naming
+
+* Use path-like identifiers: `domain/subdomain/action`.
+* Keep verbs last so related flows sort together.
+* Be consistent (snake_case or kebab-case).
+
+### Linking
+
+* **Hierarchy:** `parent` gives parent/child trees (e.g., `premarket` → `data/fetch` → `indicators/compute`).
+* **Correlation keys:** Join work across threads/processes (e.g., `ticker`, `date`, `request_id`).
+* **Causal links:** Use `caused_by` to connect an event that triggered another flow.
+
+### Success / Failure Semantics
+
+* **Success** = business expectation met (e.g., non-empty candles; indicators present; order acknowledged).
+* **Failure** = unmet expectation even if no exception (e.g., empty dataset, missing column, threshold missed).
+* **Exception** = system error (tracked independently; a failure may wrap an exception for context).
+
+### Event Taxonomy
+
+* `checkpoint` — reached a notable point.
+* `success` — intent met (with short reason/evidence).
+* `failure` — intent not met (with class & reason; severities: warn|error|critical).
+* `exception` — unhandled/system error.
+* `metric` — scalar value (latency, counts, sizes).
+* `summary` — end-of-flow/session roll-up.
+
+### Data Attachment Policy
+
+* Prefer **counts, shapes, ranges, IDs, hashes** over raw payloads.
+* Redact keys: `api_key`, `token`, `password`, `secret`, `auth`, `cookie` (extendable).
+* Truncate large evidence with `… (truncated)` and note limits.
+
+### Error Classes (for triage)
+
+* **SYSTEM:** exceptions, timeouts, resource exhaustion.
+* **DATA:** empty/malformed/late inputs.
+* **CONTRACT:** invalid state or failed validation.
+* **EXTERNAL:** upstream/downstream service failures.
+* **BUSINESS:** domain rule not satisfied.
+
+---
+
+## End‑of‑Run Artifacts
+
+**Always written (or on failure, based on config):**
+
+* **`summary.md`** — flows started/ended, first & most-recent failures, latency outliers, orphaned flows.
+* **`ask.md`** — Copilot-ready prompt with run header, flow sketch, top issues, safe evidence, and a compact trace excerpt.
+* **`trace.jsonl`** — append-only event stream (one JSON object per line).
+
+**Prompt contents (ask.md):**
+
+* Goal → *diagnose first failure(s), propose minimal patch, add a test*.
+* Run header → run_id, mode, tags.
+* Flow graph sketch → successes, failures, skipped/orphaned.
+* Top issues → first+latest failures with class and file:line.
+* Evidence → small facts (counts, shapes, ranges, IDs, hashes).
+* Trace excerpt → last N events (size-capped).
+* Action request → specific asks for Copilot (where to look, what to produce).
+
+**Guardrails:** redaction, truncation, selective excerpts, deterministic names.
+
+---
+
+## Configuration — `./.autodev/ra.yaml`
+
+Control what is recorded, where it is written, and how artifacts are produced.
+
+**Goals**: quick on/off, selective flows/tags, sinks & artifacts, privacy, performance.
+
+```yaml
+version: 1
+enabled: true
+
+profile: critical
+profiles:
+  critical:
+    include_flows: ["data/**", "indicators/**", "orders/**"]
+    exclude_flows: ["**/debug/**"]
+    include_tags: []
+    min_severity: info
+  all:
+    include_flows: ["**"]
+    exclude_flows: []
+    include_tags: []
+    min_severity: debug
+
+sinks:
+  - type: console
+  - type: jsonl
+    path: .autodev/trace.jsonl
+  # - type: sqlite
+  #   path: .autodev/trace.db
+
+artifacts:
+  summary_md: true
+  ask_md: on_failure   # always | on_failure | never
+  per_run_dirs: true   # ./.autodev/runs/<run_id>/* and ./latest symlink
+  trace_tail_events: 50
+
+privacy:
+  redact_keys: ["api_key", "token", "password", "secret", "auth", "cookie"]
+  payload_limit: 2048
+  allow_raw_payloads: false
+
+filters:
+  include_tags: []          # e.g., ["AAPL","phase5","sim"]
+  exclude_tags: []
+  include_flows: []         # extra includes beyond profile
+  exclude_flows: []
+  min_severity: info
+
+performance:
+  latency_buckets_ms: [50, 200, 1000]
+  sla_overrides:
+    "orders/submit": { p95_ms: 1000 }
+    "data/fetch/minute_candles": { p95_ms: 800 }
+
+retention:
+  rotate_trace: true
+  max_trace_bytes: 10485760  # 10 MB
+  keep_runs: 20
+```
+
+**Runtime overrides (env):**
+
+* `RA_ENABLED=0|1`  ·  `RA_PROFILE=all|critical|<custom>`
+* `RA_INCLUDE="data/**,orders/**"`  ·  `RA_EXCLUDE="**/debug/**"`
+* `RA_TAGS="AAPL,phase5,sim"`  ·  `RA_TRACE_TAIL=100`
+
+---
+
+## Flow Catalog — `./.autodev/flows.yaml`
+
+Declare flows once, toggle them centrally, and document success criteria & code references. The library reads this file to validate events, enrich summaries, and guide Copilot.
+
+```yaml
+version: 1
+defaults:
+  tags: ["phase5"]
+  correlation_keys: ["ticker", "date"]
+  on_failure: generate_prompt
+
+flows:
+  - id: "premarket/prepare"
+    enabled: true
+    description: "Validate market day, configs, and data sources."
+    success:
+      criteria:
+        - "market_day = true"
+        - "configs_loaded = true"
+    failure_classes: ["BUSINESS.MARKET_CLOSED", "SYSTEM.CONFIG_MISSING"]
+    code_refs:
+      - "src/lifecycle/premarket_context.py"
+    tags: ["mode", "phase"]
+
+  - id: "data/fetch/minute_candles"
+    enabled: true
+    description: "Fetch minute candles for the active ticker and date."
+    parent: "premarket/prepare"
+    success:
+      criteria:
+        - "rows >= 300"
+        - "time_range covers [09:30,16:00]"
+    failure_classes: ["DATA.EMPTY", "EXTERNAL.4xx", "EXTERNAL.5xx", "CONTRACT.VALIDATION"]
+    correlation_keys: ["ticker", "date", "source"]
+    code_refs:
+      - "src/data/fetcher.py"
+    tags: ["ticker", "mode"]
+
+  - id: "indicators/ema/compute"
+    enabled: true
+    description: "Compute indicator columns required by agents."
+    parent: "data/fetch/minute_candles"
+    success:
+      criteria:
+        - "columns include: ema_9, ema_21, rsi"
+    failure_classes: ["CONTRACT.VALIDATION", "DATA.MISSING_COLUMN"]
+    code_refs:
+      - "features/indicator_utils.py"
+    tags: ["ticker", "mode"]
+
+  - id: "agent/decision/evaluate"
+    enabled: true
+    description: "Produce an action with a confidence score."
+    success:
+      criteria:
+        - "action in {buy, sell, hold}"
+        - "score >= threshold"
+    failure_classes: ["BUSINESS.NO_ACTION", "DATA.BAD_STATE"]
+    code_refs:
+      - "src/agent/decision.py"
+    tags: ["ticker", "mode"]
+
+  - id: "orders/submit"
+    enabled: true
+    description: "Submit order to broker and await ack."
+    parent: "agent/decision/evaluate"
+    success:
+      criteria:
+        - "ack received with order_id"
+    failure_classes: ["EXTERNAL.TIMEOUT", "EXTERNAL.REJECTED"]
+    sla:
+      p95_ms: 1000
+    code_refs:
+      - "src/orders/broker_x.py"
+    tags: ["ticker", "mode"]
+```
+
+**Notes**
+
+* `id` is canonical; do not repurpose names.
+* `enabled` toggles tracing for that flow without touching code.
+* `parent` forms the hierarchy; `correlation_keys` link across concurrency/process boundaries.
+* `success.criteria` and `failure_classes` document intent; `code_refs` guide humans/Copilot.
+* `sla` (optional) is used in performance summaries.
+
+---
+
+## Copilot Init Prompt — `./.autodev/copilot_init.md`
+
+Paste this file into your repo so Copilot understands how to help on this project.
+
+**Purpose**: Tell Copilot what artifacts to read first, how flows map to code, and what outputs to produce.
+
+```
+# Copilot Init Prompt — flowscribe (flow-first runtime analyzer)
+
+You are assisting on a project that uses a flow-first runtime analyzer.
+
+## What to know
+- We name flows/steps (e.g., data/fetch/minute_candles, orders/submit).
+- Events: checkpoint, success, failure, exception, metric, summary.
+- Each event has context (file/line/func/tags) and small evidence (counts/shapes/ranges/ids/hashes).
+
+## Files to open first
+- ./.autodev/ask.md      # Copilot-ready prompt for the last run
+- ./.autodev/summary.md  # Human summary of flows & outcomes
+- ./.autodev/trace.jsonl # Full timeline (JSONL)
+- Optionally: ./.autodev/runs/<run_id>/* for a specific run
+
+## How to work
+1) Start with ask.md → then summary.md → then tail trace.jsonl (last 50–200 events).
+2) Map flow names to code using workspace search.
+3) Focus on the first failure per flow, and the most recent failure.
+4) Propose minimal patches and a test; keep flow markers/intent intact.
+5) Use evidence as ground truth; don’t request secrets.
+
+## Your outputs
+- Root cause summary (3–6 bullets) referencing flow names and file:line.
+- Minimal patch plan (files/functions; rationale).
+- Test plan (what it verifies; setup; assertions).
+- Risk checklist (side effects, perf, follow-ups).
+- Next commands/tasks to run locally.
+```
+
+> Tip: Pin this file open in VS Code and paste it into Copilot Chat when you start a session.
+
+---
+
+## VS Code & Copilot Integration (No-Code Setup)
+
+* Enable Copilot Chat’s **workspace access** and relevant tools (search, codebase, changes, problems).
+* Keep artifacts in `./.autodev/` so they’re easy to find.
+* Use consistent flow names so Copilot can locate code by name.
+
+---
+
+## Adoption Checklists
+
+**Team (what to decide)**
+
+* Identify 6–10 critical flows.
+* Agree on success criteria, likely failure classes, and tags.
+* Decide correlation keys (e.g., `ticker`, `date`).
+* Confirm redaction list and evidence size caps.
+* Choose which domains are summarized (e.g., `data/*`, `orders/*`).
+
+**Project hygiene**
+
+* Every started flow ends with a verdict (success/failure).
+* Minimal, safe evidence (counts/shapes/IDs/hashes; no raw payloads).
+* Stable naming; avoid repurposing flow IDs.
+
+**Config hygiene**
+
+* Reasonable defaults in `ra.yaml` (profile=critical, ask.md on failure).
+* Rotation/retention set to avoid unbounded growth.
+* Env overrides documented for quick experiments.
+
+---
+
+## Troubleshooting
+
+* **No artifacts?** Check `enabled: true`, profile filters, and sink/artifact toggles.
+* **Too much noise?** Narrow `include_flows`/`include_tags`, raise `min_severity`.
+* **Sensitive data concerns?** Extend `redact_keys`; keep `allow_raw_payloads: false`.
+* **Trace too large?** Lower `payload_limit`, `trace_tail_events`, enable rotation.
+* **Hard to find code?** Add/refresh `code_refs` in `flows.yaml` to guide search.
+
+---
+
+## Security & Privacy
+
+* Traces are **local by default**; nothing leaves your machine unless you configure it.
+* Redaction is on by default for common keys; extend for your domain.
+* Evidence is intentionally small; payloads are truncated with clear markers.
+
+---
+
+## Performance Expectations
+
+* Events are tiny and buffered.
+* Overhead is designed to be minimal; prefer marking **flow boundaries** and **decision points** over every line.
+
+---
+
+## Use Cases
+
+* Complex pipelines (data/ML) needing ground-truth runtime paths.
+* Web/CLI apps where logs don’t capture **intent**.
+* AI-assisted debugging (Copilot/ChatGPT) that benefits from structured evidence.
+* Onboarding: show newcomers the path the code actually took.
+
+---
+
+## Planned Features & Ideas (Roadmap)
+
+**Developer Features**
+
+* Searchable timeline CLI; session diffing; auto-test recorder; context snapshots.
+
+**Copilot & AI**
+
+* Auto prompt file on failure; explain mode; root-cause ranking.
+
+**Observability & Viz**
+
+* Metrics aggregation (success/failure ratios; latency histograms/p95); timeline exports (Chrome trace/Mermaid); built-in SQLite reports.
+
+**Safety & Robustness**
+
+* Redaction presets; payload hashing; strong async/multiprocess support.
+
+**Quality of Life**
+
+* Flow templates; framework adapters (pytest, FastAPI, CLI); quick toggle via env.
+
+**Stretch**
+
+* Replay mode; Copilot auto-loop; multi-language SDKs; pluggable sinks (S3/Kafka/Elastic/Prometheus); terminal TUI.
+
+---
+
+## Contributing
+
+We welcome ideas, issues, and PRs — especially around adapters (pytest, FastAPI), visualization, and new sinks. Share use-cases and feedback; even sketches help.
+
+---
+
+## License
+
+Choose a license (MIT/Apache-2.0 recommended for permissive use). Add `LICENSE` file and badge.
+
+---
+
+## Naming Note
+
+We’re using **flowscribe** as the working name. If you rebrand, update:
+
+* README title & tagline
+* Any references to `flowscribe` in docs
+* Suggested CLI alias (e.g., `fscribe`)
