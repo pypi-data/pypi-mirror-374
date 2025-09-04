@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: wexample-migration
+Version: 0.0.2
+Requires-Python: >=3.10
+Requires-Dist: pydantic<3,>=2
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+
