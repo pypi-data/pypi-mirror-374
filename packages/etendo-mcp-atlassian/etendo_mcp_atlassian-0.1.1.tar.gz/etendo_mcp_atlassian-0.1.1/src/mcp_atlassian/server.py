@@ -1,0 +1,3 @@
+def main():
+    print("OK: starting main()")
+    # aquí tu arranque real del MCP…
