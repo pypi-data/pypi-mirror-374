@@ -1,0 +1,39 @@
+Metadata-Version: 2.4
+Name: typhe
+Version: 2025.0.0
+Summary: More types for Python.
+Author-email: ItsKayraa <kayrabalc399@gmail.com>
+License: GPL3
+Project-URL: Homepage, https://github.com/ItsKayraa/typhe
+Project-URL: Bug Tracker, https://github.com/ItsKayraa/typhe/issues
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# Lowpy
+
+Wanted more **types** such as uint16, int16 and more? You can now!
+
+# Types
+
+**char**
+**sint8**
+**uint8**
+**sint16**
+**uint16**
+**uint32**
+**sint32**
+**uint64**
+**sint64**
+
+## Additional Types
+
+**mint** (Used for limiting integers)
+**mstr** (Used for limiting strings)
+
+# Requirements
+
+setuptools >= 42
+wheel
+python >= 3.8
