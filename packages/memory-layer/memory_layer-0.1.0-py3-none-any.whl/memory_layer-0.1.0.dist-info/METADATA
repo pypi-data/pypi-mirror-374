@@ -1,0 +1,185 @@
+Metadata-Version: 2.4
+Name: memory-layer
+Version: 0.1.0
+Summary: Persistent memory layer for AI coding assistants
+Author: Your Name
+Author-email: Memory Layer Team <contact@memory-layer.com>
+License: MIT
+Project-URL: Homepage, https://github.com/your-org/memory-layer
+Project-URL: Documentation, https://docs.memory-layer.com
+Project-URL: Repository, https://github.com/your-org/memory-layer
+Project-URL: Issues, https://github.com/your-org/memory-layer/issues
+Keywords: memory,ai,assistant,vector,search
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests>=2.31.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Dynamic: author
+Dynamic: license-file
+Dynamic: requires-python
+
+# memory-cli
+
+A CLI memory layer for developers across editors (Cursor, VSCode, etc.) with **prompt-driven memory mode**.
+
+## 🚀 New: Prompt-Driven Mode
+
+The CLI now supports natural language queries with automatic memory recall!
+
+```bash
+# Ask any question - automatically recalls relevant context
+memory "how did I integrate payments last week?"
+memory "what was the bug I fixed yesterday?"
+memory "show me my recent work on authentication"
+
+# Check memory statistics
+memory --stats
+```
+
+## Installation
+
+```bash
+pip install .
+```
+
+## Usage
+
+### 🎯 Prompt-Driven Mode (Recommended)
+
+**Option 1: Direct natural language queries**
+```bash
+# Using the installed command (if in PATH)
+memory "how did I integrate payments last week?"
+
+# Using Python directly
+python prompt_direct.py "what was the bug I fixed yesterday?"
+
+# Using batch file (Windows)
+.\run_prompt.bat "show me my recent work on authentication"
+```
+
+**Option 2: Using the chat command**
+```bash
+memory chat "how did I integrate payments last week?"
+memory chat --stats
+```
+
+### 🔧 Structured Commands (Legacy)
+
+**Option 1: Using the installed command (if in PATH)**
+```bash
+memory init
+memory add "Fixed login bug with JWT token"
+memory recall "login"
+memory attach cursor
+memory ask "How do I fix a JWT login bug?"
+```
+
+**Option 2: Using Python directly**
+```bash
+python cli.py init
+python cli.py add "Fixed login bug with JWT token"
+python cli.py recall "login"
+python cli.py attach cursor
+python cli.py ask "How do I fix a JWT login bug?"
+```
+
+**Option 3: Using the batch file (Windows)**
+```bash
+.\run.bat init
+.\run.bat add "Fixed login bug with JWT token"
+.\run.bat recall "login"
+.\run.bat attach cursor
+.\run.bat ask "How do I fix a JWT login bug?"
+```
+
+### Commands
+
+#### Prompt-Driven Mode
+- `memory "your question"` — Ask any question with automatic memory recall
+- `memory --stats` — Show memory statistics
+- `memory chat "your question"` — Alternative chat interface
+
+#### Structured Commands
+- `init` — Initializes a .memory folder with config and SQLite DB.
+- `add "note or context"` — Stores the note with timestamp and project path.
+- `recall [query]` — Searches for notes matching the query.
+- `attach editor` — Stub for future editor integration.
+- `ask "prompt"` — Ask the LLM with memory context.
+
+### LLM Integration
+
+The tool supports multiple LLM providers. Add your API key to `.memory/config.json`:
+
+#### OpenAI
+```json
+{
+  "llm_provider": "openai",
+  "llm_api_key": "YOUR_OPENAI_KEY"
+}
+```
+
+#### Anthropic
+```json
+{
+  "llm_provider": "anthropic",
+  "llm_api_key": "YOUR_ANTHROPIC_KEY"
+}
+```
+
+#### Google Gemini (Recommended)
+```json
+{
+  "llm_provider": "gemini",
+  "gemini_api_key": "YOUR_GEMINI_KEY"
+}
+```
+
+**To get a Gemini API key:**
+1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Create an API key
+3. Update your config.json
+
+**Test your setup:**
+```bash
+python test_gemini.py
+```
+
+## How It Works
+
+### Prompt-Driven Mode
+1. **Natural Language Input**: You ask any question in plain English
+2. **Automatic Memory Recall**: System searches for relevant past conversations and notes
+3. **Context Enrichment**: Your question is combined with relevant memory context
+4. **LLM Processing**: Enhanced prompt is sent to OpenAI/Anthropic/Gemini
+5. **Automatic Storage**: Both your question and the LLM response are saved for future reference
+
+### Database Schema
+- **notes table**: Stores all conversations with embeddings support
+- **memory table**: Legacy table for backward compatibility
+
+## Extensibility
+
+The code is modular for future commands like `sync`, `proxy`, and editor integrations.
+
+> For best keyword extraction, run:
+> 
+> ```python
+> import nltk; nltk.download('punkt'); nltk.download('averaged_perceptron_tagger')
+> ``` 
