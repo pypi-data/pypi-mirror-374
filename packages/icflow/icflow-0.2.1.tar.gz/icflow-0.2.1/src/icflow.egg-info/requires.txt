@@ -1,0 +1,17 @@
+ictasks==0.2.3
+icplot==0.2.4
+pandas
+netCDF4
+fastapi[standard]
+
+[test]
+pytest
+pytest-cov
+pytest-sugar
+black
+flake8
+pylint
+mypy
+
+[types]
+types-PyYAML
