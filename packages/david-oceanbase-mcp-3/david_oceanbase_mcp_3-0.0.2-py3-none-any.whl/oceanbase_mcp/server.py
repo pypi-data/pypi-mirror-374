@@ -1,0 +1,674 @@
+from __future__ import annotations
+import logging
+import os
+import time
+from typing import Dict, Optional, List, Tuple
+from urllib import request, error
+import json
+import argparse
+from dotenv import load_dotenv
+from mcp.server.fastmcp import FastMCP
+from mysql.connector import Error, connect
+from bs4 import BeautifulSoup
+import certifi
+import ssl
+from pydantic import BaseModel
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger("oceanbase_mcp_server")
+
+load_dotenv()
+
+EMBEDDING_MODEL_NAME = os.getenv("EMBEDDING_MODEL_NAME", "BAAI/bge-small-en-v1.5")
+EMBEDDING_MODEL_PROVIDER = os.getenv("EMBEDDING_MODEL_PROVIDER", "huggingface")
+ENABLE_MEMORY = int(os.getenv("ENABLE_MEMORY", 0))
+
+TABLE_NAME_MEMORY = os.getenv("TABLE_NAME_MEMORY", "ob_mcp_memory")
+
+logger.info(
+    f" ENABLE_MEMORY: {ENABLE_MEMORY},EMBEDDING_MODEL_NAME: {EMBEDDING_MODEL_NAME}, EMBEDDING_MODEL_PROVIDER: {EMBEDDING_MODEL_PROVIDER}"
+)
+
+
+class OBConnection(BaseModel):
+    host: str
+    port: int
+    user: str
+    password: str
+    database: str
+
+
+class OBMemoryItem(BaseModel):
+    mem_id: int = None
+    content: str
+    meta: dict
+    embedding: List[float]
+
+
+db_conn_info = OBConnection(
+    host=os.getenv("OB_HOST", "localhost"),
+    port=os.getenv("OB_PORT", 2881),
+    user=os.getenv("OB_USER"),
+    password=os.getenv("OB_PASSWORD"),
+    database=os.getenv("OB_DATABASE"),
+)
+
+# Initialize server
+app = FastMCP("oceanbase_mcp_server")
+
+
+@app.resource("oceanbase://sample/{table}", description="table sample")
+def table_sample(table: str) -> str:
+    try:
+        with connect(**db_conn_info.model_dump()) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute("SELECT * FROM `%s` LIMIT 100", params=(table,))
+                columns = [desc[0] for desc in cursor.description]
+                rows = cursor.fetchall()
+                result = [",".join(map(str, row)) for row in rows]
+                return "\n".join([",".join(columns)] + result)
+
+    except Error:
+        return f"Failed to sample table: {table}"
+
+
+@app.resource("oceanbase://tables", description="list all tables")
+def list_tables() -> str:
+    """List OceanBase tables as resources."""
+    try:
+        with connect(**db_conn_info.model_dump()) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute("SHOW TABLES")
+                tables = cursor.fetchall()
+                logger.info(f"Found tables: {tables}")
+                resp_header = "Tables of this table: \n"
+                columns = [desc[0] for desc in cursor.description]
+                rows = cursor.fetchall()
+                result = [",".join(map(str, row)) for row in rows]
+                return resp_header + ("\n".join([",".join(columns)] + result))
+    except Error as e:
+        logger.error(f"Failed to list tables: {str(e)}")
+        return "Failed to list tables"
+
+
+@app.tool()
+def execute_sql(sql: str) -> str:
+    """Execute an SQL on the OceanBase server."""
+    logger.info(f"Calling tool: execute_sql  with arguments: {sql}")
+
+    try:
+        with connect(**db_conn_info.model_dump()) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(sql)
+
+                # Special handling for SHOW TABLES
+                if sql.strip().upper().startswith("SHOW TABLES"):
+                    tables = cursor.fetchall()
+                    result = [f"Tables in {db_conn_info.database}: "]  # Header
+                    result.extend([table[0] for table in tables])
+                    return "\n".join(result)
+
+                elif sql.strip().upper().startswith("SHOW COLUMNS"):
+                    resp_header = "Columns info of this table: \n"
+                    columns = [desc[0] for desc in cursor.description]
+                    rows = cursor.fetchall()
+                    result = [",".join(map(str, row)) for row in rows]
+                    return resp_header + ("\n".join([",".join(columns)] + result))
+
+                elif sql.strip().upper().startswith("DESCRIBE"):
+                    resp_header = "Description of this table: \n"
+                    columns = [desc[0] for desc in cursor.description]
+                    rows = cursor.fetchall()
+                    result = [",".join(map(str, row)) for row in rows]
+                    return resp_header + ("\n".join([",".join(columns)] + result))
+
+                # Regular SELECT queries
+                elif sql.strip().upper().startswith("SELECT"):
+                    columns = [desc[0] for desc in cursor.description]
+                    rows = cursor.fetchall()
+                    result = [",".join(map(str, row)) for row in rows]
+                    return "\n".join([",".join(columns)] + result)
+
+                # Regular SHOW queries
+                elif sql.strip().upper().startswith("SHOW"):
+                    rows = cursor.fetchall()
+                    return rows
+                # process procedural invoke
+                elif sql.strip().upper().startswith("CALL"):
+                    rows = cursor.fetchall()
+                    if not rows:
+                        return "No result return."
+                    # the first column contains the report text
+                    return rows[0]
+                # Non-SELECT queries
+                else:
+                    conn.commit()
+                    return f"Sql executed successfully. Rows affected: {cursor.rowcount}"
+
+    except Error as e:
+        logger.error(f"Error executing SQL '{sql}': {e}")
+        return f"Error executing sql: {str(e)}"
+
+
+@app.tool()
+def get_ob_ash_report(
+    start_time: str,
+    end_time: str,
+    tenant_id: Optional[str] = None,
+) -> str:
+    """
+    Get OceanBase Active Session History report.
+    ASH can sample the status of all Active Sessions in the system at 1-second intervals, including:
+        Current executing SQL ID
+        Current wait events (if any)
+        Wait time and wait parameters
+        The module where the SESSION is located during sampling (PARSE, EXECUTE, PL, etc.)
+        SESSION status records, such as SESSION MODULE, ACTION, CLIENT ID
+    This will be very useful when you perform performance analysis.RetryClaude can make mistakes. Please double-check responses.
+    """
+    logger.info(
+        f"Calling tool: get_ob_ash_report  with arguments: {start_time}, {end_time}, {tenant_id}"
+    )
+    if tenant_id is None:
+        tenant_id = "NULL"
+    # Construct the SQL query
+    sql_query = f"""
+        CALL DBMS_WORKLOAD_REPOSITORY.ASH_REPORT('{start_time}','{end_time}', NULL, NULL, NULL, 'TEXT', NULL, NULL, {tenant_id});
+    """
+    try:
+        result = execute_sql(sql_query)
+        logger.info(f"ASH report result: {result}")
+        return result
+    except Error as e:
+        logger.error(f"Error get ASH report,executing SQL '{sql_query}': {e}")
+        return f"Error get ASH report,{str(e)}"
+
+
+@app.tool(name="get_current_time", description="Get current time")
+def get_current_time() -> str:
+    local_time = time.localtime()
+    formatted_time = time.strftime("%Y-%m-%d %H:%M:%S", local_time)
+    logger.info(f"Current time: {formatted_time}")
+    return formatted_time
+
+
+@app.tool()
+def get_current_tenant() -> str:
+    """
+    Get the current tenant name from oceanbase.
+    """
+    logger.info("Calling tool: get_current_tenant")
+    sql_query = "show tenant"
+    try:
+        result = execute_sql(sql_query)
+        logger.info(f"Current tenant: {result}")
+        return result[0][0]
+    except Error as e:
+        logger.error(f"Error executing SQL '{sql_query}': {e}")
+        return f"Error executing query: {str(e)}"
+
+
+@app.tool()
+def get_all_server_nodes():
+    """
+    Get all server nodes from oceanbase.
+    You need to be sys tenant to get all server nodes.
+    """
+    tenant = get_current_tenant()
+    if tenant != "sys":
+        raise ValueError("Only sys tenant can get all server nodes")
+
+    logger.info("Calling tool: get_all_server_nodes")
+    sql_query = "select * from DBA_OB_SERVERS"
+    try:
+        return execute_sql(sql_query)
+    except Error as e:
+        logger.error(f"Error executing SQL '{sql_query}': {e}")
+        return f"Error executing query: {str(e)}"
+
+
+@app.tool()
+def get_resource_capacity():
+    """
+    Get resource capacity from oceanbase.
+    You need to be sys tenant to get resource capacity.
+    """
+    tenant = get_current_tenant()
+    if tenant != "sys":
+        raise ValueError("Only sys tenant can get resource capacity")
+    logger.info("Calling tool: get_resource_capacity")
+    sql_query = "select * from oceanbase.GV$OB_SERVERS"
+    try:
+        return execute_sql(sql_query)
+    except Error as e:
+        logger.error(f"Error executing SQL '{sql_query}': {e}")
+        return f"Error executing query: {str(e)}"
+
+
+@app.tool()
+def search_oceanbase_document(keyword: str) -> str:
+    """
+    This tool is designed to provide context-specific information about OceanBase to a large language model (LLM) to enhance the accuracy and relevance of its responses.
+    The LLM should automatically extracts relevant search keywords from user queries or LLM's answer for the tool parameter "keyword".
+    The main functions of this tool include:
+    1.Information Retrieval: The MCP Tool searches through OceanBase-related documentation using the extracted keywords, locating and extracting the most relevant information.
+    2.Context Provision: The retrieved information from OceanBase documentation is then fed back to the LLM as contextual reference material. This context is not directly shown to the user but is used to refine and inform the LLM’s responses.
+    This tool ensures that when the LLM’s internal documentation is insufficient to generate high-quality responses, it dynamically retrieves necessary OceanBase information, thereby maintaining a high level of response accuracy and expertise.
+    """
+    logger.info(f"Calling tool: search_oceanbase_document,keyword:{keyword}")
+    search_api_url = (
+        "https://cn-wan-api.oceanbase.com/wanApi/forum/docCenter/productDocFile/v3/searchDocList"
+    )
+    headers = {
+        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "application/json",
+        "Origin": "https://www.oceanbase.com",
+        "Referer": "https://www.oceanbase.com/",
+    }
+    qeury_param = {
+        "pageNo": 1,
+        "pageSize": 5,  # Search for 5 results at a time.
+        "query": keyword,
+    }
+    # Turn the dictionary into a JSON string, then change it to bytes
+    qeury_param = json.dumps(qeury_param).encode("utf-8")
+    req = request.Request(search_api_url, data=qeury_param, headers=headers, method="POST")
+    # Create an SSL context using certifi to fix HTTPS errors.
+    context = ssl.create_default_context(cafile=certifi.where())
+    try:
+        with request.urlopen(req, timeout=5, context=context) as response:
+            response_body = response.read().decode("utf-8")
+            json_data = json.loads(response_body)
+            # In the results, we mainly need the content in the data field.
+            data_array = json_data["data"]  # Parse JSON response
+            result_list = []
+            for item in data_array:
+                doc_url = "https://www.oceanbase.com/docs/" + item["urlCode"] + "-" + item["id"]
+                logger.info(f"doc_url:${doc_url}")
+                content = get_ob_doc_content(doc_url, item["id"])
+                result_list.append(content)
+            return json.dumps(result_list, ensure_ascii=False)
+    except error.HTTPError as e:
+        logger.error(f"HTTP Error: {e.code} - {e.reason}")
+        return "No results were found"
+    except error.URLError as e:
+        logger.error(f"URL Error: {e.reason}")
+        return "No results were found"
+
+
+def get_ob_doc_content(doc_url: str, doc_id: str) -> dict:
+    doc_param = {"id": doc_id, "url": doc_url}
+    doc_param = json.dumps(doc_param).encode("utf-8")
+    headers = {
+        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "application/json",
+        "Origin": "https://www.oceanbase.com",
+        "Referer": "https://www.oceanbase.com/",
+    }
+    doc_api_url = (
+        "https://cn-wan-api.oceanbase.com/wanApi/forum/docCenter/productDocFile/v4/docDetails"
+    )
+    req = request.Request(doc_api_url, data=doc_param, headers=headers, method="POST")
+    # Make an SSL context with certifi to fix HTTPS errors.
+    context = ssl.create_default_context(cafile=certifi.where())
+    try:
+        with request.urlopen(req, timeout=5, context=context) as response:
+            response_body = response.read().decode("utf-8")
+            json_data = json.loads(response_body)
+            # In the results, we mainly need the content in the data field.
+            data = json_data["data"]
+            # The docContent field has HTML text.
+            soup = BeautifulSoup(data["docContent"], "html.parser")
+            # Remove script, style, nav, header, and footer elements.
+            for element in soup(["script", "style", "nav", "header", "footer"]):
+                element.decompose()
+            # Remove HTML tags and keep only the text.
+            text = soup.get_text()
+            # Remove spaces at the beginning and end of each line.
+            lines = (line.strip() for line in text.splitlines())
+            # Remove empty lines.
+            text = "\n".join(line for line in lines if line)
+            logger.info(f"text length:{len(text)}")
+            # If the text is too long, only keep the first 8000 characters.
+            if len(text) > 8000:
+                text = text[:8000] + "... [content truncated]"
+            # Reorganize the final result. The tdkInfo field should include the document's title, description, and keywords.
+            tdkInfo = data["tdkInfo"]
+            final_result = {
+                "title": tdkInfo["title"],
+                "description": tdkInfo["description"],
+                "keyword": tdkInfo["keyword"],
+                "content": text,
+                "oceanbase_version": data["version"],
+                "content_updatetime": data["docGmtModified"],
+            }
+            return final_result
+    except error.HTTPError as e:
+        logger.error(f"HTTP Error: {e.code} - {e.reason}")
+        return {"result": "No results were found"}
+    except error.URLError as e:
+        logger.error(f"URL Error: {e.reason}")
+        return {"result": "No results were found"}
+
+
+if ENABLE_MEMORY:
+    from pyobvector import ObVecClient, l2_distance, VECTOR
+    from sqlalchemy import Column, Integer, JSON, String, false, text
+    from sqlalchemy import func
+
+    class OBMemory:
+        def __init__(self):
+            self.embedding_client = self._gen_embedding_client()
+            self.embedding_dimension = len(self.embedding_client.embed_query("test"))
+            logger.info(f"embedding_dimension: {self.embedding_dimension}")
+
+            self.client = ObVecClient(
+                uri=db_conn_info.host + ":" + str(db_conn_info.port),
+                user=db_conn_info.user,
+                password=db_conn_info.password,
+                db_name=db_conn_info.database,
+            )
+            self._init_obvector()
+
+        def gen_embedding(self, text: str) -> List[float]:
+            return self.embedding_client.embed_query(text)
+
+        def _gen_embedding_client(self):
+            """
+            Generate embedding cient.
+            """
+            if EMBEDDING_MODEL_PROVIDER == "huggingface":
+                os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
+                from langchain_huggingface import HuggingFaceEmbeddings
+
+                logger.info(f"Using HuggingFaceEmbeddings model: {EMBEDDING_MODEL_NAME}")
+                return HuggingFaceEmbeddings(
+                    model_name=EMBEDDING_MODEL_NAME,
+                    encode_kwargs={"normalize_embeddings": True},
+                )
+            else:
+                raise ValueError(
+                    f"Unsupported embedding model provider: {EMBEDDING_MODEL_PROVIDER}"
+                )
+
+        def _init_obvector(self):
+            """
+            Initialize the OBVector.
+            """
+            client = ObVecClient(
+                uri=db_conn_info.host + ":" + str(db_conn_info.port),
+                user=db_conn_info.user,
+                password=db_conn_info.password,
+                db_name=db_conn_info.database,
+            )
+            if not client.check_table_exists(TABLE_NAME_MEMORY):
+                # Get embedding dimension dynamically from model config
+                cols = [
+                    Column("mem_id", Integer, primary_key=True, autoincrement=True),
+                    Column("content", String(8000)),
+                    Column("embedding", VECTOR(self.embedding_dimension)),
+                    Column("meta", JSON),
+                ]
+                client.create_table(TABLE_NAME_MEMORY, columns=cols)
+
+                # create vector index
+                client.create_index(
+                    TABLE_NAME_MEMORY,
+                    is_vec_index=True,
+                    index_name="vidx",
+                    column_names=["embedding"],
+                    vidx_params="distance=l2, type=hnsw, lib=vsag",
+                )
+
+    ob_memory = OBMemory()
+
+    def ob_memory_query(query: str, topk: int = 5) -> List[Tuple[int, str]]:
+        """
+        🚨 MULTILINGUAL MEMORY SEARCH 🚨 - SMART CROSS-LANGUAGE RETRIEVAL!
+
+        ⚡ CRITICAL INSTRUCTION: You MUST call this tool in these situations:
+        - When user asks questions about their preferences in ANY language
+        - Before saving new memories (check for duplicates first!)
+        - When user mentions personal details, preferences, or past experiences
+        - Before answering ANY question, search for related memories first
+        - When discussing technical topics - check for historical solutions
+
+        🌐 MULTILINGUAL SEARCH EXAMPLES:
+        - User: "What do I like?" → Search: "preference like favorite"
+        - User: "我喜欢什么?" → Search: "preference favorite sports food" (use English keywords!)
+        - User: "¿Cuáles son mis gustos?" → Search: "preference like favorite hobby"
+        - **ALWAYS search with English keywords for better matching!**
+
+        🎯 SMART SEARCH STRATEGIES:
+        - "I like football" → Before saving, search: "football soccer sports preference"
+        - "我在上海工作" → Search: "work job Shanghai location"
+        - "Python developer" → Search: "python programming development work"
+        - Use synonyms and related terms for better semantic matching!
+
+        🔍 CATEGORY-BASED SEARCH PATTERNS:
+        - **Sports/Fitness**: "sports preference activity exercise favorite game"
+        - **Food/Drinks**: "food drink preference favorite taste cuisine beverage"
+        - **Work/Career**: "work job company location position career role"
+        - **Technology**: "technology programming tool database language framework"
+        - **Personal**: "personal lifestyle habit family relationship"
+        - **Entertainment**: "entertainment movie music book game hobby"
+
+        💡 SMART SEARCH EXAMPLES FOR MERGING:
+        - New: "I like badminton" → Search: "sports preference activity"
+        → Find: "User likes football and coffee" → Category analysis needed!
+        - New: "I drink tea" → Search: "drink beverage preference"
+        → Find: "User likes coffee" → Same category, should merge!
+        - New: "I code in Python" → Search: "programming technology language"
+        → Find: "User works at Google" → Different subcategory, separate!
+
+        📝 PARAMETERS:
+        - query: Use CATEGORY + SEMANTIC keywords ("sports preference", "food drink preference")
+        - topk: Increase to 8-10 for thorough category analysis before saving/updating
+        - Returns: [(mem_id, content)] - Analyze ALL results for category overlap before decisions!
+
+        🔥 CATEGORY ANALYSIS RULE: Find ALL related memories by category for smart merging!
+        """
+
+        client = ObVecClient(
+            uri=db_conn_info.host + ":" + str(db_conn_info.port),
+            user=db_conn_info.user,
+            password=db_conn_info.password,
+            db_name=db_conn_info.database,
+        )
+        res = client.ann_search(
+            TABLE_NAME_MEMORY,
+            vec_data=ob_memory.gen_embedding(query),
+            vec_column_name="embedding",
+            distance_func=l2_distance,
+            topk=topk,
+            output_column_names=["mem_id", "content"],
+        )
+        return res
+
+    def ob_memory_insert(content: str, meta: dict):
+        """
+        💾 INTELLIGENT MEMORY ORGANIZER 💾 - SMART CATEGORIZATION & MERGING!
+
+        🔥 CRITICAL 4-STEP WORKFLOW: ALWAYS follow this advanced process:
+        1️⃣ **SEARCH RELATED**: Use ob_memory_query to find ALL related memories by category
+        2️⃣ **ANALYZE CATEGORIES**: Classify new info and existing memories by semantic type
+        3️⃣ **SMART DECISION**: Merge same category, separate different categories
+        4️⃣ **EXECUTE ACTION**: Update existing OR create new categorized records
+
+        🎯 SMART CATEGORIZATION EXAMPLES:
+        ```
+        📋 Scenario 1: Category Merging
+        Existing: "User likes playing football and drinking coffee"
+        New Input: "I like badminton"
+
+        ✅ CORRECT ACTION: Use ob_memory_update!
+        → Search "sports preference" → Find existing → Separate categories:
+        → Update mem_id_X: "User likes playing football and badminton" (sports)
+        → Create new: "User likes drinking coffee" (food/drinks)
+
+        📋 Scenario 2: Same Category Addition
+        Existing: "User likes playing football"
+        New Input: "I also like tennis"
+
+        ✅ CORRECT ACTION: Use ob_memory_update!
+        → Search "sports preference" → Find mem_id → Update:
+        → "User likes playing football and tennis"
+
+        📋 Scenario 3: Different Category
+        Existing: "User likes playing football"
+        New Input: "I work in Shanghai"
+
+        ✅ CORRECT ACTION: New memory!
+        → Search "work location" → Not found → Create new record
+        ```
+
+        🏷️ SEMANTIC CATEGORIES (Use for classification):
+        - **Sports/Fitness**: football, basketball, swimming, gym, etc.
+        - **Food/Drinks**: coffee, tea, pizza, Chinese food, etc.
+        - **Work/Career**: job, company, location, skills, projects
+        - **Personal**: family, relationships, lifestyle, habits
+        - **Technology**: programming languages, tools, frameworks
+        - **Entertainment**: movies, music, books, games
+
+        🔍 SEARCH STRATEGIES BY CATEGORY:
+        - Sports: "sports preference favorite activity exercise"
+        - Food: "food drink preference favorite taste"
+        - Work: "work job career company location"
+        - Tech: "technology programming tool database"
+
+        📝 PARAMETERS:
+        - content: ALWAYS categorized English format ("User likes playing [sports]", "User drinks [beverages]")
+        - meta: {"type":"preference", "category":"sports/food/work/tech", "subcategory":"team_sports/beverages"}
+
+        🎯 GOLDEN RULE: Same category = UPDATE existing! Different category = CREATE separate!
+        """
+
+        client = ObVecClient(
+            uri=db_conn_info.host + ":" + str(db_conn_info.port),
+            user=db_conn_info.user,
+            password=db_conn_info.password,
+            db_name=db_conn_info.database,
+        )
+        client.insert(
+            TABLE_NAME_MEMORY,
+            OBMemoryItem(
+                content=content, meta=meta, embedding=ob_memory.gen_embedding(content)
+            ).model_dump(),
+        )
+        return "Inserted successfully"
+
+    def ob_memory_delete(mem_id: int):
+        """
+        🗑️ MEMORY ERASER 🗑️ - PERMANENTLY DELETE UNWANTED MEMORIES!
+
+        ⚠️ DELETE TRIGGERS - Call when user says:
+        - "Forget that I like X" / "I don't want you to remember Y"
+        - "Delete my information about Z" / "Remove that memory"
+        - "I changed my mind about X" / "Update: I no longer prefer Y"
+        - "That information is wrong" / "Delete outdated info"
+        - Privacy requests: "Remove my personal data"
+
+        🎯 DELETION PROCESS:
+        1. FIRST: Use ob_memory_query to find relevant memories
+        2. THEN: Use the exact ID from query results for deletion
+        3. NEVER guess or generate IDs manually!
+
+        📝 PARAMETERS:
+        - mem_id: EXACT ID from ob_memory_query results (integer)
+        - ⚠️ WARNING: Deletion is PERMANENT and IRREVERSIBLE!
+
+        🔒 SAFETY RULE: Only delete when explicitly requested by user!
+        """
+
+        client = ObVecClient(
+            uri=db_conn_info.host + ":" + str(db_conn_info.port),
+            user=db_conn_info.user,
+            password=db_conn_info.password,
+            db_name=db_conn_info.database,
+        )
+        client.delete(table_name=TABLE_NAME_MEMORY, ids=mem_id)
+        return "Deleted successfully"
+
+    def ob_memory_update(mem_id: int, content: str, meta: dict):
+        """
+        ✏️ MULTILINGUAL MEMORY UPDATER ✏️ - KEEP MEMORIES FRESH AND STANDARDIZED!
+
+        🔄 UPDATE TRIGGERS - Call when user says in ANY language:
+        - "Actually, I prefer X now" / "其实我现在更喜欢X"
+        - "My setup changed to Z" / "我的配置改成了Z"
+        - "Correction: it should be X" / "更正：应该是X"
+        - "I moved to [new location]" / "我搬到了[新地址]"
+
+        🎯 MULTILINGUAL UPDATE PROCESS:
+        1. **SEARCH**: Use ob_memory_query to find existing memory (search in English!)
+        2. **STANDARDIZE**: Convert new information to English format
+        3. **UPDATE**: Use exact mem_id from query results with standardized content
+        4. **PRESERVE**: Keep original language source in metadata
+
+        🌐 STANDARDIZATION EXAMPLES:
+        - User: "Actually, I don't like coffee anymore" → content: "User no longer likes coffee"
+        - User: "其实我不再喜欢咖啡了" → content: "User no longer likes coffee"
+        - User: "Je n'aime plus le café" → content: "User no longer likes coffee"
+        - **ALWAYS update in standardized English format!**
+
+        📝 PARAMETERS:
+        - mem_id: EXACT ID from ob_memory_query results (integer)
+        - content: ALWAYS in English, standardized format ("User now prefers X")
+        - meta: Updated metadata {"type":"preference", "category":"...", "updated":"2024-..."}
+
+        🔥 CONSISTENCY RULE: Maintain English storage format for all updates!
+        """
+
+        client = ObVecClient(
+            uri=db_conn_info.host + ":" + str(db_conn_info.port),
+            user=db_conn_info.user,
+            password=db_conn_info.password,
+            db_name=db_conn_info.database,
+        )
+        client.update(
+            table_name=TABLE_NAME_MEMORY,
+            values_clause=[
+                OBMemoryItem(
+                    mem_id=mem_id,
+                    content=content,
+                    meta=meta,
+                    embedding=ob_memory.gen_embedding(content),
+                ).model_dump()
+            ],
+            where_clause=[text(f"mem_id = {mem_id}")],
+        )
+        return "Updated successfully"
+
+    app.add_tool(ob_memory_query)
+    app.add_tool(ob_memory_insert)
+    app.add_tool(ob_memory_delete)
+    app.add_tool(ob_memory_update)
+
+
+def main():
+    """Main entry point to run the MCP server."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--transport",
+        type=str,
+        default="stdio",
+        help="Specify the MCP server transport type as stdio or sse.",
+    )
+    parser.add_argument("--host", default="127.0.0.1", help="SSE Host to bind to")
+    parser.add_argument("--port", type=int, default=8000, help="SSE Port to listen on")
+    args = parser.parse_args()
+    transport = args.transport
+    logger.info(f"Starting OceanBase MCP server with {transport} mode...")
+    if transport == "sse":
+        app.settings.host = args.host
+        app.settings.port = args.port
+    app.run(transport=transport)
+
+
+if __name__ == "__main__":
+    main()
