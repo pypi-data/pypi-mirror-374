@@ -1,0 +1,24 @@
+Metadata-Version: 2.4
+Name: nemo2riva
+Version: 2.22.0
+Summary: ('NeMo Model => Riva Deployment Converter',)
+Author: NVIDIA Riva
+Author-email: nvidia-riva@nvidia.com
+License: MIT
+Requires-Python: >=3.7.0
+License-File: LICENSE
+Requires-Dist: nemo_toolkit>=1.6.0
+Requires-Dist: nvidia-eff>=0.6.4
+Requires-Dist: nvidia-eff-tao-encryption>=0.1.8
+Requires-Dist: nvidia-pyindex==1.0.6
+Requires-Dist: onnx==1.18.0
+Requires-Dist: onnxruntime==1.21.0
+Requires-Dist: onnxruntime-gpu==1.21.0
+Requires-Dist: onnx-graphsurgeon==0.5.8
+Dynamic: author
+Dynamic: author-email
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
