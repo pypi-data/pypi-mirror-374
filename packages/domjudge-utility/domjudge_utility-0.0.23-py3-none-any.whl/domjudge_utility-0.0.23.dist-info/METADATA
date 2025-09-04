@@ -1,0 +1,49 @@
+Metadata-Version: 2.3
+Name: domjudge-utility
+Version: 0.0.23
+Summary: DOMjudge Utility
+License: MIT
+Author: Dup4
+Author-email: lyuzhi.pan@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: aiodns (>=3.2.0,<4.0.0)
+Requires-Dist: aiohttp (>=3.10.10,<4.0.0)
+Requires-Dist: asyncio (>=3.4.3,<4.0.0)
+Requires-Dist: bs4 (>=0.0.1,<0.0.2)
+Requires-Dist: htmlmin (>=0.1.12,<0.2.0)
+Requires-Dist: pyyaml (>=6.0,<7.0)
+Requires-Dist: requests (>=2.31.0,<3.0.0)
+Requires-Dist: requests-toolbelt (>=1.0.0,<2.0.0)
+Requires-Dist: xlwt (>=1.3.0,<2.0.0)
+Description-Content-Type: text/markdown
+
+<img align="right" width="96px" src="./assets/python3_logo.png">
+
+# DOMjudge-Utility
+
+[![Test][test-ci-badge]][test-ci]
+[![GitHub release][gh-release-badge]][gh-release]
+
+* [board-cache](./board-cache/)
+* [dump](./dump)
+* [submit-stress-test](./submit-stress-test)
+* [pdf_parser](./pdf_parser)
+
+## License
+
+[MIT](./LICENSE) License © 2020 - PRESENT [XCPCIO][xcpcio]
+
+[xcpcio]: https://github.com/XCPCIO
+[test-ci-badge]: https://github.com/xcpcio/domjudge-utility/workflows/Test/badge.svg
+[test-ci]: https://github.com/xcpcio/domjudge-utility/actions/workflows/test.yml
+[gh-release-badge]: https://img.shields.io/github/release/xcpcio/domjudge-utility.svg
+[gh-release]: https://GitHub.com/xcpcio/domjudge-utility/releases/
+
