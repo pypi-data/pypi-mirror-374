@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eprpy"
+version = "0.9.0b1"
+description = "A Python library for working with EPR spectroscopic data."
+readme = "README.md"
+requires-python = ">=3.9, <=3.13"
+authors = [
+    { name = "Davis Thomas Daniel", email = "davisthomasdaniel@gmail.com" }
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "License :: OSI Approved :: MIT License"
+]
+dependencies = [
+    "numpy",
+    "scipy",
+    "matplotlib"
+]
+
+[project.optional-dependencies]
+develop = [
+    'pytest',
+    'pytest-cov',
+    'sphinx',
+    'nbsphinx==0.9.7',
+    'furo==2025.7.19',
+    'sphinx-copybutton==0.5.2'
+]
+
+[project.urls]
+Homepage = "https://github.com/davistdaniel/EPRpy"
+Issues = "https://github.com/davistdaniel/EPRpy/issues"
+Documentation = "https://davistdaniel.github.io/EPRpy/"
+Repository = "https://github.com/davistdaniel/EPRpy"
