@@ -1,0 +1,82 @@
+[project]
+name = "toolviper"
+version = "0.0.16"
+description = ""
+authors = [
+    {name = "Joshua Hoskins", email="jhoskins@nrao.edu"},
+    {name = "Jan-Willem Steeb", email="jsteeb@nrao.edu"}
+]
+license = {file = "LICENSE"}
+readme = "README.md"
+requires-python = ">= 3.11, < 3.14"
+
+dependencies = [
+    'cerberus',
+    'dask>=2025.7.0',
+    'dask_jobqueue',
+    'distributed',
+    'numpy',
+    'psutil',
+    'rich',
+    'requests',
+    'tqdm',
+]
+
+[project.optional-dependencies]
+test = [
+    'pytest',
+    'pytest-cov',
+    'pytest-html',
+    'black'
+]
+
+interactive = [
+    'matplotlib',
+    'prettytable',
+    'jupyterlab',
+    'ipykernel',
+    'ipympl',
+    'ipython',
+    'jupyter-client',
+]
+
+docs = [
+    'ipykernel',
+    'ipympl',
+    'ipython',
+    'jupyter-client',
+    'nbsphinx',
+    'recommonmark',
+    'scanpydoc',
+    'sphinx-autoapi',
+    'sphinx-autosummary-accessors',
+    'sphinx_rtd_theme',
+    'twine',
+    'pandoc'
+]
+
+all = [
+    'black',
+    'pytest',
+    'pytest-cov',
+    'pytest-html',
+    'matplotlib',
+    'prettytable',
+    'jupyterlab',
+    'ipykernel',
+    'ipympl',
+    'ipython',
+    'jupyter-client',
+    'ipykernel',
+    'ipympl',
+    'ipython',
+    'jupyter-client',
+    'nbsphinx',
+    'recommonmark',
+    'scanpydoc',
+    'sphinx-autoapi',
+    'sphinx-autosummary-accessors',
+    'sphinx_rtd_theme',
+    'twine',
+    'pandoc'
+]
