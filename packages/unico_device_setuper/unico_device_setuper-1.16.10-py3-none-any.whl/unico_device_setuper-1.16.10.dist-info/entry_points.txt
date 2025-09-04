@@ -1,0 +1,4 @@
+[console_scripts]
+device-setup = unico_device_setuper.cli.main:APP
+device-setuper-backend = unico_device_setuper.backend.app:local_app
+unico-scripts = unico_device_setuper.scripts.main:APP
