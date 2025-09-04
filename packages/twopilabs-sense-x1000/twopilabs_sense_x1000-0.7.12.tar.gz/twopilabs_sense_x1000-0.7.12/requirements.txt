@@ -1,0 +1,12 @@
+# requirements.txt for examples pyinstaller build
+zeroconf==0.132.0 # Fix zeroconf for twopilabs-sense-x1000 due to issues with pyinstaller
+twopilabs-sense-x1000
+matplotlib
+scipy==1.11.4
+PySide6-Essentials==6.4.3
+h5py==3.9.0
+PySide6==6.4.3
+pyqtgraph==0.13.2
+numpy==1.25.2
+scipy==1.11.4
+

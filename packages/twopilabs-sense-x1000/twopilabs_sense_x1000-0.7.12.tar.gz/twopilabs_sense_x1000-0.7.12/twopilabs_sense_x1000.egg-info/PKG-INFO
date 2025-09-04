@@ -1,0 +1,25 @@
+Metadata-Version: 2.4
+Name: twopilabs-sense-x1000
+Version: 0.7.12
+Summary: Official 2πSENSE X1000 series hardware control library
+Home-page: https://www.2pi-labs.com
+Author: 2pi-Labs GmbH
+Author-email: opensource@2pi-labs.com
+License: LGPLv3
+Project-URL: Documentation, https://2pi-labs.gitlab.io/python/twopilabs-sense-x1000
+Project-URL: Source, https://gitlab.com/2pi-labs/python/twopilabs-sense-x1000
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7.4
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: twopilabs-utils-scpi>=0.6.3
+Requires-Dist: numpy
+Requires-Dist: pyyaml
+Dynamic: license-file
+
+twopilabs-sense-x1000
+=====================
+This is the official 2πSENSE X1000 Series hardware control library.
+
+Please take a look at the official documentation for further details.

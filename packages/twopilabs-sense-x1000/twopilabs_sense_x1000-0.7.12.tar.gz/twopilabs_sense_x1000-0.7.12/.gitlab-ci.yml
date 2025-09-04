@@ -1,0 +1,109 @@
+variables:
+  GIT_STRATEGY: clone # Clone entire repo
+  GIT_DEPTH: 0 # No shallow copy to get version info (tags/branches)
+  EXAMPLES_PACKAGE_FILE: "${CI_PROJECT_NAME}-examples-${CI_COMMIT_TAG}"
+  EXAMPLES_PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_NAME}/${CI_COMMIT_TAG}"
+
+image:
+  name: $PYTHON_BUILDUTILS_IMAGE
+  entrypoint: [ '/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0' ]
+
+stages:
+  - build
+  - deploy
+  - examples_build
+  - examples_deploy
+
+package:
+  stage: build
+  rules:
+    - if: $PYTHON_BUILDUTILS_IMAGE
+  before_script:
+    - apt-get update && apt-get install -y git
+    - pip install --upgrade pip setuptools setuptools-scm wheel build
+  script:
+    - python3 -m build
+  artifacts:
+    paths:
+      - dist/
+
+docs:
+  stage: build
+  rules:
+    - if: $PYTHON_BUILDUTILS_IMAGE
+  before_script:
+    - apt-get update && apt-get install -y git
+    - pip install --upgrade pip setuptools setuptools-scm wheel build sphinx==7.4.7 sphinx-rtd-theme==3.0.2
+  script:
+    - pip install -r docs/requirements.txt
+    - pip install .
+    - sphinx-build -b html docs/ build/docs/
+  artifacts:
+    paths:
+      - build/
+
+upload:
+  stage: deploy
+  dependencies:
+    - package
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^([0-9]+)\.([0-9]+)\.([0-9]+)$/ && $PYPI_USERNAME && $PYPI_PASSWORD'
+  before_script:
+    - pip install --upgrade pip twine
+  script:
+    - python3 -m twine upload -u $PYPI_USERNAME -p $PYPI_PASSWORD dist/*
+
+pages:
+  stage: deploy
+  dependencies:
+    - docs
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^([0-9]+)\.([0-9]+)\.([0-9]+)$/'
+  script:
+    - mv build/docs/ public/
+  artifacts:
+    paths:
+    - public
+
+# Building examples binaries
+build_examples_win64:
+  stage: examples_build
+  image:
+    name: $PYTHON_DISTUTILS_IMAGE_WIN64
+  rules:
+    - if: $PYTHON_DISTUTILS_IMAGE_WIN64
+  script:
+    - /entrypoint.sh pyinstaller spec/x1000-examples-win64.spec
+    - mkdir -p dist/x1000-examples/lib
+    - mv dist/x1000-examples/*.pyd dist/x1000-examples/api-ms-*.dll dist/x1000-examples/lib/
+  artifacts:
+    paths:
+      - dist/
+
+upload_examples_win64:
+  stage: examples_deploy
+  image: $CI_REGISTRY/containers/alpine-image:latest
+  rules:
+    - if: $PYTHON_DISTUTILS_IMAGE_WIN64 && $CI_COMMIT_TAG
+  script:
+    - |
+      apk add zip curl
+      echo "${CI_COMMIT_TAG}" > dist/VERSION      
+      cd dist/x1000-examples
+      zip -r ${EXAMPLES_PACKAGE_FILE}-win64.zip *
+      curl -k --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file ${EXAMPLES_PACKAGE_FILE}-win64.zip ${EXAMPLES_PACKAGE_REGISTRY_URL}/${EXAMPLES_PACKAGE_FILE}-win64.zip
+
+release_examples:
+  stage: examples_deploy
+  image: $CI_REGISTRY/containers/release-cli:latest
+  rules:
+    - if: '$PYTHON_DISTUTILS_IMAGE_WIN64 && $CI_COMMIT_TAG =~ /^([0-9]+)\.([0-9]+)\.([0-9]+)$/'
+  script:
+    - echo "Running Release Job"
+  release:
+    tag_name: $CI_COMMIT_TAG
+    description: Release $CI_COMMIT_TAG
+    assets:
+      links:
+        - name: "${EXAMPLES_PACKAGE_FILE}-win64"
+          url: "${EXAMPLES_PACKAGE_REGISTRY_URL}/${EXAMPLES_PACKAGE_FILE}-win64.zip"
