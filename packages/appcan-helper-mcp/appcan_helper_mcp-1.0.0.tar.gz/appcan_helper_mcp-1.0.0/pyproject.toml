@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "appcan-helper-mcp"
+version = "1.0.0"
+description = "AppCan Helper MCP Server - 提供 AppCan 官方文档查询功能"
+authors = [
+    {name = "zhangyipeng", email = "sandy1108@163.com"}
+]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+keywords = ["mcp", "appcan", "documentation", "ai", "assistant"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Documentation",
+]
+dependencies = [
+    "fastmcp",
+    "requests",
+    "beautifulsoup4",
+    "markdown",
+    "fuzzywuzzy",
+    "python-levenshtein"
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/appcan-helper-mcp"
+Repository = "https://github.com/yourusername/appcan-helper-mcp"
+Issues = "https://github.com/yourusername/appcan-helper-mcp/issues"
+
+# 🔑 关键配置：定义入口点（标准 src 布局）
+[project.scripts]
+appcan-helper-mcp = "appcan_helper_mcp.server:main"
+
+# 包查找配置 - 使用 src 布局
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["appcan_helper_mcp*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.md", "*.txt"]
