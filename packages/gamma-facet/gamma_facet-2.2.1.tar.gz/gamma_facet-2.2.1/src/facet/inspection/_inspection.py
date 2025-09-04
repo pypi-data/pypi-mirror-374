@@ -1,0 +1,89 @@
+"""
+Core implementation of :mod:`facet.inspection`
+"""
+
+import logging
+from typing import TypeAlias
+
+import numpy as np
+import numpy.typing as npt
+import pandas as pd
+
+from pytools.api import AllTracker
+
+log = logging.getLogger(__name__)
+
+__all__ = [
+    "ShapPlotData",
+]
+
+
+#
+# Type aliases
+#
+
+FloatArray: TypeAlias = npt.NDArray[np.float64]
+
+
+#
+# Ensure all symbols introduced below are included in __all__
+#
+
+__tracker = AllTracker(globals())
+
+
+#
+# Class definitions
+#
+
+
+class ShapPlotData:
+    """
+    Data for use in SHAP plots provided by the
+    `shap <https://shap.readthedocs.io/en/stable/>`__ package.
+    """
+
+    def __init__(
+        self,
+        *,
+        shap_values: FloatArray | list[FloatArray],
+        features: pd.DataFrame,
+        target: pd.Series | pd.DataFrame,
+    ) -> None:
+        """
+        :param shap_values: the shap values for all observations and outputs
+        :param features: features for which SHAP values are available;
+            aligned with param ``shap_values``
+        :param target: target values for all observations;
+            aligned with param ``shap_values``
+        """
+        self._shap_values = shap_values
+        self._features = features
+        self._target = target
+
+    @property
+    def shap_values(self) -> FloatArray | list[FloatArray]:
+        """
+        Matrix of SHAP values (number of observations by number of features)
+        or list of shap value matrices for multi-output models.
+        """
+        return self._shap_values
+
+    @property
+    def features(self) -> pd.DataFrame:
+        """
+        Matrix of feature values (number of observations by number of features).
+        """
+        return self._features
+
+    @property
+    def target(self) -> pd.Series | pd.DataFrame:
+        """
+        Series of target values (number of observations)
+        or matrix of target values for multi-output models
+        (number of observations by number of outputs).
+        """
+        return self._target
+
+
+__tracker.validate()

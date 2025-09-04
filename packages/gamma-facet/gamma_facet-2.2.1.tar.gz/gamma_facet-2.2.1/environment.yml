@@ -1,0 +1,38 @@
+name: facet-develop
+channels:
+  - conda-forge
+  - bcgx
+dependencies:
+  # run
+  - gamma-pytools     ~= 3.0
+  - joblib            ~= 1.5
+  - lightgbm          ~= 4.6
+  - matplotlib        ~= 3.10
+  - numpy             ~= 2.2
+  - pandas            ~= 2.3
+  - python            ~= 3.13
+  - scikit-learn      ~= 1.7
+  - scipy             ~= 1.16
+  - shap              ~= 0.45
+  - sklearndf         ~= 2.4
+  - typing_extensions ~= 4.14
+  - xlrd               = 2
+  - catboost          ~= 1.2
+  # additional packages for notebooks etc.
+  - pip >= 25
+  - pip:
+     - arfs
+  # test
+  - pytest            ~= 8.1
+  - pytest-cov        ~= 4.1
+  # sphinx
+  - nbsphinx                 ~= 0.9
+  - sphinx                   ~= 7.2
+  - sphinx-autodoc-typehints ~= 1.24
+  - pydata-sphinx-theme      ~= 0.15
+  # notebooks
+  - ipywidgets        ~= 8.1
+  - jupyterlab        ~= 4.1
+  - openpyxl          ~= 3.1
+  - seaborn           ~= 0.13
+  - tableone          ~= 0.8
