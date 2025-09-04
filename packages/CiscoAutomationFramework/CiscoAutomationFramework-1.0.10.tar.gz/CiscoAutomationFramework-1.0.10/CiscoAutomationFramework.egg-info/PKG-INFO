@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: CiscoAutomationFramework
+Version: 1.0.10
+Summary: Framework for issuing commands and retrieving consistent data on Cisco devices
+Home-page: https://github.com/superadm1n/CiscoAutomationFramework
+Author: Kyle Kowalczyk
+Author-email: kowalkyl@gmail.com
+License: Apache 2.0
+Keywords: cisco automation framework network
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3.9
+License-File: LICENSE
+
+The CiscoAutomationFramework is designed to be an interface for network engineers to 
+issue commands and retrieve output from Cisco devices regardless of firmware so they can easily build automation 
+scripts atop the framework and dont have to worry about the nuances of CLI scraping.
