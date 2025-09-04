@@ -1,0 +1,47 @@
+[tool.poetry]
+name = "podaac-thumbnail-generator"
+version = "0.14.0"
+description = "Tool for Image Generation (TIG)"
+authors = ["podaac-tva <podaac-tva@jpl.nasa.gov>"]
+license = "Apache-2.0"
+readme = "README.md"
+repository = "https://github.jpl.nasa.gov/podaac/tig"
+classifiers = [
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+exclude = ['contrib', 'docs', 'tests']
+packages = [
+    { include = "podaac" },
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10, <3.13"
+numpy = "^2.2.1"
+matplotlib = "^3.8.3"
+netCDF4 = "^1.6.5"
+xarray = "^2025.1.1"
+imageio = "^2.34.0"
+pygeogrids = "^0.5.0"
+cumulus-process = "^1.5.0"
+requests = "^2.31.0"
+click = "^8.1.7"
+scipy = "^1.12.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.1"
+flake8 = "^7.0.0"
+pytest-cov = "^6"
+pylint = "^3.0.3"
+Sphinx = "^8.1.3"
+moto = "^5.0.26"
+mock = "^5.1.0"
+opencv-python = "^4.10.0.84"
+scikit-image = "^0.25.0"
+
+[tool.poetry.scripts]
+tig = 'podaac.tig.cli:main'
+generate_hitide_config = 'podaac.tig.generate_hitide_config:generate_hitide_config_command'
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
