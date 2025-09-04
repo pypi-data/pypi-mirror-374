@@ -1,0 +1,14 @@
+default:
+    @just --list
+
+build:
+    uv build
+
+lint:
+    uv run pylint src/ tests/
+
+publish:
+    uv publish
+
+test:
+    uv run pytest --cov=src --cov-report=term-missing
