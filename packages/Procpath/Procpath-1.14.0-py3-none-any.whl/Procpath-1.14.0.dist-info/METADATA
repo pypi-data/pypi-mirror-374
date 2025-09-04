@@ -1,0 +1,154 @@
+Metadata-Version: 2.1
+Name: Procpath
+Version: 1.14.0
+Summary: Procpath is a process tree analysis workbench
+Home-page: https://heptapod.host/saajns/procpath
+Author: saaj
+Author-email: mail@saaj.me
+License: LGPL-3.0-only
+Project-URL: Source Code, https://heptapod.host/saajns/procpath
+Project-URL: Documentation, https://saajns.heptapod.io/procpath/
+Project-URL: Release Notes, https://saajns.heptapod.io/procpath/history.html
+Keywords: procfs jsonpath sqlite plotting
+Classifier: Environment :: Console
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Topic :: System :: Monitoring
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Requires-Python: >= 3.9
+Requires-Dist: jsonpyth<0.2,>=0.1.3
+Requires-Dist: pygal<4,>=3.0.4
+
+.. image:: https://img.shields.io/pypi/l/Procpath.svg
+   :target: https://spdx.org/licenses/LGPL-3.0-only.html
+   :alt: PyPI - License
+.. image::
+   https://img.shields.io/gitlab/pipeline-status/saajns%2Fprocpath
+   ?gitlab_url=https%3A%2F%2Fheptapod.host&branch=branch%2Fdefault
+   :target: https://heptapod.host/saajns/procpath/-/commits/branch/default
+   :alt: Pipeline status
+.. image::
+   https://img.shields.io/gitlab/pipeline-coverage/saajns%2Fprocpath
+   ?gitlab_url=https%3A%2F%2Fheptapod.host&branch=branch%2Fdefault
+   :target: https://saajns.heptapod.io/procpath/htmlcov/?badge=coverage
+   :alt: Test code coverage
+.. image:: https://img.shields.io/badge/benchmarked%20by-asv-blue.svg?style=flat
+   :target: https://saajns.heptapod.io/procpath/htmlasv/?badge=asv
+   :alt: Benchmark
+.. image:: https://badge.fury.io/py/Procpath.svg
+   :target: https://pypi.python.org/pypi/Procpath
+   :alt: PyPI
+.. image::
+   https://img.shields.io/gitlab/pipeline-status/saajns%2Fprocpath
+   ?gitlab_url=https%3A%2F%2Fheptapod.host&branch=branch%2Fdefault&label=documentation
+   :target: https://saajns.heptapod.io/procpath/
+   :alt: RTFM
+
+********
+Procpath
+********
+.. image:: https://saajns.heptapod.io/procpath/_static/logo.svg
+   :align: center
+   :alt: Procpath
+
+Procpath is a process tree analysis command-line workbench. Its goal is to
+provide natural interface to the tree structure of processes running on a
+Linux system for inspection, collection and later analysis with focus on
+performance.
+
+Installation
+============
+.. code::
+
+   pipx install Procpath
+
+`pipx`_ is recommended for installing Procpath (into a dedicated virtual
+environment). Alternatively ``pip`` can be used to install Procpath to the
+Python user install directory.
+
+.. code::
+
+   pip install --user Procpath
+
+Quickstart
+==========
+Get comma-separated PIDs of the process subtree (including the parent process
+``pid=2610``).
+
+.. code::
+
+   procpath query -d , '$..children[?(@.stat.pid == 2610)]..pid'
+
+Get JSON document of said process subtree.
+
+.. code::
+
+   procpath query -i 2 '$..children[?(@.stat.pid == 2610)]'
+
+Get total RSS in MiB of said process subtree (this is an example that
+``query`` produces JSON that can be further processed outside of ``procpath``,
+and below is a much easier way to calculate aggregates).
+
+.. code::
+
+   procpath query '$..children[?(@.stat.pid == 2610)]' \
+     | jq '[.. | .stat? | objects | .rss] | add / 1024 * 4'
+
+Get total RSS in MiB of said process subtree the easy way.
+
+.. code::
+
+   procpath query '$..children[?(@.stat.pid == 2610)]' \
+     'SELECT SUM(stat_rss) / 1024.0 * 4 total FROM record'
+
+Get total RSS in MiB of a docker-compose stack.
+
+.. code::
+
+   L=$(docker ps -f status=running -f name='^project_name' -q | xargs -I{} -- \
+     docker inspect -f '{{.State.Pid}}' {} | tr '\n' ,)
+   procpath query "$..children[?(@.stat.pid in [$L])]" \
+     'SELECT SUM(stat_rss) / 1024.0 * 4 total FROM record'
+
+Record process trees of two Docker containers once a second, re-evaluating the
+containers' root process PIDs once per 30 recordings. Then visualise RSS of
+each process (which is also just an example, that output SQLite database can
+be visualised in different ways, including exporting CSV, ``sqlite3 -csv ...``,
+and doing it the old way, to using proper UI described in the documentation).
+
+.. code::
+
+   procpath record \
+     -e C1='docker inspect -f "{{.State.Pid}}" project_db_1' \
+     -e C2='docker inspect -f "{{.State.Pid}}" project_app_1' \
+     -i 1 -v 30 -d out.sqlite '$..children[?(@.stat.pid in [$C1, $C2])]'
+   # press Ctrl + C
+   sqlite3 out.sqlite \
+     "SELECT stat_pid, group_concat(stat_rss / 1024.0 * 4) \
+      FROM record \
+      GROUP BY stat_pid" \
+     | sed -z 's/\n/\n\n\n/g' | sed 's/|/\n/' | sed 's/,/\n/g' > special_fmt
+   gnuplot -p -e \
+     "plot for [i=0:*] 'special_fmt' index i with lines title columnheader(1)"
+
+Visualise the above recording the easy way.
+
+.. code::
+
+   procpath plot -d out.sqlite -o out.svg -q cpu -q rss
+
+.. image:: https://heptapod.host/saajns/procpath/-/raw/bc5b10/manual/_static/default_rss_vs_cpu.svg
+   :alt: Procpath RSS vs CPU SVG
+
+
+.. _pipx: https://pypi.org/project/pipx/
