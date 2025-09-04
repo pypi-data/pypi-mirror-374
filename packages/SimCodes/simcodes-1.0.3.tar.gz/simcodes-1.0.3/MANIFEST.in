@@ -1,0 +1,8 @@
+#recursive-include SimCodes *.*
+include versioneer.py
+include SimCodes/_version.py
+# Include all binaries recursively in the package
+recursive-include SimCodes *.dll *.exe *.so *.dylib *.bin
+# Include any other non-Python files you need
+recursive-include SimCodes *.dat *.txt *.cfg
+
