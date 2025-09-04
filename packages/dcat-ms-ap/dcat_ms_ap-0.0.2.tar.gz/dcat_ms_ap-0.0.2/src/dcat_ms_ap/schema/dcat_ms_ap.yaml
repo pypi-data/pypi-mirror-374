@@ -1,0 +1,75 @@
+id: https://w3id.org/NFDI4Chem/dcat-ms-ap
+name: dcat-ms-ap
+title: dcat-ms-ap
+description: |-
+  A dcat ap implementing the recommendations fo the MS MIChI.
+license: MIT
+see_also:
+  - https://NFDI4Chem.github.io/dcat-ms-ap
+prefixes:
+  linkml: https://w3id.org/linkml/
+  MS: http://purl.obolibrary.org/obo/MS_
+#  dcat_4c_ap: https://stroemphi.github.io/dcat-4C-ap/
+#  dcat_ap_plus: https://stroemphi.github.io/dcat-4C-ap/
+
+imports:
+  - linkml:types
+  - dcat_ap_plus
+  - dcat_4c_ap
+
+classes:
+  MSAnalysisDataset:
+    is_a: AnalysisDataset
+    class_uri: dcat:Dataset
+    description: A dataset that is the result of a MSAnalysis of a ChemicalSample.
+    slot_usage:
+      was_generated_by:
+        range: MSAnalysis
+        multivalued: true
+        inlined_as_list: true
+      is_about_entity:
+        range: ChemicalSample
+    comments:
+      - Initial implementation of a domain-specific schema profile for a mass spectrometry dataset.
+
+  MSAnalysis:
+    is_a: DataAnalysis
+    description: A DataAnalysis which identifies and/or quantifies molecules in a mass spectrum.
+    slot_usage:
+      evaluated_entity:
+        range: MSSpectrum
+    comments:
+      - Initial implementation of a domain-specific schema profile of a mass spectrometry analysis.
+
+  MSSpectroscopy:
+    is_a: DataGeneratingActivity
+    class_uri: CHMO:0000470 # mass spectrometry from CHMO
+    description: Spectrometry where the sample is converted into gaseous ions which are characterised by their mass-to-charge ratio and relative abundance.
+    slot_usage:
+      evaluated_entity:
+        range: ChemicalSample
+
+  MSSpectrum:
+    is_a: AnalysisSourceData
+    class_uri: MS:1000442
+    description: A set of chemical shifts obtained via NMR spectroscopy.
+    slot_usage:
+      was_generated_by:
+        range: MSSpectroscopy
+        multivalued: true
+        inlined_as_list: true
+      scan_polarity:
+        slot_uri: MS:1000465
+        range: ScanPolarityEnum
+        description: The scan polarity of the spectrum.
+        required: true
+
+enums:
+  ScanPolarityEnum:
+    permissible_values:
+      negative_scan:
+        text: negative_scan
+        meaning: MS:1000129
+      positive_scan:
+        text: positive_scan
+        meaning: MS:1000130
