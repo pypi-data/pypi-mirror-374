@@ -1,0 +1,38 @@
+Metadata-Version: 2.4
+Name: sp_package
+Version: 0.1.0
+Summary: A simple example package with math, string, and data utilities.
+Home-page: https://github.com/paytai/sp_package
+Author: Yok
+Author-email: raseljone.com@gmail.com
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-python
+Dynamic: summary
+
+# sp_package
+
+`sp_package` is a lightweight Python package that provides simple utility functions
+for **math**, **string processing**, and **data summarization**.
+It is designed mainly for learning purposes and as an example of Python packaging.
+
+---
+
+## Features
+- **Math utilities**: addition and multiplication
+- **String utilities**: convert to uppercase and lowercase
+- **Data utilities**: summarize a list of numbers (min, max, average)
+
+---
+
+## Installation
+
+You can install the package directly from PyPI:
+
+```bash
+pip install sp_package
