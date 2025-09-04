@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hedera-defi"
+version = "0.2.0"
+authors = [
+    {name = "Sam Savage", email = "admin@quantdefi.ai"},
+]
+description = "Simple Python SDK for Hedera DeFi analytics via Hgraph"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+keywords = ["hedera", "defi", "blockchain", "analytics", "hgraph", "cryptocurrency"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "requests>=2.28.0",
+    "pandas>=1.5.0",
+    "numpy>=1.21.0",
+    "python-dateutil>=2.8.0",
+    "typing-extensions>=4.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=22.0.0",
+    "flake8>=4.0.0",
+    "mypy>=0.950",
+]
+
+[project.urls]
+Homepage = "https://github.com/samthedataman/hedera-defi-sdk"
+Repository = "https://github.com/samthedataman/hedera-defi-sdk"
+Issues = "https://github.com/samthedataman/hedera-defi-sdk/issues"
