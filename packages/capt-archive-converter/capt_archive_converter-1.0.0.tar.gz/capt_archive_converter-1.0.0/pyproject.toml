@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "capt-archive-converter"
+version = "1.0.0"
+description = "Part of a Comic Archive Processing Toolkit, Archive Converter for CBR, CBZ, and PDF files"
+readme = "README.txt"
+license = { text = "GPL-3.0-or-later" }
+authors = [
+  { name = "Tezdread", email = "quixlinedesign@gmail.com" },
+]
+requires-python = ">=3.8"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Operating System :: OS Independent",
+]
+
+dependencies = [
+  "PyQt6",
+  "rarfile",
+  "PyMuPDF",
+  "Pillow",
+]
+
+[project.urls]
+Homepage = "https://github.com/quixline/capt_archive_converter"
+Repository = "https://github.com/quixline/capt_archive_converter"
+Issues = "https://github.com/quixline/capt_archive_converter/issues"
+
+[project.scripts]
+# The main function is in the 'main' sub-package now
+capt-converter = "capt_archive_converter.main:main"
+
+[tool.setuptools.packages.find]
+# Tell setuptools to look for packages inside the 'src' directory
+where = ["src"]
