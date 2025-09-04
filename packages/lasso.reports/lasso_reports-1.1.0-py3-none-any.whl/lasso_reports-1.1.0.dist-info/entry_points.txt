@@ -1,0 +1,5 @@
+[console_scripts]
+git-ping = lasso.reports.branches.git_ping:main
+pds-plan = lasso.reports.plan.plan:main
+pds-sloc = lasso.reports.sloc.sloc:main
+summaries = lasso.reports.gh_pages.build_summaries:main
