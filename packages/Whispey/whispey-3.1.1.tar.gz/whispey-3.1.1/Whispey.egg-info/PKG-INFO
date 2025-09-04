@@ -1,0 +1,41 @@
+Metadata-Version: 2.4
+Name: Whispey
+Version: 3.1.1
+Summary: Voice Analytics SDK for AI Agents
+Home-page: https://whispey.xyz/
+Author: Whispey AI Voice Analytics
+Author-email: deepesh@pypeai.com
+Keywords: voice analytics,AI agents,conversation intelligence,whispey
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+Requires-Dist: livekit-agents>=1.2.2
+Requires-Dist: livekit-plugins-openai
+Requires-Dist: livekit-plugins-deepgram
+Requires-Dist: livekit-plugins-elevenlabs
+Requires-Dist: livekit-plugins-silero
+Requires-Dist: livekit-plugins-cartesia
+Requires-Dist: livekit-plugins-turn-detector
+Requires-Dist: opentelemetry-api
+Requires-Dist: opentelemetry-sdk
+Requires-Dist: opentelemetry-exporter-otlp
+Requires-Dist: aiohttp>=3.8.0
+Requires-Dist: python-dotenv>=1.0.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+Monitor, track, and analyze AI voice agent conversations with Whispey's advanced analytics platform.
