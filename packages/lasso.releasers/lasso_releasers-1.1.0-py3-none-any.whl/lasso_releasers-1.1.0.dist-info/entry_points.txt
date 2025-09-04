@@ -1,0 +1,5 @@
+[console_scripts]
+maven-release = lasso.releasers.maven_release:main
+nodejs-release = lasso.releasers.nodejs_release:main
+python-release = lasso.releasers.python_release:main
+snapshot-release = lasso.releasers.maven_release:main
