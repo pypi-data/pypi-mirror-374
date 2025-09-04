@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: unfolding
+Version: 0.1
+Summary: Bloch wave unfolding
+Author-email: Xu He <mailhexu@gmail.com>
+License: BSD2-Clause
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Requires-Dist: ase
+Provides-Extra: abipy
+Requires-Dist: abipy; extra == "abipy"
+Dynamic: license-file
