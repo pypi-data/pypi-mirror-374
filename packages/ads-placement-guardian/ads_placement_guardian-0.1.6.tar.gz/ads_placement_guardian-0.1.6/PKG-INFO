@@ -1,0 +1,17 @@
+Metadata-Version: 2.4
+Name: ads-placement-guardian
+Version: 0.1.6
+Summary: description
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: googleads-housekeeper[gcp]>=0.3.6
+Requires-Dist: appengine-python-standard==1.1.6
+Requires-Dist: gunicorn
+Requires-Dist: flask
+Requires-Dist: flask-cors
+Requires-Dist: redis
+Requires-Dist: smart_open[gcs]
+Requires-Dist: garf-youtube-data-api
+Requires-Dist: legacy-cgi
