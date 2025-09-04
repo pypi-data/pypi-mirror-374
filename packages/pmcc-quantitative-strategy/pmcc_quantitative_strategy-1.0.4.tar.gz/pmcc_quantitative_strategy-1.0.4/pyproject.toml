@@ -1,0 +1,82 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pmcc-quantitative-strategy"
+version = "1.0.4"
+description = "PMCC quantitative strategy prototype (dry-run)"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{name = "PMCC Team"}]
+dependencies = []
+
+[project.scripts]
+pmcc = "pmcc.main:main"
+
+[tool.coverage.run]
+source = ["src/pmcc"]
+parallel = true
+disable_warnings = ["no-data-collected"]
+
+[tool.mypy]
+python_version = "3.10"
+check_untyped_defs = false
+disallow_untyped_defs = false
+ignore_missing_imports = true
+warn_return_any = false
+warn_unused_ignores = true
+no_implicit_optional = false
+pretty = true
+exclude = ["tests/"]
+explicit_package_bases = true
+mypy_path = "src"
+
+[[tool.mypy.overrides]]
+module = ["pmcc.*"]
+check_untyped_defs = true
+no_implicit_optional = true
+
+[[tool.mypy.overrides]]
+module = "pmcc.risk"
+disallow_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = "pmcc.execution"
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+addopts = "-q -p pytest_cov -p xdist -p pytest_randomly -p pytest_timeout -n auto --durations=10 --timeout=60"
+testpaths = ["tests"]
+markers = [
+  "slow: 标记慢测试用例，可能运行时间较长"
+]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+extend-select = ["B", "UP", "SIM", "PERF"]
+ignore = []
+
+[tool.ruff.lint.isort]
+known-first-party = ["pmcc"]
+combine-as-imports = true
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["B", "UP", "SIM", "PERF"]
+"docs/**" = ["B", "UP", "SIM", "PERF"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,241 @@
+Metadata-Version: 2.4
+Name: pmcc-quantitative-strategy
+Version: 1.0.4
+Summary: PMCC quantitative strategy prototype (dry-run)
+Author: PMCC Team
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+
+# 美股 PMCC 量化策略（项目框架与编程指南）
+
+本项目旨在构建可用于实盘（IBKR）的 PMCC（Poor Man's Covered Call）量化策略系统，覆盖：数据 → 过滤 → PMCC 组合枚举 → 单策略评分 → 组合构建与风控 → 执行 → 监控与再平衡 → 可视化/IDE 集成。
+
+- 文档语言：中文（项目运行与 UI 目标支持中英双语）。
+- 主数据源：IBKR（标的 L1 + OPRA 期权 L1；Greeks 以 IBKR/本地计算为准）。
+- 标的池：首发 20 只高流动性期权 ETF。
+- 事件过滤：官方源为准（FRB/FOMC、BLS/CPI、BEA/GDP、Treasury/拍卖），FRED 为二级校验；ETF 默认“减小新入场”，个股财报（未来扩展）默认“冻结”。
+- 风险边界：Cushion 硬下限 15%，自适应目标 20–30%。
+- 短腿滚动：支持“激进（双周）”与“稳健”两套参数，可切换。
+
+## 目录结构
+
+```text
+├─ README.md                      # 项目总览与开发指引（中文）
+├─ docs/                          # 编程指南文档体系（中文）
+│  ├─ 01-架构总览.md
+│  ├─ 02-数据层.md
+│  ├─ 03-策略枚举与评分.md
+│  ├─ 04-组合与风险模型.md
+│  ├─ 05-执行与IBKR集成.md
+│  ├─ 06-监控与事件过滤.md
+│  ├─ 07-技术分析与背离检测.md
+│  ├─ 08-参数与滚动模式.md
+│  ├─ 09-UI与IDE集成.md
+│  └─ 10-性能与资源.md
+├─ config/                        # 配置模板（JSON，无第三方依赖）
+│  ├─ data_sources.json
+│  ├─ universe_etf_20.json
+│  ├─ risk_policy.json
+│  ├─ event_filters.json
+│  ├─ rolling_modes.json
+│  ├─ technical_analysis.json
+│  ├─ system.json
+│  └─ keys_example.json           # 可选密钥示例（实际密钥请勿入库）
+│  └─ market_filters.json         # 可选：市场过滤阈值示例（当前未在主流程直接引用）
+├─ src/
+│  └─ pmcc/
+│     ├─ __init__.py
+│     ├─ __main__.py              # 允许 python -m pmcc 运行
+│     ├─ main.py                  # 最小可运行入口（读取配置并校验）
+│     ├─ execution.py             # 干跑执行规划（占位模块，契约已固定）
+│     ├─ monitor.py               # 干跑监控循环（占位模块，契约已固定）
+│     ├─ risk.py                  # 干跑风险检查（含规则实现，dry-run）
+│     ├─ utils.py                 # 公共工具（如 is_number）
+│     └─ cache.py                 # TTLCache 公共缓存（可注入时钟，便于测试）
+├─ scripts/
+│  └─ run_demo.sh                 # 运行示例（可选）
+└─ .gitignore
+```
+
+更多文档：`docs/11-端到端流水线.md`
+
+阅读贡献指南：`CONTRIBUTING.md`
+
+## 集成快速提示
+
+- 审批 HTTP 模式：设置 `PMCC_APPROVAL_HTTP_URL`（可配 `PMCC_APPROVAL_HTTP_RETRIES`、`PMCC_APPROVAL_HTTP_BASE_DELAY`），与 `--require-approval` 一起使用；如设置 `PMCC_APPROVAL_LOG` 则优先写文件（JSON Lines）。
+- Real HTTP 只读：启用 `PMCC_DATA_BACKEND=real` 且 `PMCC_REAL_HTTP=1` 时，需要安装 `requests`；未安装将被映射为 `NETWORK_ERROR`（契约保持稳定）。
+- JSON 摘要（stdout）：`--summary-json` 输出包含 `ibkr`、`portfolio`、`exec_plan`、`monitor`、`approval` 等非破坏性扩展字段；结构以 `schemas/summary.json` 为准（允许 additionalProperties）。
+
+## 集成脚本（简化对接）
+
+- 输出摘要并写入文件：
+
+```bash
+scripts/pmcc_integ.py --config-dir ./config --summary-json-out out/summary.json
+```
+
+- 启用审批与 Schema 校验（写审计文件）：
+
+```bash
+scripts/pmcc_integ.py \
+  --config-dir ./config \
+  --require-approval \
+  --approval-log out/approval.jsonl \
+  --schemas-path schemas/summary.json
+```
+
+说明：集成脚本基于 `src/pmcc/integration.py`，封装了 CLI 调用与可选的 summary.json Schema 校验，stdout 始终输出摘要 JSON。
+
+### Real Stub（仅用于契约占位）
+
+- 启用方式（不建议在生产环境）：
+
+```bash
+export PMCC_DATA_BACKEND=real
+export PMCC_REAL_STUB=1
+# 可选：覆盖 endpoint 与 base URL（默认 /quote、/options、http://127.0.0.1:0）
+# export PMCC_REAL_MARKET_EP=/quote
+# export PMCC_REAL_OPTIONS_EP=/options
+# export PMCC_REAL_BASE_URL=http://127.0.0.1:0
+```
+
+- 说明：real stub 仅用于契约与流水线对接占位；默认 fetcher 会在测试中被 monkeypatch，避免真实网络；生产接入请参考 `docs/18` 里程碑 M1–M3 并替换为真实只读连接器。
+
+## 快速开始
+
+- 推荐方式（自动设置 PYTHONPATH）：
+
+```bash
+bash scripts/run_demo.sh
+```
+
+- 或在手动运行时显式设置 PYTHONPATH（mac/Linux）：
+
+```bash
+PYTHONPATH=./src python3 -m pmcc --config-dir ./config
+```
+
+- 输出为当前配置的加载与校验结果，不进行任何交易行为。
+
+## CLI 选项（干跑）
+
+- `--dry-risk`：干跑风险检查（仅打印，不下单）
+- `--dry-exec`：干跑执行规划（仅打印，不下单）
+- `--dry-monitor`：干跑监控循环（仅打印，不下单）
+- `--redistribute-leftover`：启用组合中剩余资金的二次分配
+- `--min-total-weight`：最小总权重阈值（默认 0.95）
+
+示例：
+
+```bash
+bash scripts/run_demo.sh --dry-risk --dry-exec --dry-monitor \
+  --redistribute-leftover --min-total-weight 0.90
+```
+
+更多参见：`docs/11-端到端流水线.md`
+
+## 运行测试
+
+- 安装开发依赖：
+
+```bash
+python3 -m pip install -r requirements-dev.txt
+```
+
+- 运行测试脚本：
+
+```bash
+bash scripts/test.sh
+```
+
+- 或直接运行 pytest：
+
+```bash
+PYTHONPATH=./src python3 -m pytest -q --cov=src/pmcc --cov-report=term-missing
+```
+
+## 可观测与指标上报
+
+- 简单上报（stdout 或 JSON Lines 文件）：
+
+```bash
+# 每秒一次，共 60 次，输出到 stdout
+python3 scripts/metrics_reporter.py --interval 1 --count 60
+
+# 追加写入到文件（JSON Lines）
+python3 scripts/metrics_reporter.py --interval 1 --count 60 --out out/pmcc_metrics.jsonl
+```
+
+- 字段说明：
+  - `ts`: 采样时间（epoch seconds）
+  - `counters`: 全局成功/错误计数（pmcc.metrics）
+  - `by_kind`: 分类别成功/错误计数（如 market/options）
+
+## 配置说明
+
+- `data_sources.json`：数据源优先级（IBKR 为关键路径；FRB/BLS/BEA/Treasury 为事件主来源，FRED 二级；Alpha Vantage News/GDELT 可选）。
+- `universe_etf_20.json`：首发 20 ETF 名单与准入阈值。
+- `risk_policy.json`：Cushion 硬下限 15% 与自适应目标区间、头寸/相关性限制等。
+- `event_filters.json`：宏观/财报事件窗口与“冻结/减仓”策略（ETF 默认减仓）。
+- `rolling_modes.json`：激进与稳健两套短腿管理参数（DTE/Δ/利润了结/入ITM处置等）。
+- `technical_analysis.json`：背离检测与其他技术特征的参数。
+- `portfolio_allocation.json`：组合分配参数（risk balanced、剩余资金重分配、最小总权重等）。
+- `system.json`：资源上限（CPU≤30%）、并发与缓存策略（占位/可扩展）。
+- `keys_example.json`：可选Key位示例（请复制为`config/keys.json`，并加入 .gitignore）。
+
+## 编程约定
+
+- 关键交易路径（定价/Greeks/下单）只使用 IBKR 数据；免费源仅用于事件/新闻/备援可视化。
+- 采用最小变更原则进行持仓调整，降低滑点和交易费用。
+- 统一日志与错误处理：模块化、可追溯（后续落地）。
+- 国际化：运行/UI 目标中英双语；文档统一中文。
+
+## 安全与密钥
+
+- 不在仓库中携带真实密钥/账号信息。
+- 本地复制 `config/keys_example.json` 为 `config/keys.json` 并填写 Key。
+
+## AI开发指引
+
+本项目已配置完整的AI开发约束与质量门禁，支持GPT-5-High等先进模型进行自动化开发。
+
+### 开发约束
+
+- **安全第一**：禁止真实交易，仅允许干跑模式
+- **TDD强制**：测试先行
+- **覆盖率门槛**：核心模块≥98%，非核心模块≥95%；不得有跳过/警告
+- **质量门禁**：必须通过 lint / mypy / pytest / bandit 检查
+
+### 开发优先级
+
+1. **Phase 1**：完善风险模块（check_position_limits, check_correlation_control等）
+2. **Phase 2**：数据层与过滤器实现
+3. **Phase 3**：策略枚举与评分算法
+
+### 关键约束文档
+
+- `docs/15-AI开发约束.md`：详细的开发规范与禁止事项
+- `docs/12-TDD计划.md`：测试驱动开发策略
+- `.github/workflows/ci.yml`：自动化质量检查流程
+  - 可选新增代码覆盖率守护：本地设 `PMCC_DIFF_COVER=1` 以启用 `diff-cover` 检查
+
+### GPT-5-High配置要求
+
+- 严格遵循金融安全原则
+- 优先实现业务逻辑，UI放在后期
+- 所有配置参数化，不得硬编码
+- 完善的错误处理与日志记录
+
+## 项目备份建议
+
+推送到云端前建议创建本地备份：
+
+```bash
+# 创建时间戳备份
+cp -r . ../pmcc-backup-$(date +%Y%m%d-%H%M%S)
+```
+
+## 免责声明
+
+本项目仅用于教育与研究目的，不构成投资建议。实盘需确保合规、风控与数据质量达标。
