@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la douyin_mcp_server/)",
+      "Bash(ls -la)",
+      "Bash(ls -la kbase_mcp_server/)",
+      "WebFetch(domain:modelscope.cn)",
+      "Bash(find kbase_mcp_server -type f)"
+    ],
+    "deny": []
+  }
+}
