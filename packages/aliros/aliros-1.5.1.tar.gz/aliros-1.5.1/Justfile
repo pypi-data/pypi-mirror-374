@@ -1,0 +1,32 @@
+default:
+    @just --list
+
+init:
+    uv sync
+    uv run pre-commit install
+
+build:
+    uv build
+
+deploy:
+	rm -rf build/ dist/
+	uv run pyinstaller aliros.spec
+	cp {CHANGELOG.md,LICENSE,README.md} dist/
+
+lint:
+    uv run pylint src/ tests/
+
+publish:
+    uv publish
+
+test:
+    uv run pytest --cov=src --cov-report=term-missing
+
+codecov:
+	uv run pytest --cov=src --cov-report=xml
+	codecov
+
+clean:
+	find . -name '__pycache__' -type d | xargs rm -rf
+	rm -rf .pytest_cache/ .tox/ build/ dist/
+	rm -f .coverage coverage.xml .python_version

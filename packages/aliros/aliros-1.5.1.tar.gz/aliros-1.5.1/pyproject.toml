@@ -1,0 +1,38 @@
+[project]
+name = "aliros"
+version = "1.5.1"
+description = "A command-line tool to organize resources by Resource Orchestration Service for Alibaba Cloud."
+requires-python = ">=3.10,<3.13"
+authors = [
+    { name = "Garrett HE", email = "garrett.he@outlook.com" }
+]
+readme = "README.md"
+license = { text = "BSD-3-Clause" }
+keywords = ["alicloud", "ros", "devops"]
+classifiers = []
+dependencies = [
+    "aliyun-python-sdk-core>=2.16.0",
+    "aliyun-python-sdk-ros>=3.6.0",
+    "click>=8.1.7",
+]
+
+[project.urls]
+homepage = "https://github.com/garrett-he/aliros"
+repository = "https://github.com/garrett-he/aliros.git"
+
+[project.scripts]
+aliros = "aliros.__cli__:main"
+
+[dependency-groups]
+dev = [
+    "chance>=0.110",
+    "pre-commit>=4.0.1",
+    "pyinstaller>=6.10.0",
+    "pylint>=3.3.3",
+    "pytest>=8.3.4",
+    "pytest-cov>=6.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
