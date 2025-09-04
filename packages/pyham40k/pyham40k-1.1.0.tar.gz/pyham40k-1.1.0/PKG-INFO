@@ -1,0 +1,170 @@
+Metadata-Version: 2.4
+Name: pyham40k
+Version: 1.1.0
+Summary: pyham40k (pyham) - to overanalyze your Warhammer 40k 10e gameplay
+Author-email: Cat Gamer <catgamer702@gmail.com>
+License: MIT
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: markdown-it-py==4.0.0
+Requires-Dist: mdurl==0.1.2
+Requires-Dist: Pygments==2.19.2
+Requires-Dist: rich==14.1.0
+Dynamic: license-file
+
+# pyham40k
+pyham40k (pyham, rarely py_ham) - a tool to overanalyze your Warhammer 40k 10e gameplay.
+
+# Table of Contents
+1. [Purpose](README.md#1-purpose)
+2. [Methodology](README.md#2-methodology)
+3. [Notation](README.md#3-notation)
+4. [Installation](README.md#4-installation)
+5. [Usage](README.md#5-usage)
+6. [Author](README.md#6-author)
+
+# 1. Purpose
+pyham serves as a tool to analyze performance of different weapons (attackers) against arbitrary datasheets (defenders). This analysis is based on a statistical calculation - the expected number of wounds sustained by the defender. This number of wounds is naturally a discrete random value, described by repeated dice rolls. Therefore, comparison between the distributions of the number of wounds sustained by various defenders against different attackers must be made. pyham chooses to compare these distributions based on one characteristic - the expected value of wounds. Even though other characteristics (namely the variance) can be important, expected value is usually sufficient (especially if no random attributes for attacks or damage are present in the attacker's profile). Although die rolls are probabilistic and nothing in 10e rules can stop even the least suitable close combat weapon from inflicting wounds on the strongest tank, it is still reasonable to pick attackers with higher expected number of wounds against specific defenders. This last statement is the basis of pyham.
+
+# 2. Methodology
+## 2.1 The algorithm
+First and foremost, calculating the expected number of wounds sustained can be achieved through the definition of expected value of discrete random variable. This approach requires calculating the probabilities of inflicting any particular number of wounds which is certainly doable, but is convoluted (especially when random attributes for attacks or damage are introduced). Thus, a "cheat" method was that relies on properties of expected value (mainly the linearity of expectation) to simplify such calculation. This new method follows the following steps:
+
+1. Determine the expected number of attacks (using linearity of expectation for random attack attribute);
+2. Determine the probability of a hit (probability comes from the classical definition: ratio of favorable die sides to sides total);
+3. Determine the probability of a wound (analogous to step 2);
+4. Determine the probability of a failed save (analogous to step 2 with additional choice between regular and invulnerable save. The best option for defender is chosen);
+5. Determine the expected number of wounds from damage attribute (using linearity of expectation for random damage attribute);
+6. Determine the probability of a failed feel no pain (analogous to step 2);
+
+Then, the expected number of wounds is the product of values 1 through 6.
+
+## 2.2 Mathematical motivation
+Truthfully, the proposed algorithm was built manly on intuition. Yet actual mathematical arguments can be made in favor of it. Let's consider a simplified example of calculating the expected number of hits. It is evident, that the hit roll satisfies the criteria for a Bernoulli trial with p - probability of a hit based on attacker's skill and die size. Therefore, the number of hits follows the binomial distribution. The expected value of binomial distribution is given by np, where n is the number of trials and p is the probability of a hit. For an attacker with a constant number of attacks this is the resulting expected number of hits. Yet, the number of trials tends to be a discrete random variable when attacker has a random attack attribute. In that case, expected value (shortened to Ev from now on) of expected number of hits is considered - Ev(np). By the linearity of expectation, the value can be simplified to Ev(a)p, where a is the random variable of the number of attacks, which is trivial to calculate for a die roll. To preserve generality, the expected value of expected number of hits can be calculated for an attacker with a constant number of attacks, as Ev(np) == np, when both n and p are constant. Technically, this value - the expected value of expected number is different from the advertised expected number of hits by definition, but is still called simply expected number of wounds for user's clarity (especially since the difference does not hinder the algorithm as originally described, disambiguating the analysis). Same logic can be extended to steps 3, 4 and 6. Step 5 requires some additional mathematical motivation. Given the number of unsaved wounds, which is a discrete random variable, each wound can inflict some damage, which might also be a random variable. Analogous to step 2, the Ev of wounds inflicted by damage attribute is then calculated as a product between the Ev number of unsaved wounds, as per the linearity of expectation.
+
+Some attributes include rerolls. Rerolls of ones and full rerolls improve the probability of success in tests in steps 2, 3, 4, 6. Ev with rerolls is calculated as if only the outcomes that are both failed and eligible for a reroll get rerolled. Ev for random attributes in steps 1 and 5 with rerolls is calculated as if only the outcomes that are both below the Ev of a normal roll and eligible for a reroll get rerolled.
+
+Some attributes include modifiers. This is a constant integer value that modifies the Ev as per the standard properties of Ev.
+
+Some random attributes include multipliers (such as 2d6, 4d6...). The Ev of such rolls is modified as per the linearity of expectation.
+
+# 3. Notation
+## 3.1 Motivation for custom notation
+The two main entities that are used in calculations are attackers and defenders, commonly referred to as profiles. The names of attributes take root from official names by Game Workshop but are slightly modified in pursuit of generality. For example, both "ballistic skill" and "weapon skill" were unified into "hit". As a side effect, all names were shortened to 1 letter to better fit the console table format.
+
+## 3.2. Attacker
+Attacker is whoever inflicts damage (shoots or engages in melee).
+
+Attacker includes:
+1. Attacks - Random or positive value. Can have a modifier and reroll;
+2. Hit - Positive value. Can have a modifier and reroll. Can be n/a (autohit);
+3. Strength - Positive value. Can have a modifier and reroll (modifiers and rerolls are applied to wound roll);
+4. Penetration - non-positive value. Can have a modifier;
+5. Damage - Random or positive value. Can have a modifier and reroll;
+### 3.2.1. Example attacker
+```
+     A     |     H     |     S     |     P     |     D     
+     1     |    n/a    |    9 r    |    -4     |   d6 +6   
+
+```
+
+## 3.3. Defender
+Defender is whoever suffers damage (is shoots or engaged in melee).
+
+Defender includes:
+1. Toughness - positive value;
+2. Save - Positive value. Can have a modifier and reroll (rare units and rules allow for such a reroll);
+3. Invulnerable save - Positive value. Can have a modifier and reroll (just in case). Can be n/a;
+4. Feel no pain - Positive value. Can have a modifier and reroll (just in case). Can be n/a;
+### 3.3.1. Example defender
+```
+     T     |     S     |     I     |     F     
+     5     |     2     |     4     |    n/a    
+
+```
+
+## 3.4 Values
+### 3.4.1 Base value syntax
+Values as entities exist inseparably from the profiles. Yet it was deemed clearer to firstly introduce the familiar profiles and then specify the composing values in detail. Values are separated by vertical bars "|" in the table. Each attribute has exactly one value. There are 4 types of values as seen by the user: random, positive, non-positive and not assigned values. Each of them has some specifics, but they also share basic syntax:
+
+#### 3.4.1.1. Base value syntax scheme
+```
+specific [modifier] [reroll]
+```
+where:
+1. *specific* is a part that is specific to one of 4 value types as described below;
+2. *modifier* is an optional part that adds or subtracts a constant to a roll. Is signed, however "+" sign can be omitted during user input. Examples: "+1", "-1", "0" (equivalent to missing modifier), "+2", "-2"... Values are clamped as per rules of modifying rolls;
+3. *reroll* is an optional part that encodes results eligible for a reroll. When not omitted, it is either "r1" (reroll 1s) or "r" (full reroll);
+
+Order is important: if modifier is included it cannot go after reroll
+
+#### 3.4.1.2. Example value 1
+```
+d6 +1 r
+```
+#### 3.4.1.3. Example value 2
+```
+12 r1
+```
+
+### 3.4.2. Random value syntax
+Random value always has "d" for die in its string representation. A multiplier (how many dice are thrown) can be specified before "d" for throws like "2d6" or "4d6". Multiplier of 1 can be omitted. A die size always follows after "d".
+
+#### 3.4.2.1. Example random value specific 1
+```
+d3
+```
+#### 3.4.2.2. Example random value specific 2
+```
+4d6
+```
+
+### 3.4.3. Positive value syntax
+Positive value is a simple integer with no leading "+". It is the most common type of value.
+
+#### 3.4.3.1. Example positive value specific 1
+```
+3
+```
+#### 3.4.3.2. Example positive value specific 2
+```
+5
+```
+
+### 3.4.4. Non-positive value syntax
+Non-positive value is a simple negative integer with leading "-" or "0". Used only for penetration.
+
+#### 3.4.4.1. Example non-positive value specific 1
+```
+0
+```
+#### 3.4.4.2. Example non-positive value specific 2
+```
+-4
+```
+
+### 3.4.5. Not assigned value syntax
+Not assigned value for torrent (autohit) weapons and invulnerable saves as well as feel no pain abilities. Is always stylized as "n/a", but user can also input empty string "" (just press enter) for not assigned value for brevity. Technically, modifiers and rerolls can be inputted for not assigned value too, however they never have meaning (such is the price for generality).
+
+#### 3.4.5.1. Example Not assigned value specific 1
+```
+n/a
+```
+
+# 4. Installation
+Available through pip with:
+```
+pip install pyham40k
+```
+
+# 5. Usage
+Use in the environment where pyham40k was installed:
+```
+pyham
+```
+
+The cli will display all the possible choices and the keys that must be entered for each option in parenthesis. Some options have "default" in their names and can be accessed with empty string (just pressing enter).
+
+# 6. Author
+I am a Cat Gamer. A hobbyist software developer among other things. I do not have a wealth of experience with mathematics or software, but I like to partake on such projects. I sometimes answer on my email: catgamer702@gmail.com 
