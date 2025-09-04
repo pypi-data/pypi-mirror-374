@@ -1,0 +1,120 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* somconnexio
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-07-10 07:25+0000\n"
+"PO-Revision-Date: 2025-07-10 07:25+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: somconnexio
+#: model:ir.model.fields,field_description:somconnexio.field_crm_lead__source
+#: model:ir.model.fields,field_description:somconnexio.field_partner_create_lead_wizard__source
+msgid "Source"
+msgstr "Motiu petició"
+
+#. module: somconnexio
+#. odoo-python
+#: code:addons/odoo-somconnexio/somconnexio/models/crm_lead.py:0
+#: code:addons/somconnexio/models/crm_lead.py:0
+#: model:ir.model.fields.selection,name:somconnexio.selection__crm_lead__source__online_form
+#, python-format
+msgid "Online Form"
+msgstr "Formularis"
+
+#. module: somconnexio
+#: model:mail.template,name:somconnexio.crm_lead_creation_manual_email_template
+msgid "CRM Lead manual creation"
+msgstr "Petició manual"
+
+#. module: somconnexio
+#. odoo-python
+#: code:addons/odoo-somconnexio/somconnexio/models/crm_lead.py:0
+#: code:addons/odoo-somconnexio/somconnexio/wizards/create_lead_from_partner/create_lead_from_partner.py:0
+#: code:addons/somconnexio/models/crm_lead.py:0
+#: code:addons/somconnexio/wizards/create_lead_from_partner/create_lead_from_partner.py:0
+#: model:ir.model.fields.selection,name:somconnexio.selection__crm_lead__source__attention_switchboard_call
+#: model:ir.model.fields.selection,name:somconnexio.selection__partner_create_lead_wizard__source__attention_switchboard_call
+#, python-format
+msgid "Attention Switchboard Call"
+msgstr "Trucada CA"
+
+#. module: somconnexio
+#. odoo-python
+#: code:addons/odoo-somconnexio/somconnexio/models/crm_lead.py:0
+#: code:addons/odoo-somconnexio/somconnexio/wizards/create_lead_from_partner/create_lead_from_partner.py:0
+#: code:addons/somconnexio/models/crm_lead.py:0
+#: code:addons/somconnexio/wizards/create_lead_from_partner/create_lead_from_partner.py:0
+#: model:ir.model.fields.selection,name:somconnexio.selection__crm_lead__source__commercial_action
+#: model:ir.model.fields.selection,name:somconnexio.selection__partner_create_lead_wizard__source__commercial_action
+#, python-format
+msgid "Commercial Action"
+msgstr "Acció comercial directa"
+
+#. module: somconnexio
+#. odoo-python
+#: code:addons/odoo-somconnexio/somconnexio/models/crm_lead.py:0
+#: code:addons/odoo-somconnexio/somconnexio/wizards/create_lead_from_partner/create_lead_from_partner.py:0
+#: code:addons/somconnexio/models/crm_lead.py:0
+#: code:addons/somconnexio/wizards/create_lead_from_partner/create_lead_from_partner.py:0
+#: model:ir.model.fields.selection,name:somconnexio.selection__crm_lead__source__incoming_mail
+#: model:ir.model.fields.selection,name:somconnexio.selection__partner_create_lead_wizard__source__incoming_mail
+#, python-format
+msgid "Incoming Mail"
+msgstr "Correu entrant"
+
+#. module: somconnexio
+#. odoo-python
+#: code:addons/odoo-somconnexio/somconnexio/models/crm_lead.py:0
+#: code:addons/odoo-somconnexio/somconnexio/wizards/create_lead_from_partner/create_lead_from_partner.py:0
+#: code:addons/somconnexio/models/crm_lead.py:0
+#: code:addons/somconnexio/wizards/create_lead_from_partner/create_lead_from_partner.py:0
+#: model:ir.model.fields.selection,name:somconnexio.selection__crm_lead__source__marginalized_group
+#: model:ir.model.fields.selection,name:somconnexio.selection__partner_create_lead_wizard__source__marginalized_group
+#, python-format
+msgid "Marginalized groups"
+msgstr "Col·lectius marginalitzats"
+
+#. module: somconnexio
+#. odoo-python
+#: code:addons/odoo-somconnexio/somconnexio/models/crm_lead.py:0
+#: code:addons/odoo-somconnexio/somconnexio/wizards/create_lead_from_partner/create_lead_from_partner.py:0
+#: code:addons/somconnexio/models/crm_lead.py:0
+#: code:addons/somconnexio/wizards/create_lead_from_partner/create_lead_from_partner.py:0
+#: model:ir.model.fields.selection,name:somconnexio.selection__crm_lead__source__others
+#: model:ir.model.fields.selection,name:somconnexio.selection__partner_create_lead_wizard__source__others
+#, python-format
+msgid "Others"
+msgstr "Altres"
+
+#. module: somconnexio
+#. odoo-python
+#: code:addons/odoo-somconnexio/somconnexio/models/crm_lead.py:0
+#: code:addons/odoo-somconnexio/somconnexio/wizards/create_lead_from_partner/create_lead_from_partner.py:0
+#: code:addons/somconnexio/models/crm_lead.py:0
+#: code:addons/somconnexio/wizards/create_lead_from_partner/create_lead_from_partner.py:0
+#: model:ir.model.fields.selection,name:somconnexio.selection__crm_lead__source__outgoing_call
+#: model:ir.model.fields.selection,name:somconnexio.selection__partner_create_lead_wizard__source__outgoing_call
+#, python-format
+msgid "Outgoing Call"
+msgstr "Trucada sortint"
+
+#. module: somconnexio
+#. odoo-python
+#: code:addons/odoo-somconnexio/somconnexio/models/crm_lead.py:0
+#: code:addons/odoo-somconnexio/somconnexio/wizards/create_lead_from_partner/create_lead_from_partner.py:0
+#: code:addons/somconnexio/models/crm_lead.py:0
+#: code:addons/somconnexio/wizards/create_lead_from_partner/create_lead_from_partner.py:0
+#: model:ir.model.fields.selection,name:somconnexio.selection__crm_lead__source__retention_call
+#: model:ir.model.fields.selection,name:somconnexio.selection__partner_create_lead_wizard__source__retention_call
+#, python-format
+msgid "Retention Call"
+msgstr "Trucada retenció"
