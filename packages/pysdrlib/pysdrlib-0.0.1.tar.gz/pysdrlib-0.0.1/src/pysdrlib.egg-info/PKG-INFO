@@ -1,0 +1,39 @@
+Metadata-Version: 2.4
+Name: pysdrlib
+Version: 0.0.1
+Summary: wrapper for hardware SDRs
+Author-email: Anonoei <to+dev@an0.cx>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/Anonoei/pysdrlib
+Project-URL: Documentation, https://anonoei.github.io/pysdrlib/
+Project-URL: Repository, https://github.com/Anonoei/pysdrlib.git
+Project-URL: Issues, https://github.com/Anonoei/pysdrlib/issues
+Project-URL: Source, https://github.com/anonoei/pysdrlib
+Keywords: anonoei,sdr
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Provides-Extra: dev
+Requires-Dist: twine; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Requires-Dist: bumpver; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pdoc3; extra == "dev"
+Dynamic: license-file
+
+# pysdrlib
+ Python wrappers for hardware SDRs
+
+ - [Documentation](https://anonoei.github.io/pysdrlib/)
+ - [PyPI](https://pypi.org/project/pysdrlib/)
+
+# Contributing
+1. `git clone https://github.com/Anonoei/pysdrlib`
+2. `cd pysdrlib`
+3. `git branch -c feature/<your feature>`
+4. `python3 builder.py -b -l` build and install locally
