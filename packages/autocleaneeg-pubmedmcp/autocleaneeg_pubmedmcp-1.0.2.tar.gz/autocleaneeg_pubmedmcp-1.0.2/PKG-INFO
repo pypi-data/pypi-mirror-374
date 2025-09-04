@@ -1,0 +1,230 @@
+Metadata-Version: 2.4
+Name: autocleaneeg-pubmedmcp
+Version: 1.0.2
+Summary: A Model Context Protocol (MCP) server for PubMed biomedical research database
+Project-URL: Homepage, https://github.com/anthropics/claude-code
+Project-URL: Documentation, https://github.com/anthropics/claude-code/tree/main/examples/minimal_mcp_pubmed
+Project-URL: Repository, https://github.com/anthropics/claude-code.git
+Project-URL: Issues, https://github.com/anthropics/claude-code/issues
+Author-email: Ernest Pedapati <ernest.pedapati@cchmc.org>
+Maintainer-email: Ernest Pedapati <ernest.pedapati@cchmc.org>
+License: MIT License
+        
+        Copyright (c) 2025 Anthropic PBC
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE
+Keywords: ai,biomedical,claude,mcp,ncbi,pubmed,research
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP :: Indexing/Search
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: Topic :: Scientific/Engineering :: Medical Science Apps.
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Requires-Dist: email-validator>=2.0.0
+Requires-Dist: httpx>=0.25.0
+Requires-Dist: mcp>=1.0.0
+Requires-Dist: pydantic>=2.0.0
+Provides-Extra: dev
+Requires-Dist: black>=23.0.0; extra == 'dev'
+Requires-Dist: mypy>=1.0.0; extra == 'dev'
+Requires-Dist: pytest-asyncio>=0.21.0; extra == 'dev'
+Requires-Dist: pytest>=7.0.0; extra == 'dev'
+Requires-Dist: ruff>=0.1.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# AutoCleanEEG PubMed MCP Server
+
+A Model Context Protocol (MCP) server that provides access to PubMed, the comprehensive biomedical literature database maintained by NCBI. This server enables AI assistants like Claude to search and retrieve detailed information from millions of biomedical research articles.
+
+## Features
+
+- **Search PubMed Database**: Search across 39+ million biomedical articles using flexible query syntax
+- **Retrieve Article Details**: Get complete article metadata, abstracts, authors, and publication information  
+- **Database Information**: Access current PubMed database statistics and status
+- **API Key Support**: Optional NCBI API key integration for enhanced rate limits
+- **MCP Protocol**: Full Model Context Protocol compliance for seamless AI assistant integration
+
+## Installation
+
+### From PyPI (Recommended)
+
+```bash
+pip install autocleaneeg-pubmedmcp
+```
+
+### From Source
+
+```bash
+git clone <repository-url>
+cd claude_code_docker
+pip install -e .
+```
+
+## Usage
+
+### As MCP Server
+
+The server can be run directly:
+
+```bash
+autocleaneeg-pubmedmcp
+```
+
+### Claude Desktop Integration
+
+Add to your Claude Desktop configuration (`claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "pubmed": {
+      "command": "autocleaneeg-pubmedmcp",
+      "args": [],
+      "env": {
+        "PUBMED_API_KEY": "your_api_key_here_optional"
+      }
+    }
+  }
+}
+```
+
+## API Key Setup (Optional)
+
+For enhanced rate limits, obtain a free API key from NCBI:
+
+1. Visit [NCBI API Key Settings](https://account.ncbi.nlm.nih.gov/settings/)
+2. Create an account or log in
+3. Generate an API key
+4. Set environment variable: `export PUBMED_API_KEY="your_key_here"`
+
+## Available Tools
+
+### `search_pubmed`
+Search the PubMed database with flexible query syntax.
+
+**Parameters:**
+- `term` (required): Search query using PubMed syntax
+- `retmax` (optional): Maximum results to return (1-1000, default: 20)
+- `email` (optional): Your email for NCBI tracking
+
+**Example:**
+```json
+{
+  "term": "BRCA1 mutations AND breast cancer",
+  "retmax": 10
+}
+```
+
+### `get_pubmed_details`
+Retrieve detailed information for specific PubMed articles.
+
+**Parameters:**
+- `id` (required): PubMed ID(s) - single ID or array of IDs
+
+**Example:**
+```json
+{
+  "id": ["35123456", "35789012"]
+}
+```
+
+### `get_pubmed_info`
+Get current information about the PubMed database.
+
+**Parameters:** None
+
+## Query Syntax Examples
+
+- Basic search: `"covid vaccine"`
+- Multiple terms: `"BRCA1 AND breast cancer"`
+- Author search: `"Smith J[Author]"`
+- Date range: `"covid vaccine" AND 2020:2023[dp]`
+- Journal: `"Nature[Journal]"`
+- Title search: `"machine learning"[Title]`
+
+## Error Handling
+
+The server provides comprehensive error handling for:
+- Invalid queries or parameters
+- Network connectivity issues
+- Rate limiting (automatically handled)
+- Invalid PubMed IDs
+- API key validation
+
+## Development
+
+### Testing
+
+Run the test suite:
+
+```bash
+python test_focused.py
+```
+
+### Requirements
+
+- Python 3.10+
+- httpx>=0.25.0
+- mcp>=1.0.0
+- pydantic>=2.0.0
+- email-validator>=2.0.0
+
+## License
+
+MIT License - see LICENSE file for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit pull requests or open issues.
+
+## Support
+
+For issues and questions:
+- Check the troubleshooting section below
+- Open an issue on the repository
+
+## Troubleshooting
+
+### Connection Issues
+- Verify internet connectivity
+- Check if NCBI servers are accessible
+- Ensure firewall allows outbound HTTPS connections
+
+### Rate Limiting
+- Consider adding a PUBMED_API_KEY for higher limits
+- Reduce query frequency
+- Check NCBI rate limiting guidelines
+
+### Invalid Results
+- Verify PubMed ID format (numeric)
+- Check query syntax against PubMed documentation
+- Ensure search terms are properly formatted
+
+---
+
+**Made with ❤️ for biomedical research and AI assistance**
