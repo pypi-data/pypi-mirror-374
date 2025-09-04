@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "just-prompt-sdk"
+version = "0.1.0"
+authors = [{ name = "Trustsoft", email = "contact@trustsoft.com.vn" }]
+description = "A Python SDK for fetching and rendering prompts from Prompt Studio API"
+readme = "README.md"
+requires-python = ">=3.8.1"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "httpx>=0.24.0",
+    "jinja2>=3.0.0",
+]
+keywords = ["prompt", "template", "api", "sdk", "jinja2"]
+
+[project.urls]
+Homepage = "https://github.com/trustsoftvn/prompt_studio_sdk"
+Repository = "https://github.com/trustsoftvn/prompt_studio_sdk.git"
+Documentation = "https://github.com/trustsoftvn/prompt_studio_sdk#readme"
+Issues = "https://github.com/trustsoftvn/prompt_studio_sdk/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-httpx>=0.21.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["prompt_studio*"]
+
+[tool.black]
+line-length = 88
+target-version = ["py38"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "0.1.0"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
