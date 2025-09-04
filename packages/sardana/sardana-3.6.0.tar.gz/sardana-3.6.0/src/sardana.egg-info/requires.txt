@@ -1,0 +1,17 @@
+PyTango>=9.2.5
+taurus>=5.1.4
+lxml>=2.3
+click
+packaging
+
+[all]
+ipython>=5.1
+itango>=0.1.6
+taurus[taurus-qt]
+
+[qt]
+taurus[taurus-qt]
+
+[spock]
+ipython>=5.1
+itango>=0.1.6

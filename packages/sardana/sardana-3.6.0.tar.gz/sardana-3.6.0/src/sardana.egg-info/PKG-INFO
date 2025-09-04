@@ -1,0 +1,66 @@
+Metadata-Version: 2.4
+Name: sardana
+Version: 3.6.0
+Summary: instrument control and data acquisition system
+Home-page: http://www.sardana-controls.org
+Download-URL: http://pypi.python.org/packages/source/s/sardana
+Author: Tiago Coutinho et al.
+Maintainer: Sardana Community
+Maintainer-email: sardana-devel@lists.sourceforge.net
+License: LGPL
+Keywords: Sardana,Tango,Python,Control System
+Platform: Linux
+Platform: Windows XP/2000/NT
+Platform: Windows 95/98/ME
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Environment :: No Input/Output (Daemon)
+Classifier: Environment :: Win32 (MS Windows)
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: Unix
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development :: Libraries
+Provides: sardana
+License-File: LICENSE
+Requires-Dist: PyTango>=9.2.5
+Requires-Dist: taurus>=5.1.4
+Requires-Dist: lxml>=2.3
+Requires-Dist: click
+Requires-Dist: packaging
+Provides-Extra: spock
+Requires-Dist: ipython>=5.1; extra == "spock"
+Requires-Dist: itango>=0.1.6; extra == "spock"
+Provides-Extra: qt
+Requires-Dist: taurus[taurus-qt]; extra == "qt"
+Provides-Extra: all
+Requires-Dist: ipython>=5.1; extra == "all"
+Requires-Dist: itango>=0.1.6; extra == "all"
+Requires-Dist: taurus[taurus-qt]; extra == "all"
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: download-url
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: maintainer
+Dynamic: maintainer-email
+Dynamic: platform
+Dynamic: provides
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: summary
+
+Sardana is a Supervision, Control And Data Acquisition (SCADA) system for
+ scientific installations. It is written in Python and based on the TANGO
+ library. The hardware control and data acquisition routines can be
+ accessed via an IPython console and a generic graphical user interface
+ (both of which are easily extensible by the user).

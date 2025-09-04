@@ -1,0 +1,12 @@
+graft doc
+graft build/sphinx/html
+
+global-exclude *.pyc .cvsignore .svnignore .gitignore
+exclude setup.cfg
+exclude .project
+exclude .pydevproject
+exclude .ropeproject
+exclude build_*
+
+include CHANGELOG.md
+include LICENSE

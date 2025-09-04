@@ -1,0 +1,26 @@
+[console_scripts]
+MacroServer = sardana.tango.macroserver:main
+Pool = sardana.tango.pool:main
+Sardana = sardana.tango:main
+diffractometeralignment = sardana.taurus.qt.qtgui.extra_hkl.diffractometeralignment:main
+hklscan = sardana.taurus.qt.qtgui.extra_hkl.hklscan:main
+macroexecutor = sardana.taurus.qt.qtgui.extra_macroexecutor.macroexecutor:_main
+sardanactl = sardana.cli:main
+sequencer = sardana.taurus.qt.qtgui.extra_macroexecutor.sequenceeditor:_main
+showscan = sardana.taurus.qt.qtgui.extra_sardana.showscanonline:_main
+spock = sardana.spock:main
+ubmatrix = sardana.taurus.qt.qtgui.extra_hkl.ubmatrix:main
+
+[pytest11]
+sardana_pool_plugins = sardana.pool.test.util
+
+[sardana.cli.subcommands]
+expconf = sardana.taurus.qt.qtgui.extra_sardana.expdescription:expconf_cmd
+expstatus = sardana.taurus.qt.qtgui.expstatus.expstatus:expstatus_cmd
+macroexecutor = sardana.taurus.qt.qtgui.extra_macroexecutor.macroexecutor:macroexecutor_cmd
+sequencer = sardana.taurus.qt.qtgui.extra_macroexecutor.sequenceeditor.sequenceeditor:sequencer_cmd
+showscan = sardana.taurus.qt.qtgui.extra_sardana.showscanonline:showscan_cmd
+spock = sardana.spock:spock_cmd
+
+[taurus.form.item_factories]
+sardana.pool = sardana.taurus.qt.qtgui.extra_pool.formitemfactory:pool_item_factory
