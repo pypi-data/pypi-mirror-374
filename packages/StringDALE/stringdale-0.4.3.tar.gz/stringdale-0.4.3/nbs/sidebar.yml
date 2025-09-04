@@ -1,0 +1,52 @@
+website:
+  sidebar:
+    contents:
+      - text: "Getting Started"
+        href: index.ipynb
+      - section: Tutorials
+        contents:
+          - text: "Hello world"
+            href: docs/tutorials/001_getting_started.ipynb
+          - text: "Port Mapping"
+            href: docs/tutorials/002_port_mapping.ipynb
+          - text: "Decision Diagrams"
+            href: docs/tutorials/003_decision_diagrams.ipynb
+          - text: "Nested Diagrams"
+            href: docs/tutorials/004_nested_diagrams.ipynb
+          - text: "Compound Diagrams"
+            href: docs/tutorials/005_compound_diagrams.ipynb
+          - text: "Customizing State"
+            href: docs/tutorials/006_customizing_state.ipynb
+          - text: "Stateful Nodes"
+            href: docs/tutorials/007_stateful_nodes.ipynb
+          - text: "Batching"
+            href: docs/tutorials/008_batching.ipynb
+          - text: "Keeping Diagrams DRY"
+            href: docs/tutorials/009_keeping_diagrams_dry.ipynb
+      - section: Examples
+        contents:
+          - text: "RAG"
+            href: docs/examples/001_rag.ipynb
+          - text: "React"
+            href: docs/examples/002_react.ipynb
+          - text: "Interactive QA"
+            href: docs/examples/003_interactive_qa.ipynb
+          - text: "RAG on summary"
+            href: docs/examples/004_rag_on_summary.ipynb
+          - text: "Interactive QA with DB"
+            href: docs/examples/005_interactive_qa_db.ipynb
+          - text: "Monitor Pattern"
+            href: docs/examples/007_monitor.ipynb
+          - text: "Routing Pattern"
+            href: docs/examples/008_router.ipynb
+      - section: Reference
+        contents:
+          - text: "Diagrams"
+            href: docs/reference/diagrams.ipynb
+          - text: "Chat"
+            href: docs/reference/chat.ipynb
+          - text: "DBs"
+            href: docs/reference/dbs.ipynb
+          - text: "Tools"
+            href: docs/reference/tools.ipynb
+

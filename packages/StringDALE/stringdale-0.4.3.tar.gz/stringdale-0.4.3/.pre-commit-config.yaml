@@ -1,0 +1,14 @@
+repos:
+- repo: https://github.com/fastai/nbdev
+  rev: 2.2.10
+  hooks:
+  - id: nbdev_clean
+  - id: nbdev_export
+- repo: https://github.com/KoBoldMetals/pre-commit-circleci
+  rev: v0.0.4
+  hooks:
+    - id: circleci-validate
+- repo: https://github.com/mpalmer/action-validator
+  rev: v0.5.1  # Use the latest version
+  hooks:
+    - id: action-validator
