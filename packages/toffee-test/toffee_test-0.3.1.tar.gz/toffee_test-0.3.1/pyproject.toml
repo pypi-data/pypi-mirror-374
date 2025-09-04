@@ -1,0 +1,46 @@
+[build-system]
+requires = [
+    "hatchling",
+    "hatch-vcs",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "toffee-test"
+description = "pytest plugin for toffee testing"
+readme = "README.md"
+license = {file="LICENSE"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: Pytest",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
+    "License :: OSI Approved :: Mulan Permissive Software License v2 (MulanPSL-2.0)",
+]
+requires-python = ">=3.8"
+dependencies = [
+    'pytoffee>=0.2.3',
+    'pytest>=7.0.0',
+    'pytest-reporter-html1>=0.8.4',
+    'pytest-xdist>=3.5.0',
+    'pytest-asyncio>=0.23.0',
+    "filelock>=3.16.1",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/XS-MLVP/toffee-test"
+Source = "https://github.com/XS-MLVP/toffee-test"
+Tracker = "https://github.com/XS-MLVP/toffee-test/issues"
+
+[project.entry-points.pytest11]
+toffee-test = "toffee_test.plugin"
+
+[tool.hatch.build.targets.sdist]
+exclude = ["/.github"]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "toffee_test/__version.py"
