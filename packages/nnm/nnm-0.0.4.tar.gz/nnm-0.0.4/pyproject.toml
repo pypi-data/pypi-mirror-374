@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nnm"
+dynamic = ["version"]
+description = "Neural Network Models"
+readme = "README.md"
+authors = [
+    {name = "Jiau Zhang", email = "jiauzhang@163.com"},
+]
+license = {file = "LICENSE"}
+classifiers = [
+    'Intended Audience :: Developers',
+    'Topic :: Scientific/Engineering :: Artificial Intelligence',
+    'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+    'Programming Language :: Python :: 3.10',
+]
+keywords = [
+    'PyTorch',
+    'Deep Learning',
+    'Artificial Intelligence',
+]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "torch",
+    'fakeset',
+    'conippets>=0.1.8',
+]
+
+[project.urls]
+Homepage = "https://github.com/jiauzhang/nnm"
+
+[tool.hatch.version]
+path = "nnm/version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["nnm"]
+
+[project.optional-dependencies]
+dev = [
+    "transformers==4.51.3",
+    "pytest==8.3.4",
+]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests",
+]
