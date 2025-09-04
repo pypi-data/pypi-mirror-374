@@ -1,0 +1,20 @@
+-e git+https://github.com/ckan/ckanext-spatial.git#egg=ckanext-spatial
+
+pyutilib
+
+# ckanext-spatial
+Shapely==2.0.6
+OWSLib==0.32.1
+lxml>=2.3
+argparse
+pyparsing>=2.1.10
+# requests>=1.1.0 # included in ckan-core
+six
+geojson==3.1.0
+
+# PyZ3950
+pyasn1
+# ply #required in setup.py
+
+# other requirments
+boto3
