@@ -1,0 +1,15 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pyptrs"
+version = "1.0.0.post1"
+dependencies = []
+description = "Real pointers and some memory utilities for python"
+readme = "README.md"
+authors = [{name = "pyhacks", email = "enginyildirim111@gmail.com"}]
+keywords = ["pointers", "ptrs", "memory"]
+
+[project.urls]
+Homepage = "https://github.com/pyhacks/pyptrs"
