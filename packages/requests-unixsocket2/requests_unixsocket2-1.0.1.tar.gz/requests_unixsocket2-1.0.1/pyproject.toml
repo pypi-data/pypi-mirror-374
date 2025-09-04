@@ -1,0 +1,82 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "requests-unixsocket2"
+version = "1.0.1"
+description = "Use requests to talk HTTP via a UNIX domain socket"
+readme = "README.md"
+classifiers = [
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: ISC License (ISCL)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+dependencies = ["requests (>=2.32.3,<3)", "urllib3 (>=2.4.0,<3.0)"]
+requires-python = ">=3.9"
+
+[project.license]
+text = "ISC"
+
+[[project.authors]]
+name = "thelab"
+email = "thelabdev@thelab.co"
+
+[project.urls]
+Homepage = "https://gitlab.com/thelabnyc/requests-unixsocket2"
+Repository = "https://gitlab.com/thelabnyc/requests-unixsocket2"
+
+[dependency-groups]
+dev = [
+    "coverage[toml] (>=7.8.0,<8)",
+    "ruff (>=0.11.6)",
+    "pytest (>=8.3.5,<9)",
+    "waitress (>=3.0.2,<4)",
+    "mypy (>=1.15.0,<2)",
+    "types-requests (>=2.32.0.20240521,<3)",
+    "types-waitress (>=3.0.0.20240423,<4)",
+    "tox>=4.27.0",
+    "tox-uv>=1.26.1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["requests_unixsocket"]
+
+[tool.mypy]
+python_version = "3.8"
+
+[tool.pytest.ini_options]
+addopts = "--tb=short"
+
+
+[tool.isort]
+profile = "black"
+from_first = true
+
+[tool.ruff.lint.isort]
+from-first = true
+
+[tool.coverage.run]
+branch = true
+source_pkgs = ["requests_unixsocket"]
+
+[tool.coverage.report]
+show_missing = true
+ignore_errors = true
+
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+annotated_tag = true
+gpg_sign = true
+tag_format = "v$version"
+update_changelog_on_bump = true
+changelog_merge_prerelease = true
+version_provider = "pep621"
+version_scheme = "pep440"
+version_files = ["pyproject.toml:version"]
+pre_bump_hooks = ["pre-commit run --all-files || true"]
+post_bump_hooks = ["git push origin master $CZ_POST_CURRENT_TAG_VERSION"]
