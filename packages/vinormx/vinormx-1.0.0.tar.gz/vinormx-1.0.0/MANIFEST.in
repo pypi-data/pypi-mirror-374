@@ -1,0 +1,44 @@
+# Manifest file cho vinorm-windows package
+# Chỉ định files nào sẽ được include khi build package
+
+include README.md
+include QUICK_INSTALL.md
+include INSTALL_FROM_LOCAL.md
+include LICENSE
+include requirements.txt
+include MANIFEST.in
+
+# Include main Python files
+include vinormx.py
+include test_vinormx.py
+
+# Include modular Python files
+include dict_module.py
+include mapping_module.py
+include regex_rule_module.py
+include config_module.py
+include __init__.py
+
+# Include comprehensive dictionary files
+recursive-include dictionaries *.txt
+
+# Include comprehensive regex rule files
+recursive-include RegexRule *.txt
+
+# Include comprehensive mapping files
+recursive-include Mapping *.txt
+
+# Include original data files
+recursive-include Dict *.txt
+
+# Exclude các files không cần thiết
+exclude *.pyc
+exclude __pycache__/*
+exclude .git/*
+exclude .gitignore
+exclude *.egg-info/*
+exclude build/*
+exclude dist/*
+exclude old_vinormx.py
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
