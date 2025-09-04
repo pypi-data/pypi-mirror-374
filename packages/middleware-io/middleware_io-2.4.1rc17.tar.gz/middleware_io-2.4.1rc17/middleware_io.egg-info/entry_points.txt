@@ -1,0 +1,56 @@
+[console_scripts]
+middleware-bootstrap = opentelemetry.instrumentation.bootstrap:run
+middleware-run = opentelemetry.instrumentation.auto_instrumentation:run
+
+[middleware_instrumentor]
+aio-pika = opentelemetry.instrumentation.aio_pika:AioPikaInstrumentor
+aiohttp-client = opentelemetry.instrumentation.aiohttp_client:AioHttpClientInstrumentor
+aiohttp-server = opentelemetry.instrumentation.aiohttp_server:AioHttpServerInstrumentor
+aiokafka = opentelemetry.instrumentation.aiokafka:AioKafkaInstrumentor
+aiopg = opentelemetry.instrumentation.aiopg:AiopgInstrumentor
+asyncclick = opentelemetry.instrumentation.asyncclick:AsyncclickInstrumentor
+asyncio = opentelemetry.instrumentation.asyncio:AsyncioInstrumentor
+asyncpg = opentelemetry.instrumentation.asyncpg:AsyncPGInstrumentor
+aws-lambda = opentelemetry.instrumentation.aws_lambda:AwsLambdaInstrumentor
+boto = opentelemetry.instrumentation.boto:BotoInstrumentor
+boto3sqs = opentelemetry.instrumentation.boto3sqs:Boto3SQSInstrumentor
+botocore = opentelemetry.instrumentation.botocore:BotocoreInstrumentor
+cassandra = opentelemetry.instrumentation.cassandra:CassandraInstrumentor
+celery = opentelemetry.instrumentation.celery:CeleryInstrumentor
+click = opentelemetry.instrumentation.click:ClickInstrumentor
+confluent-kafka = opentelemetry.instrumentation.confluent_kafka:ConfluentKafkaInstrumentor
+django = opentelemetry.instrumentation.django:DjangoInstrumentor
+elasticsearch = opentelemetry.instrumentation.elasticsearch:ElasticsearchInstrumentor
+falcon = opentelemetry.instrumentation.falcon:FalconInstrumentor
+fastapi = opentelemetry.instrumentation.fastapi:FastAPIInstrumentor
+flask = opentelemetry.instrumentation.flask:FlaskInstrumentor
+grpc = opentelemetry.instrumentation.grpc:GrpcInstrumentorClient
+httpx = opentelemetry.instrumentation.httpx:HTTPXClientInstrumentor
+jinja2 = opentelemetry.instrumentation.jinja2:Jinja2Instrumentor
+kafka-python = opentelemetry.instrumentation.kafka:KafkaInstrumentor
+logging = opentelemetry.instrumentation.logging:LoggingInstrumentor
+mysql = opentelemetry.instrumentation.mysql:MySQLInstrumentor
+mysqlclient = opentelemetry.instrumentation.mysqlclient:MySQLClientInstrumentor
+pika = opentelemetry.instrumentation.pika:PikaInstrumentor
+psycopg = opentelemetry.instrumentation.psycopg:PsycopgInstrumentor
+psycopg2 = opentelemetry.instrumentation.psycopg2:Psycopg2Instrumentor
+pymemcache = opentelemetry.instrumentation.pymemcache:PymemcacheInstrumentor
+pymongo = opentelemetry.instrumentation.pymongo:PymongoInstrumentor
+pymssql = opentelemetry.instrumentation.pymssql:PyMSSQLInstrumentor
+pymysql = opentelemetry.instrumentation.pymysql:PyMySQLInstrumentor
+pyramid = opentelemetry.instrumentation.pyramid:PyramidInstrumentor
+redis = opentelemetry.instrumentation.redis:RedisInstrumentor
+remoulade = opentelemetry.instrumentation.remoulade:RemouladeInstrumentor
+requests = opentelemetry.instrumentation.requests:RequestsInstrumentor
+sqlalchemy = opentelemetry.instrumentation.sqlalchemy:SQLAlchemyInstrumentor
+sqlite3 = opentelemetry.instrumentation.sqlite3:SQLite3Instrumentor
+starlette = opentelemetry.instrumentation.starlette:StarletteInstrumentor
+system-metrics = opentelemetry.instrumentation.system_metrics:SystemMetricsInstrumentor
+threading = opentelemetry.instrumentation.threading:ThreadingInstrumentor
+tornado = opentelemetry.instrumentation.tornado:TornadoInstrumentor
+tortoiseorm = opentelemetry.instrumentation.tortoiseorm:TortoiseORMInstrumentor
+urllib = opentelemetry.instrumentation.urllib:URLLibInstrumentor
+urllib3 = opentelemetry.instrumentation.urllib3:URLLib3Instrumentor
+
+[opentelemetry_distro]
+middleware_distro = middleware.distro:MiddlewareDistro
