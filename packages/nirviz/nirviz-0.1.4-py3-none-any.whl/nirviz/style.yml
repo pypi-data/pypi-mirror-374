@@ -1,0 +1,51 @@
+meta-categories:
+  draw-direction: "left-right" # top-bottom or left-right
+
+node-categories:
+  input-output:
+    patterns: ["Input", "Output"]
+    attributes:
+      color: "black"
+      style: "dashed"
+      shape: "box"
+
+  connection-full:
+    patterns: ["Affine", "Linear"]
+    attributes:
+      color: "#71c8b0"
+      style: "filled"
+      shape: "box"
+
+  connection-conv:
+    patterns: ["Conv1d", "Conv2d"]
+    attributes:
+      color: "#ffc655"
+      style: "filled"
+      shape: "box"
+
+  transform:
+    patterns: ["Flatten"]
+    attributes:
+      color: "#e4b9dd"
+      style: "filled"
+      shape: "box"
+
+  pool:
+    patterns: ["AvgPool1d", "AvgPool2d"]
+    attributes:
+      color: "#4a9bff"
+      style: "filled"
+      shape: "box"
+
+  computation:
+    patterns: ["CubaLI", "CubaLIF", "I", "IF", "LI", "LIF"]
+    attributes:
+      color: "#a0d5f1"
+      style: "filled"
+      shape: "box"
+
+defaults:
+    node:
+      attributes:
+        color: "black"
+        style: "dashed"
