@@ -1,0 +1,583 @@
+import torch
+from torch.fx import Graph
+from . import DmxModule, Conv1d as _Conv1d, Conv2d as _Conv2d
+import operator
+from .core import DmxGraph
+
+
+class Conv1dUnfold(_Conv1d):
+    r"""
+    This is an alternative version of the DmxModule .nn.Conv1d,
+    without calling torch.nn.functional.conv1d(), but torch.nn.functional.unfold() and torch.matmul() instead.
+    """
+
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size,
+        stride=1,
+        padding=0,
+        dilation=1,
+        groups=1,
+        bias=True,
+        padding_mode="zeros",
+        **kwargs,
+    ) -> None:
+        super().__init__(
+            in_channels,
+            out_channels,
+            kernel_size,
+            stride=stride,
+            padding=padding,
+            dilation=dilation,
+            groups=groups,
+            bias=bias,
+            padding_mode=padding_mode,
+            **kwargs,
+        )
+        self.input_casts.input_cast.block_dim = 1
+        self.weight_cast.block_dim = 1
+        if self.bias_cast is not None:
+            self.bias_cast.block_dim = -1
+
+    def _forward(self, _input: torch.Tensor) -> torch.Tensor:
+        _weight = self._weight.reshape((self.out_channels, -1))
+        _input = torch.nn.functional.unfold(
+            _input.unsqueeze(-1),
+            kernel_size=self.kernel_size + (1,),
+            dilation=self.dilation + (1,),
+            padding=self.padding + (0,),
+            stride=self.stride + (1,),
+        )
+        _convolution = self.accum_cast(torch.matmul(_weight, _input))
+        if self.bias is not None:
+            _output = torch.add(_convolution, self._bias.unsqueeze(-1))
+        else:
+            _output = _convolution
+        return _output
+
+    def to_compiler_graph(self) -> Graph:
+        """
+        Returns a compiler friendly graph
+        """
+        g = DmxGraph()
+        with g.inserting_after():
+            # PLACEHOLDERS
+            _input_dq = g.create_placeholders(
+                ["_input"],
+                ["input_casts.input_cast"],
+                [repr(self.input_casts.input_cast.format)],
+            )
+            _unsqueeze = g.call_function(torch.unsqueeze, (_input_dq, -1))
+            _unfold = g.create_node(
+                "call_function",
+                torch.nn.functional.unfold,
+                (_unsqueeze, self.kernel_size + (1,)),
+                dict(
+                    dilation=self.dilation + (1,),
+                    padding=self.padding + (0,),
+                    stride=self.stride + (1,),
+                ),
+                name="_unfold",
+            )
+
+            # _weight
+            _weight_storage_dq = g.get_attr(
+                "weight", "weight_storage_cast", repr(self.weight_storage_cast.format)
+            )
+            _weight_dq = g.qdq_node(
+                _weight_storage_dq, "weight_cast", repr(self.weight_cast.format)
+            )
+
+            _reshape = g.call_function(
+                torch.reshape, (_weight_dq, (self.out_channels, -1))
+            )
+            _matmul_dq = g.call_function(
+                torch.matmul,
+                (_reshape, _unfold),
+                cast_name="accum_cast",
+                cast_format=repr(self.accum_cast.format),
+            )
+
+            if self.bias is not None:
+                _bias_dq = g.get_attr(
+                    "bias",
+                    "bias_cast",
+                    repr(getattr(self.bias_cast, "format", None)),
+                )
+                _bias_unsqueeze = g.call_function(torch.unsqueeze, (_bias_dq, -1))
+
+                _output = g.call_function(
+                    torch.add,
+                    (_matmul_dq, _bias_unsqueeze),
+                )
+            else:
+                _output = _matmul_dq
+
+            _output_dq = g.qdq_node(
+                _output,
+                "output_casts.output_cast",
+                repr(self.output_casts.output_cast.format),
+            )
+            g.output(_output_dq)
+        return g
+
+
+class Conv1dScatter(_Conv1d):
+    r"""
+    This is an alternative version of the DmxModule .nn.Conv1d,
+    without calling torch.nn.functional.conv1d(), but torch.scatter() and torch.matmul() instead.
+    """
+
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size,
+        stride=1,
+        padding=0,
+        dilation=1,
+        groups=1,
+        bias=True,
+        padding_mode="zeros",
+        **kwargs,
+    ) -> None:
+        super().__init__(
+            in_channels,
+            out_channels,
+            kernel_size,
+            stride=stride,
+            padding=padding,
+            dilation=dilation,
+            groups=groups,
+            bias=bias,
+            padding_mode=padding_mode,
+            **kwargs,
+        )
+        self.input_casts.input_cast.block_dim = 1
+        self.weight_cast.block_dim = 1
+        if self.bias_cast is not None:
+            self.bias_cast.block_dim = -1
+
+    def _forward(self, _input: torch.Tensor) -> torch.Tensor:
+        _N, _, _l_in = _input.shape
+        _padded_l_in = _l_in + 2 * self.padding[0]
+        _l_out = (_padded_l_in - self.kernel_size[0]) // self.stride[0] + 1
+
+        # zero padded input
+        _matmul_input = _input.transpose(1, 2).unsqueeze(2)
+        _pad = _input.new_zeros(_N, self.padding[0], 1, self.in_channels)
+        _matmul_input = torch.cat((_pad, _matmul_input, _pad), 1)
+
+        _matmul_weight = _input.new_zeros(
+            self.out_channels, _padded_l_in, self.in_channels, _l_out
+        )
+
+        # Create a single weight matrix from all kernels
+        _weight_ref = self._weight.transpose(1, 2).unsqueeze(3).repeat(1, 1, 1, _l_out)
+
+        # Create scatter indices
+        _indices = _input.new_ones(_l_out, dtype=torch.int64).cumsum(0) - 1
+        _indices = _indices * self.stride[0]
+        _offset = _input.new_ones(self.kernel_size[0], dtype=torch.int64).cumsum(0) - 1
+        _indices = _indices[:, None].repeat(1, self.kernel_size[0]) + _offset
+        _indices = _indices.t()
+        _indices = _indices.unsqueeze(0).unsqueeze(2).expand_as(_weight_ref)
+
+        # Copy the weight matrix to correct indices
+        _matmul_weight.scatter_(dim=1, index=_indices, src=_weight_ref)
+
+        _output = _input.new_zeros(_N, 0, _l_out)
+        # OUT_CH is the output_channel size, and is constant
+        for Cout in range(self.out_channels):
+            # matmul broadcast batch dim corresponds to input batch size, so Cout dim is covered manually
+            # torch.sum is reduction over padded sequence
+            _sum = torch.sum(
+                torch.matmul(_matmul_input, _matmul_weight[Cout])[:, :, 0, :], dim=1
+            )
+            if self.bias is not None:
+                _sum = torch.add(_sum, self._bias[Cout])
+            _output = torch.cat((_output, _sum.unsqueeze(1)), 1)
+        return _output
+
+    def to_compiler_graph(self) -> Graph:
+        """
+        Returns a compiler friendly graph
+        """
+        g = DmxGraph()
+        with g.inserting_after():
+            # PLACEHOLDERS
+            _input_dq = g.create_placeholders(
+                ["_input"],
+                ["input_casts.input_cast"],
+                [repr(self.input_casts.input_cast.format)],
+            )
+
+            getattr_1 = g.call_function(getattr, (_input_dq, "shape"), {})
+            getitem = g.call_function(operator.getitem, (getattr_1, 0), {})
+            getitem_1 = g.call_function(operator.getitem, (getattr_1, 1), {})
+            getitem_2 = g.call_function(operator.getitem, (getattr_1, 2), {})
+            add = g.call_function(operator.add, (getitem_2, 2 * self.padding[0]), {})
+            sub = g.call_function(operator.sub, (add, self.kernel_size[0]), {})
+            floordiv = g.call_function(operator.floordiv, (sub, self.stride[0]), {})
+            add_1 = g.call_function(operator.add, (floordiv, 1), {})
+            transpose = g.call_method("transpose", (_input_dq, 1, 2), {})
+            unsqueeze = g.call_method("unsqueeze", (transpose, 2), {})
+            new_zeros = g.call_method(
+                "new_zeros",
+                (_input_dq, getitem, self.padding[0], 1, self.in_channels),
+                {},
+            )
+            cat = g.call_function(torch.cat, ((new_zeros, unsqueeze, new_zeros), 1), {})
+            new_zeros_1 = g.call_method(
+                "new_zeros",
+                (_input_dq, self.out_channels, add, self.in_channels, add_1),
+                {},
+            )
+
+            # _weight
+            _weight_storage_dq = g.get_attr(
+                "weight", "weight_storage_cast", repr(self.weight_storage_cast.format)
+            )
+            _weight_dq = g.qdq_node(
+                _weight_storage_dq, "weight_cast", repr(self.weight_cast.format)
+            )
+            transpose_1 = g.call_method("transpose", (_weight_dq, 1, 2), {})
+            unsqueeze_1 = g.call_method("unsqueeze", (transpose_1, 3), {})
+            repeat = g.call_method("repeat", (unsqueeze_1, 1, 1, 1, add_1), {})
+            new_ones = g.call_method(
+                "new_ones", (_input_dq, add_1), {"dtype": torch.int64}
+            )
+            cumsum = g.call_method("cumsum", (new_ones, 0), {})
+            sub_1 = g.call_function(operator.sub, (cumsum, 1), {})
+            mul = g.call_function(operator.mul, (sub_1, self.stride[0]), {})
+            new_ones_1 = g.call_method(
+                "new_ones", (_input_dq, self.kernel_size[0]), {"dtype": torch.int64}
+            )
+            cumsum_1 = g.call_method("cumsum", (new_ones_1, 0), {})
+            sub_2 = g.call_function(operator.sub, (cumsum_1, 1), {})
+            getitem_3 = g.call_function(
+                operator.getitem, (mul, (slice(None, None, None), None)), {}
+            )
+            repeat_1 = g.call_method("repeat", (getitem_3, 1, self.kernel_size[0]), {})
+            add_2 = g.call_function(operator.add, (repeat_1, sub_2), {})
+            t = g.call_method("t", (add_2,), {})
+            unsqueeze_2 = g.call_method("unsqueeze", (t, 0), {})
+            unsqueeze_3 = g.call_method("unsqueeze", (unsqueeze_2, 2), {})
+            expand_as = g.call_method("expand_as", (unsqueeze_3, repeat), {})
+            scatter_ = g.call_method(
+                "scatter_",
+                (new_zeros_1,),
+                {"dim": 1, "index": expand_as, "src": repeat},
+            )
+            new_zeros_2 = g.call_method("new_zeros", (_input_dq, getitem, 0, add_1), {})
+
+            for Cout in range(self.out_channels):
+                getitem_4 = g.call_function(operator.getitem, (scatter_, Cout), {})
+                matmul = g.call_function(operator.matmul, (cat, getitem_4), {})
+                getitem_5 = g.call_function(
+                    operator.getitem,
+                    (
+                        matmul,
+                        (
+                            slice(None, None, None),
+                            slice(None, None, None),
+                            0,
+                            slice(None, None, None),
+                        ),
+                    ),
+                    {},
+                )
+                sum_1 = g.call_function(torch.sum, (getitem_5,), {"dim": 1})
+                if self.bias is not None:
+                    _bias_dq = g.get_attr(
+                        "bias",
+                        "bias_cast",
+                        repr(getattr(self.bias_cast, "format", None)),
+                    )
+                    getitem_6 = g.call_function(operator.getitem, (_bias_dq, Cout), {})
+                    add_3 = g.call_function(torch.add, (sum_1, getitem_6), {})
+                    sum_1 = add_3
+                unsqueeze_4 = g.call_method("unsqueeze", (sum_1, 1), {})
+                cat_1 = g.call_function(torch.cat, ((new_zeros_2, unsqueeze_4), 1), {})
+                new_zeros_2 = cat_1
+
+            _output_dq = g.qdq_node(
+                cat_1,
+                "output_casts.output_cast",
+                repr(self.output_casts.output_cast.format),
+            )
+
+            g.output(_output_dq)
+        return g
+
+
+class Conv2dUnfold(_Conv2d):
+    r"""
+    This is an alternative version of the DmxModule.nn.Conv2d,
+    without calling torch.nn.functional.conv2d(), but torch.nn.functional.unfold() and torch.matmul() instead.
+    """
+
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size,
+        stride=1,
+        padding=0,
+        dilation=1,
+        groups=1,
+        bias=True,
+        padding_mode="zeros",
+        **kwargs,
+    ) -> None:
+        super().__init__(
+            in_channels,
+            out_channels,
+            kernel_size,
+            stride=stride,
+            padding=padding,
+            dilation=dilation,
+            groups=groups,
+            bias=bias,
+            padding_mode=padding_mode,
+            **kwargs,
+        )
+        self.input_casts.input_cast.block_dim = 1
+        self.weight_cast.block_dim = 1
+        if self.bias_cast is not None:
+            self.bias_cast.block_dim = -1
+
+    def _forward(self, _input: torch.Tensor) -> torch.Tensor:
+        _, _, in_height, in_width = _input.shape
+        _h_out = (
+            in_height + 2 * self.padding[0] - (self.kernel_size[0] - 1) - 1
+        ) // self.stride[0] + 1
+        _w_out = (
+            in_width + 2 * self.padding[1] - (self.kernel_size[1] - 1) - 1
+        ) // self.stride[1] + 1
+        _weight = self._weight.reshape((self.out_channels, -1))
+        _input = torch.nn.functional.unfold(
+            _input,
+            kernel_size=self.kernel_size,
+            dilation=self.dilation,
+            padding=self.padding,
+            stride=self.stride,
+        )
+        _convolution = self.accum_cast(torch.matmul(_weight, _input))
+        if self.bias is not None:
+            _output = torch.add(_convolution, self._bias.unsqueeze(-1))
+        else:
+            _output = _convolution
+        return torch.nn.functional.fold(_output, (_h_out, _w_out), (1, 1))
+
+    def to_compiler_graph(self) -> Graph:
+        """
+        Returns a compiler friendly graph
+        """
+        import operator
+
+        g = DmxGraph()
+        with g.inserting_after():
+            # PLACEHOLDERS
+            _input_dq = g.create_placeholders(
+                ["_input"],
+                ["input_casts.input_cast"],
+                [repr(self.input_casts.input_cast.format)],
+            )
+            getattr_1 = g.call_function(getattr, (_input_dq, "shape"), {})
+            getitem_2 = g.call_function(operator.getitem, (getattr_1, 2), {})
+            getitem_3 = g.call_function(operator.getitem, (getattr_1, 3), {})
+            add = g.call_function(operator.add, (getitem_2, 2 * self.padding[0]), {})
+            sub = g.call_function(operator.sub, (add, self.kernel_size[0] - 1), {})
+            sub_1 = g.call_function(operator.sub, (sub, 1), {})
+            floordiv = g.call_function(operator.floordiv, (sub_1, self.stride[0]), {})
+            add_1 = g.call_function(operator.add, (floordiv, 1), {})
+            add_2 = g.call_function(operator.add, (getitem_3, 2 * self.padding[1]), {})
+            sub_2 = g.call_function(operator.sub, (add_2, self.kernel_size[1] - 1), {})
+            sub_3 = g.call_function(operator.sub, (sub_2, 1), {})
+            floordiv_1 = g.call_function(operator.floordiv, (sub_3, self.stride[1]), {})
+            add_3 = g.call_function(operator.add, (floordiv_1, 1), {})
+
+            # _weight
+            _weight_storage_dq = g.get_attr(
+                "weight", "weight_storage_cast", repr(self.weight_storage_cast.format)
+            )
+            _weight_dq = g.qdq_node(
+                _weight_storage_dq, "weight_cast", repr(self.weight_cast.format)
+            )
+
+            getattr_2 = g.call_function(getattr, (_weight_dq, "device"), {})
+            to = g.call_method("to", (_weight_dq, getattr_2), {})
+            clone = g.call_method("clone", (to,), {})
+            getattr_3 = g.call_function(getattr, (to, "dtype"), {})
+            to_1 = g.call_method("to", (clone, getattr_3), {})
+            reshape = g.call_method("reshape", (to_1, (self.out_channels, -1)), {})
+            unfold = g.call_function(
+                torch.nn.functional.unfold,
+                (_input_dq, self.kernel_size),
+                {
+                    "dilation": self.dilation,
+                    "padding": self.padding,
+                    "stride": self.stride,
+                },
+            )
+            _matmul_dq = g.call_function(
+                torch.matmul,
+                (reshape, unfold),
+                {},
+                cast_name="accum_cast",
+                cast_format=repr(self.accum_cast.format),
+            )
+            clone_1 = g.call_method("clone", (_matmul_dq,), {})
+            getattr_4 = g.call_function(getattr, (_matmul_dq, "dtype"), {})
+            to_2 = g.call_method("to", (clone_1, getattr_4), {})
+            if self.bias is not None:
+                _bias_dq = g.get_attr(
+                    "bias",
+                    "bias_cast",
+                    repr(getattr(self.bias_cast, "format", None)),
+                )
+                clone_2 = g.call_method("clone", (_bias_dq,), {})
+                getattr_5 = g.call_function(getattr, (_bias_dq, "dtype"), {})
+                to_3 = g.call_method("to", (clone_2, getattr_5), {})
+                unsqueeze = g.call_method("unsqueeze", (to_3, -1), {})
+                add_4 = g.call_function(torch.add, (to_2, unsqueeze), {})
+                output = add_4
+            else:
+                output = to_2
+            _output_dq = g.call_function(
+                torch.nn.functional.fold,
+                (output, (add_1, add_3), (1, 1)),
+                cast_name="output_casts.output_cast",
+                cast_format=repr(self.output_casts.output_cast.format),
+            )
+            g.output(_output_dq)
+        return g
+
+
+class Conv2dGather(_Conv2d):
+    r"""
+    This is an alternative version of the DmxModule.nn.Conv2d,
+    without calling torch.nn.functional.conv2d(), but torch.gather() and torch.matmul() instead.
+    """
+
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size,
+        stride=1,
+        padding=0,
+        dilation=1,
+        groups=1,
+        bias=True,
+        padding_mode="zeros",
+        **kwargs,
+    ) -> None:
+        super().__init__(
+            in_channels,
+            out_channels,
+            kernel_size,
+            stride=stride,
+            padding=padding,
+            dilation=dilation,
+            groups=groups,
+            bias=bias,
+            padding_mode=padding_mode,
+            **kwargs,
+        )
+        self.input_casts.input_cast.block_dim = 1
+        self.weight_cast.block_dim = 1
+        if self.bias_cast is not None:
+            self.bias_cast.block_dim = -1
+
+    def _forward(self, _input: torch.Tensor) -> torch.Tensor:
+        _N, _, in_height, in_width = _input.shape
+        _h_out = (
+            in_height + 2 * self.padding[0] - (self.kernel_size[0] - 1) - 1
+        ) // self.stride[0] + 1
+        _w_out = (
+            in_width + 2 * self.padding[1] - (self.kernel_size[1] - 1) - 1
+        ) // self.stride[1] + 1
+
+        # zero padded input
+        _pad_h = _input.new_zeros(_N, self.in_channels, self.padding[0], in_width)
+        _padded_input = torch.cat((_pad_h, _input, _pad_h), 2)
+        _pad_w = _input.new_zeros(
+            _N, self.in_channels, in_height + 2 * self.padding[0], self.padding[1]
+        )
+        _padded_input = torch.cat((_pad_w, _padded_input, _pad_w), 3)
+        _input_ref = (
+            _padded_input.unsqueeze(1).unsqueeze(2).repeat(1, _h_out, _w_out, 1, 1, 1)
+        )
+        del _pad_h, _pad_w, _padded_input
+
+        # Create gather indices for Height dim
+        _indices_h = _input.new_ones(_h_out, dtype=torch.int64).cumsum(0) - 1
+        _indices_h = _indices_h * self.stride[0]
+        _offset_h = (
+            _input.new_ones(self.kernel_size[0], dtype=torch.int64).cumsum(0) - 1
+        )
+        _indices_h = _indices_h[:, None].repeat(1, self.kernel_size[0]) + _offset_h
+        _indices_h = (
+            _indices_h.unsqueeze(0).unsqueeze(2).repeat(_N, 1, self.in_channels, 1)
+        )
+        _indices_h = (
+            _indices_h.unsqueeze(2)
+            .unsqueeze(5)
+            .repeat(1, 1, _w_out, 1, 1, in_width + 2 * self.padding[1])
+        )
+
+        # Gather Matmul inputs in Height dim
+        _matmul_input = _input_ref.gather(dim=4, index=_indices_h)
+        del _indices_h, _offset_h, _input_ref
+
+        # Create gather indices for Width dim
+        _indices_w = _input.new_ones(_w_out, dtype=torch.int64).cumsum(0) - 1
+        _indices_w = _indices_w * self.stride[1]
+        _offset_w = (
+            _input.new_ones(self.kernel_size[1], dtype=torch.int64).cumsum(0) - 1
+        )
+        _indices_w = _indices_w[:, None].repeat(1, self.kernel_size[1]) + _offset_w
+        _indices_w = (
+            _indices_w.unsqueeze(0).unsqueeze(2).repeat(_N, 1, self.in_channels, 1)
+        )
+        _indices_w = (
+            _indices_w.unsqueeze(1)
+            .unsqueeze(4)
+            .repeat(1, _h_out, 1, 1, self.kernel_size[0], 1)
+        )
+
+        # Gather Matmul inputs in Width dim
+        _matmul_input = _matmul_input.gather(dim=5, index=_indices_w)
+        del _indices_w, _offset_w
+        _matmul_input = _matmul_input.view(
+            -1, _matmul_input.size(3) * _matmul_input.size(4) * _matmul_input.size(5)
+        )
+
+        # Create matmul weight from original weights
+        _matmul_weight = self._weight.reshape(
+            -1, self._weight.size(1) * self._weight.size(2) * self._weight.size(3)
+        ).transpose(0, 1)
+
+        # Matmul calculation
+        _output = (
+            torch.matmul(_matmul_input, _matmul_weight)
+            .view(_N, _h_out, _w_out, -1)
+            .transpose(2, 3)
+            .transpose(1, 2)
+        )
+        if self.bias is not None:
+            _output = torch.add(
+                _output, self._bias.unsqueeze(0).unsqueeze(2).unsqueeze(3)
+            )
+
+        return _output
+
+    def to_compiler_graph(self) -> Graph:
+        """
+        Returns a compiler friendly graph
+        """
+        raise NotImplementedError("to_compiler_graph not implemented!")
