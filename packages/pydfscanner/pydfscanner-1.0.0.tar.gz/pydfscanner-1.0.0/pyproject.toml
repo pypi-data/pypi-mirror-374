@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pydfscanner"
+version = "1.0.0"
+authors = [ 
+    { name="Emmet Weyman", email="emmetweyman@vt.edu" },
+]
+description = "PDF scanner and collator"
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: POSIX :: Linux",
+]
+license = { file = "LICENSE.txt" }
+dependencies = ['imutils',
+                'numpy',
+                'opencv-python',
+                'pillow',
+                'matplotlib']
+
+[project.scripts]
+pydfscanner = "pydfscanner:main"
+pydf = "pydfscanner:main"
