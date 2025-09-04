@@ -1,0 +1,107 @@
+Metadata-Version: 2.1
+Name: hitif-ops
+Version: 0.1.1
+Summary: A Python package for OPS POP 2022 works
+Home-page: https://github.com/CBIIT/HiTIF-OPS-POP
+Author: Your Name
+Author-email: your.email@example.com
+License: MIT
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: pandas>=1.2.5
+Requires-Dist: numpy>=1.24.3
+Requires-Dist: matplotlib>=3.1.2
+Requires-Dist: seaborn>=0.11.0
+Requires-Dist: scipy>=1.9.3
+Requires-Dist: scikit-learn>=1.3.2
+Requires-Dist: scikit-image>=0.21.0
+Requires-Dist: jupyter>=1.0.0
+Requires-Dist: ipykernel>=6.27.1
+Requires-Dist: ipython>=8.12.3
+Requires-Dist: opencv-python-headless>=4.8.1.78
+Requires-Dist: pillow>=9.4.0
+Requires-Dist: tifffile>=2023.7.10
+Requires-Dist: imageio>=2.31.5
+Requires-Dist: torch>=2.1.1
+Requires-Dist: tqdm>=4.66.1
+Requires-Dist: requests>=2.31.0
+Requires-Dist: pyyaml>=6.0.1
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: pytest-cov>=2.0; extra == "dev"
+Requires-Dist: black>=21.0; extra == "dev"
+Requires-Dist: flake8>=3.8; extra == "dev"
+Requires-Dist: mypy>=0.800; extra == "dev"
+
+# HiTIF OPS POP 
+
+A Python package for optical pooled screening code
+
+## Features
+
+- Data analysis and visualization tools
+- Machine learning utilities
+- Image processing capabilities
+- Jupyter notebook integration
+- GPU acceleration support (CUDA)
+
+## Installation
+
+### From PyPI
+
+```bash
+pip install hitif-ops
+```
+
+### From source
+
+```bash
+git clone https://github.com/CBIIT/HiTIF-OPS-POP.git
+cd HiTIF-OPS-POP
+pip install -e .
+```
+
+## Quick Start
+
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Your data analysis code here
+print("HiTIF OPS POP 2022 Works package loaded successfully!")
+```
+
+## Requirements
+
+- Python 3.8+
+- See `requirements.txt` for full dependency list
+
+## Development
+
+To set up the development environment:
+
+```bash
+pip install -e ".[dev]"
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request to the [CBIIT/HiTIF-OPS-POP](https://github.com/CBIIT/HiTIF-OPS-POP) repository.
