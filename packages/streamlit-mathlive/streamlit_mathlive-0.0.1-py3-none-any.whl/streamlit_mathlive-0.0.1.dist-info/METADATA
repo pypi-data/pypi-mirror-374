@@ -1,0 +1,43 @@
+Metadata-Version: 2.1
+Name: streamlit-mathlive
+Version: 0.0.1
+Summary: A WYSWYG math expression editor for Streamlit using MathLive mathfield and on-screen keyboard.
+Home-page: https://github.com/sinagolchi/Streamlit-Mathlive-Editor
+Author: Sina Golchi
+Author-email: sinagolchi@gmail.com
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: streamlit>=0.63
+Provides-Extra: devel
+Requires-Dist: wheel; extra == "devel"
+Requires-Dist: pytest==7.4.0; extra == "devel"
+Requires-Dist: playwright==1.39.0; extra == "devel"
+Requires-Dist: requests==2.31.0; extra == "devel"
+Requires-Dist: pytest-playwright-snapshot==1.0; extra == "devel"
+Requires-Dist: pytest-rerunfailures==12.0; extra == "devel"
+
+# Streamlit-Mathlive-Editor
+
+A WYSWYG math expression editor for Streamlit using Mathlive math field and on-screen keyboard.
+Additionally, the component returns the MathML expression of the mathematical expression in the field using MathJaX. 
+![image](https://github.com/user-attachments/assets/008d2610-2d57-4220-a4c5-3f145b0fdac1)
+## Installation instructions
+
+```sh
+pip install streamlit-mathlive
+```
+
+## Usage instructions
+
+
+```python
+import streamlit as st
+from st_mathlive import mathfield
+
+Tex, MathML = mathfield(title="Equation 1", value=r"\frac{1}{2} \times 5",)
+
+st.latex(Tex)
+st.write(MathML)
+
+```
