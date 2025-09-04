@@ -1,0 +1,15 @@
+[console_scripts]
+mxmake = mxmake.main:main
+
+[mxdev]
+hook = mxmake.hook:Hook
+
+[mxmake.topics]
+applications = mxmake.topics:applications
+core = mxmake.topics:core
+docs = mxmake.topics:docs
+i18n = mxmake.topics:i18n
+js = mxmake.topics:js
+ldap = mxmake.topics:ldap
+qa = mxmake.topics:qa
+system = mxmake.topics:system
