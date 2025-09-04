@@ -1,0 +1,431 @@
+Metadata-Version: 2.4
+Name: collective.excelexport
+Version: 2.0
+Summary: Export dexterity contents in an excel file, one column by field
+Home-page: http://pypi.python.org/pypi/collective.excelexport
+Author: Thomas Desvenain
+Author-email: thomas.desvenain@gmail.com
+License: GPL
+Keywords: Export,Plone,Excel
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Plone
+Classifier: Framework :: Plone :: 6.0
+Classifier: Framework :: Plone :: 6.1
+Classifier: Framework :: Plone :: Addon
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: Plone
+Requires-Dist: plone.api
+Requires-Dist: setuptools
+Requires-Dist: xlwt
+Provides-Extra: test
+Requires-Dist: collective.z3cform.datagridfield; extra == "test"
+Requires-Dist: ecreall.helpers.testing; extra == "test"
+Requires-Dist: plone.app.testing; extra == "test"
+Requires-Dist: plone.app.dexterity; extra == "test"
+Requires-Dist: plone.app.relationfield; extra == "test"
+Requires-Dist: xlrd; extra == "test"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: summary
+
+======================
+collective.excelexport
+======================
+
+What does this product
+======================
+
+This product provides tools to provide excel exports to `Plone`_ users,
+under xls or csv format.
+
+A framework, with default utilities to export the dexterity contents of a folder,
+the results of a catalog search,
+and the results of a `eea faceted navigation`_ search.
+Many field types are managed (text, list, file, boolean, datagrid...).
+
+Try @@collective.excelexport view on any folder containing dexterity elements.
+Try @@collective.excelexport?excelexport.policy=excelexport.search&review_state=published on site root.
+
+Try @@collective.excelexportcsv view on any folder for csv export.
+
+
+Translations
+============
+
+This product has been translated into
+
+- French.
+
+- Spanish.
+
+You can contribute for any message missing or other new languages, join us at
+`Plone Collective Team <https://www.transifex.com/plone/plone-collective/>`_
+into *Transifex.net* service with all world Plone translators community.
+
+
+Installation
+============
+
+Install ``collective.excelexport`` by adding it to your buildout:
+
+   [buildout]
+
+    ...
+
+    eggs =
+        collective.excelexport
+
+
+and then running "bin/buildout"
+
+
+How to configure this product
+=============================
+
+You can set a list of fields to be excluded from export via the registry record:
+*collective.excelexport.excluded_exportables*
+
+
+How to extend it
+================
+
+Datasources
+-----------
+
+If you want to implement a new way to get content to export,
+you can register a #datasource#, which is an adapter for
+collective.excelexport.interfaces.IDataSource interface.
+
+This adapter can be a named one.
+
+You will call this datasource calling the view @@collective.excelexport?excelexport.policy=datasourcename
+
+See the IDataSource interface for more information
+
+
+
+Exportables (excel sheet columns)
+---------------------------------
+
+If you want to define new columns for your excel export, you will write or override: ::
+
+  - Exportable factories, adapters for IExportableFactory interface that provides a list of Exportables
+  - Exportables, that define columns.
+
+Example of an exportable factory: ::
+
+    from plone.dexterity.interfaces import IDexterityFTI
+    from collective.excelexport.exportables.base import BaseExportableFactory
+    from collective.excelexport.exportables.dexterityfields import get_ordered_fields
+    from collective.excelexport.exportables.dexterityfields import get_exportable
+    from collective.excelexport.exportables.dexterityfields import ParentField
+    from collective.excelexport.exportables.dexterityfields import GrandParentField
+
+    class PSTActionFieldsFactory(BaseExportableFactory):
+        adapts(IDexterityFTI, Interface, Interface)
+        portal_types = ('pstaction',)
+
+        def get_exportables(self):
+            portal_types = api.portal.get_tool('portal_types')
+            action_fti = portal_types['pstaction']
+            oo_fti = portal_types['operationalobjective']
+            os_fti = portal_types['strategicobjective']
+            fields = []
+            fields.extend([get_exportable(
+                field[1], self.context, self.request)
+                for field in get_ordered_fields(action_fti)])
+            fields.extend([get_exportable(
+                ParentField(field[1]), self.context, self.request)
+                for field in get_ordered_fields(oo_fti)])
+            fields.extend([get_exportable(
+                GrandParentField(field[1]), self.context, self.request)
+                for field in get_ordered_fields(os_fti)])
+            return fields
+
+
+Dexterity exportables
+---------------------
+
+You have a complete set of exportables for dexterity fields.
+Those are multi-adapters of field, context and request.
+
+You can override them declaring a more specific adapter.
+
+You can also declare a named adapter with the field name if you want a specific
+rendering for one field.
+
+
+Styles
+------
+
+If you don't feel good with default styles, you can register a specific one for: ::
+  - the export policy
+  - the context
+  - the layer
+
+You just have to register a new IStyle adapter, in a zcml: ::
+
+    <adapter for="zope.interface.Interface
+                  .interfaces.IThemeSpecific"
+             factory=".excelstyles.MyNeutralStyle"
+             provides="collective.excelexport.interfaces.IStyles"
+              />
+
+If you do not specify the name, the styles will be registered for all policies.
+
+and in python: ::
+
+
+	class MyNeutralStyle(Styles):
+
+	    content = xlwt.easyxf('font: height 200, name Arial, colour_index black, bold off; '
+	                     'align: wrap off, vert centre, horiz left;'
+	                     'borders: top thin, bottom thin, left thin, right thin;'
+	                     'pattern: pattern solid, back_colour white, fore_colour white'
+	                     )
+
+	    headers = xlwt.easyxf('font: height 200, name Arial, colour_index black, bold on; '
+	                         'align: wrap off, vert centre, horiz left; '
+	                         'borders: top thin, bottom thin, left thin, right thin; '
+	                         'pattern: pattern solid, back_colour white, fore_colour white; '
+	                         )
+
+plone.restapi
+=============
+
+To get an export via `rest api`_, query @collective.excelexport / @collective.excelexportcsv (with one @)
+
+
+Versions
+========
+
+- Version 2.x is for Plone 6+ only
+- Version 1.x is for Plone 4 / 5
+
+
+Tests status
+============
+
+This add-on is tested using Github action. The current status of the add-on is:
+
+.. image:: https://github.com/collective/collective.excelexport/actions/workflows/main.yml/badge.svg
+    :target: https://github.com/collective/collective.excelexport/actions/workflows/main.yml
+
+.. image:: https://coveralls.io/repos/github/collective/collective.excelexport/badge.svg
+    :target: https://coveralls.io/github/collective/collective.excelexport
+
+.. image:: http://img.shields.io/pypi/v/collective.excelexport.svg
+   :alt: PyPI badge
+   :target: https://pypi.org/project/collective.excelexport
+
+
+Contribute
+==========
+
+Have an idea? Found a bug? Let us know by `opening a ticket`_.
+
+- Issue Tracker: https://github.com/collective/collective.excelexport/issues
+- Source Code: https://github.com/collective/collective.excelexport
+
+
+License
+=======
+
+The project is licensed under the GPLv2.
+
+.. _Plone: https://plone.org/
+.. _`eea faceted navigation`: http://eea.github.io/docs/eea.facetednavigation/index.html
+.. _`rest api`: https://pypi.org/project/plone.restapi/
+.. _`opening a ticket`: https://github.com/collective/collective.excelexport/issues
+
+Contributors
+============
+
+- Thomas Desvenain, thomas.desvenain@gmail.com
+- Leonardo J. Caballero G., leonardocaballero@gmail.com
+
+
+Changelog
+=========
+
+
+2.0 (2025-09-04)
+----------------
+
+- Add Plone 6 compatibility, drop Plone 4 & Plone 5 compatibility
+  [laulaz]
+
+- Add uninstall profile
+  [laulaz]
+
+- Added Transifex.net service integration to manage the translation process.
+  [macagua]
+
+- Added Spanish translation.
+  [macagua]
+
+- Updated the i18n support.
+  [macagua]
+
+
+1.8.2 (2020-02-27)
+------------------
+
+- Add Python 3 compatibility.
+  [bsuttor]
+
+
+1.8.1 (2019-11-06)
+------------------
+
+- Safely decode voc_value (fix encoding issue) + test
+  [boulch]
+
+
+1.8 (2019-09-12)
+----------------
+
+# BREAKING CHANGES
+
+CONFIGURATION_FIELDS constant has been removed, we now use a registry record: collective.excelexport.excluded_exportables
+
+# CHANGES
+
+- Explicit inclusion of plone.restapi zcml
+  [thomasdesvenain]
+
+- Exclude dexterity 'allow discussion' and 'exclude_from_nav' fields
+  (previously, only archetypes fields were excluded)
+  [thomasdesvenain]
+
+- Fix error when referenced object value has no Title method.
+  [thomasdesvenain]
+
+- Fix: Don't ommit fields that are in the default fieldset if there is one
+  [petchesi-iulian]
+
+- Fix error on eea.faceted when there is a widget operator.
+  [thomasdesvenain]
+
+- Archetypes support,
+  Products.ATExtensions support (RecordField, RecordsField, FormattableNamesField).
+  [thomasdesvenain]
+
+- Fix encoding issue.
+
+1.7 (2018-06-22)
+----------------
+
+- Added plone.restapi service.
+  [thomasdesvenain]
+
+- Fixed csv export mimetype.
+
+- Added helper method get_exportable_for_fieldname.
+  [gbastien]
+
+1.6 (2018-01-05)
+----------------
+
+- Fix: no limit for number of results in eeafaceted datasource.
+  [cedricmessiant]
+
+1.5 (2017-11-28)
+----------------
+
+- Upgrade bootstrap.
+  [sgeulette]
+- Fix: render choice field with source vocabulary
+  [sgeulette]
+
+1.4 (2017-05-31)
+----------------
+
+- Prevent removal of exportables with similar names when ordering them
+  [thomasdesvenain]
+- Refactor: view exposes method that creates data buffer from sheet data.
+  [thomasdesvenain]
+- Made correct release
+  [sgeulette]
+
+1.3 (2016-11-28)
+----------------
+
+- Fix: check if value_type is empty for collection field render.
+  [bsuttor]
+
+- Fix: try to get the value of a method if the field is a method and translate
+  DateTime results to a unicode, this fixes the export for objects with the IPublication
+  Behavior.
+  [pcdummy]
+
+- Fix: be sure to not retrieve an attribute on an object by acquisition.
+  [vincentfretin]
+
+- Feature: render_style can now return a Style object with content and headers
+  attribute to be able to customise the header style per exportable.
+  [vincentfretin]
+
+- Feature: the passed obj to render_value is now
+  exportable.field.bind(obj).context to make it easier to get data from
+  parent or grandparent.
+  [vincentfretin]
+
+- Feature: BaseFieldRenderer.render_header method returns now the translated field
+  title instead of the Message object.
+  [vincentfretin]
+
+- Fix: Ignore reverse parameter when creating export url.
+  [cedricmessiant]
+
+- Feature: Add sort exportables feature using exportables_order list.
+  Works with field and non-field exportables.
+  [cedricmessiant, ebrehault, thomasdevenain]
+
+1.2 (2014-09-10)
+----------------
+
+- Feature: Added export under csv format.
+  [thomasdesvenain]
+
+- API: Filter exportables by field name by default using excluded_exportables list.
+  [cedricmessiant]
+
+- API: We can define a dexterity adapter for just one field using field name as
+  adapter name.
+  [thomasdesvenain]
+
+- Fix: Faceted nav export link ignores results per page criterion.
+  [thomasdesvenain]
+
+- Fix: Translate sheet title.
+  [thomasdesvenain]
+
+- Fix: Improve text fields support.
+  [fngaha, thomasdesvenain]
+
+1.1 (2014-06-19)
+----------------
+
+- Rename search policy excelexport.search to avoid conflict with 'search' view.
+  [thomasdesvenain]
+
+
+1.0 (2014-06-02)
+----------------
+
+- Initial release.
+  [thomasdesvenain]
+

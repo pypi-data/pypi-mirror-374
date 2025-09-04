@@ -1,0 +1,36 @@
+dist: bionic
+language: python
+sudo: false
+cache:
+  pip: true
+  directories:
+  - eggs
+python:
+  - "2.7"
+env:
+  - PLONE_VERSION=4.3
+  - PLONE_VERSION=5.0
+  - PLONE_VERSION=5.1
+  - PLONE_VERSION=5.2
+
+fast_finish: true
+
+before_install:
+  - sed -ie "s#test-4.3#test-$PLONE_VERSION#" buildout.d/base.cfg
+  - virtualenv .
+  - bin/pip install -r requirements.txt
+  - bin/buildout -c travis.cfg annotate
+install:
+  - bin/buildout -c travis.cfg
+script:
+  - bin/test
+after_success:
+  - bin/createcoverage --output-dir=parts/test/coverage
+  - bin/pip install coverage
+  - bin/python -m coverage.pickle2json
+  - bin/pip install -q coveralls
+  - bin/coveralls
+notifications:
+  email:
+    - travis-reports@ecreall.com
+    - devs@imio.be
