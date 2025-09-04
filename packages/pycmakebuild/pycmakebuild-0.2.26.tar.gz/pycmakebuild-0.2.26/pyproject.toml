@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pycmakebuild"
+version = "0.2.26"
+description = "Python CMake批量构建工具，支持变量替换、多项目管理、跨平台自动化编译，通过build.json配置实现CMake项目的统一构建流程"
+authors = [
+  { name = "PatchLion", email = "747497016@qq.com" }
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.6"
+dependencies = [
+  "cmake>=3.0,<4.0"
+]
+
+[project.urls]
+Homepage = "https://gitee.com/PatchLion/pycmakebuild"
+
+[project.scripts]
+pycmakebuild = "pycmakebuild.__main__:main"
