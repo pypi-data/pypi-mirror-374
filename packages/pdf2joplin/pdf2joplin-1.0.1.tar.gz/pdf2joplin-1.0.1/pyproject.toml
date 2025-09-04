@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# --- Project Settings ---
+[project]
+name = "pdf2joplin"
+version = "1.0.1"
+description = "Convert your PDF documents to Markdown notes with KaTeX support with the help of OpenAI."
+readme = "README.md"
+requires-python = ">3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "Christos Kaltsas", email = "christos@xcalts.co" }]
+maintainers = [{ name = "Christos Kaltsas", email = "christos@xcalts.co" }]
+
+# --- Required Dependencies ---
+dependencies = [
+    # Command-line interface
+    "Click",
+    # Wraps the pdftoppm utility to convert PDF to PIL Image object
+    "pdf2image",
+    # Official OpenAI Client
+    "openai",
+    # Data validation using Python type hints
+    "pydantic",
+]
+
+# --- URLs ---
+[project.urls]
+"Homepage" = "https://github.com/xcalts/pdf2joplin"
+"Source" = "https://github.com/xcalts/pdf2joplin"
+"Documentation" = "https://github.com/xcalts/pdf2joplin"
+"Bug Reports" = "https://github.com/xcalts/pdf2joplin/issues"
+"Changelog" = "https://github.com/xcalts/pdf2joplin/releases"
+
+# --- Scripts ---
+[project.scripts]
+pdf2joplin = "main:cli"
+
+# --- Lint ---
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint.isort]
+section-order = [
+    "third-party",
+    "standard-library",
+    "first-party",
+    "local-folder",
+]
+force-sort-within-sections = true
+lines-after-imports = 2
