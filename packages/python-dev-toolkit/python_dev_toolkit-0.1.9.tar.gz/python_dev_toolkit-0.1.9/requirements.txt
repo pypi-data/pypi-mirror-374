@@ -1,0 +1,15 @@
+# Requirements file for learning-pypi-demo-nisimi
+# 
+# Note: This file will be populated with actual package hashes after
+# the package is published to PyPI. Until then, it serves as a placeholder.
+#
+# To generate requirements with hashes after publishing:
+# 1. pip install learning-pypi-demo-nisimi
+# 2. pip freeze | grep learning-pypi-demo-nisimi > temp_req.txt  
+# 3. pip-compile --generate-hashes temp_req.txt -o requirements.txt
+#
+# For now, this package has no external dependencies, demonstrating
+# a minimal package structure for educational purposes.
+
+# learning-pypi-demo-nisimi==0.1.1 \
+#     --hash=sha256:PLACEHOLDER_HASH_WILL_BE_GENERATED_AFTER_PUBLISHING

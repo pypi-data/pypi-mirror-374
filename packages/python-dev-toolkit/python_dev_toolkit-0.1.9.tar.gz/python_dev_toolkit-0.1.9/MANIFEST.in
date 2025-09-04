@@ -1,0 +1,21 @@
+# Include documentation files
+include README.md
+include LICENSE
+
+# Include configuration files  
+include pyproject.toml
+include requirements.txt
+
+# Include the specification document
+include spec.md
+
+# Include package data
+recursive-include python_dev_toolkit *.py
+
+# Exclude common files that shouldn't be distributed
+exclude .gitignore
+exclude .DS_Store
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * *.so
+recursive-exclude * .git*

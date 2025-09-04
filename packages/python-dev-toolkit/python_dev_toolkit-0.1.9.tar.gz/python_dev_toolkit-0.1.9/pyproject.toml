@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "python-dev-toolkit"
+version = "0.1.9"
+authors = [
+    {name = "alex-smith"}
+]
+description = "Professional toolkit for Python developers and software engineers"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Education", 
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8", 
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Education",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["python", "development", "toolkit", "engineering"]
+dependencies = []
+
+[project.urls]
+"Homepage" = "https://github.com/alex-smith/python-dev-toolkit"
+"Bug Reports" = "https://github.com/alex-smith/python-dev-toolkit/issues"
+"Source" = "https://github.com/alex-smith/python-dev-toolkit/"
+
+[tool.setuptools]
+packages = ["python_dev_toolkit"]
+
+[tool.setuptools.package-dir]
+python_dev_toolkit = "python_dev_toolkit"
