@@ -1,0 +1,95 @@
+# Remote Web Typing
+
+A simple Flask web application that allows you to remotely type text on your computer from any device on the same network. This is particularly useful for situations where you need to transfer text from a device (like a phone) to a computer without a direct copy-paste mechanism, such as during online exams, working with virtual machines, or in other restricted environments.
+
+[![Python Version](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
+
+## Features
+
+*   **Web-Based Interface**: Accessible from any device (phone, tablet, another computer) on the same local network.
+*   **Live Clipboard Viewer**: Displays the current content of the server's clipboard on the web page, updating in real-time.
+*   **Remote Typing**: Send text from the web interface to have it automatically typed out on the server machine.
+*   **Adjustable Speed**: Control the typing speed (Fast, Normal, Slow) to suit different applications and avoid detection.
+*   **Cancel Functionality**: Immediately stop an ongoing typing job with a single click.
+
+## How It Works
+
+1.  A **Flask** web server runs on the host machine, serving a simple, self-contained HTML page.
+2.  A background thread continuously monitors the host's clipboard using **pyperclip**. Any new copied text is sent to the web interface.
+3.  When you submit text through the web form, a new thread is started to handle the typing job.
+4.  This thread uses **pyautogui** to simulate individual keystrokes on the host machine, effectively "typing" out the text you sent.
+5.  A short delay before typing begins gives you time to focus the cursor on the desired input field (e.g., a text editor, a browser search bar, etc.).
+
+## ⚠️ Security Warning
+
+This application is designed for use on a **trusted private network**. It binds to `0.0.0.0`, making it accessible to any device on your network. There is **no authentication**. Anyone on your network can view your clipboard and make your computer type.
+
+**Do not expose this application to the internet or run it on an untrusted network (like public Wi-Fi).**
+
+## Requirements
+
+*   Python 3.12+
+*   Flask
+*   PyAutoGUI
+*   Pyperclip
+*   Keyboard
+*   Pillow
+
+All dependencies are listed in the `pyproject.toml` file.
+
+## Installation
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/Mayank170906/remote-web-typing.git
+    cd remote-web-typing
+    ```
+
+2.  **Create and activate a virtual environment (recommended):**
+    ```bash
+    # For Windows
+    python -m venv venv
+    .\venv\Scripts\activate
+
+    # For macOS/Linux
+    python3 -m venv venv
+    source venv/bin/activate
+    ```
+
+3.  **Install the project and its dependencies:**
+    The `pip install .` command will read the `pyproject.toml` file and install the project along with all required packages.
+    ```bash
+    pip install .
+    ```
+
+## Usage
+
+1.  **Run the application:**
+    Once installed, you can run the server using the console script created during installation:
+    ```bash
+    remote-web-typing
+    ```
+    The server will start on `http://0.0.0.0:5000`.
+
+2.  **Find your computer's local IP address:**
+    *   **Windows**: Open Command Prompt and type `ipconfig`. Look for the "IPv4 Address" under your active network adapter (e.g., "Wireless LAN adapter Wi-Fi").
+    *   **macOS/Linux**: Open a terminal and type `ifconfig` or `ip addr`. Look for the `inet` address.
+
+3.  **Access the Web Interface:**
+    On another device (like your phone) connected to the **same Wi-Fi network**, open a web browser and navigate to:
+    `http://<YOUR_COMPUTER_IP>:5000`
+    (Replace `<YOUR_COMPUTER_IP>` with the address you found in the previous step).
+
+4.  **Start Typing!**
+    *   The "Copied Text" section will show whatever is currently on your computer's clipboard.
+    *   Enter the text you want to type into the "Type Solution" text area.
+    *   Click **"Send to Laptop"**.
+    *   Quickly switch to the window on your computer where you want the text to appear and click to focus the cursor. There is a 1-second delay before typing begins.
+
+## Contributing
+
+Issues and pull requests are welcome! Please feel free to open an issue to discuss a bug or a new feature.
+
+## License
+
+This project is not yet licensed.
