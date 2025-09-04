@@ -1,0 +1,676 @@
+import copy
+import os
+import random
+import pint.logging
+import luigi
+import matplotlib.pyplot as plt
+import numpy as np
+import yaml
+from pint.logging import log
+from astropy.table import Table
+from hendrics.ml_timing import ml_pulsefit, normalized_template
+
+from .data_setup import (
+    GetInfo,
+    GetPhaseogram,
+    GetTemplate,
+    GetPulseFreq,
+    _get_and_normalize_phaseogram,
+    _plot_phaseogram,
+)
+from .utils import encode_image_file, output_name, search_substring_in_list
+from .utils.config import load_yaml_file, read_config
+from .utils.fit_crab_profiles import (
+    _plot_profile_and_fit,
+    create_template_from_profile_table,
+    default_crab_model,
+)
+
+
+def plot_complete_diagnostics(
+    phaseogram_files, model_fit, phase_max=None, model_init=None, output_fname=None
+):
+    """Make a pretty plot to show how the fit went."""
+
+    n_phas_rows = len(phaseogram_files)
+
+    phaseograms = []
+    for phaseogram in phaseogram_files:
+        phaseograms.append(Table.read(phaseogram))
+
+    phases = phaseograms[0].meta["phase"]
+    profile = 0.0
+    profile_raw = 0.0
+    durations = []
+    for phaseogram_table in phaseograms:
+        phaseogram = phaseogram_table["profile"]
+        local_profile = np.sum(phaseogram, axis=0)
+        profile_raw += local_profile
+        if "expo" in phaseogram_table.meta:
+            expo = phaseogram_table.meta["expo"]
+            local_profile = local_profile / expo
+        durations.append(phaseogram_table.meta["mjdstop"] - phaseogram_table.meta["mjdstart"])
+        profile += local_profile
+
+    durations = np.array(durations)
+    if phase_max is None:
+        phase_max = 0
+
+    if np.min(phases) >= 0 and np.max(phases) <= 1:
+        phases = np.concatenate([phases - 1, phases, phases + 1])
+        profile = np.concatenate([profile, profile, profile])
+        if profile_raw is not None:
+            profile_raw = np.concatenate([profile_raw, profile_raw, profile_raw])
+
+    # External GridSpec
+    if n_phas_rows < 3:
+        height_ratios = [0.65, 0.35] + [1] * n_phas_rows
+        hspace = 0.1
+    else:
+        max_height = 1 * np.log2(n_phas_rows) / n_phas_rows
+        height_scale = durations / durations.max() * max_height
+        height_ratios = [0.65, 0.35] + list(height_scale)
+        hspace = 0
+
+    figure_width = 10
+    figure_height = 3 * np.sum(height_ratios)
+
+    fig = plt.figure(figsize=(figure_width, figure_height))
+    padding_border = 0.001
+    padding_width = 0.075
+    rescale_height = figure_width / figure_height
+
+    gs_external = fig.add_gridspec(
+        2 + n_phas_rows,
+        3,
+        width_ratios=[2, 1, 1],
+        height_ratios=height_ratios,
+        hspace=hspace,
+        wspace=0.05,
+    )
+    plt.subplots_adjust(
+        left=padding_width,
+        right=1 - padding_border,
+        top=1 - padding_border * rescale_height,
+        bottom=padding_width * rescale_height,
+    )
+
+    axes_full_profile = [fig.add_subplot(gs_external[i, 0]) for i in range(2)]
+    axes_zoom_peak1 = [fig.add_subplot(gs_external[i, 1]) for i in range(2)]
+    axes_zoom_peak2 = [fig.add_subplot(gs_external[i, 2]) for i in range(2)]
+
+    axes_all_profiles = [axes_full_profile, axes_zoom_peak1, axes_zoom_peak2]
+    axes_all_phaseograms = [
+        [fig.add_subplot(gs_external[i + 2, j], sharex=axes_all_profiles[j][0]) for j in range(3)]
+        for i in range(n_phas_rows)
+    ]
+
+    for phaseogram, axrow in zip(phaseogram_files, axes_all_phaseograms):
+        local_phases, time_hrs, phas, meantime_mjd = _get_and_normalize_phaseogram(phaseogram)
+        _plot_phaseogram(
+            local_phases,
+            time_hrs,
+            phas,
+            meantime_mjd,
+            axrow[0],
+            title=None,
+            label_y=n_phas_rows < 3,
+        )
+        for ax in axrow[1:]:
+            _plot_phaseogram(
+                local_phases,
+                time_hrs,
+                phas,
+                meantime_mjd,
+                ax,
+                title=None,
+                label_y=False,
+            )
+
+    for axpair in [axes_full_profile, axes_zoom_peak1, axes_zoom_peak2]:
+        axfit, axres = axpair[0], axpair[1]
+
+        _plot_profile_and_fit(
+            phases,
+            profile,
+            model_fit,
+            axfit,
+            axres,
+            model_init=model_init,
+            phase_max=phase_max,
+            profile_raw=profile_raw,
+        )
+
+    for ax in axes_full_profile:
+        ax.set_xlim([-0.5, 0.5])
+    for ax in axes_zoom_peak1:
+        plt.setp(ax.get_yticklabels(), visible=False)
+
+        ax.set_xlim([phase_max - 0.125, phase_max + 0.125])
+
+    for ax in axes_zoom_peak2:
+        plt.setp(ax.get_yticklabels(), visible=False)
+
+        ax.set_xlim([phase_max + 0.25, phase_max + 0.5])
+
+    for ax in [axes_full_profile[1], axes_zoom_peak1[1], axes_zoom_peak2[1]]:
+        plt.setp(ax.get_xticklabels(), visible=False)
+
+    if n_phas_rows > 2:
+        for ax_row in axes_all_phaseograms[:-1]:
+            for ax in ax_row:
+                ax.xaxis.label.set_visible(False)
+                plt.setp(ax.get_xticklabels(), visible=False)
+
+    for ax in axes_all_phaseograms[-1]:
+        ax.xaxis.label.set_visible(True)
+        ax.set_xlabel("Pulse Phase")
+        ax.axvline(0, ls="--", color="k")
+
+    for ax in [axes_full_profile[0], axes_zoom_peak1[0], axes_zoom_peak2[0]]:
+        plt.setp(ax.get_xticklabels(), visible=False)
+
+    axes_full_profile[0].set_ylabel("Counts")
+    axes_full_profile[1].set_ylabel("Residuals")
+    axes_zoom_peak2[0].legend()
+
+    if output_fname is not None:
+        plt.savefig(output_fname, dpi=150)
+        plt.close(fig)
+    else:
+        plt.show()
+
+
+class TOAPipeline(luigi.Task):
+    fname = luigi.Parameter()
+    config_file = luigi.Parameter()
+    version = luigi.Parameter(default="none")
+    worker_timeout = luigi.IntParameter(default=600)
+
+    def requires(self):
+        yield PlotDiagnostics(self.fname, self.config_file, self.version, self.worker_timeout)
+        yield GetProfileFit(self.fname, self.config_file, self.version, self.worker_timeout)
+        yield GetPhaseogram(self.fname, self.config_file, self.version, self.worker_timeout)
+        yield GetPulseFreq(self.fname, self.config_file, self.version, self.worker_timeout)
+
+    def output(self):
+        return luigi.LocalTarget(output_name(self.fname, self.version, "_results.txt"))
+
+    def run(self):
+        residual_file = (
+            GetResidual(self.fname, self.config_file, self.version, self.worker_timeout)
+            .output()
+            .path
+        )
+        image_files_list = (
+            PlotDiagnostics(self.fname, self.config_file, self.version, self.worker_timeout)
+            .output()
+            .path
+        )
+        profile_fit_file = (
+            GetProfileFit(self.fname, self.config_file, self.version, self.worker_timeout)
+            .output()
+            .path
+        )
+        pulse_freq_file = (
+            GetPulseFreq(self.fname, self.config_file, self.version, self.worker_timeout)
+            .output()
+            .path
+        )
+        pulse_freq_table = Table.read(pulse_freq_file)
+        for val in ["fname"]:
+            pulse_freq_table.remove_column(val)
+        image_files = list(filter(None, open(image_files_list, "r").read().splitlines()))
+        image_file = image_files[0]
+
+        residual_dict = load_yaml_file(residual_file)
+        for col in pulse_freq_table.colnames:
+            if not isinstance(pulse_freq_table[col][0], str):
+                residual_dict["search_" + col] = float(pulse_freq_table[col][0])
+        # residual_dict["search_stat"] = pulse_freq_table.meta["label"]
+
+        profile_fit_table = Table.read(profile_fit_file)
+        # best_freq_table = Table.read(best_freq_file)
+        meta = profile_fit_table.meta
+
+        for key in "phase", "expo":
+            meta.pop(key, None)
+        for model_results_str in "best_fit", "model_init":
+            data = meta.pop(model_results_str, None)
+            if data is not None:
+                residual_dict.update(
+                    dict([(model_results_str + "_" + k, v) for k, v in data.items()])
+                )
+
+        residual_dict.update(meta)
+
+        residual_dict["phase_max"] = profile_fit_table.meta["phase_max"]
+        residual_dict["phase_max_err"] = profile_fit_table.meta["phase_max_err"]
+        residual_dict["fit_residual"] = (
+            profile_fit_table.meta["phase_max"] / profile_fit_table.meta["F0"]
+        )
+        residual_dict["fit_residual_err"] = (
+            profile_fit_table.meta["phase_max_err"] / profile_fit_table.meta["F0"]
+        )
+
+        outfile = self.output().path.replace(".txt", ".yaml")
+
+        output_files = [outfile]
+
+        if "profile_1" in profile_fit_table.colnames:
+            for col in profile_fit_table.colnames:
+                if not col.startswith("profile_") or "raw" in col:
+                    continue
+                label = col.replace("profile", "")
+                meta = profile_fit_table[col].meta
+                local_residual_dict = copy.deepcopy(residual_dict)
+                local_residual_dict.update(meta)
+                local_residual_dict["fit_residual"] = meta["phase_max"] / meta["F0"]
+                local_residual_dict["fit_residual_err"] = meta["phase_max_err"] / meta["F0"]
+                local_image_file = search_substring_in_list(label + ".jpg", image_files)[0]
+                local_residual_dict["img"] = encode_image_file(local_image_file)
+                local_outfile = self.output().path.replace(".txt", f"{label}.yaml")
+                for key in "phase", "expo":
+                    meta.pop(key, None)
+                for model_results_str in "best_fit", "model_init":
+                    data = meta.pop(model_results_str, None)
+                    if data is not None:
+                        local_residual_dict.update(
+                            dict([(model_results_str + "_" + k, v) for k, v in data.items()])
+                        )
+
+                with open(local_outfile, "w") as f:
+                    yaml.dump(local_residual_dict, f)
+
+                output_files.append(local_outfile)
+
+        residual_dict["img"] = encode_image_file(image_file)
+        with open(outfile, "w") as f:
+            yaml.dump(residual_dict, f)
+
+        with open(self.output().path, "w") as f:
+            for outfile in output_files:
+                print(outfile, file=f)
+
+
+class PlotDiagnostics(luigi.Task):
+    fname = luigi.Parameter()
+    config_file = luigi.Parameter()
+    version = luigi.Parameter(default="none")
+    worker_timeout = luigi.IntParameter(default=600)
+
+    def requires(self):
+        yield GetResidual(self.fname, self.config_file, self.version, self.worker_timeout)
+        yield GetFoldedProfile(self.fname, self.config_file, self.version, self.worker_timeout)
+        yield GetProfileFit(self.fname, self.config_file, self.version, self.worker_timeout)
+        yield GetPhaseogram(self.fname, self.config_file, self.version, self.worker_timeout)
+
+    def output(self):
+        return luigi.LocalTarget(output_name(self.fname, self.version, "_diagnostics.txt"))
+
+    def run(self):
+        profile_fit_file = (
+            GetProfileFit(self.fname, self.config_file, self.version, self.worker_timeout)
+            .output()
+            .path
+        )
+        phaseogram_file = (
+            GetPhaseogram(self.fname, self.config_file, self.version, self.worker_timeout)
+            .output()
+            .path
+        )
+        profile_fit_table = Table.read(profile_fit_file)
+
+        init_model = default_crab_model(init_pars=profile_fit_table.meta["model_init"])
+        best_fit_model = default_crab_model(init_pars=profile_fit_table.meta["best_fit"])
+        phaseograms = open(phaseogram_file).read().splitlines()
+
+        root = self.output().path.replace(".txt", "")
+        outfile = root + ".jpg"
+        plot_complete_diagnostics(
+            phaseograms,
+            model_fit=best_fit_model,
+            model_init=init_model,
+            output_fname=outfile,
+        )
+        outfiles = [outfile]
+        if "profile_1" in profile_fit_table.colnames:
+            for col in profile_fit_table.colnames:
+                if not col.startswith("profile_") or "raw" in col:
+                    continue
+
+                label = col.replace("profile", "")
+
+                init_model = default_crab_model(init_pars=profile_fit_table[col].meta["model_init"])
+                best_fit_model = default_crab_model(
+                    init_pars=profile_fit_table[col].meta["best_fit"]
+                )
+                local_phaseograms = search_substring_in_list(
+                    label + ".hdf5",
+                    phaseograms,
+                )
+
+                outfile = root + label + ".jpg"
+                plot_complete_diagnostics(
+                    local_phaseograms,
+                    model_fit=best_fit_model,
+                    model_init=init_model,
+                    output_fname=outfile,
+                )
+                outfiles.append(outfile)
+
+        with open(self.output().path, "w") as f:
+            for outfile in outfiles:
+                print(outfile, file=f)
+
+
+class GetResidual(luigi.Task):
+    fname = luigi.Parameter()
+    config_file = luigi.Parameter()
+    version = luigi.Parameter(default="none")
+    worker_timeout = luigi.IntParameter(default=600)
+
+    def requires(self):
+        yield GetFoldedProfile(self.fname, self.config_file, self.version, self.worker_timeout)
+        yield GetTemplate(self.fname, self.config_file, self.version, self.worker_timeout)
+
+    def output(self):
+        return luigi.LocalTarget(output_name(self.fname, self.version, "_residual.yaml"))
+
+    def run(self):
+        prof_file = (
+            GetFoldedProfile(self.fname, self.config_file, self.version, self.worker_timeout)
+            .output()
+            .path
+        )
+        prof_table = Table.read(prof_file)
+        template_file = (
+            GetTemplate(self.fname, self.config_file, self.version, self.worker_timeout)
+            .output()
+            .path
+        )
+
+        template_table = Table.read(template_file, format="ascii.ecsv")
+
+        infofile = (
+            GetInfo(self.fname, self.config_file, self.version, self.worker_timeout).output().path
+        )
+        info = load_yaml_file(infofile)
+
+        prof = prof_table["profile"]
+        template = template_table["profile"]
+        template = normalized_template(template_table["profile"], tomax=False)
+
+        pars, errs = ml_pulsefit(prof, template, calculate_errors=True, fit_base=True)
+
+        phase_res, phase_res_err = pars[1], errs[1]
+
+        output = {}
+        output.update(info)
+        for key, val in prof_table.meta.items():
+            if key not in output:
+                try:
+                    output[key] = float(val)
+                except Exception:
+                    output[key] = val
+        output["residual"] = float(phase_res / prof_table.meta["F0"])
+        output["residual_err"] = float(phase_res_err / prof_table.meta["F0"])
+
+        with open(self.output().path, "w") as f:
+            yaml.dump(output, f)
+
+
+class GetProfileFit(luigi.Task):
+    fname = luigi.Parameter()
+    config_file = luigi.Parameter()
+    version = luigi.Parameter(default="none")
+    worker_timeout = luigi.IntParameter(default=600)
+
+    def requires(self):
+        return GetFoldedProfile(self.fname, self.config_file, self.version, self.worker_timeout)
+
+    def output(self):
+        return luigi.LocalTarget(output_name(self.fname, self.version, "_fit_template.hdf5"))
+
+    def run(self):
+        prof_file = (
+            GetFoldedProfile(self.fname, self.config_file, self.version, self.worker_timeout)
+            .output()
+            .path
+        )
+        out = self.output().path
+        create_template_from_profile_table(
+            prof_file,
+            output_template_fname=out,
+            nbins=512,
+        )
+
+
+class GetFoldedProfile(luigi.Task):
+    fname = luigi.Parameter()
+    config_file = luigi.Parameter()
+    version = luigi.Parameter(default="none")
+    worker_timeout = luigi.IntParameter(default=600)
+
+    def requires(self):
+        yield GetPhaseogram(self.fname, self.config_file, self.version, self.worker_timeout)
+
+    def output(self):
+        return luigi.LocalTarget(output_name(self.fname, self.version, "_folded.hdf5"))
+
+    def run(self):
+        phaseogram_file = (
+            GetPhaseogram(self.fname, self.config_file, self.version, self.worker_timeout)
+            .output()
+            .path
+        )
+        phaseogram_files = open(phaseogram_file).read().splitlines()
+
+        phaseograms = []
+        for phaseogram in phaseogram_files:
+            phaseograms.append(Table.read(phaseogram))
+
+        phases = phaseograms[0].meta["phase"]
+        profile = 0.0
+        profile_raw = 0.0
+
+        result_table = Table()
+        for subprofile_count, phaseogram_table in enumerate(phaseograms):
+            phaseogram = phaseogram_table["profile"]
+            local_profile_raw = np.sum(phaseogram, axis=0)
+            profile_raw += local_profile_raw
+            if "expo" in phaseogram_table.meta:
+                expo = phaseogram_table.meta["expo"]
+                local_profile = local_profile_raw / expo
+            else:
+                local_profile = local_profile_raw
+
+            if "phase" not in result_table.colnames:
+                result_table["phase"] = phases
+                result_table.meta.update(phaseogram_table.meta)
+
+            result_table[f"profile_{subprofile_count}"] = local_profile
+            result_table[f"profile_raw_{subprofile_count}"] = local_profile_raw
+            result_table[f"profile_{subprofile_count}"].meta.update(phaseogram_table.meta)
+
+            profile += local_profile
+
+        if subprofile_count == 0:
+            log.info("Only one profile found in the observation")
+            result_table.rename_column("profile_0", "profile")
+        else:
+            log.info("Creating summed profile")
+            result_table["profile"] = np.sum(
+                [result_table[f"profile_{i}"] for i in range(len(phaseograms))], axis=0
+            )
+            result_table["profile_raw"] = np.sum(
+                [result_table[f"profile_raw_{i}"] for i in range(len(phaseograms))],
+                axis=0,
+            )
+
+        result_table.write(self.output().path, serialize_meta=True)
+
+
+def get_outputs(task):
+    """Get all outputs from a given luigi task and his dependencies."""
+    outputs = []
+    local_require = task
+
+    while 1:
+        try:
+            outputs.append(local_require.output().path)
+            local_require = local_require.requires()
+        except AttributeError:
+            break
+
+    return outputs
+
+
+def select_n_files_per_directory(files, nmax, config_file=None, version="none"):
+    """Select up to nmax files per directory, chosen randomly.
+
+    Examples
+    --------
+    >>> input_files = ["./dir1/file1", "./dir2/file3"]
+    >>> select_n_files_per_directory(input_files, 1)
+    ['dir1/file1', 'dir2/file3']
+    >>> input_files = ["./dir1/file1", "./dir1/file2", "./dir2/file3", "./dir2/file4"]
+    >>> files = select_n_files_per_directory(input_files, 1)
+    >>> # Must be two files, from two different directories
+    >>> assert len(files) == 2
+    >>> assert len(set(os.path.split(f)[0] for f in files)) == 2
+    """
+    log.info(f"Analyzing only {nmax} files per directory, chosen randomly")
+    files = [os.path.relpath(f) for f in files]
+    dirs = sorted(list(set([os.path.split(fname)[0] for fname in files])))
+    fnames = []
+    for d in dirs:
+        log.debug(f"Selecting files from directory {d}")
+        files_in_dir = [f for f in files if f.startswith(d)]
+
+        if len(files_in_dir) <= nmax:
+            good_files = files_in_dir
+        else:
+            good_files = []
+            while len(good_files) < nmax:
+                if len(files_in_dir) == 0:
+                    break
+                f = random.choice(files_in_dir)
+                res = TOAPipeline(f, config_file, version).output().path
+                exists = os.path.exists(res)
+                if not exists and f not in good_files:
+                    log.debug(f"Adding {f}")
+                    good_files.append(f)
+                else:
+                    log.debug(f"File {f} already processed")
+                files_in_dir.remove(f)
+        fnames.extend(good_files)
+    return fnames
+
+
+def main(args=None):
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Calculate TOAs from event files")
+
+    parser.add_argument("files", help="Input binary files", type=str, nargs="+")
+    parser.add_argument("--config", help="Config file", type=str, default=None)
+    parser.add_argument("--loglevel", help="Set log level", type=str, default="INFO")
+    parser.add_argument("--debug", help="Enable debug mode", action="store_true")
+    parser.add_argument("-v", "--version", help="Version", type=str, default="none")
+    parser.add_argument("--local-scheduler", help="Use local scheduler", action="store_true")
+    parser.add_argument(
+        "-N",
+        "--nmax",
+        help="Maximum number of data files from a given directory",
+        type=int,
+        default=None,
+    )
+
+    args = parser.parse_args(args)
+
+    log_level = args.loglevel.upper()
+    if args.debug:
+        log_level = "DEBUG"
+        log.info("Enabling debug mode")
+
+    pint.logging.setup(level=log_level)
+    log.debug(f"Log level set to {log_level}")
+
+    config_file = args.config
+    if config_file is None:
+
+        config = read_config("default")
+        config_file = "default_config.yaml"
+        with open(config_file, "w") as file:
+            yaml.dump(config, file)
+
+    config = read_config(config_file)
+    fnames = args.files
+
+    if args.nmax is not None:
+        fnames = select_n_files_per_directory(fnames, args.nmax, config_file, args.version)
+
+    _ = luigi.build(
+        [
+            TOAPipeline(
+                fname,
+                config_file,
+                args.version,
+                worker_timeout=config["worker_timeout"] if "worker_timeout" in config else 600,
+            )
+            for fname in fnames
+        ],
+        local_scheduler=args.local_scheduler,
+        log_level="INFO",
+        workers=4,
+    )
+
+
+def main_freq(args=None):
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Calculate TOAs from event files")
+
+    parser.add_argument("files", help="Input binary files", type=str, nargs="+")
+    parser.add_argument("--config", help="Config file", type=str, default=None)
+    parser.add_argument("--loglevel", help="Set log level", type=str, default="INFO")
+    parser.add_argument("--debug", help="Enable debug mode", action="store_true")
+    parser.add_argument("-v", "--version", help="Version", type=str, default="none")
+    parser.add_argument("--local-scheduler", help="Use local scheduler", action="store_true")
+    parser.add_argument(
+        "-N",
+        "--nmax",
+        help="Maximum number of data files from a given directory",
+        type=int,
+        default=None,
+    )
+
+    args = parser.parse_args(args)
+
+    log_level = args.loglevel.upper()
+    if args.debug:
+        log_level = "DEBUG"
+        log.debug("Debug mode enabled")
+
+    pint.logging.setup(level=log_level)
+
+    config_file = args.config
+    if config_file is None:
+        from .utils.config import read_config
+
+        config = read_config("default")
+        config_file = "default_config.yaml"
+        with open(config_file, "w") as file:
+            yaml.dump(config, file)
+
+    fnames = args.files
+    if args.nmax is not None:
+        fnames = select_n_files_per_directory(fnames, args.nmax, config_file, args.version)
+
+    _ = luigi.build(
+        [GetPulseFreq(fname, config_file, args.version) for fname in fnames],
+        local_scheduler=args.local_scheduler,
+        log_level="INFO",
+        workers=4,
+    )
