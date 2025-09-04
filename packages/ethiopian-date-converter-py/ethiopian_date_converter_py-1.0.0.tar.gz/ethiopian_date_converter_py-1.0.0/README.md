@@ -1,0 +1,286 @@
+# Ethiopian Date Converter for Python
+
+High-performance Ethiopian calendar date conversion for Python applications with native C implementation.
+
+## Installation
+
+```bash
+# pip
+pip install ethiopian-date-converter
+
+# conda (if available)
+conda install ethiopian-date-converter
+```
+
+## Quick Start
+
+```python
+from ethiopian_date_converter import (
+    EthiopicDate, 
+    GregorianDate, 
+    ethiopic_to_gregorian, 
+    gregorian_to_ethiopic
+)
+
+# Using conversion functions
+gregorian = ethiopic_to_gregorian(2017, 1, 1)
+print(gregorian)  # {'year': 2024, 'month': 9, 'day': 11}
+
+ethiopic = gregorian_to_ethiopic(2024, 9, 11)
+print(ethiopic)  # {'year': 2017, 'month': 1, 'day': 1}
+
+# Using date classes
+ethiopic_date = EthiopicDate(2017, 1, 1)
+gregorian_date = ethiopic_date.to_gregorian()
+print(gregorian_date)  # 2024-09-11
+
+# Date arithmetic and formatting
+new_year = EthiopicDate(2017, 1, 1)
+print(new_year.get_month_name())  # "Meskerem"
+print(new_year.get_day_of_week())  # "Wednesday"
+print(new_year.format("DD MMMM YYYY"))  # "01 Meskerem 2017"
+
+next_month = new_year.add_months(1)
+print(next_month)  # 2017-02-01
+```
+
+## Main Functionalities
+
+### Date Conversion
+Convert dates between Ethiopian and Gregorian calendars with high accuracy:
+
+```python
+# Ethiopian New Year 2017 to Gregorian
+result = ethiopic_to_gregorian(2017, 1, 1)
+print(result)  # {'year': 2024, 'month': 9, 'day': 11}
+
+# Ethiopian Christmas 2017 to Gregorian
+result = ethiopic_to_gregorian(2017, 4, 29)
+print(result)  # {'year': 2025, 'month': 1, 'day': 7}
+
+# Reverse conversions
+result = gregorian_to_ethiopic(2025, 1, 7)
+print(result)  # {'year': 2017, 'month': 4, 'day': 29}
+```
+
+### Date Classes with Rich Functionality
+Work with powerful date objects that support arithmetic and formatting:
+
+```python
+# Create Ethiopian date
+date = EthiopicDate(2017, 1, 1)
+
+# Date arithmetic
+tomorrow = date.add_days(1)
+next_month = date.add_months(1)
+next_year = date.add_years(1)
+
+# Calculate differences
+christmas = EthiopicDate(2017, 4, 29)
+days_until = christmas.diff_days(date)
+print(f"Days until Christmas: {days_until}")
+
+# Cross-calendar operations
+gregorian_equivalent = date.to_gregorian()
+print(f"Gregorian date: {gregorian_equivalent}")
+```
+
+### Holiday Detection and Calendar Information
+Automatically detect Ethiopian holidays and get calendar metadata:
+
+```python
+new_year = EthiopicDate(2017, 1, 1)
+print(new_year.is_holiday())  # True
+print(new_year.get_holiday_name())  # "Ethiopian New Year"
+
+christmas = EthiopicDate(2017, 4, 29)
+print(christmas.is_holiday())  # True
+print(christmas.get_holiday_name())  # "Ethiopian Christmas"
+
+# Get calendar information
+print(date.get_days_in_month())  # 30
+print(date.is_leap_year())  # False (2017 % 4 != 3)
+```
+
+### Formatting and Localization
+Format dates with support for multiple languages:
+
+```python
+date = EthiopicDate(2017, 1, 1)
+
+# English formatting
+print(date.format("YYYY-MM-DD"))  # "2017-01-01"
+print(date.format("DD MMMM YYYY"))  # "01 Meskerem 2017"
+print(date.format("DDDD, DD MMMM YYYY"))  # "Wednesday, 01 Meskerem 2017"
+
+# Amharic formatting
+print(date.get_month_name("am"))  # "መስከረም"
+print(date.get_day_of_week("am"))  # "ረቡዕ"
+```
+
+## All Available Functions
+
+### Core Conversion Functions
+- `ethiopic_to_gregorian(year, month, day, era=None)` - Convert Ethiopian to Gregorian
+- `gregorian_to_ethiopic(year, month, day)` - Convert Gregorian to Ethiopian
+
+### Validation Functions
+- `is_valid_ethiopic_date(year, month, day)` - Validate Ethiopian date
+- `is_valid_gregorian_date(year, month, day)` - Validate Gregorian date
+- `is_gregorian_leap(year)` - Check if Gregorian year is leap year
+
+### Date Classes
+- `EthiopicDate(year, month, day)` - Ethiopian calendar date with full functionality
+- `GregorianDate(year, month, day)` - Gregorian calendar date with conversion
+
+### Date Arithmetic Methods
+- `add_days(days)` - Add/subtract days
+- `add_months(months)` - Add/subtract months
+- `add_years(years)` - Add/subtract years
+- `diff_days(other_date)` - Calculate difference in days
+
+### Formatting and Display
+- `format(pattern, locale="en")` - Format date with custom pattern
+- `get_month_name(locale="en")` - Get month name in specified language
+- `get_day_of_week(locale="en")` - Get weekday name in specified language
+
+### Calendar Information
+- `get_days_in_month()` - Get number of days in current month
+- `is_leap_year()` - Check if current year is leap year
+- `is_holiday()` - Check if date is a holiday
+- `get_holiday_name()` - Get holiday name if applicable
+
+### Julian Day Number Functions
+- `ethiopic_to_jdn(year, month, day, era=None)` - Convert Ethiopian to JDN
+- `gregorian_to_jdn(year, month, day)` - Convert Gregorian to JDN
+- `jdn_to_ethiopic(jdn, era=None)` - Convert JDN to Ethiopian
+- `jdn_to_gregorian(jdn)` - Convert JDN to Gregorian
+- `get_day_of_week(jdn)` - Get weekday from JDN
+
+### Utility Functions
+- `get_current_ethiopic_date()` - Get current Ethiopian date
+- `get_current_gregorian_date()` - Get current Gregorian date
+- `generate_calendar(year, month, calendar_type)` - Generate calendar grid
+- `get_business_days(start, end, exclude_holidays=True)` - Calculate business days
+- `get_holidays(year, calendar_type="ethiopic")` - Get all holidays for year
+- `calculate_age(birth_date, reference_date=None)` - Calculate age
+- `find_next_holiday(start_date, max_days=365)` - Find next holiday
+
+### Class Methods
+- `EthiopicDate.from_gregorian(gregorian_date)` - Create from Gregorian
+- `EthiopicDate.from_jdn(jdn, era=None)` - Create from JDN
+- `EthiopicDate.today()` - Get current Ethiopian date
+- `GregorianDate.from_ethiopic(ethiopic_date)` - Create from Ethiopian
+- `GregorianDate.today()` - Get current Gregorian date
+
+### Constants
+- `ETHIOPIC_MONTHS` - Month names in English and Amharic
+- `GREGORIAN_MONTHS` - Gregorian month names
+- `WEEKDAYS` - Weekday names in multiple languages
+- `ETHIOPIAN_HOLIDAYS` - Built-in holiday definitions
+- `JD_EPOCH_OFFSET_*` - Julian Day epoch constants
+
+## Date Object Properties
+
+All date objects have these properties:
+```python
+date = EthiopicDate(2017, 1, 1)
+print(date.year)   # 2017
+print(date.month)  # 1
+print(date.day)    # 1
+```
+
+## Calendar Systems
+
+### Ethiopian Calendar
+- 13 months (12 months of 30 days + Pagume)
+- Pagume: 5 days (normal year), 6 days (leap year)
+- Leap year: `year % 4 == 3`
+- Supported range: 1000-3000 EC (recommended)
+
+### Gregorian Calendar
+- Standard Gregorian calendar rules
+- Full leap year support including century exceptions
+- Compatible with Python's datetime module
+
+## Error Handling
+
+The package provides clear error messages for invalid operations:
+
+```python
+from ethiopian_date_converter.date_classes import InvalidDateError
+
+try:
+    invalid_date = EthiopicDate(2017, 13, 7)  # Invalid Pagume day
+except InvalidDateError as e:
+    print(f"Error: {e}")  # Error: Invalid Ethiopian date: 2017-13-7
+
+try:
+    result = ethiopic_to_gregorian(2017, 0, 1)  # Invalid month
+except ValueError as e:
+    print(f"Error: {e}")  # Error: Invalid Ethiopian date: 2017-0-1
+```
+
+## Performance
+
+- Native C implementation for core calculations
+- Optimized for high-frequency conversions
+- Zero external dependencies beyond Python standard library
+- Thread-safe operations
+- Memory efficient date objects
+
+## Supported Date Ranges
+
+- **Ethiopian Years**: 1000 - 3000 EC (optimal range)
+- **Gregorian Years**: 1007 - 4007 AD
+- **Modern Era**: 1900 - 2100 AD (recommended for applications)
+
+## Examples
+
+### Age Calculation
+```python
+from ethiopian_date_converter.utils import calculate_age
+
+birth_date = EthiopicDate(2000, 1, 1)
+age = calculate_age(birth_date)
+print(f"Age: {age['years']} years, {age['months']} months, {age['days']} days")
+```
+
+### Calendar Generation
+```python
+from ethiopian_date_converter.utils import generate_calendar
+
+# Generate Ethiopian calendar for Meskerem 2017
+calendar = generate_calendar(2017, 1, "ethiopic")
+print(f"Month: {calendar['month_name']}")
+print(f"Days in month: {calendar['days_in_month']}")
+for week in calendar['calendar_grid']:
+    print(week)
+```
+
+### Business Days Calculation
+```python
+from ethiopian_date_converter.utils import get_business_days
+
+start = EthiopicDate(2017, 1, 1)
+end = EthiopicDate(2017, 1, 30)
+business_days = get_business_days(start, end, exclude_holidays=True)
+print(f"Business days: {business_days}")
+```
+
+## Documentation
+
+For comprehensive documentation, advanced usage examples, and API reference, visit:
+https://github.com/abiywondimu5758/ethiopian-date-converter/tree/main/docs/python
+
+## Requirements
+
+- Python 3.7 or higher
+- C compiler (for building the native extension)
+  - Windows: Visual Studio Build Tools or MinGW
+  - macOS: Xcode Command Line Tools
+  - Linux: GCC
+
+## License
+
+MIT License - see LICENSE file for details.
