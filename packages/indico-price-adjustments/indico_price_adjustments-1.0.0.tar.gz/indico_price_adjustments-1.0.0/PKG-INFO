@@ -1,0 +1,51 @@
+Metadata-Version: 2.4
+Name: indico-price-adjustments
+Version: 1.0.0
+Summary: Price adjustments for logged in users
+Project-URL: GitHub, https://github.com/RobotHanzo/IndicoPriceAdjustments
+Author-email: RobotHanzo <admin@robothanzo.dev>
+License: MIT License
+License-File: LICENSE
+Classifier: Environment :: Plugins
+Classifier: Environment :: Web Environment
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: <3.13,>=3.12
+Requires-Dist: indico-patcher>=0.2.1
+Requires-Dist: indico>=3.3
+Requires-Dist: pygments<3,>=2.7.2
+Description-Content-Type: text/markdown
+
+# indico-price-adjustments
+
+This plugin provides registration price adjustment options for non-logged-in users.
+
+## Installation
+
+Install the plugin [package](https://pypi.org/project/indico-price-adjustments/) from PyPI
+```bash
+pip install indico-price-adjustments
+```
+
+Open `indico.conf` of your indico installation then add `price_adjustments` on `PLUGIN`.
+```python
+PLUGINS = { ... , 'price_adjustments'}
+```
+
+## Install for development for contributing to this plugin
+
+Clone this repository on `~/dev/indico/plugins`
+```bash
+git clone https://github.com/RobotHanzo/IndicoPriceAdjustments.git
+```
+
+With python virtual environment of Indico development installation enabled, enter the cloned directory then run following command to install the plugin.
+```bash
+pip install -e .
+```
+
+Open `indico.conf` which should be located in `~/dev/indico/src/indico` then add `price_adjustments` on `PLUGIN`.
+```python
+PLUGINS = { ... , 'price_adjustments'}
+```
+
+You can now test you modification on your development indico environment.
