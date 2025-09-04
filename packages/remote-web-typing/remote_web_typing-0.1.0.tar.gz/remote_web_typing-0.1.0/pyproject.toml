@@ -1,0 +1,23 @@
+[project]
+name = "remote-web-typing"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "mayank", email = "mayankchodharysept17@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "flask>=3.1.2",
+    "keyboard>=0.13.5",
+    "pillow>=11.3.0",
+    "pyautogui>=0.9.54",
+    "pyperclip>=1.9.0",
+]
+
+[project.scripts]
+remote-web-typing = "remote_web_typing:main"
+
+[build-system]
+requires = ["uv_build>=0.8.14,<0.9.0"]
+build-backend = "uv_build"
