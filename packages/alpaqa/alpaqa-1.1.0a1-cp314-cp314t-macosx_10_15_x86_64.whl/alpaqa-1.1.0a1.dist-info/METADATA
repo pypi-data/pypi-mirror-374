@@ -1,0 +1,99 @@
+Metadata-Version: 2.4
+Name: alpaqa
+Version: 1.1.0a1
+Summary: Augmented Lagrangian and PANOC solvers for nonconvex numerical optimization.
+Keywords: optimization,panoc,alm,mpc
+Author-Email: Pieter P <pieter.p.dev@outlook.com>
+License-Expression: LGPL-3.0-or-later
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: MacOS
+Classifier: Typing :: Typed
+Project-URL: Documentation, https://kul-optec.github.io/alpaqa
+Project-URL: Source, https://github.com/kul-optec/alpaqa
+Project-URL: Bug Tracker, https://github.com/kul-optec/alpaqa/issues
+Requires-Python: >=3.9
+Requires-Dist: numpy<3
+Provides-Extra: casadi
+Requires-Dist: casadi~=3.7.1; extra == "casadi"
+Requires-Dist: cmake<5,>=3.28; extra == "casadi"
+Requires-Dist: ninja<2,>=1.11.1; extra == "casadi"
+Provides-Extra: docs
+Requires-Dist: breathe~=4.36.0; extra == "docs"
+Requires-Dist: sphinx~=8.2.3; extra == "docs"
+Requires-Dist: sphinx-tabs~=3.4.7; extra == "docs"
+Requires-Dist: sphinxcontrib-matlabdomain~=0.22.1; extra == "docs"
+Requires-Dist: sphinxcontrib-moderncmakedomain~=3.29.0; extra == "docs"
+Requires-Dist: furo==2025.7.19; extra == "docs"
+Requires-Dist: casadi~=3.7.1; extra == "docs"
+Requires-Dist: cmake<5,>=3.28; extra == "docs"
+Requires-Dist: ninja<2,>=1.11.1; extra == "docs"
+Requires-Dist: matplotlib; extra == "docs"
+Provides-Extra: test
+Requires-Dist: pytest<9,>=7.2.0; extra == "test"
+Requires-Dist: qpalm~=1.2.1; extra == "test"
+Requires-Dist: scipy<2,>=1.9.3; extra == "test"
+Requires-Dist: casadi~=3.7.1; extra == "test"
+Requires-Dist: cmake<5,>=3.28; extra == "test"
+Requires-Dist: ninja<2,>=1.11.1; extra == "test"
+Description-Content-Type: text/x-rst
+
+alpaqa
+======
+
+``alpaqa`` is an efficient implementation of an augmented Lagrangian method for
+general nonlinear programming problems, which uses the first-order, matrix-free
+PANOC algorithm as an inner solver.
+The numerical algorithms themselves are implemented in C++ for optimal
+performance, and they are exposed as an easy-to-use Python package. An
+experimental MATLAB interface is available as well.
+
+The solvers in this library solve minimization problems of the following form:
+
+.. math::
+
+    \begin{aligned}
+        & \underset{x}{\textbf{minimize}}
+        & & f(x) &&&& f : {{\rm I\mathchoice{\hspace{-2pt}}{\hspace{-2pt}}{\hspace{-1.75pt}}{\hspace{-1.7pt}}R}}^n \rightarrow {{\rm I\mathchoice{\hspace{-2pt}}{\hspace{-2pt}}{\hspace{-1.75pt}}{\hspace{-1.7pt}}R}} \\
+        & \textbf{subject to}
+        & & \underline{x} \le x \le \overline{x} \\
+        &&& \underline{z} \le g(x) \le \overline{z} &&&& g : {{\rm I\mathchoice{\hspace{-2pt}}{\hspace{-2pt}}{\hspace{-1.75pt}}{\hspace{-1.7pt}}R}}^n \rightarrow {{\rm I\mathchoice{\hspace{-2pt}}{\hspace{-2pt}}{\hspace{-1.75pt}}{\hspace{-1.7pt}}R}}^m
+    \end{aligned}
+
+Documentation
+-------------
+
+- `Documentation (Sphinx) <https://kul-optec.github.io/alpaqa/1.1.0a1/Sphinx/index.html>`_
+- `Python examples <https://kul-optec.github.io/alpaqa/1.1.0a1/Sphinx/examples/index.html>`_
+- `Documentation (Doxygen) <https://kul-optec.github.io/alpaqa/1.1.0a1/Doxygen/index.html>`_
+- `C++ examples <https://kul-optec.github.io/alpaqa/1.1.0a1/Doxygen/examples.html>`_
+- `Matlab documentation <https://kul-optec.github.io/alpaqa/1.1.0a1/Sphinx/reference/matlab-api.html>`_
+
+Installation
+------------
+
+The Python interface can be installed directly from PyPI:
+
+.. code-block:: sh
+
+    python3 -m pip install --upgrade --pre alpaqa
+
+For more information, please see the full
+`installation instructions <https://kul-optec.github.io/alpaqa/1.1.0a1/Sphinx/install/installation.html>`_.
+
+Publications
+------------
+
+- `P. Pas, M. Schuurmans, and P. Patrinos, “Alpaqa: A matrix-free solver for nonlinear MPC and large-scale nonconvex optimization,” 20th European Control Conference (ECC), Jul. 2022 (arXiv) <https://arxiv.org/abs/2112.02370>`_
