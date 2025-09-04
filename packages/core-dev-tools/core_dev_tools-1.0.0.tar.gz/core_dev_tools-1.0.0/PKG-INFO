@@ -1,0 +1,44 @@
+Metadata-Version: 2.4
+Name: core-dev-tools
+Version: 1.0.0
+Summary: This library provides common tools used for development...
+Author-email: Alejandro Cora González <alek.cora.glez@gmail.com>
+Maintainer: Alejandro Cora González
+License: MIT
+Project-URL: Homepage, https://gitlab.com/bytecode-solutions/core/core-dev-tools
+Project-URL: Repository, https://gitlab.com/bytecode-solutions/core/core-dev-tools
+Project-URL: Documentation, https://core-dev-tools.readthedocs.io/en/latest/
+Project-URL: Issues, https://gitlab.com/bytecode-solutions/core/core-dev-tools/-/issues
+Project-URL: Changelog, https://gitlab.com/bytecode-solutions/core/core-dev-tools/-/blob/master/CHANGELOG.md
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Developers
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Utilities
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: bandit>=1.8.6
+Requires-Dist: mypy>=1.17.1
+Requires-Dist: pip-audit>=2.9.0
+Requires-Dist: pylint>=3.3.8
+Requires-Dist: pydata-sphinx-theme>=0.16.1
+Requires-Dist: pyright>=1.1.404
+Requires-Dist: ruff>=0.12.11
+Requires-Dist: setuptools>=61.0.0
+Requires-Dist: Sphinx>=8.2.3; python_version >= "3.11"
+Requires-Dist: Sphinx==7.4.7; python_version >= "3.9" and python_version < "3.11"
+Requires-Dist: types-setuptools>=62.6.1
+Requires-Dist: taskipy>=1.14.1
+Requires-Dist: tox>=4.29.0
+Requires-Dist: uv>=0.8.14
+Requires-Dist: wheel>=0.45.0
+Dynamic: license-file

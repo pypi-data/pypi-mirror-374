@@ -1,0 +1,19 @@
+bandit>=1.8.6
+mypy>=1.17.1
+pip-audit>=2.9.0
+pylint>=3.3.8
+pydata-sphinx-theme>=0.16.1
+pyright>=1.1.404
+ruff>=0.12.11
+setuptools>=61.0.0
+types-setuptools>=62.6.1
+taskipy>=1.14.1
+tox>=4.29.0
+uv>=0.8.14
+wheel>=0.45.0
+
+[:python_version >= "3.11"]
+Sphinx>=8.2.3
+
+[:python_version >= "3.9" and python_version < "3.11"]
+Sphinx==7.4.7
