@@ -1,0 +1,47 @@
+[project]
+name = "fffio"
+dynamic = []
+authors = [
+    { name = "yamakox", email = "yamakox@gmail.com" }
+]
+description = "Python package of FFmpeg Frame Input/Output"
+readme = "README.md"
+license = "MIT"
+license-files = [ "LICENSE" ]
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta", 
+]
+dependencies = [
+    "ffmpeg-python>=0.2.0",
+    "numpy>=2.0.0",
+]
+version = "0.6.0"
+
+[project.urls]
+Homepage = "https://github.com/yamakox/fffio"
+Issues = "https://github.com/yamakox/fffio/issues"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[dependency-groups]
+dev = [
+    "pillow>=11.3.0",
+    "sphinx>=8.2.3,<8.3.0",
+    "sphinx-rtd-theme>=3.0.2,<3.1.0",
+]
+
+[tool.poetry]
+packages = [{include = "fffio", from = "src"}]
+
+[tool.poetry.requires-plugins]
+poetry-dynamic-versioning = {version = ">=1.0.0,<2.0.0", extras = ["plugin"]}
+
+[tool.poetry-dynamic-versioning]
+enable = false
+pattern = "(?P<base>\\d+\\.\\d+\\.\\d+)"
