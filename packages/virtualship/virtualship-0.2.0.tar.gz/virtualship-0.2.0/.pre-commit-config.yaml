@@ -1,0 +1,27 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+        exclude: .*\.zarr/
+      - id: check-yaml
+      - id: check-ast
+      - id: check-json
+        types: [text]
+        files: \.(json|ipynb)$
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.6
+    hooks:
+      - id: ruff
+        args: [--fix, --show-fixes]
+      - id: ruff
+        name: ruff (isort jupyter)
+        args: [--select, I, --fix]
+        types_or: [jupyter]
+      - id: ruff-format
+        types_or: [python, jupyter]
+  - repo: https://github.com/rbubley/mirrors-prettier # Update mirror as official mirror is deprecated
+    rev: v3.5.1
+    hooks:
+      - id: prettier

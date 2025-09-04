@@ -1,0 +1,193 @@
+Metadata-Version: 2.4
+Name: virtualship
+Version: 0.2.0
+Summary: Code for the Virtual Ship Classroom, where Marine Scientists can combine Copernicus Marine Data with an OceanParcels ship to go on a virtual expedition.
+Author: oceanparcels.org team
+License: MIT License
+        
+        Copyright (c) 2023 OceanParcels
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://oceanparcels.org/
+Project-URL: Repository, https://github.com/OceanParcels/virtualship
+Project-URL: Documentation, https://virtualship.readthedocs.io/
+Project-URL: Bug Tracker, https://github.com/OceanParcels/virtualship/issues
+Project-URL: Changelog, https://github.com/OceanParcels/virtualship/releases
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Education
+Classifier: Intended Audience :: Education
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: click
+Requires-Dist: parcels>3.1.0
+Requires-Dist: pyproj<4,>=3
+Requires-Dist: sortedcontainers==2.4.0
+Requires-Dist: opensimplex==0.4.5
+Requires-Dist: numpy<2,>=1
+Requires-Dist: pydantic<3,>=2
+Requires-Dist: PyYAML
+Requires-Dist: copernicusmarine>=2.2.2
+Requires-Dist: yaspin
+Requires-Dist: textual
+Dynamic: license-file
+
+<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./docs/_static/virtual_ship_logo_inverted.png">
+  <img alt="VirtualShipParcels logo'" width="200" src="./docs/_static/virtual_ship_logo.png">
+</picture>
+</p>
+
+<!-- Badges -->
+
+[![Anaconda-release](https://anaconda.org/conda-forge/virtualship/badges/version.svg)](https://anaconda.org/conda-forge/virtualship/)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/virtualship)
+[![DOI](https://zenodo.org/badge/682478059.svg)](https://doi.org/10.5281/zenodo.14013931)
+[![unit-tests](https://github.com/OceanParcels/virtualship/actions/workflows/ci.yml/badge.svg)](https://github.com/OceanParcels/virtualship/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/OceanParcels/virtualship/graph/badge.svg?token=SLGLN8QBLW)](https://codecov.io/gh/OceanParcels/virtualship)
+
+<!-- Zenodo badge -->
+
+---
+
+<!-- SPHINX-START -->
+<table>
+    <tr>
+        <th>Project Owner</th>
+        <td>Emma Daniels (e.e.daniels1@uu.nl)</td>
+    </tr>
+    <tr>
+        <!-- Should mirror pyproject.toml. Use one of the "Development status" flags from https://pypi.org/classifiers/-->
+        <th>Development status</th>
+        <td>Alpha</td>
+    </tr>
+</table>
+
+<!-- Insert catchy summary -->
+
+VirtualShipParcels is a command line simulator allowing students to plan and conduct a virtual research expedition, receiving measurements as if they were coming from actual oceanographic instruments including:
+
+- ADCP (currents)
+- CTD (conductivity and temperature)
+- XBT (temperature)
+- underwater measurements (salinity and temperature)
+- surface drifters
+- argo float deployments
+
+<!-- TODO: future. Along the way students will encounter difficulties such as: -->
+
+## Installation
+
+For a normal installation do:
+
+```bash
+conda create -n ship -c conda-forge virtualship
+conda activate ship
+```
+
+which creates an environment named `ship` with the latest version of `virtualship`. You can replace `ship` with any name you like.
+
+For a development installation, please follow the instructions detailed in the [contributing page](https://virtualship.readthedocs.io/en/latest/contributing/index.html).
+
+## Usage
+
+```console
+$ virtualship --help
+Usage: virtualship [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --version  Show the version and exit.
+  --help     Show this message and exit.
+
+Commands:
+  fetch  Download input data for an expedition.
+  init   Initialize a directory for a new expedition, with an example...
+  run    Run the expedition.
+```
+
+```console
+$ virtualship init --help
+Usage: virtualship init [OPTIONS] PATH
+
+  Initialize a directory for a new expedition, with an example schedule and
+  ship config files.
+
+Options:
+  --help  Show this message and exit.
+```
+
+```console
+
+$ virtualship fetch --help
+Usage: virtualship fetch [OPTIONS] PATH
+
+  Download input data for an expedition.
+
+  Entrypoint for the tool to download data based on space-time region provided
+  in the schedule file. Data is downloaded from Copernicus Marine, credentials
+  for which can be obtained via registration:
+  https://data.marine.copernicus.eu/register . Credentials can be provided on
+  prompt, via command line arguments, or via a YAML config file. Run
+  `virtualship fetch` on a expedition for more info.
+
+Options:
+  --username TEXT  Copernicus Marine username.
+  --password TEXT  Copernicus Marine password.
+  --help           Show this message and exit.
+```
+
+```console
+$ virtualship run --help
+Usage: virtualship run [OPTIONS] PATH
+
+  Run the expedition.
+
+Options:
+  --help  Show this message and exit.
+```
+
+For examples, see [the tutorials section of our documentation](https://virtualship.readthedocs.io/en/latest/user-guide/tutorials/index.html).
+
+## Input data
+
+The scripts are written to work with [A-grid ocean data from the Copernicus Marine Service](https://data.marine.copernicus.eu/product/GLOBAL_ANALYSISFORECAST_PHY_001_024/description).
+
+## Source code
+
+The code for this project is [hosted on GitHub](https://github.com/OceanParcels/virtualship).
+
+### Contributors
+
+<a href="https://github.com/oceanparcels/virtualship/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=oceanparcels/virtualship" />
+</a>
+
+**All contributions are welcome! See the [contributing page](https://virtualship.readthedocs.io/en/latest/contributing/index.html) in our documentation to see how to get involved.**
+Image made with [contrib.rocks](https://contrib.rocks).

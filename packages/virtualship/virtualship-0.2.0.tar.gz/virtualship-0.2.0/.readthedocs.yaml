@@ -1,0 +1,18 @@
+# Read the Docs configuration file
+# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+
+version: 2
+sphinx:
+  configuration: docs/conf.py
+build:
+  os: ubuntu-22.04
+  tools:
+    python: mambaforge-22.9
+  jobs:
+    pre_build:
+      - pip install .
+      - sphinx-build -b linkcheck docs/ _build/linkcheck
+      - sphinx-apidoc -o docs/api/ --module-first --no-toc --force src/virtualship
+
+conda:
+  environment: environment.yml

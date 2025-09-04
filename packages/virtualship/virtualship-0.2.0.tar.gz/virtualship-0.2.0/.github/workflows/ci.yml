@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash -el {0}
+
+env:
+  # Many color libraries just need this to be set to any value, but at least
+  # one distinguishes color depth, where "3" -> "256-bit color".
+  FORCE_COLOR: 3
+
+jobs:
+  tests:
+    name: tests (${{ matrix.runs-on }} | Python ${{ matrix.python-version }})
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+        runs-on: [ubuntu-latest, windows-latest, macos-14]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: ship
+          environment-file: environment.yml
+          create-args: >-
+            python=${{matrix.python-version}}
+
+      - run: pip install . --no-deps
+
+      - name: Test package
+        run: >-
+          python -m pytest -ra --cov --cov-report=xml --cov-report=term
+          --durations=20
+
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v5.4.0
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+  typechecking:
+    name: mypy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: ship
+          environment-file: environment.yml
+          create-args: >-
+            python=3.12
+
+      - run: pip install . --no-deps
+      - run: conda install lxml # dep for report generation
+      - name: Typechecking
+        run: |
+          mypy --install-types --non-interactive src/virtualship --html-report mypy-report
+      - name: Upload test results
+        if: ${{ always() }} # Upload even on mypy error
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mypy report
+          path: mypy-report
