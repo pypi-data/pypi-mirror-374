@@ -1,0 +1,93 @@
+[project]
+name = "protein-turnover"
+version = "0.6.1"
+description = "protein turnover pipeline"
+authors = [{ name = "Ian Castleden", email = "ian.castleden@uwa.edu.au" }]
+requires-python = ">=3.11"
+readme = "README.md"
+license = "MIT"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = [
+    "pymzml>=2.5.11,<3",
+    "pyteomics>=4.5.3,<5",
+    "lxml>=6.0.0,<7",
+    "click>=8.1.3,<9",
+    "scipy>=1.15,<2",
+    "pandas>=2.2.3,<3",
+    "pyarrow>=19.0.0,<22",
+    "more-itertools>=10.6.0,<11",
+    "matplotlib>=3.10.0,<4",
+    "SQLAlchemy>=2.0.20,<3",
+    "tomli-w>=1.2.0,<2",
+    "typing-extensions>=4.12.2,<5",
+]
+
+[project.optional-dependencies]
+unidecode = ["unidecode>=1.3.8,<2"]
+psutil = ["psutil>=7.0,<8"]
+all = ["psutil>=7.0,<8", "unidecode>=1.3.8,<2"]
+
+[project.urls]
+Repository = "https://github.com/arabidopsis/protein_turnover.git"
+
+[project.scripts]
+turnover = "protein_turnover.__main__:cli"
+
+[dependency-groups]
+dev = [
+    "aiosmtpd>=1.4.6",
+    "coverage>=7.10.4",
+    "pytest>=8.4.1",
+    "pytest-cov>=6.2.1",
+    "tqdm>=4.67.1",
+]
+# unused...
+unimod = ["requests>=2.28.1,<3"]
+
+[tool.hatch.build.targets.sdist]
+include = ["protein_turnover"]
+exclude = ["tests/**"]
+
+[tool.hatch.build.targets.wheel]
+include = ["protein_turnover"]
+exclude = ["tests/**"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.mypy]
+ignore_missing_imports = true
+
+[tool.ruff.lint]
+# lambda expressions
+ignore = ['E731']
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+[tool.coverage.run]
+branch = true
+source = ["protein_turnover"]
+omit = [
+    "fabfile.py",
+    "protein_turnover/dinosaur/**",
+    "protein_turnover/sqla/iso_peaks.py",
+    "protein_turnover/sqla/iso_peaks_ui.py",
+    "protein_turnover/types/**",
+    "protein_turnover/api.py",
+    "protein_turnover/website.py",
+    "protein_turnover/unimod.py",
+    "protein_turnover/old_iso_dist.py",
+    "tests/testSlugify.py",
+    "tests/testprotxml.py",
+    "tests/testpepxml.py",
+    "tests/testmz.py",
+    "tests/testmzml.py",
+    "tests/__main__.py",
+    "tests/cli.py",
+]
