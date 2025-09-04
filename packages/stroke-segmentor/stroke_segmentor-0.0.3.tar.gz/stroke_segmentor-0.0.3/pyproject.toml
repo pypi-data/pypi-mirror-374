@@ -1,0 +1,48 @@
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.poetry-dynamic-versioning]
+enable = false
+
+[tool.poetry]
+name = "stroke_segmentor"
+version = "0.0.3"
+description = ""
+authors = ["Marcel Rosier <marcel.rosier@tum.de>"]
+repository = "https://github.com/BrainLesion/stroke_segmentor"
+homepage = "https://github.com/BrainLesion/stroke_segmentor"
+documentation = "https://www.TODO.com"
+readme = "README.md"
+
+
+# Add the exclude field directly under [tool.poetry]
+exclude = ["examples", "benchmark"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+rich = "^13.9.4"
+monai = "^1.5.0"
+simpleitk = ">=2.2.1"
+nibabel = "^5.3.2"
+loguru = "^0.7.3"
+requests = "^2.32.5"
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=8.0.0"
+pytest-cov = ">=5.0.0"
+flake8 = ">=5.0.1"
+pytest-mock = "^3.14.1"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+Sphinx = ">=7.0.0"
+sphinx-copybutton = ">=0.5.2"
+furo = ">=2024.8.6"
+myst-parser = ">=2.0.0"
