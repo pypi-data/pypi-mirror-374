@@ -1,0 +1,80 @@
+theme: jekyll-theme-minimal
+title: AxiomTradeAPI-py
+description: The Professional Python SDK for Solana Trading on Axiom Trade. Build advanced trading bots, monitor portfolios, and automate DeFi strategies with enterprise-grade reliability.
+
+# Site settings
+url: "https://chipadevteam.github.io"
+baseurl: "/AxiomTradeAPI-py"
+
+# Author information
+author:
+  name: ChipaDevTeam
+  email: chipadevteam@gmail.com
+  url: https://shop.chipatrade.com
+
+# Social links
+github_username: ChipaDevTeam
+discord_invite: https://discord.gg/p7YyFqSmAz
+
+# SEO settings
+logo: /assets/logo.png
+social:
+  name: AxiomTradeAPI-py
+  links:
+    - https://github.com/ChipaDevTeam/AxiomTradeAPI-py
+    - https://discord.gg/p7YyFqSmAz
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Collections
+collections:
+  guides:
+    output: true
+    permalink: /:collection/:name/
+
+# Navigation
+navigation:
+  - name: Home
+    url: /
+  - name: Getting Started
+    url: /getting-started/
+  - name: API Reference
+    url: /api-reference/
+  - name: Guides
+    url: /guides/
+  - name: Support
+    url: /troubleshooting/
+
+# Footer links
+footer_links:
+  - name: GitHub
+    url: https://github.com/ChipaDevTeam/AxiomTradeAPI-py
+  - name: Discord
+    url: https://discord.gg/p7YyFqSmAz
+  - name: Professional Services
+    url: https://shop.chipatrade.com/products/create-your-bot
+
+# Analytics (add your tracking ID)
+google_analytics: # UA-XXXXXXXX-X
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - README.md

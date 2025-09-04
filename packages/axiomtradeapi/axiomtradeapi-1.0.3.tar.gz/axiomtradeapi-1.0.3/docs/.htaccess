@@ -1,0 +1,21 @@
+# URL rewriting for clean URLs on GitHub Pages
+RewriteEngine On
+
+# Handle base URL for GitHub Pages
+RewriteBase /AxiomTradeAPI-py/
+
+# Redirect .html extensions to clean URLs
+RewriteCond %{THE_REQUEST} \s/+AxiomTradeAPI-py/([^.\s?]*)(\.html)[\s?] [NC]
+RewriteRule ^ /AxiomTradeAPI-py/%1? [R=301,L]
+
+# Internal rewrite for clean URLs - check if HTML file exists
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/AxiomTradeAPI-py/$1.html -f
+RewriteRule ^([^/]+)/?$ $1.html [L]
+
+# For subdirectories with clean URLs
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/AxiomTradeAPI-py/$1/index.html -f
+RewriteRule ^([^/]+)/?$ $1/index.html [L]

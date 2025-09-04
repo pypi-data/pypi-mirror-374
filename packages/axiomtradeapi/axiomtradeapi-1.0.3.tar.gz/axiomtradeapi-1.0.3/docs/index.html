@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AxiomTradeAPI-py - Professional Python SDK for Solana Trading</title>
+    <meta name="description" content="Build advanced trading bots, monitor portfolios, and automate Solana DeFi strategies with enterprise-grade reliability">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-code-branch nav-icon"></i>
+                <span class="nav-title">AxiomTradeAPI-py</span>
+            </div>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#getting-started" class="nav-link">Getting Started</a>
+                <a href="#documentation" class="nav-link">Docs</a>
+                <a href="#api-reference" class="nav-link">API</a>
+                <a href="#examples" class="nav-link">Examples</a>
+                <a href="#community" class="nav-link">Community</a>
+            </div>
+            
+            <div class="nav-actions">
+                <a href="https://github.com/ChipaDevTeam/AxiomTradeAPI-py" class="btn btn-outline" target="_blank">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+                <a href="https://discord.gg/p7YyFqSmAz" class="btn btn-primary" target="_blank">
+                    <i class="fab fa-discord"></i> Join Discord
+                </a>
+            </div>
+            
+            <div class="nav-toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-background">
+            <div class="hero-particles"></div>
+        </div>
+        
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badges">
+                    <span class="badge badge-success">
+                        <i class="fas fa-check-circle"></i> Production Ready
+                    </span>
+                    <span class="badge badge-info">
+                        <i class="fab fa-python"></i> Python 3.8+
+                    </span>
+                    <span class="badge badge-warning">
+                        <i class="fas fa-bolt"></i> Real-time
+                    </span>
+                </div>
+                
+                <h1 class="hero-title">
+                    Professional Python SDK for 
+                    <span class="gradient-text">Solana Trading</span>
+                </h1>
+                
+                <p class="hero-description">
+                    Build advanced trading bots, monitor portfolios, and automate Solana DeFi strategies 
+                    with enterprise-grade reliability and sub-millisecond WebSocket updates.
+                </p>
+                
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-number">< 10ms</div>
+                        <div class="stat-label">WebSocket Latency</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">99.9%</div>
+                        <div class="stat-label">Uptime</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">1000+</div>
+                        <div class="stat-label">Batch Operations</div>
+                    </div>
+                </div>
+                
+                <div class="hero-actions">
+                    <a href="#getting-started" class="btn btn-primary btn-large">
+                        <i class="fas fa-rocket"></i> Get Started
+                    </a>
+                    <a href="#examples" class="btn btn-outline btn-large">
+                        <i class="fas fa-code"></i> View Examples
+                    </a>
+                </div>
+                
+                <div class="hero-install">
+                    <div class="install-command">
+                        <code>pip install axiomtradeapi</code>
+                        <button class="copy-btn" data-copy="pip install axiomtradeapi">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Powerful Features for Professional Trading</h2>
+                <p class="section-description">
+                    Everything you need to build sophisticated Solana trading applications
+                </p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="feature-title">Real-time WebSocket</h3>
+                    <p class="feature-description">
+                        Sub-millisecond token updates with automatic reconnection and heartbeat monitoring
+                    </p>
+                    <div class="feature-highlight">
+                        <span class="highlight-badge">< 10ms latency</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3 class="feature-title">Portfolio Tracking</h3>
+                    <p class="feature-description">
+                        Multi-wallet balance monitoring with batch operations for up to 1000 addresses
+                    </p>
+                    <div class="feature-highlight">
+                        <span class="highlight-badge">1000+ wallets/request</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="feature-title">Trading Automation</h3>
+                    <p class="feature-description">
+                        Advanced bot frameworks with built-in risk management and position sizing
+                    </p>
+                    <div class="feature-highlight">
+                        <span class="highlight-badge">Enterprise-grade</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Enterprise Security</h3>
+                    <p class="feature-description">
+                        Production-grade authentication with automatic token refresh and validation
+                    </p>
+                    <div class="feature-highlight">
+                        <span class="highlight-badge">JWT authentication</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">Market Data</h3>
+                    <p class="feature-description">
+                        Comprehensive Solana market information with price feeds and volume analysis
+                    </p>
+                    <div class="feature-highlight">
+                        <span class="highlight-badge">Real-time data</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3 class="feature-title">Batch Operations</h3>
+                    <p class="feature-description">
+                        Efficient bulk operations with automatic batching and connection pooling
+                    </p>
+                    <div class="feature-highlight">
+                        <span class="highlight-badge">High performance</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Section -->
+    <section id="getting-started" class="getting-started">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Get Started in Minutes</h2>
+                <p class="section-description">
+                    From installation to your first trading bot in just a few steps
+                </p>
+            </div>
+            
+            <div class="quickstart-tabs">
+                <div class="tab-nav">
+                    <button class="tab-btn active" data-tab="installation">
+                        <i class="fas fa-download"></i> Installation
+                    </button>
+                    <button class="tab-btn" data-tab="basic-usage">
+                        <i class="fas fa-play"></i> Basic Usage
+                    </button>
+                    <button class="tab-btn" data-tab="websocket">
+                        <i class="fas fa-wifi"></i> WebSocket
+                    </button>
+                    <button class="tab-btn" data-tab="trading-bot">
+                        <i class="fas fa-robot"></i> Trading Bot
+                    </button>
+                </div>
+                
+                <div class="tab-content">
+                    <div class="tab-pane active" id="installation">
+                        <div class="code-example">
+                            <div class="code-header">
+                                <span class="code-title">Installation</span>
+                                <button class="copy-btn" data-copy="pip install axiomtradeapi">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code class="language-bash">pip install axiomtradeapi</code></pre>
+                        </div>
+                        
+                        <div class="step-description">
+                            <h4>System Requirements</h4>
+                            <ul>
+                                <li>Python 3.8 or higher</li>
+                                <li>Windows 10+, macOS 10.15+, or Linux (Ubuntu 18.04+)</li>
+                                <li>At least 4GB RAM</li>
+                                <li>Stable internet connection</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane" id="basic-usage">
+                        <div class="code-example">
+                            <div class="code-header">
+                                <span class="code-title">Basic Balance Query</span>
+                                <button class="copy-btn" data-copy='from axiomtradeapi import AxiomTradeClient
+
+# Initialize client
+client = AxiomTradeClient()
+
+# Get wallet balance
+balance = client.GetBalance("BJBgjyDZx5FSsyJf6bFKVXuJV7DZY9PCSMSi5d9tcEVh")
+print(f"Balance: {balance[\"sol\"]} SOL")'>
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code class="language-python">from axiomtradeapi import AxiomTradeClient
+
+# Initialize client
+client = AxiomTradeClient()
+
+# Get wallet balance
+balance = client.GetBalance("BJBgjyDZx5FSsyJf6bFKVXuJV7DZY9PCSMSi5d9tcEVh")
+print(f"Balance: {balance['sol']} SOL")</code></pre>
+                        </div>
+                        
+                        <div class="step-description">
+                            <h4>Response Format</h4>
+                            <pre><code class="language-json">{
+  "sol": 1.234567890,
+  "lamports": 1234567890,
+  "slot": 344031778
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane" id="websocket">
+                        <div class="code-example">
+                            <div class="code-header">
+                                <span class="code-title">Real-time Token Monitoring</span>
+                                <button class="copy-btn" data-copy='import asyncio
+
+async def handle_new_tokens(tokens):
+    for token in tokens:
+        print(f"New token: {token[\"tokenName\"]}")
+
+async def monitor():
+    client = AxiomTradeClient(auth_token="your-token")
+    await client.subscribe_new_tokens(handle_new_tokens)
+    await client.ws.start()
+
+asyncio.run(monitor())'>
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code class="language-python">import asyncio
+
+async def handle_new_tokens(tokens):
+    for token in tokens:
+        print(f"New token: {token['tokenName']}")
+
+async def monitor():
+    client = AxiomTradeClient(auth_token="your-token")
+    await client.subscribe_new_tokens(handle_new_tokens)
+    await client.ws.start()
+
+asyncio.run(monitor())</code></pre>
+                        </div>
+                        
+                        <div class="step-description">
+                            <h4>Authentication Required</h4>
+                            <p>WebSocket features require authentication tokens. Get them from your browser after logging into <a href="https://axiom.trade" target="_blank">axiom.trade</a>.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane" id="trading-bot">
+                        <div class="code-example">
+                            <div class="code-header">
+                                <span class="code-title">Simple Trading Bot</span>
+                                <button class="copy-btn" data-copy='class TokenSniperBot:
+    def __init__(self):
+        self.client = AxiomTradeClient(auth_token="...")
+        self.min_liquidity = 10.0  # SOL
+        
+    async def analyze_token(self, token_data):
+        if token_data[\"liquiditySol\"] > self.min_liquidity:
+            print(f"🎯 Opportunity: {token_data[\"tokenName\"]}")
+            return await self.execute_trade(token_data)
+    
+    async def execute_trade(self, token):
+        # Your trading logic here
+        pass'>
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code class="language-python">class TokenSniperBot:
+    def __init__(self):
+        self.client = AxiomTradeClient(auth_token="...")
+        self.min_liquidity = 10.0  # SOL
+        
+    async def analyze_token(self, token_data):
+        if token_data['liquiditySol'] > self.min_liquidity:
+            print(f"🎯 Opportunity: {token_data['tokenName']}")
+            return await self.execute_trade(token_data)
+    
+    async def execute_trade(self, token):
+        # Your trading logic here
+        pass</code></pre>
+                        </div>
+                        
+                        <div class="step-description">
+                            <h4>Bot Features</h4>
+                            <ul>
+                                <li>Real-time token analysis</li>
+                                <li>Risk management</li>
+                                <li>Position sizing</li>
+                                <li>Automated execution</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Documentation Section -->
+    <section id="documentation" class="documentation">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Complete Documentation</h2>
+                <p class="section-description">
+                    Comprehensive guides and tutorials for every skill level
+                </p>
+            </div>
+            
+            <div class="docs-grid">
+                <div class="docs-category">
+                    <h3 class="category-title">
+                        <i class="fas fa-play-circle"></i> Getting Started
+                    </h3>
+                    
+                    <div class="docs-list">
+                        <a href="#installation-guide" class="doc-item">
+                            <div class="doc-icon">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <div class="doc-content">
+                                <div class="doc-title">Installation Guide</div>
+                                <div class="doc-description">Complete setup with troubleshooting</div>
+                                <div class="doc-meta">
+                                    <span class="doc-time">10 min</span>
+                                    <span class="doc-difficulty beginner">Beginner</span>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <a href="#getting-started-guide" class="doc-item">
+                            <div class="doc-icon">
+                                <i class="fas fa-rocket"></i>
+                            </div>
+                            <div class="doc-content">
+                                <div class="doc-title">Getting Started Tutorial</div>
+                                <div class="doc-description">Step-by-step from zero to trading bot</div>
+                                <div class="doc-meta">
+                                    <span class="doc-time">30 min</span>
+                                    <span class="doc-difficulty beginner">Beginner</span>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <a href="#authentication-guide" class="doc-item">
+                            <div class="doc-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div class="doc-content">
+                                <div class="doc-title">Authentication Setup</div>
+                                <div class="doc-description">Secure API access and token management</div>
+                                <div class="doc-meta">
+                                    <span class="doc-time">15 min</span>
+                                    <span class="doc-difficulty beginner">Beginner</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="docs-category">
+                    <h3 class="category-title">
+                        <i class="fas fa-cogs"></i> Core Features
+                    </h3>
+                    
+                    <div class="docs-list">
+                        <a href="#balance-queries" class="doc-item">
+                            <div class="doc-icon">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div class="doc-content">
+                                <div class="doc-title">Balance Queries</div>
+                                <div class="doc-description">Wallet monitoring and portfolio tracking</div>
+                                <div class="doc-meta">
+                                    <span class="doc-time">20 min</span>
+                                    <span class="doc-difficulty intermediate">Intermediate</span>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <a href="#websocket-guide" class="doc-item">
+                            <div class="doc-icon">
+                                <i class="fas fa-wifi"></i>
+                            </div>
+                            <div class="doc-content">
+                                <div class="doc-title">WebSocket Guide</div>
+                                <div class="doc-description">Real-time data streaming and monitoring</div>
+                                <div class="doc-meta">
+                                    <span class="doc-time">30 min</span>
+                                    <span class="doc-difficulty intermediate">Intermediate</span>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <a href="#trading-bots" class="doc-item">
+                            <div class="doc-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="doc-content">
+                                <div class="doc-title">Trading Bots</div>
+                                <div class="doc-description">Automated strategies and frameworks</div>
+                                <div class="doc-meta">
+                                    <span class="doc-time">45 min</span>
+                                    <span class="doc-difficulty advanced">Advanced</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="docs-category">
+                    <h3 class="category-title">
+                        <i class="fas fa-tools"></i> Advanced Topics
+                    </h3>
+                    
+                    <div class="docs-list">
+                        <a href="#performance" class="doc-item">
+                            <div class="doc-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <div class="doc-content">
+                                <div class="doc-title">Performance Optimization</div>
+                                <div class="doc-description">Scaling and monitoring techniques</div>
+                                <div class="doc-meta">
+                                    <span class="doc-time">25 min</span>
+                                    <span class="doc-difficulty advanced">Advanced</span>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <a href="#security" class="doc-item">
+                            <div class="doc-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="doc-content">
+                                <div class="doc-title">Security Best Practices</div>
+                                <div class="doc-description">Secure deployment guidelines</div>
+                                <div class="doc-meta">
+                                    <span class="doc-time">20 min</span>
+                                    <span class="doc-difficulty all">All Levels</span>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <a href="#troubleshooting" class="doc-item">
+                            <div class="doc-icon">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <div class="doc-content">
+                                <div class="doc-title">Troubleshooting</div>
+                                <div class="doc-description">Solutions for common issues</div>
+                                <div class="doc-meta">
+                                    <span class="doc-time">Reference</span>
+                                    <span class="doc-difficulty all">All Levels</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Reference Section -->
+    <section id="api-reference" class="api-reference">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">API Reference</h2>
+                <p class="section-description">
+                    Complete documentation for all classes, methods, and functions
+                </p>
+            </div>
+            
+            <div class="api-navigation">
+                <div class="api-nav">
+                    <button class="api-nav-btn active" data-section="client">
+                        <i class="fas fa-cube"></i> AxiomTradeClient
+                    </button>
+                    <button class="api-nav-btn" data-section="websocket">
+                        <i class="fas fa-wifi"></i> WebSocket Client
+                    </button>
+                    <button class="api-nav-btn" data-section="auth">
+                        <i class="fas fa-lock"></i> Authentication
+                    </button>
+                    <button class="api-nav-btn" data-section="exceptions">
+                        <i class="fas fa-exclamation-triangle"></i> Exceptions
+                    </button>
+                </div>
+                
+                <div class="api-content">
+                    <div class="api-section active" id="api-client">
+                        <h3>AxiomTradeClient</h3>
+                        <p>The main client class for interacting with the Axiom Trade API.</p>
+                        
+                        <div class="method-card">
+                            <div class="method-header">
+                                <h4 class="method-name">GetBalance(wallet_address)</h4>
+                                <span class="method-type">Method</span>
+                            </div>
+                            <p class="method-description">
+                                Retrieve the SOL balance for a specific wallet address.
+                            </p>
+                            
+                            <div class="method-example">
+                                <div class="code-header">
+                                    <span class="code-title">Example</span>
+                                    <button class="copy-btn" data-copy='balance = client.GetBalance("BJBgjyDZx5FSsyJf6bFKVXuJV7DZY9PCSMSi5d9tcEVh")'>
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                                <pre><code class="language-python">balance = client.GetBalance("BJBgjyDZx5FSsyJf6bFKVXuJV7DZY9PCSMSi5d9tcEVh")</code></pre>
+                            </div>
+                            
+                            <div class="method-params">
+                                <h5>Parameters</h5>
+                                <div class="param">
+                                    <span class="param-name">wallet_address</span>
+                                    <span class="param-type">str</span>
+                                    <span class="param-desc">Valid Solana wallet address (44 characters)</span>
+                                </div>
+                            </div>
+                            
+                            <div class="method-returns">
+                                <h5>Returns</h5>
+                                <pre><code class="language-json">{
+  "sol": 1.234567890,
+  "lamports": 1234567890,
+  "slot": 344031778
+}</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="method-card">
+                            <div class="method-header">
+                                <h4 class="method-name">GetBatchedBalance(wallet_addresses)</h4>
+                                <span class="method-type">Method</span>
+                            </div>
+                            <p class="method-description">
+                                Retrieve balances for multiple wallet addresses in a single request.
+                            </p>
+                            
+                            <div class="method-example">
+                                <div class="code-header">
+                                    <span class="code-title">Example</span>
+                                    <button class="copy-btn" data-copy='addresses = ["wallet1", "wallet2"]
+balances = client.GetBatchedBalance(addresses)'>
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                                <pre><code class="language-python">addresses = ["wallet1", "wallet2"]
+balances = client.GetBatchedBalance(addresses)</code></pre>
+                            </div>
+                            
+                            <div class="method-params">
+                                <h5>Parameters</h5>
+                                <div class="param">
+                                    <span class="param-name">wallet_addresses</span>
+                                    <span class="param-type">List[str]</span>
+                                    <span class="param-desc">List of wallet addresses (max 1000)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="api-section" id="api-websocket">
+                        <h3>WebSocket Client</h3>
+                        <p>Dedicated WebSocket client for real-time data streaming.</p>
+                        
+                        <div class="method-card">
+                            <div class="method-header">
+                                <h4 class="method-name">subscribe_new_tokens(callback)</h4>
+                                <span class="method-type">Async Method</span>
+                            </div>
+                            <p class="method-description">
+                                Subscribe to real-time new token launches via WebSocket.
+                            </p>
+                            
+                            <div class="method-example">
+                                <div class="code-header">
+                                    <span class="code-title">Example</span>
+                                    <button class="copy-btn" data-copy='async def handle_tokens(tokens):
+    print(f"New tokens: {len(tokens)}")
+
+await client.subscribe_new_tokens(handle_tokens)'>
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                                <pre><code class="language-python">async def handle_tokens(tokens):
+    print(f"New tokens: {len(tokens)}")
+
+await client.subscribe_new_tokens(handle_tokens)</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="api-section" id="api-auth">
+                        <h3>Authentication</h3>
+                        <p>Authentication helper class for managing API tokens.</p>
+                        
+                        <div class="method-card">
+                            <div class="method-header">
+                                <h4 class="method-name">refresh_tokens(refresh_token)</h4>
+                                <span class="method-type">Async Method</span>
+                            </div>
+                            <p class="method-description">
+                                Refresh authentication tokens using refresh token.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="api-section" id="api-exceptions">
+                        <h3>Exceptions</h3>
+                        <p>Exception classes for error handling.</p>
+                        
+                        <div class="exception-list">
+                            <div class="exception-item">
+                                <h4>APIError</h4>
+                                <p>Base exception class for API-related errors.</p>
+                            </div>
+                            <div class="exception-item">
+                                <h4>NetworkError</h4>
+                                <p>Exception raised for network connectivity issues.</p>
+                            </div>
+                            <div class="exception-item">
+                                <h4>AuthenticationError</h4>
+                                <p>Exception raised for authentication failures.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Examples Section -->
+    <section id="examples" class="examples">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Code Examples</h2>
+                <p class="section-description">
+                    Real-world examples and use cases for different trading scenarios
+                </p>
+            </div>
+            
+            <div class="examples-grid">
+                <div class="example-card">
+                    <div class="example-header">
+                        <h3 class="example-title">
+                            <i class="fas fa-chart-line"></i>
+                            Portfolio Tracker
+                        </h3>
+                        <span class="example-difficulty beginner">Beginner</span>
+                    </div>
+                    <p class="example-description">
+                        Monitor multiple wallets and track portfolio performance with real-time balance updates.
+                    </p>
+                    <div class="example-features">
+                        <span class="feature-tag">Multi-wallet</span>
+                        <span class="feature-tag">Real-time</span>
+                        <span class="feature-tag">Analytics</span>
+                    </div>
+                    <div class="example-actions">
+                        <button class="btn btn-outline view-code-btn" data-example="portfolio">
+                            <i class="fas fa-code"></i> View Code
+                        </button>
+                        <a href="#" class="btn btn-primary">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="example-card">
+                    <div class="example-header">
+                        <h3 class="example-title">
+                            <i class="fas fa-bell"></i>
+                            Token Sniper Bot
+                        </h3>
+                        <span class="example-difficulty intermediate">Intermediate</span>
+                    </div>
+                    <p class="example-description">
+                        Detect new token launches and analyze them for trading opportunities with customizable filters.
+                    </p>
+                    <div class="example-features">
+                        <span class="feature-tag">WebSocket</span>
+                        <span class="feature-tag">Filters</span>
+                        <span class="feature-tag">Automation</span>
+                    </div>
+                    <div class="example-actions">
+                        <button class="btn btn-outline view-code-btn" data-example="sniper">
+                            <i class="fas fa-code"></i> View Code
+                        </button>
+                        <a href="#" class="btn btn-primary">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="example-card">
+                    <div class="example-header">
+                        <h3 class="example-title">
+                            <i class="fas fa-exchange-alt"></i>
+                            Arbitrage Scanner
+                        </h3>
+                        <span class="example-difficulty advanced">Advanced</span>
+                    </div>
+                    <p class="example-description">
+                        Scan for arbitrage opportunities across different DEXs with profit calculation and execution.
+                    </p>
+                    <div class="example-features">
+                        <span class="feature-tag">Multi-DEX</span>
+                        <span class="feature-tag">Profit calc</span>
+                        <span class="feature-tag">Risk mgmt</span>
+                    </div>
+                    <div class="example-actions">
+                        <button class="btn btn-outline view-code-btn" data-example="arbitrage">
+                            <i class="fas fa-code"></i> View Code
+                        </button>
+                        <a href="#" class="btn btn-primary">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section id="community" class="community">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Join Our Community</h2>
+                <p class="section-description">
+                    Connect with developers, share strategies, and get support
+                </p>
+            </div>
+            
+            <div class="community-grid">
+                <div class="community-card">
+                    <div class="community-icon">
+                        <i class="fab fa-discord"></i>
+                    </div>
+                    <h3 class="community-title">Discord Server</h3>
+                    <p class="community-description">
+                        Join our active Discord community for real-time help, strategy discussions, and announcements.
+                    </p>
+                    <div class="community-stats">
+                        <span class="stat-item">
+                            <i class="fas fa-users"></i> 1,500+ Members
+                        </span>
+                        <span class="stat-item">
+                            <i class="fas fa-comments"></i> 24/7 Support
+                        </span>
+                    </div>
+                    <a href="https://discord.gg/p7YyFqSmAz" class="btn btn-primary" target="_blank">
+                        <i class="fab fa-discord"></i> Join Discord
+                    </a>
+                </div>
+                
+                <div class="community-card">
+                    <div class="community-icon">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <h3 class="community-title">GitHub Repository</h3>
+                    <p class="community-description">
+                        Contribute to the project, report issues, and access the latest source code and examples.
+                    </p>
+                    <div class="community-stats">
+                        <span class="stat-item">
+                            <i class="fas fa-star"></i> 500+ Stars
+                        </span>
+                        <span class="stat-item">
+                            <i class="fas fa-code-branch"></i> Open Source
+                        </span>
+                    </div>
+                    <a href="https://github.com/ChipaDevTeam/AxiomTradeAPI-py" class="btn btn-outline" target="_blank">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+                
+                <div class="community-card">
+                    <div class="community-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="community-title">Professional Services</h3>
+                    <p class="community-description">
+                        Need custom trading solutions? Our expert team can build tailored bots and integrations.
+                    </p>
+                    <div class="community-stats">
+                        <span class="stat-item">
+                            <i class="fas fa-trophy"></i> Expert Team
+                        </span>
+                        <span class="stat-item">
+                            <i class="fas fa-clock"></i> Fast Delivery
+                        </span>
+                    </div>
+                    <a href="https://shop.chipatrade.com/products/create-your-bot" class="btn btn-primary" target="_blank">
+                        <i class="fas fa-handshake"></i> Get Help
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <i class="fas fa-code-branch"></i>
+                        <span>AxiomTradeAPI-py</span>
+                    </div>
+                    <p class="footer-description">
+                        Professional Python SDK for Solana trading with enterprise-grade reliability.
+                    </p>
+                    <div class="footer-social">
+                        <a href="https://discord.gg/p7YyFqSmAz" target="_blank">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                        <a href="https://github.com/ChipaDevTeam/AxiomTradeAPI-py" target="_blank">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://twitter.com/chipadevteam" target="_blank">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Documentation</h4>
+                    <div class="footer-links">
+                        <a href="#getting-started">Getting Started</a>
+                        <a href="#api-reference">API Reference</a>
+                        <a href="#examples">Examples</a>
+                        <a href="#troubleshooting">Troubleshooting</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Resources</h4>
+                    <div class="footer-links">
+                        <a href="#installation-guide">Installation</a>
+                        <a href="#authentication-guide">Authentication</a>
+                        <a href="#websocket-guide">WebSocket Guide</a>
+                        <a href="#performance">Performance</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Community</h4>
+                    <div class="footer-links">
+                        <a href="https://discord.gg/p7YyFqSmAz" target="_blank">Discord Server</a>
+                        <a href="https://github.com/ChipaDevTeam/AxiomTradeAPI-py" target="_blank">GitHub</a>
+                        <a href="https://shop.chipatrade.com/products/create-your-bot" target="_blank">Professional Services</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-legal">
+                    <p>&copy; 2024 ChipaDevTeam. Licensed under MIT License.</p>
+                    <p class="footer-disclaimer">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Trading cryptocurrencies involves substantial risk. Never invest more than you can afford to lose.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Code Modal -->
+    <div id="code-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Code Example</h3>
+                <button class="modal-close" id="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="code-example">
+                    <div class="code-header">
+                        <span class="code-title" id="code-title">Example Code</span>
+                        <button class="copy-btn" id="modal-copy-btn">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <pre><code id="modal-code" class="language-python"></code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top -->
+    <button id="back-to-top" class="back-to-top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

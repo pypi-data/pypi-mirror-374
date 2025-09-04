@@ -1,0 +1,12 @@
+# Telegram Bot Requirements
+# Install with: pip install -r requirements.txt
+
+# Core Telegram bot library
+python-telegram-bot>=20.0
+
+# Environment variable management
+python-dotenv>=1.0.0
+
+# JSON handling (usually built-in, but ensuring compatibility)
+# Note: The main axiomtradeapi package requirements are inherited
+# when running from the project directory

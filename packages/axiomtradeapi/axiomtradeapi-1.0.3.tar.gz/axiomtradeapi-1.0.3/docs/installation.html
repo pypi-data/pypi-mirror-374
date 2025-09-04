@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installation Guide - AxiomTradeAPI-py</title>
+    <meta name="description" content="Complete step-by-step installation guide for AxiomTradeAPI-py, the leading Python SDK for Solana trading bot development.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/docs.css">
+    
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-code-branch nav-icon"></i>
+                <span class="nav-title">AxiomTradeAPI-py</span>
+            </div>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.html#features" class="nav-link">Features</a>
+                <a href="getting-started.html" class="nav-link">Getting Started</a>
+                <a href="#" class="nav-link active">Installation</a>
+                <a href="api-reference.html" class="nav-link">API</a>
+                <a href="index.html#examples" class="nav-link">Examples</a>
+            </div>
+            
+            <div class="nav-actions">
+                <a href="https://github.com/ChipaDevTeam/AxiomTradeAPI-py" class="btn btn-outline" target="_blank">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+                <a href="https://discord.gg/p7YyFqSmAz" class="btn btn-primary" target="_blank">
+                    <i class="fab fa-discord"></i> Join Discord
+                </a>
+            </div>
+            
+            <div class="nav-toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="docs-main">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar -->
+                <aside class="docs-sidebar">
+                    <div class="sidebar-content">
+                        <h3 class="sidebar-title">Installation Guide</h3>
+                        <nav class="sidebar-nav">
+                            <a href="#requirements" class="sidebar-link">
+                                <i class="fas fa-check-circle"></i> Requirements
+                            </a>
+                            <a href="#quick-install" class="sidebar-link">
+                                <i class="fas fa-download"></i> Quick Installation
+                            </a>
+                            <a href="#virtual-env" class="sidebar-link">
+                                <i class="fas fa-box"></i> Virtual Environment
+                            </a>
+                            <a href="#advanced" class="sidebar-link">
+                                <i class="fas fa-cogs"></i> Advanced Options
+                            </a>
+                            <a href="#docker" class="sidebar-link">
+                                <i class="fab fa-docker"></i> Docker Setup
+                            </a>
+                            <a href="#verification" class="sidebar-link">
+                                <i class="fas fa-check"></i> Verification
+                            </a>
+                            <a href="#troubleshooting" class="sidebar-link">
+                                <i class="fas fa-bug"></i> Troubleshooting
+                            </a>
+                        </nav>
+                    </div>
+                </aside>
+
+                <!-- Content -->
+                <div class="docs-content">
+                    <div class="docs-header">
+                        <div class="breadcrumb">
+                            <a href="index.html">Home</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <span>Installation Guide</span>
+                        </div>
+                        
+                        <h1 class="docs-title">Installation Guide</h1>
+                        <p class="docs-description">
+                            Complete step-by-step installation guide for AxiomTradeAPI-py, the leading Python SDK for Solana trading bot development.
+                        </p>
+                        
+                        <div class="docs-meta">
+                            <span class="meta-item">
+                                <i class="fas fa-clock"></i> 10 minutes
+                            </span>
+                            <span class="meta-item difficulty-beginner">
+                                <i class="fas fa-user"></i> Beginner
+                            </span>
+                            <span class="meta-item">
+                                <i class="fas fa-calendar"></i> Last updated: Jan 2024
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Requirements Section -->
+                    <section id="requirements" class="docs-section">
+                        <h2 class="section-heading">
+                            <i class="fas fa-check-circle section-icon"></i>
+                            System Requirements
+                        </h2>
+                        
+                        <div class="requirements-grid">
+                            <div class="requirement-card">
+                                <div class="requirement-icon">
+                                    <i class="fab fa-python"></i>
+                                </div>
+                                <h3>Python Version</h3>
+                                <p>Python 3.8 or higher</p>
+                                <div class="requirement-status recommended">Recommended: 3.10+</div>
+                            </div>
+                            
+                            <div class="requirement-card">
+                                <div class="requirement-icon">
+                                    <i class="fas fa-desktop"></i>
+                                </div>
+                                <h3>Operating System</h3>
+                                <p>Windows 10+, macOS 10.15+, or Linux (Ubuntu 18.04+)</p>
+                                <div class="requirement-status supported">All platforms supported</div>
+                            </div>
+                            
+                            <div class="requirement-card">
+                                <div class="requirement-icon">
+                                    <i class="fas fa-memory"></i>
+                                </div>
+                                <h3>Memory</h3>
+                                <p>At least 4GB RAM</p>
+                                <div class="requirement-status recommended">8GB+ for trading bots</div>
+                            </div>
+                            
+                            <div class="requirement-card">
+                                <div class="requirement-icon">
+                                    <i class="fas fa-wifi"></i>
+                                </div>
+                                <h3>Internet Connection</h3>
+                                <p>Stable connection required</p>
+                                <div class="requirement-status required">For real-time features</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Quick Installation Section -->
+                    <section id="quick-install" class="docs-section">
+                        <h2 class="section-heading">
+                            <i class="fas fa-download section-icon"></i>
+                            Quick Installation
+                        </h2>
+                        
+                        <div class="install-options">
+                            <div class="install-option recommended">
+                                <div class="option-header">
+                                    <h3>
+                                        <i class="fas fa-star"></i>
+                                        Standard Installation (Recommended)
+                                    </h3>
+                                    <span class="option-badge">Most Popular</span>
+                                </div>
+                                
+                                <div class="code-example">
+                                    <div class="code-header">
+                                        <span class="code-title">Install via pip</span>
+                                        <button class="copy-btn" data-copy="pip install axiomtradeapi">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <pre><code class="language-bash">pip install axiomtradeapi</code></pre>
+                                </div>
+                                
+                                <div class="option-description">
+                                    <p>Installs the latest stable version with all core dependencies. Perfect for most users and production environments.</p>
+                                    
+                                    <div class="features-list">
+                                        <div class="feature-item">
+                                            <i class="fas fa-check text-success"></i>
+                                            Latest stable release
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-check text-success"></i>
+                                            All core dependencies included
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-check text-success"></i>
+                                            Production ready
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="install-option">
+                                <div class="option-header">
+                                    <h3>
+                                        <i class="fas fa-code"></i>
+                                        Development Installation
+                                    </h3>
+                                    <span class="option-badge">For Developers</span>
+                                </div>
+                                
+                                <div class="code-example">
+                                    <div class="code-header">
+                                        <span class="code-title">Install with dev dependencies</span>
+                                        <button class="copy-btn" data-copy="pip install axiomtradeapi[dev]">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <pre><code class="language-bash">pip install axiomtradeapi[dev]</code></pre>
+                                </div>
+                                
+                                <div class="option-description">
+                                    <p>Includes additional development tools for contributors and advanced users.</p>
+                                    
+                                    <div class="features-list">
+                                        <div class="feature-item">
+                                            <i class="fas fa-check text-success"></i>
+                                            Testing frameworks (pytest, coverage)
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-check text-success"></i>
+                                            Code formatting tools (black, isort)
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-check text-success"></i>
+                                            Documentation generation
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Virtual Environment Section -->
+                    <section id="virtual-env" class="docs-section">
+                        <h2 class="section-heading">
+                            <i class="fas fa-box section-icon"></i>
+                            Virtual Environment Setup (Best Practice)
+                        </h2>
+                        
+                        <div class="info-box">
+                            <i class="fas fa-lightbulb"></i>
+                            <div>
+                                <strong>Why use virtual environments?</strong>
+                                <p>Virtual environments isolate your project dependencies, preventing conflicts between different projects and ensuring reproducible deployments.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step-by-step">
+                            <div class="step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h3>Create Virtual Environment</h3>
+                                    <div class="code-example">
+                                        <div class="code-header">
+                                            <span class="code-title">Create new environment</span>
+                                            <button class="copy-btn" data-copy="python -m venv axiom_trading_env">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                        <pre><code class="language-bash">python -m venv axiom_trading_env</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h3>Activate Environment</h3>
+                                    <div class="platform-tabs">
+                                        <div class="tab-nav">
+                                            <button class="tab-btn active" data-tab="windows">
+                                                <i class="fab fa-windows"></i> Windows
+                                            </button>
+                                            <button class="tab-btn" data-tab="macos">
+                                                <i class="fab fa-apple"></i> macOS
+                                            </button>
+                                            <button class="tab-btn" data-tab="linux">
+                                                <i class="fab fa-linux"></i> Linux
+                                            </button>
+                                        </div>
+                                        
+                                        <div class="tab-content">
+                                            <div class="tab-pane active" id="windows">
+                                                <div class="code-example">
+                                                    <div class="code-header">
+                                                        <span class="code-title">Windows activation</span>
+                                                        <button class="copy-btn" data-copy="axiom_trading_env\Scripts\activate">
+                                                            <i class="fas fa-copy"></i>
+                                                        </button>
+                                                    </div>
+                                                    <pre><code class="language-bash">axiom_trading_env\Scripts\activate</code></pre>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="tab-pane" id="macos">
+                                                <div class="code-example">
+                                                    <div class="code-header">
+                                                        <span class="code-title">macOS activation</span>
+                                                        <button class="copy-btn" data-copy="source axiom_trading_env/bin/activate">
+                                                            <i class="fas fa-copy"></i>
+                                                        </button>
+                                                    </div>
+                                                    <pre><code class="language-bash">source axiom_trading_env/bin/activate</code></pre>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="tab-pane" id="linux">
+                                                <div class="code-example">
+                                                    <div class="code-header">
+                                                        <span class="code-title">Linux activation</span>
+                                                        <button class="copy-btn" data-copy="source axiom_trading_env/bin/activate">
+                                                            <i class="fas fa-copy"></i>
+                                                        </button>
+                                                    </div>
+                                                    <pre><code class="language-bash">source axiom_trading_env/bin/activate</code></pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h3>Install AxiomTradeAPI-py</h3>
+                                    <div class="code-example">
+                                        <div class="code-header">
+                                            <span class="code-title">Install in virtual environment</span>
+                                            <button class="copy-btn" data-copy="pip install axiomtradeapi">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                        <pre><code class="language-bash">pip install axiomtradeapi</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Docker Section -->
+                    <section id="docker" class="docs-section">
+                        <h2 class="section-heading">
+                            <i class="fab fa-docker section-icon"></i>
+                            Docker Installation
+                        </h2>
+                        
+                        <p class="section-description">
+                            Perfect for production deployments, cloud environments, and containerized trading systems.
+                        </p>
+                        
+                        <div class="docker-examples">
+                            <div class="docker-example">
+                                <h3>Simple Dockerfile</h3>
+                                <div class="code-example">
+                                    <div class="code-header">
+                                        <span class="code-title">Dockerfile</span>
+                                        <button class="copy-btn" data-copy="FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install AxiomTradeAPI-py
+RUN pip install axiomtradeapi
+
+# Copy your trading bot code
+COPY . .
+
+# Run your trading bot
+CMD [&quot;python&quot;, &quot;your_trading_bot.py&quot;]">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <pre><code class="language-dockerfile">FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install AxiomTradeAPI-py
+RUN pip install axiomtradeapi
+
+# Copy your trading bot code
+COPY . .
+
+# Run your trading bot
+CMD ["python", "your_trading_bot.py"]</code></pre>
+                                </div>
+                            </div>
+                            
+                            <div class="docker-example">
+                                <h3>Build and Run</h3>
+                                <div class="code-example">
+                                    <div class="code-header">
+                                        <span class="code-title">Docker commands</span>
+                                        <button class="copy-btn" data-copy="# Build your container
+docker build -t my-solana-bot .
+
+# Run your trading bot
+docker run -d --name solana-bot my-solana-bot
+
+# View logs
+docker logs solana-bot">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <pre><code class="language-bash"># Build your container
+docker build -t my-solana-bot .
+
+# Run your trading bot
+docker run -d --name solana-bot my-solana-bot
+
+# View logs
+docker logs solana-bot</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Verification Section -->
+                    <section id="verification" class="docs-section">
+                        <h2 class="section-heading">
+                            <i class="fas fa-check section-icon"></i>
+                            Installation Verification
+                        </h2>
+                        
+                        <div class="verification-steps">
+                            <div class="verification-step">
+                                <h3>
+                                    <i class="fas fa-play-circle"></i>
+                                    Quick Test
+                                </h3>
+                                <div class="code-example">
+                                    <div class="code-header">
+                                        <span class="code-title">Verify installation</span>
+                                        <button class="copy-btn" data-copy='python -c "from axiomtradeapi import AxiomTradeClient; print(\'✅ Installation successful!\')"'>
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <pre><code class="language-bash">python -c "from axiomtradeapi import AxiomTradeClient; print('✅ Installation successful!')"</code></pre>
+                                </div>
+                            </div>
+                            
+                            <div class="verification-step">
+                                <h3>
+                                    <i class="fas fa-code"></i>
+                                    Complete Test Script
+                                </h3>
+                                <div class="code-example">
+                                    <div class="code-header">
+                                        <span class="code-title">test_installation.py</span>
+                                        <button class="copy-btn" data-copy='import sys
+
+def test_installation():
+    try:
+        from axiomtradeapi import AxiomTradeClient
+        print("✅ AxiomTradeAPI-py imported successfully")
+        
+        client = AxiomTradeClient()
+        print("✅ Client created successfully")
+        
+        print(f"✅ Python version: {sys.version}")
+        print("🎉 Installation verification complete!")
+        
+    except ImportError as e:
+        print(f"❌ Import error: {e}")
+        print("Please check your installation")
+        
+    except Exception as e:
+        print(f"❌ Unexpected error: {e}")
+
+if __name__ == "__main__":
+    test_installation()'>
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <pre><code class="language-python">import sys
+
+def test_installation():
+    try:
+        from axiomtradeapi import AxiomTradeClient
+        print("✅ AxiomTradeAPI-py imported successfully")
+        
+        client = AxiomTradeClient()
+        print("✅ Client created successfully")
+        
+        print(f"✅ Python version: {sys.version}")
+        print("🎉 Installation verification complete!")
+        
+    except ImportError as e:
+        print(f"❌ Import error: {e}")
+        print("Please check your installation")
+        
+    except Exception as e:
+        print(f"❌ Unexpected error: {e}")
+
+if __name__ == "__main__":
+    test_installation()</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Troubleshooting Section -->
+                    <section id="troubleshooting" class="docs-section">
+                        <h2 class="section-heading">
+                            <i class="fas fa-bug section-icon"></i>
+                            Common Issues & Solutions
+                        </h2>
+                        
+                        <div class="troubleshooting-items">
+                            <div class="trouble-item">
+                                <div class="trouble-header">
+                                    <h3>
+                                        <i class="fas fa-exclamation-triangle text-warning"></i>
+                                        "No module named 'axiomtradeapi'"
+                                    </h3>
+                                </div>
+                                <div class="trouble-content">
+                                    <p><strong>Problem:</strong> Python cannot find the installed package.</p>
+                                    <div class="trouble-solutions">
+                                        <div class="solution">
+                                            <h4>Solution 1: Verify Installation</h4>
+                                            <div class="code-example">
+                                                <pre><code class="language-bash">pip list | grep axiomtradeapi</code></pre>
+                                            </div>
+                                        </div>
+                                        <div class="solution">
+                                            <h4>Solution 2: Reinstall Package</h4>
+                                            <div class="code-example">
+                                                <pre><code class="language-bash">pip uninstall axiomtradeapi
+pip install axiomtradeapi</code></pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="trouble-item">
+                                <div class="trouble-header">
+                                    <h3>
+                                        <i class="fas fa-exclamation-triangle text-warning"></i>
+                                        Permission Denied Error
+                                    </h3>
+                                </div>
+                                <div class="trouble-content">
+                                    <p><strong>Problem:</strong> Insufficient permissions to install packages.</p>
+                                    <div class="trouble-solutions">
+                                        <div class="solution">
+                                            <h4>Solution: User Installation</h4>
+                                            <div class="code-example">
+                                                <pre><code class="language-bash">pip install --user axiomtradeapi</code></pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="trouble-item">
+                                <div class="trouble-header">
+                                    <h3>
+                                        <i class="fas fa-exclamation-triangle text-warning"></i>
+                                        Python Version Not Supported
+                                    </h3>
+                                </div>
+                                <div class="trouble-content">
+                                    <p><strong>Problem:</strong> Using Python version older than 3.8.</p>
+                                    <div class="trouble-solutions">
+                                        <div class="solution">
+                                            <h4>Solution: Update Python</h4>
+                                            <p>Download and install Python 3.8+ from <a href="https://python.org" target="_blank">python.org</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Next Steps -->
+                    <section class="docs-section">
+                        <h2 class="section-heading">
+                            <i class="fas fa-arrow-right section-icon"></i>
+                            Next Steps
+                        </h2>
+                        
+                        <div class="next-steps">
+                            <a href="getting-started.html" class="next-step-card">
+                                <div class="step-icon">
+                                    <i class="fas fa-rocket"></i>
+                                </div>
+                                <div class="step-content">
+                                    <h3>Getting Started Tutorial</h3>
+                                    <p>Learn the basics and build your first trading bot</p>
+                                </div>
+                                <div class="step-arrow">
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                            </a>
+                            
+                            <a href="authentication.html" class="next-step-card">
+                                <div class="step-icon">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                                <div class="step-content">
+                                    <h3>Authentication Setup</h3>
+                                    <p>Configure API access and security tokens</p>
+                                </div>
+                                <div class="step-arrow">
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                            </a>
+                            
+                            <a href="api-reference.html" class="next-step-card">
+                                <div class="step-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <div class="step-content">
+                                    <h3>API Reference</h3>
+                                    <p>Complete documentation of all methods and classes</p>
+                                </div>
+                                <div class="step-arrow">
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Back to Top -->
+    <button id="back-to-top" class="back-to-top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
