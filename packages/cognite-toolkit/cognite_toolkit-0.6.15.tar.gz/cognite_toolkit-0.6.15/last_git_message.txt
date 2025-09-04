@@ -1,0 +1,25 @@
+[CDF-25550] ⬆ Support upload assets (#1884)
+
+# Description
+
+This PR just adds the CLI interface and exposes the command to the user.
+All the logic is already implemented.
+<img width="873" height="152" alt="image"
+src="https://github.com/user-attachments/assets/8b2251f2-6f6d-4841-9d5b-f8ea53f52795"
+/>
+
+
+## Changelog
+
+- [x] Patch
+- [ ] Skip
+
+## cdf
+
+### Added
+
+- [alpha] Support for uploading assets to CDF, `cdf upload assets`. 
+
+## templates
+
+No changes.
