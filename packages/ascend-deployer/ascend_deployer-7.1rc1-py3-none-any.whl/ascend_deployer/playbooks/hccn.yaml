@@ -1,0 +1,12 @@
+- hosts: hccn
+  tasks:
+    - name: execute hccn_tool
+      process_hccn:
+        device_ips: "{{ deviceip | default([]) }}"
+        gateways: "{{ gateways | default('') }}"
+        netmask: "{{ netmask | default('') }}"
+        detect_ips: "{{ detectip | default([]) }}"
+        common_network: "{{ common_network | default('') }}"
+        bitmap: "{{ bitmap | default('') }}"
+        dscp_tc: "{{ dscp_tc | default('') }}"
+        roce_port: "{{ roce_port | default('') }}"

@@ -1,0 +1,60 @@
+- hosts:
+    - master[0]
+    - other_build_image
+  name: build image for ascend-device-plugin
+  tasks:
+    - name: build device-plugin image
+      install_device_plugin:
+        resources_dir: "{{ resource_path }}"
+        step: 'build'
+
+    - name: fetch device-plugin image
+      scp:
+        ip: "{{ inventory_hostname }}"
+        port: "{{ansible_ssh_port|default('22')}}"
+        remote_user: "{{ ansible_ssh_user }}"
+        passwd: "{{ ansible_ssh_pass|default('') }}"
+        src: "{{ device_plugin_images }}"
+        dest: "{{ resource_path }}/mindxdl/dlImages/{{ ansible_architecture }}/device-plugin"
+        fetch: 'true'
+      delegate_to: localhost
+
+- hosts:
+    - npu_node
+  tasks:
+    - name: get ascend-device-plugin label
+      label_node:
+        step: 'get_label'
+        ansible_run_tags: "ascend-device-plugin"
+        node_name: "{{ NODE_NAME }}"
+
+- hosts:
+    - worker
+  name: install or upgrade ascend-device-plugin
+  tasks:
+    - name: push images to remote
+      scp:
+        ip: "{{ inventory_hostname }}"
+        port: "{{ansible_ssh_port|default('22')}}"
+        remote_user: "{{ ansible_ssh_user }}"
+        passwd: "{{ ansible_ssh_pass|default('') }}"
+        src: "{{ resource_path }}/mindxdl/dlImages/{{ ansible_architecture }}/device-plugin/*"
+        dest: "{{ resource_path }}/mindxdl/dlImages/{{ ansible_architecture }}/device-plugin/"
+      delegate_to: localhost
+
+    - name: install device-plugin
+      install_device_plugin:
+        resources_dir: "{{ resource_path }}"
+        node_name: "{{ NODE_NAME }}"
+        container_runtime_type: "{{ hostvars[groups['master'][0]].container_runtime_type }}"
+        step: 'install'
+
+    - name: apply device-plugin
+      run_once: yes
+      install_device_plugin:
+        resources_dir: "{{ resource_path }}"
+        step: 'apply'
+        labels: "{{ groups.get('npu_node', []) | default([groups['worker'][0]], true) 
+                | map('extract', hostvars, 'node_label') | map('default', {}) | list | combine(recursive=True)}}"
+      delegate_to: "{{ groups['master'][0] }}"
+      when: apply_yaml

@@ -1,0 +1,17 @@
+- hosts: '{{ hosts_name }}'
+  name: install mindie
+  tasks:
+    - name: install mindie image
+      install_mindie_image:
+        resources_dir: "{{resource_path}}"
+        npu_info: "{{npu_info}}"
+        tags: "{{ansible_run_tags}}"
+        davinci_devices: "{{ davinci | default([]) }}"
+        weights_path: "{{ WEIGHTS_PATH | default('')}}"
+      register: install_mindie_result
+
+
+    - name: message
+      debug:
+        var: install_mindie_result
+      failed_when: install_mindie_result.rc != 0

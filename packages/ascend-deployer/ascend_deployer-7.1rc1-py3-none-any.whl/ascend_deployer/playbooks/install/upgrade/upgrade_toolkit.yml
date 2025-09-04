@@ -1,0 +1,18 @@
+- hosts: '{{ hosts_name }}'
+  name: upgrade toolkit
+  tasks:
+    - name: upgrade toolkit
+      install_cann:
+        pkg_name: "toolkit"
+        run_tags: "{{ansible_run_tags}}"
+        python_version: "{{python_version}}"
+        resources_dir: "{{resource_path}}"
+        npu_info: "{{npu_info}}"
+        action: "upgrade"
+      register: upgrade_toolkit_result
+      failed_when: false
+
+    - name: message
+      debug:
+        var: upgrade_toolkit_result
+      failed_when: upgrade_toolkit_result.rc != 0

@@ -1,0 +1,44 @@
+{"name": "TensorFlow",
+    "version":"1.15.0",
+    "default":false,
+    "framework_whl": [
+        {"system":"linux_aarch64",
+            "whl":[
+            {
+                "filename":"tensorflow-1.15.0-cp37-cp37m-manylinux2014_aarch64.whl",
+                "url":"https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/tensorflow-1.15.0-cp37-cp37m-manylinux2014_aarch64.whl",
+                "dest":"pylibs/python3.7",
+                "python":"cp37",
+                "sha256":"c2d6df0930f6558ec9bb741c219cb84f90f906cc9e2c28c6561960a1404dec39"
+            },
+            {
+                "filename":"npu_bridge-1.15.0-py3-none-manylinux2014_aarch64.whl",
+                "url":"https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/npu_bridge-1.15.0-py3-none-manylinux2014_aarch64.whl",
+                "dest":"pylibs/python3.7",
+                "python":"cp37",
+                "sha256":"bda218b674c2eb9af0c1e2db7647d9db3b9b5acfe8839631edfaf1202f23f823"
+            }
+        ]
+        },
+        {"system":"linux_x86_64",
+            "whl":[
+            {
+                "filename":"tensorflow-1.15.0-cp37-cp37m-manylinux2010_x86_64.whl",
+                "url":"https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/tensorflow-1.15.0-cp37-cp37m-manylinux2010_x86_64.whl",
+                "dest":"pylibs/python3.7",
+                "python":"cp37",
+                "sha256":"71a6bbda4241ba928922f63e4dca71b2e4402d6ff37d892eefdac080b58f81c6"
+            },
+            {
+                "filename":"npu_bridge-1.15.0-py3-none-manylinux2014_x86_64.whl",
+                "url":"https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/npu_bridge-1.15.0-py3-none-manylinux2014_x86_64.whl",
+                "dest":"pylibs/python3.7",
+                "python":"cp37",
+                "sha256":"921b31450c55eb8b74c774ef1f1d991089911d94ca17eaeae81bb6f8edfceb9d"
+            }
+        ]
+        }
+    ]
+}
+
+

@@ -1,0 +1,18 @@
+- hosts: worker
+  name: upgrade mcu
+  tasks:
+    - name: upgrade mcu
+      process_mcu:
+        resource_dir: "{{ resource_path }}"
+        cus_npu_info: "{{ cus_npu_info | default('') }}"
+        ansible_run_tags: "{{ ansible_run_tags }}"
+      register: upgrade_mcu_result
+
+    - name: show upgrade message
+      debug:
+        var: upgrade_mcu_result.stdout_lines
+
+    - name: fail if upgrade_result is not correct
+      fail:
+        msg: "Failed to update mcu, please check the update log."
+      when: upgrade_mcu_result.fail_flag | bool

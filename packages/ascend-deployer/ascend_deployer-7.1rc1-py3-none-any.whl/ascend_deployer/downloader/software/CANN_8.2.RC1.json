@@ -1,0 +1,83 @@
+{
+  "name": "CANN",
+  "version": "8.2.RC1",
+  "default": true,
+  "required_soft": [
+    {
+      "name": "NPU",
+      "version": "25.2.0"
+    }
+  ],
+  "other": [
+    {
+      "filename": "Ascend-cann-toolkit_8.2.RC1_linux-aarch64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%208.2.RC1/Ascend-cann-toolkit_8.2.RC1_linux-aarch64.zip",
+      "sha256": "5b06ca17f73c0a10978ba4d63c23e9dcf3a4b5ee902b7f842a69c250ef6ed045"
+    },
+    {
+      "filename": "Ascend-cann-toolkit_8.2.RC1_linux-x86_64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%208.2.RC1/Ascend-cann-toolkit_8.2.RC1_linux-x86_64.zip",
+      "sha256": "8c9e7b8cc052e0ed21694949dc361d04621ca14eaaff1da4103ecac50dee4f74"
+    },
+    {
+      "filename": "Ascend-cann-nnae_8.2.RC1_linux-aarch64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%208.2.RC1/Ascend-cann-nnae_8.2.RC1_linux-aarch64.zip",
+      "sha256": "c5fd7ee2f04705ef041c4dea34282de0aeb8614144d62a652104204edfddfdde"
+    },
+    {
+      "filename": "Ascend-cann-nnae_8.2.RC1_linux-x86_64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%208.2.RC1/Ascend-cann-nnae_8.2.RC1_linux-x86_64.zip",
+      "sha256": "016267eb69a5214094edd7cce0efc869d15d0c76259c135cd07284f15da3204f"
+    },
+    {
+      "filename": "Ascend-cann-kernels-310p_8.2.RC1_linux-aarch64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%208.2.RC1/Ascend-cann-kernels-310p_8.2.RC1_linux-aarch64.zip",
+      "sha256": "63fe694c38718f9fb16936201e7bd1cbfea8b931a2b752f0af679c71e3d108a3"
+    },
+    {
+      "filename": "Ascend-cann-kernels-310p_8.2.RC1_linux-x86_64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%208.2.RC1/Ascend-cann-kernels-310p_8.2.RC1_linux-x86_64.zip",
+      "sha256": "200b2e6ae1472ad8c5a575aa787a584f3d76fc74b9d63ae564f419a9c223342c"
+    },
+    {
+      "filename": "Ascend-cann-kernels-910_8.2.RC1_linux-aarch64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%208.2.RC1/Ascend-cann-kernels-910_8.2.RC1_linux-aarch64.zip",
+      "sha256": "ba6a55131a3241a963193b79874dcbde653c3cbd68a31ff44b0b2f07ea154e0e"
+    },
+    {
+      "filename": "Ascend-cann-kernels-910_8.2.RC1_linux-x86_64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%208.2.RC1/Ascend-cann-kernels-910_8.2.RC1_linux-x86_64.zip",
+      "sha256": "c6b939e8093f0ea37bba32489faa3bc18b4919ce838d941e0d72529b176ae5cc"
+    },
+    {
+      "filename": "Ascend-cann-kernels-910b_8.2.RC1_linux-aarch64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%208.2.RC1/Ascend-cann-kernels-910b_8.2.RC1_linux-aarch64.zip",
+      "sha256": "c93874922bb220f40be30090fd8d3eb14641f3e658ae7331e266c43bcfea421a"
+    },
+    {
+      "filename": "Ascend-cann-kernels-910b_8.2.RC1_linux-x86_64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%208.2.RC1/Ascend-cann-kernels-910b_8.2.RC1_linux-x86_64.zip",
+      "sha256": "4365daf06ca94fc595b31a194489327fede37e6acfd7415027b9ba63ff630396"
+    },
+    {
+      "filename": "Ascend-cann-nnrt_8.2.RC1_linux-aarch64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%208.2.RC1/Ascend-cann-nnrt_8.2.RC1_linux-aarch64.zip",
+      "sha256": "2baade265eb5257a998ac710d8d7c6c8a66e90c7c58164418cc64dd4cbf7e2f4"
+    },
+    {
+      "filename": "Ascend-cann-nnrt_8.2.RC1_linux-x86_64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%208.2.RC1/Ascend-cann-nnrt_8.2.RC1_linux-x86_64.zip",
+      "sha256": "56e6937af6de0ad069f27da12e99259e0821c925c06cf65e00accf68d2fd2c32"
+    },
+    {
+      "filename": "Ascend-mindx-toolbox_7.1.RC1_linux-aarch64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%207.1.RC1/Ascend-mindx-toolbox_7.1.RC1_linux-aarch64.zip",
+      "sha256": "e1038a63cc34b38b7eff8527a8ad00785a0e9f1a81c830afccdfc4ee865953f8"
+    },
+    {
+      "filename": "Ascend-mindx-toolbox_7.1.RC1_linux-x86_64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%207.1.RC1/Ascend-mindx-toolbox_7.1.RC1_linux-x86_64.zip",
+      "sha256": "8be569b0bb4b1619c48600b276677fe970e9d3644a88f3b796dedcd5661145fb"
+    }
+  ]
+}

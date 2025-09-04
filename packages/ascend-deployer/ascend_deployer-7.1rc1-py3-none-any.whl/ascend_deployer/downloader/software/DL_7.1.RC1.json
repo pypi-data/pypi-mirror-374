@@ -1,0 +1,189 @@
+{
+  "name": "DL",
+  "version": "7.1.RC1",
+  "default": true,
+  "required_soft": [
+    {
+      "name": "NPU",
+      "version": "25.2.0"
+    }
+  ],
+  "support_os_list": [
+    "BCLinux_21.10_aarch64",
+    "BCLinux_21.10U4_aarch64",
+    "CentOS_7.6_aarch64",
+    "CentOS_7.6_x86_64",
+    "CTyunOS_22.06_aarch64",
+    "CTyunOS_22.06_x86_64",
+    "CTyunOS_23.01_aarch64",
+    "Kylin_V10_aarch64",
+    "Kylin_V10Lance_aarch64",
+    "Kylin_V10Halberd_aarch64",
+    "Kylin_V10Sword_aarch64",
+    "Kylin_V10Tercel_aarch64",
+    "Kylin_V10Tercel_x86_64",
+    "OpenEuler_20.03LTS_aarch64",
+    "OpenEuler_20.03LTS_x86_64",
+    "OpenEuler_22.03LTS_aarch64",
+    "OpenEuler_22.03LTS_x86_64",
+    "Ubuntu_18.04_aarch64",
+    "Ubuntu_18.04_x86_64",
+    "Ubuntu_20.04_aarch64",
+    "Ubuntu_20.04_x86_64",
+    "Ubuntu_22.04_aarch64",
+    "Ubuntu_22.04_x86_64",
+    "Ubuntu_22.04.4_aarch64",
+    "UOS_20-1020e_aarch64",
+    "UOS_20-1050e_aarch64",
+    "OpenEuler_22.03LTS-SP4_aarch64",
+    "OpenEuler_22.03LTS-SP1_aarch64",
+    "OpenEuler_24.03LTS-SP1_aarch64",
+    "MTOS_22.03LTS-SP4_aarch64",
+    "EulerOS_2.12_aarch64",
+    "veLinux_1.3_aarch64",
+    "CULinux_3.0_aarch64"
+  ],
+    "aarch64":[
+    {
+      "filename": "version.json",
+      "url": "https://ascend-repo-modelzoo.obs.myhuaweicloud.com/MindXDL/5.0.RC2/resources/version.json",
+      "sha256": "84ed289713bfea135bdd3e19c7f17e1495714351758e2fe3428cf323ff28f10f",
+      "dest": "resources"
+    },
+    {
+      "filename": "ubuntu_arm64_18.04.tar.gz",
+      "url": "https://ascend-repo-modelzoo.obs.myhuaweicloud.com/MindXDL/5.0.RC2/resources/mindxdl/baseImages/aarch64/ubuntu_arm64_18.04.tar.gz",
+      "sha256": "933d8a4041c2fb92b8d4953a731d927a903f66adb39ba5efacb968537f8ff379",
+      "dest": "resources/mindxdl/baseImages/aarch64"
+    },
+    {
+      "filename": "alpine_arm64_latest.tar.gz",
+      "url": "https://ascend-repo-modelzoo.obs.myhuaweicloud.com/MindXDL/5.0.RC2/resources/mindxdl/baseImages/aarch64/alpine_arm64_latest.tar.gz",
+      "sha256": "1f2140d4fd082dcc92b405d95c9dc6bf4b19972190dda7fac238359dc6aea3a2",
+      "dest": "resources/mindxdl/baseImages/aarch64"
+    },
+    {
+      "filename": "Ascend-docker-runtime_7.1.RC1_linux-aarch64.run",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%207.1.RC1/Ascend-docker-runtime_7.1.RC1_linux-aarch64.run",
+      "sha256": "2816954e67757bf992c25f1673021df60bdf32be31a62517afc818e5b556eb3b",
+      "dest": "resources/mindxdl/dlPackage/aarch64"
+    },
+    {
+      "filename": "Ascend-mindxdl-device-plugin_7.1.RC1_linux-aarch64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%207.1.RC1/Ascend-mindxdl-device-plugin_7.1.RC1_linux-aarch64.zip",
+      "sha256": "8ef6fffbe9f87c89c5175be97d6a33dd66243be6de44d2aca2ba9d4d770a38f4",
+      "dest": "resources/mindxdl/dlPackage/aarch64"
+    },
+    {
+      "filename": "Ascend-mindxdl-ascend-operator_7.1.RC1_linux-aarch64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%207.1.RC1/Ascend-mindxdl-ascend-operator_7.1.RC1_linux-aarch64.zip",
+      "sha256": "c1d18c41312fec5c00de0fc1188d1614c6956dabf6e0ef915fb8515e402a2d84",
+      "dest": "resources/mindxdl/dlPackage/aarch64"
+    },
+    {
+      "filename": "Ascend-mindxdl-resilience-controller_7.1.RC1_linux-aarch64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%207.1.RC1/Ascend-mindxdl-resilience-controller_7.1.RC1_linux-aarch64.zip",
+      "sha256": "fc82c9f84f2c7fa8546c26e7e712c58969b819b90e45b745a5d1ce87333910da",
+      "dest": "resources/mindxdl/dlPackage/aarch64"
+    },
+    {
+      "filename": "Ascend-mindxdl-npu-exporter_7.1.RC1_linux-aarch64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%207.1.RC1/Ascend-mindxdl-npu-exporter_7.1.RC1_linux-aarch64.zip",
+      "sha256": "14630702d0c4066b0dd8cfc11dfe961bd2970c922d1dec46299d90471c7bc08f",
+      "dest": "resources/mindxdl/dlPackage/aarch64"
+    },
+    {
+      "filename": "Ascend-mindxdl-volcano_7.1.RC1_linux-aarch64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%207.1.RC1/Ascend-mindxdl-volcano_7.1.RC1_linux-aarch64.zip",
+      "sha256": "c5394b844170bd41407ea501ffafa31c3b0b27539a58d0fdf72bb117dc8fda27",
+      "dest": "resources/mindxdl/dlPackage/aarch64"
+    },
+    {
+      "filename": "Ascend-mindxdl-noded_7.1.RC1_linux-aarch64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%207.1.RC1/Ascend-mindxdl-noded_7.1.RC1_linux-aarch64.zip",
+      "sha256": "b2cca10ecd68d2a3c710723f9445eefcba8e00be3add18acba2647142c8f5a09",
+      "dest": "resources/mindxdl/dlPackage/aarch64"
+    },
+    {
+      "filename": "Ascend-mindxdl-clusterd_7.1.RC1_linux-aarch64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%207.1.RC1/Ascend-mindxdl-clusterd_7.1.RC1_linux-aarch64.zip",
+      "sha256": "4b3059508cc754d4df5302e25e58366b0e343bc2dd0eacc7faac9d29597e38dd",
+      "dest": "resources/mindxdl/dlPackage/aarch64"
+    }
+  ],
+  "x86_64": [
+    {
+      "filename": "version.json",
+      "url": "https://ascend-repo-modelzoo.obs.myhuaweicloud.com/MindXDL/5.0.RC2/resources/version.json",
+      "sha256": "84ed289713bfea135bdd3e19c7f17e1495714351758e2fe3428cf323ff28f10f",
+      "dest": "resources"
+    },
+    {
+      "filename": "alpine_amd64_latest.tar.gz",
+      "url": "https://ascend-repo-modelzoo.obs.myhuaweicloud.com/MindXDL/5.0.RC2/resources/mindxdl/baseImages/x86_64/alpine_amd64_latest.tar.gz",
+      "sha256": "95193d0cdfb0d617978ad49d5a4adf0a46aae3cd9acd9416ab860c2b977a2e72",
+      "dest": "resources/mindxdl/baseImages/x86_64"
+    },
+    {
+      "filename": "ubuntu_amd64_18.04.tar.gz",
+      "url": "https://ascend-repo-modelzoo.obs.myhuaweicloud.com/MindXDL/5.0.RC2/resources/mindxdl/baseImages/x86_64/ubuntu_amd64_18.04.tar.gz",
+      "sha256": "80ca8af02bb8c3b618c459dccfeb1bba279ebfa7405f4725a85700bf1c77e5dd",
+      "dest": "resources/mindxdl/baseImages/x86_64"
+    },
+    {
+      "filename": "Ascend-mindxdl-noded_7.1.RC1_linux-x86_64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%207.1.RC1/Ascend-mindxdl-noded_7.1.RC1_linux-x86_64.zip",
+      "sha256": "eb1157a77a92260344025abc101850f21c5704388f9d2e68a55a123042f20c5b",
+      "dest": "resources/mindxdl/dlPackage/x86_64"
+    },
+    {
+      "filename": "Ascend-mindxdl-volcano_7.1.RC1_linux-x86_64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%207.1.RC1/Ascend-mindxdl-volcano_7.1.RC1_linux-x86_64.zip",
+      "sha256": "2aa2c302869f4dc94a1bb98dde26defdf196883306cb5af620693a29110065b3",
+      "dest": "resources/mindxdl/dlPackage/x86_64"
+    },
+    {
+      "filename": "Ascend-mindxdl-npu-exporter_7.1.RC1_linux-x86_64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%207.1.RC1/Ascend-mindxdl-npu-exporter_7.1.RC1_linux-x86_64.zip",
+      "sha256": "2f7093a26dc7bab93f7574ca149212a24751cfa3c24bf118c4973206f5c7e58e",
+      "dest": "resources/mindxdl/dlPackage/x86_64"
+    },
+    {
+      "filename": "Ascend-docker-runtime_7.1.RC1_linux-x86_64.run",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%207.1.RC1/Ascend-docker-runtime_7.1.RC1_linux-x86_64.run",
+      "sha256": "430da8571dabc5fd9056032afbd14a622c467d6b5bc6792837933a060dfc2b8c",
+      "dest": "resources/mindxdl/dlPackage/x86_64"
+    },
+    {
+      "filename": "Ascend-mindxdl-device-plugin_7.1.RC1_linux-x86_64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%207.1.RC1/Ascend-mindxdl-device-plugin_7.1.RC1_linux-x86_64.zip",
+      "sha256": "edd8b82b91692b047f780212202ed0ab01d275d025288956812ac139afbe3d54",
+      "dest": "resources/mindxdl/dlPackage/x86_64"
+    },
+    {
+      "filename": "Ascend-mindxdl-ascend-operator_7.1.RC1_linux-x86_64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%207.1.RC1/Ascend-mindxdl-ascend-operator_7.1.RC1_linux-x86_64.zip",
+      "sha256": "99ec0d3c0f318b3fbb250f5bb731557f3c583667bb93ab466f6abd6cc2324d14",
+      "dest": "resources/mindxdl/dlPackage/x86_64"
+    },
+    {
+      "filename": "Ascend-mindxdl-resilience-controller_7.1.RC1_linux-x86_64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%207.1.RC1/Ascend-mindxdl-resilience-controller_7.1.RC1_linux-x86_64.zip",
+      "sha256": "a6873d6700150144610323ed3fa14b2dd8e81dcb93934a49e3348bde82ed8ff3",
+      "dest": "resources/mindxdl/dlPackage/x86_64"
+    },
+    {
+      "filename": "Ascend-mindxdl-clusterd_7.1.RC1_linux-x86_64.zip",
+      "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%207.1.RC1/Ascend-mindxdl-clusterd_7.1.RC1_linux-x86_64.zip",
+      "sha256": "3b0b61ab0b05f5518059d9379a77f2f653db8e9fc54b803854f6b7e7e7d1291d",
+      "dest": "resources/mindxdl/dlPackage/x86_64"
+    },
+    {
+      "filename": "version.json",
+      "url": "https://ascend-repo-modelzoo.obs.myhuaweicloud.com/MindXDL/5.0.RC2/resources/mindxdl/version.json",
+      "sha256": "e06716192511de8fd9389c71b17f331a3a75ff7a0352892b8ec097cc8be9f68a",
+      "dest": "resources/mindxdl"
+    }
+  ],
+  "other": []
+}

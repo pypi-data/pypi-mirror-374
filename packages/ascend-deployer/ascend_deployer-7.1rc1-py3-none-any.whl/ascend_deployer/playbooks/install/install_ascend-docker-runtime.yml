@@ -1,0 +1,8 @@
+- hosts: worker
+  name: install ascend-docker-runtime
+  tasks:
+    - name: install docker runtime
+      install_docker_runtime:
+        resources_dir: "{{ resource_path }}"
+        node_name: "{{ NODE_NAME }}"
+        container_runtime_type: "{{ hostvars[groups['master'][0]].container_runtime_type }}"

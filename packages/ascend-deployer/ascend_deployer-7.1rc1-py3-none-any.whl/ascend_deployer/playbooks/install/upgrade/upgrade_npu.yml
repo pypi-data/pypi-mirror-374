@@ -1,0 +1,15 @@
+- hosts: worker
+  name: upgrade npu
+  tasks:
+    - name: upgrade npu
+      process_npu:
+        force_upgrade_npu: "{{ force_upgrade_npu }}"
+        resource_dir: "{{ resource_path }}"
+        cus_npu_info: "{{ cus_npu_info | default('') }}"
+        ansible_run_tags: "{{ ansible_run_tags }}"
+        action: "upgrade"
+      register: upgrade_npu_result
+
+    - name: show reboot message
+      debug:
+        var: upgrade_npu_result.stdout_lines

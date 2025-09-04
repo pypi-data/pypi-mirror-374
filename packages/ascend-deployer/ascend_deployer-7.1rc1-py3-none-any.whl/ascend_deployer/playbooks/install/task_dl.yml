@@ -1,0 +1,5 @@
+- name: prepare for install dl
+  import_playbook: ../prepare_for_dl.yml
+
+- name: label node before install dl
+  import_playbook: ../label_node.yml

@@ -1,0 +1,68 @@
+- hosts:
+    - master[0]
+    - other_build_image
+  tasks:
+    - name: Match component clusterd
+      find:
+        paths: "{{ resource_path }}/mindxdl/dlPackage/{{ ansible_architecture }}"
+        patterns: '*clusterd*'
+      register: clusterd_files
+
+    - name: message
+      debug:
+        msg: "failed to find clusterd in path: {{ resource_path }}/mindxdl/dlPackage/{{ ansible_architecture }}"
+      when: not clusterd_files.matched
+
+- hosts:
+    - master[0]
+    - other_build_image
+  name: build image for clusterd
+  tasks:
+    - name: build clusterd image
+      install_clusterd:
+        resources_dir: "{{ resource_path }}"
+        step: 'build'
+      when: clusterd_files.matched
+
+    - name: fetch clusterd image
+      scp:
+        ip: "{{ inventory_hostname }}"
+        port: "{{ansible_ssh_port|default('22')}}"
+        remote_user: "{{ ansible_ssh_user }}"
+        passwd: "{{ ansible_ssh_pass|default('') }}"
+        src: "{{ clusterd_images }}"
+        dest: "{{ resource_path }}/mindxdl/dlImages/{{ ansible_architecture }}/clusterd"
+        fetch: 'true'
+      delegate_to: localhost
+      when: clusterd_files.matched
+
+- hosts:
+    - master
+  name: install or upgrade clusterd
+  tasks:
+    - name: push images to remote
+      scp:
+        ip: "{{ inventory_hostname }}"
+        port: "{{ansible_ssh_port|default('22')}}"
+        remote_user: "{{ ansible_ssh_user }}"
+        passwd: "{{ ansible_ssh_pass|default('') }}"
+        src: "{{ resource_path }}/mindxdl/dlImages/{{ ansible_architecture }}/clusterd/*"
+        dest: "{{ resource_path }}/mindxdl/dlImages/{{ ansible_architecture }}/clusterd/"
+      delegate_to: localhost
+      when: hostvars[groups['master'][0]]['clusterd_files'].matched
+
+    - name: install clusterd
+      install_clusterd:
+        resources_dir: "{{ resource_path }}"
+        node_name: "{{ NODE_NAME }}"
+        container_runtime_type: "{{ hostvars[groups['master'][0]].container_runtime_type }}"
+        step: 'install'
+      when: hostvars[groups['master'][0]]['clusterd_files'].matched
+
+    - name: apply clusterd
+      run_once: yes
+      install_clusterd:
+        resources_dir: "{{ resource_path }}"
+        step: 'apply'
+      delegate_to: "{{ groups['master'][0] }}"
+      when: hostvars[groups['master'][0]]['clusterd_files'].matched and apply_yaml

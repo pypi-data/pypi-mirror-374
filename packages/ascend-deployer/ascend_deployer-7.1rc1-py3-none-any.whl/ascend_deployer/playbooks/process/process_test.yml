@@ -1,0 +1,79 @@
+- name: Preparing job
+  hosts: localhost
+  tasks:
+    - name: Set global variable test_master_nodes
+      block:
+        - name: Set variable master_exists and dl_executable_tags
+          set_fact:
+            master_exists: "{{ groups['master'] | length > 0 }}"
+            dl_executable_tags:
+              - whole
+              - ascend-operator
+              - clusterd
+              - resilience-controller
+              - hccl-controller
+              - volcano
+              - ascend-device-plugin
+              - noded
+              - npu-exporter
+        - name: Set global variable test_master_nodes
+          set_fact:
+            test_master_nodes: "{{ groups['master'][0] }}"
+          when: master_exists
+  tags: always
+
+- name: Execute the test job on each worker node
+  hosts: worker
+  tasks:
+    - name: Do test and set results as global variables
+      block:
+        - name: Do CANN test
+          process_test:
+            ansible_run_tags: "{{ ansible_run_tags }}"
+            cus_npu_info: "{{ cus_cpu_info | default('') }}"
+            ip: "{{ inventory_hostname }}"
+            python_version: "{{ python_version | default('python3.7.5') }}"
+          register: sub_cann_test
+
+        - name: Do Docker runtime test
+          process_docker_runtime_test:
+            ansible_run_tags: "{{ ansible_run_tags }}"
+            node_name: "{{ set_hostname | default('') }}"
+          register: sub_docker_runtime_test
+
+        - name: Set global test results
+          set_fact:
+            sub_cann_result: "{{ sub_cann_test.result }}"
+            sub_docker_runtime_result: "{{ sub_docker_runtime_test.result }}"
+  tags: always
+
+- name: Aggregate the data gathered from worker nodes and generate the report
+  hosts: localhost
+  tasks:
+    - name: Initialize variables
+      set_fact:
+        cann_test_result: []
+        docker_runtime_result: []
+        apply_node: "{{ groups['apply'][0] | default(groups['worker'][0]) }}"
+
+    - name: Gather data from each worker node
+      set_fact:
+        cann_test_result: "{{ cann_test_result + [hostvars[item].sub_cann_result] }}"
+        docker_runtime_result: "{{ docker_runtime_result + [hostvars[item].sub_docker_runtime_result] }}"
+      loop: "{{ groups['worker'] }}"
+      loop_control:
+        loop_var: item
+
+    - name: Do the DL test
+      process_dl_test:
+        ansible_run_tags: "{{ ansible_run_tags }}"
+      register: dl_result
+      delegate_to: "{{ test_master_nodes | default(groups['worker'][0]) }}"
+      when:  apply_node in groups["worker"] and (dl_executable_tags | select('in', ansible_run_tags) | list | length > 0)
+
+    - name: Generate the test report
+      process_test_report:
+        cann_test_result: "{{ cann_test_result | default([]) }}"
+        docker_runtime_result: "{{ docker_runtime_result | default([]) }}"
+        dl_result: "{{ dl_result.result | default({}) }}"
+  tags: always

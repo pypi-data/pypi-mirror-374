@@ -1,0 +1,58 @@
+{"name": "MindSpore",
+    "version":"2.6.0",
+    "default":false,
+    "framework_whl": [
+        {"system":"linux_aarch64",
+            "whl":[
+              {
+                "filename": "mindspore-2.6.0-cp39-cp39-linux_aarch64.whl",
+                "url": "https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.6.0/MindSpore/unified/aarch64/mindspore-2.6.0-cp39-cp39-linux_aarch64.whl",
+                "dest": "pylibs/python3.9",
+                "python": "cp39",
+                "sha256": "f496de26a28ea6cd6e63dc86aeb2cf455fba3304658779d03cb7689e5f6a1aac"
+              },
+              {
+                "filename": "mindspore-2.6.0-cp310-cp310-linux_aarch64.whl",
+                "url": "https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.6.0/MindSpore/unified/aarch64/mindspore-2.6.0-cp310-cp310-linux_aarch64.whl",
+                "dest": "pylibs/python3.10",
+                "python": "cp310",
+                "sha256": "1e1f844f65a3699146ba6a210d9df2a36906f43c3668d089d600f5041cb05d78"
+              },
+              {
+                "filename": "mindspore-2.6.0-cp311-cp311-linux_aarch64.whl",
+                "url": "https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.6.0/MindSpore/unified/aarch64/mindspore-2.6.0-cp311-cp311-linux_aarch64.whl",
+                "dest": "pylibs/python3.11",
+                "python": "cp311",
+                "sha256": "14cb6b2b94598d38fa1be50dfed05597d23e479dbff9e52f906b9583259a61a9"
+              }
+            ]
+        },
+        {"system":"linux_x86_64",
+            "whl":[
+                {
+                  "filename": "mindspore-2.6.0-cp39-cp39-linux_x86_64.whl",
+                  "url": "https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.6.0/MindSpore/unified/x86_64/mindspore-2.6.0-cp39-cp39-linux_x86_64.whl",
+                  "dest": "pylibs/python3.9",
+                  "python": "cp39",
+                  "sha256": "fc99ac495ae308f27e44900e48abda91bf53695eedca160836ac452442b8f295"
+                },
+                {
+                  "filename": "mindspore-2.6.0-cp310-cp310-linux_x86_64.whl",
+                  "url": "https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.6.0/MindSpore/unified/x86_64/mindspore-2.6.0-cp310-cp310-linux_x86_64.whl",
+                  "dest": "pylibs/python3.10",
+                  "python": "cp310",
+                  "sha256": "9d6fb7f538d2c464a9037640c45c6cd3939948db759bfbb534f4b7dbc3f6d200"
+                },
+                {
+                  "filename": "mindspore-2.6.0-cp311-cp311-linux_x86_64.whl",
+                  "url": "https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.6.0/MindSpore/unified/x86_64/mindspore-2.6.0-cp311-cp311-linux_x86_64.whl",
+                  "dest": "pylibs/python3.11",
+                  "python": "cp311",
+                  "sha256": "55910e88e99bb842853bb026f0629f9176a8f911f0abc3200aea1e78ebd62c51"
+                }
+            ]
+        }
+    ]
+}
+
+

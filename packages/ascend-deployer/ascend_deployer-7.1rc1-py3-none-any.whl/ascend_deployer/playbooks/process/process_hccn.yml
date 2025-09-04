@@ -1,0 +1,7 @@
+- name: hccn configuration
+  import_playbook: ../hccn.yaml
+  tags: hccn
+
+- name: generate report
+  import_playbook: ../report.yaml
+  tags: always

@@ -1,0 +1,58 @@
+- hosts:
+    - master[0]
+    - other_build_image
+  name: build image for hccl-controller
+  tasks:
+    - name: message
+      debug:
+        msg: "Current dl version does not support hccl controller, skip installation"
+      when: hccl_controller == "unsupported"
+
+    - name: build hccl-controller image
+      install_hccl_controller:
+        resources_dir: "{{ resource_path }}"
+        step: 'build'
+      when: hccl_controller == "supported"
+
+    - name: fetch hccl-controller image
+      scp:
+        ip: "{{ inventory_hostname }}"
+        port: "{{ansible_ssh_port|default('22')}}"
+        remote_user: "{{ ansible_ssh_user }}"
+        passwd: "{{ ansible_ssh_pass|default('') }}"
+        src: "{{ hccl_controller_images }}"
+        dest: "{{ resource_path }}/mindxdl/dlImages/{{ ansible_architecture }}/hccl-controller"
+        fetch: 'true'
+      delegate_to: localhost
+      when: hccl_controller == "supported"
+
+- hosts:
+    - master
+  name: install or upgrade hccl-controller
+  tasks:
+    - name: push images to remote
+      scp:
+        ip: "{{ inventory_hostname }}"
+        port: "{{ansible_ssh_port|default('22')}}"
+        remote_user: "{{ ansible_ssh_user }}"
+        passwd: "{{ ansible_ssh_pass|default('') }}"
+        src: "{{ resource_path }}/mindxdl/dlImages/{{ ansible_architecture }}/hccl-controller/*"
+        dest: "{{ resource_path }}/mindxdl/dlImages/{{ ansible_architecture }}/hccl-controller/"
+      delegate_to: localhost
+      when: hccl_controller == "supported"
+
+    - name: install hccl-controller
+      install_hccl_controller:
+        resources_dir: "{{ resource_path }}"
+        node_name: "{{ NODE_NAME }}"
+        container_runtime_type: "{{ hostvars[groups['master'][0]].container_runtime_type }}"
+        step: 'install'
+      when: hccl_controller == "supported"
+
+    - name: apply hccl-controller
+      run_once: yes
+      install_hccl_controller:
+        resources_dir: "{{ resource_path }}"
+        step: 'apply'
+      delegate_to: "{{ groups['master'][0] }}"
+      when: hccl_controller == "supported" and apply_yaml

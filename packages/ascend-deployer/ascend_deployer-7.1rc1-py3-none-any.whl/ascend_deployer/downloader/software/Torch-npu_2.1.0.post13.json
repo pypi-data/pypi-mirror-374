@@ -1,0 +1,126 @@
+{"name": "Torch-npu",
+    "version":"2.1.0.post13",
+    "default":false,
+    "framework_whl": [
+        {"system":"linux_aarch64",
+            "whl":[
+                {
+                  "filename": "torch-2.1.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                  "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/5.0.0/torch-2.1.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                  "dest": "pylibs/python3.8",
+                  "python": "cp38",
+                  "sha256": "761822761fffaa1c18a62c5deb13abaa780862577d3eadc428f1daa632536905"
+                },
+                {
+                  "filename": "torch_npu-2.1.0.post13-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                  "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/torch_npu-2.1.0.post13-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                  "dest": "pylibs/python3.8",
+                  "python": "cp38",
+                  "sha256": "9a4411a857ddc24bdba7a3a02bf20eea06a8182fce0465630e6b66186d104eeb"
+                },
+                {
+                  "filename": "torch-2.1.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                  "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/5.0.0/torch-2.1.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                  "dest": "pylibs/python3.9",
+                  "python": "cp39",
+                  "sha256": "de7d63c6ecece118684415a3dbd4805af4a4c1ee1490cccf7405d8c240a481b4"
+                },
+                {
+                  "filename": "torch_npu-2.1.0.post13-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                  "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/torch_npu-2.1.0.post13-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                  "dest": "pylibs/python3.9",
+                  "python": "cp39",
+                  "sha256": "86aeb4908f0867cee81ef760068df0045cadc3c9902de4b4bbf792cb92da3183"
+                },
+                {
+                  "filename": "torch-2.1.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                  "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/5.0.0/torch-2.1.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                  "dest": "pylibs/python3.10",
+                  "python": "cp310",
+                  "sha256": "a04a0296d47f28960f51c18c5489a8c3472f624ec3b5bcc8e2096314df8c3342"
+                },
+                {
+                  "filename": "torch_npu-2.1.0.post13-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                  "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/torch_npu-2.1.0.post13-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                  "dest": "pylibs/python3.10",
+                  "python": "cp310",
+                  "sha256": "cfb5e3a59615856493b8398273bbdbd8a252bed15e50febd975258f5139485c4"
+                },
+                {
+                  "filename": "torch-2.1.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                  "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/5.0.0/torch-2.1.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                  "dest": "pylibs/python3.11",
+                  "python": "cp311",
+                  "sha256": "8132efb782cd181cc2dcca5e58effbe4217cdb2581206ac71466d535bf778867"
+                },
+                {
+                  "filename": "torch_npu-2.1.0.post13-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                  "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/torch_npu-2.1.0.post13-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                  "dest": "pylibs/python3.11",
+                  "python": "cp311",
+                  "sha256": "424ad1143349b417e411b6bc173be0c605000b01e3922553a97f3bbb31e2961a"
+                }
+            ]
+        },
+        {"system":"linux_x86_64",
+            "whl":[
+                {
+                  "filename": "torch-2.1.0+cpu-cp38-cp38-linux_x86_64.whl",
+                  "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/5.0.0/torch-2.1.0%2Bcpu-cp38-cp38-linux_x86_64.whl",
+                  "dest": "pylibs/python3.8",
+                  "python": "cp38",
+                  "sha256": "9e5cfd931a65b38d222755a45dabb53b836be31bc620532bc66fee77e3ff67dc"
+                },
+                {
+                  "filename": "torch_npu-2.1.0.post13-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+                  "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/torch_npu-2.1.0.post13-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+                  "dest": "pylibs/python3.8",
+                  "python": "cp38",
+                  "sha256": "325dc875f2572d4fa04a6b13315a9e9040a68da8056ab1ef73b805afb9ecec6a"
+                },
+                {
+                  "filename": "torch-2.1.0+cpu-cp39-cp39-linux_x86_64.whl",
+                  "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/5.0.0/torch-2.1.0%2Bcpu-cp39-cp39-linux_x86_64.whl",
+                  "dest": "pylibs/python3.9",
+                  "python": "cp39",
+                  "sha256": "86cc28df491fa84738affe752f9870791026565342f69e4ab63e5b935f00a495"
+                },
+                {
+                  "filename": "torch_npu-2.1.0.post13-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+                  "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/torch_npu-2.1.0.post13-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+                  "dest": "pylibs/python3.9",
+                  "python": "cp39",
+                  "sha256": "40350c227a2e48778bb51053065539c1123230772c8336e75d143067e5f2ffd5"
+                },
+                {
+                  "filename": "torch-2.1.0+cpu-cp310-cp310-linux_x86_64.whl",
+                  "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/5.0.0/torch-2.1.0%2Bcpu-cp310-cp310-linux_x86_64.whl",
+                  "dest": "pylibs/python3.10",
+                  "python": "cp310",
+                  "sha256": "5077921fc2b54e69a534f3a9c0b98493c79a5547c49d46f5e77e42da3610e011"
+                },
+                {
+                  "filename": "torch_npu-2.1.0.post13-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+                  "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/torch_npu-2.1.0.post13-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+                  "dest": "pylibs/python3.10",
+                  "python": "cp310",
+                  "sha256": "0063577a87a249f607905cf4a6563ab33b5b6579744669690b685bb4947da765"
+                },
+                {
+                  "filename": "torch-2.1.0+cpu-cp311-cp311-linux_x86_64.whl",
+                  "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/5.0.0/torch-2.1.0%2Bcpu-cp311-cp311-linux_x86_64.whl",
+                  "dest": "pylibs/python3.11",
+                  "python": "cp311",
+                  "sha256": "5954924ce74bc7e6a6c811e3fa4bdda9936d9889f6369fd068420c444bfd1cae"
+                },
+                {
+                  "filename": "torch_npu-2.1.0.post13-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+                  "url": "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/OpenSource/python/packages/torch_npu-2.1.0.post13-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+                  "dest": "pylibs/python3.11",
+                  "python": "cp311",
+                  "sha256": "813be772d8197bf7c00176b076558b79741436e9f1a6a7ac9eab9036a9c18c8f"
+                }
+            ]
+        }
+    ]
+}

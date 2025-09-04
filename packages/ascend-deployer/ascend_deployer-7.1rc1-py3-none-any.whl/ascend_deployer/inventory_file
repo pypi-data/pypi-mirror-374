@@ -1,0 +1,26 @@
+[hccn]
+
+[hccn:vars]
+gateways=""
+netmask="255.255.255.0"
+roce_port=4791
+bitmap=""
+dscp_tc=""
+common_network="0.0.0.0/0"
+
+[master]
+# 10.10.10.1-10.10.10.9 ansible_ssh_user="root" ansible_ssh_pass="test1234" step_len=3
+
+[worker]
+localhost ansible_connection='local' ansible_ssh_user='root'
+# 10.10.10.1-10.10.10.9 ansible_ssh_user="root" ansible_ssh_pass="test1234" step_len=3
+
+[npu_node]
+# 10.10.10.1-10.10.10.9 ansible_ssh_user="root" ansible_ssh_pass="test1234" step_len=3
+
+[other_build_image]
+
+[all:vars]
+SCALE="false"
+RUNNER_IP=""
+WEIGHTS_PATH=""

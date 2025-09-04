@@ -1,0 +1,93 @@
+- hosts:
+    - master[0]
+  name: get noded label
+  tasks:
+    - name: get pods info
+      command: kubectl get pod -Ao wide
+      register: pods_info
+      when: sub_group_count | default(1) | int == 1
+
+    - name: get noded info
+      set_fact:
+        noded_label: "{{ 'on' if (pods_info.stdout.splitlines() | select('search', '^\\S+\\s+.*noded.*$') |
+                      list | length > 0) else '' }}"
+
+- hosts:
+    - worker
+  name: label node in k8s
+  tasks:
+    - name: set noded label
+      set_fact:
+        noded_label: "{{ hostvars[groups['master'][0]].noded_label | default('')}}"
+      when: sub_group_count | default(1) | int == 1
+
+    - name: get label
+      label_node:
+        step: 'get_label'
+        ansible_run_tags: "{{ ansible_run_tags }}"
+        node_name: "{{ NODE_NAME }}"
+        master_node: "{{ inventory_hostname in groups['master'] }}"
+        worker_node: "{{ inventory_hostname in groups['worker'] }}"
+        noded_label: "{{ noded_label | default('') }}"
+
+    - name: save node label to yaml
+      run_once: yes
+      label_node:
+        step: 'save_label'
+        nodes_label: "{{ (groups['master'] | map('extract', hostvars, 'node_label') | map('default', {}) | list) |
+                combine((groups['worker'] | map('extract', hostvars, 'node_label') | map('default', {}) | list),
+                recursive=True) }}"
+      delegate_to: "{{ groups['worker'][0] }}"
+
+- hosts:
+    - worker[0]
+  name: copy label yaml and label worker nodes
+  tasks:
+    - name: clear last label yaml
+      shell: "rm -rf /root/.ascend_deployer/dl_yaml/label/groups/*"
+      delegate_to: "{{ groups['master'][0] }}"
+      when: sub_group_count | default(1) | int == 1
+
+    - name: copy label yaml
+      scp:
+        ip: "{{ inventory_hostname }}"
+        port: "{{ansible_ssh_port|default('22')}}"
+        remote_user: "{{ ansible_ssh_user }}"
+        passwd: "{{ ansible_ssh_pass|default('') }}"
+        src: "/root/.ascend_deployer/dl_yaml/label/label_node.json"
+        dest: "/root/.ascend_deployer/dl_yaml/label/groups/{{ inventory_hostname }}"
+        fetch: 'true'
+      delegate_to: "{{ groups['master'][0] }}"
+
+    - name: label worker nodes
+      label_node:
+        step: 'label'
+        group_count: "{{ sub_group_count | default(1) | int }}"
+      delegate_to: "{{ groups['master'][0] }}"
+      register: label_result
+
+    - name: get label node result
+      set_fact:
+        need_apply_yaml: "{{ label_result.changed }}"
+
+- hosts:
+    - master
+  name: label master nodes
+  tasks:
+    - name: label master nodes
+      command: kubectl label --overwrite node {{ NODE_NAME }} masterselector=dls-master-node
+      delegate_to: "{{ groups['master'][0] }}"
+      register: label_result
+
+    - name: get label node result
+      set_fact:
+        need_apply_yaml: "{{ label_result.rc == 0 }}"
+
+- hosts:
+    - master
+    - worker
+  name: whether need to apply yaml
+  tasks:
+    - name: set apply_yaml variable
+      set_fact:
+        apply_yaml: "{{ hostvars[groups['worker'][0]]['need_apply_yaml'] | default(false) }}"

@@ -1,0 +1,28 @@
+- hosts: localhost
+  tags: hccn
+  tasks:
+    - name: check user
+      check_user:
+
+- hosts: hccn
+  tags: hccn
+  tasks:
+    - name: check hccn config
+      check_hccn:
+        device_ips: "{{ deviceip | default([]) }}"
+        gateways: "{{ gateways | default('') }}"
+        netmask: "{{ netmask | default('') }}"
+        detect_ips: "{{ detectip | default([]) }}"
+        common_network: "{{ common_network | default('') }}"
+        bitmap: "{{ bitmap | default('') }}"
+        dscp_tc: "{{ dscp_tc | default('') }}"
+
+    - name: check npu
+      command: npu-smi info
+      register: npu_status
+      ignore_errors: yes
+
+    - name: handle npu check error
+      fail:
+        msg: "[ASCEND][ERROR] Please install NPU first or run cmd 'npu-smi info' to confirm the NPU status healthy"
+      when: npu_status.rc != 0

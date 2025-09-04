@@ -1,0 +1,50 @@
+- hosts:
+    - master[0]
+    - other_build_image
+  name: build image for volcano
+  tasks:
+    - name: build volcano image
+      install_volcano:
+        resources_dir: "{{ resource_path }}"
+        step: 'build'
+
+    - name: fetch volcano image
+      scp:
+        ip: "{{ inventory_hostname }}"
+        port: "{{ansible_ssh_port|default('22')}}"
+        remote_user: "{{ ansible_ssh_user }}"
+        passwd: "{{ ansible_ssh_pass|default('') }}"
+        src: "{{ volcano_images }}"
+        dest: "{{ resource_path }}/mindxdl/dlImages/{{ ansible_architecture }}/volcano"
+        fetch: 'true'
+      delegate_to: localhost
+
+- hosts:
+    - master
+    - worker
+  name: install or upgrade volcano
+  tasks:
+    - name: push images to remote
+      scp:
+        ip: "{{ inventory_hostname }}"
+        port: "{{ansible_ssh_port|default('22')}}"
+        remote_user: "{{ ansible_ssh_user }}"
+        passwd: "{{ ansible_ssh_pass|default('') }}"
+        src: "{{ resource_path }}/mindxdl/dlImages/{{ ansible_architecture }}/volcano/*"
+        dest: "{{ resource_path }}/mindxdl/dlImages/{{ ansible_architecture }}/volcano/"
+      delegate_to: localhost
+
+    - name: install volcano
+      install_volcano:
+        resources_dir: "{{ resource_path }}"
+        node_name: "{{ NODE_NAME }}"
+        container_runtime_type: "{{ hostvars[groups['master'][0]].container_runtime_type }}"
+        step: 'install'
+
+    - name: apply volcano
+      run_once: yes
+      install_volcano:
+        resources_dir: "{{ resource_path }}"
+        step: 'apply'
+      delegate_to: "{{ groups['master'][0] }}"
+      when: apply_yaml

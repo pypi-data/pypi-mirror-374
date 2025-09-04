@@ -1,0 +1,6 @@
+- hosts:
+    - master[0]
+  name: prepare for install dl
+  tasks:
+    - name: prepare for install dl
+      prepare_for_dl:

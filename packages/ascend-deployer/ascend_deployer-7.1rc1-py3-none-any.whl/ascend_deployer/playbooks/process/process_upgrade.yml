@@ -1,0 +1,96 @@
+- name: gather fact info
+  import_playbook: ../gather_npu_fact.yml
+  tags: always
+
+- name: copy resources to remote servers
+  import_playbook: ../distribution.yml
+  tags: copy
+
+- name: upgrade npu
+  import_playbook: ../install/upgrade/upgrade_npu.yml
+  tags: driver,firmware,npu
+
+- name: upgrade mcu
+  import_playbook: ../install/upgrade/upgrade_mcu.yml
+  tags: mcu
+
+- name: upgrade toolkit
+  import_playbook: ../install/upgrade/upgrade_toolkit.yml
+  tags: toolkit
+
+- name: upgrade nnrt
+  import_playbook: ../install/upgrade/upgrade_nnrt.yml
+  tags: nnrt
+
+- name: upgrade nnae
+  import_playbook: ../install/upgrade/upgrade_nnae.yml
+  tags: nnae
+
+- name: upgrade tfplugin
+  import_playbook: ../install/upgrade/upgrade_tfplugin.yml
+  tags: tfplugin
+
+- name: upgrade kernels
+  import_playbook: ../install/upgrade/upgrade_kernels.yml
+  tags: kernels
+
+- name: upgrade toolbox
+  import_playbook: ../install/upgrade/upgrade_toolbox.yml
+  tags: toolbox
+
+- name: prepare for dl
+  import_playbook: ../install/task_dl.yml
+  tags:
+    - volcano
+    - hccl-controller
+    - ascend-device-plugin
+    - noded
+    - npu-exporter
+    - ascend-operator
+    - clusterd
+    - resilience-controller
+    - ascend-docker-runtime
+
+- name: install docker-runtime
+  import_playbook: ../install/install_ascend-docker-runtime.yml
+  tags: ascend-docker-runtime
+
+- name: install volcano
+  import_playbook: ../install/install_volcano.yml
+  tags: volcano
+
+- name: install hccl-controller
+  import_playbook: ../install/install_hccl-controller.yml
+  tags: hccl-controller
+
+- name: install device plugin
+  import_playbook: ../install/install_ascend-device-plugin.yml
+  tags: ascend-device-plugin
+
+- name: install noded
+  import_playbook: ../install/install_noded.yml
+  tags: noded
+
+- name: install ascend-operator
+  import_playbook: ../install/install_ascend-operator.yml
+  tags: ascend-operator
+
+- name: install clusterd
+  import_playbook: ../install/install_clusterd.yml
+  tags: clusterd
+
+- name: install resilience-controller
+  import_playbook: ../install/install_resilience-controller.yml
+  tags: resilience-controller
+
+- name: install npu-exporter
+  import_playbook: ../install/install_npu-exporter.yml
+  tags: npu-exporter
+
+- name: install fault-diag
+  import_playbook: ../install/install_fault-diag.yml
+  tags: fault-diag
+
+- name: generate report
+  import_playbook: ../report.yaml
+  tags: always
