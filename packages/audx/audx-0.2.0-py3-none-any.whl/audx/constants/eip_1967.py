@@ -1,0 +1,21 @@
+"""
+Constants related to EIP 1967 Storage Slots for Proxies
+See https://eips.ethereum.org/EIPS/eip-1967
+"""
+
+# from audx.utils import keccak_subtract
+
+# LOGIC_CONTRACT_ADDRESS = keccak_subtract("eip1967.proxy.implementation")
+LOGIC_CONTRACT_ADDRESS = (
+    "0x360894A13BA1A3210667C828492DB98DCA3E2076CC3735A920A3CA505D382BBC"
+)
+
+
+# BEACON_CONTRACT_ADDRESS = keccak_subtract("eip1967.proxy.beacon")
+BEACON_CONTRACT_ADDRESS = (
+    "0xA3F0AD74E5423AEBFD80D3EF4346578335A9A72AEAEE59FF6CB3582B35133D50"
+)
+
+
+# ADMIN_ADDRESS = keccak_subtract("eip1967.proxy.admin")
+ADMIN_ADDRESS = "0xB53127684A568B3173AE13B9F8A6016E243E63B6E8EE1178D6A717850B5D6103"
