@@ -1,0 +1,77 @@
+Metadata-Version: 2.4
+Name: molecule-lib
+Version: 2025.9.3.5
+Summary: A python library for manipulating molecular structures.
+Author-email: Jeremy Neil Schroeder <jeremynschroeder@gmail.com>
+License-Expression: GPL-3.0-or-later
+Project-URL: Homepage, https://github.com/jerschro/molecule_lib
+Project-URL: Documentation, https://jerschro.github.io/molecule_lib_documentation
+Project-URL: Issues, https://github.com/jerschro/molecule_lib_documentation/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=2.3.2
+Provides-Extra: rdkit
+Requires-Dist: rdkit; extra == "rdkit"
+Dynamic: license-file
+
+# molecule_lib
+
+[![PyPI version](https://img.shields.io/pypi/v/your-library-name)](https://pypi.org/project/your-library-name/)
+[![License](https://img.shields.io/badge/license-GPLv3-blue)](LICENSE)
+
+A python library for manipulating molecular structures.
+
+---
+
+## Documentation
+
+Please check out our documentation [Here](https://jerschro.github.io/molecule_lib_documentation/) to learn more about molecule_lib.
+
+
+## Features
+
+- You can read multiple different molecular file types and convert between each of them fast and efficient.
+- Selecting a molecule to move or rotate in 3d space precisely.
+- Simply edit unitcell parameters. (Work in progress)
+- Ability to reorder the atoms in a molecular structure file.
+- and many more simple use and novel features...
+
+---
+
+## Installation
+
+You can install the library directly from PyPI:
+
+```bash
+pip install molecule_lib
+
+```
+
+Requirements: Python 3.10 or later and Numpy. RDKit is optional but suggested.
+
+RDKit is an optional dependency and can be installed separately via conda or pip:
+
+```bash
+conda install -c conda-forge rdkit
+# or
+pip install rdkit
+
+```
+
+## Citation
+
+If you use **molecule_lib** in your work, please cite it as:
+
+```
+Jeremy Schroeder (2025). molecule_lib. GitHub repository: https://github.com/jerschro/molecule_lib
+
+```
+
+A journal publication will be coming soon.
+
+
+
+
