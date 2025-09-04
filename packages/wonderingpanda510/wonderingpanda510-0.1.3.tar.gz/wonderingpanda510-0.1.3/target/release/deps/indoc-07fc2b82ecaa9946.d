@@ -1,0 +1,8 @@
+/Users/yizhehao/wonderingpanda510/target/release/deps/indoc-07fc2b82ecaa9946.d: /Users/yizhehao/Library/Caches/puccinialin/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/indoc-2.0.6/src/lib.rs /Users/yizhehao/Library/Caches/puccinialin/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/indoc-2.0.6/src/error.rs /Users/yizhehao/Library/Caches/puccinialin/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/indoc-2.0.6/src/expr.rs /Users/yizhehao/Library/Caches/puccinialin/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/indoc-2.0.6/src/unindent.rs
+
+/Users/yizhehao/wonderingpanda510/target/release/deps/libindoc-07fc2b82ecaa9946.dylib: /Users/yizhehao/Library/Caches/puccinialin/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/indoc-2.0.6/src/lib.rs /Users/yizhehao/Library/Caches/puccinialin/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/indoc-2.0.6/src/error.rs /Users/yizhehao/Library/Caches/puccinialin/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/indoc-2.0.6/src/expr.rs /Users/yizhehao/Library/Caches/puccinialin/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/indoc-2.0.6/src/unindent.rs
+
+/Users/yizhehao/Library/Caches/puccinialin/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/indoc-2.0.6/src/lib.rs:
+/Users/yizhehao/Library/Caches/puccinialin/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/indoc-2.0.6/src/error.rs:
+/Users/yizhehao/Library/Caches/puccinialin/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/indoc-2.0.6/src/expr.rs:
+/Users/yizhehao/Library/Caches/puccinialin/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/indoc-2.0.6/src/unindent.rs:
