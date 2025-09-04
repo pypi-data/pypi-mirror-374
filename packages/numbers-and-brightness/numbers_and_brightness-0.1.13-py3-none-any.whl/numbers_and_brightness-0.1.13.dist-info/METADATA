@@ -1,0 +1,45 @@
+Metadata-Version: 2.4
+Name: numbers_and_brightness
+Version: 0.1.13
+Summary: Numbers and brightness analysis for microscopic image analysis implemented in python.
+Author: KJ van Beem
+License: GPL-3.0
+Project-URL: Homepage, https://github.com/JvB22/Numbers_and_brightness
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: <3.13,>=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: cellpose[gui]==3.1.1.2
+Requires-Dist: numpy==2.0.2
+Requires-Dist: matplotlib>=3.10.1
+Requires-Dist: opencv-python>=4.11.0.86
+Requires-Dist: scipy>=1.15.2
+Requires-Dist: tifffile>=2025.3.30
+Requires-Dist: tqdm>=4.67.1
+Requires-Dist: pyshortcuts>=1.9.5
+Requires-Dist: PyQt6>=6.9.0
+Requires-Dist: pandas>=2.2.3
+Dynamic: license-file
+
+# Numbers-and-brightness
+Numbers and brightness analysis for microscopic image analysis with automatic segmentation and interactive data visualisation implemented in python.
+
+[For information about usage and functionality, please see the documentation.](https://jvb22.github.io/Numbers-and-brightness/)
+
+<img src="./assets/images/documentation.png" width="50%" height="50%">
+
+## Installation
+Numbers and brightness is available on PyPi and can be installed as follows:
+```shell
+pip install numbers_and_brightness
+```
+
+## Examples
+### Automatic batch processing
+![](./assets/images/output_csv.png)
+
+### Interactive data inspection
+![](./assets/images/brightness_x_intensity.png)
+
+![](./assets/images/brightness_x_intensity_img_selection.png)
