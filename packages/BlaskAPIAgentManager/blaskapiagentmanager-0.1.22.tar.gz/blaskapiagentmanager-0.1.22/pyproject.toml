@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "BlaskAPIAgentManager"
+version = "0.1.22"
+description = "An agent for interacting with Blask API based on Swagger spec"
+readme = "README.md"
+authors = [
+    {name = "Blask RnD Team", email = "elijah@blask.com"}
+]
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "langchain",
+    "langchain-openai",
+    "langchain-core",
+    "requests",
+    "python-dotenv",
+    "pydantic",
+    "openai",
+    "clickhouse-connect",
+    "langsmith>=0.3.32",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "black",
+    "isort",
+    "mypy",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true 
