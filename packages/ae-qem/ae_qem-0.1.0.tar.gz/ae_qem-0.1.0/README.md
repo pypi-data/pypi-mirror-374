@@ -1,0 +1,87 @@
+# ae-qem — Autoencoder-based Quantum Error Mitigation SDK
+
+> A lightweight SDK for mitigating measurement errors in single quantum-circuit experiments using a pretrained autoencoder, with interactive visualization via Dash/Plotly.
+
+[![PyPI version](https://img.shields.io/pypi/v/ae-qem.svg)](https://pypi.org/project/ae-qem/)
+[![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](#)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+## Features
+
+- One-call workflow: measure → mitigate → visualize
+- Pretrained autoencoder checkpoints included (datasets A–F)
+- Interactive plots (toggle exact / noisy / mitigated traces)
+- Designed for **single-circuit** demonstration (not large batches)
+
+## Installation
+
+```bash
+pip install ae-qem
+```
+
+## Input your first quantum circuit!
+
+**Step 1.** Create your own **four-qubit** circuit.
+
+```python
+from qiskit import QuantumCircuit
+circ = QuantumCircuit(4)
+circ.h([0])
+```
+
+**Step 2.** Use `JobCenter` class to manage your jobs. This class eagerly loads the autoencoder model and the user-defined weights (A to F). By providing a quantum circuit and a `job_id` to the `add_job` method, measurement and mitigation are performed automatically, and the results are saved in the instance variable `jobs` as a dictionary.
+
+```python
+from ae_qem.mitigation import JobCenter
+center = JobCenter(checkpoint_name="F")
+# Select your own id.
+center.add_job(
+    circ=circ,
+    job_id="0"
+)
+```
+
+## Visualization
+
+**Step 3.** Provide a job ID to the `visualization` method to visualize the job results with a bar plot.
+
+```python
+center.visualization(job_id="0")
+```
+
+Figure below presents the overall visualization:
+
+The left panel compares the exact, noisy, and mitigated measurement outcomes using overlaid bar plots. The buttons below the figure toggle each type of measurement outcome on or off, providing a convenient environment for clear analysis. The right panel reports the mean absolute error (MAE) between the exact values and the unmitigated (noisy) outcomes, and between the exact values and the mitigated outcomes, indicating whether the autoencoder reduces errors.
+
+![Visualization](https://raw.githubusercontent.com/Y-Frieren-Y/ae-qem/main/docs/images/visualization.png)
+
+## License
+
+MIT License. See [LICENSE](LICENSE) for details.
+
+## Citation
+
+```bibtex
+@inproceedings{Lin2025IEEEqCCL,
+  title={Quantum Error Mitigation via Autoencoder Neural Networks},
+  author={Xiao-Dao Lin and Hsi-Ming Chang and Jhih-Shih You and Hsiu-Chuan Hsu},
+  year=2025,
+  month={June},
+  booktitle={Proceedings of the IEEE International Conference on Quantum Control, Computing and Learning (IEEE qCCL2025)},
+  publisher = {IEEE},
+  address = {The Hong Kong Polytechnic University, Hung Hom, Kowloon, Hong Kong},
+  note = {To appear; Not yet published as of August 25, 2025}
+}
+@mastersthesis{Lin2025MasterThesis,
+  title      = {Quantum Error Mitigation via Autoencoder Neural Networks},
+  author     = {Xiao-Dao Lin},
+  year       = {2025},
+  school     = {National Chengchi University},
+  department = {Graduate Institute of Applied Physics},
+  type       = {Master's thesis},
+  note       = {Advisor: Hsiu-Chuan Hsu},
+  language   = {zh-TW},
+  url        = {http://thesis.lib.nccu.edu.tw/cgi-bin/gs32/gsweb.cgi?o=dallcdr&s=id=%22G0112755009%22.&searchmode=basic}
+}
+
+```

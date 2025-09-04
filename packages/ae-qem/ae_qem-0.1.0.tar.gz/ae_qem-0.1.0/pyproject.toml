@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ae-qem"
+version = "0.1.0"
+description = "Autoencoder-based error mitigation and visualization"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [
+  { name = "LIN XIAO DAO", email = "112755009@g.nccu.edu.tw" }
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent"
+]
+dependencies = [
+  "numpy",
+  "qiskit>=1.2,<2.0",
+  "qiskit-ibm-runtime>0.3",
+  "qiskit-aer",
+  "matplotlib",
+  "pylatexenc",
+  "tensorflow>2.0,<3.0",
+  "dash",
+  "plotly"
+]
+
+[project.urls]
+Homepage = "https://github.com/Y-Frieren-Y/ae-qem"
+Issues = "https://github.com/Y-Frieren-Y/ae-qem/issues"
+
+# --- setuptools 設定 ---
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+ae_qem = [
+  "data/chkpoints/*.h5",
+  "data/models/*.keras",
+]
