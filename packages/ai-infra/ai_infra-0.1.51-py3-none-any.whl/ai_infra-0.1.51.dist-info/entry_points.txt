@@ -1,0 +1,5 @@
+[console_scripts]
+cli-mcp=ai_infra.mcp.server.custom.cli:main
+mcp-stdio-expose=ai_infra.mcp.expose.cli:app
+project-management-mcp=ai_infra.mcp.server.custom.proj_mgmt:main
+
