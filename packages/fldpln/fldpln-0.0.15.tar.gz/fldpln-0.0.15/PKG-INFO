@@ -1,0 +1,56 @@
+Metadata-Version: 2.4
+Name: fldpln
+Version: 0.0.15
+Summary: Flood inundation modeling and mapping using the FLDPLN model
+Author-email: Xingong Li <lixi@ku.edu>
+License: MIT License
+Project-URL: Homepage, https://github.com/xingongli/fldpln
+Keywords: fldpln
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: geopandas
+Requires-Dist: scipy
+Requires-Dist: h5py
+Requires-Dist: shapely
+Requires-Dist: rasterio
+Requires-Dist: rio_cogeo
+Requires-Dist: pyproj
+Requires-Dist: lxml
+Provides-Extra: all
+Requires-Dist: fldpln[extra]; extra == "all"
+Provides-Extra: extra
+Requires-Dist: pandas; extra == "extra"
+Dynamic: license-file
+
+# fldpln
+
+
+[![image](https://img.shields.io/pypi/v/fldpln.svg)](https://pypi.python.org/pypi/fldpln)
+[![image](https://img.shields.io/conda/vn/conda-forge/fldpln.svg)](https://anaconda.org/conda-forge/fldpln)
+
+
+**Flood inundation modeling and mapping using the FLDPLN model**
+
+
+-   Free software: MIT License
+-   Documentation: https://xingongli.github.io/fldpln
+    
+
+## Features
+
+-   Four modules to create and map FLDPLN library
+-   model module provides the FLDPLN class and methods for creating segment-based FLDPLN library
+-   tile module provides functions for tiling segment-based library for parallel mapping
+-   mapping module provides functions for generating special and flood event inundation maps
+-   gauge module provides functions for preparing gauges for use in flood mapping
