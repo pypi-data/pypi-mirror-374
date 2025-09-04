@@ -1,0 +1,59 @@
+{
+    "name": "pages.lapisworks.imbuement_artmind.title",
+    "icon": "lapisworks:mind",
+    "advancement": "lapisworks:got_lapis",
+    "category": "hexcasting:lapisworks/imbuement",
+    "sortnum": 5,
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "pages.lapisworks.imbuement_artmind.whatwhyhow"
+        },
+        {
+            "type": "patchouli:text",
+            "text": "pages.lapisworks.imbuement_artmind.whatwhyhow2"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "lapisworks:mind",
+            "text": "pages.lapisworks.imbuement_artmind.recipe.text"
+        },
+        {
+            "type": "patchouli:text",
+            "text": "pages.lapisworks.imbuement_artmind.howtouse"
+        },
+        {
+            "type": "patchouli:text",
+            "text": "pages.lapisworks.imbuement_artmind.thought_sieve.detailed"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:thought_sieve",
+            "anchor": "lapisworks:thought_sieve",
+            "input": "vec",
+            "output": "",
+            "text": "pages.lapisworks.imbuement_artmind.thought_sieve.summary"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:check_mind",
+            "anchor": "lapisworks:check_mind",
+            "input": "vec",
+            "output": "",
+            "text": "pages.lapisworks.imbuement_artmind.check_mind.summary"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:absorb_mind",
+            "anchor": "lapisworks:absorb_mind",
+            "input": "vec",
+            "output": "",
+            "text": "pages.lapisworks.imbuement_artmind.absorb_mind.summary"
+        },
+        {
+            "type": "patchouli:text",
+            "advancement": "hexcasting:opened_eyes",
+            "text": "pages.lapisworks.imbuement_artmind.reflection"
+        }
+    ]
+}

@@ -1,0 +1,17 @@
+{
+    "name": "pages.lapisworks.imbuement_spell.title",
+    "icon": "lapisworks:staves/amel_staff",
+    "advancement": "lapisworks:got_lapis",
+    "category": "hexcasting:lapisworks/imbuement",
+    "sortnum": 1,
+    "pages": [
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:imbue_amel",
+            "anchor": "lapisworks:imbue_amel",
+            "input": "num",
+            "output": "",
+            "text": "pages.lapisworks.imbuement_spell.summary"
+        }
+    ]
+}

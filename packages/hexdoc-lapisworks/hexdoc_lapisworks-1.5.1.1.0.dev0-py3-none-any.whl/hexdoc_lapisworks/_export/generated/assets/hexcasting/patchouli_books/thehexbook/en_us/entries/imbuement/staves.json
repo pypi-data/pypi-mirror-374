@@ -1,0 +1,31 @@
+{
+    "name": "pages.lapisworks.imbuement_staves.title",
+    "icon": "lapisworks:staves/incomplete/generic",
+    "advancement": "lapisworks:got_lapis",
+    "category": "hexcasting:lapisworks/imbuement",
+    "sortnum": 3,
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "pages.lapisworks.imbuement_staves.lore"
+        },
+        {
+            "type": "patchouli:image",
+            "title": "pages.lapisworks.imbuement_staves.incomplete_staves.title",
+            "images": [
+                "lapisworks:textures/entries/staves.png"
+            ],
+            "text": "pages.lapisworks.imbuement_staves.incomplete_staves.text"
+        },
+        {
+            "type": "patchouli:text",
+            "text": "pages.lapisworks.imbuement_staves.incomplete_staves.detail"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "title": "pages.lapisworks.imbuement_staves.full_amel_staff.title",
+            "item": "lapisworks:staves/amel_staff",
+            "text": "pages.lapisworks.imbuement_staves.full_amel_staff.text"
+        }
+    ]
+}

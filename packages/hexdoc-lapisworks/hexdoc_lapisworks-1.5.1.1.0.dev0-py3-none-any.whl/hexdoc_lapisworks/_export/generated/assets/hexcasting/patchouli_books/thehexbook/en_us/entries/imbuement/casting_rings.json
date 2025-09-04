@@ -1,0 +1,42 @@
+{
+    "name": "pages.lapisworks.imbuement_rings.title",
+    "icon": "lapisworks:staves/ring",
+    "advancement": "lapisworks:got_lapis",
+    "category": "hexcasting:lapisworks/imbuement",
+    "sortnum": 2,
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "pages.lapisworks.imbuement_rings.lore"
+        },
+        {
+            "type": "patchouli:text",
+            "text": "pages.lapisworks.imbuement_rings.lore2"
+        },
+        {
+            "type": "patchouli:crafting",
+            "title": "pages.lapisworks.imbuement_rings.recipe_title",
+            "recipe": "lapisworks:ring"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "title": "pages.lapisworks.imbuement_rings.ring_spotlightpage.title",
+            "item": "lapisworks:staves/ring",
+            "text": "pages.lapisworks.imbuement_rings.ring_spotlightpage.desc"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "title": "pages.lapisworks.imbuement_rings.amel_ring_spotlightpage.title",
+            "item": "lapisworks:staves/amel_ring",
+            "text": "pages.lapisworks.imbuement_rings.amel_ring_spotlightpage.desc",
+            "anchor": "lapisworks:amel_ring"
+        },
+        {
+            "type": "patchouli:image",
+            "images": [
+                "lapisworks:textures/entries/bookpic.png"
+            ],
+            "text": "pages.lapisworks.imbuement_rings.amel_ring_pic_desc"
+        }
+    ]
+}
