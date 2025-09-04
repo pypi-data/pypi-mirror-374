@@ -1,0 +1,89 @@
+Metadata-Version: 2.4
+Name: django-pagination-widget
+Version: 0.1.1
+Summary: A reusable Django pagination component with modern, clean styling and interactive JavaScript behavior
+Home-page: https://github.com/priyesh-04/django-pagination-widget
+Author: Priyesh Shukla
+Author-email: Priyesh Shukla <priyesh.shukla070@gmail.com>
+Maintainer-email: Priyesh Shukla <priyesh.shukla070@gmail.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/priyesh-04/django-pagination-widget
+Project-URL: Documentation, https://django-pagination-widget.readthedocs.io/
+Project-URL: Repository, https://github.com/priyesh-04/django-pagination-widget
+Project-URL: Issues, https://github.com/priyesh-04/django-pagination-widget/issues
+Project-URL: Changelog, https://github.com/priyesh-04/django-pagination-widget/blob/main/CHANGELOG.md
+Keywords: django,pagination,widget,modern,javascript
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 4.2
+Classifier: Framework :: Django :: 5.0
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: Django>=4.2
+Requires-Dist: tzdata; platform_system == "Windows"
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# Django Pagination Widget
+
+A modern, zero-dependency Django pagination component with clean styling, accessible markup, and a tiny vanilla-JS helper for smart ellipsis.
+
+Supports: Django 4.2+ · Python 3.9+
+
+## Install
+
+```bash
+pip install django-pagination-widget
+```
+
+## Quick start
+
+1) Add the app
+
+```python
+INSTALLED_APPS = [
+	# ...
+	"django_pagination_widget",
+]
+```
+
+2) In your template
+
+```html
+{% load pagination_tags %}
+
+<!-- Basic usage (widget auto-includes its CSS/JS) -->
+{% pagination_widget page_obj %}
+
+<!-- Or load assets once (e.g., in base.html) and reuse the widget -->
+{% pagination_css %}
+{% pagination_js %}
+{% pagination_widget page_obj %}
+```
+
+Optional: include your own theme overrides
+
+```html
+{% pagination_custom_css 'css/pagination_widget.css' %}
+```
+
+## Links
+
+- Source: https://github.com/priyesh-04/django-pagination-widget
+- Issues: https://github.com/priyesh-04/django-pagination-widget/issues
+
+License: MIT

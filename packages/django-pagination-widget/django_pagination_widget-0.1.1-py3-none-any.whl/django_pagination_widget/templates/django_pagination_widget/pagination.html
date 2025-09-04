@@ -1,0 +1,45 @@
+{% load static %}
+<div class="pagination">
+    <div class="step-links">
+        {% if page_obj.has_previous %}
+            <a class="page-change-btn back-btn"
+               href="?page={{ page_obj.previous_page_number }}"
+               aria-label="Go to previous page">
+                <svg class="pagination-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+            </a>
+        {% endif %}
+
+        {% for page_num in page_range %}
+            {% if page_num == '...' %}
+                <span class="page-change-btn ellipsis" aria-hidden="true">…</span>
+            {% else %}
+                <a class="page-change-btn page-num-btn {% if page_obj.number == page_num %}active{% endif %}"
+                   id="btn-{{ page_num }}"
+                   href="?page={{ page_num }}"
+                   aria-label="Go to page {{ page_num }}">
+                    {{ page_num }}
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a class="page-change-btn next-btn"
+               href="?page={{ page_obj.next_page_number }}"
+               aria-label="Go to next page">
+                <svg class="pagination-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+                </svg>
+            </a>
+        {% endif %}
+    </div>
+
+    <span class="current" aria-live="polite">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+    </span>
+</div>
+
+{# Load pagination styles and scripts #}
+<link rel="stylesheet" href="{% static 'django_pagination_widget/css/pagination.css' %}">
+<script src="{% static 'django_pagination_widget/js/pagination.js' %}"></script>
