@@ -1,0 +1,26 @@
+[project]
+name = "HumbleBench"
+version = "1.0.0"
+description = "A comprehensive benchmark for hallucinations in multimodal large language models."
+authors = [{ name="Bingkui Tong", email="bingkuitong@gmail.com" }]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.7"
+
+dependencies = [
+    "tqdm",
+    "pydantic>=2.11.7",
+    "requests",
+    "datasets==3.6.0",
+    "pillow==11.2.1",
+    "rich==14.0.0",
+    "numpy==1.26.3"
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["HumbleBench*"]
