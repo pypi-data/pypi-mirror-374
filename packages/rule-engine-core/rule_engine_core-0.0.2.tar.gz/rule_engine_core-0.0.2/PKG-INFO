@@ -1,0 +1,36 @@
+Metadata-Version: 2.4
+Name: rule-engine-core
+Version: 0.0.2
+Summary: A rule engine core library for Python.
+Home-page: https://github.com/temp-noob/rule-engine
+Author: Mohit Tripathi
+Author-email: tripathimohit051@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: psycopg2-binary
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+## Build
+-> create venv and activate
+(install meta)
+-> pip install setuptools wheel twine
+(build package)
+-> python setup.py sdist bdist_wheel
+-> pip install dist/rule-engine-core-0.1.0-py3-none-any.whl
+(Publish to pypi)
+-> pip install twine
+-> twine upload dist/*
+
+### Docker
+-> `psql --username=$POSTGRES_USER -d $POSTGRES_DB`
