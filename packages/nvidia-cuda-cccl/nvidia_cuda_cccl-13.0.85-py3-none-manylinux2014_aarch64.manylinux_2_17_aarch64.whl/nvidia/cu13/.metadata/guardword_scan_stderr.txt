@@ -1,0 +1,13 @@
+[check-guardwords]
+[check-guardwords] Raw violations Found in File: /dvs/p4/build/sw/rel/gpgpu/toolkit/r13.0/cuda_cccl/include/cccl/cuda/std/__cccl/preprocessor.h
+[check-guardwords]
+[check-guardwords]           Guardword Expression  Line     Offset      Context (blanks may be non-ascii chars)
+[check-guardwords]                           t254  918      0x0000b4fc: F) #define _CCCL_PP_REPEAT254(_M, _S, _F) _M(_S) _CCCL_PP_RE
+[check-guardwords]                                                                               ~~~~                               
+[check-guardwords]                           t254  919      0x0000b573: _F) _M(_S) _CCCL_PP_REPEAT254(_M, _F(_S), _F) #define _CCCL_
+[check-guardwords]                                                                               ~~~~                               
+[check-guardwords]
+[check-guardwords]
+[check-guardwords] === 2 guardword violations found in 1708 files scanned
+[check-guardwords] === ERROR: guardword check failed
+[check-guardwords]
