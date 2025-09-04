@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=61", "setuptools_scm[toml]>=8.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rt-client"
+dynamic = ["version"]
+requires-python = ">= 3.8"
+dependencies = [
+    "requests>=2.18.4",
+    "requests-toolbelt>=1.0.0",
+    "python-magic>=0.4.15"
+]
+authors = [
+    {name = "Catherine Sanson", email = "catherine.sanson@catalyst.net.nz"},
+    {name = "Adrian Turjak", email = "adriant@catalyst.net.nz"}
+]
+maintainers = [
+    {name = "Adrian Jarvis", email = "adrian.jarvis@catalystcloud.nz"}
+]
+description = "Request Tracker Client"
+readme = "README.rst"
+license = {text = "Apache Software License"}
+keywords = ["Request Tracker"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.optional-dependencies]
+dev = [
+    "flake8>=3.0.4",
+    "coverage>=4.4.1",
+    "sphinx!=1.6.1,>=1.5.1",
+    "sphinx-rtd-theme>=0.2.4",
+    "doc8",
+    "black>=19.3b0",
+    "requests-mock>=1.11.0",
+    "bandit"
+]
+
+[project.urls]
+Homepage = "https://gitlab.com/catalyst-cloud/rt-client"
+
+[tool.setuptools_scm]
+version_file = "rt_client/_version.py"

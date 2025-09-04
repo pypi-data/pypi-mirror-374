@@ -1,0 +1,34 @@
+image: python:3.12
+
+stages:
+  - lint
+  - test
+  - security
+
+before_script:
+  - pip install tox
+
+code_style:
+  stage: lint
+  script:
+    - tox -e pep8,black_check
+
+security:
+  stage: security
+  script:
+    - tox -e bandit
+
+py3:
+  stage: test
+  parallel:
+    matrix:
+       - PYTHON_VERSION: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+  image: python:$PYTHON_VERSION
+  script:
+    - tox -e py3
+
+coverage:
+  stage: test
+  script:
+    - tox -e coverage
+  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'

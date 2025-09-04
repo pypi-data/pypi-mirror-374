@@ -1,0 +1,13 @@
+requests>=2.18.4
+requests-toolbelt>=1.0.0
+python-magic>=0.4.15
+
+[dev]
+flake8>=3.0.4
+coverage>=4.4.1
+sphinx!=1.6.1,>=1.5.1
+sphinx-rtd-theme>=0.2.4
+doc8
+black>=19.3b0
+requests-mock>=1.11.0
+bandit
