@@ -1,0 +1,23 @@
+# Customize the report/email subject with any wording you like.
+# You could also insert the following attributes to display their values:
+#    {{datetime}} {{totalPassed}} {{totalFailed}} {{totalTestAborted}} {{totalTestcases}} 
+#    {{result}} {{pipelineId}} {{totalSkipped}}
+# Leave	blank to use Keystack default
+reportSubject: None
+
+# # Put all failure descriptions after the testcase passed/failed summary
+reportPutFailureDetailsAfterResultSummary: False
+
+# Format the report headings
+# Attributes: {{pipelineId}} {{playbook}} {{startTime}} {{stopTime}} {{duration}}  {{testResultPath}}
+#             {{reportHeadingAdditions}} {{totalTestcases}} {{totalPassed}} {{totalFailed}} {{totalTestAborted}}
+reportHeadings: "Playbook Executed: {{playbook}}\nPipelineId: {{pipelineId}}\nTest Result Folder: {{testResultPath}}\nStartTime: {{startTime}}\nStopTime: {{stopTime}}\nDuration: {{duration}}"
+
+# True|False: Displays the STAGE name, MODULE name, start|stop datetime and module level results
+reportIncludeStageHeadings: True
+
+# {{testcase}} {{result}} {{aborted}} {{outerLoopCounter}} {{innerLoopCounter}
+# For LoadCore & AirMosaic: {{kpiPassed}}  {{kpiFailed}}	
+#    kpiPassed and kpiFailed will automatically	get excluded if	the testing module isn't LoadCore or AirMosaic
+# Example: 
+#reportSummary: "{{testcase}} Result:{{result}} KPI-Passed:{{kpiPassed}} KPI-Failed:{{kpiFailed}} Aborted:{{aborted}}"

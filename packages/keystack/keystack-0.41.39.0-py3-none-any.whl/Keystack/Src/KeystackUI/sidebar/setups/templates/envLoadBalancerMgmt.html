@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link href={% static "commons/css/testResultsTreeView.css" %} rel="stylesheet" type="text/css">
+    <link href={% static "commons/css/envLoadBalance.css" %} rel="stylesheet" type="text/css">
+
+    <style>
+        // Create variables
+        :root {
+            --main-radius: 25px;
+            --main-padding: 15px;
+        }
+    
+        .grid {
+            margin-top: 100px;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: .3fr 1fr .5fr;
+            grid-template-rows: 1fr;
+            grid-template-areas:
+                "loadBalancerGroups selectedEnvs envOptions";      
+            grid-gap: 0.1rem;
+            background-color: white;
+        }
+    
+        #loadBalancerGroups {
+            grid-area: loadBalancerGroups;
+            border-radius:var(--main-radius);
+            padding-top:var(--main-padding);
+            height: 85%;
+            overflow: auto;
+            color: #66F854;
+            background: black;
+        }
+    
+        #envOptions {
+            grid-area: envOptions;
+            border-radius:var(--main-radius);
+            padding-top:var(--main-padding);
+            height: 85%;
+            overflow: auto;
+            color: #66F854;
+            background: black;
+            overflow: auto;
+        }
+
+        #selectedEnvs {
+            grid-area: selectedEnvs;
+            border-radius:var(--main-radius);
+            padding-top:var(--main-padding);
+            height: 85%;
+            overflow: auto;
+            color: #66F854;
+            background: black;
+        }
+    
+    </style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="mainBodyDiv">
+    <nav id="loadBalanceGroupNavbar" class="navbar navbar-expand-sm topbar fixed-top secondNavbarStyle">
+        <div class="insertInlineBlock">
+            <a id="createLoadBlanceGroupLink" href="#" data-toggle="modal" data-target="#createLoadBalanceGroupModal" onclick="getEnvs()">Create Load-Balance Group</a>&emsp;&emsp;
+        </div>
+    </nav>
+
+    <div class="grid">
+        <div id='loadBalancerGroups'>
+            <div class="marginTop20px"><center>Select a load-balance group</center></div><br>
+            <center>
+                <button id="createLoadBalanceGroup" class="btn btn-sm btn-outline-success" data-toggle="modal" data-target="#createLoadBalanceGroupModal" onclick="getEnvs()">Create</button>&ensp;
+                <button id="loadBalanceGroups" class="btn btn-sm btn-outline-success hide" data-toggle="modal"
+                data-target="#deleteGroupConfirmationModal">Delete Group</button>&ensp;
+                <button id="resetLoadBalanceGroup" class="btn btn-sm btn-outline-success" data-toggle="modal" data-target="#resetLBGConfirmationModal">Reset</button>&ensp;
+            </center><br>
+
+            <div id="insertLoadBalanceGroups"></div>
+        </div>
+
+        <div id='selectedEnvs'>
+            <center><div class="marginTop20px" id="insertLoadBalanceGroupName"></div></center><br>
+            <center>
+                <button id="removeSelectedLBG" class="btn btn-sm btn-outline-success" onclick="removeSelectedEnv()">Remove Selected</button>&ensp;&ensp;
+                <button id="removeAllEnvFromLBG" class="btn btn-sm btn-outline-success" data-toggle="modal" data-target="#removeAllEnvConfirmationModal">Remove All</button>
+            </center><br>
+            <div class="marginTop10px" id='insertLoadBalanceGroupEnvs'></div>
+        </div>
+
+        <div id='envOptions'>
+            <div class="marginTop20px"><center id="insertLoadBalanceGroupName2"></center></div><br>
+            <center><button id="selectEnvForLBG" class="btn btn-sm btn-outline-success" onclick="addEnvsToLoadBalanceGroup()">Select</button></center><br>
+            <span id="insertEnvsInstruction" class="marginTop20px marginLeft20px">Expand each Env group to select envs</span><br>
+            <div class="marginTop10px marginLeft40px" id='insertEnvs'></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="createLoadBalanceGroupModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+        aria-labelledby="createLoadBalancerGroup" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:35%; height:250px;  color:black">
+        <div class="modal-content">
+ 
+            <div class="modal-header">
+                <div class="floatLeft insertInlineBlock">
+                    <h6 class="modal-title textBlue" id="userMgmt">Create Load-Balance Group</h6>&ensp;&ensp;
+                    <div id="getLoadBalanceGroupEnvsStatus"></div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class='row'>
+                    <div class="flexRowInlineBlockLeft">
+                        <label for='newBalancerGroupId'>Group Name:</label>&emsp; 
+                        <input type="text" class="form-control width300px" id="createNewBalancerGroupId"/>&emsp; 
+                        <button type="button" class=" btn btn-sm btn-primary" data-dismiss="modal" onclick="createLoadBalanceGroup()">Create</button>
+                    </div>
+                </div>
+                <br>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="deleteGroupConfirmationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="deleteGroupConfirmationModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:30%; height:300px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<div class="fileRowInlineBlockRight">
+					<h5 class="modal-title textBlue">Delete Load-Balance Group&ensp;</h5>
+					<div id="showLoadBalanceGroupName" style="float:left; margin-left:20px; padding-top:3px;"></div>
+				</div>
+            </div>
+
+            <div class="modal-body" style="margin-top:2px">
+				<div class="row">&ensp;&ensp;Are you sure that you want to delete the load-balancer group?</div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="deleteLoadBalanceGroup()">Delete</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="removeAllEnvConfirmationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="removeAllEnvConfirmationModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:30%; height:200px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<div class="fileRowInlineBlockRight">
+					<h6 class="modal-title textBlue">Remove all envs from load-balance group:&ensp;<span id="insertCurrentLoadBalanceGroup"></span></h6>
+                    
+					<div id="showLoadBalanceGroupName2" style="float:left; margin-left:20px; padding-top:3px;"></div>
+				</div>
+            </div>
+
+            <div class="modal-body" style="margin-top:2px">
+				<div class="row"><center>Are you sure?</center></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="removeAllEnvs()">Remove</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="resetLBGConfirmationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="resetLBGConfirmationModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:30%; height:300px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<div class="fileRowInlineBlockRight">
+					<h5 class="modal-title textBlue">Reset Load-Balance Group&ensp;</h5>
+					<div id="showLoadBalanceGroupName" style="float:left; margin-left:20px; padding-top:3px;"></div>
+				</div>
+            </div>
+
+            <div class="modal-body" style="margin-top:2px">
+				<div class="row">&ensp;&ensp;This will remove all envs from the load-balance group.<br>&ensp;&ensp;Are you sure that you want to reset?</div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="resetLoadBalanceGroup()">Reset</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+    <script type="module" src="{% static 'commons/js/envLoadBalance.js' %}"></script>
+{% endblock extra_js %}

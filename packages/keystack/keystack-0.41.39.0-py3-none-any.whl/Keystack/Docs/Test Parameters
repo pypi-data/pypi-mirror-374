@@ -1,0 +1,55 @@
+Test parameters
+
+Example:
+    keystack run -playbook Samples/advance -domain QA -session_id myAwesomeTestId 
+
+
+playbook:              The playbook to run.  Could be any of the below formats:
+                          -playbook /opt/KeystackTests/Playbooks/DOMAIN=QA/Samples/qa.yml
+                          -playbook DOMAIN=QA/Samples/qa.yml
+                          -playbook Samples/qa -domain <playbook domain> 
+               
+domain:                The playbook's domain. Test results will be saved in the domain name
+                       that you stated.
+   
+api_key:               Running Keystack on CLI in secured mode requires this param with user's API-Key
+   
+session_id:            Tag the pipeline test session with a unique name identifier
+
+pipeline:              The saved pipeline name to run
+
+debug:                 The pipleine session ID and the result folder will be tagged with 
+                       _debug and the pipeline session will not be tracked
+
+hold_envs_if_failed:   Don't release the env if the Task failed.  This requires the user to click on 
+                       release-env in the KeystackUI when done debugging to release the env so
+                       other test could use it.
+
+abort_test_on_failure: Abort the test immediately on the first failure 
+
+pause_on_failure:      Pause the test on each failure for debugging. 
+                       Requires user to click on pause-on-faiure in the KeystackUI when done .
+                       debugging to resume testing.
+                       If running test on the CLI, this requires users to remove a provided file to continue testing 
+                       when done debugging.
+ 
+aws_s3:                Upload test results to AWS S3 bucket when the test is done
+ 
+jira:                  Automatically open or update a Jira bug defect upon encountering test case failures
+
+verbose:               For CLI test executions. Show extra traceback log messages.
+   
+email_results:         Email the test result summary when test is completed
+                       This is a placeholder for now.  *Not working yet*
+   
+app_args:              The args that you would normally passed into a CLI command app inside double 
+                       quotes. For example: Pytest args
+                       Also, overwrites testcase yml file scriptCmdlineArgs.
+   
+test_configs:          Which reconfiguration files to use to modify test params
+                       Usage: --test_configs <file name>  
+                       Usage: --test_configs <file1>  --test_configs <file2>
+
+include_loop_test_passed_results: Inlcude loop test results. Default=False
+                                  Warning! This will take up storage space. The more iterations,
+                                  the more data accumulated.

@@ -1,0 +1,24 @@
+stages:
+   Test:
+      enable: True
+      runTasksConcurrently: True
+      tasks:
+        - Layer3:
+            enable: True
+            env: DOMAIN=Communal/Samples/demoEnv
+            playlist:
+               - Modules/Demo/Testcases/L2L3_Testcases
+               - Modules/Demo/Testcases/L2L3_Testcases/ospf.yml
+               - Modules/Demo/Testcases/L2L3_Testcases/isis.yml
+
+        - dynamicResourcesSample:
+            enable: True
+            env: DOMAIN=Communal/Samples/demoEnv2
+
+            # Pass in some custom param values to Python scripts to consume
+            playbookVars:
+               serverIp: 10.10.10.1
+               serverName: qa
+
+            playlist:
+                - /Modules/Demo/Testcases/dynamicVariableSample.yml

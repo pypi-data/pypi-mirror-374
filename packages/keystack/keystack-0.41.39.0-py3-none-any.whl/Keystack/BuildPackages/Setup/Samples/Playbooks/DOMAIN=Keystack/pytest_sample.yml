@@ -1,0 +1,16 @@
+globalSettings:
+   # Catching failed word patterns from pytest stdout
+   # Example: pytest.failed('Failed: This ia a sample failed message from pytest script')
+   verifyFailurePatterns: ['Failed:', 'FAILED.*::']
+   
+stages:
+   Test:
+      enable: True
+      tasks:
+        - PyTest-Layer3:
+            enable: True
+            env: DOMAIN=Keystack/demoEnv1
+            #loadBalanceGroup: qa
+            playlist:
+               - Modules/Keystack_Samples/Testcases/runPytest.yml
+

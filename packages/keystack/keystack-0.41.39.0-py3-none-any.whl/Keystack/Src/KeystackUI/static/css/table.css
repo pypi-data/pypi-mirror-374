@@ -1,0 +1,76 @@
+/* https://www.w3docs.com/snippets/html/how-to-create-a-table-with-a-fixed-header-and-scrollable-body.html */
+
+/*     overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
+
+.tableFixedHead {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.tableFixedHead tbody {
+    display: block;
+    width: 100%;
+    overflow: auto;
+    height: 400px;
+}
+
+.tableFixedHead tr {
+    display: block;
+}
+
+.tableFixedHead thead {
+    background: #eee;
+    color: black;
+}
+
+.tableFixedHead th,
+  .tableFixedHead td {
+    padding: 5px;
+    text-align: left;
+    border: 1px solid #ccc;
+    vertical-align: middle;
+    word-wrap: break-word;
+    width: 300px;
+}
+
+.tableFixedHead2 {
+    width: auto;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+  .tableFixedHead2 tbody {
+    display: block;
+    width: 100%;
+    overflow: auto;
+    height: 600px;
+  }
+
+  .tableFixedHead2 thead tr {
+    display: block;
+  }
+
+  .tableFixedHead2 thead {
+    background: white;
+    color: black;
+  }
+
+  .tableFixedHead2 th,
+  .tableFixedHead2 td {
+    padding: 5px;
+    text-align: center;
+    width: 200px;
+
+    border: 1px solid #ccc;
+    color: black;
+    font-weight: 350;
+  }
+
+  .tableFixedHead2 td {
+    vertical-align: center;
+  }
+
+  .tableFixedHead2 td:last-child {
+    width: auto;
+  }

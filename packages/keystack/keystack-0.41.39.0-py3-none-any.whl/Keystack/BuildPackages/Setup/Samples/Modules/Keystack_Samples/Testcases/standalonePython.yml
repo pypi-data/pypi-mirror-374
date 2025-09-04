@@ -1,0 +1,27 @@
+Title: A stand alone python script
+Description: QA
+objective: BGP route stability
+topology: L3
+requirements:
+   - List of requirements here
+
+# If you have predefined Jira Issues as testcases, state the
+# Issue Key to use for appending failure descriptions to the existing Jira Issue Key.
+jiraTestcaseIssueKey: KEYS-46
+
+# The path must begins with /Modules because all scripts resides in a Module
+# Options:
+#   standalonePythonScripts: No keystack integration. Run Python script as-is.
+#   pythonScripts: Includes keystack integration.
+#   shellScripts:
+#   cliCommands: Run any app that the server supports
+standalonePythonScripts:
+   - /opt/KeystackTests/Modules/Keystack_Samples/Scripts/standalonePython.py
+
+#cliCommands:
+#   - python3.10 /Modules/Demo/Scripts/standalonePython.py
+
+scriptCmdlineArgs:
+   - -dataModelFile /opt/KeystackTests/Modules/Demo/ConfigParameters/sample.json
+
+

@@ -1,0 +1,54 @@
+There are a couple of ways to run Keystack on the CLI:
+
+   1> On the Keystack host server CLI outside of the Keystack container
+   2> Inside the Keystack container (better performance)
+   3> Use ReST API
+
+The CLI command inside and outside of the container are the same.
+The performance is faster if Keystack CLI was ran inside the container because if
+Keystack was ran outside the container, Keystack has to transfer runtime data to the DB in
+which the DB resides in a container. The data transfer will accumulate time over the duration 
+of your test.  Running test from the KeystackUI is the same as running it inside the container.
+
+CLI command to run Keystack: 
+      Below commands do the same: 
+            keystack run -playbook Samples/advance -domain Communal
+            keystack run -playbook DOMAIN=Communal/Samples/advance
+
+      Run saved pipeline tests:
+            keystack run -pipeline <pipeline>
+
+            Note: For more info on running saved pipelines, read the Pipelines doc
+
+To run on the CLI in secured mode, meaning verifying the user running 
+Keystack with its api-key, the user must get their api-key from the KeystackUI accountMgr and include it
+in the cli paramter value -apiKey <api_key>:
+      keystack -playbook Samples/advance -domain Communal -apiKey xyWGHy8fkzTgaCiRQ-Q0mB
+
+Enable cli-secured-mode:
+      Edit /opt/KeystackSystem/keystackSystemSettings.yml
+      cliSecuredMode=true
+
+   Now when you run keystack on the CLI, Keystack will verify and authorize the user 
+
+ReST-API:
+    NOTES: 
+      - At the time of this writing, it is a known issue that the playbook parameter value 
+        must being with DOMAIN=<domain name> and must include domain=<domain name>
+
+      - Please read the Rest Api Samples doc for more  ReST API samples
+
+      # Run playbook:  Inline format
+      curl --insecure -H "API-Key: iNP29xnXdlnsfOyausD_EQ" -X POST 'https://192.168.28.11/api/v1/playbook/runPlaybook?playbook=DOMAIN=Communal/Samples/advance&sessionId=awesomeTest2&domain=Communal'
+
+      # Run playbook: json data format
+      curl --insecure -d '{"playbook": "DOMAIN=Communal/Samples/advance", 
+      "domain": "Communal"}' -H "Content-Type: application/json" -H "API-Key: xyWGHy8fkzTgaCiRQ-Q0mA" -X POST https://192.168.28.11/api/v1/playbook/runPlaybook
+
+      # Run playbook: non json data format
+      curl --insecure -d "playbook=DOMAIN=Communal/Samples/advance&domain=Communal" -H "API-Key: xyWGHy8fkzTgaCiRQ-Q0mA" -X POST https://192.168.28.11/api/v1/playbook/runPlaybook 
+
+      # Run playbook: x-www-form-urlencoded format
+      curl --insecure -d "playbook=DOMAIN=Communal/Samples/advance&domain=Communal" -H "Content-Type: application/x-www-form-urlencoded" -H "API-Key: xyWGHy8fkzTgaCiRQ-Q0mA" -X POST https://192.168.28.11/api/v1/playbook/runPlaybook
+
+

@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% load static %}
+{% load fileMgmtTags %}
+
+{% block extra_css %}
+    <link href={% static "commons/css/commons.css" %} rel="stylesheet" type="text/css">
+{% endblock extra_css%}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="mainBodyDiv">
+        <nav class="navbar navbar-expand-sm topbar fixed-top secondNavbarStyle">
+            <div class="insertInlineBlock marginTop5px">
+                <a href="#" id="removePortGroups">Delete</a>&emsp;&emsp;
+            </div>
+        </nav>
+
+        <div class="row" id="portGroupCreateRow">
+            <div class="flexRowInlineBlockLeft">
+                <label id="createPortGroupLabelId" class="testParameterSessionIdLabel" for="createPortGroupInput">Name:</label>&emsp;
+                <input name="createPortGroupInputName" id="createPortGroupInput" type="text" class="form-control width300px" >&emsp;
+                <button type="button" class="btn btn-outline-primary" id="createPortGroupButton">Create Port-Group</button>
+            </div>
+        </div>
+
+        <br>
+        <div class="row" id="portGroupNotesRow">
+            <span>Notes:</span><br>
+                <span class="marginLeft10px">- After creating a Port-Group, go to Inventory to add device/ports to the Port-Group</span><br>
+                <span class="marginLeft10px">- Port-Groups are reserved in Envs</span><br>
+        </div>
+        <br>
+
+        <div class="row">
+            <table id="portGroupTable1" class="tableFixHead2">   
+                <thead>
+                    <tr>
+                        <th>Select</th>
+                        <th>Port-Groups</th>
+                        <th class="textAlignLeft">Ports</th>
+                        <th>Actively-Reserved</th>
+                        <!-- <th>On-Scheduler</th> -->
+                        <!-- <th>Reserve</th> -->
+                        <!-- <th>Release</th> -->
+                        <th>Reset-Active-Reservations</th>
+                    </tr>
+                </thead>
+
+                <tbody id="portGroupTable"></tbody>
+            </table>
+        </div>
+        <br>
+
+        <div class="modal" id="portConfigsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true"
+    aria-labelledby="openPortConfigsLabel">
+            <div id="openPortConfigsLabel" class="modal-dialog modal-dialog-scrollable" style="max-width:70%; height:750px; overflow:auto; color:black">
+                <div class="modal-content">
+                    
+                    <div class="modal-header">
+                        <div class="fileRowInlineBlockRight">
+                            <h6 class="modal-title">Ports</h6>
+                        </div>
+                    </div>
+
+                    <div class="modal-body" style="margin-top:2px">
+                        <div class='row'>
+                            <div id="insertPortGroupPortsTable"></div>
+                        </div>
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button id="closePortConfigsModal" type="button" class="btn btn-primary">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="portGroupActiveUsersModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+        aria-labelledby="activeUsers" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:95%; height:700px; overflow:auto; color:black">
+        <div class="modal-content">
+ 
+            <div class="modal-header">
+                <div class="floatLeft insertInlineBlock">
+                    <h6 class="modal-title textBlue" id="insertActiveUserMgmtPortGroup"></h6>
+                    <div id="portGroupReleaseStatus"></div>
+                </div>
+            </div>
+
+            <div class="row modal-body">
+                <div style="display:inline-block; width:50%; height:600px; float:left;">
+                    <h6 class="modal-title textBlue floatLeft">Active-Users</h6>
+
+                    <button id="portGroupRemoveFromActiveUsersButton" class="btn btn-sm btn-outline-primary floatRight margin5px marginBottom10px" style="margin-right:45px">
+                        Release Active User
+                    </button>
+
+                    <div id="insertPortGroupActiveUsers"></div>
+                </div>
+
+                <div style="display:inline-block; width:50%; height:600px; float:right;">
+                    <h6 class="modal-title textBlue floatLeft">Wait-List</h6>
+
+                    <button id="portGroupRemoveFromWaitListButton" class="btn btn-sm btn-outline-primary floatRight margin5px marginBottom10px" style="margin-right:45px">
+                        Remove From WaitList
+                    </button>
+
+                    <div id="portGroupInsertWaitList"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="floatRight margin5px btn btn-sm btn-danger" type="submit" id="portGroupCloseActiveUsers" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="createPortGroupSchedulerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="createPortGroupSchedulerModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable mediumModalSizeExtraWidth">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div id="insertPortGroupName"></div>
+                <h6 id="portGroupSchedulerStatus"></h6>
+            </div>
+
+            <div class="modal-body">
+                <!-- .---------------- minute (0 - 59)
+                     |  .------------- hour (0 - 23)
+                     |  |  .---------- day of month (1 - 31)
+                     |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+                     |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+                     |  |  |  |  |
+                     *  *  *  *  * 
+               -->
+               <h6 id="selectedPortGroup"></h6>
+
+               <div class="lineHeight25px">
+                    <span>Schedule a date-time</span>
+                    <div id="insertSchedulerDatetimePicker"></div><br>
+               </div>
+
+               <div class="lineHeight25px">
+                    <span>Optionally, set an automatic release schedule</span>
+                    <div id="insertSchedulerExpiresDatetimePicker"></div><br>
+               </div>
+
+               <div class="flexRowInlineBlockLeft">
+                   Select a different user for the reservation: &ensp;<div id="insertDomainUserSelection"></div>
+               </div>
+               <br>
+
+               <div class="row">
+                    <div class="insertInlineBlock">
+                        <label class="modalTextColor" for="removeJobAfterRunning">Remove the reservation when the Port-Group is reserved:&ensp;</label>
+                        <input style="vertical-align:middle" type="checkbox" id="removeJobAfterRunning" />&emsp;&ensp;
+                        <button type="button" class=" btn btn-sm btn-primary" onclick="saveScheduledPortGroup()">Add Reservation</button>&emsp;
+                    </div>
+                </div>
+
+                <div class='row mt-2'>
+                    <div id="insertPortGroupSchedules"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" id="removeScheduledPortGroupsButton" class="btn btn-sm btn-primary" onclick="removeScheduledPortGroupsButton()">Remove Scheduled Reservations</button>
+                <button type="button" id="closePortGroupSchedulerModal" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+    <script type="module" src="{% static 'commons/js/portGroup.js' %}"></script>
+{% endblock extra_js%}

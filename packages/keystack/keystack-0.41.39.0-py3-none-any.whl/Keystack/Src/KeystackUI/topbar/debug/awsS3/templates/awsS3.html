@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link href={% static "commons/css/testResultsTreeView.css" %} rel="stylesheet" type="text/css">
+{% endblock extra_css%}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="mainBodyDiv">
+        <nav class="navbar navbar-expand-sm topbar fixed-top secondNavbarStyle">
+            <div class="insertInlineBlock marginTop5px">
+                <a href="#" onclick="getAwsS3Uploads()">Aws S3 Uploads</a>&emsp;&emsp;
+                <a href="#" onclick="deleteSelected()">Delete Selected</a>&emsp;&emsp;
+                <a href="#" data-toggle="modal" data-target="#deleteAllModal">Delete All Uploads</a>&emsp;&emsp;
+                <a href="#" onclick="enableAwsS3DebugLogs()">EnableAwsS3Debug</a>&emsp;&emsp;
+                <a href="#" onclick="GetAwsS3Logs()">KeystackAwsS3Logs</a>&emsp;&emsp;
+                <a href="#" data-toggle="modal" data-target="#clearAwsS3LogsModal">ClearAwsS3Logs</a>&emsp;&emsp;
+                <!-- <a href="#" onclick="GetPipelineAwsS3LogFiles()">PipelineAwsS3Logs</a>&emsp;&emsp; -->
+            </div>
+            <div><button class='btn btn-sm btn-danger blink' id="insertDisableAwsS3DebugLogs" onclick="disableAwsS3DebugLogs()"></button></div>
+        </nav>
+
+        <div id="insertContents" style="height:800px;"></div>
+    </div>
+</div>
+
+<div class="modal" id="openFileModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="modifyFile" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:70%; height:750px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<!-- <div class="card-header" style="display:inline-block"> -->
+				<div class="fileRowInlineBlockRight">
+					<h5 class="modal-title" id="editFile">AWS S3 Upload File:&ensp;</h5>
+					<div id="currentOpenedFile" style="float:left; margin-left:20px; padding-top:3px;"></div>
+				</div>
+            </div>
+
+            <div class="modal-body" style="margin-top:2px">
+				<div class="row" id="insertFileContents"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="closeText()" >Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="clearAwsS3LogsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="clearAwsS3LogsModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:30%; height:300px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<!-- <div class="card-header" style="display:inline-block"> -->
+				<div class="fileRowInlineBlockRight">
+					<h5 class="modal-title" id="editFile">Clear AWS S3 Logs&ensp;</h5>
+					<div id="currentOpenedFile" style="float:left; margin-left:20px; padding-top:3px;"></div>
+				</div>
+            </div>
+
+            <div class="modal-body" style="margin-top:2px">
+				<div class="row">&ensp;&ensp;Are you sure that you want to clear the AWS S3 logs?</div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="clearAwsS3Logs()">Clear</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="deleteAllModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="deleteAll" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:30%; height:300px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<!-- <div class="card-header" style="display:inline-block"> -->
+				<div class="fileRowInlineBlockRight">
+					<h5 class="modal-title" id="editFile">Delete all AWS S3 test result uploads&ensp;</h5>
+					<div id="currentOpenedFile" style="float:left; margin-left:20px; padding-top:3px;"></div>
+				</div>
+            </div>
+
+            <div class="modal-body" style="margin-top:2px">
+				<div class="row">&ensp;&ensp;Are you sure that you want to delete all AWS S3 test result uploads?</div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="deleteAll()">Delete All</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script type="module" src="{% static 'commons/js/awsS3.js' %}"></script>
+{% endblock extra_js %}

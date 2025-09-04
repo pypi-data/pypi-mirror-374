@@ -1,0 +1,118 @@
+Keystack is a complete automation test solution framework:
+  - Lab devices/testbeds management + testbed load balancer
+  - Create, manage, run testcases and scripts
+  - REST-APIs for CI/CT/CD integration 
+
+Architecture:
+  - Built on Linux OS, Python 3, Django web framework and Mongo DB
+  - Docker install (for Web GUI and lab management)
+  - HTTP/HTTPS
+  - Distributed architecture
+      - Control multiple controllers from a single controller
+  - CI/CT/CD integration with any code repository
+  - CLI, REST API and Web UI
+  - No Windows support
+
+High level features:
+  - Create Domains and add User-Groups for access
+  - User-Groups come with 3 levels of privileges: Admin, Manager, Engineer
+  - App store to install various apps to run test cases
+  - Run anykind of files as long as the server supports the application: python, tcl, perl, pytest, shell, etc.
+  - Optional: Create testcases with Yaml files. Description, usage, which scripts to run and more 
+  - Enable/disable testcases
+  - Iterate testcase(s) and set abortTestOnFailure=True to reproduce a bug that is difficult to reproduce
+  - Use pauseOnFailure to pause the test upon a failure for debugging. Release pauseOnFailure to resume testing
+  - Inclue param -holdEnvOnFailure to automatically hold the testbed if test failed for debugging 
+  - Jira: Automatically open new Jira issue for the failure or update exising defect cases.
+  - AWS: Automatcally send test results, logs and artifacts to AWS S3
+  - Shows test status during run time (Failures, abortions and descriptive messages)
+  - Intuitive result folder containing logs, reports and artifacts
+  - Detailed testcase summary in JSON format for data digestion
+  - Create test-groups to organize your tests and results
+  - Schedule testings using Linux cron format
+  - Graph to show which testbeds utilizations and who uses them
+  - User login privileges
+  - Run your existing Python scripts using Keystack. Keystack has intelligence to verify failures and track them.
+  - View and edit your files in Keystack web UI
+  - Run your own Python scripts, shell/bash scripts and develop Python scripts integrated with Keystack so you could use resources dynamically 
+
+REST-API webhooks:
+  - Any repository such as Gitlab/BitBucket could automatically trigger pipeline testings on Keystack
+  - Any automation test framework could run Keystack tests
+  - Vice versa, use Keystack as the top-level test manager
+
+Security:
+  - Supports HTTPS/443 for web UI and REST-APIs
+  - Set user privileges
+  - Each user has its own api-key
+  - REST APIs require api-key for authentication
+  - Distributed controllers use controller tokens for authentication
+  - Initial setup creates a Keystack user group. Apply user-group to domains
+    Only users in user-groups have access to domains
+    to the Keystack filesystem where testcases, scripts and results are stored
+
+Playbook:
+  - Define test stages with unique names
+  - Each stage must pass in order for the next stage to run. This could be disabled.
+  - Control which testcases to run
+  - Set testcase dependencies. Ex: Don't run testcase_3 if testcase_1 failed
+  - State testcase folders as a plalist and all files and subfolders will get executed
+        - Use the param playlistExclusions to exclude some testcase execution 
+  - Run testcases in loops/continuously
+  - Run testcases in series or in parallel for speed
+  - Instead of running testcase yaml files, state the files to run such as any python scripts
+  - Or combined running yml file testcases and a mixture of any type of files
+  - Schedule a date-time to run playbooks
+
+Test Failure handlings:
+  - PauseOnError: If enabled, test will go on pause for debugging the failure at run-time 
+                  Release pauseOnError when done debugging to resume testing
+
+  - holdEnvsIfFailed: If enabled, hold the testbed for further debugging. Release when done.
+                      Tests that use the same testbeds will automatically wait until testbeds are available
+
+  - abortTestOnFailure: If enabled, immediately abort the test if a testcase failed
+    
+  - jira: If enabled, automatically open/update defects on Jira upon failure
+  
+Env / Testbed management:
+    Requires docker container running the Keystack webUI and MongoDB
+      - Group as many environments/testbeds as you want and give them a unique name that reflects your lab envs/testbeds
+      - Manually reserve envs (testbeds) to let teammates know it is being used
+      - Schedule env/testbeds reservations and schedule them to automatically release
+      - Keystack will automatically wait for reserved envs/testbeds until it is available
+      - Env Load balance: 
+          - Create load balance groups with a name
+          - Add Envs (testeds) to load balance groups
+          - In Playbooks, state which load balance group to use
+  
+  Below does not require the Keystack docker (No Env/testbed management)
+      - Playbooks param "envLoadBalanceGroup" must be set to None.
+      - Playbooks must use static Envs using the parameter "env"
+
+Port-Group:
+  - Create port-groups with a unique name and assign ports to it
+  - Manually reserve port-groups to let others know you're using it 
+  - Add port-group names in env/testbed files as part of the resource group for reservation
+  - Schedule port-groups for reservation
+  - Sechedule port-groups to automatically release
+
+Test completion:
+  - Upload test results, logs and artifacts to AWS-S3
+  - emailResults: If the host server has postfix installed, email test report to the email list
+  - Optional: Transfer test results to test-archive to be kept forever until removed
+
+Test results:
+  - Results are automatically grouped into domain folders
+  - Transfer results to a test-archive folder to keep results forever until they're manually removed
+  - Set when to automatically remove old results to save storage space
+  - Test results including all logs and artifacts are downloadable
+  - Easily view all logs and artifacts in the GUI
+  - Customize test summary report
+
+Utilization:
+  - Graphical chart that shows which testbeds are used and not used
+  - Show which user using which testbed and usage frequency
+
+
+

@@ -1,0 +1,15 @@
+Running Keystack on CLI in secured mode 
+
+- Running Keystack in CLI secured mode will verify user account existance by the user's API-Key
+- This feature is disabled by default
+- If user exists, the test will continue
+- Otherwise, the test will abort
+
+1> Edit /opt/KeystackSystem/keystackSystemSettings.yml
+   cliSecuredMode: True
+
+2> Users have to log into the Keystack UI to get their API-Key in "Users Accounts"
+
+3> Include -api_key <api_key> on Keystack CLI
+
+keystack run -playbook qa -domain Communal -api_key !@#$%^&*23455

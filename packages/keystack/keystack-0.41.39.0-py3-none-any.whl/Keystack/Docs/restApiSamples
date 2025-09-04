@@ -1,0 +1,74 @@
+# Get API-Key
+curl -X GET 'http://192.168.28.7:8000/api/v1/accountMgmt/apiKey?login=admin&password=admin'
+
+# Run a pipeline by the name:
+curl -H "API-Key: iNP29xnXdlnsfOyausD_EQ" -X POST 'http://192.168.28.7:8000/api/v1/pipeline/run?pipeline=pipelineName'
+
+# Run playbook:  Inline format
+curl --insecure -H "API-Key: iNP29xnXdlnsfOyausD_EQ" -X POST 'https://192.168.28.7/api/v1/playbook/run?playbook=pythonSample&domain=Communal'
+
+# Run playbook: json data format
+curl --insecure -d '{"playbook": "DOMAIN=Communal/Samples/advance", "domain": "Communal"}' -H "Content-Type: application/json" -H "API-Key: xyWGHy8fkzTgaCiRQ-Q0mA" -X POST https://192.168.28.10/api/v1/playbook/runPlaybook
+
+# Run playbook: non json data format
+curl --insecure -d "playbook=DOMAIN=Communal/Samples/advance&domain=Communal" -H "API-Key: xyWGHy8fkzTgaCiRQ-Q0mA" -X POST https://192.168.28.11/api/v1/playbook/runPlaybook 
+
+# Run playbook: x-www-form-urlencoded format
+curl --insecure -d "playbook=DOMAIN=Communal/Samples/advance&domain=Communal" -H "Content-Type: application/x-www-form-urlencoded" -H "API-Key: xyWGHy8fkzTgaCiRQ-Q0mA" -X POST https://192.168.28.11/api/v1/playbook/runPlaybook
+
+
+# Get playbook env details
+curl --insecure -H "API-Key: iNP29xnXdlnsfOyausD_EQ" -d '{"playbook": "loadcoreSample", "domain": "Communal", "stage": "LoadCoreTest", "tasks": "/Modules/LoadCore"}' -H "Content-Type: application/json" -X GET https://192.168.28.7/api/v1/playbook/env/details
+
+# Get playbook playlist
+curl --insecure -H "API-Key: iNP29xnXdlnsfOyausD_EQ" -X GET 'https://192.168.28.7/api/v1/playbook/playlist?playbook=loadcoreSample&stage=LoadCoreTest&module=LoadCore'
+
+
+# Modify playbook settings using the playbookConfigs parameter
+curl --insecure -H "API-Key: iNP29xnXdlnsfOyausD_EQ" -d '{"playbook": "pythonSample", "sessionId": "awesomeTest", "playbookConfigs": {"stages": {"Test": {"/Modules/CustomPythonScripts": {"enable": true}}}}}' -H "Content-Type: application/json" -X POST https://192.168.28.7/api/v1/playbook/runPlaybook
+
+# Modify playbook settings using the playbookConfigs parameter
+curl --insecure -H "API-Key: iNP29xnXdlnsfOyausD_EQ" -d '{"playbook": "pythonSample", "domain": "Communal", "sessionId": "awesomeTest", "awsS3": true, "playbookConfigs": {"globalSettings": {"loginCredentialKey": "regressionTest", "trackResults": false}}}' -H "Content-Type: application/json"  -X POST https://192.168.28.7/api/v1/playbook/runPlaybook
+
+
+# Run playbook: Modify testcase 
+curl --insecure -H "API-Key: iNP29xnXdlnsfOyausD_EQ" -d '{"playbook": "pythonSample", "domain": "Communal", "sessionId": "awesomeTest", "playlistMods": [{"/Modules/CustomPythonScripts/Testcases/bgp.yml": {"script": "/Modules/CustomPythonScripts/Scripts/ospf.py"}}]}' -H "Content-Type: application/json" -X POST https://192.168.28.7/api/v1/playbook/runPlaybook
+
+
+# Run playbook: Modify the stated env. To use a different env stated in the playbook module, use playbookConfigs in the next example
+curl --insecure -H "API-Key: iNP29xnXdlnsfOyausD_EQ" -d '{"playbook": "pythonSample", "domain": "Communal", "sessionId": "awesomeTest", "envConfigs": [{"stage": "Test", "module": "CustomPythonScripts",  "params": {"login": false}}]}' -H "Content-Type: application/json" -X POST https://192.168.28.7/api/v1/playbook/runPlaybook
+
+
+# Run playbook: Replace the env in the playbook module
+curl --insecure -H "API-Key: iNP29xnXdlnsfOyausD_EQ" -d '{"playbook": "pythonSample", "sessionId": "awesomeTest", "awsS3": true, "playbookConfigs": {"stages": {"Test": {"/Modules/CustomPythonScripts": {"env": "dev"}}}}}' -H "Content-Type: application/json"  -X POST https://192.168.28.7/api/v1/playbook/runPlaybook
+
+
+# create a playbook from scratch runPlaybook and 
+curl --insecure -H "API-Key: iNP29xnXdlnsfOyausD_EQ" -d  '{"sessionId": "dynamicPlaybook", "domain": "Communal", "awsS3": true,
+"playbookConfigs": {"globalSettings": {"loginCredentialKey": "regressionTest"}, "stages": {"Tests": {"/Modules/CustomPythonScripts": {
+"env": "loadcoreSample", "enable": true, "playlist": ["/Modules/CustomPythonScripts/Testcases/bgp.yml", "/Modules/CustomPythonScripts/Testcases/ospf.yml", "/Modules/CustomPythonScripts/Testcases/isis.yml"]}}}}}' -H "Content-Type: application/json" -X POST https://192.168.28.7/api/v1/playbook/runPlaybook
+
+
+# GET /api/v1/playbook/details
+# Returns: Playbook detail configs in JSON format
+curl --insecure -H "API-Key: iNP29xnXdlnsfOyausD_EQ" -X GET https://192.168.28.7/api/v1/playbook/details?playbook=pythonSample
+
+# GET /api/v1/session/status
+# Returns: Session status in JSON format
+curl --insecure -H "API-Key: iNP29xnXdlnsfOyausD_EQ" -H "Content-Type: application/json" -d '{"playbook": "pythonSample", "sessionId": "12-23-2022-20:10:06:800067_3687"}' -X GET https://192.168.28.7/api/v1/session/status
+
+# GET /api/v1/testcase/details
+# The test case path must be full path or begins at /Modules
+curl -H "API-Key: iNP29xnXdlnsfOyausD_EQ" -X GET 'https://192.168.28.7/api/v1/testcase/details?testcasePath=/Modules/LoadCore/Testcases/fullcoreBase.yml'
+
+
+# GET /api/v1/env/list
+# Returns: A list of envs in JSON format
+curl --insecure -H "API-Key: iNP29xnXdlnsfOyausD_EQ" -X GET https://192.168.28.7/api/v1/env/list
+
+
+# getSessions:  iNP29xnXdlnsfOyausD_EQ   nwYC1seRfhGP1vzak4xItg    nwYC1seRfhGP1vzak4xItg
+curl --insecure -H "API-Key: iNP29xnXdlnsfOyausD_EQ" -H "Content-Type: application/json" -d '{"view": "current", "group": "Default"}'  -X POST https://192.168.28.7/api/v1/pipeline/getPipelines
+
+
+

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="mainBodyDiv">
+        <div class="card">
+            <div class="card-header ">
+                <h5 class="card-title" style="display:inline-block; float:left">Keystack System Settings</h5>
+                <div id="insertSettingsStatus" style="display:inline-block; float:right"></div>
+            </div>
+
+            <div class="card-body text-center">
+                <textarea id="systemSettingsTextAreaId" cols="110" rows="20"></textarea>
+            </div>
+
+            <div class="card-footer text-center">
+                <span style="padding-top:5px; color:red">DANGER! Modifying system settings will interrupt all active sessions. <strong>Handle with care!</strong></span>
+                <button id="modifySystemSettingsButton" style="float:right; margin:5px;" data-toggle="modal" data-target="#settingsConfirmationModal"
+                    class="btn btn-sm btn-primary">
+                    Modify File
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="settingsConfirmationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="settingsConfirmation" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:30%; height:300px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<div class="fileRowInlineBlockRight">
+					<h5 class="modal-title" id="editFile">Modify System Settings&ensp;</h5>
+					<div id="currentOpenedFile" style="float:left; margin-left:20px; padding-top:3px;"></div>
+				</div>
+            </div>
+
+            <div class="modal-body" style="margin-top:2px">
+				<div class="row">&ensp;&ensp;Are you sure that you want to modify system settings?</div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="modifyFile()">Modify</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script type="module" src="{% static 'commons/js/systemSettings.js' %}"></script>
+{% endblock extra_js %}
