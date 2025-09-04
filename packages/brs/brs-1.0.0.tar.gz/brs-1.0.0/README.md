@@ -1,0 +1,75 @@
+A .brs reader/writer for brickadia
+
+Brickadia is a multiplayer brick building game
+
+Made for version 14 saves (Brickadia Early Access)
+
+## Example Usage:
+### Display info about a save:
+```python
+import brs
+save = brs.readBRS("foobar.brs")
+print(save)
+```
+
+### Make a save from scratch, with bricks showing the default colorset
+
+```python
+import brs
+
+save = brs.BRS.default(brs.User("Speedy Boi", "54937200-3f6e-4d8e-8e65-0e7c0bfcc117"))
+
+#create asset
+default_asset = brs.Asset("PB_DefaultBrick", 0)
+save.brick_assets.append(default_asset)
+
+for i, col in enumerate(save.colors):
+    brick = brs.Brick()
+    brick.brick_index = i
+    brick.asset = default_asset
+    brick.size = brs.Size(5, 5 ,6)  #size of a 1x1 brick
+    brick.position = brs.Position((i%12) * 10, (i//12) * 10, 0)
+    brick.orientation = brs.Orientation(brs.Direction.Z_POSITIVE, brs.Rotation.DEG_0)
+    brick.collision = brs.Collision()   # all True by default
+    brick.visibility = True
+    brick.material = save.materials[3]  # 4th material is BMC_Plastic
+    brick.physical_material = save.physical_materials[0]    # BPMC_Default
+    brick.material_intensity = 5        # doesnt matter for plastic
+    brick.color = col
+    brick.owner = save.brick_owners[0]
+    
+    # dont forget to increment brick count
+    brick.owner.brick_count += 1
+    # add the brick to the save
+    save.bricks.append(brick)
+
+save.to_file("all_colors.brs")
+```
+### Make a new component from scratch and add it to a brick:
+```python
+import brs
+...
+brick = save.bricks[0]  # take some brick to add a "Component_Target" component to
+
+# create a new Component_Target component with one Property "OnTime" of type Float
+new_component = brs.Component()
+new_component.index = len(save.components)
+new_component.name = "Component_Target"
+new_component.version = 1
+on_time = brs.Property("OnTime", brs.PropertyType.FLOAT)
+new_component.properties = [on_time]
+
+# add component to save
+save.components.append(new_component)
+
+# make a component instance and set values
+component_instance = brs.ComponentInstance(new_component)
+component_instance.property_values = {on_time: 1.234}
+
+# attach the component instance to the brick
+brick.components[new_component] = component_instance
+
+# add the brick to the component
+new_component.bricks.append(brick)
+...
+```
