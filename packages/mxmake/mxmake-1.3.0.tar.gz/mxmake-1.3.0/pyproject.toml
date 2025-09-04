@@ -1,0 +1,98 @@
+[project]
+name = "mxmake"
+description = "Generates a Python project-specific Makefile by using an extensible library of configurable Makefile snippets."
+version = "1.3.0"
+keywords = ["development", "deployment", "make"]
+authors = [
+  {name = "MX Stack Developers", email = "dev@bluedynamics.com" }
+]
+requires-python = ">=3.9"
+license = { text = "BSD 2-Clause License" }
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "inquirer",
+    "Jinja2",
+    "mxdev>=4.0.2",
+    "pyyaml"
+]
+dynamic = ["readme"]
+
+[tool.hatch.metadata.hooks.fancy-pypi-readme]
+content-type = "text/markdown"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+path = "README.md"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+path = "CHANGES.md"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+path = "LICENSE.md"
+
+[project.optional-dependencies]
+docs = [
+    "myst-parser",
+    "sphinx-conestack-theme==1.0.1",
+    "Sphinx",
+    "sphinxcontrib-mermaid",
+]
+test = ["zope.testrunner"]
+
+[project.urls]
+Homepage = "https://github.com/mxstack/mxmake"
+Documentation = "https://mxstack.github.io/mxmake"
+"Bug Reports" = "https://github.com/mxstack/mxmake/issues"
+Source = "https://github.com/mxstack/mxmake/tree/main"
+
+[project.scripts]
+mxmake = "mxmake.main:main"
+
+[project.entry-points.mxdev]
+hook = "mxmake.hook:Hook"
+
+[project.entry-points."mxmake.topics"]
+core = "mxmake.topics:core"
+docs = "mxmake.topics:docs"
+js = "mxmake.topics:js"
+ldap = "mxmake.topics:ldap"
+qa = "mxmake.topics:qa"
+system = "mxmake.topics:system"
+applications = "mxmake.topics:applications"
+i18n = "mxmake.topics:i18n"
+
+[build-system]
+requires = ["hatchling", "hatch-fancy-pypi-readme"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = [
+    "src",
+]
+
+[tool.isort]
+profile = "black"
+force_alphabetical_sort = true
+force_single_line = true
+lines_after_imports = 2
+
+[tool.mypy]
+ignore_missing_imports = true
+python_version = "3.9"
+
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = []
