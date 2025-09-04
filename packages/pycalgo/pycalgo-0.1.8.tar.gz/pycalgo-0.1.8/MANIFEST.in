@@ -1,0 +1,5 @@
+include calculator.dll
+include *.dll
+include README.md
+recursive-include . *.dll
+include pycal.py
