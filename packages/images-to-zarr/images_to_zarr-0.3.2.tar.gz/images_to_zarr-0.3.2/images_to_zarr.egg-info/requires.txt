@@ -1,0 +1,15 @@
+astropy
+click
+imageio>=2.20.0
+loguru
+numpy
+pandas
+scikit-image
+tqdm
+zarr>=3.0.0a5
+
+[dev]
+pytest
+pytest-cov
+black
+flake8
