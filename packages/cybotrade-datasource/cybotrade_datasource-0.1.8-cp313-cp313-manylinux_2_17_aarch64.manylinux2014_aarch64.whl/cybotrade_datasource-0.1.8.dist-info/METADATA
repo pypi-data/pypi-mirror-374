@@ -1,0 +1,109 @@
+Metadata-Version: 2.4
+Name: cybotrade-datasource
+Version: 0.1.8
+Classifier: Programming Language :: Rust
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+License-File: LICENSE
+Summary: Python SDK to interact with Cybotrade Datasource API.
+Author: Marcus Lee <marcuslee@balaenaquant.com>, Lee Ian <ianlee@balaenaquant.com>
+Author-email: Marcus Lee <marcuslee@balaenaquant.com>, Lee Ian <ianlee@balaenaquant.com>
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+Project-URL: Documentation, https://docs.datasource.cybotrade.rs
+
+## Cybotrade Datasource
+
+Cybotrade Datsource is a financial data broker for the crypto market. This library provides a simple-to-use Python SDK to interact with the REST and Websocket API.
+
+For more information regarding the API, refer to the [docs](https://docs.datasource.cybotrade.rs/).
+
+### Installation
+
+```sh
+pip install cybotrade-datasource
+```
+
+### Usage
+
+To fetch historical data for a particular time range:
+
+```python
+import os
+import pandas as pd
+import asyncio
+import cybotrade_datasource
+from datetime import datetime, timezone
+
+
+API_KEY = os.environ["API_KEY"]
+
+
+async def main():
+    data = await cybotrade_datasource.query_paginated(
+        api_key=API_KEY, 
+        topic='cryptoquant|btc/inter-entity-flows/miner-to-miner?from_miner=f2pool&to_miner=all_miner&window=hour', 
+        start_time=datetime(year=2024, month=1, day=1, tzinfo=timezone.utc),
+        end_time=datetime(year=2025, month=1, day=1, tzinfo=timezone.utc)
+    )
+    df = pd.DataFrame(data)
+    print(df)
+    
+
+asyncio.run(main())
+```
+
+To fetch the latest **10000** data points:
+
+```python
+import os
+import pandas as pd
+import asyncio
+import cybotrade_datasource
+from datetime import datetime, timezone
+
+
+API_KEY = os.environ["API_KEY"]
+
+
+async def main():
+    data = await cybotrade_datasource.query_paginated(
+        api_key=API_KEY, 
+        topic='cryptoquant|btc/inter-entity-flows/miner-to-miner?from_miner=f2pool&to_miner=all_miner&window=hour', 
+        limit=10000
+    )
+    df = pd.DataFrame(data)
+    print(df)
+    
+
+asyncio.run(main())
+```
+
+To subscribe and listen to live updates:
+
+```python
+import os
+import pandas as pd
+import asyncio
+import cybotrade_datasource
+from datetime import datetime, timezone
+
+
+API_KEY = os.environ["API_KEY"]
+
+
+async def main():
+    stream = await cybotrade_datasource.stream(
+        api_key=API_KEY,
+        topics=[
+            'cryptoquant|btc/inter-entity-flows/miner-to-miner?from_miner=f2pool&to_miner=all_miner&window=hour',
+            'cryptoquant|btc/market-data/liquidations?exchange=deribit&window=min',
+        ],
+    )
+    async for msg in stream:
+        print(msg)
+    
+
+asyncio.run(main())
+```
+
