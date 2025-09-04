@@ -1,0 +1,57 @@
+Metadata-Version: 2.3
+Name: txjsonrpc-ng
+Version: 0.7.3
+Summary: Code for creatig Twisted JSON-RPC servers and clients.
+License: BSD, GPL
+Author: Duncan McGreggor
+Author-email: oubiwann@adytum.us>, Andreas Wuerl <andi@tryb.de
+Requires-Python: >=3.9,<4.0
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: Twisted (>=23.10,<24.0)
+Description-Content-Type: text/x-rst
+
+.. image:: https://sonarcloud.io/api/project_badges/measure?project=wuan_txjsonrpc&metric=alert_status
+    :alt: Quality gate
+    :target: https://sonarcloud.io/project/overview?id=wuan_txjsonrpc
+.. image:: https://sonarcloud.io/api/project_badges/measure?project=wuan_txjsonrpc&metric=ncloc
+    :alt: Lines of code
+    :target: https://sonarcloud.io/project/overview?id=wuan_txjsonrpc
+.. image:: https://sonarcloud.io/api/project_badges/measure?project=wuan_txjsonrpc&metric=coverage
+    :alt: Coverage
+    :target: https://sonarcloud.io/project/overview?id=wuan_txjsonrpc
+.. image:: https://sonarcloud.io/api/project_badges/measure?project=wuan_txjsonrpc&metric=reliability_rating
+    :alt: Reliability rating
+    :target: https://sonarcloud.io/project/overview?id=wuan_txjsonrpc
+.. image:: https://api.scorecard.dev/projects/github.com/wuan/txjsonrpc/badge
+    :alt: OpenSSF Scorecard
+    :target: https://scorecard.dev/viewer/?uri=github.com/wuan/txjsonrpc
+
+============
+txjsonrpc
+============
+
+------------
+Introduction
+------------
+
+txJSON-RPC allows you to create async Python JSON-RPC servers and clients
+either over HTTP or directly on TCP with the Netstring protocol. txJSON-RPC is
+written in Twisted.
+
+--------
+Features
+--------
+
+* Asynchronous JSON-RPC server and client code.
+
+* Support for HTTP and TCP (Netstring) JSON-RPC.
+
+* A jsonrpclib similar to the one for XLM-RPC offered by the Python standard
+  library.
+
