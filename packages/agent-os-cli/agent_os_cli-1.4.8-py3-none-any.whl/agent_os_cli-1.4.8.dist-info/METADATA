@@ -1,0 +1,95 @@
+Metadata-Version: 2.4
+Name: agent-os-cli
+Version: 1.4.8
+Summary: Modern Python CLI for AgentOS - Streamlined AI-assisted development environment management
+Project-URL: Homepage, https://github.com/white8785/agent-os-cli
+Project-URL: Documentation, https://github.com/white8785/agent-os-cli#readme
+Project-URL: Repository, https://github.com/white8785/agent-os-cli.git
+Project-URL: Issues, https://github.com/white8785/agent-os-cli/issues
+Project-URL: Discussions, https://github.com/white8785/agent-os-cli/discussions
+Author-email: JR White <jrwhite8785@gmail.com>
+License: MIT
+License-File: LICENSE
+Keywords: agents,ai,automation,claude-code,cli,cursor,development,devtools,workflow
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Software Development
+Classifier: Topic :: System :: Installation/Setup
+Classifier: Topic :: Utilities
+Classifier: Typing :: Typed
+Requires-Python: >=3.9
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: requests>=2.28.0
+Requires-Dist: rich>=13.0.0
+Requires-Dist: typer>=0.9.0
+Provides-Extra: dev
+Requires-Dist: black>=23.0.0; extra == 'dev'
+Requires-Dist: coverage[toml]>=7.0.0; extra == 'dev'
+Requires-Dist: mypy>=1.0.0; extra == 'dev'
+Requires-Dist: pre-commit>=3.0.0; extra == 'dev'
+Requires-Dist: pytest-asyncio>=0.21.0; extra == 'dev'
+Requires-Dist: pytest-cov>=4.0.0; extra == 'dev'
+Requires-Dist: pytest>=7.0.0; extra == 'dev'
+Requires-Dist: ruff>=0.1.0; extra == 'dev'
+Requires-Dist: types-pyyaml; extra == 'dev'
+Requires-Dist: types-requests; extra == 'dev'
+Provides-Extra: lint
+Requires-Dist: black>=23.0.0; extra == 'lint'
+Requires-Dist: mypy>=1.0.0; extra == 'lint'
+Requires-Dist: pre-commit>=3.0.0; extra == 'lint'
+Requires-Dist: ruff>=0.1.0; extra == 'lint'
+Requires-Dist: types-pyyaml; extra == 'lint'
+Requires-Dist: types-requests; extra == 'lint'
+Provides-Extra: test
+Requires-Dist: coverage[toml]>=7.0.0; extra == 'test'
+Requires-Dist: pytest-asyncio>=0.21.0; extra == 'test'
+Requires-Dist: pytest-cov>=4.0.0; extra == 'test'
+Requires-Dist: pytest>=7.0.0; extra == 'test'
+Description-Content-Type: text/markdown
+
+<img width="1280" height="640" alt="agent-os-og" src="https://github.com/user-attachments/assets/e897628e-7063-4bab-a69a-7bb6d7ac8403" />
+
+## Your system for spec-driven agentic development.
+
+[Agent OS](https://buildermethods.com/agent-os) transforms AI coding agents from confused interns into productive developers. With structured workflows that capture your standards, your stack, and the unique details of your codebase, Agent OS gives your agents the specs they need to ship quality code on the first try—not the fifth.
+
+Use it with:
+
+✅ Claude Code, Cursor, or any other AI coding tool.
+
+✅ New products or established codebases.
+
+✅ Big features, small fixes, or anything in between.
+
+✅ Any language or framework.
+
+---
+
+### Documentation & Installation
+
+Docs, installation, useage, & best practices 👉 [It's all here](https://buildermethods.com/agent-os)
+
+**Quick References:**
+- [Setup & Installation Guide](SETUP.md)
+- [Configuration Guide](CONFIGS.md)
+- [Development Guide](DEV.md)
+- [Contributing Guidelines](CONTRIBUTING.md)
+
+---
+
+### Created by Brian Casel @ Builder Methods
+
+Created by Brian Casel, the creator of [Builder Methods](https://buildermethods.com), where Brian helps professional software developers and teams build with AI.
+
+Get Brian's free resources on building with AI:
+- [Builder Briefing newsletter](https://buildermethods.com)
+- [YouTube](https://youtube.com/@briancasel)
