@@ -1,0 +1,13 @@
+[package]
+name = "fw-file-py"
+version = "0.1.3"
+edition = "2021"
+
+[lib]
+name = "fw_file_rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+fw-file = { path = "../fw-file" }
+pyo3 = "0.25.0"
+smallvec = "1.15.1"
