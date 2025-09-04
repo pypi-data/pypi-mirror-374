@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools<74", "wheel<0.44"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "mmpg-rout"
+version = "0.2.0"
+# (Dica) você pode remover a linha 'description' para evitar issues de encoding e deixar só o README:
+# description = "..."
+readme = "README.md"
+requires-python = ">=3.8"
+
+authors = [{ name = "Valfrido Novais" }]
+keywords = ["route", "windows", "gateway", "networking", "impala", "bisp", "pmmg"]
+
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: Microsoft :: Windows",
+  "Topic :: System :: Networking",
+  "License :: OSI Approved :: MIT License"
+]
+
+[project.urls]
+Homepage = "https://github.com/ValfridoNovais/mmpg-rout"
+Repository = "https://github.com/ValfridoNovais/mmpg-rout"
+Issues = "https://github.com/ValfridoNovais/mmpg-rout/issues"
+
+[project.scripts]
+mmpg-rout = "mmpg_rout.route:main"
+
+[tool.setuptools.packages.find]
+include = ["mmpg_rout"]
