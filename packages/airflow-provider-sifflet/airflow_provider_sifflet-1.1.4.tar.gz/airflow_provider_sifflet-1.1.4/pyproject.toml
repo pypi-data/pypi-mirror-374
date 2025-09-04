@@ -1,0 +1,12 @@
+[tool.black]
+line-length = 120
+target-version = ['py37', 'py38', 'py39', 'py310', 'py311', 'py312']
+
+[tool.pylint.'MESSAGES CONTROL']
+disable = ["C0114", "C0115", "C0116", "R0903", "W1203"]
+max-line-length = 120
+
+[tool.mypy]
+python_version = 3.9
+follow_imports = "silent"
+ignore_missing_imports = true
