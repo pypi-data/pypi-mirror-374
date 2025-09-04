@@ -1,0 +1,47 @@
+Metadata-Version: 2.3
+Name: none-shall-parse
+Version: 0.2.1
+Summary: Trinity Shared Python utilities.
+Author: Jan Badenhorst, Andries Niemandt
+Author-email: Jan Badenhorst <jan.badenhorst@trintel.co.za>, Andries Niemandt <andries.niemandt@trintel.co.za>
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Dist: pytest>=8.0.0 ; extra == 'dev'
+Requires-Dist: ruff>=0.12.3 ; extra == 'dev'
+Requires-Dist: isort ; extra == 'dev'
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: uv-build ; extra == 'dev'
+Requires-Dist: sphinx ; extra == 'docs'
+Requires-Dist: sphinx-rtd-theme ; extra == 'docs'
+Requires-Python: >=3.12
+Project-URL: Homepage, https://github.com/trinity-telecomms/tpu
+Project-URL: Issues, https://github.com/trinity-telecomms/tpu/issues
+Provides-Extra: dev
+Provides-Extra: docs
+Description-Content-Type: text/markdown
+
+# none-shall-parse
+
+Trinity Shared Python utilities.
+
+## Installation
+
+Using `uv`:
+
+```bash
+uv add none-shall-parse
+```
+
+Using `pip` with `uv`:
+
+```bash
+uv pip install none-shall-parse
+```
+
+Using `pip`:
+
+```bash
+pip install none-shall-parse
+```
