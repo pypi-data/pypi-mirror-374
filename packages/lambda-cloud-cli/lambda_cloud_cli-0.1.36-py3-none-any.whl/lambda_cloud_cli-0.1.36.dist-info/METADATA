@@ -1,0 +1,29 @@
+Metadata-Version: 2.4
+Name: lambda-cloud-cli
+Version: 0.1.36
+Summary: CLI tool for managing Lambda Cloud resources
+Home-page: https://github.com/yourusername/lambda-cloud-cli
+Author: Taylor Gautreaux
+Author-email: you@example.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: typer[all]
+Requires-Dist: requests
+Requires-Dist: rich
+Dynamic: author-email
+Dynamic: home-page
+Dynamic: requires-python
+
+# lambda-cli
+
+A command-line interface for managing Lambda Cloud resources.
+
+## Install
+
+```bash
+pip install lambda-cli
+
