@@ -1,0 +1,65 @@
+Metadata-Version: 2.4
+Name: budgetmanager
+Version: 2.0.0b7
+Summary: Django and React app for keeping track of budgets, payees, and payments
+Author: Elli Greaves
+License: BSD-3-Clause-Clear license
+Project-URL: Homepage, https://github.com/Grvs44/budgetmanager
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Requires-Python: <4,>=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: django>=5.1
+Requires-Dist: djangorestframework>=3.15.0
+Requires-Dist: django-filter>=24.3
+Requires-Dist: cryptography>=42.0.4
+Dynamic: license-file
+
+# Budget Manager
+
+## Setup
+
+- `urls.py`:
+
+  ```Python
+  from django.urls import include, path
+  urlpatterns = [
+    path('budgetmanager/', include('budgetmanager.urls')),
+    ...
+  ]
+  ```
+
+- `settings.py`:
+
+  ```Python
+  INSTALLED_APPS = [
+    'budgetmanager',
+    'rest_framework',
+    'django_filters',
+    ...
+  ]
+  ```
+
+  - To disable the browsable API:
+    ```Python
+    REST_FRAMEWORK = {
+      'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+      )
+    }
+    ```
+
+- Add URLs for the auth app if not there already:
+  - Add to imports in `urls.py`:
+    ```Python
+    from django.contrib.auth.views import logout_then_login
+    from django.views.generic import RedirectView
+    ```
+  - Add to `urlpatterns`:
+    ```Python
+    path('accounts/logout/?next=<str:login_url>', logout_then_login, name='logout'),
+    path('accounts/profile/', RedirectView.as_view(url='/budgetmanager/')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    ```
