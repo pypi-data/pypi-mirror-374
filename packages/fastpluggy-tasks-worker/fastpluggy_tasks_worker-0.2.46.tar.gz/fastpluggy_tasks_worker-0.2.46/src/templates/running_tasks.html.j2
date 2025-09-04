@@ -1,0 +1,144 @@
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <div class="subheader">Running Tasks Count</div>
+            <div class="ms-auto">
+                <span class="badge bg-warning">{{ widget.running_tasks_count }}</span>
+            </div>
+        </div>
+        <div class="mt-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="tw-auto-refresh-toggle">
+                    <label class="form-check-label" for="tw-auto-refresh-toggle">Auto refresh</label>
+                </div>
+                <div class="input-group" style="max-width: 220px;">
+                    <span class="input-group-text">Every</span>
+                    <input type="number" class="form-control" id="tw-auto-refresh-interval" min="1" step="1" value="5">
+                    <span class="input-group-text">sec</span>
+                </div>
+                <small id="tw-auto-refresh-status" class="text-muted"></small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4" id="running-tasks-card">
+  <div class="card-header d-flex align-items-center">
+    <h3 class="card-title mb-0">Currently Running Tasks</h3>
+    <div class="ms-auto">
+      <!-- Placeholder actions (future: websocket/live updates toggles can go here) -->
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table card-table table-vcenter text-nowrap" id="running-tasks-table">
+      <thead>
+        <tr>
+          <th>Task ID</th>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Args</th>
+          <th>Kwargs</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="running-tasks-tbody">
+        {% if widget.task_data and widget.task_data|length > 0 %}
+          {% for t in widget.task_data %}
+            <tr data-task-id="{{ t.task_id }}">
+              <td>{{ t.task_id }}</td>
+              <td>{{ t.task_name }}</td>
+              <td>
+                {% set label = t.status %}
+                <span class="badge bg-blue-lt">{{ label }}</span>
+              </td>
+              <td>
+                <pre class="mb-0" style="max-width: 320px; max-height: 80px; overflow: auto;">{{ t.args }}</pre>
+              </td>
+              <td>
+                <pre class="mb-0" style="max-width: 320px; max-height: 80px; overflow: auto;">{{ t.kwargs }}</pre>
+              </td>
+              <td>
+                <div class="btn-list">
+                  <a class="btn btn-sm btn-outline-primary" href="{{ request.url_for('task_details', task_id=t.task_id) }}">Details</a>
+                  <a class="btn btn-sm btn-danger" href="{{ request.url_for('cancel_task', task_id=t.task_id) }}">Cancel</a>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+            <tr>
+              <td colspan="6" class="text-center text-muted">No running tasks</td>
+            </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+(function() {
+    const STORAGE_KEY_ENABLED = 'tw_auto_refresh_enabled';
+    const STORAGE_KEY_INTERVAL = 'tw_auto_refresh_interval';
+    const toggle = document.getElementById('tw-auto-refresh-toggle');
+    const input = document.getElementById('tw-auto-refresh-interval');
+    const statusEl = document.getElementById('tw-auto-refresh-status');
+    let timer = null;
+
+    function getIntervalMs() {
+        const sec = Math.max(1, parseInt(input.value || '5', 10));
+        return sec * 1000;
+    }
+
+    function updateStatus(text) {
+        if (statusEl) statusEl.textContent = text || '';
+    }
+
+    function schedule() {
+        clear();
+        const ms = getIntervalMs();
+        updateStatus('Next refresh in ' + Math.round(ms/1000) + 's');
+        timer = setInterval(() => {
+            updateStatus('Refreshing...');
+            window.location.reload();
+        }, ms);
+    }
+
+    function clear() {
+        if (timer) { clearInterval(timer); timer = null; }
+    }
+
+    // Load saved state
+    try {
+        const savedEnabled = localStorage.getItem(STORAGE_KEY_ENABLED);
+        const savedInterval = localStorage.getItem(STORAGE_KEY_INTERVAL);
+        if (savedInterval) input.value = String(Math.max(1, parseInt(savedInterval, 10)));
+        toggle.checked = savedEnabled === '1';
+    } catch (e) { /* ignore */ }
+
+    // Bind events
+    toggle.addEventListener('change', () => {
+        const enabled = toggle.checked;
+        try { localStorage.setItem(STORAGE_KEY_ENABLED, enabled ? '1' : '0'); } catch (e) {}
+        if (enabled) {
+            schedule();
+        } else {
+            clear();
+            updateStatus('');
+        }
+    });
+
+    input.addEventListener('change', () => {
+        const v = Math.max(1, parseInt(input.value || '5', 10));
+        input.value = String(v);
+        try { localStorage.setItem(STORAGE_KEY_INTERVAL, String(v)); } catch (e) {}
+        if (toggle.checked) schedule();
+    });
+
+    // If enabled, start
+    if (toggle.checked) schedule();
+
+    // Minimal hook points for future websocket integration
+    // window.updateRunningTasks = function(rows) { /* replace tbody based on incoming data */ }
+})();
+</script>
