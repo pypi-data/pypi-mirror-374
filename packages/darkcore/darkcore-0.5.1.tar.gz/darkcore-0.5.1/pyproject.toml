@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "darkcore"
+version = "0.5.1"
+description = "Practical functional programming primitives for Python: Monads, Transformers, and DSL operators for safe business logic"
+authors = ["minamorl <minamorl@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/minamorl/darkcore"
+homepage = "https://github.com/minamorl/darkcore"
+keywords = ["monad", "functional", "dsl", "business logic"]
+packages = [{ include = "darkcore" }]
+include = ["darkcore/py.typed"]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.15.0"
+pytest = "^8.3.5"
+pytest-cov = "^6.1.1"
+hypothesis = "^6.112"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+disable_error_code = ["misc"]
+files = ["darkcore"]
+
+[tool.pytest.ini_options]
+addopts = "-v --cov=darkcore"
+testpaths = ["tests"]
+
