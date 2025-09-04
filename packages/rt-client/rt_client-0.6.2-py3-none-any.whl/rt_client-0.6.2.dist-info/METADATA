@@ -1,0 +1,64 @@
+Metadata-Version: 2.4
+Name: rt-client
+Version: 0.6.2
+Summary: Request Tracker Client
+Author-email: Catherine Sanson <catherine.sanson@catalyst.net.nz>, Adrian Turjak <adriant@catalyst.net.nz>
+Maintainer-email: Adrian Jarvis <adrian.jarvis@catalystcloud.nz>
+License: Apache Software License
+Project-URL: Homepage, https://gitlab.com/catalyst-cloud/rt-client
+Keywords: Request Tracker
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Requires-Dist: requests>=2.18.4
+Requires-Dist: requests-toolbelt>=1.0.0
+Requires-Dist: python-magic>=0.4.15
+Provides-Extra: dev
+Requires-Dist: flake8>=3.0.4; extra == "dev"
+Requires-Dist: coverage>=4.4.1; extra == "dev"
+Requires-Dist: sphinx!=1.6.1,>=1.5.1; extra == "dev"
+Requires-Dist: sphinx-rtd-theme>=0.2.4; extra == "dev"
+Requires-Dist: doc8; extra == "dev"
+Requires-Dist: black>=19.3b0; extra == "dev"
+Requires-Dist: requests-mock>=1.11.0; extra == "dev"
+Requires-Dist: bandit; extra == "dev"
+Dynamic: license-file
+
+rt-client
+#########
+
+The RT Client is a python library for interfacing with RT's REST API. The
+client uses `python-requests <http://docs.python-requests.org/en/master/>`_
+and talks to the `V2 <https://github.com/bestpractical/rt-extension-rest2>`_ API.
+
+In the future we also intend to add a CLI which will use the library and offer
+a nice way of interacting with RT from the commandline based on the features
+the V2 API gives us.
+
+Getting Started
+***************
+
+.. code-block:: python
+
+  from rt_client.client import Client
+
+  rt = Client(
+      username="jsmith",
+      password="supersecret",
+      endpoint="https://rt.acme.org/",
+  )
+
+  tickets = rt.ticket.search("Queue='urgent'")
