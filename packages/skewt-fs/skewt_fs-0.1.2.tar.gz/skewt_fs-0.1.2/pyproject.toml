@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "skewt-fs"
+version = "0.1.2"
+authors = [
+  { name="Samarth P", email="samarthpardhi307@gmail.com" },
+]
+description = "An implementation of the Fernandez-Steel skewed Student's t-distribution."
+readme = "README.md" # <-- ADD THIS
+requires-python = ">=3.8"
+classifiers = [ # <-- ADD CLASSIFIERS
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy",
+    "scipy",
+]
+
+[project.urls] # <-- ADD PROJECT URLS
+"Homepage" = "https://github.com/samarthpardhi/skewt_fs"
+"Bug Tracker" = "https://github.com/samarthpardhi/skewt_fs/issues"
