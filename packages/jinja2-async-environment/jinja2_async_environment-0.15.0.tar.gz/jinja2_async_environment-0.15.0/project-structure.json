@@ -1,0 +1,167 @@
+{
+  "project_overview": {
+    "name": "jinja2_async_environment",
+    "type": "python_package",
+    "structure_pattern": "flat_layout",
+    "analysis_timestamp": "2025-07-19T17:14:52Z"
+  },
+  "directory_structure": {
+    "directories": [
+      {
+        "name": ".pytest_cache",
+        "type": "hidden",
+        "file_count": 8
+      },
+      {
+        "name": "jinja2_async_environment",
+        "type": "python_package",
+        "file_count": 11
+      },
+      {
+        "name": "dist",
+        "type": "general",
+        "file_count": 13
+      },
+      {
+        "name": ".ruff_cache",
+        "type": "hidden",
+        "file_count": 90
+      },
+      {
+        "name": "tests",
+        "type": "testing",
+        "file_count": 106
+      },
+      {
+        "name": ".claude",
+        "type": "hidden",
+        "file_count": 1
+      },
+      {
+        "name": ".benchmarks",
+        "type": "hidden",
+        "file_count": 0
+      },
+      {
+        "name": ".mypy_cache",
+        "type": "hidden",
+        "file_count": 8
+      },
+      {
+        "name": ".pdm-build",
+        "type": "hidden",
+        "file_count": 8
+      },
+      {
+        "name": "build",
+        "type": "general",
+        "file_count": 5
+      },
+      {
+        "name": "htmlcov",
+        "type": "general",
+        "file_count": 13
+      },
+      {
+        "name": ".idea",
+        "type": "hidden",
+        "file_count": 10
+      }
+    ],
+    "total_directories": 12
+  },
+  "file_distribution": {
+    "file_types": {
+      ".json": 17,
+      ".yaml": 4,
+      "no_extension": 1480,
+      ".lock": 2,
+      ".md": 9,
+      ".toml": 4,
+      ".xml": 8,
+      ".TAG": 4,
+      ".py": 1985,
+      ".gz": 9,
+      ".whl": 11,
+      ".cfg": 1,
+      ".yml": 2,
+      ".pth": 4,
+      ".html": 9,
+      ".png": 4,
+      ".js": 4,
+      ".css": 27,
+      ".iml": 1,
+      ".sample": 14,
+      ".5": 1,
+      ".idx": 1,
+      ".pack": 1,
+      ".txt": 123,
+      ".bat": 6,
+      ".ps1": 2,
+      ".test-benchmark": 1,
+      ".fish": 2,
+      ".13": 2,
+      ".nu": 2,
+      ".test": 1,
+      ".csh": 2,
+      ".typed": 49,
+      ".c": 1,
+      ".pyi": 11,
+      ".so": 11,
+      ".exe": 6,
+      ".conf": 1,
+      ".markdown-it": 1,
+      ".pyc": 1156,
+      ".APACHE2": 1,
+      ".MIT": 1,
+      ".pem": 1,
+      ".zsh": 1,
+      ".bash": 1,
+      ".rst": 3,
+      ".scss": 1,
+      ".sh": 1,
+      ".APACHE": 1,
+      ".BSD": 1,
+      ".exclude": 1,
+      ".wordlist": 2,
+      ".R": 1,
+      ".npmignore": 1,
+      ".renv": 1,
+      ".mod": 1,
+      ".gemspec": 1,
+      ".rockspec": 1,
+      ".rs": 1,
+      ".PL": 1,
+      ".go": 1,
+      ".tex": 4,
+      ".sty": 1,
+      ".odt": 1
+    },
+    "total_files": 5009
+  },
+  "dependencies": {
+    "source": "pyproject.toml",
+    "status": "detected"
+  },
+  "configuration_files": [
+    ".envrc",
+    ".libcst.codemod.yaml",
+    "pyproject.toml"
+  ],
+  "documentation": {
+    "readme": true,
+    "docs_dir": false,
+    "changelog": true
+  },
+  "testing_structure": {
+    "test_files": 173,
+    "test_directories": 2,
+    "has_conftest": false,
+    "has_pytest_ini": false
+  },
+  "package_structure": {
+    "python_files": 5,
+    "has_init": true,
+    "submodules": 0
+  }
+}

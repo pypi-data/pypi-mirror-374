@@ -1,0 +1,152 @@
+{
+  "summary": {
+    "total_hooks": 12,
+    "passed": 11,
+    "failed": 1,
+    "total_duration": 4.45,
+    "status": "failure"
+  },
+  "hooks": [
+    {
+      "id": "trailing-whitespace",
+      "name": "trailing-whitespace",
+      "status": "passed",
+      "duration": 0.15,
+      "files_processed": 0,
+      "issues_found": [],
+      "stage": "pre-commit"
+    },
+    {
+      "id": "end-of-file-fixer",
+      "name": "end-of-file-fixer",
+      "status": "passed",
+      "duration": 0.15,
+      "files_processed": 0,
+      "issues_found": [],
+      "stage": "pre-commit"
+    },
+    {
+      "id": "check-yaml",
+      "name": "check-yaml",
+      "status": "passed",
+      "duration": 0.15,
+      "files_processed": 0,
+      "issues_found": [],
+      "stage": "pre-commit"
+    },
+    {
+      "id": "check-toml",
+      "name": "check-toml",
+      "status": "passed",
+      "duration": 0.09,
+      "files_processed": 0,
+      "issues_found": [],
+      "stage": "pre-commit"
+    },
+    {
+      "id": "check-added-large-files",
+      "name": "check-added-large-files",
+      "status": "passed",
+      "duration": 0.23,
+      "files_processed": 0,
+      "issues_found": [],
+      "stage": "pre-commit"
+    },
+    {
+      "id": "pyproject-fmt",
+      "name": "pyproject-fmt",
+      "status": "failed",
+      "duration": 0.21,
+      "files_processed": 0,
+      "issues_found": [],
+      "stage": "pre-commit"
+    },
+    {
+      "id": "uv-lock",
+      "name": "uv-lock",
+      "status": "passed",
+      "duration": 0.18,
+      "files_processed": 0,
+      "issues_found": [],
+      "stage": "pre-commit"
+    },
+    {
+      "id": "detect-secrets",
+      "name": "Detect secrets",
+      "status": "passed",
+      "duration": 0.75,
+      "files_processed": 0,
+      "issues_found": [],
+      "stage": "pre-commit"
+    },
+    {
+      "id": "codespell",
+      "name": "codespell",
+      "status": "passed",
+      "duration": 0.39,
+      "files_processed": 0,
+      "issues_found": [],
+      "stage": "pre-commit"
+    },
+    {
+      "id": "ruff-check",
+      "name": "ruff check",
+      "status": "passed",
+      "duration": 0.15,
+      "files_processed": 0,
+      "issues_found": [],
+      "stage": "pre-commit"
+    },
+    {
+      "id": "ruff-format",
+      "name": "ruff format",
+      "status": "passed",
+      "duration": 0.04,
+      "files_processed": 0,
+      "issues_found": [],
+      "stage": "pre-commit"
+    },
+    {
+      "id": "mdformat",
+      "name": "mdformat",
+      "status": "passed",
+      "duration": 0.7,
+      "files_processed": 0,
+      "issues_found": [],
+      "stage": "pre-commit"
+    }
+  ],
+  "performance": {
+    "slowest_hooks": [
+      {
+        "hook": "Detect secrets",
+        "duration": 0.75,
+        "percentage": 16.8
+      },
+      {
+        "hook": "mdformat",
+        "duration": 0.7,
+        "percentage": 15.7
+      },
+      {
+        "hook": "codespell",
+        "duration": 0.39,
+        "percentage": 8.8
+      },
+      {
+        "hook": "check-added-large-files",
+        "duration": 0.23,
+        "percentage": 5.2
+      },
+      {
+        "hook": "pyproject-fmt",
+        "duration": 0.21,
+        "percentage": 4.7
+      }
+    ],
+    "optimization_suggestions": [
+      "Hook performance is well optimized"
+    ]
+  },
+  "generated_at": "2025-07-19T17:14:51Z"
+}

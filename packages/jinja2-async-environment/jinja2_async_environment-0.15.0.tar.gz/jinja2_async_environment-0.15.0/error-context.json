@@ -1,0 +1,31 @@
+{
+  "analysis_info": {
+    "timestamp": "2025-07-19T17:14:52Z",
+    "crackerjack_version": "0.19.8",
+    "python_version": "3.13+"
+  },
+  "environment": {
+    "platform": "detected_automatically",
+    "python_version": "3.13+",
+    "virtual_env": "detected_automatically",
+    "git_status": "available"
+  },
+  "common_issues": [],
+  "troubleshooting": {
+    "dependency_issues": "Run 'uv sync' to ensure all dependencies are installed",
+    "hook_failures": "Check hook-specific configuration in pyproject.toml",
+    "type_errors": "Review type annotations and ensure pyright configuration is correct",
+    "formatting_issues": "Run 'uv run ruff format' to fix formatting automatically"
+  },
+  "performance_insights": {
+    "hook_performance": "Available in hooks-analysis.json",
+    "test_performance": "Available in test output",
+    "optimization_opportunities": "Check quality-metrics.json for details"
+  },
+  "recommendations": [
+    "Regular pre-commit hook execution to maintain code quality",
+    "Periodic dependency updates for security and performance",
+    "Monitor test coverage and add tests for uncovered code",
+    "Review and update type annotations for better code safety"
+  ]
+}
