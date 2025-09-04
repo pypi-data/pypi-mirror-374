@@ -1,0 +1,81 @@
+# See PEP 518 for the spec of this file
+# https://www.python.org/dev/peps/pep-0518/
+
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "netbox-aci-plugin"
+version = "0.1.0"
+requires-python = ">=3.10.0"
+authors = [
+    {name = "Martin Hauser", email = "git@pheus.dev"},
+]
+maintainers = [
+    {name = "Martin Hauser", email = "git@pheus.dev"},
+]
+description = "NetBox plugin for Cisco ACI"
+readme = { file = "README.md", content-type = "text/markdown" }
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+keywords = ["netbox", "netbox-plugin", "cisco", "aci"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Django",
+    "Framework :: Django :: 5.2",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.optional-dependencies]
+docs = [
+    "mkdocs==1.6.1",
+    "mkdocs-material==9.6.18",
+    "mkdocs-include-markdown-plugin==7.1.7",
+]
+test = [
+    "check-manifest==0.50",
+    "pre-commit==4.3.0",
+    "pytest==8.4.1",
+    "ruff==0.12.11",
+    "yamllint==1.37.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/pheus/netbox-aci-plugin"
+Documentation = "https://pheus.github.io/netbox-aci-plugin/"
+Source = "https://github.com/pheus/netbox-aci-plugin"
+Issues = "https://github.com/pheus/netbox-aci-plugin/issues"
+Changelog = "https://github.com/pheus/netbox-aci-plugin/releases"
+
+[tool.check-manifest]
+ignore = [
+    ".editorconfig",
+    ".markdownlint.yaml",
+    ".pre-commit-config.yaml",
+    ".pypirc",
+    "requirements_dev.txt",
+    "ruff.toml",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["netbox_aci_plugin*"]
+
+[tool.setuptools.package-data]
+netbox_aci_plugin = [
+    "templates/**",
+    "static/**",
+    "locale/**/*.mo"
+]

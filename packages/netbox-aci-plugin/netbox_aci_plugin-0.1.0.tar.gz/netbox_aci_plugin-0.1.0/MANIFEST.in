@@ -1,0 +1,22 @@
+include CONTRIBUTING.md
+include LICENSE
+include README.md
+include CHANGELOG.md
+include Makefile
+include mkdocs.yml
+
+# Package assets for NetBox
+recursive-include netbox_aci_plugin/locale *
+recursive-include netbox_aci_plugin/templates *.html
+recursive-include netbox_aci_plugin/static *
+
+# Documentation
+recursive-include docs *
+prune docs/site
+
+# Tests
+recursive-include netbox_aci_plugin/tests *
+
+# Housekeeping
+global-exclude __pycache__ *.py[co] .DS_Store .ruff-cache
+prune .ci
