@@ -1,0 +1,487 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+    <head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="A web interface to manage automated testing and lab equipments">
+		<meta name="Creator and developer: Hubert Gee">
+		<title>
+			Keystack
+		</title>
+
+		<link href={% static "bootstrap-5.3.2-dist/css/bootstrap.min.css" %} rel="stylesheet" type="text/css">
+		<link href={% static "fontawesome-free-6.0.0-beta3/css/all.min.css" %} rel="stylesheet" type="text/css">
+		<link href={% static "sb-admin-2/css/sb-admin-2.min.css" %} rel="stylesheet" type="text/css">
+		<link href={% static "commons/css/commons.css" %} rel="stylesheet" type="text/css">
+		<link href={% static "commons/css/base.css" %} rel="stylesheet" type="text/css">
+		<style></style>
+
+		{% block extra_css1 %}    {% endblock extra_css1 %}
+		{% block extra_head_js %} {% endblock extra_head_js %}
+		{% block extra_css %}     {% endblock extra_css %}
+		{% block extra_style %}   {% endblock extra_style %}
+    </head>
+    
+    <body>
+		<div id="wrapper">
+			<div id="content-wrapper" class="d-flex flex-column">
+				<!-- Main Content -->
+				<div id="content">
+
+					<!-- Set the default main controller IP provided by the default page sessionMgmt -->
+					<div id="mainControllerIp" value={{mainControllerIp}}></div>
+					<div id="pageAttributes" domain={{domain}}></div>
+					<div id="domainUserRole" role={{domainUserRole}}></div>
+					<div id="user" sysAdmin={{isUserSysAdmin}}></div>
+
+					<!-- Sidebar #2929EE-->
+					<ul class="navbar-nav sidebar accordion sidebarNavPosition" id="accordionSidebar">
+
+						<!-- Sidebar - Brand -->
+						<div class="sidebar-brand d-flex align-items-center justify-content-center brandPosition backgroundColorBlack">
+							<div class="sidebar-brand-icon rotate-n-15 textYellow">
+								<!-- <i class="fas fa-laugh-wink"></i> -->
+								<i class="fas fa-align-justify"></i>
+							</div>
+							<div class="sidebar-brand-text mx-3 textWhite">KeyStack <sup></sup></div>
+						</div>
+
+						<!-- Beneath the branding -->
+						<div class="sidebarBeneathBranding" id="hideSideBar">
+							<hr class="sidebar-divider my-0"><br>
+
+							<li><div class="mainTextColor marginBottom10px textAlignCenter" id="insertServerTime"></div><br><br><br></li>
+
+							<!-- This will be insert by JS when the page is ready. onclick="connectToController(this) -->
+							<div class="marginTop5px textAlignCenter" id="getControllers"></div> 
+
+							<li class="nav-item"><div class="nav-link mainTextColor">Lab Manager</div</li>
+
+							<li class="nav-item">
+								<a class="nav-link collapsed sidebarDropdownArrowColor" href="#" data-toggle="collapse"
+								data-target="#domainInventory" aria-expanded="true" aria-controls="domainInventory">
+									<span class="modules paddingLeft30px">Inventory</span>
+								</a>
+
+								<div id="domainInventory" class="collapse" aria-labelledby="headingGroupSessions" data-parent="#accordionSidebar">
+									<div class="bg-white collapse-inner rounded sidebarDropdownStyle">
+										<p class="pl-2 pt-2 textBlack fontSize12px">Select a Domain</p>
+										<div class="fontSize12px" id="insertInventoryDomains"></div>
+									</div>
+								</div>
+							</li>
+
+							<li class="nav-item">
+								<a class="nav-link collapsed sidebarDropdownArrowColor" href="#" data-toggle="collapse"
+								data-target="#portGroupSidePanel" aria-expanded="true" aria-controls="portGroupSidePanel" onclick="getPortGroupMenu()">
+									<span class="fontSize12px paddingLeft30px">Port Groups</span>
+								</a>
+
+								<div id="portGroupSidePanel" class="collapse sidebarDropdownArrowColor" aria-labelledby="portGroupLabel" data-parent="#accordionSidebar">
+									<div class="bg-white py-1 collapse-inner rounded sidebarDropdownStyle">
+										<!-- Tell Env the group. Env renders html and JS will get all envs from the specified group -->
+										<div id='insertPortGroupDomains'></div>
+									</div>
+								</div>	
+							</li>
+
+							<li class="nav-item">
+								<a class="nav-link collapsed sidebarDropdownArrowColor" href="#" data-toggle="collapse"
+								data-target="#envSidePanel" aria-expanded="true" aria-controls="envSidePanel" onclick="getEnvGroupMenu()">
+									<span class="fontSize12px paddingLeft30px">Envs (Testbeds)</span>
+								</a>
+
+								<div id="envSidePanel" class="collapse sidebarDropdownArrowColor" aria-labelledby="envLabel" data-parent="#accordionSidebar">
+									<div class="bg-white py-1 collapse-inner rounded sidebarDropdownStyle">
+										<!-- Tell Env the group. Env renders html and JS will get all envs from the specified group -->
+										<div id='insertEnvGroupMenu'></div>
+									</div>
+								</div>	
+							</li>
+							<br>
+
+							<!-- Nav Item - Dashboard -->
+
+							<li class="nav-item">
+								<a class="nav-link collapsed sidebarDropdownArrowColor" href="#" data-toggle="collapse"
+								data-target="#domainSessions" aria-expanded="true" aria-controls="domainSessions">
+									<span class="modules">Pipelines</span>
+								</a>
+
+								<div id="domainSessions" class="collapse" aria-labelledby="headingGroupSessions" data-parent="#accordionSidebar">
+									<div class="bg-white collapse-inner rounded sidebarDropdownStyle">
+										<p class="pl-2 pt-2 textBlack fontSize12px">Select a Domain</p>
+										<div class="fontSize12px" id="insertSessionDomains"></div>
+									</div>
+								</div>
+							</li>
+
+							<!-- Test Results & Logs sidebar menu-->
+							<li class="nav-item" >
+								<a class="nav-link collapsed sidebarDropdownArrowColor" href="#" data-toggle="collapse" 
+								data-target="#activeResults" aria-expanded="true" aria-controls="testResults" onclick="getTestResultMenu()">
+									<span class="fontSize12px">Results</span>
+								</a>
+
+								<div id="activeResults" class="collapse" aria-labelledby="headingTestResults" data-parent="#accordionSidebar">
+									<div class="bg-white py-1 collapse-inner rounded sidebarDropdownStyle">
+										<!-- Notes: url testResults takes you to testResults.views -->
+										<div id='insertActiveTestResultMenu'></div>
+									</div>
+								</div>
+							</li>
+							<!-- <hr class="sidebar-divider"> -->
+
+							<li class="nav-item">
+								<a class="nav-link collapsed sidebarDropdownArrowColor" href="#" data-toggle="collapse"
+								data-target="#playbookSidePanel" aria-expanded="true" aria-controls="playbookSidePanel" onclick="getPlaybookGroupMenu()">
+									<span class="modules">Playbooks</span>
+								</a>
+
+								<div id="playbookSidePanel" class="collapse" aria-labelledby="playbookLabel" data-parent="#accordionSidebar">
+									<div class="bg-white py-1 collapse-inner rounded sidebarDropdownStyle">
+										<!-- Tell Playbook the group. Playbook renders html and JS will get all playbooks from the specified group -->
+										<div id='insertPlaybookGroupMenu'></div>
+									</div>
+								</div>	
+							</li>
+
+							<!-- <hr class="sidebar-divider"> -->
+
+							<li class="nav-item">
+								<a class="nav-link collapsed sidebarDropdownArrowColor" href="#" data-toggle="collapse"
+								data-target="#moduleStackSidePanel" aria-expanded="true" aria-controls="moduleStackSidePanel" onclick="getSidebarModules()">
+									<span class="fontSize12px">Test Modules</span>
+								</a>
+
+								<div id="moduleStackSidePanel" class="collapse" aria-labelledby="moduleStackLabel" data-parent="#accordionSidebar">
+									<div class="bg-white py-1 collapse-inner rounded sidebarDropdownStyle">
+										<div id="insertModules"></div>
+									</div>
+								</div>	
+							</li>
+
+							<!--
+							<li class="nav-item">
+								<a class="nav-link collapsed sidebarDropdownArrowColor" href="#" data-toggle="collapse"
+								data-target="#testcasesSidePanel" aria-expanded="true" aria-controls="testcasesSidePanel" onclick="getTestcasesMenu()">
+									<span class="fontSize12px">Testcases</span>
+								</a>
+
+								<div id="testcasesSidePanel" class="collapse sidebarDropdownArrowColor" aria-labelledby="envLabel" data-parent="#accordionSidebar">
+									<div class="bg-white py-1 collapse-inner rounded sidebarDropdownStyle">
+										<div id='insertTestcaseGroupsMenu'></div>
+									</div>
+								</div>	
+							</li>
+							-->
+
+						</div>
+					</ul>
+				
+					<!-- end sidebar -->					
+
+					<!-- Topbar: To make the main content scroll beneath the topbar, include: position:sticky; top:0px; z-index:10; -->
+					<nav class="navbar navbar-expand navbar-light topbar fixed-top topbarStyle">
+						<!-- Hamburger menu: Sidebar Toggle (Topbar) -->
+						<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+							<i class="fa fa-bars"></i>
+						</button>
+						
+						<span class="pt-1 topbarTitlePage" id='topbarTitlePage'>{{topbarTitlePage}}</span>
+						&emsp;<span class="pt-1 mainTextColor mainFontDetails" id="objectTitle"></span>
+
+						<ul class="navbar-nav ml-auto">
+							<li>
+								<!-- messagesIcon -->
+								<a id="messagesIcon" class="fas fa-file-lines topbarLinkStyle" href="" data-bs-toggle="modal" data-bs-target="#showMessagesModal">
+
+									<!-- Using flashingErrorMsg in the class for webpages. When user clicks on either the messages or flashing error message, will stop the blinking -->
+									<span class="topbarLinkSpanFontSize flashingErrorMsg" id="messages">&ensp;
+
+										<!-- Just a placeholder.  This gets activated when there is an error -->
+										<span class="verticalAlignTop badge badge-danger badge-counter blink flashingErrorMsg fontSize10px" id='flashingError'></span>
+									</span>
+								</a>
+							</li>
+
+							<li class="nav-item dropdown no-arrow mx-1">
+								<!-- System Settings-->
+								<a class="dropdown-toggle fas fa-bug topbarLinkStyle" href="#" id="debugDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<span class="topbarLinkSpanFontSize"></span>
+							   </a>
+
+								<!-- Dropdown - Alerts -->
+								<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="debugDropdown">
+									<h6 class="dropdown-header mainFontSize">
+										Debug
+									</h6>
+									<a class="dropdown-item d-flex align-items-center" href="{% url "systemLogs" %}">
+										<div class="mr-3"><i class="fa-solid fa-wrench text-black"></i></div>
+										<div>Logs</div>
+									</a>
+									<a class="dropdown-item d-flex align-items-center" href="{% url "AwsS3" %}">
+										<div class="mr-3"><i class="fa-solid fa-wrench text-black"></i></div>
+										<div>Aws S3</div>
+									</a>
+								</div>
+							</li>
+
+							<li>
+								<a id='utilizationIcon' class="fas fa-pie-chart topbarLinkStyle" href="{% url "utilizations" %}"> 
+									<span class="topbarLinkSpanFontSize" id="utilization"></span>
+								</a>
+							</li>
+
+							<!-- topbar items go here -->
+							<li class="nav-item dropdown no-arrow mx-1">
+								<!-- System Settings-->
+								<a class="dropdown-toggle fas fa-gears topbarLinkStyle" href="#" id="systemSettingsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								</a>
+
+								<!-- Dropdown - Alerts -->
+								<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+									aria-labelledby="systemSettingsDropdown">
+									<h6 class="dropdown-header mainFontSize">
+										System Settings
+									</h6>
+									<a class="dropdown-item d-flex align-items-center" href="{% url "systemSettings" %}">
+										<div class="mr-3"><i class="fa-solid fa-wrench text-black"></i></div>
+										<div>Settings</div>
+									</a>
+									<a class="dropdown-item d-flex align-items-center" href="{% url "loginCredentials" %}">
+										<div class="mr-3"><i class="fa-solid fa-wrench text-black"></i></div>
+										<div>Login Credentials</div>
+									</a>
+									<a class="dropdown-item d-flex align-items-center mainFontSize" href="{% url "accountMgmt" %}">
+										<i class="mr-3 fa-solid fa-user text-black"></i>
+										<div>User Accounts</div>
+									</a>
+									<a class="dropdown-item d-flex align-items-center mainFontSize" href="{% url "domains" %}">
+										<i class="mr-3 fa-solid fa-user-group text-black"></i>
+										<div>Domains</div>
+									</a>
+									<a class="dropdown-item d-flex align-items-center mainFontSize" href="{% url "system_backup" %}">
+										<i class="mr-3 fa-solid fa-user-group text-black"></i>
+										<div>System Backup / Restore</div>
+									</a>
+
+									<!--
+									<a class="dropdown-item d-flex align-items-center mainFontSize" href="{% url "apps" %}">
+										<i class="mr-3 fa-solid fa-user-group text-black"></i>
+										<div>App Store</div>
+									</a>
+									-->
+
+									<div class="hideClassFromRemoteControllers">
+										<!--
+										<div class="dropdown-item d-flex align-items-center"><i class="mr-3 fa-solid fa-link text-black mainFontSize hideClassFromRemoteControllers"></i>Controller Link Mgmt</div>
+
+										<a class="dropdown-item d-flex align-items-center paddingLeft52px mainFontSize" href="{% url "controllers" %}?task=addController">
+											Add Remote Controller
+										</a>
+										<a class="dropdown-item d-flex align-items-center paddingLeft52px mainFontSize" href="{% url "controllers" %}?task=registerAccessKey">
+											Register Remote Access-Key 
+										</a>
+										-->
+								    </div>
+								  
+								</div>
+							</li>
+
+							<li class="nav-item dropdown no-arrow mx-1 hideClassFromRemoteControllers">
+								<a class="dropdown-toggle fas fa-question-circle topbarLinkStyle dropdownLinkFontSize" href="#" id="help" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<!-- <span class="topbarLinkSpanFontSize">Help</span> -->
+								</a>
+
+								<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+									aria-labelledby="help">
+									<h6 class="dropdown-header">
+										Help
+									</h6>
+
+									<div class="dropdown-item d-flex align-items-center keystackVersion" id='showVersionId' data-bs-toggle="modal" data-bs-target="#keystackVersionModal">
+										<i class="mr-3 fa-solid fa-code-branch text-black"></i>
+										Version
+									</div>
+
+									<a class="dropdown-item d-flex align-items-center" href="{% url "userGuides" %}">
+										<div class="mr-3">
+											<i class="fa-solid fa-book "></i>
+										</div>
+										<div>User Guides</div>
+									</a>
+
+									<a class="dropdown-item d-flex align-items-center" href="{% url "restAPI" %}">
+										<i class="mr-3 fa-solid fa-code text-black"></i>
+										<div>ReST APIs</div>
+									</a>
+								</div>
+							</li>
+
+							<div class="topbar-divider d-none d-sm-block"></div>
+
+							<!-- User Information text-gray-600 -->
+							<li class="dropdown no-arrow">
+								<a class="nav-link dropdown-toggle mt-1 dropdownLinkFontSize" href="#" id="userDropdown" role="button"
+									data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<i class="fa-solid fa-user" style="color:white"></i>
+									<span class="mr-5 d-none d-lg-inline small topbarLinkSpanFontSize">{{user}}</span>
+								</a>
+								
+								<!-- Dropdown - User Information -->
+								<ul class="dropdown-menu shadow animated--grow-in" aria-labelledby="userDropdown">
+									  
+									<li class="dropdown-item"> 
+										<div data-bs-toggle="modal" data-bs-target="#showUserDomainMembershipModal">Domain Membership</div> 								
+									</li>
+								    
+									<li class="dropdown-item">
+										<a class="textBlack" href="{% url "logout" %}">
+											<!-- <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> -->
+											<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 textBlack"></i> 
+											Logout
+										</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</nav>
+					<!-- topbar ends -->
+
+					<div id="mainBodyDiv"> 
+						{% block content %}
+						{% endblock content %}
+					</div>
+				</div>
+				<!-- contents ends -->
+
+				<!-- Footer -->
+				<!-- <div class="row mt-2 hideInstantMessages footerStyle" id="footer"> -->
+				<!--
+				<div class="row mt-2 hideInstantMessages footerStyle">
+					<table class="table table-sm table-bordered table-fixed tableFixHead tableMessages" cellspacing="0">
+						<thead>
+							<tr>
+								<th class="col-2">Date / Time</th>
+								<th class="col-1">Users</th>
+								<th class="col-1">Tasks</th>
+								<th class="col-1">Msg Type</th>
+								<th class="col-md-auto">Messages</th>
+							</tr>
+						</thead>
+		
+						<tbody id="tableDataFooter"></tbody>
+					</table>
+				</div>
+				-->
+			
+		    </div>
+			<!-- content-wrapper ends -->
+
+			<div class="modal" id="showMessagesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="showMessagesModal" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-scrollable messagesModal">
+					<div class="modal-content">
+						<div class="modal-header">
+							<!-- <div class="card-header" style="display:inline-block"> -->
+							<div class="flexRowInlineBlockRight">
+								<h6 class="modal-title">Messages&ensp;</h6>
+							</div>
+						</div>
+
+						<div class="modal-body">
+							<div class="row">
+								<table class="tableMessages table-bordered">
+									<thead>
+										<tr>
+											<th class="col-2">Date / Time</th>
+											<th class="col-1">Users</th>
+											<th class="col-1">Tasks</th>
+											<th class="col-1">Msg Type</th>
+											<th class="col-md-auto">Messages</th>
+										</tr>
+									</thead>
+									<!-- tableDataFooter -->
+									<tbody id="messageTable"></tbody>
+								</table>
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" data-bs-dismiss="modal" >Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal" id="showUserDomainMembershipModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true"
+		aria-labelledby=UserDomainMembershipLabel">
+			<div id=UserDomainMembershipLabel" class="modal-dialog modal-dialog-scrollable dropdownSizeMedium1">
+				<div class="modal-content">
+					
+					<div class="modal-header">
+						<h6 class="modal-title textBlack">Domain Membership</h6>
+					</div>
+		
+					<div class="modal-body marginTop2px normalFontWeight textBlack">
+						<div class="row table-responsive"> 
+							<table class="table-bordered tableFixHead3">
+								<thead>
+									<tr>
+										<th scope="col" class="textAlignCenter">Domains</th>
+										<th scope="col" class="textAlignCenter">User Roles</th>
+									</tr>
+								</thead>
+								<tbody id="insertUserDomainMembershipTable"></tbody>
+							</table>
+						</div>
+					</div>
+		
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="modal" id="keystackVersionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="false"
+		aria-labelledby=keystackVersion">
+			<div id=keystackVersion" class="modal-dialog modal-dialog-scrollable dropdownSizeSmall2">
+				<div class="modal-content">
+					
+					<div class="modal-header">
+						<h6 class="modal-title textBlack">Keystack Version</h6>
+					</div>
+		
+					<div class="modal-body marginTop2px normalFontWeight textBlack">
+						<div id="insertKeystackVersion">
+					</div>
+					<br>
+		
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>	
+		<!-- div wrapper end --> 
+		
+	    <!-- Bootstrap core JavaScript-->
+	    <script src={% static "sb-admin-2/vendor/jquery/jquery.min.js" %}></script>
+	    <script src={% static "sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js" %}></script>
+	    
+	    <!-- Core plugin JavaScript-->
+	    <script src={% static "sb-admin-2/vendor/jquery-easing/jquery.easing.min.js" %}></script>
+	    
+	    <!-- Custom scripts for all pages-->
+	    <script src={% static "sb-admin-2/js/sb-admin-2.min.js" %}></script>
+	    <script src={% static "bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js" %}></script>
+		<script type="module" src={% static "commons/js/base.js" %}></script>
+
+	    {% block extra_js %}{% endblock extra_js %}
+	
+    </body>
+</html>

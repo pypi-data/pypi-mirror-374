@@ -1,0 +1,423 @@
+<!-- https://bootstrap-menu.com/detail-sidebar-nav-collapse.html -->
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link href={% static "commons/css/testResultsTreeView.css" %} rel="stylesheet" type="text/css">
+{% endblock extra_css%}
+
+
+{% block content %}
+<div id="logDeleteNote" deleteResultsAfterDays={{removeResultsAfterDays}}></div>
+<div id="groupAndPath" group={{group}} playbook={{playbook}} path={{resultsFolderPath}}></div>
+<div id="resultFolderPath" value={{resultFolderPath}}></div>
+
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-sm topbar fixed-top secondNavbarStyle marginTop5px">
+        <div class="flexRowInlineBlockLeft">
+            <a href="#" name="selectAllTestResultButton" onclick="selectAll();" >Select All</a>&emsp;&emsp;
+            <a href="#" name="selectAllTestResultButton" onclick="clearAll();" >Clear All</a>&emsp;&emsp;
+            <a href="#" onclick="deleteSelected()">Delete Selected</a>&emsp;&emsp;
+            <a href="#" onclick="deleteAllInGroup()">Delete All In This Group</a>&emsp;&emsp;
+            <a href="#" onclick="deleteAllInPlaybook()">Delete All In This Playbook</a>&emsp;&emsp;
+            <a href="#" onclick='archiveResults()'>Archive Results</a>&emsp;&emsp;
+            <span id="insertRemoveResultsInfo" style="color:black; font-size:14px"></span>
+            <span id='archiveResultNote' style="color:black; padding-bottom:0; font-size:14px"></span>
+        </div>
+    </nav>
+
+    <!-- py-3 = vertical up/down -->
+    <section class="section-content py-0 px-0">
+        <!-- GROUP={{group}} &emsp;&emsp; {{currentResultsFolderPath}}<br><br> -->
+        <!-- Use form action for downloads button click -->
+        <!--
+        <form action="{% url "testResults" %}" method="POST">
+            {% csrf_token %}
+            {{timestampResultFolders|safe}}
+        </form>
+        -->
+    </section>
+
+    <div id="insertTestResultPages"></div>
+</div>
+
+<div class="modal" id="openFileModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="modifyFile" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:70%; height:750px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<!-- <div class="card-header" style="display:inline-block"> -->
+				<div class="fleRowInlineBlockRight">
+					<h5 class="modal-title" id="editFile">Result File:&ensp;</h5>
+					<div id="currentOpenedFile" style="float:left; margin-left:20px; padding-top:3px;"></div>
+				</div>
+            </div>
+
+            <div class="modal-body" style="margin-top:2px">
+					<div class="row" id="insertFileContents"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="closeText()" >Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+    <script type="text/javascript">
+        var nestedFolderCounter = 0;
+        //var closeFlag = null;
+        var archiveResultsArray = new Array();
+
+        let hideInstantMessagesDiv = document.querySelector('.hideInstantMessages');
+        if (hideInstantMessagesDiv.classList.contains('hideInstantMessages')) {
+            hideInstantMessagesDiv.classList.remove('hideInstantMessages');
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            let title = document.querySelector('#topbarTitlePage').innerHTML;
+            if (title == "Test Results Archive") {
+                document.querySelector('#archiveResultNote').innerHTML = '* Results in archive will never be deleted until they are manually deleted';
+            } else {
+                let removeResultsAfterDays = document.querySelector('#logDeleteNote').getAttribute('deleteResultsAfterDays');
+                document.querySelector('#insertRemoveResultsInfo').innerHTML = `* removeResultsAfterDays=${removeResultsAfterDays}`
+                getInstantMessages();
+            }
+
+            let group = document.querySelector('#groupAndPath').getAttribute('group');
+            let playbook = document.querySelector('#groupAndPath').getAttribute('playbook');
+            let path = document.querySelector('#groupAndPath').getAttribute('path');
+            document.querySelector('#topbarTitlePage').innerHTML += `&emsp;|&emsp;&emsp;GROUP=${group} &emsp;| &emsp;&emsp;PLAYBOOK=${playbook} &emsp;&emsp;${path}`
+
+            getTestResultPages();
+
+            if (sessionStorage.getItem('controller') != sessionStorage.getItem('mainControllerIp')) {
+                hideClassFromRemoteControllers();
+            } 
+            if (sessionStorage.getItem('controller') == sessionStorage.getItem('mainControllerIp')) {
+                unhideClassFromRemoteControllers();
+            }
+        })
+
+        async function addListeners_backup(caretName="caret2", newVarName='x') {
+            // caret2
+            //let toggler = document.getElementsByClassName(caretName);
+            window[caretName] = document.getElementsByClassName(caretName);
+
+            for (x = 0; x < window[caretName].length; x++) {
+                console.log(`------- addListeners:  caretName:${caretName}   x:${x}   total:${window[caretName].length} ----`)
+                //await toggler[x].removeEventListener("click", toggleFolder(toggler[x]));
+
+                /*
+                toggler[nestedFolderCounter].addEventListener("click", function() {
+                    console.log(`\n----- hi index:${nestedFolderCounter} 3: ${this.parentElement.querySelector(".nested").classList}  length:${toggler.length} ---`)
+
+                    this.parentElement.querySelector(".nested").classList.toggle("active");
+                    //this.classList.toggle("caret-down");
+
+                    console.log(`----- hi index:${nestedFolderCounter} 4: ${this.parentElement.querySelector(".nested").classList} ---`)                    
+                }, {once:doOnce});
+                */
+               
+                window[caretName][x].onclick = await function() {
+                    console.log(`\n----- Howdy!  caretName:${caretName}   index:${x}  3: ${this.parentElement.querySelector(".nested").classList}  length:${window[caretName].length} ---`)
+                    this.parentElement.querySelector(".nested").classList.toggle("active");
+                    console.log(`----- Howdy!  caretName:${caretName}  index:${x}  4: ${this.parentElement.querySelector(".nested").classList} ---`)
+                }
+            }
+        }
+
+        function addListeners(caretName="caret2", newVarName='x') {
+            // caret2
+            //let toggler = document.getElementsByClassName(caretName);
+            window[caretName] = document.getElementsByClassName(caretName);
+
+            for (x= 0; x < window[caretName].length; x++) {
+                //await toggler[x].removeEventListener("click", toggleFolder(toggler[x]));
+
+                window[caretName][x].addEventListener("click", function() {
+
+                    this.parentElement.querySelector(".nested").classList.toggle("active");
+
+                    //this.classList.toggle("caret-down");               
+                });
+               
+                /*
+                window[caretName][window[newVarName]].onclick = await function() {
+                    console.log(`\n----- Howdy 3!  caretName:${caretName}   index:${window[newVarName]}   ${this.parentElement.querySelector(".nested").classList}  length:${window[caretName].length} ---`)
+
+                    this.parentElement.querySelector(".nested").classList.toggle("active");
+                    console.log(`----- Howdy 4!  caretName:${caretName}  index:${window[newVarName]}   ${this.parentElement.querySelector(".nested").classList} ---`)
+                }
+                */
+            }
+        }
+
+        async function toggleFolder(object=null) {
+            //object.classList.toggle("active");
+            //await object.parentElement.querySelector(".nested").classList.toggle("active");
+            //await object.parentElement.querySelector(".nested").classList.toggle();
+
+            await object.parentElement.querySelector(".nested");
+        }
+
+        function removeListeners(object) {
+            let toggler = document.getElementsByClassName("caret2");
+            for (g = 0; g < toggler.length; g++) {
+                toggler[g].removeEventListener("click", toggleFolder(toggler[g]));
+            }
+        }
+
+        async function getTestResultPages(object=null) {
+            /* object is page buttons onclick */
+
+            let pageIndexRange = [];
+            let getPageNumber = 1;
+
+            if (object == null) {
+                // Default getting up to 25 test results per page
+                pageIndexRange.push("0:3");
+            } else {
+                pageIndexRange.push(object.getAttribute("pageIndexRange"));
+                getPageNumber = object.getAttribute("getPageNumber");
+            }
+
+            let resultFolderPath = document.querySelector("#resultFolderPath").getAttribute("value");
+
+            // Remove eventListeners
+            //await removeListeners();
+
+            let data = await postData("{% url "getTestResultPages" %}", "{{csrf_token}}", 'POST', 
+                    {resultFolderPath:resultFolderPath, pageIndexRange:pageIndexRange, getPageNumber:getPageNumber})
+
+            //await document.querySelector('#insertTestResultPages').innerHTML = data.pages
+            await insertTestResultPages(data.pages);
+
+            // This must sit here after getTestResultPages() in order to work.
+            // This code goes in conjuntion with testResultsTreeView.css for expanding the nested tree view
+            await addListeners(caretName="caret2");
+        }
+
+        function insertTestResultPages(data) {
+            document.querySelector('#insertTestResultPages').innerHTML = data
+        }
+
+        function insertNestedFolder(id, data) {
+            document.querySelector(id).innerHTML = data;
+        }
+
+        async function getNestedFolderFiles(object=null) {
+            let nestedFolderPath = object.getAttribute('nestedFolderPath');
+            let insertToDivId = object.getAttribute('insertToDivId');
+
+            // Remove eventListener
+            //await removeListeners();
+          
+            //console.log(`getNestedFolderFiles: ${nestedFolderPath}  ${insertToDivId}`)
+            let data = await postData("{% url "getNestedFolderFiles" %}", "{{csrf_token}}", 'POST', 
+                                                    {nestedFolderPath:nestedFolderPath, insertToDivId:insertToDivId})
+
+            //await document.querySelector(insertToDivId).innerHTML = data.folderFiles
+            await insertNestedFolder(insertToDivId, data.folderFiles);
+
+            // This must sit here after getTestResultPages() in order to work.
+            // This code goes in conjuntion with testResultsTreeView.css for expanding the nested tree view
+            await addListeners(caretName=data.caretName, newVarName=data.newVarName);
+        }
+
+        function closeText() {
+			// Toggle to hide buttons
+			//toggle.style.display = toggle.style.display == "none" ? "block" : "none";
+			document.querySelector("#insertFileContents").style.display = "none";
+
+			let toggle = document.querySelector("#textareaId");
+			if (toggle.value) {
+				// User attempting to open a non text file, the textarea is not created.
+				// Come in here only if textarea exists
+				toggle.value = ''
+			}
+		}
+
+        function getSelectedSessions() {
+            // Collect all the selected checkboxes and delete them all in one shot
+            var checkboxArray = document.querySelectorAll('input[name=testResultCheckbox]:checked');
+            
+            for (let x=0; x < checkboxArray.length; x++) {
+                let testResultsPath = checkboxArray[x].getAttribute('value');
+                archiveResultsArray.push(testResultsPath)
+        
+                // Uncheck the checkbox because getSessionIds() will not refresh 
+                // the page is any deleteSessionId checkbox is checked
+                checkboxArray[x].checked = false;
+            }
+          }
+
+        async function archiveResults() {
+            console.log('Archiving Results: ' + archiveResultsArray)
+            getSelectedSessions();
+            await postData("{% url "archiveResults" %}", "{{csrf_token}}", 'POST', {results:archiveResultsArray})
+            window.location.reload();
+            getInstantMessages();
+        }
+
+		async function getFileContents(object) {
+			try {
+				document.querySelector("#openFileModal");
+				let filePath = object.getAttribute('filePath');
+				console.log(`fileMgmt.getFileContents(): filePath: ${filePath}`)
+
+				const data = await postData("{% url "getFileContents" %}", "{{csrf_token}}", 'POST', {filePath: filePath})
+
+				if (data.status == "failed") {
+					status = `<div style='color:red'>Failed: ${data.errorMsg}</div>`
+					document.querySelector("#modifyFileStatus").innerHTML = status
+				} else {
+					// Text area. Set the name attr with the module preferences file path.
+					document.getElementById("insertFileContents").innerHTML =
+					`<textarea id="textareaId" name=${data.fullPath} cols="123" rows="30">${data.fileContents}</textarea><br><br>`
+
+					let toggle = document.getElementById("insertFileContents")
+					// Toggle to show text 
+					//toggle.style.display = toggle.style.display == "block" ? "none" : "block";
+					// toggle.style.display = toggle.style.display == "block";
+					toggle.style.display = "block";
+					
+					document.getElementById("currentOpenedFile").innerHTML = '<h7>' + data.fullPath + '</h7>'
+					document.getElementById('textAreaButton').style.display = "block"
+				}
+			} catch (error) {
+				console.log("fileMgmt.getFileContents() error: " + error)
+			}
+			//getInstantMessages();	  
+		}
+
+        async function getInstantMessages() {
+          const data = await postData("{% url "getInstantMessages" %}", "{{csrf_token}}", 'POST', {'webPage':'results'})
+          document.querySelector('#tableDataFooter').innerHTML = data.instantMessages
+        }
+
+        function selectAll() {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]')
+            for (var x=0; x < checkboxes.length; x++) {
+                checkboxes[x].checked = true;
+            }
+        }
+
+        function clearAll() {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]')
+            for (var x=0; x < checkboxes.length; x++) {
+                checkboxes[x].checked = false;
+            }
+        }
+
+        async function deleteSelected() {
+            // hmtl code for testResultCheckbox is created in views TestResult class
+            var cboxes = document.getElementsByName('testResultCheckbox');
+            var len = cboxes.length;
+            var selectedCheckboxArray = new Array();
+
+            for (var i=0; i<len; i++) {
+                if (cboxes[i].checked) {
+                    selectedCheckboxArray.push(cboxes[i].value)
+                }
+                console.log('testResults template.deleteSelected: ' + i + (cboxes[i].checked?' checked ':' unchecked ') + cboxes[i].value);
+            }   
+            console.log(`testResults template.deleteSelected: ${selectedCheckboxArray}`)
+            const data = await postData("{% url "testResults" %}", "{{csrf_token}}", 'POST', {deleteTestResults: selectedCheckboxArray})
+            location.reload()
+            getInstantMessages();
+        }
+
+        async function deleteAllInGroup() {
+            /* Delete all test results in the current group */
+            // <div id="groupAndPath" group={{group}}
+            let group = document.querySelector("#groupAndPath").getAttribute("group");
+            console.log(`testResults: deleteAllInGroup: ${group}`)
+            const data = await postData("{% url "testResultsDeleteAllInGroup" %}", "{{csrf_token}}", 'POST', 
+                    {group:group})
+            location.reload()
+            getInstantMessages();
+        }
+
+        async function deleteAllInPlaybook() {
+            /* Delete all test results in the current group */
+            // <div id="groupAndPath" group={{group}}
+            let path = document.querySelector("#resultFolderPath").getAttribute("value");
+            console.log(`testResults: deleteAllInPlaybook: ${path}`)
+            const data = await postData("{% url "testResultsDeleteAllInPlaybook" %}", "{{csrf_token}}", 'POST', 
+                    {path:path})
+            location.reload()
+            getInstantMessages();
+        }
+
+        async function downloadSelected() {
+            // hmtl code for testResultCheckbox is created in views TestResult class
+            var cboxes = document.getElementsByName('testResultCheckBox');
+            var len = cboxes.length;
+            var selectedCheckboxArray = new Array();
+
+            for (var i=0; i<len; i++) {
+                if (cboxes[i].checked) {
+                    selectedCheckboxArray.push(cboxes[i].value)
+                }
+                console.log('testResults template.downloadSelected: ' + i + (cboxes[i].checked?' checked ':' unchecked ') + cboxes[i].value);
+            }   
+            console.log(`testResults template.downloadSelected: ${selectedCheckboxArray}`
+            )
+
+            const data = await postData("{% url "testResults" %}", "{{csrf_token}}", 'POST', {downloadTestResults: selectedCheckboxArray})
+            location.reload()
+            getInstantMessages();
+        }
+
+        /* Not used. Leaving here in case it is needed
+        async function readTestResultFile(filePath) {
+			try {
+                dataValue = filePath.getAttribute("data-value")
+                name = filePath.innerText;                
+				//console.log('testResult template.readTestResultFile(): filePath: ' + filePath.value)
+				const data = await postData("{% url "getTestResultFileContents" %}", "{{csrf_token}}", 'POST', {testResultFile: dataValue})
+				console.log('testResult template.readTestResultFile(): returned data: ' + data.fileContents)			
+				document.getElementById("insertTestResultFileContent").innerHTML = '<h7>' + data.fileContents + '</h7>'
+
+			} catch (error) {
+				console.log("testResult template.readTestResultFile() error: " + error)
+			}	  
+		}
+        */
+        
+        document.addEventListener("DOMContentLoaded", function(){
+            document.querySelectorAll('.keystackSidebar .nav-link').forEach(function(element){
+                element.addEventListener('click', function (e) {
+                    let nextEl = element.nextElementSibling;
+                    let parentEl  = element.parentElement;	
+
+                    if(nextEl) {
+                        e.preventDefault();	
+                        let mycollapse = new bootstrap.Collapse(nextEl);
+
+                        if(nextEl.classList.contains('show')){
+                            mycollapse.hide();
+                        } else {
+                            mycollapse.show();
+                            // find other submenus with class=show
+                            var opened_submenu = parentEl.parentElement.querySelector('.submenu.show');
+                            // if it exists, then close all of them
+                            if(opened_submenu){
+                                new bootstrap.Collapse(opened_submenu);
+                            }
+                        }
+                    }
+                });
+            })
+        }); 
+        // DOMContentLoaded  end
+       
+
+    </script>
+{% endblock extra_js %}

@@ -1,0 +1,72 @@
+Bug fixes: None
+
+Enhancements: None
+   - Updated pymongo to 4.11.1.  Changed updateDocument by removing multi, use update_one or update_many and updated all the scripts that read count() and replace count() with len(list(cound)) 
+
+TODOs:
+      - PortMgmt: Allow users to add/remove existing device ports
+      - Allow adding apps such las L1. With Port-Group, work on LinkLayer.py to connect Layer1 ports
+      - Port-Group page: Page is refreshing when clicking on port dropdowns
+      - Add a "rerun" feature. User selects 1 or more pipelines and click on rerun button
+      
+      - Auto setup/teardown: 
+         - Enter server cli commands (done)
+         - SSH/Telnet: To an env device and enter commands
+
+      - Background process to sync test results with redis
+      - Recycle /opt/KeystackSystem/Logs/* written by Serviceware and 
+            /var/log/nginx 
+               access.log, error.log, keystack.access.log keystack.error.log and /var/log/ungicorn/
+      - Allow using multiple Envs per test
+      - parseParams.py: Use rest-api for AccountMgr().getApiKeyUser and DomainMgr().getUserAllowedDomains
+      - Verify user domain membership running pipelines that uses playbooks from a different domain
+      - accountMgr.py: If RedisMgr.redis is None, Use execRestApi because using CLI on local host has no MongoDB
+      - Domain names not in sync somehow.  In KeystackUI domain, domain=dagabah, but in Results, domain=Dagabah
+      - Rename this in playbook and loadcore app: deleteTestLogsAndResultsOnLoadCore
+      - Authorize people running testcases from modules.  Who could run which modules.
+      - While pipeline is still running, allow users to release envs and add a modal to warn users pipeline is still running and ask for confirmation.
+      - Testcases:
+         - Make scripts into a list of scripts to run (done)
+         - Verify scripts could be located anywhere in the filesystem.  APPs and Scripts are for organizing. (done)
+         - Create a page to show test plans & test cases
+
+   - Create a log file for autoSetup/autoTeardown 
+   - Running keystack.py on cli with -user <name> doesn't check for user name
+   - Fix device test connections
+
+   - Envs:
+      - Add a keyword called VM-profile (or something like that)
+      - spin up the VM-profile
+
+      Pipelines:
+         - Include port-connections and port-groups to keystackEnv
+         - Add a filter dropdown checkbox for selecting: running, pause-on-error, failed, passed, completed, aborted, terminated
+         - OverallDetails: Need to create a seperate for loop getSessons() just for this overall details (Done)
+
+      REST-APIs
+         - create / delete port group
+         - get port group details
+         - reserve / release port port-group
+         - schedule port group
+         - schedule env
+
+Work In Progress: None
+
+Misc: None
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+   
+
+

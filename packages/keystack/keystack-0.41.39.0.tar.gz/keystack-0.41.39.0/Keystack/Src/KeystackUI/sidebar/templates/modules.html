@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load static %}
+{% load fileMgmtTags %}
+
+{% block extra_style %}
+<style>
+	ul, #menuTree {
+		list-style-type: none;
+	}
+	
+	#menuTree {
+		margin: 0;
+		padding: 0;
+	}
+	
+	.caret {
+		cursor: pointer;
+		-webkit-user-select: none; /* Safari 3.1+ */
+		-moz-user-select: none; /* Firefox 2+ */
+		-ms-user-select: none; /* IE 10+ */
+		user-select: none;
+	}
+	
+	.caret::before {
+		content: "\25B6";
+		color: blue;
+		display: inline-block;
+		margin-right: 6px;
+	}
+	
+	.caret-down::before {
+		-ms-transform: rotate(90deg); /* IE 9 */
+		-webkit-transform: rotate(90deg); /* Safari */'
+		transform: rotate(90deg);  
+	}
+	
+	.nested {
+		display: none;
+	}
+	
+	.active {
+		display: block;
+	}
+</style>
+{% endblock extra_style %}
+
+{% block content %}
+<div class="mainBodyDivNoSecondNavbar">
+	<!-- <div style="overlfow:auto; height:0px"> -->
+	<div class="container-fluid">
+		<div id="moduleForJs" module={{module}}></div>
+		<div id="insertModuleDetails" class="paddingTop20px"></div>
+	</div>
+
+	<div class="modal" id="modifyFileModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+		aria-labelledby="modifyFile" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-scrollable" style="max-width:70%; height:750px; overflow:auto; color:black">
+			<div class="modal-content">
+				
+				<div class="modal-header">
+					<!-- <div class="card-header" style="display:inline-block"> -->
+					<div style="display:flex; flex-direction: row; justify-content:right; align-items:right">
+						<h5 class="modal-title" id="editFile">Edit File:&ensp;</h5>
+						<div id="currentOpenedFile" style="float:left; margin-left:20px; padding-top:3px;"></div>
+					</div>
+				</div>
+
+				<div id="modifyFileStatus" style="text-align:right; margin-right:25px; margin-top:10px; margin-bottom:0"></div>
+
+				<div class="modal-body" style="margin-top:2px">
+					<div class="row" id="insertFileContents"></div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" id="modifyModulesbutton" class=" btn btn-sm btn-danger" onclick="modifyFile()">Modify File</button>
+					<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="closeText()" >Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+	<script type="module" src="{% static 'commons/js/modules.js' %}"></script>
+{% endblock extra_js %}
+

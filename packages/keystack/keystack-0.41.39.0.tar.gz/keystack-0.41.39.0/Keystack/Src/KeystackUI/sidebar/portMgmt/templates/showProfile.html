@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+{% load static %}
+{% load fileMgmtTags %}
+
+{% block extra_css %}
+    <link href={% static "commons/css/commons.css" %} rel="stylesheet" type="text/css">
+{% endblock extra_css%}
+
+{% block content %}
+<div class="container-fluid">
+    <div id='pageAttributes' profile={{profile}} domain={{domain}} device={{device}} ipAddress={{ipAddress}} ipPort={{ipPort}}></div>
+
+    <div class="mainBodyDiv">
+        <nav class="navbar navbar-expand-sm topbar fixed-top secondNavbarStyle">
+            <div class="insertInlineBlock marginTop5px">
+            <!-- <a href="/portMgmt/portGroup">Port-Group Mgmt</a>&emsp;&emsp; -->
+            <a href="/lab/inventory">Inventory</a>&emsp;&emsp;
+            </div>
+        </nav>
+
+        <div class="row">
+            <table id="portProfileTable" class="tableFixHead2">   
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Status</th>
+                        <th>Name</th>
+                        <th>DeviceType</th>
+                        <th>Vendor</th>
+                        <th>Model</th>
+                        <th>Serial #</th>
+                        <th>Location</th>
+                        <th>IP Address</th>
+                        <th>IP Port</th>
+                        <th>Login</th>
+                        <th>Password</th>
+                        <th>ConnectProtocol</th>
+                        <th>Ports</th>
+                    </tr>
+                </thead>
+
+                <tbody id="portProfileDetailsTable"></tbody>
+            </table>
+        </div>
+        <br><br>
+
+        <div class="row">
+            <div class="flexRowInlineBlockLeft marginBottom10px">
+                <div><a class="textBlack" href="#" id="removePortsFromProfile">Remove Ports</a></div>&emsp;&emsp;
+                <div id="addPortsToPortGroup"></div>&emsp;&emsp;
+                <div id="removePortsFromPortGroup"></div>&emsp;&emsp;
+                <div id="connectPortsToLinkDevice"></div>&emsp;&emsp;
+                <a href="#" id="disconnectPortsFromLinkDevice" class="textBlack noTextDecoration paddingTop10px">Disconnect Ports</a>&emsp;&emsp;
+                <a href="#" class="textBlack noTextDecoration paddingTop10px" id="addRemoveFields" data-bs-toggle="modal" data-bs-target="#addRemoveFieldsModal">Add/Remove Fields</a>&emsp;&emsp;
+            </div>
+
+            <div id="portConnectionsTable"></div>
+        </div>
+
+        <div class="modal" id="editPortDeviceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true"
+        aria-labelledby="editPortDeviceLabel">
+            <div id="editPortDeviceLabel" class="modal-dialog modal-dialog-scrollable textBlack dropdownEditPortMgmt">
+                <div class="modal-content">
+                    
+                    <div class="modal-header">
+                        <div class="fileRowInlineBlockRight">
+                            <h6 class="modal-title">Edit Port Device:&ensp;<span id=insertDeviceName></span></h6>
+                            <div id="insertStatus"></div>
+                        </div>
+                    </div>
+
+                    <div class="modal-body" style="margin-top:2px">
+
+                        <!-- Input Fields -->
+                        <div class="marginTop10px flexRowInlineBlockLeft editInputField hide">
+                            <label class="testParameterSessionIdLabel paddingTop5px editInputField hide" for="editField" id="inputField"></label>&emsp;
+                            <input class="form-control width300px editInputField hide" id="editField" type="text">
+                        </div>
+                        
+                        <!-- Device Type -->
+                        <a class="dropdown-toggle editPortDeviceTypeSelection hide" data-toggle="dropdown" role='button' aria-haspopup=true aria-expanded=false>
+                            <span class="editPortDeviceTypeSelection hide">Select a Device Type</span>
+                        </a>&emsp;
+                        <span class="editPortDeviceTypeSelection hide" id="insertSelectedDeviceType"></span>
+                        <span class="editPortDeviceTypeSelection hide" id="insertCustomDeviceType"></span>
+                        <ul class="dropdown-menu dropdownMedium dropdownFontSize editPortDeviceTypeSelection hide" id="selectPortMgmtDeviceType">
+                            <li class="dropdown-item" deviceType="layer1Swich">Layer1 Switch</li>
+                            <li class="dropdown-item" deviceType="layer2 Swich">Layer2 Switch</li>
+                            <li class="dropdown-item" deviceType="trafficGenerator">Traffic Generator</li>
+            
+                            <li class="dropdown-item" deviceType="custom">
+                                <div class="flexRowInlineBlockLeft">
+                                    <label class="testParameterSessionIdLabel paddingTop5px" for="layer1CustomInput">Custom Device Type:</label>&emsp;
+                                    <input name="customInput" id="layer1CustomInput" type="text" class="form-control width200px" >&emsp;
+                                    <button id="customDeviceTypeIdEnterButton" type="submit" class="btn btn-sm btn-outline-primary">Enter</button>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <!-- Connection Protocol -->
+                        <div class="marginTop10px flexRowInlineBlockLeft">
+                            <label class="testParameterSessionIdLabel paddingTop5px editConnectionProtocol hide">Connection Protocol:</label>&emsp;
+                            <input class="editConnectionProtocol hide" type="radio" name="connectProtocol" value="ssh" checked/><span class="editConnectionProtocol hide">&nbsp;SSH&emsp;&emsp;</span>
+                            <input class="editConnectionProtocol hide" type="radio" name="connectProtocol" value="telnet"/><span class="editConnectionProtocol hide">&nbsp;Telnet&emsp;&emsp;</span>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="editPortMgmtDeviceButton">Edit</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="closeEditModal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="deletePortDeviceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true"
+        aria-labelledby="deletePortDeviceLabel">
+            <div id="deletePortDeviceLabel" class="modal-dialog modal-dialog-scrollable dropdownSizeSmall2">
+                <div class="modal-content">
+                    
+                    <div class="modal-header">
+                        <div class="fileRowInlineBlockRight">
+                            <h6 class="modal-title">Delete Port Device&ensp;</h6>
+                        </div>
+                    </div>
+
+                    <div class="modal-body marginTop2px">
+                        <div class="row">&ensp;&ensp;Are you sure that you want to delete this profile?</div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="deletePortMgmtDeviceButton">Delete</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="addRemoveFieldsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true"
+        aria-labelledby="addRemoveFields">
+            <div id="addFields" class="modal-dialog modal-dialog-scrollable dropdownSizeExtraLarge2">
+                <div class="modal-content">
+                    
+                    <div class="modal-header">
+                        <div class="fileRowInlineBlockRight">
+                            <h6 class="modal-title">Add / Remove Fields&ensp;</h6>
+                        </div>
+                    </div>
+
+                    <div class="modal-body marginTop2px">                      
+                        <div class="input-group mb-3">
+                            <input id="fieldNameInput" type="text" class="form-control textBlack" aria-label="field name" placeholder="Field Name">
+                            <input id="fieldValueInput" type="text" class="form-control textBlack" aria-label="field value" placeholder="Field Value">
+
+                            <select id="fieldType">
+                            <option selected disabled value="">Select Field type</option>
+                            <option>string</option>
+                            <option>integer</option>
+                            <option>boolean: true</option>
+                            <option>boolean: false</option>
+                            </select>
+                            &emsp;
+
+                            <button id="addFieldButton" class="btn btn-primary" type="button">Add Field</button>
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            <table id="removeFieldTable" class="tableFixHead2">   
+                                <thead>
+                                    <tr>
+                                        <th>Select</th>
+                                        <th>Field</th>
+                                    </tr>
+                                </thead>
+                    
+                                <tbody id="removeFieldTableData"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="removeFieldsButton">Remove Fields</button>
+                        <button type="button" class="btn btn-danger" id="closeRemoveFieldsModal" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+
+{% endblock content %}
+
+{% block extra_js %}
+    <script type="module" src="{% static 'commons/js/portMgmt.js' %}"></script>
+{% endblock extra_js%}

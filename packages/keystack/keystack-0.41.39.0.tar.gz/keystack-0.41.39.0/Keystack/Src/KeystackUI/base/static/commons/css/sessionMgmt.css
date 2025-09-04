@@ -1,0 +1,127 @@
+
+.showOverallPipelineDetails {
+    /* Visibility handles the visibility of the tag, the display handles space it occupies on the page.
+       If you set the visibility and do not change the display, even if the tags are not seen, it still occupies space.
+
+       Note that a toggling display may cause surrounding elements to move as a result of space reallocation. 
+       If this "jumping" effect is undesired, use visibility instead
+
+       To default disable overallDetails, add class="showOverallPipelineDetails" to the <tr> in sessionMgmt.html
+    */
+    display: none;
+    visibility: hidden;
+}
+
+.hideTestReportModal {
+    display:none;
+}
+
+.keystackSidebar li .submenu { 
+    list-style: none; 
+    margin: 0; 
+    padding: 0; 
+    padding-left: 1rem; 
+    padding-right: 1rem;
+}
+
+.keystackSidebar .nav-link {
+    font-weight: 350;
+    font-size: 13px;
+    color: var(--bs-dark);
+    line-height: .1;
+}
+.keystackSidebar .nav-link:hover {
+    color: var(--bs-primary);
+}
+
+.testParameterDropdownSize {
+    width: 700px !important;
+    height: 600px !important;
+    overflow: auto;
+}
+
+.testParameterSessionIdLabel {
+    color:black;
+    margin-left:20px;
+    margin-top:10px;
+}
+
+.testParameterInsertDomains {
+    display:flex;
+    color:black;
+    margin-left:20px;
+    flex-direction:row;
+    justify-content:left;
+    align-items: center;
+}
+
+.testParameterSubmitButton {
+    padding-left:5px;
+    padding-right:5px;
+}
+
+.filterStyle {
+    float: right;
+    margin-left: 10px;
+    height: 20px; 
+    width: 130px; 
+    font-size: 13px;
+}
+
+.testModal {
+    max-width:65%;
+    height:600px;
+    overflow:auto;
+    color:black;
+}
+
+.sessionMgmtTable {
+    margin-top:5px;
+    height: 500px;
+    overflow: auto;
+}
+
+/* since tbody itself is a block now, it can no longer behave like a table.
+Since you still need a table behavior to display you columns correctly, the solution 
+is to ask for each of your rows to display as individual tables 
+*/
+.tableFixHead thead {
+    display: table;
+    width: 100%;
+}
+.tableFixHead tr {
+    display: table;
+    width: 100%;
+}
+
+.tableFixHead th {
+    position: sticky;
+    top: 0;
+    background: #eee;
+}
+
+.tableFixHead th::after {
+    content: '';
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: black;
+}
+
+.tableFixHead th,
+  .tableFixHead td {
+    color: black;
+    background-color: white;
+    font-weight: 350;
+    text-align: center;
+    line-height: 15px;
+    font-size: 13px;
+    vertical-align: top;
+    padding: 7px;
+  }
+  
+
+
+

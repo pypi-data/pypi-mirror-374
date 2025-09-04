@@ -1,0 +1,34 @@
+Feature is coming soon ...
+
+Keystack Apps have to be in Github, Gitlab or any repository that uses Git
+
+Apps could be in the internet or privately hosted servers in datacenter
+
+Edit /opt/KeystackSystem/appStoreLocations.yml
+Add Github URLs.  Example shown below:
+
+- app:
+    apiUrl: https://api.github.com/repos/OpenIxia/keystack-LoadCore
+    cloneUrl: https://github.com/OpenIxia/keystack-LoadCore.git
+
+- app:
+    apiUrl: https://api.github.com/repos/OpenIxia/keystack-IxNetworkDataModel
+    cloneUrl: https://github.com/OpenIxia/keystack-IxNetworkDataModel.git
+
+- app:
+    apiUrl: https://api.github.com/repos/OpenIxia/keystack-IxLoad
+    cloneUrl: https://github.com/OpenIxia/keystack-IxLoad.git
+
+
+Note:
+   - Github has a limit on using REST APIs to retrieve URLs.
+   - Once you reach the limit, Github stops Keystack from retrieving apps
+   - You must wait 1 hour before Github allows REST API access.
+   - If you don't want to wait, edit /opt/KeystackSystem/.loginCredentials.yml
+     and provide a valid github access token for githubAccessToken show below ...
+
+keystack:
+   githubAccessToken: <valid github token>
+
+
+

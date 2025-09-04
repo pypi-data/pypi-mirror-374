@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <!-- <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@3/swagger-ui.css"> -->
+    <link href={% static "swagger-ui/dist/swagger-ui.css" %} rel="stylesheet" type="text/css">
+
+    <style>
+        /* Give some space in between each line */
+        #swagger-ui span {
+            line-height: 1.5;
+            font-size: 13px;
+          }
+    </style>    
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="mainBodyDivNoSecondNavbar">
+        <div id="swagger-ui" style="overflow:hidden;"></div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+    <!-- <script src="https://unpkg.com/swagger-ui-dist@3/swagger-ui-bundle.js"></script> -->
+    <script type="text/javascript" src={% static "swagger-ui/dist/swagger-ui-bundle.js" %}></script>
+    <script type="module" src="{% static 'commons/js/swagger.js' %}"></script>
+
+    <!--
+    <script type="module">
+        import * as commons from "{% static "commons/js/commons.js" %}"
+
+        document.querySelector("#mainBodyDiv").style.height = "100vh";
+        document.querySelector("#mainBodyDiv").style.marginTop = "15px";
+        commons.getServerTime();
+        
+        // schema-swagger-ui | restAPI
+        const ui = SwaggerUIBundle({
+            url: "{% url 'schema-swagger-ui' %}",
+            dom_id: '#swagger-ui',
+            presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIBundle.SwaggerUIStandalonePreset
+            ],
+            layout: "BaseLayout",
+            requestInterceptor: (request) => {
+                request.headers['X-CSRFToken'] = commons.getCookie('csrftoken')
+                return request;
+            }
+        })
+    </script> 
+-->
+{% endblock extra_js %}

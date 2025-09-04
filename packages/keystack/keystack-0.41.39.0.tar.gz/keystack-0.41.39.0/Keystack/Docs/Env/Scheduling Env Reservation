@@ -1,0 +1,29 @@
+Scheduling Envs (testbeds) for usage
+
+Important: Keystack docker container must be running
+
+- Go to the Envs page 
+- Select 1 or more Envs to be scheduled for reserving and click at the top-bar link "Scheduler"
+- Select the date and time to reserve the Env
+
+- Options:
+    - Select a date-and-time to automatically release the Env
+          Note: If you don't set a release date-and-time, your scheduled reservation will automatically repeat
+                at the scheduled date-and-time
+
+    - Checkbox: Remove the scheduled reservation when the Env is reserved by the scheduler
+          Note: This will automatically remove the scheduled reservation right after the env is reserved.
+                If you don't checkbox this, your scheduled reservation will keep repeating the 
+                scheduled reservation.
+
+    - Select a user for the reservation
+
+
+NOTE:
+    Question: What if the env (testbed) is being used at the time when the Env is scheduled to be reserved?
+    Answer: Your env reservation will go to the wait-list until the env is released
+
+    Question: What will happen to all the scheduled reservations if the Keystack web-server is updated or rebooted?
+    Answer: All scheduled reservations are kept in a persistant database.
+            Keystack will restore all the scheduled reservations immediately upon a boot up
+

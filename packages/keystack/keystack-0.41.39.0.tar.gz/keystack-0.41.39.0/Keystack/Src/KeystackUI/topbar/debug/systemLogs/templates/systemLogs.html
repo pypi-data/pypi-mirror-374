@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div id="deleteLogs" deleteLogs={{deleteLogs}}></div>
+
+<div class="container-fluid">
+    <div class="mainBodyDiv">
+        <nav class="navbar navbar-expand-sm topbar fixed-top secondNavbarStyle">
+            <div class="insertInlineBlock marginTop5px">
+                <div id="insertLogTopics" class="insertInlineBlock"></div>&ensp;&ensp;&ensp;&ensp;
+
+                <button id="deleteLogsButton" class="btn btn-sm btn-outline-primary marginBottom5px" type="button" >
+                    Delete Logs
+                </button>
+
+            </div>
+        </nav>
+
+        <div class="row">
+            <span class="mainFontSize marginTop10px" id="insertDeleteLogsNote"></span>
+        </div> 
+        <br>
+
+        <div class="row">
+            <table class="tableFixHead2 table-bordered">
+                <thead>
+                    <tr> 
+                        <th>Date/Time</th>
+                        <th>Users</th>
+                        <th>Actions</th>
+                        <th>MsgType</th>
+                        <th>Messages</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tableDataSystemLogs"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script type="module" src={% static "commons/js/systemLogs.js" %}></script> 
+{% endblock extra_js %}

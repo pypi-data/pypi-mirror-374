@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    // Create variables
+    :root {
+        --main-radius: 25px;
+        --main-padding: 15px;
+    }
+
+    .grid {
+        display: grid;
+        margin-top: 0px;
+        min-height: 100vh;
+        grid-template-columns: auto 50%;
+        grid-template-rows: minmax(auto, .1fr) minmax(auto, 1fr) minmax(auto, 1fr);
+        grid-template-areas:
+            "createUserGroup currentUserGroup"
+            "selectUsers selectedUsers";      
+        grid-gap: 0.1rem;
+        background-color: white;
+    }
+
+    #createUserGroup {
+        grid-area: createUserGroup;
+        border-radius:var(--main-radius);
+        padding-top:var(--main-padding);
+        //color: #66F854;
+        color: black;
+        background: white;
+    }
+
+    #currentUserGroup {
+        grid-area: currentUserGroup;
+        border-radius:var(--main-radius);
+	    padding-top:var(--main-padding);
+        //color: #66F854;
+        color: black;
+        background: white;
+    }
+
+    #selectUsers {
+        grid-area: selectUsers;
+        border-radius:var(--main-radius);
+        padding-top:var(--main-padding);
+        overflow: auto;
+        color: #66F854;
+        background: white;
+        //border-right: 2px solid black;
+    }
+
+    #selectedUsers {
+        grid-area: selectedUsers;
+        border-radius:var(--main-radius);
+        padding-top:var(--main-padding);
+        overflow: auto;
+        color: #66F854;
+        background: white;
+    }
+
+    @media only screen and (max-width: 550px) {
+        .grid {
+            grid-template-columns: 1fr;
+            grid-template-rows: .3fr 3fr .1fr .1fr;
+            grid-template-areas:
+                "createUserGroup"
+                "currentUserGroup"
+                "selectUsers" 
+                "selectedUsers";
+        }
+    }
+
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<!-- <div class="container-fluid"> -->
+
+<div class='grid'>
+    <nav class="navbar navbar-expand-sm topbar fixed-top secondNavbarStyle">
+        <div class="flexRowInlineBlockLeft mt-1">
+            <a class="paddingTop10px" id="userGroup" href="{% url "accountMgmt" %}">Create User</a>&emsp;&emsp;|&emsp;&emsp;
+
+            <div class="dropdown">
+                <a class="dropdown-toggle mb-1" href="#" id="selectUserGroupDropdown" type="button" data-bs-toggle="dropdown" aria-expanded=false>
+                    Select a User-Group
+                </a>
+
+                <ul class="dropdown-menu" id="selectUserGroup" aria-labelledby="selectUserGroupDropdown">
+                    <div id='insertUserGroupSelections'></div>
+                </ul>
+            </div>
+            &emsp;&emsp;&emsp;
+
+            <a class="paddingTop10px" href="#"  id="deleteUserGroup">Delete User-Group</a>&emsp;&emsp;&emsp;
+            <a class="paddingTop10px" href={% url "domains" %}>Put User-Group to Domains</a>
+        </div>
+    </nav>
+
+    <!-- Create new User-Group -->
+    <div id="createUserGroup" class='row mt-2 pl-3'>
+        <div class="flexRowInlineBlockLeft">
+            <div class="input-group">
+                <input id="userGroupName" type="text" class="form-control inputWidth300px" placeholder="User-Group name" aria-label="User-Group" aria-describedby="createUserGroupNameId">
+                <button id="createUserGroupNameId" class="btn btn-outline-secondary textBlack" type="button" >Create User-Group</button>&ensp;&ensp;
+                <button type="button" id="addUsersToUserGroup" class="btn btn-sm btn-outline-primary">Add Users</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="selectUserGroup" class="row mt-2">
+        <div class="flexRowInlineBlockLeft">
+            <button type="button" id="addUsersToUserGroup" class="btn btn-sm btn-outline-primary">Add Users</button>
+        </div>
+    </div>
+
+    <div id="currentUserGroup" class="row mt-2">
+        <div class="flexRowInlineBlockLeft">
+            <button type="button" id="removeUsersFromUserGroup" class="btn btn-sm btn-outline-primary">Remove Users</button>
+        </div>
+    </div>
+
+    <div id="selectUsers" class="row pl-3" style="width:80%">
+        <table id="selectUsersForUserGroupTable" class="tableFixHead2">
+            <thead>
+                <tr>
+                    <th scope="col" class="textAlignCenter">Select</th>
+                    <th scope="col" class="textAlignLeft">Add Users To User-Group: &emsp;&emsp;<span class="textYellow" id='insertUserGroupName'></span></th>
+                </tr>
+            </thead>
+            <tbody id="insertSelectUserDataTable"></tbody>
+        </table>
+    </div>
+
+    <div id="selectedUsers" class="row" style="width:80%">
+        <table id="selectedUsersForUserGroupTable" class="tableFixHead2">
+            <thead>
+                <tr>
+                    <th scope="col" class="textAlignCenter">Select</th>
+                    <th scope="col" class="textAlignCenter">Users in User-Group:&emsp;<span class="textYellow" id="insertUserGroupUsers"></th>
+                </tr>
+            </thead>
+            <tbody id="insertSelectedUsersDataTable"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 
+<div class="modal" id="editUserGroupModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="editUserGroupManager" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable mediumModalSize">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <h6 class="modal-title" id="editUserGroupManager">User Groups</h6>
+                <div id="showEditUserGroupStatus"></div>
+            </div>
+
+            <div class="modal-body">
+                <div class='row'>
+                    <div class="flexRowInlineBlockLeft">
+                        <label for='editUserGroupNameId' class="testParameterSessionIdLabel">New User Group: </label>&emsp; 
+                        <input id="editUserGroupNameId" type="text" class="form-control width300px" />&emsp; 
+ 
+                    </div>
+                </div>
+
+                <div class='row'>
+                    <span class="mt-1" style="padding-left:125px">** Create user group name without spaces</span>
+                </div>
+
+                <div class='row mt-4'>
+                    <div style="display:inline-block; width:50%; height:600px; float:left;">
+                        <table id="envTable" class="mt-2 table table-sm table-bordered table-fixed tableFixHead tableMessages">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Select</th>
+                                    <th scope="col" style="text-align:center">Users</th>
+                                </tr>
+                            </thead>
+                            <tbody id="insertUserDataTable2"></tbody>
+                        </table>
+                    </div>
+
+                    <div style="display:inline-block; width:50%; height:600px; float:left;">
+                        <table id="envTable" class="mt-2 table table-sm table-bordered table-fixed tableFixHead tableMessages">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Select</th>
+                                    <th scope="col" style="text-align:left">Users</th>
+                                </tr>
+                            </thead>
+                            <tbody id="insertUserDataTable2"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class=" btn btn-sm btn-primary" onclick="createUserGroup()">Create</button><br>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+
+{% endblock content %}
+
+{% block extra_js %}
+    <script type="module" src="{% static 'commons/js/userGroupMgmt.js' %}"></script>
+{% endblock extra_js %}

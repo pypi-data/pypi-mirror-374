@@ -1,0 +1,57 @@
+# DESCRIPTION
+#    This file contains Keystack system settings
+
+# MANDATORY: What is the localhost Python path?
+# If you are not sure, enter on cli: which python or which python3 or 
+# the python command you enter to run python
+# If using docker, /usr/local/bin/python3.10.
+pythonPath: {pythonFullPath}
+
+dockerPythonPath: {dockerPythonFullPath}
+
+platform: {platform}
+
+# Run Keystack on CLI in secured-modules
+# Set to True to require users to include their api-key using param -apiKey
+cliSecuredMode: False
+
+# Optional: Email: Separate each email address with a comma
+#           Use emailTo for production testing.
+#           Use devModeEmailTo when you're developing tests
+#           so emails won't get blasted to team members.
+emailTo: ''
+devModeEmailTo: ''
+emailFrom: Keystack@Keystack
+
+# A list of pip modules to install separated by commas
+# pip version is accepted: pytest: : 2.32.0
+#pipInstalls: 
+
+# The github URLs for the app locations separated by commas
+# This will get/update the listed apps in /opt/KeystackSystem/Apps
+# Your testcase Yaml files and Playbook Playlist could point to these apps to run
+#appURL: https://api.github.com/repos/OpenIxia
+
+# Delete past results
+#   0 :  removes all result folders starting from today
+#   1 :  removes all result folders starting from yesterday
+#   never :  Don't remove any
+#   Example: 2 :  Keep just the last 2 days of results and remove the rest
+removeResultsFolder: 14
+removeLogsAfterDays: 3
+
+# Track results.
+# Default: 14.  Set how many days of result data to track.
+# Must include param -trackResults
+trackResultsForHowManyDays: 14
+
+# MongoIp is hostname mongo configured in docker-compose.yml
+mongoDbIp: {mongoIp}
+dbIpPort: {mongoPort}
+localHostIp: {keystackIp}
+keystackIpPort: {keystackPort}
+redisPort: {redisPort}
+
+
+
+

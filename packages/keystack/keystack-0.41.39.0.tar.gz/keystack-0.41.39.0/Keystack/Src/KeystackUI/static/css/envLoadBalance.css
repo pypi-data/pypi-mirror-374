@@ -1,0 +1,54 @@
+.tableFixHeadLB thead {
+    border-top: 1pt solid gray;
+  }
+  
+  .tableFixHeadLB thead th {
+    position: sticky;
+    top: 0;
+    /* background: #eee; */
+    background: black;
+    color: #66F854;
+  }
+  
+  .tableFixHeadLB th::after {
+    content: '';
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: black;
+  }
+  
+  .tableFixHeadLB th,
+  .tableFixHeadLB td {
+    color: black;
+    background-color: white;
+    font-weight: 350;
+    text-align: center;
+    line-height: 15px;
+    font-size: 13px;
+    vertical-align: top;
+    padding: 7px;
+    border: 1px solid #66F854;
+    height: 15px;
+    text-overflow: ellipsis; /* too long gets dots ... */
+    /* white-space: nowrap; */
+    background-color: black;
+    color: #66F854;
+  }
+  
+  .tableFixHeadLB tbody tr {
+    outline: thin solid;
+    /* color: #eee; */
+    /* background: white; */
+    background: black;
+    color: #66F854;
+    width: 100px;
+  }
+  
+  /*
+  .tableFixHeadLB tr.bottomBorder {
+    border-bottom: 1pt solid gray;
+  }
+  */
