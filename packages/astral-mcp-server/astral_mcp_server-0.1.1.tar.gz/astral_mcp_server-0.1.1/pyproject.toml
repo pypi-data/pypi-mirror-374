@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "astral-mcp-server"
+version = "0.1.1"
+description = "A MCP (Model Context Protocol) server that enables AI models to query location attestations using the Astral GraphQL endpoints and APIs"
+authors = ["AR"]
+readme = "README.md"
+packages = [{include = "astral_mcp_server"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+httpx = "^0.27.0"
+mcp = {extras = ["cli"], version = "^1.0.0"}
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+pytest-asyncio = "^0.24.0"
+black = "^24.0.0"
+flake8 = "^7.0.0"
+mypy = "^1.8.0"
+pyaml = "^25.7.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+start-server = "astral_mcp_server.server:main"
+
+[tool.black]
+line-length = 130
+target-version = ['py312']
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
