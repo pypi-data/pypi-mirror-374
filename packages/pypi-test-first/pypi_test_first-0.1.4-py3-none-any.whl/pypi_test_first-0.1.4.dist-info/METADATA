@@ -1,0 +1,47 @@
+Metadata-Version: 2.4
+Name: pypi-test-first
+Version: 0.1.4
+Summary: A simple test package
+Project-URL: Homepage, https://github.com/zs856/pypi-test-first.git
+License: MIT
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+
+# pypi-test-first
+
+This is a simple Python package that provides basic mathematical operations.
+
+## Installation
+
+```bash
+pip install pypi-test-first
+```
+
+## Usage
+
+```python
+import pypi_test_first
+
+result = pypi_test_first.add(2, 3)
+print(result)  # Output: 5
+
+result = pypi_test_first.subtract(5, 3)
+print(result)  # Output: 2
+
+result = pypi_test_first.multiply(2, 3)
+print(result)  # Output: 6
+
+result = pypi_test_first.divide(6, 3)
+print(result)  # Output: 2.0
+
+result = pypi_test_first.power(2, 3)
+print(result) # Output: 8
+```
+
+## Available Functions
+
+- `add(a, b)`: Returns the sum of `a` and `b`.
+- `subtract(a, b)`: Returns the difference between `a` and `b`.
+- `multiply(a, b)`: Returns the product of `a` and `b`.
+- `divide(a, b)`: Returns the result of dividing `a` by `b`. Raises a `ValueError` if `b` is zero.
+- `power(a, b)`: Returns the result of `a` raised to the power of `b`.
