@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lambda-cloud-cli"
+version = "0.1.36"
+description = "CLI tool for managing Lambda Cloud resources"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Taylor Gautreaux" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    "typer[all]",
+    "requests",
+    "rich"
+]
+requires-python = ">=3.7"
+
+[project.scripts]
+lambda-cli = "lambda_cloud_cli.cli:app"
+
+[tool.setuptools.packages.find]
+include = ["lambda_cloud_cli*"]
+
