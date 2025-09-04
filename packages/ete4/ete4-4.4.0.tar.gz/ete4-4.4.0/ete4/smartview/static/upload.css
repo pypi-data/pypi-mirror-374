@@ -1,0 +1,84 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.centered {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1em;
+}
+
+h1 {
+    color: #333;
+    border-bottom: 3px solid #00b894;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+div {
+    margin: 0.5rem 0.2rem;
+}
+
+fieldset {
+    display: inline-block;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #DDD;
+    border-radius: 4px;
+
+}
+
+button {
+    padding: 12px 24px;
+    background-color: #0ea5e9;
+    color: white;
+    border: 0;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+    background-color: #0284c7;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+div#div_metadata {
+    display: none;
+}
+
+input, label, textarea {
+    margin: 0.4rem 0;
+}
+
+footer {
+    flex: 1;
+    margin: 2em 0 0 0;
+    padding: 2em 0 0 0;
+
+    background-color: #EEE;
+    font-size: 0.9em;
+}
+
+kbd {  /* from https://developer.mozilla.org/en-US/docs/Web/HTML/Element/kbd */
+    background-color: #eee;
+    border-radius: 3px;
+    border: 1px solid #b4b4b4;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .2),
+                0 2px 0 0 rgba(255, 255, 255, .7) inset;
+    color: #333;
+    display: inline-block;
+    font-size: .85em;
+    font-weight: 700;
+    line-height: 1;
+    padding: 2px 4px;
+    white-space: nowrap;
+}
