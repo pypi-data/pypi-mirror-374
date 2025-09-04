@@ -1,0 +1,543 @@
+Metadata-Version: 2.4
+Name: sverification
+Version: 0.1.2
+Summary: A tool for verifying PDF statements from Tanzanian and beyond institutions
+Home-page: https://github.com/Tausi-Africa/statement-verification
+Author: Alex Mkwizu @ Black Swan AI
+Author-email: alex@bsa.ai
+Project-URL: Bug Tracker, https://github.com/Tausi-Africa/statement-verification/issues
+Project-URL: Repository, https://github.com/Tausi-Africa/statement-verification
+Keywords: pdf verification statements metadata financial
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: Other/Proprietary License
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Topic :: Office/Business :: Financial
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pdforensic-authentic-check>=0.1.41
+Requires-Dist: pdfplumber>=0.6.0
+Requires-Dist: pdf-font-checker>=0.1.1
+Provides-Extra: test
+Requires-Dist: pytest>=7.0.0; extra == "test"
+Requires-Dist: pytest-cov>=4.0.0; extra == "test"
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Statement Verification
+
+A Python package for verifying PDF statements from financial institutions. Extracts metadata, detects the issuing institution, and provides verification scores.
+
+## Installation
+
+```bash
+# From PyPI (recommended)
+pip install sverification
+
+# Or from source
+git clone https://github.com/Tausi-Africa/statement-verification.git
+cd statement-verification
+pip install -e .
+```
+
+## Quick Start
+
+```bash
+# Command line usage with font comparison
+verify-statement path/to/statement.pdf --brands statements_metadata.json --font-data statements_font_data.json
+```
+
+```python
+# Python API - Simple verification
+import sverification
+
+result = sverification.verify_statement_verbose("statement.pdf")
+print(f"Brand: {result['detected_brand']}, Score: {result['combined_score']:.1f}%")
+print(f"Metadata: {result['verification_score']:.1f}%, Font: {result['font_score']:.1f}%")
+```
+
+## 📚 Function Reference
+
+### 1. `verify_statement_verbose()` - Complete Verification with Font Analysis
+
+**Purpose**: Performs complete statement verification with metadata and font comparison.
+
+```python
+import sverification
+
+# Basic usage with both metadata and font verification
+result = sverification.verify_statement_verbose("statement.pdf")
+
+# With custom template files
+result = sverification.verify_statement_verbose(
+    pdf_path="statement.pdf",
+    brands_json_path="custom_brands.json",
+    font_data_json_path="custom_font_data.json"
+)
+
+# Access comprehensive results
+print(f"Detected Brand: {result['detected_brand']}")
+print(f"Combined Score: {result['combined_score']:.1f}%")
+print(f"Metadata Score: {result['verification_score']:.1f}%")
+print(f"Font Score: {result['font_score']:.1f}%")
+
+# Check metadata fields
+for field in result['field_results']:
+    status = "✓" if field['match'] else "✗"
+    print(f"[{status}] {field['field']}: {field['actual']} (expected: {field['expected']})")
+
+# Check font fields
+for font_field in result['font_results']:
+    status = "✓" if font_field['match'] else "✗"
+    print(f"[{status}] {font_field['field']}: {font_field['actual']} (expected: {font_field['expected']})")
+```
+
+**Returns**: Dictionary with complete verification data
+- `detected_brand`: Institution name
+- `combined_score`: Overall score combining metadata and font analysis
+- `verification_score`: Metadata verification score (0-100)
+- `font_score`: Font comparison score (0-100)
+- `field_results`: List of metadata field comparisons
+- `font_results`: List of font field comparisons
+- `total_fields`: Number of metadata fields checked
+- `matched_fields`: Number of matching metadata fields
+- `total_font_fields`: Number of font fields checked
+- `matched_font_fields`: Number of matching font fields
+- `summary`: Human-readable summary
+
+### 2. `print_verification_report()` - Formatted Output with Font Analysis
+
+**Purpose**: Prints a formatted verification report including font comparison.
+
+```python
+import sverification
+
+# Get verification results
+result = sverification.verify_statement_verbose("statement.pdf")
+
+# Print formatted report (same as CLI output)
+sverification.print_verification_report(result)
+
+# Output example:
+# ========================================================================
+# PDF: statement.pdf
+# Detected brand: selcom
+# Template used: selcom
+# Metadata fields checked: 5
+# Metadata fields matched: 5
+# Metadata score: 100.0%
+# Font fields checked: 4
+# Font fields matched: 3
+# Font score: 75.0%
+# Combined verification score: 91.7%
+# ------------------------------------------------------------------------
+# Metadata Comparison (expected vs. actual):
+#   [✓] pdf_version      expected='1.4'  actual='1.4'
+#   [✓] creator          expected='Selcom'  actual='Selcom'
+# ------------------------------------------------------------------------
+# Font Comparison (expected vs. actual):
+#   [✗] font_pdf_version expected='PDF-1.7'  actual='PDF-1.4'
+#   [✓] font_count       expected=2  actual=2
+#   [✓] font_names       expected=['Helvetica']  actual=['Helvetica']
+# ------------------------------------------------------------------------
+# Metadata Score: 100.0% | Font Score: 75.0% | Combined: 91.7%
+# ========================================================================
+```
+
+### 3. `extract_all()` - PDF Metadata Extraction
+
+**Purpose**: Extracts comprehensive metadata from PDF files.
+
+```python
+import sverification
+
+# Extract metadata
+metadata = sverification.extract_all("statement.pdf")
+
+# Access specific metadata
+print(f"PDF Version: {metadata['pdf_version']}")
+print(f"Creator: {metadata['creator']}")
+print(f"Producer: {metadata['producer']}")
+print(f"Creation Date: {metadata['creationdate']}")
+print(f"Modification Date: {metadata['moddate']}")
+print(f"EOF Markers: {metadata['eof_markers']}")
+print(f"PDF Versions: {metadata['pdf_versions']}")
+
+# Check for potential issues
+if metadata['eof_markers'] > 1:
+    print("⚠️  Multiple EOF markers detected")
+
+if metadata['creationdate'] != metadata['moddate']:
+    print("⚠️  Creation and modification dates differ")
+```
+
+**Returns**: Dictionary with extracted metadata
+- `pdf_version`: PDF specification version
+- `creator`: Application that created the PDF
+- `producer`: Software that produced the PDF
+- `creationdate`: When PDF was created
+- `moddate`: When PDF was last modified
+- `eof_markers`: Number of EOF markers (security indicator)
+- `pdf_versions`: Number of PDF versions
+
+### 4. `get_company_name()` - Institution Detection
+
+**Purpose**: Automatically detects the financial institution from PDF content.
+
+```python
+import sverification
+
+# Detect institution
+company = sverification.get_company_name("statement.pdf")
+print(f"Detected Institution: {company}")
+
+# Handle unknown institutions
+if company == "unknown":
+    print("⚠️  Institution not recognized")
+    print("Consider adding detection rules for this institution")
+
+# Examples of detected institutions:
+# "selcom", "vodacom", "airtel", "absa", "crdb", "nmb", etc.
+```
+
+**Returns**: String with institution code
+- Returns standardized institution codes (e.g., "selcom", "vodacom")
+- Returns "unknown" if institution cannot be detected
+
+### 5. `extract_pdf_font_data()` - Font Information Extraction
+
+**Purpose**: Extracts comprehensive font information from PDF files.
+
+```python
+import sverification
+
+# Extract font data
+font_data = sverification.extract_pdf_font_data("statement.pdf")
+
+# Access font information
+print(f"PDF Version: {font_data['pdf_version']}")
+print(f"Total Fonts: {font_data['total_no_of_fonts']}")
+print(f"Font Names: {font_data['font_names']}")
+print(f"Info Object: {font_data['info_object']}")
+
+# Example output:
+# {
+#   'pdf_version': 'PDF-1.4',
+#   'total_no_of_fonts': 2,
+#   'font_names': ['Helvetica', 'AZHGJL+ArialMT'],
+#   'info_object': '20 0 R'
+# }
+```
+
+**Returns**: Dictionary with font information
+- `pdf_version`: PDF version from font perspective
+- `total_no_of_fonts`: Number of fonts used in the PDF
+- `font_names`: List of font names/identifiers
+- `info_object`: PDF info object reference
+
+### 6. `compare_font_data()` - Font Comparison
+
+**Purpose**: Compares extracted font data against expected font template.
+
+```python
+import sverification
+
+# Extract font data and load templates
+font_data = sverification.extract_pdf_font_data("statement.pdf")
+font_templates = sverification.load_font_data("statements_font_data.json")
+company = sverification.get_company_name("statement.pdf")
+
+# Get expected font template
+expected_font = font_templates.get(company.lower(), [{}])[0]
+
+# Compare font data
+font_results, font_score = sverification.compare_font_data(font_data, expected_font)
+
+print(f"Font Score: {font_score:.1f}%")
+print("\nFont comparison results:")
+
+for field_name, expected_val, actual_val, is_match in font_results:
+    status = "✓ PASS" if is_match else "✗ FAIL"
+    print(f"{status} {field_name}")
+    print(f"  Expected: {expected_val}")
+    print(f"  Actual:   {actual_val}")
+    print()
+```
+
+**Returns**: Tuple of (results_list, percentage_score)
+- `results_list`: List of tuples (field, expected, actual, match_bool)
+- `percentage_score`: Float between 0-100
+
+### 7. `load_font_data()` - Font Template Management
+
+**Purpose**: Loads font templates for comparison.
+
+```python
+import sverification
+
+# Load font templates
+font_data = sverification.load_font_data("statements_font_data.json")
+
+# Check available font templates
+print("Available font templates:")
+for brand_code, templates in font_data.items():
+    print(f"  - {brand_code}: {len(templates)} template(s)")
+
+# Get font template for specific institution
+selcom_font_templates = font_data.get("selcom", [])
+if selcom_font_templates:
+    template = selcom_font_templates[0]  # Use first template
+    print(f"Expected PDF version: {template.get('pdf_version')}")
+    print(f"Expected font count: {template.get('total_no_of_fonts')}")
+    print(f"Expected fonts: {template.get('font_names')}")
+```
+
+**Returns**: Dictionary mapping institution codes to font template lists
+
+### 8. `load_brands()` - Metadata Template Management
+
+**Purpose**: Loads institution templates for comparison.
+
+```python
+import sverification
+
+# Load default templates
+brands = sverification.load_brands("statements_metadata.json")
+
+# Check available institutions
+print("Available institutions:")
+for brand_code, templates in brands.items():
+    print(f"  - {brand_code}: {len(templates)} template(s)")
+
+# Get template for specific institution
+selcom_templates = brands.get("selcom", [])
+if selcom_templates:
+    template = selcom_templates[0]  # Use first template
+    print(f"Expected PDF version for Selcom: {template.get('pdf_version')}")
+    print(f"Expected creator: {template.get('creator')}")
+```
+
+**Returns**: Dictionary mapping institution codes to template lists
+
+### 9. `compare_fields()` - Metadata Field Comparison
+
+**Purpose**: Compares extracted metadata against expected template.
+
+```python
+import sverification
+
+# Extract metadata and load templates
+metadata = sverification.extract_all("statement.pdf")
+brands = sverification.load_brands("statements_metadata.json")
+company = sverification.get_company_name("statement.pdf")
+
+# Get expected template
+expected = brands.get(company.lower(), [{}])[0]
+
+# Compare fields
+results, score = sverification.compare_fields(metadata, expected)
+
+print(f"Overall Score: {score:.1f}%")
+print("\nField-by-field results:")
+
+for field_name, expected_val, actual_val, is_match in results:
+    status = "✓ PASS" if is_match else "✗ FAIL"
+    print(f"{status} {field_name}")
+    print(f"  Expected: {expected_val}")
+    print(f"  Actual:   {actual_val}")
+    print()
+```
+
+**Returns**: Tuple of (results_list, percentage_score)
+- `results_list`: List of tuples (field, expected, actual, match_bool)
+- `percentage_score`: Float between 0-100
+
+## 🔄 Common Workflows
+
+### Batch Processing with Font Analysis
+
+```python
+import sverification
+import os
+
+def process_directory_with_fonts(pdf_directory):
+    """Process all PDFs in a directory with font analysis"""
+    results = []
+    
+    for filename in os.listdir(pdf_directory):
+        if filename.endswith('.pdf'):
+            pdf_path = os.path.join(pdf_directory, filename)
+            
+            try:
+                result = sverification.verify_statement_verbose(pdf_path)
+                results.append({
+                    'file': filename,
+                    'brand': result['detected_brand'],
+                    'combined_score': result['combined_score'],
+                    'metadata_score': result['verification_score'],
+                    'font_score': result['font_score']
+                })
+                print(f"✓ {filename}: Combined {result['combined_score']:.1f}% (Meta: {result['verification_score']:.1f}%, Font: {result['font_score']:.1f}%)")
+            except Exception as e:
+                print(f"✗ {filename}: Error - {e}")
+    
+    return results
+
+# Process all PDFs with enhanced analysis
+results = process_directory_with_fonts("./statements/")
+```
+
+### Font Quality Analysis
+
+```python
+import sverification
+
+def analyze_font_quality(pdf_path):
+    """Analyze font quality and consistency"""
+    try:
+        font_data = sverification.extract_pdf_font_data(pdf_path)
+        company = sverification.get_company_name(pdf_path)
+        
+        issues = []
+        
+        # Check for embedded fonts (potential security issue)
+        embedded_fonts = [f for f in font_data.get('font_names', []) if '+' in f]
+        if embedded_fonts:
+            issues.append(f"Embedded fonts detected: {embedded_fonts}")
+        
+        # Check for unusual font count
+        font_count = font_data.get('total_no_of_fonts', 0)
+        if font_count > 5:
+            issues.append(f"High font count: {font_count} fonts")
+        elif font_count == 0:
+            issues.append("No fonts detected")
+        
+        return {
+            'company': company,
+            'font_data': font_data,
+            'issues': issues
+        }
+    except Exception as e:
+        return {'error': str(e)}
+
+# Analyze font quality
+analysis = analyze_font_quality("statement.pdf")
+if 'error' not in analysis:
+    print(f"Institution: {analysis['company']}")
+    print(f"Font Count: {analysis['font_data']['total_no_of_fonts']}")
+    if analysis['issues']:
+        print("⚠️  Font issues:")
+        for issue in analysis['issues']:
+            print(f"  - {issue}")
+    else:
+        print("✓ No font issues detected")
+```
+
+### Custom Analysis
+
+```python
+import sverification
+
+def analyze_statement_quality(pdf_path):
+    """Analyze statement quality indicators"""
+    metadata = sverification.extract_all(pdf_path)
+    company = sverification.get_company_name(pdf_path)
+    
+    issues = []
+    
+    # Check for multiple EOF markers (potential tampering)
+    if metadata['eof_markers'] > 1:
+        issues.append("Multiple EOF markers detected")
+    
+    # Check for date inconsistencies
+    if metadata['creationdate'] != metadata['moddate']:
+        issues.append("Creation and modification dates differ")
+    
+    # Check for unknown institution
+    if company == "unknown":
+        issues.append("Institution not recognized")
+    
+    return {
+        'company': company,
+        'issues': issues,
+        'metadata': metadata
+    }
+
+# Analyze a statement
+analysis = analyze_statement_quality("statement.pdf")
+print(f"Institution: {analysis['company']}")
+if analysis['issues']:
+    print("⚠️  Issues found:")
+    for issue in analysis['issues']:
+        print(f"  - {issue}")
+else:
+    print("✓ No issues detected")
+```
+
+## 🔍 What's Verified
+
+### Metadata Analysis
+- **PDF Version**: Document format version
+- **Creation/Modification Dates**: Timestamp consistency
+- **Creator/Producer**: Software used to generate the PDF
+- **EOF Markers**: Security indicators (multiple markers may indicate tampering)
+- **Document Properties**: Author, subject, keywords, trapped status
+
+### Font Analysis (NEW!)
+- **Font Count**: Number of fonts used in the document
+- **Font Names**: Specific fonts and their identifiers
+- **Font Embedding**: Detection of embedded vs. system fonts
+- **PDF Version Consistency**: Cross-verification with metadata
+- **Font Info Objects**: Internal PDF reference validation
+
+### Combined Scoring
+The package now provides three types of scores:
+- **Metadata Score**: Traditional metadata verification (0-100%)
+- **Font Score**: Font consistency verification (0-100%)
+- **Combined Score**: Weighted combination of both analyses
+
+## 🏦 Supported Institutions
+
+Banks: ABSA, CRDB, DTB, Exim, NMB, NBC, TCB, UBA  
+Mobile Money: Airtel, Tigo, Vodacom, Halotel, Selcom  
+Others: Azam Pesa, PayMaart, and more...
+
+## 🧪 Testing
+
+```bash
+# Run tests
+pytest
+
+# Run with coverage
+pytest --cov=sverification
+```
+
+## 📄 License
+
+Proprietary software licensed under Black Swan AI Global. See [LICENSE](LICENSE) for details.
