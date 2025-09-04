@@ -1,0 +1,72 @@
+name: Windows CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  merge_group:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build_and_test:
+    strategy:
+      matrix:
+        os: [ windows-2019, windows-2022, windows-2025 ]
+        toolset: [ v142, v143, ClangCL ]
+        include:
+          - os: windows-2019
+            env: "Visual Studio 16 2019"
+          - os: windows-2022
+            env: "Visual Studio 17 2022"
+          - os: windows-2025
+            env: "Visual Studio 17 2022"
+        exclude:
+          - os: windows-2019
+            toolset: v143
+          - os: windows-2022
+            toolset: v142
+          - os: windows-2025
+            toolset: v142
+
+    name: ${{matrix.os}} with ${{matrix.env}} and ${{matrix.toolset}} toolset
+    runs-on: ${{matrix.os}}
+
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: "${{matrix.os}}-${{matrix.toolset}}"
+          variant: ccache
+          save: true
+          max-size: 10G
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{github.workspace}}\build
+
+      - name: Configure CMake
+        working-directory: ${{github.workspace}}\build
+        run: >
+          cmake ${{github.workspace}}
+          -G "${{matrix.env}}"
+          -A x64 -T ${{matrix.toolset}}
+          -DMOCKTURTLE_EXAMPLES=ON
+          -DMOCKTURTLE_EXPERIMENTS=ON
+          -DMOCKTURTLE_TEST=ON
+
+      - name: Build
+        working-directory: ${{github.workspace}}\build
+        run: cmake --build . -j4
+
+      - name: Run tests
+        shell: cmd
+        run: |
+          ${{github.workspace}}\build\test\Debug\run_tests "~[quality]"

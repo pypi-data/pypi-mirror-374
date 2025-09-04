@@ -1,0 +1,64 @@
+name: macOS CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  merge_group:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build_and_test:
+    strategy:
+      matrix:
+        os: [ macos-14, macos-15 ]
+        compiler: [ clang++ ]
+
+    name: ${{matrix.os}} with ${{matrix.compiler}}
+    runs-on: ${{matrix.os}}
+
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install building tools
+        run: brew install autoconf
+
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: "${{matrix.os}}-${{matrix.compiler}}"
+          variant: ccache
+          save: true
+          max-size: 10G
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{github.workspace}}/build
+
+      - name: Configure CMake
+        working-directory: ${{github.workspace}}/build
+        run: >
+          cmake ${{github.workspace}}
+          -DCMAKE_CXX_COMPILER=${{matrix.compiler}}
+          -DMOCKTURTLE_EXAMPLES=ON
+          -DMOCKTURTLE_EXPERIMENTS=ON
+          -DMOCKTURTLE_TEST=ON
+
+      - name: Build
+        working-directory: ${{github.workspace}}/build
+        run: cmake --build . -j4
+
+      - name: Run tests
+        working-directory: ${{github.workspace}}/build/test
+        run: |
+          ./run_tests "~[quality]"
