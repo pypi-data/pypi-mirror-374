@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pairs-toolkit"
+version = "0.0.1"
+description = "A modular Python toolkit to model, analyze, and compare pairwise velocities and dispersions."
+
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+
+authors = [
+  { name="Mariana Jaber", email="jaber@cft.edu.pl"},
+  { name = "Antonela Taverna", email = "taverna@cft.edu.pl" },
+  { name = "Jorge Farieta"}
+]
+
+dependencies = [
+  "numpy",
+  "scipy>=1.4",
+  "mpi4py>=3.0.0"
+]
