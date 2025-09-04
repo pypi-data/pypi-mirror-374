@@ -1,0 +1,4 @@
+Create new MetadataKey string enum class.  Replace usages like `metadata_key="keyword_name"`
+with `metadata_key=MetadataKey.keyword_name`.  Note that unlike other enum classes, we are using
+the name, not the value. Stem bases now check if they are passed a MetadataKey, and take
+the name as the required string.
