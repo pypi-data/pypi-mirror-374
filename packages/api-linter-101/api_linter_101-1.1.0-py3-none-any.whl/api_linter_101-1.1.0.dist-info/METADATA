@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: api-linter-101
+Version: 1.1.0
+Summary: Linter for Open API specification documents
+Author: BAUHAUS
+Author-email: shubhushan.kattel@bahag.com
+Keywords: python,yaml,linter
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Requires-Dist: PyYAML
+Requires-Dist: python-dotenv
+Requires-Dist: requests
+
+A yaml linter for openapi documents. 
