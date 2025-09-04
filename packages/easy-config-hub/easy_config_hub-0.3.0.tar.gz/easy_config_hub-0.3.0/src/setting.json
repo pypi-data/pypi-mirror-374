@@ -1,0 +1,37 @@
+{
+    "version": "0.1.0",
+    "dev_mode": true,
+    "debug_mode": true,
+    "ImageDownloading": {
+        "convert_image": true,
+        "preferable_format": "WEBP",
+        "max_threads": 12,
+        "image_update_every": 10,
+        "PIL_SUPPORTED_EXT": {
+            "JPG": "JPEG",
+            "JPEG": "JPEG",
+            "PNG": "PNG",
+            "GIF": "GIF",
+            "BMP": "BMP",
+            "WEBP": "WEBP",
+            "ICO": "ICO",
+            "TIFF": "TIFF",
+            "TIF": "TIFF"
+        }
+    },
+    "UI": {
+        "MangaViewer": {
+            "image_loading_intervals": 100,
+            "placeholder_loading_intervals": 5,
+            "set_size_with_every_placeholder": true,
+            "cull_height_multiplier": 2.0,
+            "cull_scene_cooldown": 250
+        }
+    },
+    "Scrolling": {
+        "step": 150,
+        "step_duration": 200,
+        "alt_multiplier": 8,
+        "scale_multiplier": 1.5
+    }
+}
