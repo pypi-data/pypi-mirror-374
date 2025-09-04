@@ -1,0 +1,20 @@
+[project]
+name = "tuya-strip"
+version = "0.1.0"
+description = "CLI for controlling a Tuya 3-way power strip over LAN"
+authors = [
+    { name = "wanjawischmeier" }
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "tinytuya (>=1.17.4,<2.0.0)",
+    "python-dotenv (>=1.1.1,<2.0.0)"
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+tuya-strip = "tuya_strip.cli:main"
