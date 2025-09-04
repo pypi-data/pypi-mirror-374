@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tubegrab"
+version = "0.0.0"
+authors = [
+    { name = "Sachin Acharya", email = "tubegrab.sachin.acharya@gmail.com" },
+]
+description = "A simple library for extracting YouTube content using yt-dlp"
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Multimedia :: Video",
+]
+license-files = ["LICENSE"]
+dependencies = ["yt-dlp>=2024.7.7"]
+keywords = ["youtube", "extract", "yt-dlp"]
+
+[project.urls]
+Homepage = "https://github.com/sachin-acharya-projects/youtube-extractor"
+Issues = "https://github.com/sachin-acharya-projects/youtube-extractor/issues"
+
+[tool.setuptools.packages.find]
+where = ["youtube_extractor"]
+
+[project.optional-dependencies]
+dev = []

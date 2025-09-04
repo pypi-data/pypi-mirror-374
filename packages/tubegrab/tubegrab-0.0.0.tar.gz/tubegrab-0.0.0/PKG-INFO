@@ -1,0 +1,164 @@
+Metadata-Version: 2.4
+Name: tubegrab
+Version: 0.0.0
+Summary: A simple library for extracting YouTube content using yt-dlp
+Author-email: Sachin Acharya <tubegrab.sachin.acharya@gmail.com>
+Project-URL: Homepage, https://github.com/sachin-acharya-projects/youtube-extractor
+Project-URL: Issues, https://github.com/sachin-acharya-projects/youtube-extractor/issues
+Keywords: youtube,extract,yt-dlp
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Multimedia :: Video
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: yt-dlp>=2024.7.7
+Provides-Extra: dev
+Dynamic: license-file
+
+# YouTube Extractor 🎥🎵
+
+A Python library for extracting **video, audio, and metadata** from YouTube.
+It provides a clean **dataclass-based API** with built-in JSON serialization (`to_json` / `from_json`) and integrates well with other serializers like **Django REST Framework**.
+
+---
+
+## ✨ Features
+
+-   📥 **Extract video metadata** – title, id, duration, uploader, thumbnails, and more.
+-   🎶 **List all available audio formats** – codecs, bitrates, container, size, and direct download URL.
+-   🎬 **List all available video formats** – resolution, fps, codecs, container, and direct download URL.
+-   🌍 **Subtitle extraction** – download subtitles in multiple languages.
+-   💾 **Serialization support** – convert objects to JSON (`to_json`) or restore them from JSON (`from_json`).
+-   🛠 **Compatible with Django serializers** – easily plug into DRF or custom serializers.
+-   ⚡ Built on top of [`yt-dlp`](https://github.com/yt-dlp/yt-dlp) for reliable YouTube extraction.
+
+---
+
+## 📦 Installation
+
+```bash
+pip install youtube_extractor
+```
+
+> Requires **Python 3.8+**
+
+---
+
+## 🚀 Quick Start
+
+```python
+from youtube_extractor import YouTube
+
+# Initialize extractor
+video_url = "https://www.youtube.com/watch?v=Wpi1_RsRaAU"
+yt = YouTube(video_url)
+
+# Extract metadata + formats
+yt.extract_info(download=True)
+
+# General metadata
+data = yt.video_data()
+print("Title:", data.title)
+print("Duration:", data.duration)
+print("Uploader:", data.uploader)
+
+# Audio formats
+for audio in yt.audio_formats():
+    print(audio.codec, audio.bitrate, audio.url)
+
+# Video formats
+for video in yt.video_formats():
+    print(video.resolution, video.fps, video.url)
+
+# Subtitles (if available)
+if data.subtitles:
+    for lang, subs in data.subtitles.items():
+        print(f"Language: {lang}, Available formats: {[s.ext for s in subs]}")
+```
+
+---
+
+## 🗂 JSON Serialization
+
+All objects support **`to_json`** and **`from_json`**:
+
+```python
+import json
+
+# Save to file
+with open("video.json", "w") as f:
+    json.dump(data.to_json(to_dict=True), f, indent=4)
+
+# Restore from file
+with open("video.json", "r") as f:
+    restored = YouTube.VideoData.from_json(json.load(f))
+    print(restored.title)
+```
+
+---
+
+## 📖 Example: Save Audio, Video & Metadata
+
+```python
+from youtube_extractor import YouTube
+import json
+
+def write(file, obj):
+    with open(file, "w") as f:
+        json.dump(obj, f, indent=4)
+
+def main(video_url: str):
+    yt = YouTube(video_url)
+    yt.extract_info(download=True)
+
+    # Extract audio formats
+    audio = yt.audio_formats()
+    write("Audio.json", audio.to_json(to_dict=True))
+
+    # Extract video formats
+    video = yt.video_formats()
+    write("Video.json", video.to_json(to_dict=True))
+
+    # Extract general metadata
+    data = yt.video_data()
+    write("Data.json", data.to_json(to_dict=True))
+
+if __name__ == "__main__":
+    main("https://www.youtube.com/watch?v=Wpi1_RsRaAU")
+```
+
+This script will create three files in your project directory:
+
+-   `Audio.json` → list of all available **audio formats**
+-   `Video.json` → list of all available **video formats**
+-   `Data.json` → **general video metadata**
+
+---
+
+## ⚙️ Integration with Django REST Framework
+
+```python
+from rest_framework import serializers
+from youtube_extractor import YouTube
+
+class VideoDataSerializer(serializers.Serializer):
+    id = serializers.CharField()
+    title = serializers.CharField()
+    duration = serializers.IntegerField()
+    uploader = serializers.CharField()
+    thumbnails = serializers.ListField()
+
+# Example usage
+yt = YouTube("https://www.youtube.com/watch?v=Wpi1_RsRaAU")
+yt.extract_info()
+
+serializer = VideoDataSerializer(yt.video_data().to_json(to_dict=True))
+print(serializer.data)
+```
+
+---
+
+## 📝 License
+
+MIT License © 2025
