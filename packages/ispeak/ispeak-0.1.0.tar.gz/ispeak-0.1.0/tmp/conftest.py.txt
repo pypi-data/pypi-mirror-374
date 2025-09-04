@@ -1,0 +1,213 @@
+"""Shared pytest fixtures and configuration"""
+
+import json
+import tempfile
+from pathlib import Path
+from typing import Dict, Any
+
+import pytest
+
+from src.code_speak.replace import TextReplacer
+
+
+@pytest.fixture
+def sample_rules():
+    """Sample replacement rules for testing"""
+    return {
+        "hello": "hi",
+        "world": "universe",
+        r"\s+": " ",
+        "/test/i": "TEST"
+    }
+
+
+@pytest.fixture
+def complex_rules():
+    """Complex replacement rules for advanced testing"""
+    return {
+        # Voice transcription cleanup
+        r"\s*period\s*": ".",
+        r"\s*comma\s*": ",",
+        r"\s*question\s*mark\s*": "?",
+        r"\s*exclamation\s*mark\s*": "!",
+
+        # Programming constructs
+        r"\bfunction\b": "def",
+        r"\bopen\s*paren\b": "(",
+        r"\bclose\s*paren\b": ")",
+
+        # Case-insensitive patterns
+        "/hello/i": "HI",
+        "/start/i": "BEGIN",
+        "/end/i": "FINISH",
+
+        # Substitution groups
+        r"(\w+)\s+says\s+(\w+)": r'"\2" - \1',
+        r"(\d{4})-(\d{2})-(\d{2})": r"\3/\2/\1"
+    }
+
+
+@pytest.fixture
+def temp_rules_file():
+    """Create a temporary JSON file with replacement rules"""
+    rules = {
+        "temporary": "TEMP",
+        "file": "FILE",
+        r"\btest\b": "TESTED"
+    }
+
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+        json.dump(rules, f)
+        temp_file = f.name
+
+    yield temp_file
+
+    # Cleanup
+    Path(temp_file).unlink(missing_ok=True)
+
+
+@pytest.fixture
+def temp_wrapped_rules_file():
+    """Create a temporary JSON file with rules wrapped in 'replace' key"""
+    data = {
+        "replace": {
+            "wrapped": "WRAPPED",
+            "config": "CONFIG"
+        },
+        "other_settings": {
+            "ignored": True
+        }
+    }
+
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+        json.dump(data, f)
+        temp_file = f.name
+
+    yield temp_file
+
+    # Cleanup
+    Path(temp_file).unlink(missing_ok=True)
+
+
+@pytest.fixture
+def multiple_temp_files():
+    """Create multiple temporary JSON files with different rules"""
+    files = []
+    rules_sets = [
+        {"file1": "FILE1", "common": "FROM_FILE1"},
+        {"file2": "FILE2", "common": "FROM_FILE2"},
+        {"file3": "FILE3", "/special/i": "SPECIAL"}
+    ]
+
+    for i, rules in enumerate(rules_sets):
+        with tempfile.NamedTemporaryFile(mode='w', suffix=f'_{i}.json', delete=False) as f:
+            json.dump(rules, f)
+            files.append(f.name)
+
+    yield files
+
+    # Cleanup
+    for file_path in files:
+        Path(file_path).unlink(missing_ok=True)
+
+
+@pytest.fixture
+def invalid_json_file():
+    """Create a temporary file with invalid JSON"""
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+        f.write('{"invalid": json content}')
+        temp_file = f.name
+
+    yield temp_file
+
+    # Cleanup
+    Path(temp_file).unlink(missing_ok=True)
+
+
+@pytest.fixture
+def text_replacer():
+    """Create a TextReplacer instance with basic rules"""
+    rules = {
+        "test": "TEST",
+        "hello": "hi"
+    }
+    return TextReplacer(rules)
+
+
+@pytest.fixture
+def empty_replacer():
+    """Create an empty TextReplacer instance"""
+    return TextReplacer()
+
+
+@pytest.fixture
+def regex_replacer():
+    """Create a TextReplacer with regex patterns"""
+    rules = {
+        r"\d+": "NUM",
+        r"\s+": " ",
+        r"[aeiou]": "*",
+        "/case/i": "CASE"
+    }
+    return TextReplacer(rules)
+
+
+@pytest.fixture
+def voice_transcription_replacer():
+    """Create a TextReplacer configured for voice transcription cleanup"""
+    rules = {
+        # Punctuation
+        r"\s*period\s*": ".",
+        r"\s*comma\s*": ",",
+        r"\s*question\s*mark\s*\.?": "?",
+        r"\s*exclamation\s*mark\s*\.?": "!",
+        r"\s*semicolon\s*": ";",
+        r"\s*colon\s*": ":",
+
+        # Brackets and parentheses
+        r"\s*open\s*paren\s*": "(",
+        r"\s*close\s*paren\s*": ")",
+        r"\s*open\s*bracket\s*": "[",
+        r"\s*close\s*bracket\s*": "]",
+        r"\s*open\s*brace\s*": "{",
+        r"\s*close\s*brace\s*": "}",
+
+        # Programming keywords
+        r"\bfunction\b": "def",
+        r"\breturn\b": "return",
+        r"\bprint\b": "print",
+        r"\bif\b": "if",
+        r"\belse\b": "else",
+        r"\bfor\b": "for",
+        r"\bwhile\b": "while",
+
+        # Numbers
+        r"\bone\b": "1",
+        r"\btwo\b": "2",
+        r"\bthree\b": "3",
+        r"\bfour\b": "4",
+        r"\bfive\b": "5",
+
+        # Common symbols
+        r"\bequals\b": "=",
+        r"\bplus\b": "+",
+        r"\bminus\b": "-",
+        r"\btimes\b": "*",
+        r"\bdivided\s*by\b": "/",
+
+        # Clean up spacing
+        r"\s+": " ",
+    }
+    return TextReplacer(rules)
+
+
+@pytest.fixture
+def capture_stdout():
+    """Fixture to capture stdout for testing print statements"""
+    import sys
+    from io import StringIO
+
+    old_stdout = sys.stdout
+    sys.stdout = captured_output = StringIO()
+    yield captured_output
+    sys.stdout = old_stdout

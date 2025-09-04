@@ -1,0 +1,18 @@
+scope:
+  - cli: ""
+  - config: ""
+  - core: ""
+  - recorder: "src/claude_speak/recorder.py"
+  - root: "src/*.*"
+
+type:
+  - build: "changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)"
+  - ci: "changes to CI configuration files and scripts (examples: Github Actions, SauceLabs)"
+  - docs: "documentation only changes"
+  - feat: "a new feature"
+  - fix: "a bug fix"
+  - perf: "a code change that improves performance"
+  - refactor: "a code change that neither fixes a bug nor adds a feature"
+  - update: "a code change that adds or removes functionality from a feature"
+  - rewrite: "a major code change outside the scope of refactor/fix/feat"
+  - test: "adding missing tests or correcting existing tests"
