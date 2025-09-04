@@ -1,0 +1,18 @@
+[project]
+name = "a1facts"
+version = "0.1.1"
+description = "a1facts - precise knowledge for AI agents"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "agno>=1.8.0",
+    "colored>=2.3.1",
+    "exa-py>=1.15.3",
+    "neo4j>=5.28.2",
+    "networkx>=3.5",
+    "posthog>=6.7.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/shadi-fsai/a1facts"
+Issues = "https://github.com/shadi-fsai/a1facts/issues"
