@@ -1,0 +1,53 @@
+[build-system]
+requires = ["flit"]
+build-backend = "flit.buildapi"
+
+[project]
+name = "bsb-lookup"
+authors = [
+    { name = "Ilan Kessler", email = "ilan@refundid.com" },
+]
+description = "Lookup and enrich Australian BSBs"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11"
+]
+requires-python = ">=3.8.1"
+dynamic = ["version"]
+
+[project.optional-dependencies]
+test = [
+    "check-manifest==0.50",
+    "ruff==0.5.7",
+    "mypy==1.11.1",
+    "pre-commit==4.0.1",
+    "pytest==8.3.3"
+]
+
+[project.urls]
+Documentation = "https://github.com/ilankessler/bsb-lookup#readme"
+Source = "https://github.com/ilankessler/bsb-lookup"
+Tracker = "https://github.com/ilankessler/bsb-lookup/issues"
+
+[tool.flit.module]
+name = "bsb"
+
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = ['pydantic/v1', 'tests/mypy/outputs']
+
+[tool.ruff.lint]
+extend-select = ['Q', 'RUF100', 'C90', 'UP', 'I', 'D', 'T']
+ignore = ['D105', 'D107', 'D205', 'D415', 'D203', 'D211', "D213"]
+flake8-quotes = { inline-quotes = 'double', multiline-quotes = 'double' }
+mccabe = { max-complexity = 14 }
+isort = { known-first-party = ['pydantic', 'tests'], force-single-line = true }
