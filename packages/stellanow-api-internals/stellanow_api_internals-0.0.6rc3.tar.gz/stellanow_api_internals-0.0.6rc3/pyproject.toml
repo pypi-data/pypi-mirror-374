@@ -1,0 +1,58 @@
+[project]
+name = "stellanow-api-internals"
+version = "0.0.6rc3"
+description = "Library for communicating with the internal API of StellaNow platform."
+authors = [
+    {name = "Stella Technologies (UK) Limited"}
+]
+readme = "README.md"
+requires-python = ">=3.11,<4.0"
+
+dependencies = [
+    "loguru (>=0.7,<1.0)",
+    "httpx (>=0.28.1,<0.29.0)",
+    "python-keycloak (>=5.3.1,<6.0.0)",
+    "pydantic (>=2.10.6,<3.0.0)",
+    "beautifulsoup4 (>=4.13.3,<5.0.0)",
+]
+
+[tool.poetry.group.dev.dependencies]
+autoflake = "*"
+isort = "*"
+vulture = "*"
+black = "*"
+safety = "*"
+mypy = "*"
+autopep8 = "*"
+pytest = "*"
+pytest-mock = "*"
+poethepoet = "^0.33.1"
+
+[tool.poe.tasks]
+lint-autoflake = "autoflake --remove-all-unused-imports --recursive --remove-unused-variables --in-place . --exclude=__init__.py"
+lint-autoflake-check = "autoflake --remove-all-unused-imports --check --recursive --remove-unused-variables --in-place . --exclude=__init__.py"
+lint-vulture = "vulture . --min-confidence 80"
+lint-black = "black . -l 120"
+lint-black-check = "black . -l 120 --check --diff"
+lint-isort = "isort --multi-line=3 --trailing-comma --force-grid-wrap=0 --combine-as --line-width 120 ."
+lint-isort-check = "isort --multi-line=3 --trailing-comma --force-grid-wrap=0 --combine-as --line-width 120 --check-only ."
+lint-mypy = "mypy --ignore-missing-imports stellanow_api_internals"
+lint-safety = "safety check"
+lint = { sequence = [
+    { cmd = "echo Running all lint tasks" },
+    { ref = "lint-autoflake" },
+    { ref = "lint-vulture" },
+    { ref = "lint-black" },
+    { ref = "lint-isort" },
+]}
+lint-check = { sequence = [
+    { cmd = "echo Running all lint checks" },
+    { ref = "lint-autoflake-check" },
+    { ref = "lint-vulture" },
+    { ref = "lint-isort-check" },
+]}
+test = "pytest"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
