@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: mcp-layer
+Version: 0.1.0
+Summary: MCP Layer to manage tools from multiple MCP servers.
+Requires-Python: >=3.12
+Requires-Dist: faiss-cpu>=1.12.0
+Requires-Dist: langchain-community==0.3.19
+Requires-Dist: langchain-core==0.3.68
+Requires-Dist: langchain-mcp-adapters==0.1.9
+Requires-Dist: langchain-openai==0.3.11
+Requires-Dist: langchain==0.3.26
+Requires-Dist: langgraph==0.5.1
+Requires-Dist: penelopedefillama==0.1.1
+Requires-Dist: pydantic>=2.11.7
