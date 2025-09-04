@@ -1,0 +1,113 @@
+[project]
+name = "folio_uuid"
+version = "1.0.0"
+requires-python = ">=3.10,<4.0"
+description = "A library for generating predictive uuids for FOLIO data migrations"
+authors = [
+    { name = "Theodor Tolstoy", email = "github.teddes@tolstoy.se" },
+    { name = "Lisa Sjögren" },
+    { name = "Brooks Travis", email = "brooks.travis@gmail.com" },
+]
+license = "MIT"
+readme = "README.md"
+keywords = [
+    "FOLIO",
+    "ILS",
+    "LSP",
+    "Library Systems",
+    "MARC21",
+    "Library data",
+    "UUID",
+]
+
+[project.urls]
+homepage = "https://github.com/FOLIO-FSE/folio_uuid"
+repository = "https://github.com/FOLIO-FSE/folio_uuid"
+
+[dependency-groups]
+dev = [
+    "coverage[toml]>=6.5.0,<7.0.0",
+    "mypy>=1.17.1",
+    "pytest>=7.1.3,<8.0.0",
+    "pytest-cov>=4.0.0,<5.0.0",
+    "ruff>=0.12.11",
+]
+
+# Coverage
+[tool.coverage.report]
+show_missing = false
+fail_under = 95
+
+[tool.coverage.paths]
+source = ["*/site-packages"]
+
+[tool.coverage.run]
+branch = true
+source = ["src/folio_uuid"]
+
+# Build
+[build-system]
+requires = ["uv_build>=0.8.6,<0.9.0"]
+build-backend = "uv_build"
+
+# Linting
+[tool.ruff]
+line-length = 99
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "build",
+    "dist",
+    "site-packages",
+    "venv",
+    "**/tests/*.py"
+]
+
+indent-width = 4
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["B", "B9", "C", "E", "F", "S", "W"]
+ignore = []
+
+fixable = ["ALL"]
+unfixable = []
+
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E402", "F401"]
+"**/{tests,docs,tools}/*" = ["E402"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+docstring-code-format = false
+docstring-code-line-length = "dynamic"
+
+
+# Testing
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
