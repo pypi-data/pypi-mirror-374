@@ -1,0 +1,37 @@
+[project]
+name = "tyba-client"
+version = "0.5.0"
+description = "A Python API client for the Tyba Public API"
+authors = [
+    { name = "Tyler Nisonoff <tyler@tybaenergy.com>" }
+]
+requires-python = ">=3.10,<4.0"
+license = "MIT"
+readme = "PYPI_README.md"
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dependencies]
+requests = "^2.32.5"
+pandas = "^2.3.2"
+structlog = "^25.4.0"
+generation-models = "^0.10.8"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4.1"
+ipdb = "^0.13.13"
+jupyter = "^1.1.1"
+
+
+[tool.poetry.group.docs.dependencies]
+pandoc = "^2.4"
+sphinx = ">=8.0,<8.2"
+autodoc-pydantic = "^2.2.0"
+sphinx-autodoc-typehints = ">=3.0"
+sphinx-rtd-theme = "^3.0.2"
+sphinx-gallery = "^0.19.0"
+nbsphinx = "<=0.9.6"
+boto3 = "^1.40.23"
