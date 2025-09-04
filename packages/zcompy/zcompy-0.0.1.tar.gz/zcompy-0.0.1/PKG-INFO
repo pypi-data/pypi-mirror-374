@@ -1,0 +1,526 @@
+Metadata-Version: 2.4
+Name: zcompy
+Version: 0.0.1
+Summary: Generate zsh completions with Python.
+Maintainer-email: Feng Wang <wangfeng19950315@163.com>
+License:                                  Apache License
+                                   Version 2.0, January 2004
+                                http://www.apache.org/licenses/
+        
+           TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+        
+           1. Definitions.
+        
+              "License" shall mean the terms and conditions for use, reproduction,
+              and distribution as defined by Sections 1 through 9 of this document.
+        
+              "Licensor" shall mean the copyright owner or entity authorized by
+              the copyright owner that is granting the License.
+        
+              "Legal Entity" shall mean the union of the acting entity and all
+              other entities that control, are controlled by, or are under common
+              control with that entity. For the purposes of this definition,
+              "control" means (i) the power, direct or indirect, to cause the
+              direction or management of such entity, whether by contract or
+              otherwise, or (ii) ownership of fifty percent (50%) or more of the
+              outstanding shares, or (iii) beneficial ownership of such entity.
+        
+              "You" (or "Your") shall mean an individual or Legal Entity
+              exercising permissions granted by this License.
+        
+              "Source" form shall mean the preferred form for making modifications,
+              including but not limited to software source code, documentation
+              source, and configuration files.
+        
+              "Object" form shall mean any form resulting from mechanical
+              transformation or translation of a Source form, including but
+              not limited to compiled object code, generated documentation,
+              and conversions to other media types.
+        
+              "Work" shall mean the work of authorship, whether in Source or
+              Object form, made available under the License, as indicated by a
+              copyright notice that is included in or attached to the work
+              (an example is provided in the Appendix below).
+        
+              "Derivative Works" shall mean any work, whether in Source or Object
+              form, that is based on (or derived from) the Work and for which the
+              editorial revisions, annotations, elaborations, or other modifications
+              represent, as a whole, an original work of authorship. For the purposes
+              of this License, Derivative Works shall not include works that remain
+              separable from, or merely link (or bind by name) to the interfaces of,
+              the Work and Derivative Works thereof.
+        
+              "Contribution" shall mean any work of authorship, including
+              the original version of the Work and any modifications or additions
+              to that Work or Derivative Works thereof, that is intentionally
+              submitted to Licensor for inclusion in the Work by the copyright owner
+              or by an individual or Legal Entity authorized to submit on behalf of
+              the copyright owner. For the purposes of this definition, "submitted"
+              means any form of electronic, verbal, or written communication sent
+              to the Licensor or its representatives, including but not limited to
+              communication on electronic mailing lists, source code control systems,
+              and issue tracking systems that are managed by, or on behalf of, the
+              Licensor for the purpose of discussing and improving the Work, but
+              excluding communication that is conspicuously marked or otherwise
+              designated in writing by the copyright owner as "Not a Contribution."
+        
+              "Contributor" shall mean Licensor and any individual or Legal Entity
+              on behalf of whom a Contribution has been received by Licensor and
+              subsequently incorporated within the Work.
+        
+           2. Grant of Copyright License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              copyright license to reproduce, prepare Derivative Works of,
+              publicly display, publicly perform, sublicense, and distribute the
+              Work and such Derivative Works in Source or Object form.
+        
+           3. Grant of Patent License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              (except as stated in this section) patent license to make, have made,
+              use, offer to sell, sell, import, and otherwise transfer the Work,
+              where such license applies only to those patent claims licensable
+              by such Contributor that are necessarily infringed by their
+              Contribution(s) alone or by combination of their Contribution(s)
+              with the Work to which such Contribution(s) was submitted. If You
+              institute patent litigation against any entity (including a
+              cross-claim or counterclaim in a lawsuit) alleging that the Work
+              or a Contribution incorporated within the Work constitutes direct
+              or contributory patent infringement, then any patent licenses
+              granted to You under this License for that Work shall terminate
+              as of the date such litigation is filed.
+        
+           4. Redistribution. You may reproduce and distribute copies of the
+              Work or Derivative Works thereof in any medium, with or without
+              modifications, and in Source or Object form, provided that You
+              meet the following conditions:
+        
+              (a) You must give any other recipients of the Work or
+                  Derivative Works a copy of this License; and
+        
+              (b) You must cause any modified files to carry prominent notices
+                  stating that You changed the files; and
+        
+              (c) You must retain, in the Source form of any Derivative Works
+                  that You distribute, all copyright, patent, trademark, and
+                  attribution notices from the Source form of the Work,
+                  excluding those notices that do not pertain to any part of
+                  the Derivative Works; and
+        
+              (d) If the Work includes a "NOTICE" text file as part of its
+                  distribution, then any Derivative Works that You distribute must
+                  include a readable copy of the attribution notices contained
+                  within such NOTICE file, excluding those notices that do not
+                  pertain to any part of the Derivative Works, in at least one
+                  of the following places: within a NOTICE text file distributed
+                  as part of the Derivative Works; within the Source form or
+                  documentation, if provided along with the Derivative Works; or,
+                  within a display generated by the Derivative Works, if and
+                  wherever such third-party notices normally appear. The contents
+                  of the NOTICE file are for informational purposes only and
+                  do not modify the License. You may add Your own attribution
+                  notices within Derivative Works that You distribute, alongside
+                  or as an addendum to the NOTICE text from the Work, provided
+                  that such additional attribution notices cannot be construed
+                  as modifying the License.
+        
+              You may add Your own copyright statement to Your modifications and
+              may provide additional or different license terms and conditions
+              for use, reproduction, or distribution of Your modifications, or
+              for any such Derivative Works as a whole, provided Your use,
+              reproduction, and distribution of the Work otherwise complies with
+              the conditions stated in this License.
+        
+           5. Submission of Contributions. Unless You explicitly state otherwise,
+              any Contribution intentionally submitted for inclusion in the Work
+              by You to the Licensor shall be under the terms and conditions of
+              this License, without any additional terms or conditions.
+              Notwithstanding the above, nothing herein shall supersede or modify
+              the terms of any separate license agreement you may have executed
+              with Licensor regarding such Contributions.
+        
+           6. Trademarks. This License does not grant permission to use the trade
+              names, trademarks, service marks, or product names of the Licensor,
+              except as required for reasonable and customary use in describing the
+              origin of the Work and reproducing the content of the NOTICE file.
+        
+           7. Disclaimer of Warranty. Unless required by applicable law or
+              agreed to in writing, Licensor provides the Work (and each
+              Contributor provides its Contributions) on an "AS IS" BASIS,
+              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+              implied, including, without limitation, any warranties or conditions
+              of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+              PARTICULAR PURPOSE. You are solely responsible for determining the
+              appropriateness of using or redistributing the Work and assume any
+              risks associated with Your exercise of permissions under this License.
+        
+           8. Limitation of Liability. In no event and under no legal theory,
+              whether in tort (including negligence), contract, or otherwise,
+              unless required by applicable law (such as deliberate and grossly
+              negligent acts) or agreed to in writing, shall any Contributor be
+              liable to You for damages, including any direct, indirect, special,
+              incidental, or consequential damages of any character arising as a
+              result of this License or out of the use or inability to use the
+              Work (including but not limited to damages for loss of goodwill,
+              work stoppage, computer failure or malfunction, or any and all
+              other commercial damages or losses), even if such Contributor
+              has been advised of the possibility of such damages.
+        
+           9. Accepting Warranty or Additional Liability. While redistributing
+              the Work or Derivative Works thereof, You may choose to offer,
+              and charge a fee for, acceptance of support, warranty, indemnity,
+              or other liability obligations and/or rights consistent with this
+              License. However, in accepting such obligations, You may act only
+              on Your own behalf and on Your sole responsibility, not on behalf
+              of any other Contributor, and only if You agree to indemnify,
+              defend, and hold each Contributor harmless for any liability
+              incurred by, or claims asserted against, such Contributor by reason
+              of your accepting any such warranty or additional liability.
+        
+           END OF TERMS AND CONDITIONS
+        
+           APPENDIX: How to apply the Apache License to your work.
+        
+              To apply the Apache License to your work, attach the following
+              boilerplate notice, with the fields enclosed by brackets "[]"
+              replaced with your own identifying information. (Don't include
+              the brackets!)  The text should be enclosed in the appropriate
+              comment syntax for the file format. We also recommend that a
+              file or class name and description of purpose be included on the
+              same "printed page" as the copyright notice for easier
+              identification within third-party archives.
+        
+           Copyright 2025 Feng Wang
+        
+           Licensed under the Apache License, Version 2.0 (the "License");
+           you may not use this file except in compliance with the License.
+           You may obtain a copy of the License at
+        
+               http://www.apache.org/licenses/LICENSE-2.0
+        
+           Unless required by applicable law or agreed to in writing, software
+           distributed under the License is distributed on an "AS IS" BASIS,
+           WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+           See the License for the specific language governing permissions and
+           limitations under the License.
+        
+Project-URL: Homepage, https://github.com/FateScript/zcompy
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: absl-py; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: toml; extra == "dev"
+Requires-Dist: tox; extra == "dev"
+Dynamic: license-file
+
+# zcompy
+
+**zcompy** (**z**sh **comp**letion using **Py**thon) is a Python library that makes it easy to generate sophisticated zsh completion scripts for your command-line tools.
+
+Instead of writing complex zsh completion scripts by hand, you can define your commands and options in Python and let zcompy generate the completion for you.
+
+## Features
+
+- 🐍 **Pure Python**: Define completions using familiar Python syntax
+- 🎯 **Type-safe**: Built-in support for common argument types (files, directories, strings)
+- 🔄 **Sub-commands**: Full support for nested sub-commands
+- 🎨 **Custom completions**: Define your own completion functions with python functions
+- 🔗 **Dependencies**: Completion could depend on other option values
+
+## Installation
+
+### From PyPI
+
+```bash
+pip install zcompy
+```
+
+### From Source
+
+```bash
+git clone https://github.com/FateScript/zcompy.git
+cd zcompy
+pip install -e .
+```
+
+### Development Installation
+
+```bash
+git clone https://github.com/FateScript/zcompy.git
+cd zcompy
+pip install -e ".[dev]"
+```
+
+## Quick Start
+
+Here's a simple example to get you started:
+
+```python
+from zcompy import Command, Option, Files, Completion
+
+# Create your command
+mytool = Command("mytool", "My awesome command-line tool")
+
+# Add global options for mytool
+mytool.add_options([
+    Option(("--verbose", "-v"), "Enable verbose output"),
+    Option(("--config", "-c"), "Config file path", complete_func=Files())
+])
+
+# Create sub-commands
+build_cmd = Command("build", "Build the project")
+build_cmd.add_options([
+    Option(
+        ("--output", "-o"), "Output directory",
+        complete_func=Files(dir_only=True)
+    ),
+    Option(
+        ("--optimize", "-O"), "Optimization level",
+        complete_func=Completion(func=("o1", "o2", "o3"))
+    )
+])
+
+# Add sub-command to main command
+mytool.add_sub_commands(build_cmd)
+
+# print completion source
+print(mytool.complete_source())
+# Also, you might generate zsh completion code in output dir
+# mytool.completion_entry(output_dir="~/.zsh/completion")
+```
+
+Then add to your `~/.zshrc` or run in your terminal sesssion:
+```bash
+fpath=(~/.zsh/completions $fpath)
+autoload -U compinit && compinit
+compdef _mytool mytool
+```
+
+👉 Please type `mytool` in cli and press `<TAB>` to feel the magic 🪄
+
+## Usage
+
+### Basic Command Structure
+
+```python
+from zcompy import Command, Option, Completion, Files
+
+# Create a command
+cmd = Command("mycmd", "Description of your command")
+
+# Add options
+cmd.add_options([
+    Option(("--flag", "-f"), "Turn on to enable something"),
+    Option(("--file",), "Input file", complete_func=Files()),
+    Option(("--dir",), "Output directory", complete_func=Files(dir_only=True))
+])
+```
+
+### Sub-commands
+
+```python
+# Create main command
+main = Command("git", "Git version control")
+
+# Create sub-commands
+status = Command("status", "Show working tree status")
+commit = Command("commit", "Record changes to repository")
+commit.add_options([
+    Option(("--message", "-m"), "Commit message", type="STRING"),
+    Option(("--amend",), "Amend previous commit")
+])
+
+# Add sub-commands to main
+main.add_sub_commands([status, commit])
+```
+
+### Custom Completions
+
+Define your own completion functions
+
+NOTE: 
+1. To make your completions work, simply print each completion string to stdout.
+2. If you want to show descriptions for completions, print them after a space, like: `completion description`.
+
+```python
+def list_things():
+    for item in ["thing1", "thing2", "thing3"]:
+        print(f"my_{item}")
+
+branch_option = Option(
+    ("--things", "-t"), 
+    "things to describe",
+    type="THINGS", 
+    complete_func=Completion(list_things)
+)
+```
+
+### Advanced Usage
+
+#### Automatic CLI Framework Support
+
+zcompy provides built-in support for generating completions from popular Python CLI frameworks:
+
+##### ArgumentParser support
+```python
+from argparse import ArgumentParser
+from zcompy.parser_command import ParserCommand
+
+# Create your argparse parser
+parser = ArgumentParser(prog="mytool", description="My awesome CLI tool")
+parser.add_argument("--verbose", "-v", action="store_true", help="Enable verbose output")
+parser.add_argument("--config", "-c", type=str, help="Config file path")
+parser.add_argument("--mode", choices=["auto", "manual", "disabled"], help="Operation mode")
+
+# Add sub-commands
+subparsers = parser.add_subparsers(dest="command")
+build_parser = subparsers.add_parser("build", help="Build the project")
+build_parser.add_argument("--output", "-o", type=str, help="Output directory")
+
+# Generate completion using zcompy
+parser_command = ParserCommand(parser)
+command = parser_command.to_command()
+print(command.complete_source())
+
+# Add custom completion for file paths
+from zcompy.action import Files
+parser_command.add_action_for_options("--config", "--output", action=Files())
+```
+
+##### Abseil ([absl-py](https://github.com/abseil/abseil-py)) Support
+```python
+from absl import flags
+from zcompy.absl_command import AbslFlagsCommand
+
+# Define your absl flags
+FLAGS = flags.FLAGS
+flags.DEFINE_string('name', 'World', 'The name to greet')
+flags.DEFINE_integer('count', 1, 'The number of greetings')
+flags.DEFINE_bool('verbose', False, 'Whether to display verbose output')
+flags.DEFINE_enum('color', 'blue', ['red', 'blue', 'green'], 'Choose a color')
+
+# Generate completion using zcompy
+cmd = AbslFlagsCommand(name="mytool").to_command()
+print(cmd.complete_source())
+```
+
+##### [Fire](https://github.com/google/python-fire) Support
+
+Users could use FireCommand like [fire-guide](https://github.com/google/python-fire/blob/master/docs/guide.md).
+
+###### python class
+```python
+import fire
+from zcompy.fire_command import FireCommand
+
+class MyCLI:
+    """My awesome CLI tool."""
+
+    def add(self, x, y):
+        """Addition command"""
+        return x + y
+
+    def mul(self, a, b):
+        """Multiplication command"""
+        return a * b
+
+    def build(self, output_dir="./build", optimize=True):
+        """Build the project"""
+        return f"Building to {output_dir}"
+
+# Generate completion using zcompy
+fire_cmd = FireCommand(name="mytool", obj=MyCLI)
+command = fire_cmd.to_command()
+print(command.complete_source())
+```
+
+##### python function
+
+```python
+def add_func(x, y):
+    """Addition command"""
+    return x + y
+
+fire_cmd = FireCommand(name="calc", obj=add_func)
+command = fire_cmd.to_command()
+print(command.complete_source())
+```
+
+##### python dict
+
+```python
+func_dict = {"add": lambda x, y: x + y, "mul": lambda a, b: a * b}
+fire_cmd = FireCommand(name="math", obj=func_dict)
+command = fire_cmd.to_command()
+print(command.complete_source())
+```
+
+#### Dependent Completions
+
+Completions could depend on other options' value/existence:
+
+```python
+from zcompy import DependentCompletion, Option
+
+def complete_based_on_config(config_path):
+    """Complete based on config_path value."""
+    if config_path and os.path.exists(config_path):
+        # Read config and provide completions
+        with open(config_path) as f:
+            configs = f.read().splitlines()
+        for line, config in enumerate(configs):
+            print(f"{config} line {line + 1}")
+
+config_dependent = Option(
+    ("--target",), 
+    "Target based on config",
+    type="TARGET",
+    complete_func=DependentCompletion(
+        func=complete_based_on_config,
+        depends_on="--config"
+    )
+)
+```
+
+#### Positional Arguments
+
+```python
+from zcompy.action import GitBranches, GitCommits
+
+# Add positional arguments
+cmd.add_positional_args([
+    Files("*.py"),
+    GitBranches(),
+    GitCommits(),
+])
+
+# Use repeat_pos_args if you want to repeat positional arguments.
+# for example, `cmd file1 file2 file3`
+cmd.repeat_pos_args = Files()
+```
+
+## Development
+
+### Setup Development Environment
+```bash
+git clone https://github.com/FateScript/zcompy.git
+cd zcompy
+python -m venv zcompy
+source zcompy/bin/activate
+pip install -e ".[dev]"
+```
+
+### Running Tests
+
+```bash
+pytest tests
+```
+
+## Acknowledgments
+
+- Thanks to [Claude code](https://github.com/anthropics/claude-code) and [Kimi K2](https://github.com/MoonshotAI/Kimi-K2) for writing code and giving inspiration, guidance.
