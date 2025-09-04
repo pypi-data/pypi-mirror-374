@@ -1,0 +1,255 @@
+# aigency-lib
+
+Una librería para crear y gestionar agentes de IA.
+
+## Inicio rápido
+
+Para probar un agente simple:
+
+```bash
+cd examples/simple_agents/hello_world_agent
+docker compose up
+```
+
+## 🔧 Gestión de versiones
+
+Este proyecto incluye un sistema automatizado para gestionar versiones tanto en desarrollo como en producción.
+
+### Version Manager
+
+El script `scripts/version_manager.py` te ayuda a gestionar las versiones de tu paquete de forma local.
+
+#### Comandos disponibles
+
+##### 1. Ver información actual
+```bash
+python scripts/version_manager.py show
+```
+**Qué hace:**
+- Muestra la versión actual en `pyproject.toml`
+- Muestra la rama git actual
+- Muestra el commit actual
+- Si no estás en `main`, sugiere una versión de desarrollo
+
+**Ejemplo de salida:**
+```
+Versión actual: 0.0.1
+Rama: feature/new-agent
+Commit: a1b2c3d
+Versión dev sugerida: 0.0.1.dev20250409143022+feature/new-agent.a1b2c3d
+```
+
+##### 2. Crear versión de desarrollo
+```bash
+python scripts/version_manager.py dev
+```
+**Qué hace:**
+- Toma la versión actual y crea una versión de desarrollo
+- Formato: `version.devYYYYMMDDHHMMSS+branch.commit`
+- Actualiza automáticamente el `pyproject.toml`
+
+**Ejemplo:**
+```bash
+# Si estás en rama "feature/auth" con commit "abc123"
+python scripts/version_manager.py dev
+# Resultado: 0.0.1.dev20250409143022
+```
+
+##### 3. Establecer versión específica
+```bash
+python scripts/version_manager.py set --version "0.1.0"
+```
+**Qué hace:**
+- Cambia la versión a la que especifiques
+- Útil para releases o para corregir versiones
+
+**Ejemplos:**
+```bash
+# Versión de release
+python scripts/version_manager.py set --version "1.0.0"
+
+# Versión beta
+python scripts/version_manager.py set --version "1.0.0b1"
+
+# Versión alpha
+python scripts/version_manager.py set --version "1.0.0a1"
+```
+
+##### 4. Crear versión Release Candidate
+```bash
+python scripts/version_manager.py rc --version "1.0.1"
+```
+**Qué hace:**
+- Crea una versión RC con el formato `version-rc<commit>`
+- Útil para preparar releases en ramas `release/*`
+
+##### 5. Validar versión actual
+```bash
+python scripts/version_manager.py validate
+```
+**Qué hace:**
+- Valida que la versión actual sea apropiada para la rama
+- Verifica formato semántico en `main` y ramas `release/*`
+
+##### 6. Crear dev con versión base personalizada
+```bash
+python scripts/version_manager.py dev --base-version "0.2.0"
+```
+**Qué hace:**
+- Usa una versión base diferente a la actual
+- Útil cuando quieres preparar una dev version para la próxima release
+
+### 🚀 Flujo de trabajo recomendado
+
+#### Para desarrollo diario:
+```bash
+# 1. Ver estado actual
+python scripts/version_manager.py show
+
+# 2. Si estás en una rama feature, crear versión dev
+python scripts/version_manager.py dev
+
+# 3. Hacer tus cambios y commits
+git add .
+git commit -m "feat: nueva funcionalidad"
+
+# 4. Si necesitas actualizar la versión dev (opcional)
+python scripts/version_manager.py dev
+```
+
+#### Para releases:
+```bash
+# 1. En rama main, establecer versión de release
+python scripts/version_manager.py set --version "1.0.0"
+
+# 2. Commit de la versión
+git add pyproject.toml
+git commit -m "bump: version 1.0.0"
+
+# 3. Usar el workflow de GitHub para publicar
+```
+
+#### Para testing:
+```bash
+# Crear versión de test específica
+python scripts/version_manager.py set --version "1.0.0rc1"
+```
+
+### ⚠️ Limitaciones de PyPI
+
+PyPI no permite "local versions" (versiones con `+` y identificadores locales). Por eso, hemos adaptado el formato:
+
+- ❌ No permitido: `1.0.0.dev20250409+feature.abc123`
+- ✅ Permitido: `1.0.0.dev20250409`
+
+**Solución para Release Candidates:**
+- Convertimos el hash del commit (hexadecimal) a decimal
+- Ejemplo: commit `abc123` → `11256099` → versión `1.0.1rc11256099`
+- Esto mantiene la unicidad del commit en un formato compatible con PyPI
+
+**Resultado:**
+- Las versiones dev incluyen timestamp único
+- Las versiones RC incluyen el hash del commit (en decimal)
+- Mantenemos trazabilidad sin usar local versions
+
+### 📋 Casos de uso prácticos
+
+**Escenario 1: Trabajando en una feature**
+```bash
+git checkout -b feature/new-auth
+python scripts/version_manager.py dev
+# Ahora tienes: 0.0.1.dev20250409143022
+```
+
+**Escenario 2: Preparando release**
+```bash
+git checkout main
+python scripts/version_manager.py set --version "1.0.0"
+git add pyproject.toml
+git commit -m "release: v1.0.0"
+```
+
+**Escenario 3: Preparando Release Candidate**
+```bash
+git checkout -b release/1.0.1
+python scripts/version_manager.py rc --version "1.0.1"
+# Resultado: 1.0.1rc12345678 (donde 12345678 es el hash del commit en decimal)
+```
+
+**Escenario 4: Hotfix urgente**
+```bash
+git checkout -b hotfix/critical-bug
+python scripts/version_manager.py dev --base-version "1.0.1"
+# Resultado: 1.0.1.dev20250409143022
+```
+
+## 🔄 Workflow de CI/CD Inteligente
+
+El proyecto incluye un único workflow inteligente (`python-publish.yml`) que maneja automáticamente diferentes tipos de versiones según la rama:
+
+### Comportamiento automático por rama:
+
+#### 🚀 Rama `main` - Versiones de Producción
+- **Trigger**: Push a `main` o ejecución manual
+- **Versión**: Usa exactamente la versión del `pyproject.toml`
+- **Validaciones**:
+  - ✅ Verifica que sea una versión semántica válida (ej: `1.0.0`)
+  - ✅ Verifica que no exista ya en PyPI
+  - ❌ Falla si contiene sufijos de desarrollo (`dev`, `rc`, `alpha`, `beta`)
+- **Destino**: PyPI producción
+
+#### 🎯 Ramas `release/*` - Release Candidates
+- **Trigger**: Push a rama `release/X.Y.Z` o ejecución manual
+- **Versión**: `X.Y.ZrcN` donde N es el hash del commit en decimal (ej: `1.0.1rc12345678`)
+- **Validaciones**:
+  - ✅ Verifica que `X.Y.Z` sea una versión semántica válida
+  - ✅ Extrae la versión del nombre de la rama
+  - ✅ Usa hash del commit como identificador único
+  - ✅ Formato compatible con PyPI
+- **Destino**: PyPI producción
+- **Ejemplo**: Rama `release/1.0.1` + commit `abc123` → Versión `1.0.1rc11256099`
+
+#### 🔧 Otras ramas - Versiones de Desarrollo
+- **Trigger**: Push a cualquier otra rama o ejecución manual
+- **Versión**: `current.devYYYYMMDDHHMMSS` (ej: `0.0.1.dev20250409143022`)
+- **Destino**: PyPI producción
+- **Nota**: Sin local versions para compatibilidad con PyPI
+
+### Flujo de trabajo recomendado:
+
+```bash
+# 1. Desarrollo en feature branch
+git checkout -b feature/new-functionality
+# Versión automática: 0.0.1.dev20250409143022+feature-new-functionality.abc123
+
+# 2. Preparar release
+git checkout -b release/1.0.0
+git push origin release/1.0.0
+# Versión automática: 1.0.0rc12345678
+
+# 3. Release final
+git checkout main
+python scripts/version_manager.py set --version "1.0.0"
+git add pyproject.toml
+git commit -m "release: v1.0.0"
+git push origin main
+# Versión: 1.0.0 (con validaciones)
+```
+
+## 📦 Instalación
+
+```bash
+pip install aigency
+```
+
+## 🛠️ Desarrollo
+
+1. Clona el repositorio
+2. Instala las dependencias de desarrollo
+3. Usa el version manager para gestionar versiones durante el desarrollo
+
+```bash
+git clone <repo-url>
+cd aigency-lib
+pip install -e .
+```
