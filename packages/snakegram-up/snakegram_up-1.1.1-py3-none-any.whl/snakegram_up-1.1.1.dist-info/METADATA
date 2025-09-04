@@ -1,0 +1,101 @@
+Metadata-Version: 2.4
+Name: snakegram_up
+Version: 1.1.1
+Summary: Full-featured Telegram client library for Python 3
+Home-page: https://github.com/amirwolf5122/snakegram_up
+Author: Amir:3
+Author-email: amirwolf512@gmail.com
+License: MIT
+Keywords: telegram api chat client library messaging mtproto
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Communications :: Chat
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: requires-python
+Dynamic: summary
+
+# Snakegram  
+⭐ Thank you to everyone who has supported Snakegram! Your stars help the project grow and improve.
+
+Snakegram is a Python library for interacting with Telegram. It provides a simple, flexible interface to create bots, clients, and automated workflows with Python.
+
+## Why Snakegram?
+
+Working with MTproto can be complex. Snakegram handles all details for you, letting you focus on creating your app without worrying about the low-level work.
+
+
+## Development Status
+
+This library is actively being developed. New features are added frequently.  
+
+## What snakegram-up does:3
+⭐️The purpose of snakegram-up is that it automatically updates the TL layer (api.tl) to the latest version of Telegram⭐️:3
+
+## Installation
+
+**Install the latest development version from GitHub:**  
+```bash
+pip install -U git+https://github.com/amirwolf5122/snakegram_up.git@dev
+```
+
+**Install the last PyPI release (may not include recent changes):**
+```bash
+pip install snakegram-up
+```
+
+## Quick Start Example
+```python
+import snakegram_up
+# snakegram_up.chack()
+# Automatically update the Telethon API layer (api.tl).
+from snakegram import filters, Telegram
+
+client = Telegram(
+    'session',
+    api_id=1234567,
+    api_hash='0123456789abcdef0123456789abcdef'
+)
+
+# Handle incoming "ping" messages
+@client.on_update(
+    filters.new_message
+    & ~ (
+        filters.proxy.message.out
+        |
+        (filters.proxy.message % types.MessageService)
+    )
+    & filters.proxy.message.message.lower() == 'ping'
+)
+async def ping_handler(update):
+    await client.send_message(update.message.peer_id, '*PONG*')
+
+# start the client and keep it running
+client.start()
+client.wait_until_disconnected()
+
+```
+---
+
+## Support & Community
+Have questions or ideas? Join the discussion and get help in our Telegram group:
+
+[Snakegram Chat](https://t.me/SnakegramChat)
+
+## License
+Snakegram is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0). See the [LICENSE](LICENSE) file for details.
+
