@@ -1,0 +1,25 @@
+{
+  "description": "TSL2561 is a digital light sensor that provides high-accuracy light intensity measurements in lux units. It features dual photodiodes for broadband and infrared light detection, enabling light source identification and quality assessment. The sensor includes configurable integration time and gain settings for optimal performance across a wide range of lighting conditions from very dark to bright sunlight.",
+  "variables": [
+    {
+      "name": "sda",
+      "required": false,
+      "description": "I2C SDA pin",
+      "default": "board.SDA"
+    },
+    {
+      "name": "scl",
+      "required": false,
+      "description": "I2C SCL pin",
+      "default": "board.SCL"
+    },
+    {
+      "name": "address",
+      "required": false,
+      "description": "I2C address",
+      "default": "0x39"
+    }
+  ],
+  "tested": true,
+  "warn_offline": false
+}
