@@ -1,0 +1,125 @@
+Metadata-Version: 2.3
+Name: ssb-project-cli
+Version: 1.7.1
+Summary: SSB Project CLI
+License: MIT
+Author: Statistics Norway
+Author-email: stat-dev@ssb.no
+Requires-Python: >=3.10,<3.13
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: certifi (>=2024.8.30)
+Requires-Dist: cruft (>=2.11.1)
+Requires-Dist: gitpython (>=3.1.27)
+Requires-Dist: ipykernel (>=6.25.2)
+Requires-Dist: jupyter-client (>=8.3.1)
+Requires-Dist: kvakk-git-tools (>=2.5.1,<3.0.0)
+Requires-Dist: poetry (>=2.0)
+Requires-Dist: psutil (>=5.9.4)
+Requires-Dist: pygithub (>=1.55)
+Requires-Dist: questionary (>=1.10.0)
+Requires-Dist: requests (>=2.32.3)
+Requires-Dist: rich (>=12.5.1)
+Requires-Dist: tomli (>=2.0.1)
+Requires-Dist: typer (==0.16.1)
+Requires-Dist: types-psutil (>=5.9.5.12)
+Requires-Dist: types-requests (>=2.28.11.17)
+Requires-Dist: types-toml (>=0.10.8)
+Requires-Dist: types-urllib3 (>=1.26.25.10)
+Requires-Dist: virtualenv (>=20.27.1)
+Project-URL: Changelog, https://github.com/statisticsnorway/ssb-project-cli/releases
+Project-URL: Documentation, https://ssb-project-cli.readthedocs.io
+Project-URL: Homepage, https://github.com/statisticsnorway/ssb-project-cli
+Project-URL: Repository, https://github.com/statisticsnorway/ssb-project-cli
+Description-Content-Type: text/markdown
+
+# SSB Project CLI
+
+[![PyPI](https://img.shields.io/pypi/v/ssb-project-cli.svg)][pypi status]
+[![Status](https://img.shields.io/pypi/status/ssb-project-cli.svg)][pypi status]
+[![Python Version](https://img.shields.io/pypi/pyversions/ssb-project-cli)][pypi status]
+[![License](https://img.shields.io/pypi/l/ssb-project-cli)][license]
+
+[![Read the documentation](https://img.shields.io/badge/docs-Github%20Pages-purple)](https://statisticsnorway.github.io/ssb-project-cli/)
+[![Tests](https://github.com/statisticsnorway/ssb-project-cli/workflows/Tests/badge.svg)][tests]
+[![Codecov](https://codecov.io/gh/statisticsnorway/ssb-project-cli/branch/main/graph/badge.svg)][codecov]
+
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)][pre-commit]
+[![Black](https://img.shields.io/badge/code%20style-black-000000.svg)][black]
+
+[pypi status]: https://pypi.org/project/ssb-project-cli/
+[tests]: https://github.com/statisticsnorway/ssb-project-cli/actions?workflow=Tests
+[codecov]: https://app.codecov.io/gh/statisticsnorway/ssb-project-cli
+[pre-commit]: https://github.com/pre-commit/pre-commit
+[black]: https://github.com/psf/black
+
+## Features
+
+![Help text](/docs/assets/images/cli_help_screenshot.png)
+
+- Create a new project quickly and easily with `ssb-project create`.
+- Your colleagues can quickly get started when you share the project with them with `ssb-project build`.
+- Includes:
+  - Local directory structure
+  - Virtual Environment
+  - Kernel for use on Jupyter
+  - Github repo (if desired)
+- The project will follow the most recent SSB guidelines for security and quality.
+- It will always be possible to update existing projects as guidelines change.
+
+:sparkles: Now allows specifying _any_ Cookiecutter template which uses Poetry, for example
+
+```shell
+ssb-project create my-project --template-git-url https://github.com/cjolowicz/cookiecutter-hypermodern-python
+```
+
+## Installation
+
+You can install _SSB Project CLI_ via [pip] from [PyPI]:
+
+```console
+pip install ssb-project-cli
+```
+
+## Releasing a new version
+
+To release a new version of the CLI, run the following sequence.
+
+```console
+git switch --create release main
+```
+
+```console
+poetry version <version>
+```
+
+```console
+git commit --message="<project> <version>" pyproject.toml
+```
+
+```console
+git push origin release
+```
+
+## Contributing
+
+### Setup
+
+1. [Install dependencies](https://cookiecutter-hypermodern-python.readthedocs.io/en/latest/guide.html#installation)
+1. [Install pre-commit hooks](https://cookiecutter-hypermodern-python.readthedocs.io/en/latest/guide.html#running-pre-commit-from-git)
+1. Run tests: `nox -r` ([More information here](https://cookiecutter-hypermodern-python.readthedocs.io/en/latest/guide.html#using-nox))
+1. Run the help command: `poetry run ssb-project --help`
+
+## License
+
+Distributed under the terms of the [MIT license][license],
+_SSB Project CLI_ is free and open source software.
+
+<!-- github-only -->
+
+[license]: https://github.com/statisticsnorway/ssb-project-cli/blob/main/LICENSE
+
