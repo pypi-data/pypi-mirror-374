@@ -1,0 +1,36 @@
+[prep CDF-25295] 🫠 Introduce new columns (#1860)
+
+# Description
+**Context**: This is part of the `alpha` migration tooling in Toolkit,
+for overview [see
+here](https://cognitedata.atlassian.net/wiki/spaces/~170890702/pages/5455773697/Migration+Tooling+in+Toolkit).
+This is step 3 of that process.
+
+This PR extends the columns of the input format that the migrate command
+expects to take new columns such that the user can provide the ingestion
+and consumption views they would like to use for the instances. We do
+not yet use these columns, so the user cannot set them and expect any
+different behavior.
+
+A side-effect of this change is what is described below. The reading of
+the csv file becomes more robust to order of columns, and improved error
+message.
+
+## Changelog
+
+- [x] Patch
+- [ ] Skip
+
+## cdf
+
+### Improved
+
+- In the `cdf migrate timeseries/files` commands the mapping file can
+now have columns in an arbitrary order and will ignore irrelevant
+columns instead of raising an error.
+
+## templates
+
+No changes.
+
+
