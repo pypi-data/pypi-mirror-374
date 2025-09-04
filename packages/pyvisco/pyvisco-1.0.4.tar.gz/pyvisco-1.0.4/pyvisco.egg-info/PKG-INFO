@@ -1,0 +1,76 @@
+Metadata-Version: 2.4
+Name: pyvisco
+Version: 1.0.4
+Summary: Pyvisco is a Python library that supports Prony series identification for linear viscoelastic material models.
+Home-page: https://github.com/NREL/pyvisco
+Author: Martin Springer
+Author-email: martin.springer@nrel.gov
+Maintainer: Martin Springer
+Maintainer-email: martin.springer@nrel.gov
+License: BSD-3
+Project-URL: Documentation, https://pyvisco.readthedocs.io/
+Project-URL: Source Code, https://github.com/NREL/pyvisco/
+Project-URL: Web application, https://pyvisco.herokuapp.com/
+Keywords: curve-fitting,material-modelling,viscoelasticity,prony
+Classifier: Development Status :: 4 - Beta
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.7
+License-File: LICENSE
+Requires-Dist: jupyter
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: scipy
+Requires-Dist: ipython
+Requires-Dist: ipywidgets
+Requires-Dist: ipympl
+Requires-Dist: voila
+Requires-Dist: xlrd
+Requires-Dist: Markdown
+Provides-Extra: doc
+Requires-Dist: sphinx<8.0,>=6.0; extra == "doc"
+Requires-Dist: docutils==0.18.1; extra == "doc"
+Requires-Dist: mistune<2.0; extra == "doc"
+Requires-Dist: m2r2; extra == "doc"
+Provides-Extra: all
+Requires-Dist: docutils==0.18.1; extra == "all"
+Requires-Dist: m2r2; extra == "all"
+Requires-Dist: mistune<2.0; extra == "all"
+Requires-Dist: sphinx<8.0,>=6.0; extra == "all"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: maintainer
+Dynamic: maintainer-email
+Dynamic: project-url
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+
+Pyvisco is a Python library that supports the identification of Prony series
+parameters for linear viscoelastic materials described by a Generalized Maxwell
+model. The necessary material model parameters are identified by fitting a Prony
+series to the experimental measurement data in either the frequency-domain
+(via Dynamic Mechanical Thermal Analysis) or time-domain (via relaxation
+measurements). Pyvisco performs the necessary data processing of the
+experimental measurements, mathematical operations, and curve-fitting routines
+to identify the Prony series parameters. These parameters are used in subsequent
+Finite Element simulations involving linear viscoelastic material models that
+accurately describe the mechanical behavior of polymeric materials such as
+encapsulants and backsheets of PV modules. An optional minimization routine is
+included to reduce the number of Prony elements. This routine is helpful in
+large Finite Element simulations where reducing the computational complexity of
+the linear viscoelastic material models can shorten the simulation time.
+
+Documentation: https://pyvisco.readthedocs.io
+Source code: https://github.com/NREL/pyvisco
