@@ -1,0 +1,19 @@
+# This is the central configuration file for your Python project.
+# It tells tools like `uv` how to build and manage your package.
+
+[build-system]
+# This section specifies that you are using uv-build as your build tool.
+requires = ["uv-build"]
+build-backend = "uv_build"
+
+[project]
+# This section contains metadata about your package.
+# 'name' is what you'll use to import the package (use a hyphen here,
+# Python will convert it to an underscore for importing: import my_package).
+name = "notificationz_sdk_python"
+version = "0.2.0"
+# classifiers = ["Private :: Do Not Upload"]
+dependencies = [
+  "requests",
+  "enum"
+]
