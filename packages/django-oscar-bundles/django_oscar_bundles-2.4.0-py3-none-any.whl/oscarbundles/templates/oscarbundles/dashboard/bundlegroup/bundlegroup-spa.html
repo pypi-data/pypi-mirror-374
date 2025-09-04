@@ -1,0 +1,44 @@
+{% extends 'oscar/dashboard/layout.html' %}
+{% load i18n %}
+{% load static %}
+
+
+{% block title %}
+    {% trans "Bundle Groups" %} | {{ block.super }}
+{% endblock %}
+
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                <a href="{% url 'dashboard-bundle-group-list' %}">{% trans "Bundle Groups" %}</a>
+            </li>
+        </ol>
+    </nav>
+{% endblock %}
+
+
+{% block dashboard_content %}
+    <div id="bundlegroup-table"
+         data-bundlegrouptype-api="{% url 'bundlegrouptype-list' %}"
+         data-bundlegroup-api="{% url 'bundlegroup-list' %}"
+         data-concretebundle-api="{% url 'concretebundle-list' %}"
+         data-concretebundle-product-choice-api="{% url 'concretebundle-product-choice-list' %}"
+         data-userconfigurablebundle-api="{% url 'userconfigurablebundle-list' %}"
+         data-userconfigurablebundle-range-choice-api="{% url 'userconfigurablebundle-range-choice-list' %}"
+     >
+     </div>
+{% endblock dashboard_content %}
+
+
+{% block extrascripts %}
+    {{ block.super }}
+    <link type="text/css" rel="stylesheet" src="{% static 'oscarbundles/bundles.css' %}" />
+    <script type="text/javascript" src="{% url 'oscarbundles-i18n-js' %}"></script>
+    <script type="text/javascript" src="{% static 'oscarbundles/vendor.js' %}"></script>
+    <script type="text/javascript" src="{% static 'oscarbundles/bundles.js' %}"></script>
+{% endblock %}
