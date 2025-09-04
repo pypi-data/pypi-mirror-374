@@ -1,0 +1,76 @@
+variables:
+    TAG_COMMIT: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA
+    CACHE_DIR: $CI_PROJECT_DIR/.ci-cache
+    UV_CACHE_DIR: $CACHE_DIR/uv
+
+cache:
+    paths: [.cache/pip]
+
+stages:
+    - test
+    - publish
+    - deploy
+    - version
+
+# STAGE: TEST
+
+test:
+    stage: test
+    tags: [ci, docker]
+    image: ghcr.io/astral-sh/uv:0.8.15-debian
+    script:
+        - uv sync
+        - source .venv/bin/activate
+        - ruff check &
+        - pyright &
+        - wait
+    cache:
+        key: test
+        paths: [$CACHE_DIR]
+
+# STAGE: PUBLISH
+
+pypi-publish:
+    stage: publish
+    tags: [ci, docker]
+    image: ghcr.io/astral-sh/uv:alpine
+    only: [main]
+    script:
+        - unset UV_CACHE_DIR
+        - uv build
+        - uv publish --username __token__ --password $PYPI_TOKEN
+    cache: []
+
+docker-publish:
+    stage: publish
+    tags: [ci, shell]
+    only: [main]
+    script:
+        - docker build
+          --tag $TAG_COMMIT
+          --build-arg CONFIG="$(base64 < $ENV_FILE)"
+          .
+        - server-tools docker-gl-ci push $TAG_COMMIT
+
+# STAGE: DEPLOY
+
+docker-deploy:
+    stage: deploy
+    only: [main]
+    tags: [prod, shell]
+    script:
+        - server-tools docker-gl-ci pull $TAG_COMMIT
+        - auto-infra run-container $TAG_COMMIT
+          --server-name device-setuper
+          --health-check-endpoint /openapi.json
+
+# STAGE: VERSION
+
+version:
+    stage: version
+    tags: [ci, docker]
+    image: ghcr.io/astral-sh/uv:0.8.15-alpine
+    only: [dev]
+    script:
+        - apk add git
+        - uvx uv-ci-tools bump-version patch --password $GITLAB_ACCESS_TOKEN

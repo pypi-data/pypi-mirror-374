@@ -1,0 +1,114 @@
+Metadata-Version: 2.4
+Name: unico_device_setuper
+Version: 1.16.10
+Author-email: Florian Daude <florian.daude@unicofrance.com>
+Requires-Python: <3.13,>=3.12
+Requires-Dist: attrs>=23.2.0
+Requires-Dist: beautifulsoup4>=4.12.3
+Requires-Dist: cyclopts>=2.9.9
+Requires-Dist: email-validator>=2.2.0
+Requires-Dist: fastapi>=0.111.0
+Requires-Dist: gunicorn>=22.0.0
+Requires-Dist: httpx>=0.27.0
+Requires-Dist: keyring>=24.0.0
+Requires-Dist: oci-client>=0.2.5
+Requires-Dist: openpyxl>=3.1.3
+Requires-Dist: platformdirs>=4.2.1
+Requires-Dist: pydantic>=2.7.1
+Requires-Dist: python-jose>=3.3.0
+Requires-Dist: python-slugify>=8.0.4
+Requires-Dist: slcfg>=0.3.1
+Requires-Dist: tqdm>=4.66.4
+Requires-Dist: typer>=0.12.3
+Requires-Dist: uvicorn>=0.29.0
+Description-Content-Type: text/markdown
+
+### How 2 install ?
+
+-   Avoir un mac
+-   Ouvrir un terminal
+-   Installer <a href="https://docs.astral.sh/uv/" class="external-link" target="_blank">uv</a>:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+-   Vérifier l'installation de uv:
+
+```bash
+uv --version
+```
+
+-   Installer <a href="https://gitlab.com/unico-dev/device-setuper" class="external-link" target="_blank">device-setuper</a>:
+
+```bash
+uv tool install unico_device_setuper
+```
+
+-   Vérifier l'installation device-setuper:
+
+```bash
+device-setup --version
+```
+
+---
+
+### How 2 mettre à jour ?
+
+```bash
+uv tool upgrade unico_device_setuper
+```
+
+---
+
+### Utilisation
+
+-   Ouvrir un terminal
+
+```bash
+device-setup
+```
+
+-   Se laisser guider 🧑‍🦯‍➡️
+
+---
+
+### Faire tourner en local
+
+-   Suivre les étapes <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="external-link" target="_blank">plus haut</a> pour installer uv
+
+-   Clone le répo:
+
+```bash
+git clone git@gitlab.com:unico-dev/device-setuper.git && cd device-setuper
+```
+
+-   Installer les dépendances:
+
+```bash
+uv sync
+```
+
+-   Rentrer dans l'environement virtuel
+
+```bash
+source .venv/bin/activate
+```
+
+-   Créer puis (probablement me demander pour) remplir le fichier d'environement:
+
+```bash
+touch config.toml
+```
+
+-   Pour lancer le backend:
+
+```bash
+device-setuper-backend
+```
+
+-   Pour lancer la cli:
+
+```bash
+device-setup
+```

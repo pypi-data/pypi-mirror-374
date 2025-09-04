@@ -1,0 +1,15 @@
+[oci]
+upload_part_size = 100_000_000
+
+[security]
+algorithms = ["HS256"]
+admin_permissions = 6
+
+
+[gunicorn]
+accesslog = '-'
+errorlog = '-'
+loglevel = 'info'
+capture_output = true
+timeout = 60
+port = 12000

@@ -1,0 +1,8 @@
+[oci]
+
+[security]
+
+[gunicorn]
+workers = 4
+port = 80
+host = '0.0.0.0'
