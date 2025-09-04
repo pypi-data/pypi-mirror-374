@@ -1,0 +1,266 @@
+# DeskLog
+
+一个基于Python和Flask的桌面日志应用程序，提供实时日志显示和远程日志记录功能。
+
+## 功能特性
+
+- 🖥️ **桌面GUI界面**：使用Tkinter构建的置顶窗口，实时显示日志
+- 🌐 **Web API服务**：内置Flask服务器，支持HTTP POST请求接收日志
+- 📝 **日志管理**：自动管理日志数量，保持最新50条记录
+- 🔄 **实时更新**：每500ms自动刷新显示最新的10条日志
+- 🎨 **终端风格**：黑色背景配绿色文字，模拟终端效果
+- 📡 **远程日志**：支持从其他应用程序发送日志到DeskLog
+
+## 安装
+
+### 方法1：使用pip安装（推荐）
+
+```bash
+pip install desklog
+```
+
+### 方法2：一键安装脚本（推荐，自动处理所有依赖）
+
+```bash
+# 下载并运行一键安装脚本
+curl -O https://raw.githubusercontent.com/yourusername/desklog/main/install_desklog.py
+python3 install_desklog.py
+```
+
+### 方法3：使用安装脚本（自动处理依赖）
+
+```bash
+# 下载并运行安装脚本
+curl -O https://raw.githubusercontent.com/yourusername/desklog/main/install.py
+python3 install.py
+```
+
+### 系统依赖要求
+
+DeskLog需要以下系统依赖：
+
+#### macOS
+```bash
+# 安装tkinter支持
+brew install python-tk
+
+# 或者使用系统Python（通常包含tkinter）
+/usr/bin/python3 -m pip install desklog
+```
+
+#### Linux (Ubuntu/Debian)
+```bash
+# 安装tkinter支持
+sudo apt-get install python3-tk
+
+# 安装DeskLog
+pip install desklog
+```
+
+#### Linux (CentOS/RHEL)
+```bash
+# 安装tkinter支持
+sudo yum install tkinter
+
+# 安装DeskLog
+pip install desklog
+```
+
+#### Windows
+tkinter通常随Python一起安装。如果不可用，请重新安装Python或使用Anaconda。
+
+### 验证安装
+
+安装完成后，运行以下命令验证：
+
+```bash
+# 检查依赖
+python3 -c "import tkinter; print('tkinter可用')"
+
+# 运行DeskLog
+desklog
+```
+
+## 使用方法
+
+### 1. 启动DeskLog服务
+
+安装完成后，运行以下命令启动DeskLog：
+
+```bash
+desklog
+```
+
+这将启动：
+- 一个置顶的桌面窗口（位于屏幕右上角）
+- 一个Flask服务器（监听8765端口）
+
+### 2. 在代码中使用DeskLog
+
+在你的Python项目中导入并使用DeskLog客户端：
+
+```python
+from desklog import log
+
+# 发送日志消息
+log("这是一条测试日志")
+log("应用程序启动完成")
+log("用户登录成功")
+log("处理数据中...")
+```
+
+### 3. 通过HTTP API发送日志
+
+你也可以直接通过HTTP POST请求发送日志：
+
+```python
+import requests
+
+# 发送日志到DeskLog
+response = requests.post(
+    "http://127.0.0.1:8765/log",
+    json={"msg": "通过API发送的日志消息"}
+)
+```
+
+### 4. 在其他编程语言中使用
+
+任何支持HTTP请求的编程语言都可以与DeskLog通信：
+
+```bash
+# 使用curl发送日志
+curl -X POST http://127.0.0.1:8765/log \
+  -H "Content-Type: application/json" \
+  -d '{"msg": "来自curl的日志"}'
+```
+
+```javascript
+// 在JavaScript中发送日志
+fetch('http://127.0.0.1:8765/log', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({msg: '来自JavaScript的日志'})
+});
+```
+
+## 界面说明
+
+- **窗口位置**：默认显示在屏幕右上角
+- **窗口大小**：400x200像素
+- **显示内容**：显示最新的10条日志记录
+- **更新频率**：每500毫秒自动刷新
+- **窗口特性**：置顶显示，无边框，始终可见
+
+## 配置选项
+
+目前DeskLog使用默认配置：
+- 服务器端口：8765
+- 最大日志条数：50条
+- 显示日志条数：10条
+- 更新间隔：500毫秒
+
+## 使用场景
+
+DeskLog特别适合以下场景：
+
+- **开发调试**：在开发过程中实时查看应用程序的日志输出
+- **系统监控**：监控系统状态和关键事件
+- **多应用集成**：从多个不同的应用程序收集日志到统一界面
+- **远程日志**：通过网络API接收远程设备的日志信息
+- **实时反馈**：为长时间运行的任务提供实时进度反馈
+
+## 示例项目
+
+### Python项目集成示例
+
+```python
+# main.py
+import time
+from desklog import log
+
+def main():
+    log("应用程序启动")
+    
+    for i in range(10):
+        log(f"处理任务 {i+1}/10")
+        time.sleep(1)
+    
+    log("所有任务完成")
+
+if __name__ == "__main__":
+    main()
+```
+
+### Web应用集成示例
+
+```python
+# Flask应用示例
+from flask import Flask
+import requests
+
+app = Flask(__name__)
+
+@app.route('/api/data')
+def get_data():
+    try:
+        # 处理数据
+        result = process_data()
+        requests.post('http://127.0.0.1:8765/log', 
+                     json={'msg': '数据获取成功'})
+        return result
+    except Exception as e:
+        requests.post('http://127.0.0.1:8765/log', 
+                     json={'msg': f'错误: {str(e)}'})
+        raise
+```
+
+## 故障排除
+
+### 常见问题
+
+1. **DeskLog窗口没有显示**
+   - 确保没有其他应用程序遮挡了右上角区域
+   - 检查是否有多个DeskLog实例在运行
+
+2. **日志没有显示**
+   - 确认DeskLog服务正在运行（端口8765）
+   - 检查网络连接和防火墙设置
+   - 查看控制台是否有错误信息
+
+3. **端口被占用**
+   - 如果8765端口被占用，需要修改server.py中的端口号
+   - 或者停止占用该端口的其他服务
+
+## 开发环境设置
+
+要设置开发环境：
+
+1. 克隆仓库
+2. 安装依赖：
+   ```bash
+   pip install -e .
+   ```
+
+## 许可证
+
+本项目采用MIT许可证 - 查看LICENSE文件了解详情。
+
+## 贡献
+
+欢迎贡献代码！请随时提交Pull Request。
+
+## 更新日志
+
+### v0.1.1
+- 修复tkinter依赖检查问题
+- 添加自动依赖检测和安装指导
+- 改进错误处理和用户提示
+- 添加跨平台安装脚本
+
+### v0.1.0
+- 初始版本发布
+- 基本的桌面日志显示功能
+- Flask API服务器
+- 支持Python客户端集成
