@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="correos_shipment_code_action" model="ir.actions.act_window">
+        <field name="name">Correos Shipment Codes</field>
+        <field name="res_model">correos.shipment.code</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem
+        name="Correos Shipment Codes"
+        id="correos_shipment_code_menuitem"
+        action="correos_shipment_code_action"
+        parent="contacts.res_partner_menu_config"
+        sequence="99"
+    />
+    <record id="correos_shipment_code_tree" model="ir.ui.view">
+        <field name="name">Correos Shipment Code</field>
+        <field name="model">correos.shipment.code</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="code" />
+            </tree>
+        </field>
+    </record>
+</odoo>
