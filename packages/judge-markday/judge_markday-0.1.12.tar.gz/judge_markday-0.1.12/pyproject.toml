@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "build"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "judge-markday"
+version = "0.1.12"
+description = "Utility for marking daily results with judge integration"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "andrwl1" }]
+
+[project.urls]
+Homepage = "https://github.com/andrwl1/judge-markday"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["judge*"]
