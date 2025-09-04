@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "olca2tidas"
+version = "0.1.6"
+description = "Convert openLCA JSON-LD to TIDAS/eILCD JSON for TianGong LCA database"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [{name = "Qilin Cao"}]
+keywords = ["LCA", "openLCA", "TIDAS", "ILCD", "TianGong", "converter"]
+
+[project.urls]
+Homepage = "https://github.com/Kirin-Ciao/olca2tidas"
+Repository = "https://github.com/Kirin-Ciao/olca2tidas"
+
+[project.scripts]
+olca2tidas = "olca2tidas.cli:run"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/olca2tidas"]
