@@ -1,0 +1,109 @@
+- name: aspects-scripts
+  files:{% for file in "aspects/apps/aspects/scripts"|walk_templates %}
+  - plugins/{{ file }}{% endfor %}
+  options:
+    labels:
+        app.kubernetes.io/name: aspects
+- name: aspects-dbt
+  files:{% for file in "aspects/apps/aspects/dbt"|walk_templates %}
+  - plugins/{{ file }}{% endfor %}
+  options:
+    labels:
+        app.kubernetes.io/name: aspects
+
+- name: aspects-migrations
+  files:
+  - plugins/aspects/apps/aspects/migrations/alembic.ini
+  options:
+    labels:
+        app.kubernetes.io/name: aspects
+
+- name: aspects-migrations-alembic
+  files:
+  - plugins/aspects/apps/aspects/migrations/alembic/env.py
+  - plugins/aspects/apps/aspects/migrations/alembic/script.py.mako
+  options:
+    labels:
+        app.kubernetes.io/name: aspects
+
+- name: aspects-migrations-alembic-versions
+  files:{% for file in "aspects/apps/aspects/migrations/alembic/versions"|walk_templates %}
+  - plugins/{{ file }}{% endfor %}
+  options:
+    labels:
+        app.kubernetes.io/name: aspects
+
+{% if RUN_CLICKHOUSE %}
+- name: clickhouse-user-settings
+  files:
+    - plugins/aspects/apps/clickhouse/users/user_config.xml
+  options:
+    labels:
+        app.kubernetes.io/name: clickhouse
+- name: clickhouse-server-settings
+  files:
+    - plugins/aspects/apps/clickhouse/config/server_config.xml
+  options:
+    labels:
+        app.kubernetes.io/name: clickhouse
+{% endif %}
+
+{% if RUN_RALPH %}
+- name: ralph-settings
+  files:
+    - plugins/aspects/apps/ralph/config/ralph_auth/auth.json
+  options:
+    labels:
+        app.kubernetes.io/name: ralph
+
+- name: ralph-logging
+  files:
+    - plugins/aspects/apps/ralph/config/logging.yaml
+  options:
+    labels:
+        app.kubernetes.io/name: ralph
+{% endif %}
+
+{% if RUN_SUPERSET %}
+- name: superset-docker
+  files:
+    - plugins/aspects/apps/superset/docker/docker-bootstrap.sh
+    - plugins/aspects/apps/superset/docker/requirements-local.txt
+  options:
+    labels:
+        app.kubernetes.io/name: superset
+
+- name: superset-pythonpath
+  files:{% for file in "aspects/apps/superset/pythonpath/"|walk_templates %}
+  - plugins/{{ file }}{% endfor %}
+  options:
+    labels:
+        app.kubernetes.io/name: superset
+
+- name: superset-pythonpath-openedx
+  files:{% for file in "aspects/apps/superset/pythonpath/openedx/"|walk_templates %}
+  - plugins/{{ file }}{% endfor %}
+  options:
+    labels:
+        app.kubernetes.io/name: superset
+
+- name: superset-security
+  files:
+    - plugins/aspects/apps/superset/security/roles.json
+  options:
+    labels:
+        app.kubernetes.io/name: superset
+
+- name: superset-scripts
+  files:{% for file in "aspects/apps/superset/scripts"|walk_templates %}
+  - plugins/{{ file }}{% endfor %}
+  options:
+    labels:
+        app.kubernetes.io/name: superset
+
+{% endif %}
+{% if RUN_VECTOR %}
+- name: vector-config
+  files:
+    - plugins/aspects/apps/vector/k8s.toml
+{% endif %}

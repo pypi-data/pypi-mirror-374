@@ -1,0 +1,147 @@
+_file_name: Problem_Engagement_per_Section_Subsection_8cdcd4.yaml
+cache_timeout: null
+certification_details: null
+certified_by: null
+dataset_uuid: 171c88e5-fd4b-4aab-b287-361fa6fa5415
+description: null
+params:
+  adhoc_filters:
+  - clause: WHERE
+    comparator: null
+    datasourceWarning: false
+    expressionType: SQL
+    filterOptionName: filter_pl0jq8ekze_4ayga9dbjat
+    isExtra: false
+    isNew: false
+    operator: null
+    sqlExpression: |-
+      `section_subsection_name` <> ''
+    subject: null
+  annotation_layers: []
+  color_scheme: supersetColors
+  extra_form_data: {}
+  groupby: []
+  legendOrientation: top
+  legendType: scroll
+  metrics:
+  - attempted_at_least_one_problem
+  - attempted_all_problems
+  orientation: vertical
+  rich_tooltip: true
+  row_limit: 10000
+  show_empty_columns: true
+  show_legend: true
+  show_value: false
+  sort_series_type: sum
+  tooltipTimeFormat: smart_date
+  truncateXAxis: true
+  truncate_metric: true
+  viz_type: echarts_timeseries_bar
+  x_axis: section_subsection_name
+  x_axis_sort_series: name
+  x_axis_sort_series_ascending: true
+  y_axis_format: SMART_NUMBER
+  y_axis_title: Number of Learners
+  y_axis_title_margin: 30
+  y_axis_title_position: Left
+  zoomable: true
+query_context:
+  datasource:
+    id: 61
+    type: table
+  force: false
+  form_data:
+    adhoc_filters:
+    - clause: WHERE
+      comparator: null
+      datasourceWarning: false
+      expressionType: SQL
+      filterOptionName: filter_pl0jq8ekze_4ayga9dbjat
+      isExtra: false
+      isNew: false
+      operator: null
+      sqlExpression: |-
+        `section_subsection_name` <> ''
+      subject: null
+    annotation_layers: []
+    color_scheme: supersetColors
+    dashboards:
+    - 24
+    - 25
+    datasource: 61__table
+    extra_form_data: {}
+    force: false
+    groupby: []
+    legendOrientation: top
+    legendType: scroll
+    metrics:
+    - attempted_at_least_one_problem
+    - attempted_all_problems
+    orientation: vertical
+    result_format: json
+    result_type: full
+    rich_tooltip: true
+    row_limit: 10000
+    show_empty_columns: true
+    show_legend: true
+    show_value: false
+    slice_id: 22
+    sort_series_type: sum
+    tooltipTimeFormat: smart_date
+    truncateXAxis: true
+    truncate_metric: true
+    viz_type: echarts_timeseries_bar
+    x_axis: section_subsection_name
+    x_axis_sort_series: name
+    x_axis_sort_series_ascending: true
+    y_axis_format: SMART_NUMBER
+    y_axis_title: Number of Learners
+    y_axis_title_margin: 30
+    y_axis_title_position: Left
+    zoomable: true
+  queries:
+  - annotation_layers: []
+    applied_time_extras: {}
+    columns:
+    - columnType: BASE_AXIS
+      expressionType: SQL
+      label: section_subsection_name
+      sqlExpression: section_subsection_name
+    custom_form_data: {}
+    custom_params: {}
+    extras:
+      having: ''
+      where: |-
+        (`section_subsection_name` <> '')
+    filters: []
+    metrics:
+    - attempted_at_least_one_problem
+    - attempted_all_problems
+    order_desc: true
+    orderby:
+    - - attempted_at_least_one_problem
+      - false
+    post_processing:
+    - operation: pivot
+      options:
+        aggregates:
+          attempted_all_problems:
+            operator: mean
+          attempted_at_least_one_problem:
+            operator: mean
+        columns: []
+        drop_missing_columns: false
+        index:
+        - section_subsection_name
+    - operation: flatten
+    row_limit: 10000
+    series_columns: []
+    series_limit: 0
+    time_offsets: []
+    url_params: {}
+  result_format: json
+  result_type: full
+slice_name: Problem Engagement per Section/Subsection
+uuid: 8cdcd4aa-1fa2-41dc-b38d-f1112134592e
+version: 1.0.0
+viz_type: echarts_timeseries_bar

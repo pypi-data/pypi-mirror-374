@@ -1,0 +1,69 @@
+# Delivery settings for ERB
+EVENT_ROUTING_BACKEND_BATCHING_ENABLED = {{ EVENT_ROUTING_BACKEND_BATCHING_ENABLED }}
+EVENT_ROUTING_BACKEND_BATCH_SIZE = {{ EVENT_ROUTING_BACKEND_BATCH_SIZE }}
+EVENT_ROUTING_BACKEND_BATCH_INTERVAL = {{ EVENT_ROUTING_BACKEND_BATCH_INTERVAL }}
+
+# Configuration needed for openedx-event-sink-clickhouse
+EVENT_SINK_CLICKHOUSE_BACKEND_CONFIG = {
+	"url": "{% if CLICKHOUSE_SECURE_CONNECTION %}https{% else %}http{% endif %}://{{ CLICKHOUSE_HOST }}:{{ CLICKHOUSE_INTERNAL_HTTP_PORT }}",
+	"username": "{{ ASPECTS_CLICKHOUSE_CMS_USER }}",
+	"password": "{{ ASPECTS_CLICKHOUSE_CMS_PASSWORD }}",
+	"database": "{{ ASPECTS_EVENT_SINK_DATABASE }}",
+	"timeout_secs": {{ ASPECTS_EVENT_SINK_CLICKHOUSE_TIMEOUT_SECS }}
+}
+SUPERSET_CONFIG = {
+	"service_url": "{% if ENABLE_HTTPS %}https{% else %}http{% endif %}://{{ SUPERSET_HOST }}",
+	"username": "{{ SUPERSET_LMS_USERNAME }}",
+	"password": "{{ SUPERSET_LMS_PASSWORD }}",
+}
+EVENT_SINK_CLICKHOUSE_PII_MODELS = {{ EVENT_SINK_PII_MODELS }}
+
+ASPECTS_INSTRUCTOR_DASHBOARDS = {{ ASPECTS_INSTRUCTOR_DASHBOARDS }}
+SUPERSET_DASHBOARD_LOCALES = {{ SUPERSET_DASHBOARD_LOCALES }}
+SUPERSET_SHOW_INSTRUCTOR_DASHBOARD_LINK = {{ SUPERSET_SHOW_INSTRUCTOR_DASHBOARD_LINK }}
+ASPECTS_ENABLE_STUDIO_IN_CONTEXT_METRICS = {{ASPECTS_ENABLE_STUDIO_IN_CONTEXT_METRICS}}
+{% if ASPECTS_ENABLE_INSTRUCTOR_DASHBOARD_PLUGIN %}
+try:
+    not OPEN_EDX_FILTERS_CONFIG
+except NameError:  # OPEN_EDX_FILTERS_CONFIG is not defined
+    OPEN_EDX_FILTERS_CONFIG = {}
+if not OPEN_EDX_FILTERS_CONFIG.get("org.openedx.learning.instructor.dashboard.render.started.v1"):
+    OPEN_EDX_FILTERS_CONFIG["org.openedx.learning.instructor.dashboard.render.started.v1"] = {
+        "fail_silently": False,
+        "pipeline": [],
+    }
+OPEN_EDX_FILTERS_CONFIG["org.openedx.learning.instructor.dashboard.render.started.v1"]["pipeline"].append("platform_plugin_aspects.extensions.filters.AddSupersetTab")
+{% endif %}
+
+{% if ASPECTS_ENABLE_EVENT_BUS_PRODUCER %}
+# Update the backends to use the event bus
+EVENT_TRACKING_BACKENDS["event_transformer"]["ENGINE"] = "eventtracking.backends.event_bus.EventBusRoutingBackend"
+# Update backend to send events in sync mode
+EVENT_TRACKING_BACKENDS["event_transformer"]["OPTIONS"]["backends"]["xapi"]["ENGINE"] = "event_routing_backends.backends.sync_events_router.SyncEventsRouter"
+EVENT_TRACKING_BACKENDS["event_transformer"]["OPTIONS"]["backends"]["caliper"]["ENGINE"] = "event_routing_backends.backends.sync_events_router.SyncEventsRouter"
+# Enable the event bus producer
+SEND_TRACKING_EVENT_EMITTED_SIGNAL = True
+# Update the event bus producer config
+try:
+	not EVENT_BUS_PRODUCER_CONFIG
+except NameError:  # EVENT_BUS_PRODUCER_CONFIG is not defined
+	EVENT_BUS_PRODUCER_CONFIG = {}
+EVENT_BUS_PRODUCER_CONFIG.update(
+	{
+    	"org.openedx.analytics.tracking.event.emitted.v1": {
+        	"analytics": {
+            	"event_key_field": "tracking_log.name", "enabled": True
+         	}
+       }
+    }
+)
+if not "openedx_events" in INSTALLED_APPS:
+	INSTALLED_APPS.append("openedx_events")
+{% endif %}
+
+
+{% for model in EVENT_SINK_MODELS_ENABLED %}
+EVENT_SINK_CLICKHOUSE_{{model.upper()}}_ENABLED = True{% endfor %}
+{% if ASPECTS_ENABLE_PII %}# User PII models
+{% for model in EVENT_SINK_PII_MODELS %}EVENT_SINK_CLICKHOUSE_{{model.upper()}}_ENABLED = True
+{% endfor %}{% endif %}
