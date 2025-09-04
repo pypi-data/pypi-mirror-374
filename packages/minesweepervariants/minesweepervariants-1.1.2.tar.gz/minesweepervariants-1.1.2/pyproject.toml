@@ -1,0 +1,48 @@
+[project]
+name = "minesweepervariants"
+dynamic = []
+description = ""
+authors = [
+    {name = "Minesweepervariants-Fanmade(Organization)",email = "Minesweepervariants-Fanmade@outlook.com"},
+    {name = "WuZh-Rh",email = "you@example.com"},
+    {name = "KoolShow",email = "51787949+KoolShow@users.noreply.github.com"}
+]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+requires-python = ">=3.12,<3.15"
+version = "1.1.2"
+
+[tool.poetry]
+
+[tool.poetry.dependencies]
+ortools = ">=9.13.4784,<9.14.0"
+
+# [image]
+pillow = { version = ">=11.3.0,<11.4.0", optional = true }
+
+# [server]
+flask = { version = ">=3.1.2,<4.0.0", extras = ["async"], optional = true }
+flask-cors = { version = ">=6.0.1,<7.0.0", optional = true }
+waitress = { version = ">=3.0.2,<3.1.0", optional = true }
+orjson = { version = ">=3.11.2,<4.0.0", optional = true }
+requests = { version = ">=2.28.0,<3.0.0", optional = true }
+
+[tool.poetry.extras]
+image = ["pillow"]
+server = ["flask", "flask-cors", "waitress", "orjson", "requests"]
+
+[tool.poetry.requires-plugins]
+poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = ["plugin"] }
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.poetry.group.dev.dependencies]
+ipython = "^9.4.0"
+jurigged = { git = "https://github.com/Minesweepervariants-Fanmade/jurigged.git", rev = "0.6.1-dev" }
+
+[tool.poetry-dynamic-versioning]
+enable = false
+vcs = "git"
+style = "pep440"
