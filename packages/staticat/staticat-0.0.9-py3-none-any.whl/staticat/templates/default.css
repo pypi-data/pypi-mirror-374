@@ -1,0 +1,45 @@
+/* Diese Datei bitte nicht bearbeiten! */
+/* Sie wird beim nächsten Ausführen von Staticat überschrieben. */
+
+#logo {
+    float: left;
+    height: 5em;
+    margin-right: 1em;
+}
+
+#logo-text {
+    align-items: center;
+    display: flex;
+    height: 5em;
+}
+
+#dark {
+    font-family: bootstrap-icons;
+}
+
+body > header a {
+    color: unset;
+    text-decoration: unset;
+}
+
+article header {
+    font-weight: bold;
+}
+
+.tree {
+    margin-left: calc(var(--depth) * 3em);
+}
+
+.tree:before {
+    display: inline-block;
+    font-family: bootstrap-icons;
+    margin-right: 0.25em;
+}
+
+.directory:before {
+    content: "\F3D8";
+}
+
+.dataset:before {
+    content: "\F383";
+}

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="de" data-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="color-scheme" content="light dark">
+        <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/hriebl/staticat/refs/heads/main/assets/favicon.png">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.cyan.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="{{ dataset.relative_catalog }}/default.css">
+        <link rel="stylesheet" href="{{ dataset.relative_catalog }}/user.css">
+        <script>
+            function toggle(button) {
+                const html = document.documentElement;
+                const current = html.getAttribute("data-theme");
+                const theme = current === "light" ? "dark" : "light";
+                const icon = current === "light" ? "&#xF5A2;" : "&#xF496;";
+                html.setAttribute("data-theme", theme);
+                button.innerHTML = icon;
+            }
+        </script>
+        <title>{{ dataset.title }}</title>
+    </head>
+    <body>
+        <header class="container">
+            <nav>
+                <ul>
+                    <li>
+                        <a href="{{ dataset.relative_catalog }}/index.html">
+                            <img id="logo" src="https://raw.githubusercontent.com/hriebl/staticat/refs/heads/main/assets/logo.png" alt="staticat logo">
+                            <div id="logo-text"><strong>Offener Datensatz<br>aus Staticat</strong></div>
+                        </a>
+                    </li>
+                </ul>
+                <ul><li><button id="dark" class="outline" onclick="toggle(this);">&#xF496;</button></li></ul>
+            </nav>
+        </header>
+        <main class="container">
+            <article>
+                <header>Titel</header>
+                <div>{{ dataset.title }}</div>
+            </article>
+            <article>
+                <header>Beschreibung</header>
+                <div>{{ dataset.html_description | safe }}</div>
+            </article>
+            <article>
+                <header>Dateien</header>
+                <div>
+                    <ul>
+                        {% for distribution in dataset.distributions %}
+                            <li>
+                                {% if distribution.local %}
+                                    <span><a href="{{ distribution.title | urlencode }}">{{ distribution.title }}</a></span>
+                                {%- else -%}
+                                    <span><a href="{{ distribution.uri }}">{{ distribution.title }}</a></span>
+                                {%- endif -%}
+                                {%- if distribution.modified -%}
+                                    <span>, aktualisiert am {{ distribution.modified.date() }}</span>
+                                {%- endif -%}
+                                {%- if distribution.byte_size -%}
+                                    <span>, Dateigröße: {{ distribution.byte_size }} Bytes</span>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </article>
+            <article>
+                <header>Schlagworte</header>
+                <div>
+                    <ul>
+                        {% for keyword in dataset.keywords %}
+                            <li>{{ keyword }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </article>
+            <article>
+                <header>Kategorien</header>
+                <div>
+                    <ul>
+                        {% for theme in dataset.themes %}
+                            <li><a target="_blank" rel="noopener" href="http://publications.europa.eu/resource/authority/data-theme/{{ theme }}">{{ theme }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </article>
+            <article>
+                <header>Räumliche Abdeckung</header>
+                <div><a target="_blank" rel="noopener" href="{{ dataset.spatial }}">{{ dataset.spatial | urlname }}</a></div>
+            </article>
+            <article>
+                <header>Geopolitische Abdeckung</header>
+                <div>
+                    <span><a target="_blank" rel="noopener" href="{{ dataset.political_geocoding }}">{{ dataset.political_geocoding | urlname }}</a></span>
+                    <span>(<a target="_blank" rel="noopener" href="{{ dataset.political_geocoding_level }}">{{ dataset.political_geocoding_level | urlname }}</a>)</span>
+                </div>
+            </article>
+            <article>
+                <header>Zeitliche Abdeckung</header>
+                <div>{{ dataset.start_date.date() }} bis {{ dataset.end_date.date() }}</div>
+            </article>
+            <article>
+                <header>Lizenz</header>
+                <div><a target="_blank" rel="noopener" href="http://dcat-ap.de/def/licenses/{{ dataset.license }}">{{ dataset.license }}</a></div>
+            </article>
+            <article>
+                <header>Verfügbarkeit</header>
+                <div><a target="_blank" rel="noopener" href="http://publications.europa.eu/resource/authority/planned-availability/{{ dataset.availability }}">{{ dataset.availability }}</a></div>
+            </article>
+            <article>
+                <header>Veröffentlichungsdatum</header>
+                <div>{{ dataset.issued.date() }}</div>
+            </article>
+            <article>
+                <header>Zuständige:r</header>
+                <div><a target="_blank" rel="noopener" href="mailto:{{ dataset.maintainer.email }}">{{ dataset.maintainer.name }}</a></div>
+            </article>
+            <article>
+                <header>Ersteller:in</header>
+                <div><a target="_blank" rel="noopener" href="mailto:{{ dataset.creator.email }}">{{ dataset.creator.name }}</a></div>
+            </article>
+            <article>
+                <header>Herausgeber:in</header>
+                <div><a target="_blank" rel="noopener" href="{{ dataset.publisher.uri }}">{{ dataset.publisher.name }}</a></div>
+            </article>
+        </main>
+        <footer class="container">
+            <nav>
+                <ul>
+                    <li><a href="#">Impressum</a></li>
+                    <li><a href="#">Datenschutz</a></li>
+                </ul>
+            </nav>
+        </footer>
+    </body>
+</html>
