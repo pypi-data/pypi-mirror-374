@@ -1,0 +1,18 @@
+Metadata-Version: 2.4
+Name: tfswitch
+Version: 0.0.0
+Summary: Python CLI Utility to switch between various versions of Terraform seamlessly
+Author: Chowdhury Faizal Ahammed
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Requires-Dist: requests
+Requires-Dist: InquirerPy
+Requires-Dist: packaging
+Requires-Dist: urllib3
+Dynamic: author
+Dynamic: classifier
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
