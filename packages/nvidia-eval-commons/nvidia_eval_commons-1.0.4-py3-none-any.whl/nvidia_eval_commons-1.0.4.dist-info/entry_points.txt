@@ -1,0 +1,4 @@
+[console_scripts]
+eval-factory = nvidia_eval_commons.core.entrypoint:run_eval
+nvidia-eval-commons-example = nvidia_eval_commons.cli.example:main
+nvidia_eval_commons_example = nvidia_eval_commons.cli.example:main
