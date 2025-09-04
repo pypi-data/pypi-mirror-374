@@ -1,0 +1,181 @@
+# workday-calc
+
+日本の土日・祝日（+任意の追加休日）を考慮して **working day（稼働日）** を計算する CLI ツールです。
+
+> **重要**: 本バージョンから挙動を **「開始日を数に含める（inclusive）」で統一** しました。
+> - `-n/--offset-workdays` …… 開始日を **1 日目** として数え、n 営業日目を返します。
+> - `-e/--end` …… 開始日と終了日の **両端を含めて** 営業日数を数えます。
+> - `-w/--with-holiday` …… 土日祝の区別をせず、開始日・終了日を **両端含む** カレンダー日数を数えます。
+
+「開始日: 2023/08/27、終了日: 2023/08/27」を入力した場合は `1 days` と返るのが仕様です（稼働日・日数はいずれも開始日を含むため）。
+
+育休・産休・特別休暇の申請で、**期間（カレンダー日数）** と **稼働日数（営業日数）** の両方が必要なケースを想定して作成しています。
+
+---
+
+## インストール
+
+```bash
+pip3 install https://github.com/konono/workday-calc
+```
+
+> PyPI に公開していない場合は、`pip install git+https://github.com/<owner>/workday-calc.git` の形式をご利用ください。
+
+---
+
+## 使い方（概要）
+
+2 つのモードがあります。
+
+1. **期間モード**（`-e/--end`）: 開始日〜終了日の **営業日数** を数える
+2. **オフセットモード**（`-n/--offset-workdays`）: 開始日から **n 営業日目** の日付を求める（開始日=1 日目）
+
+```bash
+python3 cli.py -s <date> (-e <date> | -n <workdays>) [options]
+```
+
+### オプション
+- `-s, --start <DATE>`: 開始日。省略時は「今日」。
+- `-e, --end <DATE>`: 終了日。指定すると **期間モード** になります。
+- `-n, --offset-workdays <N>`: 開始日から N **営業日目** の日付を求めます（**inclusive**）。
+- `--holidays <DATES...>`: 日本の祝日に加えて除外したい日をスペース区切りで指定（社内休日など）。
+- `-w, --with-holiday`: 期間モードで **土日祝を区別せず**、カレンダー日数（両端含む）を数えます。
+- `-R, --show-period`: オフセットモード時に `period: <start> - <target>` を併記表示します。
+- `--debug`: 期間中に該当する日本の祝日一覧を出力します。
+
+### 受け付ける日付フォーマット
+`YYYY-MM-DD, YYYY-M-DD, YYYY-M-D, YYYY/MM/DD, YYYY/M/DD, YYYY/M/D, YYYY.MM.DD, YYYY.M.DD, YYYY.M.D, YYYYMMDD`
+
+---
+
+## ヘルプ
+
+```text
+usage: python3 cli.py -s <date> (-e <date> | -n <workdays>) [option]
+Available date formats is following:
+YYYY-MM-DD, YYYY-M-DD, YYYY-M-D, YYYY/MM/DD, YYYY/M/DD, YYYY/M/D, YYYY.MM.DD, YYYY.M.DD, YYYY.M.D, YYYYMMDD
+
+options:
+  -h, --help              show this help message and exit
+  --with-holiday, -w      To calculate the number of days with holiday.
+  --debug                 debug option
+  --show-period, -R       In -n mode, also print "period: <start> - <target>".
+
+date:
+  --start START_DATE, -s START_DATE
+  --end END_DATE, -e END_DATE
+  --offset-workdays OFFSET_WORKDAYS, -n OFFSET_WORKDAYS
+  --holidays [HOLIDAYS ...]  A list of date format, space delimiter
+```
+
+---
+
+## 基本使用例
+
+### 営業日数（稼働日数）を数える（両端含む）
+```bash
+❯ workday-calc -s 2023/10/18 -e 2024/01/31
+start_date: 2023/10/18
+end_date:   2024/01/31
+workdays:   72 days
+```
+
+### 社内休日を追加して除外
+```bash
+❯ workday-calc -s 2023/10/18 -e 2024/01/31 --holidays 2024/1/2 2024/1/3
+start_date: 2023/10/18
+end_date:   2024/01/31
+workdays:   70 days
+```
+
+### カレンダー日数（両端含む、土日祝を区別しない）
+```bash
+❯ workday-calc -s 2023/10/18 -e 2024/01/31 -w
+start_date: 2023/10/18
+end_date:   2024/01/31
+days:       106 days
+```
+
+### 開始日から *n* 営業日目（開始日を 1 日目）
+```bash
+❯ workday-calc -s 2025/10/01 -n 10
+start_date:       2025/10/01
+offset_workdays:  10 days
+target_date:      2025/10/15
+```
+
+---
+
+## ユースケース（育休・PTO 計画）
+
+### 1) 育休取得の全体像を把握（10/01–12/31）
+- **目的**: 期間全体のカレンダー日数を把握（会社への申請や賃金計算の参考に）。
+```bash
+❯ workday-calc -s 2025/10/01 -e 2025/12/31 -w
+start_date: 2025/10/01
+end_date:   2025/12/31
+days:       92 days
+```
+
+### 2) 10/01–10/30 を有給（PTO）、残りを育児休業とするケース
+- **手順 A**: まず PTO として消化する区間の **営業日数** を確認。
+```bash
+❯ workday-calc -s 2025/10/01 -e 2025/10/30
+start_date: 2025/10/01
+end_date:   2025/10/30
+workdays:   22 days
+```
+- **手順 B**: PTO 消化後（10/31 以降）に切り替える **育児休業のみのカレンダー日数** を確認。
+```bash
+❯ workday-calc -s 2025/10/31 -e 2025/12/31 -w
+start_date: 2025/10/31
+end_date:   2025/12/31
+days:       62 days
+```
+
+> 会社独自の特別休日がある場合は `--holidays` で追加してください。該当日は営業日から除外されます。
+
+### 3) 「10 日の特別有給」を起点日に合わせて取りたい
+- **目的**: 10/01 を 1 日目として **10 営業日目** まで休む区間（=10 日分の PTO）を求める。
+```bash
+❯ workday-calc -s 2025/10/01 -n 10
+start_date:       2025/10/01
+offset_workdays:  10 days
+target_date:      2025/10/15
+```
+- **確認**: 10/01–10/15 の **営業日数** は 10 日。
+```bash
+❯ workday-calc -s 2025/10/01 -e 2025/10/15
+start_date: 2025/10/01
+end_date:   2025/10/15
+workdays:   10 days
+```
+
+- **次の区間（10/16–10/30）に必要な PTO** を計算。
+```bash
+❯ workday-calc -s 2025/10/16 -e 2025/10/30
+start_date: 2025/10/16
+end_date:   2025/10/30
+workdays:   11 days
+```
+
+- **PTO + 育児休業の全体カレンダー日数**（土日祝含む）
+```bash
+❯ workday-calc -s 2025/10/01 -e 2025/12/31 -w
+start_date: 2025/10/01
+end_date:   2025/12/31
+days:       92 days
+```
+
+---
+
+## メモ / 注意点
+- 祝日は `jpholiday` の定義に従います。法改正や振替休日の扱いにより結果が変わる場合があります。
+- 日付は **ローカルタイム** で解釈されます。深夜跨ぎ等の厳密な取り扱いが必要な場合は明示的に日付を指定してください。
+- 長期のオフセット計算では内部的に余裕を持って休日を収集していますが、極端に長い期間で `--holidays` を大量に渡す場合は実行時間が伸びることがあります。
+
+---
+
+## ライセンス
+MIT
+
