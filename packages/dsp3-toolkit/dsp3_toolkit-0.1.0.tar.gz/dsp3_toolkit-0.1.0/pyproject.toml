@@ -1,0 +1,53 @@
+[tool.poetry]
+name = "dsp3-toolkit"
+version = "0.1.0"
+description = "DSP shared toolkit for Python apps: CLI, logging, config, linting, plugins, and more."
+authors = ["Your Name <your@email.com>"]
+
+packages = [{ include = "dsp_toolkit", from = "src" }]
+
+[tool.poetry.scripts]
+start = "dsp_toolkit.cli:main"
+test = "dsp_toolkit.cli:test"
+lint = "dsp_toolkit.cli:lint_and_format"
+release = "dsp_toolkit.cli:release"
+postinstall = "dsp_toolkit.cli:postinstall"
+
+[tool.poetry.dependencies]
+python = ">=3.12,<4.0"
+flake8 = "^7.3.0"
+flake8-comprehensions = "^3.14.0"
+flake8-bugbear = "^24.4.26"
+flake8-simplify = "^0.21.0"
+flake8-awesome = "^1.3.0"
+dotenv = "^0.9.9"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+python-semantic-release = "^10.0.0"
+bandit = "^1.7.7"
+lefthook = "^1.12.3"
+ruff = "^0.4.4"
+setuptools = "^80.9.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.semantic_release]
+version_source = "tag"
+upload_to_pypi = true
+branch = "main"
+commit_author = "semantic-release <semantic-release@github.com>"
+changelog_file = "CHANGELOG.md"
+build_command = "python -m build --sdist --wheel ."
+commit_message = "chore(release): update CHANGELOG.md [skip ci]\n\n{changelog}"
+push = true
+github_release = true
+major_on_breaking_change = true
+minor_on_feat = true
+patch_on_fix = true
+commit_parser = "conventional"
+
+[tool.flake8]
+application-import-names = ["dsp_toolkit", "plugins"]
