@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c192a205-1bcb-4135-8199-822c4d0d55ea" name="Changes" comment="add codomir">
+      <change afterPath="$PROJECT_DIR$/demo/codomir_game_over.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/codomir_win.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/codomir/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/codomir/quest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/codomir/resources/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/codomir/resources/kenney_sokoban/License.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/codomir/resources/kenney_sokoban/Spritesheet/sokoban_spritesheet.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/codomir/resources/kenney_sokoban/Spritesheet/sokoban_spritesheet.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/codomir/resources/kenney_sokoban/Spritesheet/sokoban_spritesheet@2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/codomir/resources/kenney_sokoban/Spritesheet/sokoban_spritesheet@2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/codomir/resources/kenney_sokoban/Tilesheet/sokoban_tilesheet.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/codomir/resources/kenney_sokoban/Tilesheet/sokoban_tilesheet@2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/codomir/resources/kenney_sokoban/map1.tiled-project" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/codomir/resources/kenney_sokoban/map1.tiled-session" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/codomir/resources/kenney_sokoban/map1.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/codomir/resources/kenney_sokoban/map2.tmx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/codomir/resources/kenney_sokoban/sokoban_tilesheet.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/codomir/resources/resolve_path.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pygamejr/utils/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pygamejr/utils/screen_size.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/game0.py" beforeDir="false" afterPath="$PROJECT_DIR$/demo/game0.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pygamejr/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pygamejr/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pygamejr/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pygamejr/base.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="MIXED" />
+    <option name="SET_USER_NAME_GLOBALLY" value="false" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/AppData/Local/Programs/Python/Python313/Lib/site-packages/pytmx/pytmx.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/AppData/Local/Programs/Python/Python313/Lib/site-packages/pytmx/util_pygame.py" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2rW5rwgevCeFN2Zl3molRFPjmKU" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.codomir_game_over.executor": "Run",
+    "Python.codomir_win.executor": "Run",
+    "Python.game.executor": "Run",
+    "Python.game0.executor": "Run",
+    "Python.game_position.executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.pgjrworld_example.executor": "Run",
+    "Python.pgjrworld_example_game_over (1).executor": "Run",
+    "Python.pgjrworld_example_win.executor": "Run",
+    "Python.quest_game_over (1).executor": "Run",
+    "Python.quest_win (1).executor": "Run",
+    "Python.quest_win.executor": "Debug",
+    "Python.test.executor": "Run",
+    "Python.try2.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "C:/projects/pygamejr/src/pycodomir",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.intellij.aiplayground.settings.llm",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\projects\pygamejr\src\pycodomir" />
+      <recent name="C:\projects\pygamejr\src\pycodomir\resources" />
+      <recent name="C:\projects\pygamejr\src\pygamejr\resources\quest\kenney_sokoban" />
+      <recent name="C:\projects\pygamejr\demo" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\projects\pygamejr\src\pycodomir" />
+      <recent name="C:\Users\miral\AppData\Roaming\JetBrains\PyCharm2024.2\scratches\Проекты\web1" />
+      <recent name="C:\Users\miral\AppData\Roaming\JetBrains\PyCharm2024.2\scratches\Проекты" />
+      <recent name="C:\Users\miral\AppData\Roaming\JetBrains\PyCharm2024.2\scratches\Кирилл" />
+      <recent name="C:\Users\miral\AppData\Roaming\JetBrains\PyCharm2024.2\scratches" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.codomir_game_over">
+    <configuration name="codomir_game_over" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="pygamejr" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/demo" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="C:\projects\pygamejr\demo\codomir_game_over.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="codomir_win" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="pygamejr" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/demo" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="C:\projects\pygamejr\demo\codomir_win.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="codomir_win" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="pygamejr" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/demo" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="C:\projects\pygamejr\demo\codomir_win.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="game0" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="pygamejr" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/demo" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/demo/game0.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="game_position" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="pygamejr" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/demo" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/demo/game_position.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="pygamejr" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches/Проекты/web1" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/Проекты/web1/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.game_position" />
+      <item itemvalue="Python.codomir_game_over" />
+      <item itemvalue="Python.codomir_win" />
+      <item itemvalue="Python.game0" />
+      <item itemvalue="Python.main" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.codomir_game_over" />
+        <item itemvalue="Python.codomir_win" />
+        <item itemvalue="Python.game0" />
+        <item itemvalue="Python.game_position" />
+        <item itemvalue="Python.main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-PY-252.23892.515" />
+        <option value="bundled-python-sdk-7e47963ff851-f0eec537fc84-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.23892.515" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c192a205-1bcb-4135-8199-822c4d0d55ea" name="Changes" comment="" />
+      <created>1736662192207</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1736662192207</updated>
+      <workItem from="1736662193257" duration="2815000" />
+      <workItem from="1737861951544" duration="18000" />
+      <workItem from="1739690206473" duration="638000" />
+      <workItem from="1740289663888" duration="3341000" />
+      <workItem from="1740888970986" duration="6101000" />
+      <workItem from="1740897959273" duration="2477000" />
+      <workItem from="1741516728010" duration="924000" />
+      <workItem from="1742699586690" duration="5117000" />
+      <workItem from="1743345516345" duration="801000" />
+      <workItem from="1743435935646" duration="2424000" />
+      <workItem from="1743605850395" duration="3440000" />
+      <workItem from="1743692124822" duration="2405000" />
+      <workItem from="1743918456300" duration="43000" />
+      <workItem from="1743918509828" duration="201000" />
+      <workItem from="1743918718962" duration="5701000" />
+      <workItem from="1743924868992" duration="95000" />
+      <workItem from="1744426642830" duration="5464000" />
+      <workItem from="1744458434885" duration="2481000" />
+      <workItem from="1744512365871" duration="4429000" />
+      <workItem from="1745129570958" duration="15000" />
+      <workItem from="1745131474699" duration="936000" />
+      <workItem from="1745156419361" duration="3417000" />
+      <workItem from="1746248597296" duration="858000" />
+      <workItem from="1746255810085" duration="1722000" />
+      <workItem from="1746257739964" duration="1213000" />
+      <workItem from="1746329120879" duration="2192000" />
+      <workItem from="1746845724523" duration="3501000" />
+      <workItem from="1746857313292" duration="597000" />
+      <workItem from="1746931317706" duration="27000" />
+      <workItem from="1747459377264" duration="325000" />
+      <workItem from="1752390058609" duration="809000" />
+      <workItem from="1752494079651" duration="1362000" />
+      <workItem from="1753247522600" duration="19000" />
+      <workItem from="1753248544446" duration="211000" />
+      <workItem from="1753867359341" duration="2811000" />
+      <workItem from="1754060789985" duration="1085000" />
+      <workItem from="1754224713913" duration="8270000" />
+      <workItem from="1754727069972" duration="4736000" />
+      <workItem from="1755971217571" duration="290000" />
+      <workItem from="1755971599365" duration="37000" />
+      <workItem from="1755972093844" duration="1406000" />
+      <workItem from="1756049500868" duration="3649000" />
+      <workItem from="1756053198511" duration="198000" />
+      <workItem from="1756132016895" duration="1619000" />
+      <workItem from="1756648481174" duration="268000" />
+      <workItem from="1756649175364" duration="5555000" />
+      <workItem from="1756912023042" duration="1209000" />
+    </task>
+    <task id="LOCAL-00001" summary="first version">
+      <option name="closed" value="true" />
+      <created>1740895331498</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1740895331498</updated>
+    </task>
+    <task id="LOCAL-00002" summary="add codomir">
+      <option name="closed" value="true" />
+      <created>1756913068388</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1756913068388</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="first version" />
+    <MESSAGE value="add codomir" />
+    <option name="LAST_COMMIT_MESSAGE" value="add codomir" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/codomir/utils/screen_size.py</url>
+          <line>10</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/pygamejr/utils/screen_size.py</url>
+          <line>16</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/pygamejr$codomir_win.coverage" NAME="codomir_win Coverage Results" MODIFIED="1756658184489" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/demo" />
+    <SUITE FILE_PATH="coverage/pygamejr$game0.coverage" NAME="game0 Coverage Results" MODIFIED="1756658214949" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/demo" />
+    <SUITE FILE_PATH="coverage/pygamejr$pgjrworld_example_game_over__1_.coverage" NAME="pgjrworld_example_game_over (1) Coverage Results" MODIFIED="1744458482685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/demo" />
+    <SUITE FILE_PATH="coverage/pygamejr$pgjrworld_example.coverage" NAME="pgjrworld_example Coverage Results" MODIFIED="1743921579204" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/demo" />
+    <SUITE FILE_PATH="coverage/pygamejr$try2.coverage" NAME="try2 Coverage Results" MODIFIED="1746845760533" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
+    <SUITE FILE_PATH="coverage/pygamejr$test.coverage" NAME="test Coverage Results" MODIFIED="1742710049520" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
+    <SUITE FILE_PATH="coverage/pygamejr$quest_game_over__1_.coverage" NAME="quest_game_over (1) Coverage Results" MODIFIED="1756052897684" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/demo" />
+    <SUITE FILE_PATH="coverage/pygamejr$game_position.coverage" NAME="game_position Coverage Results" MODIFIED="1756658229443" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/demo" />
+    <SUITE FILE_PATH="coverage/pygamejr$game.coverage" NAME="game Coverage Results" MODIFIED="1746848824138" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches/Проекты/Кирилл" />
+    <SUITE FILE_PATH="coverage/pygamejr$quest_win__1_.coverage" NAME="quest_win (1) Coverage Results" MODIFIED="1754233308298" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/demo" />
+    <SUITE FILE_PATH="coverage/pygamejr$codomir_game_over.coverage" NAME="codomir_game_over Coverage Results" MODIFIED="1756132656471" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/demo" />
+    <SUITE FILE_PATH="coverage/pygamejr$pgjrworld_example_win.coverage" NAME="pgjrworld_example_win Coverage Results" MODIFIED="1745161938119" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/demo" />
+    <SUITE FILE_PATH="coverage/pygamejr$quest_win.coverage" NAME="quest_win Coverage Results" MODIFIED="1754231103058" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/demo" />
+    <SUITE FILE_PATH="coverage/pygamejr$main.coverage" NAME="main Coverage Results" MODIFIED="1756132646265" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches/Проекты/web1" />
+  </component>
+</project>
