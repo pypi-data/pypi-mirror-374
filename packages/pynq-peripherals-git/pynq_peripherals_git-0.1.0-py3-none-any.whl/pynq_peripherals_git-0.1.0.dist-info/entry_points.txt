@@ -1,0 +1,8 @@
+[console_scripts]
+pynq-new-peripheral = pynq_peripherals.cli:main
+
+[pynq.lib]
+pynq_peripherals = pynq_peripherals
+
+[pynq.notebooks]
+pynq_peripherals = pynq_peripherals.notebooks
