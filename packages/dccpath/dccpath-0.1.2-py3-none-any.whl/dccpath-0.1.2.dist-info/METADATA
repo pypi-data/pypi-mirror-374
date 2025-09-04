@@ -1,0 +1,30 @@
+Metadata-Version: 2.4
+Name: dccpath
+Version: 0.1.2
+Summary: Utility library for locating common DCC (Digital Content Creation) software executables
+Project-URL: Repository, https://codeberg.org/HWAnimationTech/dccpath
+Project-URL: Issues, https://codeberg.org/HWAnimationTech/dccpath/issues
+Author-email: Henrik Wilhelmsen <contact@henrikwilhelmsen.com>
+Maintainer-email: Henrik Wilhelmsen <contact@henrikwilhelmsen.com>
+License-Expression: MPL-2.0
+License-File: LICENSE
+Keywords: Blender,DCC,Maya,MotionBuilder
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+
+# dccpath
+
+Small utility library for locating common DCC (Digital Content Creation) software executables
+
+Currently supported DCCs:
+
+- Autodesk Maya
+- Autodesk MotionBuilder
+- Blender
+
+```python
+from dccpath import get_blender, get_mayapy
+
+blender = get_blender(version="4.4")
+mayapy = get_mayapy(version="2025")
+```
