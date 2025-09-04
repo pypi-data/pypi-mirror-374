@@ -1,0 +1,9 @@
+[console_scripts]
+telegram-delete = telegram_uploader.management:delete_cli
+telegram-dforward = telegram_uploader.management:dforward_cli
+telegram-download = telegram_uploader.management:download_cli
+telegram-edit = telegram_uploader.management:edit_cli
+telegram-folder = telegram_uploader.management:folder_cli
+telegram-forward = telegram_uploader.management:forward_cli
+telegram-info = telegram_uploader.management:info_cli
+telegram-upload = telegram_uploader.management:upload_cli
