@@ -1,0 +1,49 @@
+Metadata-Version: 2.4
+Name: aionefit_updated
+Version: 0.16
+Summary: asyncio library for Bosch thermostats
+Home-page: https://github.com/spoetnik/aionefit
+Author: Martijn de Geus
+Author-email: m.degeus@nise.nl
+License: MIT
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.9.0
+Description-Content-Type: text/markdown
+Requires-Dist: pyaes
+Requires-Dist: slixmpp==1.11.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+
+# Python asyncio library for (some) Bosch thermostats
+
+aionefit is a Python library to control some Bosch thermostats using the Python asycio framework. This is done with the [Slixmpp](https://slixmpp.readthedocs.io) library.
+
+As there is no known way to talk directly to the thermostat, all communication has to be routed via cloud servers at Bosch.
+
+## Original code
+This software is based on code of the following projects:
+- https://github.com/robertklep/nefit-easy-client
+- https://github.com/patvdleer/nefit-client-python
+
+## Supported hardware
+[source](https://www.domoticz.com/wiki/NefitEasy)
+
+- Nefit Easy (Netherlands)
+- Junkers Control CT100 (Belgium, Germany)
+- Buderus Logamatic TC100 (Belgium)
+- E.L.M. Touch (France)
+- Worcester Wave (UK)
+- Bosch Control CT‑100 (Other)
