@@ -1,0 +1,33 @@
+[project]
+name = "tempnetviz"
+version = "0.1.12"
+description = ""
+authors = [
+    {name = "Corentin Nelias"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "matplotlib (>=3.10.6,<4.0.0)",
+    "numpy (>=2.3.2,<3.0.0)",
+    "igraph (>=0.11.9,<0.12.0)",
+    "networkx (>=3.5,<4.0)",
+    "scipy (>=1.16.1,<2.0.0)",
+    "pandas (>=2.3.2,<3.0.0)"
+]
+
+
+[tool.poetry]
+packages = [{ include = "tempnetviz", from = "src" }]
+
+include = [
+    { path = "src/tempnetviz/images/*" }
+]
+
+[tool.poetry.scripts]
+tempnetviz = "tempnetviz.main_gui:main"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
