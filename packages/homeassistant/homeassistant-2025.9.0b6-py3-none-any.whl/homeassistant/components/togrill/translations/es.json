@@ -1,0 +1,51 @@
+{
+    "device": {
+        "probe": {
+            "name": "Sonda {probe_number}"
+        }
+    },
+    "entity": {
+        "event": {
+            "event": {
+                "name": "Evento",
+                "state_attributes": {
+                    "event_type": {
+                        "state": {
+                            "ambient_cool_down": "Enfriamiento de la temperatura ambiente",
+                            "ambient_low_temp": "Temperatura ambiente demasiado baja",
+                            "ambient_over_heat": "Temperatura ambiente demasiado alta",
+                            "device_high_temp": "El dispositivo tiene una temperatura demasiado alta",
+                            "device_low_power": "El dispositivo tiene poca bater\u00eda",
+                            "ignition_failure": "Fallo de encendido",
+                            "probe_above_maximum": "Temperatura demasiado alta",
+                            "probe_acknowledge": "Alarma reconocida",
+                            "probe_alarm": "Alarma disparada",
+                            "probe_below_minimum": "Temperatura demasiado baja",
+                            "probe_disconnected": "Sonda desconectada",
+                            "probe_timer_alarm": "Alarma de temporizador"
+                        }
+                    }
+                }
+            }
+        },
+        "number": {
+            "alarm_interval": {
+                "name": "Intervalo de alarma"
+            },
+            "temperature_target": {
+                "name": "Temperatura deseada"
+            }
+        }
+    },
+    "exceptions": {
+        "communication_failed": {
+            "message": "Fall\u00f3 la comunicaci\u00f3n con el dispositivo"
+        },
+        "disconnected": {
+            "message": "El dispositivo est\u00e1 desconectado"
+        },
+        "rejected": {
+            "message": "Los datos fueron rechazados por el dispositivo"
+        }
+    }
+}
