@@ -1,0 +1,95 @@
+Metadata-Version: 2.4
+Name: pycalgo
+Version: 0.3.0
+Summary: A cross-platform Python calculator library using Go-based native implementations
+Home-page: https://github.com/Pranesh-2005/Go_plus_python_simple_calculator_package
+Author: Pranesh
+Author-email: praneshmadhan646@gmail.com
+Keywords: calculator,math,go,native,performance,cross-platform
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: requires-python
+Dynamic: summary
+
+# PyCalGo
+
+A high-performance, cross-platform Python calculator library using Go-based native implementations.
+
+## Features
+
+### Basic Arithmetic
+- Addition, subtraction, multiplication, division
+- Integer operations with native Go performance
+
+### Scientific Functions
+- Square root, power, logarithm
+- Trigonometric functions (sin, cos, tan)
+- Double precision floating-point operations
+
+### Unique Fast Operations
+- Fast bit counting for 64-bit integers
+- Modular factorial computation
+- XorShift pseudo-random number generation
+
+## Installation
+
+```bash
+pip install pycalgo
+```
+
+## Quick Start
+
+```python
+import pycalgo
+
+# Basic arithmetic
+print(pycalgo.add(10, 5))        # 15
+print(pycalgo.mul(6, 7))         # 42
+
+# Scientific functions
+print(pycalgo.sqrt(16))          # 4.0
+print(pycalgo.sin(1.57))         # ~1.0
+
+# Fast operations
+print(pycalgo.bitcount(15))      # 4 (binary: 1111)
+print(pycalgo.factmod(5, 7))     # 1 (5! mod 7)
+
+# Random number generation
+rand, new_seed = pycalgo.xorshift(12345)
+print(f"Random: {rand}")
+```
+
+## Platform Support
+
+- **Windows**: Uses `calculator.dll`
+- **Linux**: Uses `calculator.so`
+- **macOS**: Uses `calculator.dylib`
+
+## Requirements
+
+- Python 3.6 or higher
+- Native library automatically selected based on OS
