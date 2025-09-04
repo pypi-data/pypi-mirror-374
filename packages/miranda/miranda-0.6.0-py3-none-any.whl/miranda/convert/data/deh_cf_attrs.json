@@ -1,0 +1,24 @@
+{
+  "Header": {
+    "Conventions": "CF-1.7 CMIP-6.2",
+    "_miranda_version": true,
+    "data_specs_version": "00.00.01",
+    "institution": "DEH",
+    "license_type": "restricted",
+    "processing_level": "raw",
+    "realm": "land",
+    "table_date": "2022-11-15",
+    "table_id": "DEH",
+    "type": "station-obs"
+  },
+  "variable_entry": {
+    "flag": {
+      "comment": "See DEH technical information for details.",
+      "long_name": "data flag"
+    },
+    "q": {
+      "long_name": "River discharge",
+      "units": "m3 s-1"
+    }
+  }
+}
