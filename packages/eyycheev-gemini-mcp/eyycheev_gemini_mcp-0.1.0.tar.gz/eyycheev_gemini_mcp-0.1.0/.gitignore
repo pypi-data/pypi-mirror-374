@@ -1,0 +1,66 @@
+# codex:auto-ignore:start
+
+# Project artifacts and agent logs
+.artifacts/
+tmp/
+.agent/logs/
+
+# Playwright / Jest artifacts
+playwright-report/
+test-results/
+.nyc_output/
+coverage/
+
+# Node.js dependencies and build outputs
+node_modules/
+dist/
+dist/*.map
+build/
+out/
+*.tsbuildinfo
+
+# Logs and debug files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.apdisk
+
+# Editors and IDEs
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+.history/
+.vscode-test
+.idea/
+
+# Environment files (local only; never commit secrets)
+.env
+.env.local
+.env.*.local
+.env*
+
+# Docker (keep Dockerfile; ignore local overrides if present)
+docker-compose.override.yml
+
+# Note: lockfiles (package-lock.json, yarn.lock, pnpm-lock.yaml) are intentional and should be committed.
+
+# codex:auto-ignore:end
