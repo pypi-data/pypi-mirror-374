@@ -1,0 +1,65 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tps-agent"
+version = "2.2.0"
+authors = [
+    {name = "TPS Agent Contributors", email = "contact@tps-agent.dev"}
+]
+description = "Comprehensive TPS monitoring and throttling library with database-driven controls"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Monitoring",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: Database",
+]
+dependencies = [
+    "requests>=2.25.0,<3.0.0",
+]
+
+[project.optional-dependencies]
+postgresql = [
+    "psycopg2-binary>=2.9.0,<3.0.0",
+]
+prometheus = [
+    "prometheus_client>=0.16.0,<1.0.0",
+]
+all = [
+    "psycopg2-binary>=2.9.0,<3.0.0",
+    "prometheus_client>=0.16.0,<1.0.0",
+]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+    "black>=21.0",
+    "isort>=5.0",
+    "flake8>=3.8",
+    "psycopg2-binary>=2.9.0,<3.0.0",
+    "prometheus_client>=0.16.0,<1.0.0",
+]
+
+[project.scripts]
+tps-agent-test = "tps_agent.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/tps-agent/tps-agent"
+Repository = "https://github.com/tps-agent/tps-agent"
+Documentation = "https://tps-agent.readthedocs.io"
+Changelog = "https://github.com/tps-agent/tps-agent/blob/main/CHANGELOG.md"
+
+[tool.setuptools.packages.find]
+include = ["tps_agent*"]

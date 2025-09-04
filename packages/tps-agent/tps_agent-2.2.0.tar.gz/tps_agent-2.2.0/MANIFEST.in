@@ -1,0 +1,24 @@
+# Include documentation and metadata files
+include README.md
+include LICENSE
+include CHANGELOG.md
+include requirements.txt
+include requirements-dev.txt
+
+# Include configuration files
+include pyproject.toml
+include pytest.ini
+
+# Include test files
+recursive-include tests *.py
+
+# Exclude build artifacts and cache
+global-exclude *.pyc
+global-exclude __pycache__
+global-exclude .pytest_cache
+global-exclude build
+global-exclude dist
+global-exclude *.egg-info
+
+# Include package data
+recursive-include tps_agent *.py
