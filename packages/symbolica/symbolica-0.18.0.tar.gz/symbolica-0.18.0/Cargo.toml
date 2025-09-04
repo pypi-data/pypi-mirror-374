@@ -1,0 +1,48 @@
+[package]
+authors = ["Ben Ruijl <benruyl@gmail.com>"]
+categories = ["science"]
+description = "A blazing fast computer algebra system, with community extensions"
+edition = "2021"
+keywords = ["algebra", "symbolic", "manipulation", "mathematics", "physics"]
+license = "MIT"
+name = "symbolica_community"
+readme = "Readme.md"
+repository = "https://github.com/benruijl/symbolica-community"
+rust-version = "1.73"
+version = "0.18.0"
+
+[[bin]]
+name = "stub_gen"
+required-features = ["python_stubgen"]
+
+[lib]
+name = "symbolica_community"
+crate-type = ["rlib", "cdylib"]
+
+[features]
+python_stubgen = [
+    "pyo3-stub-gen",
+    "symbolica/python_stubgen",
+    "spynso3/python_stubgen",
+    "idenso/python_stubgen",
+    "vakint/python_stubgen",
+]
+
+[dependencies]
+idenso = { version = "0.2.3", features = ["bincode", "python"] }
+symbolica = { version = "0.18", features = ["python_export"] }
+pyo3 = "0.25"
+pyo3-stub-gen = { version = "0.13", optional = true, default-features = false }
+spynso3 = { version = "0.1" }
+vakint = { git = "https://github.com/alphal00p/vakint", rev = "7bba5b8f684fc90e86c98b448a19246440cc1180", features = [
+    "symbolica_community_module",
+] }
+
+[patch.crates-io]
+spynso3 = { git = "https://github.com/alphal00p/spenso", rev = "df271a7c8e6f1fcdd8b1a4fdc2684dff3d352b8f" }
+# spynso3 = { path = "../spenso/spynso3" }
+symbolica = { git = "https://github.com/benruijl/symbolica", branch = "modules" }
+pyo3-stub-gen = { git = "https://github.com/benruijl/pyo3-stub-gen", branch = "patched" }
+
+[build-dependencies]
+pyo3-build-config = "*"
