@@ -1,0 +1,7 @@
+[project]
+name = "django-ensuresuperuser"
+version = "0.1.0"
+description = "Create a superuser if it doesn't exist, in the non interactive mode, using environment variables to set the email and password"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["django>=4.2"]
