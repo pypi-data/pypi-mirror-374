@@ -1,0 +1,29 @@
+Metadata-Version: 2.3
+Name: lockss-pyclient
+Version: 0.1.0.dev2
+Summary: LOCKSS Python clients
+License: BSD-3-Clause
+Author: Thib Guicherd-Callin
+Author-email: thib@cs.stanford.edu
+Maintainer: Thib Guicherd-Callin
+Maintainer-email: thib@cs.stanford.edu
+Requires-Python: >=3.9,<4.0
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: System :: Archiving
+Classifier: Topic :: Utilities
+Requires-Dist: certifi (>=2025.8.0,<2025.9.0)
+Requires-Dist: python_dateutil (>=2.9.0,<2.10.0)
+Requires-Dist: six (>=1.17,<1.18)
+Requires-Dist: urllib3 (>=2.5.0,<2.6.0)
+Project-URL: Documentation, https://docs.lockss.org/en/latest/software/pyclient
+Project-URL: Repository, https://github.com/lockss/lockss-pyclient
+Project-URL: changelog, https://github.com/lockss/lockss-pyclient/blob/main/CHANGELOG.rst
+Project-URL: issues, https://github.com/lockss/lockss-pyclient/issues
+Description-Content-Type: text/x-rst
+
+TODO
