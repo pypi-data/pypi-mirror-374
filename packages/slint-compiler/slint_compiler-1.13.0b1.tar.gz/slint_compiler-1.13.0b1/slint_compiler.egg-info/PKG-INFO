@@ -1,0 +1,29 @@
+Metadata-Version: 2.4
+Name: slint-compiler
+Version: 1.13.0b1
+Summary: Python wrapper around the Slint compiler for Python
+Author-email: Slint Team <info@slint.dev>
+Project-URL: Homepage, https://slint.dev
+Project-URL: Documentation, https://slint.dev/docs
+Project-URL: Repository, https://github.com/slint-ui/slint
+Project-URL: Changelog, https://github.com/slint-ui/slint/blob/master/CHANGELOG.md
+Project-URL: Tracker, https://github.com/slint-ui/slint/issues
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: cached-path>=1.7.3
+
+<!-- Copyright © SixtyFPS GmbH <info@slint.dev> ; SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-Slint-Royalty-free-2.0 OR LicenseRef-Slint-Software-3.0 -->
+
+# Python Slint Compiler
+
+This package is a wrapper around [Slint's](https://slint.dev) compiler for Python, to generate a typed `.py` file from a `.slint` file, for use with [Slint for Python](https://pypi.org/project/slint/).
+
+When run, the slint compiler binary is downloaded, cached, and run.
+
+By default, the Slint compiler matching the version of this package is downloaded. To select a specific version, set the `SLINT_COMPILER_VERSION` environment variable. Set it to `nightly` to select the latest nightly release.
+
+## Example
+
+```bash
+uxv run slint-compiler -f python -o app_window.py app-window.slint
+```
