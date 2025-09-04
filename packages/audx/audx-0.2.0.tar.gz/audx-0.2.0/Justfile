@@ -1,0 +1,217 @@
+set dotenv-load
+
+CHECK := " ✅"
+CROSS := " ❌"
+WARN := " ⚠️"
+
+# AUDX General
+AUDX_CONTRACT_PATH := "src/contracts/AussieDollarToken.sol"
+AUDX_ABI_JSON_PATH := "src/audx/abi/abi.json"
+
+# Anvil configuration
+ANVIL_PID_FILE := ".anvil.pid"
+ANVIL_LOG_FILE := ".anvil.log"
+ANVIL_MNEMONIC :=env("ANVIL_MNEMONIC", "company age knife lazy reduce address despair barrel labor concert cable diary poverty poem sphere")
+ANVIL_PORT := "8545"
+
+# ANVIL_FORK_URL := env("ANVIL_FORK_URL", "https://polygon-rpc.com")
+# ANVIL_FORK_BLOCK := env("ANVIL_FORK_BLOCK", "54000000")
+# ANVIL_CHAIN_ID := env("ANVIL_CHAIN_ID", "137")
+
+
+# Forge configuration
+FORGE_LIB_DIR := env("FORGE_LIB_DIR", "lib")
+FORGE_OUT_DIR := env("FORGE_OUT_DIR", "out")
+FORGE_CACHE_DIR := env("FORGE_CACHE_DIR", "cache")
+FORGE_DEPLOY_PRIVATE_KEY := env("FORGE_DEPLOY_PRIVATE_KEY") # obtain this after `just start-anvil`
+FORGE_FMT_PATHS := "src scripts tests"
+
+# ruff config
+RUFF_FORMAT_PATHS := "src scripts tests"
+
+@_:
+    just --list --unsorted
+
+alias fmt := format
+alias start := quickstart
+alias stop := stop-anvil
+
+# === Main ===
+
+# Run formatters
+[group('main')]
+format:
+    @just python-format
+    @just forge-format
+
+# Start Anvil and deploy AUDX to local chain
+[group('main')]
+quickstart path=".":
+    @just forge-install
+    @just start-anvil
+    @just deploy-contract
+
+
+# Run linters
+[group('qa')]
+lint path="":
+    just python-lint {{path}}
+    just forge-lint {{path}}
+
+# Run tests
+[group('qa')]
+test path="." *args:
+    uv run pytest {{ path }} {{ args }}
+
+## === PYTHON LIBRARY DEVELOPMENT ===
+
+# Verify if uv is installed
+[group('python-dev')]
+check-uv: (check-tool "uv" "https://docs.astral.sh/uv/#installation")
+
+
+[group('python-dev')]
+python-format:
+    @uvx ruff check check --exit-zero --no-cache --force-exclude --unsafe-fixes --fix {{RUFF_FORMAT_PATHS}}
+    @uvx ruff format {{RUFF_FORMAT_PATHS}}
+
+# Run linters.
+[group('python-dev')]
+python-lint:
+    uvx ruff check
+    uvx ruff format
+    uvx ty check --python .venv src
+
+# Update dependencies.
+[group('python-dev')]
+update:
+    uv sync --upgrade
+
+# Ensure project virtualenv is up to date.
+[group('python-dev')]
+install:
+    uv sync --all-extras
+
+# Ensure project virtualenv is up to date.
+[group('python-dev')]
+update-abi:
+    forge inspect {{AUDX_CONTRACT_PATH}} abi --json > {{AUDX_ABI_JSON_PATH}}
+
+
+## === SMART CONTRACT DEVELOPMENT ===
+
+# Verify if anvil is installed.
+[group('smart-contract-dev')]
+check-anvil: (check-tool "anvil" "https://getfoundry.sh")
+
+# Verify if forge is installed.
+[group('smart-contract-dev')]
+check-forge: (check-tool "forge" "https://getfoundry.sh")
+
+# Generate contract remappings.
+[group('smart-contract-dev')]
+forge-generate-remappings:
+    @forge remappings > remappings.txt
+
+# Install forge dependencies
+[group('smart-contract-dev')]
+forge-install:
+    @forge install
+    @echo "{{CHECK}} Forge dependencies installed in {{FORGE_LIB_DIR}}"
+
+
+[group('smart-contract-dev')]
+forge-format:
+    @forge fmt {{FORGE_FMT_PATHS}}
+
+[group('smart-contract-dev')]
+forge-lint path="":
+    @forge lint {{path}}
+
+# Start local anvil
+[group("smart-contract-dev")]
+start-anvil:
+    #!/usr/bin/env sh
+    if curl -s -X POST http://localhost:{{ANVIL_PORT}} \
+        -H "Content-Type: application/json" \
+        -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
+        > /dev/null 2>&1; then
+
+        RUNNING_PID=$(lsof -ti:8545 2>/dev/null)
+        if [ -n "$RUNNING_PID" ]; then
+            echo $RUNNING_PID > {{ANVIL_PID_FILE}}
+            echo "{{CHECK}} Anvil is already running on port {{ANVIL_PORT}} (PID: $RUNNING_PID)"
+        fi
+        exit 0
+    fi
+    echo "Starting Anvil..."
+    anvil \
+        --mnemonic "{{ANVIL_MNEMONIC}}" \
+        --port "{{ANVIL_PORT}}" \
+    > {{ANVIL_LOG_FILE}} 2>&1 &
+    ANVIL_PID=$!
+    echo $ANVIL_PID > {{ANVIL_PID_FILE}}
+    echo "{{CHECK}} Anvil started (PID: $ANVIL_PID)"
+
+# Stop local anvil
+[group("smart-contract-dev")]
+stop-anvil:
+    #!/usr/bin/env sh
+    if [ -f {{ANVIL_PID_FILE}} ]; then
+        kill $(cat {{ANVIL_PID_FILE}}) 2>/dev/null && echo "{{CHECK}} Anvil stopped" || echo "{{WARN}} Process not found"
+    else
+        echo "{{CROSS}} No Anvil process found"
+    fi
+
+# Run forge tests
+[group('smart-contract-dev')]
+forge-test:
+    @forge test
+
+# Deploy contract to local chain (standard deployment)
+[group('smart-contract-dev')]
+deploy-contract:
+    @forge script scripts/contracts/Deploy.s.sol:Deploy \
+      --private-key {{FORGE_DEPLOY_PRIVATE_KEY}} \
+      --rpc-url localhost:8545 \
+      --broadcast
+
+# Serve contract docs
+[group('smart-contract-dev')]
+serve-docs:
+    @forge doc --include-libraries -s
+
+## Deploy contract deterministically using CREATE2
+#[group('smart-contract-dev')]
+#deploy-deterministic:
+#    @forge script scripts/contracts/DeployDeterministic.s.sol:DeployDeterministic \
+#      --private-key {{FORGE_DEPLOY_PRIVATE_KEY}} \
+#      --rpc-url localhost:8545 \
+#      --broadcast
+#
+## Dry run to preview deterministic deployment addresses
+#[group('smart-contract-dev')]
+#deploy-dry-run:
+#    @forge script scripts/contracts/DeployDeterministic.s.sol:DeployDeterministic \
+#      --sig "dryRun()"
+
+
+# Remove temporary files
+[group('lifecycle')]
+clean:
+    rm -rf .venv .pytest_cache .mypy_cache .ruff_cache .coverage htmlcov dist
+    find . -type d -name "__pycache__" -exec rm -r {} +
+    rm -f {{ANVIL_PID_FILE}} {{ANVIL_LOG_FILE}}
+    forge clean
+    rm -rf {{FORGE_LIB_DIR}}
+
+
+# Recreate project virtualenv from nothing
+[group('lifecycle')]
+fresh: clean install forge-install
+
+# === Utils ===
+
+[private]
+check-tool tool install_url:
+    @which {{tool}} > /dev/null 2>&1 && echo "{{CHECK}} {{tool}} installed" || echo "{{CROSS}} {{tool}} not found. Install: {{install_url}}"

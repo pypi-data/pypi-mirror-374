@@ -1,0 +1,23 @@
+Metadata-Version: 2.4
+Name: audx
+Version: 0.2.0
+Summary: Python SDK for AUDX stablecoin
+Author-email: Alvin Yip <alvin@betterx.io>
+License: MIT
+License-File: LICENSE
+Keywords: audx,blockchain,defi,ethereum,polygon,web3
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.11
+Requires-Dist: eth-typing>=5.2.1
+Requires-Dist: web3>=7.13.0
+Description-Content-Type: text/markdown
+
+# AUDX
+
+Python SDK for interacting with the AUDX smart contract. 
