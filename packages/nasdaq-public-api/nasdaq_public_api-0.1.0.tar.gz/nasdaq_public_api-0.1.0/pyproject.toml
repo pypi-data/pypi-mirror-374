@@ -1,0 +1,123 @@
+[project]
+name = "nasdaq-public-api"
+version = "0.1.0"
+description = "Minimal Nasdaq public API client for accessing market data. Automates cookie management and data retrieval."
+readme = "README.md"
+requires-python = ">=3.12"
+license = {file = "LICENSE"}
+authors = [
+  {name = "r-bit-rry", email = "34023431+r-bit-rry@users.noreply.github.com"},
+]
+keywords = ["nasdaq", "finance", "stocks", "market-data", "api-client"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Financial and Insurance Industry",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Office/Business :: Financial :: Investment",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "pandas",
+    "selenium",
+    # "diskcache",
+    "requests",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pylint>=3.3.7",
+    "radon>=6.0.1",
+    "ruff>=0.12.7",
+    "black>=25.1.0",
+    "vulture>=2.14",
+    "pyan3>=1.2.0",
+    "pylint-pydantic>=0.3.5",
+    "pylint-mccabe>=0.1.3",
+]
+
+[project.urls]
+Homepage = "https://github.com/r-bit-rry/nasdaq-public-api"
+Repository = "https://github.com/r-bit-rry/nasdaq-public-api"
+Issues = "https://github.com/r-bit-rry/nasdaq-public-api/issues"
+
+[project.scripts]
+nasdaq-cli = "nasdaq.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 120
+target-version = ['py312']
+preview = true
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-select = [
+  "I",        # isort
+  "B",        # bugbear
+  "C90",      # mccabe complexity
+  "F",        # pyflakes
+  "E", "W",   # pycodestyle
+  "UP",       # pyupgrade
+  "N",        # pep8-naming
+  "RUF",      # ruff-specific rules
+  "PL",       # pylint (subset)
+  "PT",       # pytest-style rules
+  "SIM",      # simplifications
+]
+ignore = [
+  "B008",     # do not perform function calls in argument defaults (often too strict)
+]
+unfixable = ["F401"]  # don't auto-remove unused imports unless explicitly requested
+exclude = ["build", "dist", ".venv", "__pycache__", "*.pyc", "*.egg-info", ".mypy_cache", ".ruff_cache"]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+known-first-party = ["nasdaq"]
+combine-as-imports = true
+lines-after-imports = 2
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true
+disallow_untyped_defs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_return_any = true
+show_error_codes = true
+pretty = true
+exclude = "(build|dist|.venv|tests/)"
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests"
+]
+
+[tool.vulture]
+min_confidence = 80
+exclude = ["tests/", "scripts/", ".venv/"]
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+fail_under = 85
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/nasdaq"]

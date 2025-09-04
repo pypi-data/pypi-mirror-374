@@ -1,0 +1,25 @@
+{
+  "autoAccept": true,
+  "theme": "GitHub",
+  "usageStatisticsEnabled": false,
+  "contextFileName": "AGENTS.MD",
+  "telemetry": {
+    "enabled": false,
+    "logPrompts": false
+  },
+  "mcpServers": {
+    "fetch": {
+      "command": "uvx",
+      "args": ["mcp-server-fetch"],
+      "env": {},
+      "disabled": false,
+      "autoApprove": ["fetch"]
+    },
+    "deepwiki": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://mcp.deepwiki.com/mcp"],
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}
