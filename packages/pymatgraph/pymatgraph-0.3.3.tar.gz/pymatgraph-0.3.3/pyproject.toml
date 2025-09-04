@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pymatgraph"
+version = "0.3.3"
+description = "A Python package for high-performance tensor-based GPU/CPU buffer rendering, supporting tables, text, images, and graphics."
+readme = "README.md"
+license = "Apache-2.0"
+authors = [
+    { name="Alec Candidato", email="aleccandidato@gmail.com" }
+]
+requires-python = ">=3.8"
+dependencies = ["torch", "numpy", "Pillow", "pygame", "kivy"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Multimedia :: Graphics",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3 :: Only",
+    "Operating System :: OS Independent"
+]
+keywords = ["GPU", "CPU", "graphics", "tensor", "rendering", "tables", "text", "images", "pygame", "kivy", "high-performance"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+matrixbuffer = ["fonts/*"]
+
+[project.urls]
+Homepage = "https://github.com/0202alcc/pymatgraph"
+Documentation = "https://github.com/0202alcc/pymatgraph#readme"
+Repository = "https://github.com/0202alcc/pymatgraph"
