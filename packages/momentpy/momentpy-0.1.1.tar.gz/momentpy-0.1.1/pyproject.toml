@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "momentpy"
+version = "0.1.1"
+description = "A Carbon-like datetime library for Python inspired by Laravel's Carbon"
+authors = [
+    { name = "Sandesh Satyal", email = "sandeshsatyal@gmail.com" }
+]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.8"
+
+[project.urls]
+Homepage = "https://github.com/sandysh/pycarbon"
