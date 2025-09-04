@@ -1,0 +1,46 @@
+[project]
+name = "niyamit-sphere"
+version = "0.1.2"
+description = "A modern Python implementation of HAZUS flood methodology for building vulnerability and loss estimation."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [ { name = "NiyamIT, Inc." } ]
+dependencies = [
+    "sphere-core",
+    "sphere-data",
+    "sphere-flood",
+]
+
+[project.scripts]
+sphere = "sphere:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv.workspace]
+members = [
+    "packages/core",
+    "packages/data",
+    "packages/flood",
+]
+
+[tool.uv.sources]
+sphere-flood = { workspace = true }
+sphere-core = { workspace = true }
+sphere-data = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+    "pytest-cov>=6.2.1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "src/sphere",
+    "packages/core/src/sphere",
+    "packages/data/src/sphere",
+    "packages/flood/src/sphere",
+]

@@ -1,0 +1,93 @@
+name: TestPyPI Release
+
+on:
+  push:
+    tags:
+      - 'test-sphere-core-v*'
+      - 'test-sphere-data-v*'
+      - 'test-sphere-flood-v*'
+
+jobs:
+  publish-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv (astral-sh)
+        uses: astral-sh/setup-uv@v2
+        with:
+          python-version: '3.11'
+
+      - name: Determine package dir
+        id: pkg
+        run: |
+          TAG=${GITHUB_REF##refs/tags/}
+          echo "tag=$TAG"
+          if [[ $TAG == test-sphere-core-* ]]; then
+            echo "pkg_dir=packages/core" >> $GITHUB_OUTPUT
+          elif [[ $TAG == test-sphere-data-* ]]; then
+            echo "pkg_dir=packages/data" >> $GITHUB_OUTPUT
+          elif [[ $TAG == test-sphere-flood-* ]]; then
+            echo "pkg_dir=packages/flood" >> $GITHUB_OUTPUT
+          else
+            echo "Unknown tag format" >&2
+            exit 1
+          fi
+
+      - name: Build wheels for package and workspace deps
+        run: |
+          uv build --all-packages
+
+      - name: Run tests (uv)
+        run: |
+          uv run pytest -q
+
+      - name: Ensure build tools in uv env
+        run: |
+          uv run python -m pip install --upgrade pip build twine
+
+      - name: Build and upload to TestPyPI (uv publish)
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.TEST_PYPI_API_TOKEN }}
+        run: |
+          cd ${{ steps.pkg.outputs.pkg_dir }}
+          uv run python -m build
+          uv publish --publish-url https://test.pypi.org/legacy/ --check-url https://test.pypi.org/simple --token "$UV_PUBLISH_TOKEN"
+
+      - name: Build and upload `sphere` meta-package (TestPyPI)
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
+        run: |
+          set -e
+      python - <<'PY'
+import tomli
+from packaging.version import Version
+from pathlib import Path
+files = [Path('packages/core/pyproject.toml'), Path('packages/data/pyproject.toml'), Path('packages/flood/pyproject.toml')]
+vers = []
+for f in files:
+  with open(f,'rb') as fh:
+    data = tomli.load(fh)
+  vers.append(data['project']['version'])
+high = max(vers, key=Version)
+print('meta_version=' + high)
+open('.meta_version','w').write(high)
+PY
+
+          rm -rf .build/meta || true
+          mkdir -p .build/meta
+          cp -r packages/sphere-meta/* .build/meta/
+
+          META_VER=$(cat .meta_version)
+          python - <<'PY'
+from pathlib import Path
+import re
+p = Path('.build/meta/pyproject.toml')
+s = p.read_text()
+s = re.sub(r'(?m)^version\s*=\s*".*"$', f'version = "{open(".meta_version").read().strip()}"', s, count=1)
+p.write_text(s)
+PY
+
+          (cd .build/meta && python -m build -w -o ../)
+          uv publish --publish-url https://test.pypi.org/legacy/ --check-url https://test.pypi.org/simple --token "${{ secrets.TEST_PYPI_API_TOKEN }}" ./.build/sphere-$(cat .meta_version)-*.whl
