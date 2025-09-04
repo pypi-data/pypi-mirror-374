@@ -1,0 +1,44 @@
+settings:
+  configuration: imviz
+  data:
+    auto_populate: true
+    parser: imviz-data-parser
+  visible:
+    menu_bar: false
+    toolbar: true
+    tray: true
+    tab_headers: true
+  dense_toolbar: false
+  server_is_remote: false
+  context:
+    notebook:
+      max_height: 600px
+toolbar:
+  - g-data-tools
+  - g-subset-tools
+  - g-image-viewer-creator
+  - g-coords-info
+tray:
+  - g-metadata-viewer
+  - imviz-orientation
+  - VoPlugin
+  - g-plot-options
+  - g-data-quality
+  - g-subset-tools
+  - g-markers
+  - imviz-compass
+  - imviz-line-profile-xy
+  - imviz-aper-phot-simple
+  - imviz-catalogs
+  - imviz-footprints
+  - export
+  - about
+  - logger
+viewer_area:
+  - container: col
+    children:
+      - container: row
+        viewers:
+          - name: imviz-0
+            plot: imviz-image-viewer
+            reference: imviz-0
