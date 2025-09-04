@@ -1,0 +1,52 @@
+name: ⬆️ Update lock file
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Every Monday at 06:00 UTC
+  workflow_dispatch:
+
+jobs:
+  update-lockfile:
+    name: Update lock file
+    runs-on: ubuntu-latest
+
+    env:
+      python-version: "3.13"
+      branch-name: "update-lockfile"
+      pr-title: "Update uv lock file"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # needed for PRs and git history
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ env.python-version }}
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Update lock file
+        id: update
+        run: |
+          UPDATED=$(uv lock --upgrade 2>&1 | grep "^Updated")
+          echo "updated_output<<EOF" >> $GITHUB_OUTPUT
+          echo "$UPDATED" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.PAT_FOR_CI }}
+          commit-message: |
+            ${{ env.pr-title }}
+
+            ${{ steps.update.outputs.updated_output }}
+          branch: ${{ env.branch-name }}
+          delete-branch: true
+          title: ${{ env.pr-title }}
+          body: |
+            ${{ steps.update.outputs.updated_output }}
+          labels: dependencies, automated-pr
