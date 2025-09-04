@@ -1,0 +1,25 @@
+Metadata-Version: 2.4
+Name: pyGrowwAPI
+Version: 0.1.0
+Summary: Unofficial Python SDK for Groww APIs (sync + async), with typed models.
+Project-URL: Homepage, https://github.com/kamalkavin68/pyGrowwAPI
+Project-URL: Issues, https://github.com/kamalkavin68/pyGrowwAPI/issues
+Author-email: Kavin R <kamalkavin68@gmail.com>
+License: MIT
+License-File: LICENSE
+Keywords: api,groww,investing,sdk,trading
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Requires-Dist: pydantic>=2.7.0
+Requires-Dist: requests>=2.32.0
+Provides-Extra: dev
+Requires-Dist: black>=24.0.0; extra == 'dev'
+Requires-Dist: mypy>=1.10.0; extra == 'dev'
+Requires-Dist: pytest-cov>=5.0.0; extra == 'dev'
+Requires-Dist: pytest>=8.0.0; extra == 'dev'
+Requires-Dist: respx>=0.21.1; extra == 'dev'
+Requires-Dist: ruff>=0.5.0; extra == 'dev'
