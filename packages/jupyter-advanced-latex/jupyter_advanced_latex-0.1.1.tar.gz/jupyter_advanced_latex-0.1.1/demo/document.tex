@@ -1,0 +1,29 @@
+
+\documentclass{article}
+\usepackage{booktabs}
+\usepackage[margin=1in]{geometry}
+\newcommand{\sym}[1]{\ifmmode^{#1}\else\(^{#1}\)\fi}
+
+\begin{document}
+
+\begin{tabular}{l*{4}{c}}
+\toprule
+
+&
+\multicolumn{4}{c}{D(Trade
+=
+1)}
+\\
+\cmidrule(lr){2-5}
+                    &\multicolumn{1}{c}{(1)}         &\multicolumn{1}{c}{(2)}         &\multicolumn{1}{c}{(3)}         &\multicolumn{1}{c}{(4)}         \\
+\midrule
+D(Treatment = 1) &      -0.24\sym{***}&      -0.22\sym{**} &      -1.43\sym{**} &      -3.39         \\
+                    &     (0.011)         &     (0.011)         &     (0.020)         &     (0.029)         \\\bottomrule
+Seller FE&         Yes         &         Yes         &         Yes         &         Yes         \\
+Buyer FE            &          No         &          No         &         Yes         &          No         \\
+
+Observations        &     520,537         &     520,484         &     419,525         &     160,192         \\
+\bottomrule \end{tabular}
+
+
+\end{document}
