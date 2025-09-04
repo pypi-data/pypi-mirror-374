@@ -1,0 +1,9 @@
+include README.md
+include LICENSE
+include requirements.txt
+include noble_tls/profiles/browser_header_orders.json
+include noble_tls/profiles/data/*.json
+# Include native client libraries for AWS/restricted environments
+include noble_tls/data/*
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co] 
