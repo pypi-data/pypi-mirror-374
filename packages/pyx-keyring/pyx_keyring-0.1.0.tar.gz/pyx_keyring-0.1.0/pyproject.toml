@@ -1,0 +1,35 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "pyx-keyring"
+description = "A keyring plugin for pyx."
+requires-python = ">=3.7"
+version = "0.1.0"
+keywords = ["pyx", "keyring"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+]
+authors = [
+  { name = "Astral Software Inc.", email = "hey@astral.sh" },
+]
+dependencies = [
+  "keyring"
+]
+readme = "README.md"
+license = "MIT"
+
+[tool.flit.module]
+name = "keyrings"
+
+[project.entry-points."keyring.backends"]
+PyxKeyring = "keyrings.pyx_keyring"
