@@ -1,0 +1,15 @@
+[console_scripts]
+ai-assistant = ai_assistant:main
+batch-code = batch_code:main
+batch-image = batch_image:main
+batch-status = batch_status:main
+batch-submit = batch_submit:main
+batch-vertex = batch_vertex:main
+batch-vertex-pro = batch_vertex_processor:main
+harvester = harvester:cli
+image-cli = image_cli:main
+license-check = license_check:main
+router-image = router_image:main
+style-openai = style_openai_cli:main
+style-vertex = style_vertex_cli:main
+test-xai-deepseek = test_xai_deepseek:main
