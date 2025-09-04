@@ -1,0 +1,54 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "etendo-mcp-atlassian"
+version = "0.1.9"                    # ⟵ bump (PyPI no permite overwrite)
+requires-python = ">=3.9"
+description = "MCP server for Atlassian (fork con mejoras)"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Tu Nombre" }]
+
+dependencies = [
+  "atlassian-python-api>=4.0.4",
+  "httpx>=0.28",
+  "requests>=2.32",
+  "requests-oauthlib>=2.0",
+  "pydantic>=2.11",
+  "uvicorn>=0.34",
+  "typer>=0.16",
+  "click>=8.2",
+  "rich>=14.0",
+  "websockets>=15.0",
+  "beautifulsoup4>=4.13",
+  "lxml>=5.4",
+  "python-dateutil>=2.8.2,<3",
+  "keyring>=25.0",
+  "python-dotenv>=1.0.1,<2",
+  "mcp>=1",
+  "cachetools>=5",
+  "fastmcp>=0.1.7",
+  "markdownify>=0.13",
+  "thefuzz>=0.22",
+  # opcional (acelera thefuzz):
+  "python-Levenshtein>=0.25",
+]
+
+[project.optional-dependencies]
+confluence = [
+  "md2cf>=0.5",          # ← Movido a dependencias opcionales
+  "markdown>=3.0",       # ← Para fallback básico
+]
+
+[project.scripts]
+# Ejecutable(s) que exponés
+etendo-mcp-atlassian = "mcp_atlassian.server:main"
+mcp-atlassian = "mcp_atlassian.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcp_atlassian"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/mcp_atlassian", "pyproject.toml", "README.md", "LICENSE"]
