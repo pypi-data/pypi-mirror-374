@@ -1,0 +1,288 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+log_level = "INFO"
+testpaths = ["tests"]
+filterwarnings = [
+    "ignore:The _yaml extension module is now located at yaml._yaml",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+omit = [
+  "src/suitable/_modules.py",
+  "src/suitable/_module_types.py",
+  "src/suitable/types.py",
+]
+
+[tool.bandit]
+exclude_dirs = [
+  "tests",
+  "src/suitable/_module_types.py",
+  "src/suitable/_modules.py",
+]
+skips = ["B101"]
+
+[tool.mypy]
+python_version = "3.9"
+follow_imports = "silent"
+namespace_packages = true
+explicit_package_bases = true
+strict = true
+mypy_path = "$MYPY_CONFIG_FILE_DIR/src"
+
+[[tool.mypy.overrides]]
+module = ["suitable._module_types"]
+warn_return_any = false
+
+[tool.ruff]
+exclude = [
+  ".bzr",
+  ".direnv",
+  ".eggs",
+  ".git",
+  ".git-rewrite",
+  ".hg",
+  ".ipynb_checkpoints",
+  ".mypy_cache",
+  ".nox",
+  ".pants.d",
+  ".pyenv",
+  ".pytest_cache",
+  ".pytype",
+  ".ruff_cache",
+  ".svn",
+  ".tox",
+  ".venv",
+  ".vscode",
+  "__pypackages__",
+  "_build",
+  "buck-out",
+  "build",
+  "dist",
+  "node_modules",
+  "site-packages",
+  "venv",
+]
+src = ["scripts", "src", "test"]
+include = [
+  "pyproject.toml",
+  "scripts/**/*.py",
+  "src/**/*.py",
+  "tests/**/*.py",
+]
+line-length = 80
+indent-width = 4
+target-version = "py39"
+
+[tool.ruff.lint]
+select = [
+  "A005",
+  "ASYNC",
+  "B0",
+  "B904",
+  "B909",
+  "C4",
+  "COM818",
+  "E",
+  "F",
+  "FLY002",
+  "FURB",
+  "G010",
+  "G2",
+  "I002",
+  "ISC",
+  "LOG",
+  "N",
+  "PERF",
+  "PGH004",
+  "PGH005",
+  "PIE",
+  "PYI",
+  "Q",
+  "RUF",
+  "SIM",
+  "SLOT",
+  "T",
+  "UP",
+  "W",
+]
+ignore = [
+  "FURB103",
+  "SIM105",
+  "SIM118",
+]
+unfixable = []
+preview = true
+
+[tool.ruff.lint.extend-per-file-ignores]
+"scripts/**/*.py" = [
+  "T",
+]
+"tests/**/*.py" = [
+  "RUF012",
+  "SIM108",
+]
+"src/suitable/_module*s.py" = [
+  "PYI041",
+  "RUF100",
+]
+
+[tool.ruff.lint.isort]
+required-imports = ["from __future__ import annotations"]
+
+[tool.ruff.lint.pep8-naming]
+extend-ignore-names = []
+classmethod-decorators = []
+
+[tool.ruff.lint.flake8-quotes]
+avoid-escape = true
+docstring-quotes = "double"
+inline-quotes = "single"
+multiline-quotes = "double"
+
+[tool.ruff.lint.pyupgrade]
+keep-runtime-typing = true
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
+
+[tool.bumpversion]
+current_version = "0.22.0-rc0"
+commit = true
+message = "Release {new_version}"
+tag = true
+tag_message = "Release {new_version}"
+parse = """(?x)
+    (?P<major>0|[1-9]\\d*)\\.
+    (?P<minor>0|[1-9]\\d*)\\.
+    (?P<patch>0|[1-9]\\d*)
+    (?:
+        -                             # dash separator for pre-release section
+        (?P<pre_l>[a-zA-Z-]+)         # pre-release label
+        (?P<pre_n>0|[1-9]\\d*)        # pre-release version number
+    )?                                # pre-release section is optional
+"""
+serialize = [
+    "{major}.{minor}.{patch}-{pre_l}{pre_n}",
+    "{major}.{minor}.{patch}",
+]
+
+[tool.bumpversion.parts.pre_l]
+values = ["rc", "final"]
+optional_value = "final"
+
+[[tool.bumpversion.files]]
+filename="setup.cfg"
+
+[[tool.bumpversion.files]]
+filename="docs/conf.py"
+
+[[tool.bumpversion.files]]
+filename="CHANGELOG.rst"
+search = """
+Changelog
+---------
+"""
+replace = """
+Changelog
+---------
+
+{new_version} ({now:%Y-%m-%d})
+~~~~~~~~~~~~~~~~~~~
+"""
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist =
+  py{39,310,311}-ansible7
+  py{39,310,311}-ansible8
+  py{310,311,312}-ansible9
+  py{310,311,312}-ansible10
+  py{311,312,313}-ansible11
+  py{311,312,313}-ansible12
+  ruff
+  bandit
+  mypy
+  report
+
+[gh-actions]
+python =
+    3.9: py39
+    3.10: py310
+    3.11: py311,ruff,bandit,mypy
+    3.12: py312
+    3.13: py313
+
+[testenv]
+usedevelop = true
+setenv =
+  py{38,39,310,311,312,313}: COVERAGE_FILE = .coverage.{envname}
+  ansible12: UV_PRERELEASE = allow
+deps =
+  -e{toxinidir}[tests]
+  ansible7: ansible==7.*
+  ansible7: ansible-core==2.14.*
+  ansible8: ansible==8.*
+  ansible8: ansible-core==2.15.*
+  ansible9: ansible==9.*
+  ansible9: ansible-core==2.16.*
+  ansible10: ansible==10.*
+  ansible10: ansible-core==2.17.*
+  ansible11: ansible==11.*
+  ansible11: ansible-core==2.18.*
+  ansible12: ansible==12.*
+  ansible12: ansible-core==2.19.*
+
+commands = pytest --cov --cov-report= {posargs}
+
+passenv = *
+
+[testenv:ruff]
+basepython = python3.11
+skip_install = true
+deps =
+  ruff
+commands = ruff check
+
+[testenv:bandit]
+basepython = python3.11
+skip_install = true
+deps =
+  bandit[toml]
+commands = bandit -q -c pyproject.toml -r src
+
+[testenv:mypy]
+basepython = python3.11
+deps =
+    -e{toxinidir}
+    mypy
+    mitogen
+    port_for
+    pytest
+    types-paramiko
+commands =
+  mypy -p suitable -p tests --python-version 3.9
+  mypy -p suitable -p tests --python-version 3.10
+  mypy -p suitable -p tests --python-version 3.11
+  mypy -p suitable -p tests --python-version 3.12
+  mypy -p suitable -p tests --python-version 3.13
+
+[testenv:report]
+deps =
+  coverage
+skip_install = true
+commands =
+  coverage combine
+  coverage report -m
+
+"""
