@@ -1,0 +1,109 @@
+Metadata-Version: 2.4
+Name: injectq
+Version: 0.1.0
+Summary: Modern Python dependency injection library combining simplicity, power, and performance
+Project-URL: Homepage, https://github.com/Iamsdt/injectq
+Project-URL: Documentation, https://github.com/Iamsdt/injectq
+Project-URL: Repository, https://github.com/Iamsdt/injectq
+Project-URL: Issues, https://github.com/Iamsdt/injectq/issues
+Author: InjectQ Contributors
+License-Expression: MIT
+License-File: LICENSE
+Keywords: container,dependency-injection,di,inversion-of-control,ioc
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Typing :: Typed
+Requires-Python: >=3.10
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: taskiq>=0.11.18
+Requires-Dist: typing-extensions>=4.0.0
+Provides-Extra: dev
+Requires-Dist: black>=22.0.0; extra == 'dev'
+Requires-Dist: flake8>=4.0.0; extra == 'dev'
+Requires-Dist: isort>=5.0.0; extra == 'dev'
+Requires-Dist: mypy>=1.0.0; extra == 'dev'
+Requires-Dist: pytest-asyncio>=0.21.0; extra == 'dev'
+Requires-Dist: pytest-cov>=3.0.0; extra == 'dev'
+Requires-Dist: pytest>=6.0.0; extra == 'dev'
+Provides-Extra: fastapi
+Requires-Dist: fastapi>=0.68.0; extra == 'fastapi'
+Provides-Extra: taskiq
+Requires-Dist: taskiq>=0.9.0; extra == 'taskiq'
+Provides-Extra: testing
+Requires-Dist: pytest-asyncio>=0.21.0; extra == 'testing'
+Requires-Dist: pytest>=6.0.0; extra == 'testing'
+Description-Content-Type: text/markdown
+
+# InjectQ
+
+A modern Python dependency injection library that combines the simplicity of kink, the power of python-injector, and the advanced features of modern DI frameworks.
+
+## Features
+
+- **Simplicity First**: Start with simple dict-like interface, grow into advanced features
+- **Multiple API Styles**: Choose between `@inject` decorators and `Inject()` functions  
+- **Type Safe**: Full mypy compliance with early error detection
+- **Performance Optimized**: Compile-time dependency resolution with caching
+- **Modern Framework Native**: Built-in support for FastAPI, Taskiq, and FastMCP
+- **Resource Management**: Automatic cleanup and finalization
+
+## Quick Start
+
+```python
+from injectq import InjectQ, inject, singleton
+
+# Create container
+container = InjectQ.get_instance()
+
+# Simple dict-like binding
+container[str] = "Hello, World!"
+
+# Class binding
+@singleton
+class UserService:
+    def __init__(self, message: str):
+        self.message = message
+    
+    def greet(self) -> str:
+        return f"Service says: {self.message}"
+
+# Automatic dependency injection
+@inject
+def main(service: UserService) -> None:
+    print(service.greet())
+
+if __name__ == "__main__":
+    main()  # Prints: Service says: Hello, World!
+```
+
+## Installation
+
+```bash
+pip install injectq
+```
+
+With optional framework integrations:
+
+```bash
+pip install injectq[fastapi]   # FastAPI integration
+pip install injectq[taskiq]    # Taskiq integration  
+pip install injectq[fastmcp]   # FastMCP integration
+```
+
+## Documentation
+
+See the [complete specification](INJECTQ_SPECIFICATION.md) for detailed API documentation and examples.
+
+## License
+
+MIT License - see LICENSE file for details.
