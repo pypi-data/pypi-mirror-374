@@ -1,0 +1,5 @@
+[console_scripts]
+PyDatabaseds = databaseds.database:main
+
+[pytest11]
+pytango-db-fixtures = databaseds.fixtures
