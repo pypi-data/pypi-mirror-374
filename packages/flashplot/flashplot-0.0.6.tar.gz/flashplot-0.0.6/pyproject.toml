@@ -1,0 +1,22 @@
+[project]
+name = "flashplot"
+version = "0.0.6"
+dependencies = [
+  "numpy",
+  "matplotlib",
+  "pillow",
+  "tqdm>=4.67.1"]
+requires-python = ">= 3.11"
+
+[dependency-groups]
+docs = [
+  "sphinx",
+  "sphinx-rtd-theme"
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
