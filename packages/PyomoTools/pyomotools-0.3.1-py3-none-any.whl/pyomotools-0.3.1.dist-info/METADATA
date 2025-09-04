@@ -1,0 +1,83 @@
+Metadata-Version: 2.4
+Name: PyomoTools
+Version: 0.3.1
+Summary: A collection of tools to aid in formulating and working with Pyomo models.
+Author-email: Nathan Barrett <nb5786@pricneton.edu>
+License: MIT License
+        
+        Copyright (c) 2024 Nathan Davis Barrett
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/NathanDavisBarrett/PyomoTools
+Platform: UNKNOWN
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.21.0
+Requires-Dist: pyomo>=6.0
+Requires-Dist: scipy>=1.7.0
+Requires-Dist: pandas>=2.3.0
+Requires-Dist: pwlf>=2.5.1
+Requires-Dist: matplotlib>=3.9.0
+Requires-Dist: pytest>=8.4.0
+Requires-Dist: PyQt5>=5.15.0
+Requires-Dist: XlsxWriter>=3.2.3
+Requires-Dist: openpyxl>=3.1.5
+Requires-Dist: pyyaml>=6.0.2
+Requires-Dist: gurobipy>=12.0.0
+Dynamic: license-file
+
+# PyomoTools
+**PyomoTools** is a collection of tools to aid in formulating and working with [Pyomo](http://www.pyomo.org/) models.
+
+Key functions include:
+
+* **LoadIndexedSet**: Create a dict of subsets and properly attach it to a given pyomo model. (available to environ models only)
+* **Load2DIndexedSet**: Similar to LoadIndexedSet but with two levels of indexing. (available to environ models only)
+* **GenerateExpressionStrings**: A function to create a matching pair of strings representing a given pyomo expression: One symbolic, One with all values substituted in
+* **InfeasibilityReport**: A class to analyze any infeasibilities found within a model in an easily readable way.
+* **Formulations.DoubleSidedBigM**: A function to automatically generate the constraints and variables needed to model the relation $A = B \times X + C$ in MILP form.
+* **Formulations.MinOperator**: A function to automatically generate the constraints and variables needed to model the relation $A = min(B,C)$ in MILP form.
+* **Formulations.MaxOperator**: A function to automatically generate the constraints and variables needed to model the relation $A = max(B,C)$ in MILP form.
+* **Formulations.PWL**: A function to automatically generate a Piecewise-Linear approximation of a general (non-linear) function (available to environ models only) (pyomo kernel already has this functionality)
+* **IO.ModelToExcel**: A function to write the solution of a model to an easily readable excel file. (available to environ models only)
+* **IO.LoadModelSolutionFromExcel**: A function to load a solution from an excel file into a pyomo model. (available to environ models only)
+* **IO.ModelToYaml**: A function to write the solution of a model to a yaml file. (available to kernel models only)
+* **IO.LoadSolutionFromYaml**: A function to load a solution from a yaml file into a pyomo model. (available to kernel models only)
+* **FindLeastInfeasibleSolution**: A tool for finding the least infeasible solution of a (presumably infeasible) model. 
+* **VectorRepresentation**: A tool to convert a (Mixed-Integer) Linear model into it's vector/matrix representation.
+* **Polytope**: A class to facilitate the plotting and vertex calculation of a sub-polytope of a model.
+
+Each function is available (or will soon be available) for both pyomo.environ modeling as well as pyomo.kernel modeling. To access each one, please import them from PyomoTools.environ or PyomoTools.kernel
+
+# Installation
+### From PyPi
+> 1.1. Enter the command ```pip install PyomoTools``` in your Python terminal.
+### From GitHub
+> 1.1. Download or clone this repository.\
+> 1.2. In your Python terminal, navigate to the repository you downloaded.\
+> 1.3. Enter the command ```pip install .```
+
+2. By default, the example/testing code used into this package uses the [SCIP solver](https://github.com/scipopt/scip), [Gurobi Solver](https://www.gurobi.com/), and [ipopt Solver](https://coin-or.github.io/Ipopt/). Please either \
+A) ensure that these solvers are installed and accessible to Pyomo or\
+B) call ```PyomoTools.base.Solvers.DefaultSolver.EditDefaultSolver(problemType,solverName,**defaultKwargs)``` where\
+```problemType``` is MILP, NLP, MIQCP, etc,\ ```solverName``` is the name of the solver you'd like to use (e.g. "gurobi", "ipopt"), and\ ```defaultKwargs``` are any necessary key-word arguments for pyomo to utilize (e.g. executable=path/to/executable)
+
+3. To make sure everything was correctly installed, Enter the command ```pytest PyomoTools/```
