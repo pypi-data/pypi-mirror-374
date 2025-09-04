@@ -1,0 +1,211 @@
+Metadata-Version: 2.4
+Name: langchain-openai-like
+Version: 0.1.0
+Summary: A utils to connect to all models compatible with the OpenAI style
+Project-URL: Source Code, https://github.com/TBice123123/langchain-openai-like
+Author-email: tiebingice <tiebingice123@outlook.com>
+License-File: LICENSE
+Requires-Python: >=3.11
+Requires-Dist: langchain-openai>=0.3.32
+Requires-Dist: langchain>=0.3.27
+Requires-Dist: python-dotenv>=1.1.1
+Description-Content-Type: text/markdown
+
+# 🦜️🔗 LangChain-OpenAI-Like
+
+<p align="center">
+    <em>One library to access all OpenAI-compatible models</em>
+</p>
+
+[中文文档](README_cn.md)
+
+## Motivation
+
+As OpenAI-style APIs become the industry standard, more and more large model providers are offering compatible interfaces. However, current integration methods are scattered and inefficient. For example, integrating DeepSeek requires installing `langchain-deepseek`, while integrating Qwen3 requires `langchain-qwq`. This approach of introducing separate dependency packages for each model not only increases development complexity but also reduces flexibility. More extreme examples like Kimi-K2 don't even have corresponding wrapper packages and can only be accessed through `langchain-openai`.
+
+To solve these problems, we developed this tool library (naming inspired by `llama-index-llms-openai-like`), providing a unified interface function `init_openai_like_chat_model` that allows access to all OpenAI-compatible model APIs with just one dependency package. With this tool, you can easily integrate various models, for example:
+
+```python
+from langchain_openai_like import init_openai_like_chat_model
+
+deepseek_model = init_openai_like_chat_model(model="deepseek-chat")
+deepseek_model.invoke("Hello")
+```
+
+> ⚠️ Note: Before using, make sure you have properly set up API keys like `DEEPSEEK_API_KEY`.
+
+> ⚠️ Note: If you're integrating OpenAI's GPT models, it's recommended to use `langchain-openai` directly.
+
+## Installation
+
+### Pip Installation
+
+```bash
+pip install langchain-openai-like
+```
+
+### UV Installation
+
+```bash
+uv add langchain-openai-like
+```
+
+## Usage
+
+In the `init_openai_like_chat_model` function, the `model` parameter is required, and the `provider` parameter is optional.
+
+### Supported Model Providers
+
+Currently supported model providers:
+
+- DeepSeek
+- DashScope (Alibaba Cloud)
+- Groq
+- HuggingFace
+- MoonShot-AI
+- Ollama
+- OpenRouter
+- SiliconFlow
+- VLLM
+- Zhipu-AI
+- Custom (custom provider)
+
+If you don't specify a provider, the tool will automatically determine the provider based on the model name:
+
+| Model Keyword | Provider  | Required API_KEY  |
+| ------------- | --------- | ----------------- |
+| deepseek      | DeepSeek  | DEEPSEEK_API_KEY  |
+| qwen          | DashScope | DASHSCOPE_API_KEY |
+| moonshot/kimi | MoonShot  | MOONSHOT_API_KEY  |
+| glm           | Zhipu-AI  | ZHIPU_API_KEY     |
+
+**Notes:**
+
+> (1) For VLLM and Ollama, you must specify provider="vllm" or "ollama"
+> For example:
+
+```python
+from langchain_openai_like import init_openai_like_chat_model
+
+model = init_openai_like_chat_model(
+    model="qwen3:8b",
+    provider="ollama"
+)
+print(model.invoke("Hello"))
+```
+
+> (2) For other model parameters (such as `temperature`, `top_k`, etc.), you can pass them through model_kwargs.
+> For example:
+
+```python
+from langchain_openai_like import init_openai_like_chat_model
+
+model = init_openai_like_chat_model(
+    model="qwen3-32b",
+    model_kwargs={
+      "thinking_budget": 10
+    }
+)
+print(model.invoke("Hello"))
+```
+
+### Vision Models
+
+Also supports OpenAI-compatible vision multimodal models, for example:
+
+```python
+from langchain_core.messages import HumanMessage
+from langchain_openai_like import init_openai_like_chat_model
+
+model = init_openai_like_chat_model(
+    model="qwen2.5-vl-32b-instruct"
+)
+print(model.invoke(
+    input=[
+        HumanMessage(
+            content=[
+                {
+                    "type": "image_url",
+                    "image_url": "https://example.com/image.png"
+                },
+                {
+                    "type": "text",
+                    "text": "What's in the image?"
+                }
+            ]
+        )
+    ]
+))
+```
+
+### Embedding Models
+
+This library also provides OpenAI-compatible embedding model integration. Currently supported providers are `custom`, `dashscope`, `ollama`, `vllm`, `siliconflow`, `zai`.
+
+Example code:
+
+```python
+from langchain_openai_like import init_openai_like_embeddings
+
+emb = init_openai_like_embeddings("bge-m3:latest", provider="ollama")
+print(emb.embed_query("hello world"))
+```
+
+### Custom Provider
+
+For model providers not yet supported, you can use the `provider="custom"` parameter and manually set `base_url` and `api_key`.
+
+For example, using the Kimi-K2 model from SiliconFlow platform:
+
+```python
+import os
+
+os.environ["OPENAI_LIKE_API_KEY"] = "your_api_key"
+os.environ["OPENAI_LIKE_API_BASE"] = "https://api.siliconflow.cn/v1"
+
+from langchain_openai_like import init_openai_like_chat_model
+
+model = init_openai_like_chat_model(
+    model="moonshotai/Kimi-K2-Instruct",
+    provider="custom",
+)
+print(model.invoke("Hello"))
+```
+
+### Using ChatModel Classes
+
+You can also use ChatModel classes like using ChatQwen, ChatDeepSeek. Just import the corresponding class. For example, to integrate Qwen:
+
+```python
+from langchain_openai_like.chat_model.providers.dashscope import ChatDashScopeModel
+
+model = ChatDashScopeModel(model="qwen3-30b-a3b-instruct")
+print(model.invoke("Hello"))
+```
+
+## Usage Summary
+
+### When to Use This Library vs LangChain Official Functions
+
+#### Use LangChain's official `init_chat_model` and `init_embeddings` when:
+
+- You primarily use mainstream models like OpenAI, Anthropic, Google, etc.
+- You prefer using officially maintained, stable implementations
+- Your models are already in the official support list
+
+#### Use this library's `init_openai_like_chat_model` and `init_openai_like_embeddings` when:
+
+- You need to flexibly switch between models from different providers
+- Your model is not in LangChain's official support list(e.g. qwen、glm) but provides OpenAI-compatible interfaces
+
+### Advantages of This Library
+
+The two core utility functions of this library are named after LangChain's `init_chat_model` and `init_embeddings`, providing a similar user experience but with extended support for more models:
+
+- **Broader model support**: Supports models like qwen, glm, moonshot that are not supported by official libraries
+- **Unified interface**: Access models from multiple providers with a single library
+- **Flexible switching**: Easily switch and test between different models
+
+### Contribution Guide
+
+Due to the author's limited capabilities, many compatible models are not yet integrated, or there may be issues with the integration of supported models. If your model provider also offers an OpenAI API-compatible interface, you're welcome to contribute your integration implementation through Pull Requests (PRs) to help more developers integrate easily.
