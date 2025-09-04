@@ -1,0 +1,67 @@
+Metadata-Version: 2.4
+Name: uitk
+Version: 1.0.31
+Home-page: https://github.com/m3trik/uitk
+Author: Ryan Simpson
+Author-email: m3trik@outlook.com
+License: LGPLv3
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: COPYING.LESSER
+Requires-Dist: qtpy
+Requires-Dist: pythontk==0.7.30
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0.en.html)
+[![Version](https://img.shields.io/badge/Version-1.0.31-blue.svg)](https://pypi.org/project/uitk/)
+
+# UITK: UI Toolkit for Dynamic Qt Applications
+
+UITK is a Python package that simplifies Qt application development by providing dynamic UI loading, automatic signal-slot connections, and enhanced widgets. Built on qtpy for cross-platform compatibility, UITK uses naming conventions to automatically connect UI files with their corresponding slot classes, reducing boilerplate code and streamlining the development process.
+
+## What UITK Does
+
+UITK's primary goal is to eliminate the manual wiring typically required in Qt applications. Instead of manually connecting signals to slots and managing UI loading, UITK uses file and method naming conventions to automatically establish these connections.
+
+### Core Features
+
+**Dynamic UI Loading**
+- Automatically loads .ui files created in Qt Designer
+- Connects UI widgets to Python methods based on naming conventions
+- Supports multiple UI file locations and sources
+
+**Convention-Based Signal Connection**
+- Widget named `save_button` automatically connects to method `save_button()`
+- Initialization methods like `save_button_init()` are called during setup
+- Override default signals using the `@Signals()` decorator
+
+**Enhanced Widgets**
+- Extended Qt widgets with additional functionality
+- Rich text support in buttons, labels, and other text widgets
+- Integrated menu system for buttons and other controls
+- Bulk attribute setting with `set_attributes()`
+
+**State Management**
+- Basic widget state persistence across application sessions
+- Window geometry and position restoration
+- Configurable state saving per widget
+
+**File Organization**
+- Registry system for tracking UI files, slot classes, and custom widgets
+- Support for multiple source directories
+- Lazy loading of components
+
+## Package Structure
+
+```
+uitk/
