@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "omss"
+version = "0.1.0"
+description = "Python package for generating customizable matrix reasoning puzzles, inspired by Raven Progressive Matrices"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Aran van Hout", email = "aranvanhout@hotmail.com" },
+  { name = "Nicholas Judd", email = "nicholas.judd@radboudumc.nl" }
+]
+requires-python = ">=3.7"
+dependencies = [
+    "numpy==2.2.3",
+    "opencv-python==4.11.0.86",
+    "Pillow==11.2.1",
+    "matplotlib==3.10.3"
+]
+[tool.setuptools.packages.find]
+where = ["src"]
+
+
+[project.urls]
+Homepage = "https://github.com/aranvhout/OMSS_generator"
+
