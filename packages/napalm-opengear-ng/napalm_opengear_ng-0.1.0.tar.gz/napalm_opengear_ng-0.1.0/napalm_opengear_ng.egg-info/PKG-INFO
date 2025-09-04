@@ -1,0 +1,16 @@
+Metadata-Version: 2.4
+Name: napalm-opengear-ng
+Version: 0.1.0
+Summary: NAPALM driver for Opengear CM81xx
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: napalm>=5.1.0
+Dynamic: license-file
+
+# napalm-opengear-ng
+
+NAPALM driver for "new generation" Opengear devices ([CM81xx](https://opengear.com/products/cm8100-console-server/)), but it might be compatible with other products, who knows :)
+
+## License
+This project is licensed under the Apache License - see the [LICENSE](LICENSE) file for details
