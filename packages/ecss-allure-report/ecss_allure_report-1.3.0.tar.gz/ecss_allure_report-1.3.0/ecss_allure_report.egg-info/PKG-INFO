@@ -1,0 +1,51 @@
+Metadata-Version: 2.4
+Name: ecss_allure_report
+Version: 1.3.0
+Summary: This is the simplest module for quick generate report message for Allure and send to ECSS Chat
+Author: maxstolpovskikh
+Author-email: maximstolpovskikh@gmail.com
+Keywords: ecss_chat_client
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.12.3
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests>=2.32.3
+Requires-Dist: ecss-chat-client>=1.0.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# ECSS Chat Client
+
+Python клиент для работы с ECSS Chat.
+
+## Установка
+
+```bash
+pip install ecss_allure_report
+```
+
+## GetStarted
+
+```python
+from ecss_chat_client import Client
+```
+
+### .env
+```
+REPORT_PROJECT_NAME='ELPH Chat Server'
+REPORT_DIAGRAM_NAME='chart.png'
+REPORT_ELPH_SERVER='server.domain.loc'
+REPORT_ELPH_USER='3097'
+REPORT_ELPH_PASSWORD='password'
+REPORT_ELPH_ROOM_ID = 'room_id'
+```
