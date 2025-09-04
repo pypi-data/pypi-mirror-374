@@ -1,0 +1,60 @@
+[tool.poetry]
+name = "vietnam_number"
+version = "1.0.4"
+description = "Thư viện xữ lý chữ số dành riêng cho Tiếng Việt - Hỗ trợ chuyển đổi cho cả văn nói và văn viết"
+authors = ["Nguyễn Hoài Thương <ng.thuong.lio@gmail.com>"]
+repository = "https://github.com/ngthuong45/vietnam-number.git"
+license = "GPL-3.0-or-later"
+readme = "README.rst"
+keywords = ["Vietnam", "number", "w2n", "n2w", "number to word", "word to number", "text to number", "number to text"]
+classifiers = [
+    'Natural Language :: Vietnamese',
+    'Intended Audience :: Information Technology',
+    'Intended Audience :: Financial and Insurance Industry',
+    'Intended Audience :: Telecommunications Industry',
+    'Intended Audience :: Developers',
+    'Operating System :: OS Independent',
+    'Topic :: Software Development :: Localization',
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Quality Assurance",
+    'Programming Language :: Python :: 3 :: Only',
+]
+include = [
+    "LICENSE",
+]
+
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^5.2"
+pre-commit = "^2.8.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+line_length = 127
+
+[tool.black]
+line-length = 127
+skip-string-normalization = true
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  # The following are specific to Black, you probably don't want those.
+)/
+'''
