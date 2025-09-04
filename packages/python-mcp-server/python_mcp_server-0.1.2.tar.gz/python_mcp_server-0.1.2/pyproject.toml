@@ -1,0 +1,43 @@
+[project]
+name = "python-mcp-server"
+version = "0.1.2"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastmcp",
+    "uvicorn",
+    "jupyter_client",
+    "matplotlib",
+    "pandas",
+    "ipykernel",
+]
+
+authors = [
+  { name = "DeadMeme5441", email = "deadunderscorememe@gmail.com" }
+]
+keywords = [
+  "mcp", "model context protocol", "fastmcp", "jupyter", "server", "mcp-server"
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.12",
+  "Framework :: AsyncIO",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Libraries",
+  "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+]
+
+[project.urls]
+Homepage = "https://github.com/DeadMeme5441/python-mcp-server"
+Repository = "https://github.com/DeadMeme5441/python-mcp-server"
+Issues = "https://github.com/DeadMeme5441/python-mcp-server/issues"
+Documentation = "https://github.com/DeadMeme5441/python-mcp-server#readme"
+
+[project.scripts]
+python-mcp-server = "python_mcp_server.server:main"
+
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"

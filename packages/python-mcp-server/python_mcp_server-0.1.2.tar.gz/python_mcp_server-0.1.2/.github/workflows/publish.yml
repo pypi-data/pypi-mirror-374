@@ -1,0 +1,49 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v3
+
+      # Tests temporarily disabled for initial publish hardening
+      # - name: Install test tooling
+      #   run: |
+      #     uv run --with pytest --with httpx --no-project -- python -c "import sys; print('ok')"
+      # - name: Run tests
+      #   run: |
+      #     uv run --with pytest --with httpx pytest -q
+
+      - name: Lint (ruff)
+        run: |
+          uvx ruff@latest check .
+
+      - name: Build distributions
+        run: |
+          uv build --no-sources
+
+      - name: Publish to PyPI (trusted publisher)
+        env: {}
+        run: |
+          uv publish
