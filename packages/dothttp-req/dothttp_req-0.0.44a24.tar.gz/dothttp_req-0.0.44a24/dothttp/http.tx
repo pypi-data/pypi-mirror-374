@@ -1,0 +1,322 @@
+
+MULTISET: (import_list=IMPORT)? (variables=VAR*)? (allhttps=HTTP+)?;
+
+
+VAR:
+    "var" name=ID ("=" (  index = Index | func=FunctionCall | inter=InterpolatedString | value=Value ))? ';'
+;
+
+InterpolatedString: 
+    '$"' /[^"]*/ '"'
+;
+
+Index:
+    target=ID ('[' ( (key = ID) | (key=STRING) | (key = INT) ) ']')+
+;
+
+FunctionCall: 
+    name=ID '(' (args=INT)? ')'
+;
+
+IMPORT: ('import' filename=String ';')* ;
+
+HTTP:
+    (
+        (namewrap=NAMEWRAP)?
+        (extra_args*=EXTRA_ARG)?
+        (named_args*=NAMED_ARG)?
+        "curl"?
+        urlwrap=URL
+        (authwrap=AUTHWRAP)?
+        (certificate = CERTAUTH)?
+        (lines *= LINE)?
+        (payload=PAYLOAD)?
+        (output=TOFILE)?
+        (script_wrap=HTTP_TEST_SCRIPT)?
+    )
+;
+
+URL:
+    '-X'? method=METHODTYPE url=URLString SLASH?
+;
+
+NAMEWRAP:
+    // postman does it same like inherit auth
+    // here we extend both headers and auth
+    '@name' '(' name=DotString ')' (':' base=DotString)?
+;
+
+LINE: 
+    (query=QUERY) | (header=HEADER)
+;
+
+HEADER: 
+    'header' '(' key=DotString ',' value=DotString ')'
+    | key=DotString ':' value=DotString
+    | /-H|--header/  key=/'[\w-]+/ ':' value=/\S(.*\S)?'/ SLASH?
+    | /-H|--header/  key=/"[\w-]+/ ':' value=/\S(.*\S)?"/ SLASH?
+    | /-H|--header/  key=/[\w-]+/ ':' value=/\S(.*\S)?/ SLASH?
+    | key=/'[\w-]+/ ':' value=/\S(.*\S)?'/ SLASH?
+    | key=/"[\w-]+/ ':' value=/\S(.*\S)?"/ SLASH?
+    | key=/[\w-]+/ ':' value=/\S(.*\S)?/ SLASH?
+;
+
+AUTHWRAP:
+    digest_auth = DIGESTAUTH 
+    |  basic_auth = BASICAUTH 
+    | ntlm_auth = NTLMAUTH 
+    | hawk_auth=HAWKAUTH 
+    | aws_auth = AWSAUTH 
+    | azure_auth = AZUREAUTH
+;
+
+CERTAUTH:
+    (
+        'certificate' '(' 'cert' '=' cert=DotString (',' 'key' '=' key=DotString ','?)? ')'
+    ) | (
+        'p12' '(' 'file' '=' p12_file=DotString ',' 'password' '=' password=DotString ','? ')'
+    )
+;
+
+HAWKAUTH:
+    'hawkauth' '(' id=DotString ',' key = DotString (',' algorithm=DotString)? ')'
+;
+
+
+NTLMAUTH:
+    'ntlmauth' '(' username=DotString ',' password= DotString ')'
+;
+
+
+DIGESTAUTH:
+    'digestauth' '(' username=DotString ',' password= DotString ')'
+
+;
+
+BASICAUTH:
+    'basicauth' '(' username=DotString ',' password= DotString ')'
+;
+
+AWSAUTH:
+    'awsauth' '(' ('access_id' '=' ) ? access_id=DotString ',' ('secret_key' '=')? secret_token=DotString   ( ',' ('service'  '=')? service=DotString )? ','? ')'
+    | 'awsauth' '(' ('access_id' '=' ) ? access_id=DotString ',' ('secret_key' '=')? secret_token=DotString ','  ('service'  '=')? service=DotString (',' ('region' '=')? region=DotString)? ')'
+    | 'awsauth' '(' ('access_id' '=' ) ? access_id=DotString ',' ('secret_key' '=')? secret_token=DotString ','  ('service'  '=')? service=DotString ',' ('region' '=')? region=DotString ',' ('session_token' '=') ?  session_token=DotString ')'
+;
+
+AZUREAUTH:
+    azure_spcert_auth = AZURECERTIFICATEAUTH
+    // for service principal
+    | azure_spsecret_auth = AZURESERVICEPRINCIPALAUTH
+    // if you don't have both, use device_code flow
+    // in this case, we use azure cli to get auth_token 
+    | azure_device_auth = AZUREDEVICEAUTH
+    | azure_cli_auth = AZURECLIAUTH
+;
+
+AZURESERVICEPRINCIPALAUTH:
+
+    'azurespsecret' '(' ('tenant_id' '=')? tenant_id=DotString ',' ('client_id' '=')? client_id=DotString ',' ('client_secret' '=')? client_secret=DotString (',' ('scope' '=')?  scope=DotString )? ')'
+
+;
+
+AZURECERTIFICATEAUTH:
+    // for certificate based
+    'azurespcert' '(' ('tenant_id' '=')? tenant_id=DotString ',' ('client_id' '=')? client_id=DotString ',' ('certificate_path' '=')? certificate_path=DotString (',' ('scope' '=')?  scope=DotString )?')'
+
+;
+
+AZUREDEVICEAUTH:
+    'azuredevice' '(' (('scope' '=')?  scope=DotString )? ')'
+;
+
+AZURECLIAUTH:
+    'azurecli' '(' (('scope' '=')?  scope=DotString )?  ')'
+;
+
+
+EXTRA_ARG:
+    // there can be more
+    clear=CLEAR_SESSION 
+    | insecure=INSECURE
+    | no_parent_script=CLEAR_PARENT_SCRIPT
+;
+
+NAMED_ARG:
+    // key and value
+    '(' key=STRING ',' value=STRING ')'
+;
+
+CLEAR_SESSION:
+    '@clear'
+;
+
+CLEAR_PARENT_SCRIPT:
+    '@no_parent_script'
+;
+
+INSECURE:
+    "@insecure"
+;
+
+METHODTYPE: 
+    "GET" | "POST" | "OPTIONS"
+    | "DELETE" | "CONNECT" | "PUT"
+    | "HEAD" | "TRACE" | "PATCH"
+    | "COPY" | "LINK" | "UNLINK"
+    | "PURGE" | "LOCK" | "UNLOCK"
+    | "PROPFIND" | "VIEW" | "MKCOL" 
+    | "MOVE" | "PROPPATCH" | "REPORT"
+    | "SEARCH"
+;
+
+QUERY: 
+    'query' '(' key=DotString ',' value=DotString ')'
+    |('?' | "&") (
+          '(' key=DotString ',' value=DotString ')' 
+        | key=DotString ',' value=DotString 
+        | key=DotString ':' value=DotString 
+        | key=DotString '=' value=DotString
+    )
+;
+
+PAYLOAD: 
+    (
+          // reordered to provide max performance
+          // most http requests has json input,or urlencoded as input
+        ('json' '(' json=JSON  ')' )
+        | ('data' | 'urlencoded') '(' datajson=DATAJSON (',' type=STRING)? ','? ')'
+        | ('data'| 'text') '(' data+=TRIPLE_OR_DOUBLE_STRING ((','|';') type=STRING)? ','?  ')'
+        | (fileswrap=FILES)
+        | '<' file=STRING (';' type=STRING)?
+        | 'fileinput' '(' file=STRING   (',' type=STRING)? ','?  ')'
+        | /-d|--data/ data+=TRIPLE_OR_DOUBLE_STRING
+    )
+;
+
+TRIPLE_OR_DOUBLE_STRING:
+    triple = TRIPLE_QUOTE_STRING | str = STRING | str = ID 
+;
+
+
+FILES:
+    ("files" | "form" | "multipart") "(" files*=FILETYPE[','] ','? ")"
+;
+
+FILETYPE:
+    (
+        '(' name=DotString ',' path=TRIPLE_OR_DOUBLE_STRING  (',' (type=DotString)?)? ')'
+        | name=DotString ('<' | ':') path=TRIPLE_OR_DOUBLE_STRING (';' (type=DotString)?)?
+    )
+;
+
+TOFILE:
+    (
+        'output' '('output=STRING ')'
+        | '>>' output=STRING
+    )
+;
+
+DATAJSON:
+    object=Object | id = ID | var=VarString 
+;
+
+
+JSON:
+    flt=Float | int=Int | bl=Bool |  null="null" | id = ID | inter=InterpolatedString | strs += TRIPLE_OR_DOUBLE_STRING | var=VarString |  expr=Expression | array=Array | object=Object
+;
+
+Array:
+    "[" (values*=Value[','] ) ','? "]"
+;
+
+Value:
+    flt=Float | int=Int | bl=Bool |  null="null" | id = ID | inter=InterpolatedString | strs += TRIPLE_OR_DOUBLE_STRING | var=VarString  | object=Object | array=Array | expr=Expression
+;
+
+Expression:
+    Term (('+' | '-') Term)*
+;
+
+Term:
+    Factor (('*' | '/') Factor)*
+;
+
+Factor:
+    Number | '(' Expression ')'
+;
+
+Number:
+    /\d+(\.)?\d*/ | ID
+;
+
+
+Bool:
+    value=BOOL
+;
+
+Int:
+    value=INT
+;
+
+Float:
+    value=STRICTFLOAT
+;
+
+String: 
+    value=STRING
+;
+
+Object:
+    "{" members*=Member[','] ","? "}"
+;
+
+Member:
+    (key+=TRIPLE_OR_DOUBLE_STRING (':'|'=') value=Value) |
+    (var=VarString (':'|'=') value=Value)
+;
+Comment:
+    UnixComment | CommentLine | CommentBlock
+;
+UnixComment:
+    /#.*$/
+;
+CommentLine:
+    /\/\/.*?$/
+;
+
+CommentBlock:
+    /\/\*(.|\n)*?\*\//
+;
+
+VarString:
+    "{{" /[\w,$,:]+/ ("="  (/\w+/ | STRING))? "}}"
+;
+
+DotString:
+    STRING | /\w+/
+;
+// allow only alphanumeric or string in double/single quotes
+
+TRIPLE_QUOTE_STRING:
+        /"""[\S\s]*?"""/ | /'''[\S\s]*?'''/
+
+;
+
+URLString:
+    STRING | /https\:\/\/(\S)+/
+    | /http\:\/\/(\S)+/
+    | /\/(\S)+/
+;
+// allows http or https till space otherwise go for
+
+HTTP_TEST_SCRIPT:
+    script=/> {%[\s\S]*?%}/ (lang=SCRIPT_LANGUAGE)?
+;
+
+SCRIPT_LANGUAGE:
+    'python' | 'javascript'
+;
+
+SLASH:
+    '\'
+;
