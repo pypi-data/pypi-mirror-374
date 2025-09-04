@@ -1,0 +1,249 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-14 19:05+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: oscarreports/forms.py:16
+msgid "Report Type"
+msgstr ""
+
+#: oscarreports/forms.py:17
+msgid "Only the offer and order reports use the selected date range"
+msgstr ""
+
+#: oscarreports/forms.py:21
+msgid "Date from"
+msgstr ""
+
+#: oscarreports/forms.py:25
+msgid "Date to"
+msgstr ""
+
+#: oscarreports/forms.py:26
+msgid "The report is inclusive of this date"
+msgstr ""
+
+#: oscarreports/forms.py:47
+msgid "Your start date must be before your end date"
+msgstr ""
+
+#: oscarreports/models.py:36
+msgid "Created"
+msgstr ""
+
+#: oscarreports/models.py:37
+msgid "Queued"
+msgstr ""
+
+#: oscarreports/models.py:38
+msgid "In-Progress"
+msgstr ""
+
+#: oscarreports/models.py:39
+msgid "Completed"
+msgstr ""
+
+#: oscarreports/models.py:43
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_body.html:14
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_body.txt:4
+#: oscarreports/templates/oscar/dashboard/reports/report_confirm_delete.html:37
+msgid "UUID"
+msgstr ""
+
+#: oscarreports/models.py:50
+msgid "Content Type"
+msgstr ""
+
+#: oscarreports/models.py:60 oscarreports/tables.py:17
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_body.html:20
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_body.txt:6
+#: oscarreports/templates/oscar/dashboard/reports/report_confirm_delete.html:43
+msgid "Owner"
+msgstr ""
+
+#: oscarreports/models.py:65
+msgid "Type Code"
+msgstr ""
+
+#: oscarreports/models.py:66
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_body.html:17
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_body.txt:5
+#: oscarreports/templates/oscar/dashboard/reports/report_confirm_delete.html:40
+msgid "Description"
+msgstr ""
+
+#: oscarreports/models.py:67 oscarreports/tables.py:12
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_body.html:23
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_body.txt:7
+#: oscarreports/templates/oscar/dashboard/reports/report_confirm_delete.html:46
+msgid "Date Range"
+msgstr ""
+
+#: oscarreports/models.py:71
+msgid "Background Task ID"
+msgstr ""
+
+#: oscarreports/models.py:75
+msgid "Created On"
+msgstr ""
+
+#: oscarreports/models.py:76
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_body.html:26
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_body.txt:8
+msgid "Queued On"
+msgstr ""
+
+#: oscarreports/models.py:77
+msgid "Started On"
+msgstr ""
+
+#: oscarreports/models.py:78
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_body.html:29
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_body.txt:9
+msgid "Completed On"
+msgstr ""
+
+#: oscarreports/models.py:81
+msgid "MIME Type"
+msgstr ""
+
+#: oscarreports/models.py:83
+msgid "Report File"
+msgstr ""
+
+#: oscarreports/tables.py:20
+msgid "Report Status"
+msgstr ""
+
+#: oscarreports/tables.py:23
+msgid "Task Status"
+msgstr ""
+
+#: oscarreports/tables.py:27
+msgid "File Size"
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_body.html:6
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_body.txt:1
+#, python-format
+msgid "Dear %(name)s,"
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_body.html:9
+msgid ""
+"\n"
+"            We are happy to inform you that the following Oscar report has "
+"been completed.\n"
+"        "
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_body.html:33
+msgid ""
+"\n"
+"            To download this report, please click the link below.\n"
+"        "
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_body.html:39
+msgid "Download Report"
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_body.txt:2
+msgid ""
+"We are happy to inform you that the following Oscar report has been "
+"completed."
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_body.txt:11
+msgid "To download this report, please click the link below."
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/emails/report_completed_alert_subject.txt:1
+#, python-format
+msgid "Your report is ready to download | %(descr)s"
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/index.html:9
+msgid "Reporting dashboard"
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/index.html:16
+msgid "Generating..."
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/index.html:17
+msgid "Generate report"
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/index.html:29
+msgid "No reports found."
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/report_confirm_delete.html:6
+msgid "Delete Report"
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/report_confirm_delete.html:13
+msgid "Dashboard"
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/report_confirm_delete.html:16
+msgid "Reporting Dashboard"
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/report_confirm_delete.html:19
+#: oscarreports/templates/oscar/dashboard/reports/report_confirm_delete.html:26
+msgid "Delete report?"
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/report_confirm_delete.html:31
+msgid "Delete report"
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/report_confirm_delete.html:50
+msgid "Deleting..."
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/report_confirm_delete.html:50
+#: oscarreports/templates/oscar/dashboard/reports/report_row_actions.html:22
+msgid "Delete"
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/report_confirm_delete.html:51
+msgid "or"
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/report_confirm_delete.html:51
+msgid "cancel"
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/report_row_actions.html:5
+msgid "Actions"
+msgstr ""
+
+#: oscarreports/templates/oscar/dashboard/reports/report_row_actions.html:16
+msgid "Download"
+msgstr ""
+
+#: oscarreports/views.py:62
+msgid "Successfully queued report for generation"
+msgstr ""
+
+#: oscarreports/views.py:68
+msgid "Reports"
+msgstr ""

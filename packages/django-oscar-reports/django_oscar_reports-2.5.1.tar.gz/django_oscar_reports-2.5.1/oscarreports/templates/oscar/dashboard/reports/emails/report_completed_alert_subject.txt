@@ -1,0 +1,1 @@
+{% load i18n %}{% blocktrans with descr=report.description %}Your report is ready to download | {{ descr }}{% endblocktrans %}

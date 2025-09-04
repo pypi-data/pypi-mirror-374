@@ -1,0 +1,5 @@
+{% if record.date_range %}
+    {{ record.date_range.lower }} &ndash; {{ record.date_range.upper }}
+{% else %}
+    &mdash;
+{% endif %}

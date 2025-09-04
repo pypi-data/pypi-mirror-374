@@ -1,0 +1,13 @@
+{% load i18n %}{% blocktrans with name=report.owner.get_short_name %}Dear {{ name }},{% endblocktrans %}
+{% blocktrans %}We are happy to inform you that the following Oscar report has been completed.{% endblocktrans %}
+
+{% trans "UUID" %}: {{ report.uuid }}
+{% trans "Description" %}: {{ report.description }}
+{% trans "Owner" %}: {{ report.owner.get_full_name }}
+{% trans "Date Range" %}: {{ report.date_range.lower }} &ndash; {{ report.date_range.upper }}
+{% trans "Queued On" %}: {{ report.queued_on }}
+{% trans "Completed On" %}: {{ report.completed_on }}
+
+{% blocktrans with site_name=site.name %}To download this report, please click the link below.{% endblocktrans %}
+
+https://{{ site.domain }}{% url 'dashboard:reports-download' report.uuid %}
