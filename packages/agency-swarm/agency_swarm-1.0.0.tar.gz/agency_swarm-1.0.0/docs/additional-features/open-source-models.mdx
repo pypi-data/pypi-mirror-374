@@ -1,0 +1,401 @@
+---
+title: "Open-Source Models"
+description: "Utilize open-source models with Agency Swarm."
+icon: "code-fork"
+---
+
+While OpenAI is generally recommended, there are situations where you might prefer open-source models. Agency Swarm supports various open-source model integrations as alternatives to OpenAI:
+
+<Tabs>
+<Tab title="v1.x">
+## LiteLLM Integration
+
+Since Agents SDK no longer uses assistants, most of the previously available frameworks became incompatible with it. One of the few frameworks that has been ported for the new SDK is [LiteLLM](https://docs.litellm.ai/docs/response_api), which you can use to connect your agent to various providers, such as: Anthropic, Vertex AI, AWS Bedrock, Azure, and others.
+
+
+<Tabs>
+<Tab title="Using OpenAI's LiteLLM model">
+<Steps>
+
+<Step title="Install LiteLLM">
+Install LiteLLM to get started with open-source model support:
+
+```bash
+pip install "openai-agents[litellm]"
+```
+</Step>
+
+<Step title="Configure Agency Swarm Agent">
+Create an agent that connects to your LiteLLM proxy:
+
+```python
+import os
+from agency_swarm import Agent
+from agents.extensions.models.litellm_model import LitellmModel
+
+gemini_agent = Agent(
+    name="GeminiAgent",
+    instructions="You are a helpful assistant",
+    model=LitellmModel(
+      model="gemini/gemini-2.0-flash",
+      api_key=os.getenv("GEMINI_API_KEY")
+    )
+)
+```
+</Step>
+
+<Step title="Create and Run Agency">
+Set up your agency and start using open-source models:
+
+```python
+import asyncio
+from agency_swarm import Agency
+
+agency = Agency(gemini_agent)
+
+agency.terminal_demo()
+```
+</Step>
+
+</Steps>
+</Tab>
+
+<Tab title="Using proxy server">
+<Steps>
+
+<Step title="Install LiteLLM">
+Install LiteLLM to get started with open-source model support:
+
+```bash
+pip install "litellm[proxy]"
+```
+</Step>
+
+<Step title="Create LiteLLM Configuration">
+Create a `config.yaml` file to configure your models and providers:
+
+```yaml
+model_list:
+  - model_name: gemini-flash
+    litellm_params:
+      model: gemini/gemini-2.0-flash
+      api_key: os.environ/GEMINI_API_KEY # or paste your key directly here
+  - model_name: claude-sonnet
+    litellm_params:
+      model: anthropic/claude-3-5-sonnet-20240620
+      api_key: os.environ/ANTHROPIC_API_KEY
+  - model_name: llama-groq
+    litellm_params:
+      model: groq/llama-3.1-70b-versatile
+      api_key: os.environ/GROQ_API_KEY
+
+general_settings:
+  store_prompts_in_spend_logs: true  # Enable session management
+```
+</Step>
+
+<Step title="Set Environment Variables">
+Add your API keys to your environment variables:
+
+```bash
+export GEMINI_API_KEY="your-gemini-api-key"
+export ANTHROPIC_API_KEY="your-anthropic-api-key"
+export GROQ_API_KEY="your-groq-api-key"
+```
+</Step>
+
+<Step title="Start LiteLLM Proxy Server">
+Launch the LiteLLM proxy server with your configuration:
+
+```bash
+litellm --config /path/to/config.yaml
+
+# Server will start on http://localhost:4000
+```
+</Step>
+
+<Step title="Configure Agency Swarm Agent">
+Create an agent that connects to your LiteLLM proxy:
+
+```python
+import os
+from openai import AsyncOpenAI
+from agency_swarm import Agent, OpenAIChatCompletionsModel
+
+custom_client = AsyncOpenAI(
+    api_key="xxx",  # Any if proxy key wasn't set
+    base_url="http://localhost:4000",
+)
+
+gemini_agent = Agent(
+    name="GeminiAgent",
+    instructions="You are a helpful assistant",
+    model=OpenAIChatCompletionsModel(
+        model="gemini/gemini-2.0-flash",
+        openai_client=custom_client
+    )
+)
+```
+</Step>
+
+<Step title="Create and Run Agency">
+Set up your agency and start using open-source models:
+
+```python
+import asyncio
+from agency_swarm import Agency
+
+agency = Agency(gemini_agent)
+
+agency.terminal_demo()
+```
+</Step>
+
+</Steps>
+
+</Tab>
+</Tabs>
+
+## Using model-specific tools
+
+Some models, like gemini or claude have their internal tools, which can be attached to an agent by utilizing `extra_body` parameter in agent's `model_settings`:
+
+```python
+import os
+from agency_swarm import Agent
+from agents.extensions.models.litellm_model import LitellmModel
+
+gemini_agent = Agent(
+    name="GeminiAgent",
+    instructions="You are a helpful assistant",
+    model=LitellmModel(
+      model="gemini/gemini-2.0-flash",
+      api_key=os.getenv("GEMINI_API_KEY"),
+      extra_body={"web_search_options": {"search_context_size": "medium"}}
+    )
+)
+
+claude_agent = Agent(
+    name="ClaudeAgent",
+    instructions="You are a helpful assistant",
+    model=LitellmModel(
+      model="anthropic/claude-sonnet-4-20250514",
+      api_key=os.getenv("ANTHROPIC_API_KEY"),
+      extra_body={
+        "search_parameters": {
+          "mode": "on", "returnCitations": True
+        }
+      }
+    )
+)
+```
+
+Here both claude and gemini agents will be able to use their native search tools, which are similar to openai's WebSearch() tool. Consider checking out [LiteLLM's documentation](https://docs.litellm.ai/docs) to find a full list of supported tools.
+
+</Tab>
+
+<Tab title="v0.x">
+## Supported Projects
+
+<CardGroup>
+
+<Card
+  title="Astra Assistants API"
+  icon="rocket"
+  iconType="solid"
+  href="https://github.com/datastax/astra-assistants-api"
+>
+  The best and the easiest option for running Open Source models. Supports Assistants API V2. See example
+  [notebook](https://github.com/VRSEN/agency-swarm/blob/main/notebooks/os_models_with_astra_assistants_api.ipynb) and [official examples](https://github.com/datastax/astra-assistants-api/tree/main/examples/python/agency-swarm).
+</Card>
+
+<Card title="Open Assistant API" icon="users" iconType="solid" href="https://github.com/MLT-OSS/open-assistant-api">
+  Fully local, stable, and tested, but only supports Assistants V1. See example
+  [here](https://github.com/VRSEN/agency-swarm-lab/tree/main/OpenSourceSwarm).
+</Card>
+
+<Card title="OpenOpenAI" icon="code" iconType="solid" href="https://github.com/transitive-bullshit/OpenOpenAI">
+  Unverified.
+</Card>
+
+<Card title="LiteLLM" icon="code" iconType="solid" href="https://github.com/BerriAI/litellm/issues/2842">
+  Assistants API Proxy in development.
+</Card>
+
+</CardGroup>
+
+## Astra Assistants API
+
+<Steps>
+
+<Step title="1. Create an account on Astra Assistants API and obtain an API key." icon="user">
+  Open the [Astra Assistants API](https://astra.datastax.com/signup) and create an account. Once you have an account,
+  you can obtain an API key by clicking on the "Generate Token" button. ![Astra Assistants API
+  Example](https://firebasestorage.googleapis.com/v0/b/vrsen-ai/o/public%2Fgithub%2FScreenshot%202024-07-01%20at%208.19.00%E2%80%AFAM.png?alt=media&token=b4f1a7ad-3b77-40fa-a5da-866a4f1410bd)
+</Step>
+
+<Step title="2. Add Astra DB Token to your .env file:" icon="file">
+Copy the token from the file that starts with "AstraCS:" and paste it into your `.env` file.
+
+```env
+ASTRA_DB_APPLICATION_TOKEN=AstraCS:dsfkgn...
+```
+
+</Step>
+
+<Step title="3. Add other model provider API keys to .env as well:" icon="key">
+```env
+PERPLEXITYAI_API_KEY=your_perplexityai_api_key
+ANTHROPIC_API_KEY=your_anthropic_api_key
+TOGETHER_API_KEY=your_together_api_key
+GROQ_API_KEY=your_groq_api_key
+```
+</Step>
+
+<Step title="4. Install the Astra Assistants API and Gradio:" icon="download">
+```bash
+pip install astra-assistants-api gradio
+```
+</Step>
+
+<Step title="5. Patch the OpenAI client:" icon="code">
+```python
+from openai import OpenAI
+from astra_assistants import patch
+from agency_swarm import set_openai_client
+from dotenv import load_dotenv
+
+load_dotenv()
+
+client = patch(OpenAI())
+
+set_openai_client(client)
+```
+</Step>
+
+<Step title="6. Create an agent:" icon="user-plus">
+Create an agent and replace the `model` parameter with the name of the model you want to use. With Astra Assistants, you can upload files as usual using `files_folder`.
+
+```python
+from agency_swarm import Agent
+
+ceo = Agent(
+    name="ceo",
+    description="I am the CEO",
+    model='ollama/llama3',
+    # model = 'perplexity/llama-3-8b-instruct'
+    # model = 'anthropic/claude-3-5-sonnet-20240620'
+    # model = 'groq/mixtral-8x7b-32768'
+    # model="gpt-4o",
+    files_folder="path/to/your/files"
+)
+```
+
+</Step>
+
+<Step title="7. Create an agency:" icon="people-arrows">
+You can add more agents as needed, just ensure all manager agents support function calling.
+
+```python
+from agency_swarm import Agency
+
+agency = Agency([ceo])
+```
+
+</Step>
+
+<Step title="8. Start Gradio:" icon="play">
+To utilize your agency in Gradio, apply a specific non-streaming `demo_gradio` method from the [agency-swarm-lab](https://github.com/VRSEN/agency-swarm-lab/blob/main/OpenSourceSwarm/demo_gradio.py) repository:
+
+```python
+from agency_swarm import Agency
+from .demo_gradio import demo_gradio
+
+agency = Agency([ceo])
+
+demo_gradio(agency)
+```
+
+</Step>
+
+</Steps>
+
+**For complete examples, see the [implementation notebook](https://github.com/VRSEN/agency-swarm/blob/main/notebooks/os_models_with_astra_assistants_api.ipynb) and [official Astra Assistants examples](https://github.com/datastax/astra-assistants-api/tree/main/examples/python/agency-swarm).**
+
+## General Instructions
+
+To use agency-swarm with any other projects that mimic the Assistants API, generally, you need to follow these steps:
+
+<Steps>
+
+<Step title="Install the previous version of agency-swarm as most projects are not yet compatible with streaming and Assistants V2:">
+```bash
+pip install agency-swarm==0.1.7
+```
+</Step>
+
+<Step title="Switch out the OpenAI client:">
+```python
+import openai
+from agency_swarm import set_openai_client
+
+client = openai.OpenAI(api_key="your-api-key", base_url="http://127.0.0.1:8000/")
+
+set_openai_client(client)
+```
+</Step>
+
+<Step title="Set the model parameter:">
+```python
+from agency_swarm import Agent
+
+ceo = Agent(
+    name="ceo",
+    description="I am the CEO",
+    model='ollama/llama3'
+)
+```
+
+</Step>
+
+<Step title="Start Gradio:">
+To utilize your agency in Gradio, apply a specific non-streaming `demo_gradio` method from the [agency-swarm-lab](https://github.com/VRSEN/agency-swarm-lab/blob/main/OpenSourceSwarm/demo_gradio.py) repository:
+
+```python
+from agency_swarm import Agency
+from .demo_gradio import demo_gradio
+
+agency = Agency([ceo])
+
+demo_gradio(agency)
+```
+
+</Step>
+
+<Step title="For backend integrations, simply use:">
+```python
+agency.get_completion("I am the CEO")
+```
+</Step>
+
+</Steps>
+</Tab>
+</Tabs>
+
+## Limitations
+
+<Warning>
+Be aware of the limitations when using open-source models.
+</Warning>
+
+- **Hosted tools are not supported**: Patched agents are not able to utilize hosted tools, such as WebSearch, FileSearch, CodeInterpreter and others.
+- **Patched and unpatched models should not use handoffs to communicate**: You may use standard OpenAI client and patched agents in a single agency, however using handoff to transfer chat from patched model to unpatched or vice-versa will lead to an error.
+- **Function calling may not be supported by some open-source models**: This limitation prevents the agent from communicating with other agents in the agency. Therefore, it must be positioned at the end of the agency chart and cannot utilize any tools.
+- **RAG is typically limited**: Most open-source implementations have restricted Retrieval-Augmented Generation capabilities. It is recommended to develop a custom tool with your own vector database.
+- **Potential library conflicts**: the Agents SDK is still a fairly new framework which is being actively developed and improved. Due to that, there might be potential conflicts between litellm and openai-agents packages on recent releases.
+
+## Future Plans
+
+Updates will be provided as new open-source assistant API implementations stabilize.
+
+If you successfully integrate other projects with agency-swarm, please share your experience through an issue or pull request.
