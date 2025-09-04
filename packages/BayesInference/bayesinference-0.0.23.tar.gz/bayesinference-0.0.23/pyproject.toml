@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "BayesInference"
+version = "0.0.23"
+authors = [
+    {name = "Sebastian Sosa", email = "bi@s-sosa.com"}
+]
+description = "A Python package for Bayesian Inference modeling and diagnostics."
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "GPL-3.0-or-later"} # Using the standard identifier is slightly cleaner
+keywords = ["python", "Bayesian inferences"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Education",
+    "Programming Language :: Python :: 3",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+]
+
+# Core dependencies: Notice 'jax' is removed from this list.
+# numpyro will pull in a compatible CPU version of jax by default.
+dependencies = [
+    "numpyro == 0.18.0",
+    "numpy == 1.26.3",
+    "matplotlib == 3.8.2",
+    "pandas == 2.2.3",
+    "seaborn == 0.13.2",
+    "tensorflow_probability == 0.24.0",
+    "arviz == 0.17.0",
+    "funsor == 0.4.5",
+    "IPython == 8.12.3",
+    "scipy == 1.11.4",
+]
+
+
+[project.optional-dependencies]
+cpu = [
+    "jax==0.5.1",
+    "jaxlib==0.5.1",
+]
+gpu = [
+    "jax[cuda12_pip]==0.5.1",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/BGN-for-ASNA/BI"
+"Bug Tracker" = "https://github.com/BGN-for-ASNA/BI/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
