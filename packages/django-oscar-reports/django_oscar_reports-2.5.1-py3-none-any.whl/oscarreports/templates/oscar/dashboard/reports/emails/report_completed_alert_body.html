@@ -1,0 +1,42 @@
+{% extends "oscar/communication/emails/base.html" %}
+{% load i18n %}
+
+{% block body %}
+    <p>
+        {% blocktrans with name=report.owner.get_short_name %}Dear {{ name }},{% endblocktrans %}
+    </p>
+    <p>
+        {% blocktrans %}
+            We are happy to inform you that the following Oscar report has been completed.
+        {% endblocktrans %}
+    </p>
+    <dl>
+        <dt><strong>{% trans "UUID" %}</strong></dt>
+        <dd><p>{{ report.uuid }}</p></dd>
+
+        <dt><strong>{% trans "Description" %}</strong></dt>
+        <dd><p>{{ report.description }}</p></dd>
+
+        <dt><strong>{% trans "Owner" %}</strong></dt>
+        <dd><p>{{ report.owner.get_full_name }}</p></dd>
+
+        <dt><strong>{% trans "Date Range" %}</strong></dt>
+        <dd><p>{{ report.date_range.lower }} &ndash; {{ report.date_range.upper }}</p></dd>
+
+        <dt><strong>{% trans "Queued On" %}</strong></dt>
+        <dd><p>{{ report.queued_on }}</p></dd>
+
+        <dt><strong>{% trans "Completed On" %}</strong></dt>
+        <dd><p>{{ report.completed_on }}</p></dd>
+    </dl>
+    <p>
+        {% blocktrans with site_name=site.name %}
+            To download this report, please click the link below.
+        {% endblocktrans %}
+    </p>
+    <p>
+        <a href="https://{{ site.domain }}{% url 'dashboard:reports-download' report.uuid %}">
+            {% trans "Download Report" %}
+        </a>
+    </p>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'oscar/dashboard/layout.html' %}
+{% load i18n %}
+
+{% block body_class %}{{ block.super }} reports{% endblock %}
+{% block title %}
+    {% trans "Delete Report" %} | {{ block.super }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'dashboard:reports-index' %}">{% trans "Reporting Dashboard" %}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                {% trans "Delete report?" %}
+            </li>
+        </ol>
+    </nav>
+{% endblock %}
+
+{% block headertext %}
+    {% trans "Delete report?" %}
+{% endblock %}
+
+{% block dashboard_content %}
+    <div class="table-header">
+        <h2>{% trans "Delete report" %}</h2>
+    </div>
+    <form method="post" class="card card-body">
+        {% csrf_token %}
+        {{ form }}
+        <dl>
+            <dt>{% trans "UUID" %}</dt>
+            <dd><p>{{ object.uuid }}</p></dd>
+
+            <dt>{% trans "Description" %}</dt>
+            <dd><p>{{ object.description }}</p></dd>
+
+            <dt>{% trans "Owner" %}</dt>
+            <dd><p>{{ object.owner.get_full_name }}</p></dd>
+
+            <dt>{% trans "Date Range" %}</dt>
+            <dd><p>{{ object.date_range.lower }} &ndash; {{ object.date_range.upper }}</p></dd>
+        </dl>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger" data-loading-text="{% trans 'Deleting...' %}">{% trans "Delete" %}</button>
+            {% trans "or" %} <a href="{% url 'dashboard:reports-index' %}">{% trans "cancel" %}</a>
+        </div>
+    </form>
+{% endblock %}
