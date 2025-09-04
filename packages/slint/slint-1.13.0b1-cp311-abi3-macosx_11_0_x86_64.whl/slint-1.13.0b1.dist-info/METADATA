@@ -1,0 +1,31 @@
+Metadata-Version: 2.4
+Name: slint
+Version: 1.13.0b1
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: MacOS X
+Classifier: Environment :: X11 Applications
+Classifier: Environment :: Win32 (MS Windows)
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Rust
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: License :: Other/Proprietary License
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Classifier: Topic :: Software Development :: User Interfaces
+Classifier: Topic :: Software Development :: Widget Sets
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: numpy>=2.3.2 ; extra == 'dev'
+Requires-Dist: pillow>=11.3.0 ; extra == 'dev'
+Provides-Extra: dev
+Home-Page: https://slint.dev
+Author-email: Slint Team <info@slint.dev>
+Requires-Python: >=3.12
+Project-URL: Homepage, https://slint.dev
+Project-URL: Documentation, https://slint.dev/docs
+Project-URL: Repository, https://github.com/slint-ui/slint
+Project-URL: Changelog, https://github.com/slint-ui/slint/blob/master/CHANGELOG.md
+Project-URL: Tracker, https://github.com/slint-ui/slint/issues
