@@ -1,0 +1,26 @@
+{
+  "description": "Diagnostic test for neopixel arrays to identify pixel count issues",
+  "variables": [
+    {
+      "name": "neopixel_pin",
+      "required": true,
+      "description": "Pin Neopixel is connected to",
+      "default": "board.NEOPIXEL"
+    },
+    {
+      "name": "neopixel_count",
+      "required": true,
+      "description": "Number of neopixels to test",
+      "default": 320
+    },
+    {
+      "name": "brightness",
+      "required": true,
+      "description": "Brightness 0 - 1.0",
+      "default": 0.1
+    }
+  ],
+  "default_commandline": "neopixel_pin neopixel_count brightness",
+  "tested": false,
+  "warn_offline": false
+}

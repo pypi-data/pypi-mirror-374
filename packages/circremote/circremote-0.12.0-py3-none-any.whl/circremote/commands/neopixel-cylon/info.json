@@ -1,0 +1,39 @@
+{
+  "description": "Classic Cylon effect with a red blob bouncing side to side on neopixel displays",
+  "variables": [
+    {
+      "name": "neopixel_pin",
+      "required": true,
+      "description": "Pin Neopixel is connected to",
+      "default": "board.NEOPIXEL"
+    },
+    {
+      "name": "width",
+      "required": true,
+      "description": "Width of the neopixel display",
+      "default": 16
+    },
+    {
+      "name": "height",
+      "required": true,
+      "description": "Height of the neopixel display (defaults to 1 for strips)",
+      "default": 1
+    },
+    {
+      "name": "brightness",
+      "required": true,
+      "description": "Brightness 0 - 1.0",
+      "default": 0.1
+    },
+    {
+      "name": "delay",
+      "required": true,
+      "description": "Delay between animation frames (in seconds)",
+      "default": 0.05
+    }
+  ],
+  "default_commandline": "neopixel_pin width height brightness delay",
+  "tested": true,
+  "warn_offline": false
+}
+
