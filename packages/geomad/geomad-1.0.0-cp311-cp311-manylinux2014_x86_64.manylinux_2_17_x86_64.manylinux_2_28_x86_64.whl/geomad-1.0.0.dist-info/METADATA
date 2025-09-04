@@ -1,0 +1,55 @@
+Metadata-Version: 2.4
+Name: geomad
+Version: 1.0.0
+Summary: Geomedian and Median Absolute Deviation implementation
+Author: Geoscience Australia
+License-Expression: Apache-2.0
+Project-URL: Homepage, https://github.com/GeoscienceAustralia/geomad
+Project-URL: Source, https://github.com/GeoscienceAustralia/geomad
+Project-URL: Issues, https://github.com/GeoscienceAustralia/geomad/issues
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Natural Language :: English
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: POSIX :: BSD
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering :: GIS
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: joblib; extra == "test"
+Dynamic: license-file
+
+# Geomad
+
+A library for fast calculation of geomedian and median absolute deviation (MAD).
+
+### Assumptions
+
+We assume that the data stack dimensions are ordered so that the spatial dimensions are first (*y*,*x*), followed 
+by the spectral dimension of size *p*, finishing with the temporal dimension. 
+
+Algorithms reduce in the last dimension (typically, the temporal dimension).
+
+----
+
+For details of the scientific algorithms implemented, see:
+
+- Roberts, D., Mueller, N., & McIntyre, A. (2017). High-dimensional pixel composites from earth observation time 
+  series. IEEE Transactions on Geoscience and Remote Sensing, 55(11), 6254-6264.
+
+- Roberts, D., Dunn, B., & Mueller, N. (2018). Open data cube products using high-dimensional statistics of time 
+  series. In IGARSS 2018-2018 IEEE International Geoscience and Remote Sensing Symposium (pp. 8647-8650).
