@@ -1,0 +1,21 @@
+[project]
+name = "mcp-server-tke"
+version = "0.0.2"
+description = "MCP Server for Tencent Cloud TKE"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=1.0.0",
+    "tencentcloud-sdk-python-tke==3.0.1356",
+    "tencentcloud-sdk-python-common==3.0.1356"
+]
+
+[project.scripts]
+mcp-server-tke = "mcp_server_tke:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcp_server_tke"]
