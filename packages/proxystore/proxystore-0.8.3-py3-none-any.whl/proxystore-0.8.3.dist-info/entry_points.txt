@@ -1,0 +1,4 @@
+[console_scripts]
+proxystore-endpoint = proxystore.endpoint.cli:cli
+proxystore-globus-auth = proxystore.globus.cli:cli
+proxystore-relay = proxystore.p2p.relay.run:cli
