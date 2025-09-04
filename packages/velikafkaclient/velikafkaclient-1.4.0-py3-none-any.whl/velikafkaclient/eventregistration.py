@@ -1,0 +1,54 @@
+from .events.base import KafkaEvent
+from .topics.topics import KafkaTopic
+from .events.triptracker import TripTrackerAuthEvent, TripTrackerEvent, TripTrackerItemActionEvent, \
+    TripTrackerCheckoutEvent, TripTrackerPurchaseEvent, TripTrackerClickEvent
+from .topics.triptracker import KafkaTripTrackerTopic
+
+
+class KafkaTopicEvents:
+    topic_event_models = None
+
+    def __init__(self):
+        self.topic_event_models = dict()
+
+    def register_topic_event_model(self, topic: KafkaTopic, model: KafkaEvent):
+        self.topic_event_models[topic] = model
+
+
+kafka_topic_events = KafkaTopicEvents()
+
+# auth
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.USER_LOGIN, TripTrackerAuthEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.USER_LOGOUT, TripTrackerEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.USER_REGISTRATION, TripTrackerAuthEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.B2B_USER_REGISTRATION, TripTrackerAuthEvent)
+# page views
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.PAGE_VIEW, TripTrackerEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.CART_BAG_VIEW, TripTrackerEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.PROFILE_SETTINGS_VIEW, TripTrackerEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.ORDER_DETAIL_PAGE_VIEW, TripTrackerEvent)
+# popups
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.LOGIN_POPUP, TripTrackerEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.REGISTER_POPUP, TripTrackerEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.CART_POPUP, TripTrackerEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.RECOVER_POPUP, TripTrackerEvent)
+# clicks
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.SECTION_CLICK, TripTrackerClickEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.COMPONENT_CLICK, TripTrackerClickEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.SOCIAL_BUTTON_CLICK, TripTrackerClickEvent)
+# mobile app
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.SCREEN_VIEW, TripTrackerEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.APP_INSTALL, TripTrackerEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.APP_UPDATE, TripTrackerEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.APP_DELETE, TripTrackerEvent)
+# ecommerce
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.SEARCH, TripTrackerEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.VIEW_ITEM, TripTrackerItemActionEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.ADD_TO_CART, TripTrackerItemActionEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.REMOVE_FROM_CART, TripTrackerItemActionEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.ADD_TO_WISHLIST, TripTrackerItemActionEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.REMOVE_FROM_WISHLIST, TripTrackerItemActionEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.CHECKOUT, TripTrackerCheckoutEvent)
+kafka_topic_events.register_topic_event_model(KafkaTripTrackerTopic.PURCHASE, TripTrackerPurchaseEvent)
+
+
