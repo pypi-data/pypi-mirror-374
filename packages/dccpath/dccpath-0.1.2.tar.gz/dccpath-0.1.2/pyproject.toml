@@ -1,0 +1,47 @@
+[project]
+name = "dccpath"
+dynamic = ["version"]
+description = "Utility library for locating common DCC (Digital Content Creation) software executables"
+readme = "README.md"
+authors = [
+  { name = "Henrik Wilhelmsen", email = "contact@henrikwilhelmsen.com" },
+]
+maintainers = [
+  { name = "Henrik Wilhelmsen", email = "contact@henrikwilhelmsen.com" },
+]
+license = "MPL-2.0"
+license-files = ["LICENSE"]
+keywords = ["Maya", "MotionBuilder", "Blender", "DCC"]
+requires-python = ">=3.10"
+dependencies = []
+
+[project.urls]
+Repository = "https://codeberg.org/HWAnimationTech/dccpath"
+Issues = "https://codeberg.org/HWAnimationTech/dccpath/issues"
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.basedpyright]
+include = ["src"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-v"
+testpaths = [
+    "tests",
+]
+
+[dependency-groups]
+dev = [
+    "basedpyright>=1.28.3",
+    "debugpy>=1.8.13",
+    "pyfakefs>=5.8.0",
+    "pytest>=8.3.5",
+    "pytest-cov>=6.0.0",
+    "ruff>=0.11.2",
+]

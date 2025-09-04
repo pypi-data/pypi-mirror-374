@@ -1,0 +1,25 @@
+name: CI
+on: [push]
+jobs:
+  test-and-build:
+    runs-on: ubuntu-uv
+    steps:
+      - name: Checkout Repo
+        uses: https://code.forgejo.org/actions/checkout@v4
+
+      - name: Install the project
+        run: uv sync --locked --all-extras --dev
+        shell: bash
+
+      - name: Lint
+        run: uv run ruff check src tests
+
+      - name: Test
+        run: uv run pytest -v --cov-report term-missing --cov=dccpath tests
+
+      - name: Build
+        run: uv build
+
+      - name: Publish
+        if: forge.ref_type == 'tag'
+        run: uv publish --token ${{ secrets.PYPI_TOKEN }}
