@@ -1,0 +1,31 @@
+image: {{ DOCKER_IMAGE_SUPERSET }}
+  user: root
+  volumes:
+    - ../../env/plugins/aspects/apps/superset/docker:/app/docker
+    - ../../env/plugins/aspects/apps/superset/pythonpath:/app/pythonpath
+    - ../../env/plugins/aspects/apps/superset/security:/app/security
+    - ../../env/plugins/aspects/apps/superset/superset_home:/app/superset_home
+    - ../../env/plugins/aspects/apps/superset/scripts:/app/scripts
+    - ../../env/plugins/aspects/build/aspects-superset/openedx-assets:/app/openedx-assets
+    {%- for mount in iter_mounts(MOUNTS, "superset") %}
+    - {{ mount }}
+    {%- endfor %}        
+  restart: unless-stopped
+  environment:
+    DATABASE_DIALECT: {{ SUPERSET_DB_DIALECT }}
+    DATABASE_HOST: {{ SUPERSET_DB_HOST }}
+    DATABASE_PORT: {{ SUPERSET_DB_PORT }}
+    DATABASE_DB: {{ SUPERSET_DB_NAME }}
+    DATABASE_PASSWORD: {{ SUPERSET_DB_PASSWORD }}
+    DATABASE_USER: {{ SUPERSET_DB_USERNAME }}
+    OAUTH2_CLIENT_SECRET: {{ SUPERSET_OAUTH2_CLIENT_SECRET }}
+    SECRET_KEY: {{ SUPERSET_SECRET_KEY }}
+    PYTHONPATH: /app/pythonpath:/app/docker/pythonpath_dev
+    REDIS_HOST: {{ REDIS_HOST }}
+    REDIS_PORT: {{ REDIS_PORT }}
+    REDIS_USERNAME: {{ REDIS_USERNAME }}
+    REDIS_PASSWORD: {{ REDIS_PASSWORD }}
+    SUPERSET_HOST: {{ SUPERSET_HOST }}
+    SUPERSET_PORT: {{ SUPERSET_PORT }}
+    OAUTH2_ACCESS_TOKEN_PATH: "{{ SUPERSET_OAUTH2_ACCESS_TOKEN_PATH }}"
+    OAUTH2_AUTHORIZE_PATH: "{{ SUPERSET_OAUTH2_AUTHORIZE_PATH }}"

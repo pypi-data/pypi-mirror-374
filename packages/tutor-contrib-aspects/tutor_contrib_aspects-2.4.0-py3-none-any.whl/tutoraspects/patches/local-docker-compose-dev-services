@@ -1,0 +1,58 @@
+{% if RUN_SUPERSET %}
+superset:
+  {% include 'base-docker-compose-services' %}
+    OPENEDX_LMS_ROOT_URL: "http://{{ LMS_HOST }}:8000"
+    OAUTH2_CLIENT_ID: {{ SUPERSET_OAUTH2_CLIENT_ID_DEV }}
+    SUPERSET_ENV: development
+  command: ["bash", "/app/docker/docker-bootstrap.sh", "app"]
+  ports:
+    - 8088:{{ SUPERSET_PORT }}
+  depends_on:
+    {% if RUN_MYSQL %}- mysql{% endif %}
+    - redis
+    - superset-worker
+    - superset-worker-beat
+
+superset-worker:
+  {% include 'base-docker-compose-services' %}
+    OPENEDX_LMS_ROOT_URL: "http://{{ LMS_HOST }}:8000"
+    OAUTH2_CLIENT_ID: {{ SUPERSET_OAUTH2_CLIENT_ID_DEV }}
+    SUPERSET_ENV: development
+  command: ["bash", "/app/docker/docker-bootstrap.sh", "worker"]
+  healthcheck:
+    test: ["CMD-SHELL", "celery -A superset.tasks.celery_app:app inspect ping -d celery@$$HOSTNAME"]
+    interval: 30s
+    retries: 3
+  depends_on:
+    {% if RUN_MYSQL %}- mysql{% endif %}
+    - redis
+
+superset-worker-beat:
+  {% include 'base-docker-compose-services' %}
+    OPENEDX_LMS_ROOT_URL: "http://{{ LMS_HOST }}:8000"
+    OAUTH2_CLIENT_ID: {{ SUPERSET_OAUTH2_CLIENT_ID_DEV }}
+    SUPERSET_ENV: development
+  command: ["bash", "/app/docker/docker-bootstrap.sh", "beat"]
+  healthcheck:
+    disable: true
+  depends_on:
+    {% if RUN_MYSQL %}- mysql{% endif %}
+    - redis
+{% endif %}
+
+{% if RUN_CLICKHOUSE %}
+clickhouse:
+    volumes:
+        - ../../data/clickhouse:/var/lib/clickhouse/
+        - ../../env/plugins/aspects/apps/clickhouse/dev_config:/etc/clickhouse-server/config.d/
+        - ../../env/plugins/aspects/apps/clickhouse/users:/etc/clickhouse-server/users.d/
+{% endif %}
+
+{% if ASPECTS_ENABLE_EVENT_BUS_CONSUMER %}
+aspects-consumer:
+  <<: *openedx-service
+  environment:
+      DJANGO_SETTINGS_MODULE: lms.envs.tutor.development
+  command: |
+    ./manage.py lms consume_events -t analytics -g event_routing_backends --extra '{"consumer_name": "aspects"}'
+{% endif %}

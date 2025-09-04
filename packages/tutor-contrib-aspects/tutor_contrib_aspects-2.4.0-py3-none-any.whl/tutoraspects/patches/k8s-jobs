@@ -1,0 +1,277 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: aspects-job
+  labels:
+    app.kubernetes.io/component: job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: aspects
+        env:
+          - name: VENV_DIR
+            value: /opt/venv
+          - name: ASPECTS_EVENT_SINK_DATABASE
+            value: {{ASPECTS_EVENT_SINK_DATABASE}}
+          - name: ASPECTS_XAPI_DATABASE
+            value: {{ASPECTS_XAPI_DATABASE}}
+          - name: CLICKHOUSE_CLUSTER_NAME
+            value: "{{CLICKHOUSE_CLUSTER_NAME}}"
+          - name: DBT_STATE
+            value: {{ DBT_STATE_DIR }}
+          - name: ASPECTS_DATA_TTL_EXPRESSION
+            value: "{{ ASPECTS_DATA_TTL_EXPRESSION }}"
+          - name: DBT_PROFILE_TARGET_DATABASE
+            value: "{{ DBT_PROFILE_TARGET_DATABASE }}"
+          - name: DBT_PROFILES_DIR
+            value: {{ DBT_PROFILES_DIR }}
+          - name: DBT_BRANCH
+            value: "{{ DBT_BRANCH }}"
+          - name: DBT_REPOSITORY
+            value: "{{ DBT_REPOSITORY }}"
+          - name: DBT_SSH_KEY
+            value: "{{ DBT_SSH_KEY }}"
+        image: {{ DOCKER_IMAGE_ASPECTS }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 0
+        volumeMounts:
+          - mountPath: /app
+            name: app
+          - mountPath: /app/aspects/dbt
+            name: dbt
+          - mountPath: /app/aspects/scripts
+            name: scripts
+          - mountPath: /app/aspects/migrations/
+            name: migrations
+          - mountPath: /app/aspects/migrations/alembic
+            name: alembic
+          - mountPath: /app/aspects/migrations/alembic/versions
+            name: versions
+      volumes:
+        - name: scripts
+          configMap:
+            name: aspects-scripts
+            defaultMode: 0777
+        - name: dbt
+          configMap:
+            name: aspects-dbt
+        - name: app
+          emptyDir: {}
+        - name: migrations
+          configMap:
+            name: aspects-migrations
+        - name: alembic
+          configMap:
+            name: aspects-migrations-alembic
+        - name: versions
+          configMap:
+            name: aspects-migrations-alembic-versions
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: clickhouse-job
+  labels:
+    app.kubernetes.io/component: job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: clickhouse
+        image: {{ DOCKER_IMAGE_CLICKHOUSE }}
+        env:
+          - name: CLICKHOUSE_DB
+            value: "{{ ASPECTS_XAPI_DATABASE }}"
+          - name: CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT
+            value: "1"
+          - name: CLICKHOUSE_PASSWORD
+            value: "{{ CLICKHOUSE_ADMIN_PASSWORD }}"
+          - name: CLICKHOUSE_USER
+            value: "{{ CLICKHOUSE_ADMIN_USER }}"
+
+{% if RUN_SUPERSET %}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: superset-job
+  labels:
+    app.kubernetes.io/component: job
+spec:
+  template:
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+      restartPolicy: Never
+      containers:
+      - name: superset
+        image: {{ DOCKER_IMAGE_SUPERSET }}
+        env:
+          - name: DATABASE_DIALECT
+            value: "{{ SUPERSET_DB_DIALECT }}"
+          - name: DATABASE_HOST
+            value: "{{ SUPERSET_DB_HOST }}"
+          - name: DATABASE_PORT
+            value: "{{ SUPERSET_DB_PORT }}"
+          - name: DATABASE_DB
+            value: "{{ SUPERSET_DB_NAME }}"
+          - name: DATABASE_PASSWORD
+            value: "{{ SUPERSET_DB_PASSWORD }}"
+          - name: DATABASE_USER
+            value: "{{ SUPERSET_DB_USERNAME }}"
+          - name: OAUTH2_CLIENT_ID
+            value: "{{ SUPERSET_OAUTH2_CLIENT_ID }}"
+          - name: OAUTH2_CLIENT_SECRET
+            value: "{{ SUPERSET_OAUTH2_CLIENT_SECRET }}"
+          - name: SECRET_KEY
+            value: "{{ SUPERSET_SECRET_KEY }}"
+          - name: PYTHONPATH
+            value: "/app/pythonpath:/app/docker/pythonpath_dev"
+          - name: REDIS_HOST
+            value: "{{ REDIS_HOST }}"
+          - name: REDIS_PORT
+            value: "{{ REDIS_PORT }}"
+          - name: REDIS_USERNAME
+            value: "{{ REDIS_USERNAME }}"
+          - name: REDIS_PASSWORD
+            value: "{{ REDIS_PASSWORD }}"
+          - name: FLASK_DEBUG
+            value: "0"
+          - name: SUPERSET_ENV
+            value: "production"
+          - name: SUPERSET_HOST
+            value: "{{ SUPERSET_HOST }}"
+          - name: SUPERSET_PORT
+            value: "{{ SUPERSET_PORT }}"
+          - name: OAUTH2_ACCESS_TOKEN_PATH
+            value: "{{ SUPERSET_OAUTH2_ACCESS_TOKEN_PATH }}"
+          - name: OAUTH2_AUTHORIZE_PATH
+            value: "{{ SUPERSET_OAUTH2_AUTHORIZE_PATH }}"
+          - name: OPENEDX_COURSES_LIST_PATH
+            value: "{{ SUPERSET_OPENEDX_COURSES_LIST_PATH }}"
+          - name: OPENEDX_LMS_ROOT_URL
+            value: "{% if ENABLE_HTTPS %}https{% else %}http{% endif %}://{{ LMS_HOST }}"
+        volumeMounts:
+          - mountPath: /app/docker
+            name: docker
+          - mountPath: /app/pythonpath
+            name: pythonpath
+          - mountPath: /app/pythonpath/openedx
+            name: pythonpath-openedx
+          - mountPath: /app/security
+            name: security
+          - mountPath: /app/assets
+            name: assets
+          - mountPath: /app/scripts
+            name: scripts
+      volumes:
+        - name: docker
+          configMap:
+            name: superset-docker
+        - name: pythonpath
+          configMap:
+            name: superset-pythonpath
+        - name: pythonpath-openedx
+          configMap:
+            name: superset-pythonpath-openedx
+        - name: security
+          configMap:
+            name: superset-security
+        - name: assets
+          emptyDir: {}
+        - name: scripts
+          configMap:
+            name: superset-scripts
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: superset-worker-job
+  labels:
+    app.kubernetes.io/component: job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: superset-worker-job
+          image: {{ DOCKER_IMAGE_SUPERSET }}
+          env:
+            - name: DATABASE_DIALECT
+              value: "{{ SUPERSET_DB_DIALECT }}"
+            - name: DATABASE_HOST
+              value: "{{ SUPERSET_DB_HOST }}"
+            - name: DATABASE_PORT
+              value: "{{ SUPERSET_DB_PORT }}"
+            - name: DATABASE_DB
+              value: "{{ SUPERSET_DB_NAME }}"
+            - name: DATABASE_PASSWORD
+              value: "{{ SUPERSET_DB_PASSWORD }}"
+            - name: DATABASE_USER
+              value: "{{ SUPERSET_DB_USERNAME }}"
+            - name: OAUTH2_CLIENT_ID
+              value: "{{ SUPERSET_OAUTH2_CLIENT_ID }}"
+            - name: OAUTH2_CLIENT_SECRET
+              value: "{{ SUPERSET_OAUTH2_CLIENT_SECRET }}"
+            - name: SECRET_KEY
+              value: "{{ SUPERSET_SECRET_KEY }}"
+            - name: PYTHONPATH
+              value: "/app/pythonpath:/app/docker/pythonpath_dev"
+            - name: REDIS_HOST
+              value: "{{ REDIS_HOST }}"
+            - name: REDIS_PORT
+              value: "{{ REDIS_PORT }}"
+            - name: REDIS_PASSWORD
+              value: "{{ REDIS_PASSWORD }}"
+            - name: FLASK_DEBUG
+              value: "0"
+            - name: SUPERSET_ENV
+              value: "production"
+            - name: SUPERSET_HOST
+              value: "{{ SUPERSET_HOST }}"
+            - name: SUPERSET_PORT
+              value: "{{ SUPERSET_PORT }}"
+            - name: OAUTH2_ACCESS_TOKEN_PATH
+              value: "{{ SUPERSET_OAUTH2_ACCESS_TOKEN_PATH }}"
+            - name: OAUTH2_AUTHORIZE_PATH
+              value: "{{ SUPERSET_OAUTH2_AUTHORIZE_PATH }}"
+            - name: OPENEDX_COURSES_LIST_PATH
+              value: "{{ SUPERSET_OPENEDX_COURSES_LIST_PATH }}"
+            - name: OPENEDX_LMS_ROOT_URL
+              value: "{% if ENABLE_HTTPS %}https{% else %}http{% endif %}://{{ LMS_HOST }}"
+          volumeMounts:
+            - mountPath: /app/docker
+              name: docker
+            - mountPath: /app/pythonpath
+              name: pythonpath
+            - mountPath: /app/pythonpath/openedx
+              name: pythonpath-openedx
+            - mountPath: /app/security
+              name: security
+            - mountPath: /app/assets
+              name: assets
+      volumes:
+        - name: docker
+          configMap:
+            name: superset-docker
+        - name: pythonpath
+          configMap:
+            name: superset-pythonpath
+        - name: pythonpath-openedx
+          configMap:
+            name: superset-pythonpath-openedx
+        - name: security
+          configMap:
+            name: superset-security
+        - name: assets
+          emptyDir: {}
+{% endif %}

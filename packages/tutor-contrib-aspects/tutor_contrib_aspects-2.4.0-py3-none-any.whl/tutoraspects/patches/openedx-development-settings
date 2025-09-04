@@ -1,0 +1,6 @@
+SUPERSET_CONFIG = {
+    "internal_service_url": "http://superset:{{ SUPERSET_PORT }}/",
+    "service_url": "{% if ENABLE_HTTPS %}https{% else %}http{% endif %}://{{ SUPERSET_HOST }}:{{ SUPERSET_PORT }}",
+    "username": "{{ SUPERSET_LMS_USERNAME }}",
+    "password": "{{ SUPERSET_LMS_PASSWORD }}",
+}

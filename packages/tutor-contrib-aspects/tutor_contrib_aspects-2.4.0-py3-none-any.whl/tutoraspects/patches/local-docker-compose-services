@@ -1,0 +1,154 @@
+{% if RUN_CLICKHOUSE %}
+clickhouse:
+    image: {{DOCKER_IMAGE_CLICKHOUSE}}
+    restart: unless-stopped
+    environment:
+        CLICKHOUSE_DB: "{{ ASPECTS_XAPI_DATABASE }}"
+        CLICKHOUSE_USER: "{{ CLICKHOUSE_ADMIN_USER }}"
+        CLICKHOUSE_PASSWORD: "{{ CLICKHOUSE_ADMIN_PASSWORD }}"
+        CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+    ports:
+        - {{ CLICKHOUSE_HOST_HTTP_PORT }}:{{ CLICKHOUSE_INTERNAL_HTTP_PORT }}
+        - {{ CLICKHOUSE_HOST_NATIVE_PORT }}:{{ CLICKHOUSE_INTERNAL_NATIVE_PORT }}
+    ulimits:
+        nofile:
+            soft: 262144
+            hard: 262144
+    volumes:
+        - ../../data/clickhouse:/var/lib/clickhouse/
+        - ../../env/plugins/aspects/apps/clickhouse/config:/etc/clickhouse-server/config.d/
+        - ../../env/plugins/aspects/apps/clickhouse/users:/etc/clickhouse-server/users.d/
+{% endif %}
+
+{% if RUN_RALPH %}
+ralph:
+    image: {{ DOCKER_IMAGE_RALPH }}
+    restart: unless-stopped
+    {% if RUN_CLICKHOUSE %}depends_on:
+      - clickhouse{% endif %}
+    env_file:
+      - ../../env/plugins/aspects/apps/ralph/config/env
+    ports:
+      - "{{ RALPH_PORT }}:{{ RALPH_PORT }}"
+    command:
+      - "uvicorn"
+      - "ralph.api:app"
+      - "--proxy-headers"
+      - "--log-config"
+      - "/etc/ralph/logging.yaml"
+      - "--port"
+      - "{{ RALPH_PORT }}"
+      - "--host"
+      - "0.0.0.0"
+    volumes:
+      - ../../env/plugins/aspects/apps/ralph/config/ralph_auth/:/app/.ralph
+      - ../../env/plugins/aspects/apps/ralph/config/logging.yaml:/etc/ralph/logging.yaml:ro
+{% endif %}
+
+{% if RUN_SUPERSET %}
+superset:
+  {% include 'base-docker-compose-services' %}
+    OPENEDX_LMS_ROOT_URL: "{% if ENABLE_HTTPS %}https{% else %}http{% endif %}://{{ LMS_HOST }}"
+    OAUTH2_CLIENT_ID: {{ SUPERSET_OAUTH2_CLIENT_ID }}
+    SUPERSET_ENV: production
+  command: ["bash", "/app/docker/docker-bootstrap.sh", "app-gunicorn"]
+  ports:
+    - 8088:{{ SUPERSET_PORT }}
+  depends_on:
+    {% if RUN_MYSQL %}- mysql{% endif %}
+    - redis
+
+superset-worker:
+  {% include 'base-docker-compose-services' %}
+    OPENEDX_LMS_ROOT_URL: "{% if ENABLE_HTTPS %}https{% else %}http{% endif %}://{{ LMS_HOST }}"
+    OAUTH2_CLIENT_ID: {{ SUPERSET_OAUTH2_CLIENT_ID }}
+    SUPERSET_ENV: production
+  command: ["bash", "/app/docker/docker-bootstrap.sh", "worker"]
+  healthcheck:
+    test: ["CMD-SHELL", "celery -A superset.tasks.celery_app:app inspect ping -d celery@$$HOSTNAME"]
+    interval: 30s
+    retries: 3
+  depends_on:
+    {% if RUN_MYSQL %}- mysql{% endif %}
+    - redis
+
+superset-worker-beat:
+  {% include 'base-docker-compose-services' %}
+    OPENEDX_LMS_ROOT_URL: "{% if ENABLE_HTTPS %}https{% else %}http{% endif %}://{{ LMS_HOST }}"
+    OAUTH2_CLIENT_ID: {{ SUPERSET_OAUTH2_CLIENT_ID }}
+    SUPERSET_ENV: production
+  command: ["bash", "/app/docker/docker-bootstrap.sh", "beat"]
+  healthcheck:
+    disable: true
+  depends_on:
+    {% if RUN_MYSQL %}- mysql{% endif %}
+    - redis
+{% endif %}
+
+{% if RUN_VECTOR %}
+vector:
+    image: {{ DOCKER_IMAGE_VECTOR }}
+    volumes:
+        - ../../data/vector:/var/lib/vector
+        - ../plugins/aspects/apps/vector/local.toml:/etc/vector/vector.toml:ro
+        {% if ASPECTS_DOCKER_HOST_SOCK_PATH %}- {{ ASPECTS_DOCKER_HOST_SOCK_PATH }}:/var/run/docker.sock:ro{% endif %}
+    environment:
+        - DOCKER_HOST=/var/run/docker.sock
+        - VECTOR_LOG=warn
+    restart: unless-stopped
+{% endif %}
+
+{% if ASPECTS_ENABLE_EVENT_BUS_CONSUMER %}
+aspects-consumer:
+  image: {{ DOCKER_IMAGE_OPENEDX }}
+  stdin_open: true
+  tty: true
+  volumes:
+    # Settings & config
+    - ../apps/openedx/settings/lms:/openedx/edx-platform/lms/envs/tutor:ro
+    - ../apps/openedx/settings/cms:/openedx/edx-platform/cms/envs/tutor:ro
+    - ../apps/openedx/config:/openedx/config:ro
+    {%- for mount in iter_mounts(MOUNTS, "openedx", "lms") %}
+    - {{ mount }}
+    {%- endfor %}
+  environment:
+    SERVICE_VARIANT: lms
+    DJANGO_SETTINGS_MODULE: lms.envs.tutor.production
+  restart: unless-stopped
+  command: |
+    ./manage.py lms consume_events -t analytics -g event_routing_backends --extra '{"consumer_name": "aspects"}'
+  deploy:
+    mode: replicated
+    replicas: {{ ASPECTS_EVENT_BUS_CONSUMER_REPLICAS }}
+  depends_on:
+    {% if RUN_MYSQL %}- mysql{% endif %}
+    {% if RUN_MONGODB %}- mongodb{% endif %}
+    {% if RUN_REDIS %}- redis{% endif %}
+{% endif %}
+
+{% if RUN_ASPECTS_DOCS %}
+aspects-docs:
+  user: root
+  image: {{ DOCKER_IMAGE_ASPECTS }}
+  environment:
+    VENV_DIR: /opt/venv
+    ASPECTS_EVENT_SINK_DATABASE: {{ASPECTS_EVENT_SINK_DATABASE}}
+    ASPECTS_XAPI_DATABASE: {{ASPECTS_XAPI_DATABASE}}
+    CLICKHOUSE_CLUSTER_NAME: {{CLICKHOUSE_CLUSTER_NAME}}
+    DBT_STATE: {{ DBT_STATE_DIR }}
+    ASPECTS_DATA_TTL_EXPRESSION: "{{ ASPECTS_DATA_TTL_EXPRESSION }}"
+    DBT_PROFILE_TARGET_DATABASE: "{{ DBT_PROFILE_TARGET_DATABASE }}"
+    DBT_PROFILES_DIR: {{ DBT_PROFILES_DIR }}
+    DBT_BRANCH: "{{ DBT_BRANCH }}"
+    DBT_REPOSITORY: "{{ DBT_REPOSITORY }}"
+    DBT_SSH_KEY: "{{ DBT_SSH_KEY }}"
+  command: |
+    bash /app/aspects/scripts/docs.sh
+  ports:
+    - 7000:7000
+  volumes:
+    - ../../env/plugins/aspects/apps/aspects/dbt:/app/aspects/dbt
+    - ../../env/plugins/aspects/apps/aspects/scripts/:/app/aspects/scripts:ro
+  depends_on:
+  {% if RUN_CLICKHOUSE %}  - clickhouse{% endif %}
+{% endif %}
