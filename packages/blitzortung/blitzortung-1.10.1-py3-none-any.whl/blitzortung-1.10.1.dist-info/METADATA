@@ -1,0 +1,21 @@
+Metadata-Version: 2.3
+Name: blitzortung
+Version: 1.10.1
+Summary: blitzortung.org python modules
+License: Apache-2.0
+Author: Andreas Würl
+Author-email: andi@tryb.de
+Requires-Python: >=3.11,<4.0
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: fasteners (>=0.19,<0.20)
+Requires-Dist: incremental (==22.10.0)
+Requires-Dist: injector (>=0.22.0,<0.23.0)
+Requires-Dist: psycopg2 (>=2.9.10,<3.0.0)
+Requires-Dist: pyproj (>=3.7.0,<4.0.0)
+Requires-Dist: requests (>=2.32.3,<3.0.0)
+Requires-Dist: shapely (>=2.0.6,<3.0.0)
+Requires-Dist: twisted (>=23.10.0,<24.0.0)
