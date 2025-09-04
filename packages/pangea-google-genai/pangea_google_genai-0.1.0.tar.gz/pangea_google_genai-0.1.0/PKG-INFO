@@ -1,0 +1,47 @@
+Metadata-Version: 2.4
+Name: pangea-google-genai
+Version: 0.1.0
+Summary: A wrapper around the Google GenAI Python SDK
+Author: Pangea
+Author-email: Pangea <support@pangea.cloud>
+License-Expression: Apache-2.0
+Requires-Dist: google-genai>=1.32.0
+Requires-Dist: pangea-sdk>=6.6.0
+Requires-Dist: typing-extensions>=4.15.0
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+
+# Pangea + Google Gen AI SDK
+
+A wrapper around the Google Gen AI SDK that wraps the Gemini API with
+Pangea AI Guard. Supports Python v3.10 and greater.
+
+## Installation
+
+```bash
+pip install -U pangea-google-genai
+```
+
+## Usage
+
+```python
+import os
+
+import pangea_google_genai as genai
+
+client = genai.PangeaClient(
+    api_key=os.environ.get("GEMINI_API_KEY"),
+    pangea_api_key=os.environ.get("PANGEA_API_KEY"),
+    pangea_input_recipe="pangea_prompt_guard",
+    pangea_output_recipe="pangea_llm_response_guard",
+)
+
+response = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents="Explain how AI works in a few words",
+)
+print(response.text)
+```
+
+Note that AI Guard transformations on the LLM response are **not** applied
+because the conversion from Gemini API output to Pangea AI Guard input is lossy.
