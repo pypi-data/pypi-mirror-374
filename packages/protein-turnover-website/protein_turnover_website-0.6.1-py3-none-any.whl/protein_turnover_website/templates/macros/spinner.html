@@ -1,0 +1,103 @@
+{% macro css(height='.4em') %}
+<style>
+    /*{# loader progress bar at top #}*/
+
+    .loader.progress {
+        margin:0px;
+        height:{{height}};
+        width:100%;
+        position:fixed; top:0px;
+        z-index:5000;
+        display:none;
+        background-color: transparent !important;
+    }
+
+    .loader.progress .progress-bar {
+        width:100%; height:{{height}};
+
+    }
+</style>
+{% endmacro %}
+
+{% macro html(cls='warning') %}
+<div id="loader-top" class="loader progress">
+    <div class="progress-bar progress-bar-{{cls}} bg-{{cls}} progress-bar-striped active" role="progressbar" aria-valuenow="100"
+         aria-valuemin="0"
+         aria-valuemax="100">
+    </div>
+</div>
+{% endmacro %}
+{# currently only config.delta=10  and config.spinner_interval=200 and config.loader='#loader-top' is used #}
+
+{% macro js(config={}) %}
+<script>
+{% autoescape false %}
+var SubaCrop = SubaCrop || {};
+(function() {
+    function runloader(delta, continuous, config) {
+
+        config = config || {};
+        var w = 0,
+            kill = false,
+            sign = 1,
+            id,
+            interval = config.spinner_interval || 200;
+
+        var l = $(config.loader || '#loader-top');
+        var pb = l.find('.progress-bar');
+        pb.css({
+            width: w + 'px'
+        });
+
+        l.show();
+
+        if (!continuous) {
+            id = setInterval(function() {
+                w += delta;
+                if (w > 100 || kill) {
+                    w = 100;
+                    clearInterval(id);
+                }
+                pb.css({
+                    width: w + '%'
+                });
+            }, interval);
+        } else {
+            id = setInterval(function() {
+
+                w += sign * delta;
+                if (w < 0) {
+                    w = 0;
+                    sign = -sign;
+                } else if (w > 100) {
+                    w = 100;
+                    sign = -sign;
+                }
+                pb.css({
+                    width: w + '%'
+                });
+                if (kill) {
+                    clearInterval(id);
+                }
+            }, interval);
+        }
+
+        function quit() {
+
+            kill = true;
+            l.hide();
+
+        }
+        return quit;
+    }
+
+    function spinner(config) {
+        config = config || {{config|tojson}} || {};
+        return runloader(config.delta || 10, true, config); // FIXME how quick?
+
+    }
+    SubaCrop.spinner = spinner;
+})();
+{% endautoescape %}
+</script>
+{% endmacro %}

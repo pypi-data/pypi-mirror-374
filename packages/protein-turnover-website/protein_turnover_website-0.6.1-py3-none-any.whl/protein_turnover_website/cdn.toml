@@ -1,0 +1,78 @@
+
+[jquery.js]
+src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+integrity = "sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+
+[bootstrap.js]
+src = "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+integrity = "sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+
+[bootstrap.css]
+href = "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+integrity = "sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+
+[fontawesome.js]
+src = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"
+integrity = "sha512-YSdqvJoZr83hj76AIVdOcvLWYMWzy6sJyIMic2aQz5kh2bPTd9dzY3NtdeEAzPp/PhgZqr4aJObB3ym/vsItMg=="
+
+[fontawesome.css]
+href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+integrity = "sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+
+[toastr.js] # at 2.1.4
+src = "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"
+integrity = "sha256-yNbKY1y6h2rbVcQtf0b8lq4a+xpktyFc3pSYoGAY1qQ="
+
+[toastr.css]
+href = "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css"
+integrity = "sha256-R91pD48xW+oHbpJYGn5xR0Q7tMhH4xOrWn1QqMRINtA="
+
+[bootstrap_select.js]
+src = "https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/js/bootstrap-select.min.js"
+integrity = "sha256-+o/X+QCcfTkES5MroTdNL5zrLNGb3i4dYdWPWuq6whY="
+
+[bootstrap_select.css]
+href = "https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/css/bootstrap-select.min.css"
+integrity = "sha256-l3FykDBm9+58ZcJJtzcFvWjBZNJO40HmvebhpHXEhC0="
+
+[nunjucks.js] # at 3.0.1
+src = "https://cdnjs.cloudflare.com/ajax/libs/nunjucks/3.0.1/nunjucks.min.js"
+integrity = "sha256-sh9FYQZVVLprCQB3/IcNyCRrZwu9hZ+xLHhUszDfsK4="
+
+[select2.js] # at 4.0.13
+src = "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"
+integrity = "sha256-wfVTTtJ2oeqlexBsfa3MmUoB77wDNRPqT1Q1WA2MMn4="
+
+[select2.css]
+href = "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css"
+integrity = "sha256-FdatTf20PQr/rWg+cAKfl6j4/IY3oohFAJ7gVC3M34E="
+
+[select2_bootstrap.css]
+href = "https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.4.0/dist/select2-bootstrap4.min.css"
+integrity = "sha256-3UPl0A8ykc7qW77XmHP0HDb1Nvs/09AACcTrNpIbdJ4="
+
+[mathjax.js]
+src = "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+integrity = "sha256-Cm3tWrvOEzMWWN0jnzQ4Kr0GSSx0txth6MqoES7FX6U="
+async = true
+
+[requirejs.js]
+src = "https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"
+integrity = "sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA="
+
+# integrity from https://www.srihash.org/
+[datatables.js]
+src = "https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"
+integrity = "sha384-/+lMY1Q+32LzZlNRStHLIp76PCNXWUYqMZft+ClMnfnTIeH16eT732DHr4R494uH"
+# integrity from https://www.srihash.org/
+[datatables.css]
+href = "https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.css"
+integrity = "sha384-4+3RMUungd+Oh0juS2Jl3yQ7mPlVfsgr10NLSsqltLXIECi9ExY4d1cTtmf9aN8E"
+# integrity from https://www.srihash.org/
+[datatables-select.js]
+src = "https://cdn.datatables.net/select/1.4.0/js/dataTables.select.min.js"
+integrity = "sha384-ciSNvZMn/ZSRBeE3M3OcMMoPXc8l9agJUSZOJUisImdZhTnrWCIVHAAKCrbDbj9W"
+# integrity from https://www.srihash.org/
+[datatables-select.css]
+href = "https://cdn.datatables.net/select/1.4.0/css/select.dataTables.min.css"
+integrity = "sha384-6YBWLZWKHgAKI8tNEuS55HPMq1EGfX09SVIxAkfPguzJg8QwnCUaLQAxgC53+dpX"

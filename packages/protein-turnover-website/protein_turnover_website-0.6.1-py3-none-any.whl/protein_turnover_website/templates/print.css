@@ -1,0 +1,27 @@
+@media print {
+    header {
+        display: none !important;
+    }
+
+    footer {
+        display: none !important;
+    }
+
+    nav {
+        display: none !important;
+    }
+
+    body {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 12pt;
+    }
+
+    body mjx-math {
+        font-size: 10pt;
+    }
+
+    .container>.about {
+        width: 100% !important;
+    }
+
+}

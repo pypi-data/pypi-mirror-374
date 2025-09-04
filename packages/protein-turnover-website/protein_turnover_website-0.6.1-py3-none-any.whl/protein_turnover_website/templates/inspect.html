@@ -1,0 +1,296 @@
+{% extends base_template %}
+{% import "macros/spinner.html" as spinner %}
+
+{% block title %}Explore: {{job.job_name}}{% endblock %}
+
+{% block cdn_css %}
+{{cdn_css('datatables')}}
+{{cdn_css('datatables-select')}}
+{% endblock %}
+
+{% macro settings(settings) %}
+<div id="settings-modal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Job Settings</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped settings">
+            <tr><td>Retention time tolerance</td> <td>{{settings.rtTolerance }}secs</td></tr>
+            <tr><td>m/z tolerance</td> <td>{{settings.mzTolerance }}</td></tr>
+            <tr><td>Labelled element</td> <td>{{settings.labelledElement }}</td></tr>
+            <tr><td>Labelled isotope number</td> <td>{{settings.labelledIsotopeNumber }}</td></tr>
+            <tr><td>Maximum labelled enrichment</td> <td>{{settings.maximumLabelEnrichment }}</td></tr>
+            <tr><td>Retention time correction</td> <td>{{settings.retentionTimeCorrection }}</td></tr>
+            <tr><td>Number of Enrichment Columns</td> <td>{{settings.enrichmentColumns }}</td></tr>
+            <tr><td>Minimum probability cutoff</td> <td>{{settings.minProbabilityCutoff }}</td></tr>
+            <tr><td>Use Observed m/z</td> <td>{{settings.useObservedMz }}</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endmacro %}
+
+{% block css %}
+{{spinner.css()}}
+<style>
+    {# include "fragments/range.css" #}
+    #datatable {
+        font-size: smaller;
+    }
+    #pep_table {
+        font-size: smaller;
+    }
+    #datatable table tr:hover {
+        cursor: pointer;
+    }
+
+    #datatable .dataTables_length {
+        float: right;
+    }
+
+    #datatable .dataTables_paginate {
+        margin-bottom: .3em;
+    }
+
+    #pep_table table tr:hover {
+        cursor: pointer;
+    }
+
+    .btn-toolbar .selected {
+        margin-top: .5em;
+        margin-left: 1em;
+    }
+
+    input[type="range"]+datalist {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        writing-mode: vertical-lr;
+        width: 100%;
+    }
+
+    datalist option {
+        padding: 0;
+    }
+
+    .dataTable.peptides td.fixed {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 12pt;
+    }
+
+    .lpf_image {
+        width: 100%;
+    }
+
+
+    .dataTable.peptides tr.selected-protein>td {
+        color: black;
+    }
+
+    .dataTable.peptides tr>td {
+        color: var(--bs-info, black);
+    }
+
+    #image-div {
+        display: none
+    }
+
+    #image img {
+        width: 100%;
+        cursor: pointer;
+    }
+
+    #image {
+        transition: width 1s ease;
+    }
+
+    #image.zoom {
+        position: absolute;
+        max-width: 95vw;
+        z-index: 5000;
+        left: 1em;
+        box-shadow: 5px 5px 10px gray;
+    }
+    .datatable-height {
+        height: 100vh;
+        overflow-y:auto;
+    }
+    .table.settings tr td:first-child {
+        font-weight: bold;
+    }
+</style>
+{% endblock css %}
+
+{% block precontent %}
+{{spinner.html('danger')}}
+{{ settings(job.settings) }}
+{% endblock precontent %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid pt-2 pb-4">
+    <div class="row">
+        <div class="col-4">
+            <h2 class="d-inline pe-5">{{job_name}}</h2>
+            <small><code>{{job.jobid}}</code> {{stat.st_size|human}} version:{{sqlite_version}}</small>
+        </div>
+        <div class="col-8">
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group">
+
+                    <div class="dropdown">
+                        <button title="download filtered data" class="btn btn-info dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Download Filtered <i class="fas fa-download"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="download">
+                            <li><button class="dropdown-item" form="filters" type="submit" name="format" value="xlsx"><i
+                                        class="far fa-file-excel"></i> As Excel </button></li>
+                            <li><button class="dropdown-item" form="filters" type="submit" name="format" value="tsv"><i
+                                        class="fas fa-file-csv"></i> As TSV</button></li>
+                        </ul>
+                    </div>
+
+                    <a id="download-all" href="{{url_for('inspect.download', dataid=dataid, format='all')}}" download
+                        title="download *all* data as sqlite file" class="btn btn-outline-danger">Download
+                        <strong>All</strong> ({{stat.st_size|human}}) <i class="fas fa-download"></i>
+                    </a>
+                    <button title="settings" class="btn btn-outline-info"
+                        data-bs-toggle="modal" data-bs-target="#settings-modal">
+                        Settings <i class="fas fa-rocket"></i>
+                    </button>
+
+                </div>
+                <div class="selected">Selected protein: <code id="selected-genes"></code></div>
+                <input type="range" title="change width" style="width:15%" min="10" max="90"
+                        class="form-range mt-2 ms-2" id="col-width" value="{{split_width}}">
+
+            </div>
+
+        </div>
+
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col" style="width:{{split_width}}%; flex: 1 0 auto;" id="protein-col">
+            <div class="left">
+                <div class="d-inline ms-4">
+                    <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" id="table-height">
+                        fix table height
+                    </label>
+                </div>
+                <span class="ms-2">Total Distinct Peptides: <code id="total_peptides"></code></span>
+                <div id="datatable">{# protein group table goes here #}</div>
+            </div>
+        </div>
+        <div class="col border" style="width:{{100 - split_width}}%; flex: 1 0 auto;" id="peptide-col">
+            <div class="top">
+                <div class="row mt-2">
+                    <div class="col-3">
+                    <label class="col-form-label col-form-label-sm">enrichment Columns:</label>
+                    </div>
+                    <div class="col-3">
+                    <input type="number" title="enrichment columns (zero for default)" min="0"
+                            class="form-control form-control-sm" id="enrichment-cols" value="0"
+                            >
+                    </div>
+                    <div class="col-6 form-check">
+                        <input class="form-check-input" type="checkbox" {% if filtered %}checked{% endif %} value="true"
+                            id="filter-peptides" name="filter-peptides" form="filters">
+                        <label class="form-check-label" for="filter-peptides">
+                            Filter peptides
+                        </label>
+                    </div>
+                </div>
+                <div style="min-height:20em">
+                    <div id="pep_table">{# peptide table goes here #}</div>
+                    <div id="pep_lpf" class="w-50 mx-auto">{# peptide LPF goes here #}</div>
+                </div>
+
+                <div class="mt-2">
+                    <div id="image-div">
+                        <a class="btn btn-outline-primary" download id="image-download">Download PDF <i
+                                class="fas fa-image"></i></a>
+                        Don't understand these plots? See <a target="about"
+                            href="{{url_for('inspect.about', _anchor='calculations')}}" target="about">here</a>.
+                            Double click to zoom.
+                        <button class="btn btn-outline-warning float-end" id="close-image-btn"
+                            title="close image">⨯</button>
+                    </div>
+                    <div id="image" class="w-100 border mt-2 ps-2"></div>
+                </div>
+            </div>
+            <div class="bottom">
+                <form id="filters" method="POST" class="border rounded p-2 m-2 shadow"
+                    action="{{url_for('inspect.download', dataid=dataid)}}">
+
+                    <h2>Filters <button id="refresh" class="btn btn-primary float-end" type="submit" name="refresh">Refresh
+                            <i class="fas fa-sync"></i></button></h2>
+                    <input type="hidden" id="sqlite_version" name="sqlite_version"  value="{{sqlite_version}}" >
+                    <div id="filters-frag">
+                        {# include "filter-frag.html" with context #}
+                    </div>
+                </form>
+
+                <div class="row">
+                    <div class="col">
+                        <h4>NNLS Deviance Histogram</h4>
+                        <img id="nnls-image" src="{{url_for('static', filename='img/nnls_residuals.png') }}"
+                            class="w-100 mt-2" />
+                    </div>
+                    <div class="col">
+                        <h4>Enrichment Histogram</h4>
+                        <img id="enrichment-image" src="{{url_for('static', filename='img/enrichment.png') }}"
+                            class="w-100 mt-2" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+{{super()}}
+{{cdn_js('datatables')}}
+{{cdn_js('datatables-select')}}
+{# https://datatables.net/reference/event/error #}
+<script>
+    $.fn.dataTable.ext.errMode = function (e, settings, techNote, message) {
+        toastr.error(techNote, 'DataTables Error:',
+            { closeButton: true, timeOut: 0, showDuration: 0, extendedTimeOut: 0 })
+
+    }
+    const Config = {
+
+        dataid: "{{dataid}}",
+
+        data_url: "{{url_for('inspect.datatable', dataid=dataid)}}",
+        group_url: "{{url_for('inspect.group', dataid=dataid)}}",
+        enrichment_url: "{{url_for('inspect.enrichment_plot', dataid=dataid)}}",
+        nnls_url: "{{url_for('inspect.nnls_plot', dataid=dataid)}}",
+        plot_url: "{{url_for('inspect.plot', dataid=dataid)}}",
+        plot_image_url: "{{url_for('inspect.plot_url', dataid=dataid)}}",
+        pdf_url: "{{url_for('inspect.pdf', dataid=dataid)}}",
+        {# stats_url: "{{url_for('inspect.stats', dataid=dataid)}}", #}
+        form_frag_html_url: "{{url_for('inspect.form_frag_html', dataid=dataid)}}",
+
+        min_search_length: 100,
+        table_class: 'table table-striped',
+        max_download_attempts: Number("{{ config.COOKIE_MAX_ATTEMPTS }}"),
+        length: Number("{{ length }}")
+
+    }
+    {# include "fragments/range.js" #}
+    {% include "inspect.js" %}
+    {% include "inspect-download.js" %}
+</script>
+
+{{spinner.js()}}
+{% endblock js %}

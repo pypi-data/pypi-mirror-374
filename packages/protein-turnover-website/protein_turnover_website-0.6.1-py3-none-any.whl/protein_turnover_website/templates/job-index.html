@@ -1,0 +1,101 @@
+{% extends base_template %}
+
+{% block title %}Jobs: {{config.APP_NAME}}{% endblock %}
+
+{% block cdn_css %}
+{{cdn_css('datatables')}}
+{{cdn_css('datatables-select')}}
+{% endblock %}
+
+{% block css %}
+<style>
+    tr.failed td {
+        background-color: #f5dbdb;
+    }
+    .jobs-table table tr td:nth-child(6),
+    .jobs-table table tr th:nth-child(6) {
+        text-align: right;
+    }
+    .jobs-table table table.logging {
+        font-size: smaller;
+    }
+    .jobs-table table td > .failed {
+        color: var(--bs-danger, 'red');
+        font-weight: bold;
+    }
+    .logging td.info { color: var(--bs-info, 'orange'); }
+    .logging td.error { color: var(--bs-danger, 'red'); }
+    .logging td.warning { color: var(--bs-warning, 'orange'); }
+    .logging td.warn { color: var(--bs-warning, 'orange'); }
+
+    .unknown-mountpoint { color: var(--bs-danger, 'red'); }
+</style>
+{% endblock css %}
+
+{% import "job-macros.html" as macros %}
+{% block content %}
+<div class="container pt-4 pb-4">
+    <h3>Notice:</h3>
+    {% if not is_running %}
+    <div class="alert alert-danger text-center" role="alert">
+        The background Job queue is currently not running. Run something like:
+        <br/>
+        <code>
+        python -m protein_turnover --level=INFO background --workers=4 {config.JOBSDIR}
+        </code>
+    </div>
+    {% else %}
+    <p> The current job scheduler only wakes every 60 seconds to
+        check for new jobs to run. Either refresh this page or press this button <button id="refresh"
+            class="btn btn-outline-info">refresh</button>
+        if you are expecting your job
+        to be running.</p>
+    {% endif %}
+
+    <h2>Jobs Running</h2>
+    <hr />
+    <div id="jobs-running" class="jobs-table">
+        {{ macros.jobtable(running, oktokill) }}
+    </div>
+    <h2>Jobs Queued</h2>
+    <hr />
+    <div id="jobs-queued" class="jobs-table">
+        {{ macros.jobtable(queued, oktokill) }}
+    </div>
+    <h2>Jobs Done</h2>
+    <hr />
+    <div id="jobs-finished" class="jobs-table">
+        {{ macros.jobtable(finished, oktokill) }}
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+{{super()}}
+{{cdn_js('datatables')}}
+{{cdn_js('datatables-select')}}
+{# https://datatables.net/reference/event/error #}
+<script>
+    $.fn.dataTable.ext.errMode = function (e, settings, techNote, message) {
+        toastr.error(techNote, 'DataTables Error:',
+            { closeButton: true, timeOut: 0, showDuration: 0, extendedTimeOut: 0 })
+    }
+
+    const JobIndex = {
+        job_index_url: "{{url_for('job.index')}}",
+        find_metadata_url: "{{url_for('job.find_metadata')}}",
+        find_log_url: "{{url_for('job.find_log')}}",
+        kill_job_url: "{{url_for('job.kill_job')}}",
+        restart_job_url: "{{url_for('job.restart_job')}}",
+        remove_job_url: "{{url_for('job.remove_job')}}",
+        refresh_jobs_url: "{{url_for('job.refresh_jobs')}}",
+        queue_length: Number("{{ request.values.get('length') or 10 }}"),
+        refresh_delay: Number("{{ config.REFRESH_DELAY }}")
+
+    }
+
+    {% include "job-index.js" %}
+
+</script>
+{% endblock js %}

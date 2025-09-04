@@ -1,0 +1,149 @@
+{% macro row(key,value) %}
+<tr>
+    <td>{{key}}</td>
+    <td>{{value|safe}}</td>
+</tr>
+{% endmacro %}
+
+{# type: job:TurnoverJob #}
+{% macro showjob(job, dataid, located=True) %}
+<tr data-metadata='true'>
+    <td colspan="7">
+        <div class="container border rounded p-1">
+            <div class="btn-group float-end">
+                {% if located %}
+                <a class="btn btn-outline-success float-end pl-2" href="{{url_for('job.create_job_page', dataid=dataid)}}"
+                    target="new-job">New job like this</a>
+                <button class="btn btn-outline-info" data-closeme="true">
+                    Close <i class="fas fa-times"></i>
+                </button>
+                {% endif %}
+            </div>
+            <table class="table m-2 p-2">
+                <tr>
+                    <th>key</th>
+                    <th> value</th>
+                </tr>
+                {% set s = 's' if job.pepxml|length != 1 else '' %}
+                {{ row('pepxml file' + s, job.pepxml|join('<br />')) }}
+                {{ row('protxml file', job.protxml) }}
+                {{ row('mzML files', job.mzmlfiles|join('<br />')) }}
+                {{ row('labelled element', job.settings.labelledElement) }}
+                {{ row('isotope number', job.settings.labelledIsotopeNumber) }}
+            </table>
+        </div>
+    </td>
+</tr>
+{% endmacro %}
+
+{% macro check_finish(msg) -%}
+{%- if msg.startswith('turnover finished!') -%}
+<strong style="text-decoration:underline">{{msg}}</strong>
+{%- else -%}
+{{msg}}
+{%- endif -%}
+{%- endmacro %}
+{# type: loglist:list[LogRecord] #}
+{% macro showlog(loglist) %}
+<tr data-metadata="true">
+    <td colspan="7">
+        <div class="container border rounded p-1">
+            <button class="btn btn-outline-info float-end" data-closeme="true">Close
+                <i class="fas fa-times"></i></button>
+            {% if loglist %}
+            <table class="table logging m-2">
+                <tr>
+                    <th>time</th>
+                    <th>level</th>
+                    <th>message</th>
+                </tr>
+
+                {% for rec in loglist %}
+                <tr>
+                    <td>{{rec.time.strftime('%Y-%m-%d %H:%M:%S')}}</td>
+                    <td class="{{rec.level|lower}}">{{rec.level}}</td>
+                    {# log maybe ends with a WARNING about email failing #}
+                    {% if loop.index in [1,2] -%}
+                    <td>{{check_finish(rec.msg)}}</td>
+                    {%- else -%}
+                    <td>{{rec.msg}}</td>
+                    {%- endif %}
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <h5 class="text-center text-warning">No Logs</h5>
+            {% endif %}
+
+        </div>
+    </td>
+</tr>
+{% endmacro %}
+
+{# data:TurnoverJobFiles #}
+{% macro jobinfo(data, oktokill) %}
+<div class="btn-group">
+    <button class="btn btn-sm btn-outline-info" data-view="true" title="show job info">Job</button>
+    <button class="btn btn-sm btn-outline-secondary" data-log="true" title="show logs">Logs</button>
+    {% if oktokill %}
+        {% if data.is_running %}
+        <button class="btn btn-sm btn-outline-danger" data-kill="true" title="stop this job"><i
+                class="fas fa-power-off"></i></button>
+        {% elif data.status == 'killed' %}
+        <button class="btn btn-sm btn-outline-success" data-restart="true" title="restart this job"><i
+                class="fas fa-redo"></i></button>
+        <button class="btn btn-sm btn-outline-danger" data-remove="true" title="remove this job"><i
+                class="far fa-trash-alt"></i></button>
+        {% elif data.status == 'failed' %}
+        <button class="btn btn-sm btn-outline-danger" data-remove="true" title="remove this job"><i
+                class="far fa-trash-alt"></i></button>
+        {% endif %}
+    {% endif %}
+</div>
+
+{% endmacro %}
+{# results:list[TurnoverJobFiles] #}
+{% macro jobtable(results, oktokill) %}
+{% if results|length > 0 %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>has result</th>
+            <th>job name</th>
+            <th>status</th>
+            <th>email</th>
+            <th>info</th>
+            <th>size</th>
+            <th>last modified</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in results %}
+        <tr data-id="{{data.dataid}}" class="{{data.status}}">
+            <td> {% if data.has_result %}
+                <a class="btn btn-outline-info" href="{{url_for('inspect.data', dataid=data.dataid)}}"
+                    target="inspect">view result</a>
+                {% endif %}
+            </td>
+            <td>
+                <div title="{{data.job.jobid}}">{{data.job.job_name}}</div>
+            </td>
+            <td>
+                <span class="{{data.status}}">{{data.status}}</span>
+            </td>
+            <td>
+                {{data.job.email or 'no email'}}
+            </td>
+            <td>
+                {{jobinfo(data, oktokill)}}
+            </td>
+            <td>{{data.size|human}}</td>
+            <td>{{data.mtime.strftime('%Y-%m-%d %H:%M:%S')}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+{#<div class="text-center w-100 bg-info">No jobs</div>#}
+{% endif %}
+{% endmacro %}

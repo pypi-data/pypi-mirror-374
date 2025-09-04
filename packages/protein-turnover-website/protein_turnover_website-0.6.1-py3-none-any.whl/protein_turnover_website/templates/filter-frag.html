@@ -1,0 +1,156 @@
+<div class="row">
+
+    <div class="col-6">
+        <input type="hidden" id="searchinfo" name="searchinfo" value="">
+        <label class="form-label w-100">minimum allowed maximum intensity
+            (<span id="maxPeakAreaId">{{'%g' % stats.max_maxPeakArea}}</span>)
+            <input type="number" class="form-control" name="maxPeakArea" value="0.0" min="0.0"
+                max="{{stats.max_maxPeakArea}}" step="{{stats.max_maxPeakArea/100}}"
+                title="minimum allowed maximum intensity" />
+        </label>
+    </div>
+    <div class="col-6">
+        {% set mx = stats.max_nnls_residual %}
+        <label class="form-label w-100">max scaled NNLS <code>deviance<sup>1/2</sup></code> maximum
+            <a href="{{url_for('inspect.about',_anchor='scaled-deviance')}}">see here</a>
+            (max: <span id="nnlsResidualid">{{mx}}</span>)
+            {# <input type="text" class="form-control" name="nnlsResidual" value="{{mx}}" inputmode="decimal"
+                pattern="[0-9]*\.?[0-9]+([eE][+\-]?[0-9]+)?" title="max deviance" /> #}
+
+            <input type="number" class="form-control" name="nnlsResidual" value="{{mx}}" min="0" max="{{mx}}"
+                step="{{mx/100.0}}" inputmode="decimal" title="max deviance" />
+        </label>
+    </div>
+
+
+    <div class="col-6">
+        <label class="form-label w-100">Protein <code>log(sigma/LPF)</code> maximum [-8,4]
+            <input type="number" class="form-control" name="log_sigma_lpf" min="-8" max="4" step="0.1" value="0.0"
+                title="Protein LPF minimum" />
+        </label>
+    </div>
+    <div class="col-6">
+        <label class="form-label w-100">max ratio of (-1 Peak)/monoPeak (lower the better)
+            <input type="number" class="form-control" name="inv_ratio_max" value="1.0" step="0.1" max="2.0" min="0.0"
+                title="min. ratio of mono / -1 peak" />
+        </label>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-6">
+        {% if sqlite_version >= 1 %}
+        <div class="row">
+            <div class="col-6">
+                <label class="form-label w-75" for="isoPeaksNr">Number of Peaks
+                    <input type="number" id="isoPeaksNr" class="form-control" name="isoPeaksNr" value="5" step="1"
+                        max="100" min="1" title="number of peaks" />
+
+                </label>
+                <i class="fas fa-greater-than-equal text-secondary ms-4"></i>
+            </div>
+            <div class="col-6">
+
+                <label class="form-label w-100" for="isoPeaksMinRSQ">adjusted R<sup>2</sup>
+                    <select class="form-select" id="isoPeaksMinRSQ" name="isoPeaksMinRSQ">
+                        <option value="-1" selected>not set</option>
+                        {% for val in minrsq %}
+                        <option value="{{val}}">{{val / 100.0}}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-6">
+        <div class="row">
+            <div class="col-6">
+                <div class="rounded border p-1">
+                    {# include "fragments/range.html" #}
+                    <label for="enrichmentMin" class="form-label">Enrichment Min:
+                        <output for="enrichmentMin" id="enrichmentMin-output" aria-hidden="true"></output>
+                    </label>
+                    <input type="range" class="form-range" min="0" value="0" max="1" step="0.01" id="enrichmentMin"
+                        name="enrichmentMin">
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="rounded border p-1">
+                    <label for="enrichmentMax" class="form-label">Enrichment Max:
+                        <output for="enrichmentMax" id="enrichmentMax-output" aria-hidden="true"></output>
+                    </label>
+                    <input type="range" class="form-range" min="0" value="1" max="1" step="0.01" id="enrichmentMax"
+                        name="enrichmentMax">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+<div class="row">
+    <div class="col-6">
+        <label class="form-label w-100">minimum peptide probability
+            <input type="number" class="form-control" name="peptideQualityFilter" value="0.8" step="0.01" max="1"
+                min="0.8" title="minimum peptide probability" />
+        </label>
+    </div>
+    {# <div class="col-6">
+        <label class="form-label w-100">Heavy fit correlation: min. R-squared
+            <input type="number" class="form-control" name="heavyMinRSQ" value="0.6" step="0.01" max="1" min="0"
+                title="Heavy fit correlation: min. R-squared" />
+        </label>
+    </div> #}
+
+    <div class="col-6">
+        <label class="form-label w-100">Heavy fit correlation: min. cor
+            <input type="number" class="form-control" name="heavyMinCor" value="0.5" step="0.01" max="1" min="0"
+                title="Heavy fit correlation: min. cor" />
+        </label>
+    </div>
+
+</div>
+
+{#
+<div class="row">
+
+    <div class="col-6">
+        <label class="form-label w-100">maximum enrichment
+            <input type="number" class="form-control" name="enrichmentMax" value="0.95" step="0.05" max="1.0" min="0.0"
+                title="maximum enrichment" />
+        </label>
+    </div>
+
+    <div class="col-6">
+        <label class="form-label w-100">enrichment +- standard deviations to keep
+            <input type="number" class="form-control" name="enrichmentFactor" value="2" step="0.5" max="5.0" min="0.0"
+                title="enrichment +- standard deviations to keep" />
+        </label>
+    </div>
+    <div class="col-6">
+        <label class="form-label w-100">Non-linear least squares residual
+            maximum
+            {% set mx = stats.max_nnls_residual %}
+            <input type="number" class="form-control" name="nnlsResidual" min="0.0" value="{{stats.max_nnls_residual}}"
+                max="{{mx}}" step="{{mx/1000}}" title="Non-linear least squares residual maximum" />
+        </label>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="border p-2 input-group">
+            <div>Isotope space peak number</div>
+            <label class="form-label w-100">min. nr of peaks
+                <input type="number" class="form-control" name="isoPeaksNr" value="5" step="1" max="inf" min="0"
+                    title="min. nr of peaks" />
+            </label>
+            <label class="form-label w-100">with R-squared above<input type="number" class="form-control"
+                    name="isoPeaksMinRSQ" value="0.6" step="0.01" max="1" min="0" title="with R-squared above" />
+            </label>
+        </div>
+    </div>
+</div>
+#}

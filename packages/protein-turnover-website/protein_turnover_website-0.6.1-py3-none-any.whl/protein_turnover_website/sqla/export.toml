@@ -1,0 +1,45 @@
+[[Column]]
+name = "protein_name"
+title = "Protein"
+[[Column]]
+name = "protein_description"
+title = "Description"
+[[Column]]
+name = "group_number"
+title = "Group"
+search = false
+[[Column]]
+name = "probability"
+title = "Probability"
+search = false
+[[Column]]
+name = "#Peptides"
+aggregate = { column = "peptideid", aggfunc = "count" }
+[[Column]]
+name = "num_found_peptides"
+title = "#Found Peptides"
+search = false
+[[Column]]
+name = "Filtered STD LPF"
+aggregate = { column = "relativeIsotopeAbundance", aggfunc = "std" }
+[[Column]]
+name = "Enrichment Avg"
+aggregate = { column = "enrichment", aggfunc = "avg" }
+[[Column]]
+name = "lpf_std"
+title = "STD LPF"
+search = false
+[[Column]]
+name = "lpf_median"
+title = "Median LPF"
+search = false
+[[Column]]
+name = "Filtered Peptides"
+aggregate = { column = "peptide", aggfunc = "group_concat", args = ", " }
+[[Column]]
+name = "PP Probability Avg"
+aggregate = { column = "peptideprophet_probability", aggfunc = "avg" }
+[[Column]]
+name = "nnls_min"
+title = "NNLS (min)"
+aggregate = { column = "nnls_residual", aggfunc = "min", denom = "totalNNLSWeight" }

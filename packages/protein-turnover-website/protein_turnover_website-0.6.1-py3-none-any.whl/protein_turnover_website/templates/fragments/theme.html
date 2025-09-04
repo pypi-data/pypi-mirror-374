@@ -1,0 +1,40 @@
+{# requires that the link for bootstrap be marked with id="bootstrap-theme-css" #}
+{% macro theme_html(theme=None) %}
+<div class="btn-group form-inline">
+  <button id="theme-button" class="btn btn-outline-secondary navbar-btn dropdown-toggle" data-bs-toggle="dropdown"
+    tabindex="-1">
+    Theme: <span id="bootstrap-current">{{theme|default('Bootstrap')}}</span>
+    <span class="caret"></span>
+  </button>
+  <div id="switcher-bootstrap" class="dropdown-menu" role="menu" style="z-index:5060;">
+
+    {% for theme in ['bootstrap', 'mickie', 'hollar', 'sunset','wandoo', 'graymor', 'electro',
+    'lymcha', 'deeply', 'minco', 'skeeblu', 'preptor', 'monotone'] -%}
+    <a href="#" class="dropdown-item" data-theme="{{theme}}" tabindex="-1">{{theme|title}}</a>
+    {%- endfor %}
+  </div>
+</div>
+{% endmacro %}
+
+{% macro theme_js() %}
+<script>
+  jQuery(function ($) {
+    var theme = null;
+    var bootstrap = $('#bootstrap-theme-css');
+    if (bootstrap.length == 0) return;
+    const href = bootstrap.attr('href');
+    function key2url(theme) {
+      if (theme === 'bootstrap') return href;
+      return `https://themesguide.github.io/top-hat/dist/${theme}/theme.min.css`;
+    };
+    $('#switcher-bootstrap').on('click', 'a[data-theme]', function (e) {
+      e.preventDefault();
+      var $this = $(this);
+      var theme = $this.attr('data-theme');
+      $('#bootstrap-current').text($this.text());
+      bootstrap.attr('href', key2url(theme));
+    });
+
+  });
+</script>
+{% endmacro %}

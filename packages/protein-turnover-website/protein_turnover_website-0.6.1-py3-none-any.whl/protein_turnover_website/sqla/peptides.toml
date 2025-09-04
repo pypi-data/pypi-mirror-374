@@ -1,0 +1,32 @@
+[[Column]]
+# special column to show any filtering
+name = "filtered"
+title = "Passed Filter?"
+# not a table column (so don't read from database)
+read = false
+[[Column]]
+name = "peptide"
+title = "Peptide"
+className = "fixed"
+[[Column]]
+name = "modcol"
+title = "Modifications"
+[[Column]]
+name = "peptideprophet_probability"
+title = "PP Probability"
+[[Column]]
+name = "enrichment"
+title = "Enrichment"
+[[Column]]
+name = "relativeIsotopeAbundance"
+title = "LPF"
+[[Column]]
+name = "heavyCor"
+title = "Heavy Correlation"
+[[Column]]
+name = "nnls_residual"
+title = "NNLS Deviance"
+denom = "totalNNLSWeight"
+[[Column]]
+name = "protein_names"
+title = "Protein Names"

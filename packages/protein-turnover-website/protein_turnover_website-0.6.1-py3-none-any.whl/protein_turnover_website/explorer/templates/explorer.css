@@ -1,0 +1,19 @@
+.explorer-wrap  { height: 50vh; overflow-y:scroll; }
+table.explorer > tbody > tr.file.selected { background-color: var(--bs-info); }
+table.explorer > tbody > tr { cursor: pointer; }
+table.explorer > tbody > tr.dir {  user-select: none; }
+table.explorer > thead > tr > th { position: sticky; top: 0; z-index: 1;
+    background-color:white; padding:0px;  cursor: pointer; }
+
+table.explorer > tbody > tr > td:nth-child(3) {
+    text-align:right;
+}
+table.explorer>:not(:first-child) {
+    border-top-width: 0px;
+}
+
+
+table.explorer > thead > tr > th > div {
+    border-bottom: 2px currentColor solid; width:100%; padding: 0.5rem 0.5rem;
+}
+.mountpoints .current { color: var(--bs-primary)}

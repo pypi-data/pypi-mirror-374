@@ -1,0 +1,17 @@
+{% extends base_template %}
+
+{% block title %}Welcome{% endblock %}
+
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <h2 class="text-center">Welcome</h2>
+    {% if config.SITE_PASSWORD %}
+    <p class="text-center">
+        This website requires you to login, which means that
+        we track your browser with cookies. Using this site means
+        that you accept this condition.
+    </p>
+    {% endif %}
+</div>
+{% endblock content %}
