@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Sentinel_2_band_downloader"
+version = "0.3.4"
+authors = [
+  { name="Beatriz Nattrodt DAvila", email="beatriznattrodt@gmail.com" },
+]
+description = "Utility for searching and downloading satellite images of Sentinel 2"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "requests==2.31.0",
+    "loguru==0.7.2",
+    "tqdm==4.66.1",
+]
