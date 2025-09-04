@@ -1,0 +1,9 @@
+include README.md
+include LICENSE
+include pyproject.toml
+recursive-include eloq_sdk *.py
+exclude *.pyc
+exclude __pycache__
+exclude .git*
+exclude .gitignore
+exclude .DS_Store
