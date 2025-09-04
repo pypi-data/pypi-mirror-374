@@ -1,0 +1,32 @@
+Metadata-Version: 2.4
+Name: idi-brightsites-sdk
+Version: 0.1.0
+Summary: Brightsites SDK
+Author: Bradley Reynolds
+Author-email: Bradley Reynolds <bradley.reynolds@impressdesigns.com>
+License-Expression: MIT
+Requires-Dist: pydantic>=2.9.2
+Requires-Dist: email-validator>=2.3.0
+Requires-Dist: httpx>=0.27.2
+Requires-Dist: nox>=2024.4.15 ; extra == 'dev'
+Requires-Dist: pre-commit>=3.7.1 ; extra == 'dev'
+Requires-Dist: ruff>=0.5.2 ; extra == 'dev'
+Requires-Dist: mypy>=1.10.1 ; extra == 'dev'
+Requires-Dist: sphinx>=7.4.4 ; extra == 'docs'
+Requires-Dist: furo>=2024.5.6 ; extra == 'docs'
+Requires-Dist: sphinx-autoapi>=3.1.2 ; extra == 'docs'
+Requires-Dist: releases>=2.1.1 ; extra == 'docs'
+Requires-Dist: pytest>=8.2.2 ; extra == 'tests'
+Requires-Dist: pytest-randomly>=3.15.0 ; extra == 'tests'
+Requires-Dist: coverage>=7.6.1 ; extra == 'tests'
+Requires-Python: >=3.13
+Project-URL: documentation, https://impressdesigns.dev/brightsites-sdk/
+Project-URL: repository, https://github.com/impressdesigns/brightsites-sdk/
+Provides-Extra: dev
+Provides-Extra: docs
+Provides-Extra: tests
+Description-Content-Type: text/markdown
+
+# brightsites-sdk
+
+https://docs.mybrightsites.com/
