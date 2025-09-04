@@ -1,0 +1,31 @@
+include README.md
+include LICENSE
+include requirements.txt
+include setup.cfg
+include pyproject.toml
+include setup.py
+
+# Package source code
+graft noa
+graft tsm
+graft utils
+
+# Docs (lightweight only)
+recursive-include docs *.rst *.md Makefile conf.py make.bat
+
+# Exclude non-essential, large, or generated artifacts from sdist
+prune tests
+prune analysis
+prune evaluation_output
+prune evaluation_results
+prune tsm_output
+prune uploads
+prune cache
+prune venv
+
+# Global excludes
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.pyd
+global-exclude __pycache__
+global-exclude .DS_Store

@@ -1,0 +1,310 @@
+# Realtime Accompaniment System Ver. 1
+
+A real-time musical accompaniment system that listens to live performance and dynamically adjusts orchestral playback speed to stay synchronized with the performer.
+
+## Overview
+
+**TLDR**: This system listens to a live musical performance, determines where the performer is in the score, and adjusts the accompaniment's playback speed in real time so it stays in sync with the player.
+
+The Realtime Accompaniment System enables real-time tracking of a performer's position within a musical piece and dynamically adjusts playback speed based on the user's playing. This version represents a "simulated online" prototype of what will eventually become a fully online, real-time accompaniment system.
+
+### Core Architecture
+
+The system is built around two core components:
+1. **Alignment**: Tracks the performer's position in the score
+2. **Time Stretching**: Adjusts accompaniment playback speed in real-time
+
+### Key Data Types
+
+- **Reference (R)**: Two pre-synchronized tracks—piano and orchestra—that serve as the timing and position reference
+- **Query (Q)**: The live input provided to the system
+
+By aligning the query with the piano reference track, the system determines the current position in the piece. Since the piano and orchestra tracks are synchronized, this position maps directly to the orchestra track, allowing the time stretching module to adjust accompaniment playback speed naturally.
+
+## Installation
+
+### Prerequisites
+
+- Python 3.7+
+- Java Runtime Environment (for MATCH baseline system)
+
+### Quick Install
+
+#### From PyPI (recommended)
+```bash
+pip install realtime-accompaniment
+```
+
+#### From Source
+```bash
+git clone <repository-url>
+cd RealtimeAccompaniment
+pip install .
+```
+
+### Development Setup
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd RealtimeAccompaniment
+```
+
+2. Create and activate a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install in development mode:
+```bash
+pip install -e ".[dev]"
+```
+
+This installs the package in "editable" mode with all development dependencies.
+
+## Usage
+
+### Running Evaluations
+
+The primary way to test the system is through the evaluation benchmark:
+
+```bash
+python run_evaluation_benchmark.py [options]
+```
+
+**Options:**
+- `--num_iterations`: Number of iterations for each config (default: 10)
+- `--param_name`: Parameter name to sweep (default: 'lag')
+- `--start_value`: Start value of the parameter (default: 0)
+- `--end_value`: End value of the parameter (default: 1000)
+- `--step`: Step size of the parameter (default: 100)
+- `--eval_mode`: Evaluation mode(s) - random, continuous, segmented (default: all)
+- `--eval_system`: Evaluation system(s) - noa, dtw (default: both)
+
+**Example:**
+```bash
+python run_evaluation_benchmark.py --num_iterations 20 --eval_mode continuous --eval_system noa
+```
+
+or run with default parameters.
+
+### Live Streaming
+
+For real-time performance tracking:
+
+```python
+from noa.noa import NOA
+import librosa as lb
+
+solo_reference = "analysis/bach/bach5_mov1_S.wav"
+orch_reference = "analysis/bach/bach5_mov1_A.wav"
+noa = NOA(
+    cache_dir='cache',
+    solo_reference=solo_reference,
+    orch_reference=orch_reference,
+    input_device=1,  # Set to your microphone device index
+    output_device=2, # Set to your speaker device index
+    recording=True, # Set to record your playing
+    outfile='align.wav'
+)
+
+noa.list_audio_devices()         # Optional: list available audio devices
+noa.start_live_streaming()       # Start real-time accompaniment
+# ... play your solo ...
+noa.stop_live_streaming()        # Stop and save output
+```
+
+### Offline/Simulated Real-time Alignment
+
+```python
+from noa.lagged_offline_noa import LaggedOfflineNOA
+import librosa as lb
+
+solo_reference = "analysis/bach/bach5_mov1_S.wav"
+orch_reference = "analysis/bach/bach5_mov1_A.wav"
+query = "analysis/bach/bach5_mov1_S_tsm.wav"
+
+lagged_offline_noa = LaggedOfflineNOA(
+    cache_dir="cache/bach5/mov1",
+    solo_reference=solo_reference,
+    orch_reference=orch_reference,
+    feature_extractor=lb.feature.chroma_cens,
+    alpha_lookback=50,
+    enable_tsm=True,
+    recording=True,
+    outfile='lagged_bach5_alpha50.wav',
+    lag=500
+)
+
+audio, _ = lb.load(query, sr=22050)
+query_feature = lb.feature.chroma_cens(y=audio, sr=22050, hop_length=512)
+offline_noa_path = lagged_offline_noa.align(query_feature, query)
+```
+
+### Cache Management
+
+Clean cached data:
+
+```bash
+python utils/clean_cache.py --cache_type <type> --cache_dir cache
+```
+
+## System Components
+
+### 1. Online Tracking Alignment
+
+The query (Q) is aligned to the piano reference (Sref), returning a list indexed by query frame where entries are corresponding reference frames.
+
+**Example alignment path**: `[0, 2, 4, 5, 7, 8]`
+
+| Query Frame | Reference Frame |
+|-------------|-----------------|
+| 0           | 0               |
+| 1           | 2               |
+| 2           | 4               |
+| 3           | 5               |
+| 4           | 7               |
+| 5           | 8               |
+
+### 2. Alpha Prediction
+
+**Alpha** is the TSM (Time-Stretch Modification) factor applied to the reference to match the query:
+- Alpha = 1: Query same speed as reference
+- Alpha = 2: Query twice as slow as reference
+- Alpha is the inverse of the alignment slope
+
+#### Key Constraints:
+- **Initial Constant Period**: First 10 seconds (default) maintain alpha = 1 for algorithm stabilization
+- **Orchestra-Led Sections**: Alpha = 1 during sections where piano isn't playing
+
+#### Alpha Calculation:
+- **Update Frequency**: Calculated every 10 frames (default)
+- **Method**: Least squares approximation over last 100 frames (default lookback)
+- **Adjustment Frequency**: Alpha adjusted every 2 frames (default) using sigmoid mapping
+
+### 3. Mode Detection
+
+Performed during initialization to identify piano-led vs orchestra-led sections:
+
+- **Method**: Compares librosa chroma CQT features between piano and orchestra references
+- **Threshold**: Log magnitude ratio < -10 (default) over 2.5-second window (default)
+- **Purpose**: Prevents tracking during orchestra-only sections
+
+### 4. Time-Stretch Modification (TSM)
+
+Real-time audio time-stretching that adjusts orchestra playback speed based on calculated alpha values while maintaining pitch.
+
+## Evaluation System
+
+### Query Generation
+
+The system generates test queries with known TSM values in four modes:
+
+#### 1. Continuous Mode
+- Alpha changes smoothly using uniform distribution around previous value
+- Log scale for symmetric speed perception
+- TSM range: 1/1.3 to 1.3 (default)
+
+#### 2. Segmented Mode
+- Random number of segments (10-100)
+- Alpha changes at random frame positions
+- Each segment's alpha based on previous value
+
+#### 3. Random Mode
+- Similar to segmented but alpha values are completely random within TSM range
+- No dependency on previous alpha values
+
+#### 4. Constant Mode
+- Single constant alpha value throughout piece
+- Excludes initial constant period and orchestra-led sections
+
+### Evaluation Systems
+
+The system supports multiple evaluation approaches:
+
+- **NOA Evaluation**: Using the NOA (Note Onset Alignment) algorithm
+- **DTW Evaluation**: Dynamic Time Warping-based alignment
+- **MATCH Evaluation**: Java-based PerformanceMatcher system
+
+## Project Structure
+
+```
+RealtimeAccompaniment/
+├── __init__.py             # Root package initialization
+├── setup.py                # Package configuration
+├── pyproject.toml         # Modern packaging config
+├── requirements.txt        # Runtime dependencies
+├── requirements-dev.txt    # Development dependencies
+├── Makefile               # Development commands
+├── noa/                   # NOA algorithm implementation
+│   ├── alignment/          # Alignment runtime algorithms
+│   ├── baseline/           # Baseline comparison systems
+│   ├── noa.py             # Main NOA class
+│   ├── offline_noa.py     # Offline processing
+│   └── lagged_offline_noa.py
+├── tsm/                    # Time-stretch modification
+│   ├── tsm.py             # Main TSM implementation
+│   └── offline_tsm.py     # Offline TSM processing
+├── utils/                  # Utility modules
+│   ├── audio_streamer.py  # Real-time audio handling
+│   ├── evaluation/        # Evaluation framework
+│   ├── mode_detection.py  # Piano/orchestra detection
+│   └── presets.py         # Configuration management
+├── tests/                  # Test suite
+├── docs/                   # Documentation
+├── cfg/                    # Configuration files
+└── .github/workflows/      # CI/CD workflows
+```
+
+## Development
+
+### Using Makefile Commands
+
+```bash
+# Show all available commands
+make help
+
+# Install in development mode
+make install-dev
+
+# Run tests
+make test
+
+# Check code quality
+make check-all
+
+# Build package
+make build
+```
+
+See [PACKAGING.md](PACKAGING.md) for detailed development and packaging information.
+
+## Configuration
+
+The system uses preset configurations stored in `cfg/presets.pkl`. Access configurations through:
+
+```python
+from utils.presets import get_config, get_presets
+
+# Get available presets
+presets = get_presets()
+
+# Load specific configuration
+solo_ref, orch_ref, query = get_config(preset_name)
+```
+
+This should return the solo and orchestra reference files for the given configs. See available configs through the `get_presets` function.
+
+## Performance Notes
+
+- The system uses `numba` for just-in-time compilation to optimize performance-critical sections
+- Caching is implemented for frequently computed features
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Java not found**: Ensure Java Runtime Environment is installed for MATCH evaluation
+2. **Audio device errors**: Check `pyaudio` installation and available audio devices
+3. **Cache issues**: Use `utils/clean_cache.py` to clear corrupted cache files

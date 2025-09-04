@@ -1,0 +1,73 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "realtime-accompaniment"
+dynamic = ["version"]
+description = "A real-time musical accompaniment system that dynamically adjusts orchestral playback speed"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "RealtimeAccompaniment Team"}
+]
+maintainers = [
+    {name = "RealtimeAccompaniment Team"}
+]
+keywords = ["music", "audio", "real-time", "accompaniment", "alignment", "time-stretching"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Multimedia :: Sound/Audio",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+requires-python = ">=3.7"
+dependencies = [
+    "numpy",
+    "scipy",
+    "librosa",
+    "matplotlib",
+    "pyaudio",
+    "numba",
+    "plotly",
+    "ipython",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "black",
+    "flake8",
+    "mypy",
+]
+test = [
+    "pytest",
+    "pytest-cov",
+]
+
+[project.scripts]
+realtime-accompaniment = "run_evaluation_benchmark:main"
+
+[project.urls]
+Homepage = "https://github.com/yourusername/RealtimeAccompaniment"
+Repository = "https://github.com/yourusername/RealtimeAccompaniment"
+Documentation = "https://github.com/yourusername/RealtimeAccompaniment#readme"
+Issues = "https://github.com/yourusername/RealtimeAccompaniment/issues"
+
+[tool.setuptools]
+packages = ["noa", "tsm", "utils"]
+
+[tool.setuptools.package-data]
+"*" = ["*.pkl", "*.wav", "*.md"]
+
+# Version is managed in __init__.py and setup.py
