@@ -1,0 +1,31 @@
+Metadata-Version: 2.3
+Name: muoblp
+Version: 1.0.2
+Summary: Implementation of multi objective linear programming module
+License: MIT
+Author: Piotr Skowron
+Author-email: p.skowron@mimuw.edu.pl
+Requires-Python: >=3.11
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: pulp (==2.9.0)
+Project-URL: Documentation, https://jasieksz.github.io/multiobjective-lp
+Project-URL: Repository, https://github.com/jasieksz/multiobjective-lp
+Description-Content-Type: text/markdown
+
+# MUlti OBjective Linear Programming (MUOBLP)
+
+This package contains core model used to define MUOB linear programs and some utility methods.
+
+---
+
+### Installation
+See  [PyPi](https://pypi.org/project/muoblp/) project page for details
+
+```shell
+pip install muoblp
+```
+
