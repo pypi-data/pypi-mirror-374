@@ -1,0 +1,60 @@
+Metadata-Version: 2.4
+Name: mcp-server-tke
+Version: 0.0.2
+Summary: MCP Server for Tencent Cloud TKE
+Requires-Python: >=3.10
+Requires-Dist: mcp>=1.0.0
+Requires-Dist: tencentcloud-sdk-python-common==3.0.1356
+Requires-Dist: tencentcloud-sdk-python-tke==3.0.1356
+Description-Content-Type: text/markdown
+
+# 腾讯云 TKE MCP Server（中文版）
+
+腾讯云容器服务(TKE) Model Context Protocol (MCP) 服务器，提供标准化的TKE集群管理接口。
+
+## 功能特性
+- **集群生命周期管理**：创建、删除
+
+## 工具列表（Tools）
+
+### 集群生命周期
+| 工具名称 | 功能说明 |
+|---|---|
+| `CreateCluster` | 创建集群 |
+| `DeleteCluster` | 删除集群 |
+
+## 快速开始
+### 1. 准备腾讯云凭证
+- 登录 [腾讯云控制台](https://console.cloud.tencent.com/)，进入「访问管理」→「访问密钥」获取 `SecretId` 与 `SecretKey`
+
+### 2. 配置环境变量
+```bash
+export TENCENTCLOUD_SECRET_ID=你的SecretId
+export TENCENTCLOUD_SECRET_KEY=你的SecretKey
+```
+
+### 3. Claude Desktop 配置
+编辑 `claude_desktop_config.json`（Mac 默认路径 `~/Library/Application Support/Claude/claude_desktop_config.json`），加入：
+
+```json
+{
+  "mcpServers": {
+    "tencent-tke": {
+      "command": "uv",
+      "args": ["run", "mcp-server-tke"],
+      "env": {
+        "TENCENTCLOUD_SECRET_ID": "你的SecretId",
+        "TENCENTCLOUD_SECRET_KEY": "你的SecretKey",
+      }
+    }
+  }
+}
+```
+
+### 4. 安装
+```bash
+pip install mcp-server-tke
+```
+
+## 许可证
+MIT License，详见 LICENSE 文件。
