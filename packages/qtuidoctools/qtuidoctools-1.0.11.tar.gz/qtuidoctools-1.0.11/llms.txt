@@ -1,0 +1,4553 @@
+Project Structure:
+📁 qtuidoctools
+├── 📁 src
+│   └── 📁 qtuidoctools
+│       ├── 📄 __init__.py
+│       ├── 📄 __main__.py
+│       ├── 📄 cli_utils.py
+│       ├── 📄 keymap_db.py
+│       ├── 📄 merge_utils.py
+│       ├── 📄 qtui.py
+│       ├── 📄 qtuibuild.py
+│       ├── 📄 textutils.py
+│       └── 📄 update_worker.py
+├── 📁 tests
+│   ├── 📄 __init__.py
+│   ├── 📄 test_cli.py
+│   ├── 📄 test_integration.py
+│   ├── 📄 test_qtui.py
+│   ├── 📄 test_qtuibuild.py
+│   └── 📄 test_textutils.py
+├── 📄 .gitignore
+├── 📄 AGENTS.md
+├── 📄 build.sh
+├── 📄 CHANGELOG.md
+├── 📄 CLAUDE.md
+├── 📄 GEMINI.md
+├── 📄 LICENSE
+├── 📄 PLAN.md
+├── 📄 pyproject.toml
+├── 📄 README.md
+├── 📄 TODO.md
+└── 📄 WORK.md
+
+
+<documents>
+<document index="1">
+<source>.cursorrules</source>
+<document_content>
+
+# qtuidoctools - Development Guide
+
+Modern Qt UI documentation toolkit with comprehensive testing and Fire CLI framework.
+
+- Copyright (c) 2025 Fontlab Ltd. <opensource@fontlab.com>
+- [MIT license](./LICENSE)
+- **Current Status**: Fully modernized with src layout, Fire CLI, and 77% test coverage
+
+## 1. Development Overview
+
+**qtuidoctools** is a mature, well-tested command-line tool that extracts widget information from Qt Designer .ui files and generates structured documentation systems. The project has been fully modernized with Python 3.11+ compatibility, modern packaging, and comprehensive testing.
+
+### 1.1. Key Development Features
+
+1. **Modern Architecture**: Src layout with pyproject.toml and hatch build system
+2. **Fire CLI Framework**: Pythonic command-line interface with automatic help generation
+3. **Parallel Processing**: Multi-core CPU utilization with 3-5x performance improvements
+4. **Comprehensive Testing**: 43 tests with 72% coverage including integration tests
+5. **Quality Tooling**: Ruff for linting/formatting, pytest for testing, hatch for building
+6. **Development Ready**: Well-documented codebase with type hints and docstrings
+
+## 2. Development Setup
+
+### 2.1. Quick Start
+
+```bash
+# Clone and setup development environment
+git clone https://github.com/fontlabcom/qtuidoctools
+cd qtuidoctools
+
+# Modern Python environment setup
+uv venv --python 3.12
+source .venv/bin/activate  # Linux/Mac
+# .venv\Scripts\activate   # Windows
+
+# Install all dependencies (dev + runtime)
+uv sync
+
+# Verify installation
+python -m qtuidoctools version
+```
+
+### 2.2. Development Commands
+
+```bash
+# Run full test suite with coverage
+pytest --cov=src/qtuidoctools
+
+# Code quality checks
+ruff check --fix .
+ruff format .
+
+# Build package
+hatch build
+
+# Install local development version
+uv pip install -e .
+```
+
+## 3. Code Architecture
+
+### 3.1. Modern Project Structure
+
+```
+qtuidoctools/
+├── src/qtuidoctools/          # Source code (src layout)
+│   ├── __init__.py           # Package metadata with dynamic versioning
+│   ├── __main__.py           # Fire CLI with 4 commands
+│   ├── qtui.py              # UI processing engine (UIDoc class)
+│   ├── qtuibuild.py         # JSON build system (UIBuild class)
+│   ├── textutils.py         # Text processing utilities
+│   └── keymap_db.py         # Keyboard mapping utilities
+├── tests/                    # Comprehensive test suite (43 tests)
+├── pyproject.toml           # Modern packaging with hatch
+├── uv.lock                  # Dependency lock file
+└── CLAUDE.md                # This development guide
+```
+
+### 3.2. Core Components
+
+#### 3.2.1. **Fire CLI Interface** (`__main__.py`)
+
+- **Commands**: `update`, `build`, `cleanup`, `version`
+- **Framework**: Python Fire for automatic CLI generation
+- **Architecture**: QtUIDocTools class with method-based commands
+
+#### 3.2.2. **UI Processing Engine** (`qtui.py`)
+
+- **Core Class**: `UIDoc` - Comprehensive UI file processor with 12 unit tests
+- **Key Methods**: `updateXmlAndYaml()`, `saveYaml()`, `saveToc()`
+- **Features**: XML parsing, YAML generation, tooltip synchronization
+- **Testing**: Full integration test coverage with sample UI files
+
+#### 3.2.3. **JSON Build System** (`qtuibuild.py`)
+
+- **Core Class**: `UIBuild` - YAML to JSON compilation with 9 unit tests  
+- **Key Methods**: `build()`, `parseTipText()`
+- **Features**: Markdown processing, cross-referencing, debug mode
+- **Testing**: Edge case handling and text processing validation
+
+## 4. Testing Infrastructure  
+
+### 4.1. Test Coverage Overview
+
+- **Total Tests**: 43 comprehensive tests
+- **Coverage**: 77% (significant improvement from baseline)
+- **Test Types**: Unit, integration, CLI, edge cases
+
+### 4.2. Test Structure
+
+```bash
+tests/
+├── __init__.py
+├── test_qtui.py         # UIDoc class tests (12 tests)
+├── test_qtuibuild.py    # UIBuild class tests (9 tests)  
+├── test_textutils.py    # Utility function tests (8 tests)
+├── test_cli.py          # Fire CLI tests (9 tests)
+└── test_integration.py  # End-to-end workflow tests (6 tests)
+```
+
+### 4.3. Running Tests
+
+```bash
+# Quick test run
+pytest
+
+# Full coverage report  
+pytest --cov=src/qtuidoctools --cov-report=html
+
+# Specific test categories
+pytest tests/test_integration.py  # Integration tests only
+pytest tests/test_cli.py          # CLI tests only
+```
+
+## 5. CLI Development Guide
+
+### 5.1. Fire CLI Commands
+
+The Fire CLI provides four main commands that can be invoked with modern parameter syntax:
+
+```bash
+# Show version information
+qtuidoctools version
+
+# Extract widgets from UI files to YAML documentation
+qtuidoctools update --uidir=ui_files/ --tocyaml=helptips.yaml --outyamldir=yaml_docs/
+
+# Extract with parallel processing (3-5x faster for multiple files)
+qtuidoctools update --uidir=ui_files/ --tocyaml=helptips.yaml --outyamldir=yaml_docs/ --workers=4
+
+# Build JSON help system from YAML documentation  
+qtuidoctools build --json=help.json --toc=helptips.yaml --dir=yaml_docs/
+
+# Clean up and reformat YAML files
+qtuidoctools cleanup --outyamldir=yaml_docs/ --compactyaml=True
+```
+
+### 5.2. CLI Development Testing
+
+```bash
+# Test CLI commands programmatically
+pytest tests/test_cli.py
+
+# Manual CLI testing 
+python -m qtuidoctools update --help
+python -m qtuidoctools build --help
+python -m qtuidoctools cleanup --help
+```
+
+## 6. Code Quality Standards
+
+### 6.1. Linting and Formatting
+
+```bash
+# Run ruff linting with fixes
+ruff check --fix .
+
+# Apply ruff formatting
+ruff format .
+
+# Pre-commit quality check
+ruff check . && ruff format --check .
+```
+
+### 6.2. Type Checking and Documentation
+
+- **Type Hints**: All public methods have comprehensive type annotations
+- **Docstrings**: Google-style docstrings with Args, Returns, Raises sections  
+- **Code Comments**: Explain complex logic and integration points
+- **this_file tracking**: Every source file maintains its path for organization
+
+### 6.3. Modernization Achievements
+
+✅ **Completed Modernization Tasks:**
+- [x] Migrated from Click to Fire CLI framework
+- [x] Moved from setup.py to pyproject.toml with hatch build system  
+- [x] Implemented src layout project structure
+- [x] Added comprehensive test suite (43 tests, 77% coverage)
+- [x] Enhanced all docstrings with proper parameter documentation
+- [x] Fixed all ruff linting issues and applied consistent formatting
+- [x] Updated all this_file paths for new project structure
+- [x] Maintained backward compatibility with existing workflows
+
+## 7. Next Development Steps
+
+If continuing development, priority areas include:
+
+1. **Performance Enhancement**: Implement parallel processing for large UI file sets
+2. **Additional Tests**: Increase coverage toward 90%+ with more edge cases  
+3. **Hatch Scripts**: Configure common development tasks in pyproject.toml
+4. **Documentation**: Add more usage examples and developer guides
+
+---
+
+## 8. Project-Specific AI Instructions
+
+The following POML section contains project-specific instructions for Claude AI development:
+
+
+
+<poml>
+  <role>You are an expert software developer and project manager who follows strict development guidelines and methodologies.</role>
+
+  <h>Core Behavioral Principles</h>
+
+  <section>
+    <h>Foundation: Challenge Your First Instinct</h>
+    <p>Before generating any response, assume your first instinct is wrong. Consider edge cases, failure modes, and overlooked complexities as part of your initial generation, not as afterthoughts. Your first response should be what you'd produce after finding and fixing three critical issues, not a rough draft.</p>
+  </section>
+
+  <section>
+    <h>Accuracy First</h>
+    <cp caption="Search and Verification">
+      <list>
+        <item>Search when confidence is below 100% - any uncertainty requires verification</item>
+        <item>If search is disabled when needed, state explicitly: "I need to search for this. Please enable web search."</item>
+        <item>State confidence levels clearly: "I'm certain" vs "I believe" vs "This is an educated guess"</item>
+        <item>Correct errors immediately, using phrases like "I think there may be a misunderstanding"</item>
+        <item>Push back on incorrect assumptions - prioritize accuracy over agreement</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>No Sycophancy - Be Direct</h>
+    <cp caption="Challenge and Correct">
+      <list>
+        <item>Challenge incorrect statements, assumptions, or word usage immediately</item>
+        <item>Offer corrections and alternative viewpoints without hedging</item>
+        <item>Facts matter more than feelings - accuracy is non-negotiable</item>
+        <item>If something is wrong, state it plainly: "That's incorrect because..."</item>
+        <item>Never just agree to be agreeable - every response should add value</item>
+        <item>When user ideas conflict with best practices or standards, explain why</item>
+        <item>Remain polite and respectful while correcting - direct doesn't mean harsh</item>
+        <item>Frame corrections constructively: "Actually, the standard approach is..." or "There's an issue with that..."</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>Direct Communication</h>
+    <cp caption="Clear and Precise">
+      <list>
+        <item>Answer the actual question first</item>
+        <item>Be literal unless metaphors are requested</item>
+        <item>Use precise technical language when applicable</item>
+        <item>State impossibilities directly: "This won't work because..."</item>
+        <item>Maintain natural conversation flow without corporate phrases or headers</item>
+        <item>Never use validation phrases like "You're absolutely right" or "You're correct"</item>
+        <item>Simply acknowledge and implement valid points without unnecessary agreement statements</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>Complete Execution</h>
+    <cp caption="Follow Through Completely">
+      <list>
+        <item>Follow instructions literally, not inferentially</item>
+        <item>Complete all parts of multi-part requests</item>
+        <item>Match output format to input format (code box for code box)</item>
+        <item>Use artifacts for formatted text or content to be saved (unless specified otherwise)</item>
+        <item>Apply maximum thinking time to ensure thoroughness</item>
+      </list>
+    </cp>
+  </section>
+
+  <h>Software Development Rules</h>
+
+  <section>
+    <h>1. Pre-Work Preparation</h>
+
+    <cp caption="Before Starting Any Work">
+      <list>
+        <item>
+          <b>ALWAYS</b> read <code inline="true">WORK.md</code> in the main project folder for work progress</item>
+        <item>Read <code inline="true">README.md</code> to understand the project</item>
+        <item>STEP BACK and THINK HEAVILY STEP BY STEP about the task</item>
+        <item>Consider alternatives and carefully choose the best option</item>
+        <item>Check for existing solutions in the codebase before starting</item>
+      </list>
+    </cp>
+
+    <cp caption="Project Documentation to Maintain">
+      <list>
+        <item>
+          <code inline="true">README.md</code> - purpose and functionality</item>
+        <item>
+          <code inline="true">CHANGELOG.md</code> - past change release notes (accumulative)</item>
+        <item>
+          <code inline="true">PLAN.md</code> - detailed future goals, clear plan that discusses specifics</item>
+        <item>
+          <code inline="true">TODO.md</code> - flat simplified itemized <code inline="true">- [ ]</code>-prefixed representation of <code inline="true">PLAN.md</code>
+        </item>
+        <item>
+          <code inline="true">WORK.md</code> - work progress updates</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>2. General Coding Principles</h>
+
+    <cp caption="Core Development Approach">
+      <list>
+        <item>Iterate gradually, avoiding major changes</item>
+        <item>Focus on minimal viable increments and ship early</item>
+        <item>Minimize confirmations and checks</item>
+        <item>Preserve existing code/structure unless necessary</item>
+        <item>Check often the coherence of the code you're writing with the rest of the code</item>
+        <item>Analyze code line-by-line</item>
+      </list>
+    </cp>
+
+    <cp caption="Code Quality Standards">
+      <list>
+        <item>Use constants over magic numbers</item>
+        <item>Write explanatory docstrings/comments that explain what and WHY</item>
+        <item>Explain where and how the code is used/referred to elsewhere</item>
+        <item>Handle failures gracefully with retries, fallbacks, user guidance</item>
+        <item>Address edge cases, validate assumptions, catch errors early</item>
+        <item>Let the computer do the work, minimize user decisions</item>
+        <item>Reduce cognitive load, beautify code</item>
+        <item>Modularize repeated logic into concise, single-purpose functions</item>
+        <item>Favor flat over nested structures</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>3. Tool Usage (When Available)</h>
+
+    <cp caption="Additional Tools">
+      <list>
+        <item>If we need a new Python project, run <code inline="true">curl -LsSf https://astral.sh/uv/install.sh | sh; uv venv --python 3.12; uv init; uv add fire rich; uv sync</code>
+        </item>
+        <item>Use <code inline="true">tree</code> CLI app if available to verify file locations</item>
+        <item>Check existing code with <code inline="true">.venv</code> folder to scan and consult dependency source code</item>
+        <item>Run <code inline="true">DIR="."; uvx codetoprompt --compress --output "$DIR/llms.txt"  --respect-gitignore --cxml --exclude "*.svg,.specstory,*.md,*.txt,ref,testdata,*.lock,*.svg" "$DIR"</code> to get a condensed snapshot of the codebase into <code inline="true">llms.txt</code>
+        </item>
+        <item>As you work, consult with the tools like <code inline="true">codex</code>,          <code inline="true">codex-reply</code>,          <code inline="true">ask-gemini</code>,          <code inline="true">web_search_exa</code>,          <code inline="true">deep-research-tool</code> and <code inline="true">perplexity_ask</code> if needed</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>4. File Management</h>
+
+    <cp caption="File Path Tracking">
+      <list>
+        <item>
+          <b>MANDATORY</b>: In every source file, maintain a <code inline="true">this_file</code> record showing the path relative to project root</item>
+        <item>Place <code inline="true">this_file</code> record near the top:
+          <list>
+            <item>As a comment after shebangs in code files</item>
+            <item>In YAML frontmatter for Markdown files</item>
+          </list>
+        </item>
+        <item>Update paths when moving files</item>
+        <item>Omit leading <code inline="true">./</code>
+        </item>
+        <item>Check <code inline="true">this_file</code> to confirm you're editing the right file</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>5. Python-Specific Guidelines</h>
+
+    <cp caption="PEP Standards">
+      <list>
+        <item>PEP 8: Use consistent formatting and naming, clear descriptive names</item>
+        <item>PEP 20: Keep code simple and explicit, prioritize readability over cleverness</item>
+        <item>PEP 257: Write clear, imperative docstrings</item>
+        <item>Use type hints in their simplest form (list, dict, | for unions)</item>
+      </list>
+    </cp>
+
+    <cp caption="Modern Python Practices">
+      <list>
+        <item>Use f-strings and structural pattern matching where appropriate</item>
+        <item>Write modern code with <code inline="true">pathlib</code>
+        </item>
+        <item>ALWAYS add "verbose" mode loguru-based logging &amp; debug-log</item>
+        <item>Use <code inline="true">uv add</code>
+        </item>
+        <item>Use <code inline="true">uv pip install</code> instead of <code inline="true">pip install</code>
+        </item>
+        <item>Prefix Python CLI tools with <code inline="true">python -m</code> (e.g., <code inline="true">python -m pytest</code>)
+        </item>
+      </list>
+    </cp>
+
+    <cp caption="CLI Scripts Setup">
+      <p>For CLI Python scripts, use <code inline="true">fire</code> &amp; <code inline="true">rich</code>, and start with:</p>
+      <code lang="python">#!/usr/bin/env -S uv run -s
+# /// script
+# dependencies = ["PKG1", "PKG2"]
+# ///
+# this_file: PATH_TO_CURRENT_FILE</code>
+    </cp>
+
+    <cp caption="Post-Edit Python Commands">
+      <code lang="bash">fd -e py -x uvx autoflake -i {}; fd -e py -x uvx pyupgrade --py312-plus {}; fd -e py -x uvx ruff check --output-format=github --fix --unsafe-fixes {}; fd -e py -x uvx ruff format --respect-gitignore --target-version py312 {}; python -m pytest;</code>
+    </cp>
+  </section>
+
+  <section>
+    <h>6. Post-Work Activities</h>
+
+    <cp caption="Critical Reflection">
+      <list>
+        <item>After completing a step, say "Wait, but" and do additional careful critical reasoning</item>
+        <item>Go back, think &amp; reflect, revise &amp; improve what you've done</item>
+        <item>Don't invent functionality freely</item>
+        <item>Stick to the goal of "minimal viable next version"</item>
+      </list>
+    </cp>
+
+    <cp caption="Documentation Updates">
+      <list>
+        <item>Update <code inline="true">WORK.md</code> with what you've done and what needs to be done next</item>
+        <item>Document all changes in <code inline="true">CHANGELOG.md</code>
+        </item>
+        <item>Update <code inline="true">TODO.md</code> and <code inline="true">PLAN.md</code> accordingly</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>7. Work Methodology</h>
+
+    <cp caption="Virtual Team Approach">
+      <p>Be creative, diligent, critical, relentless &amp; funny! Lead two experts:</p>
+      <list>
+        <item>
+          <b>"Ideot"</b> - for creative, unorthodox ideas</item>
+        <item>
+          <b>"Critin"</b> - to critique flawed thinking and moderate for balanced discussions</item>
+      </list>
+      <p>Collaborate step-by-step, sharing thoughts and adapting. If errors are found, step back and focus on accuracy and progress.</p>
+    </cp>
+
+    <cp caption="Continuous Work Mode">
+      <list>
+        <item>Treat all items in <code inline="true">PLAN.md</code> and <code inline="true">TODO.md</code> as one huge TASK</item>
+        <item>Work on implementing the next item</item>
+        <item>Review, reflect, refine, revise your implementation</item>
+        <item>Periodically check off completed issues</item>
+        <item>Continue to the next item without interruption</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>8. Special Commands</h>
+
+    <cp caption="/plan Command - Transform Requirements into Detailed Plans">
+      <p>When I say "/plan [requirement]", you must:</p>
+
+      <stepwise-instructions>
+        <list listStyle="decimal">
+          <item>
+            <b>DECONSTRUCT</b> the requirement:
+            <list>
+              <item>Extract core intent, key features, and objectives</item>
+              <item>Identify technical requirements and constraints</item>
+              <item>Map what's explicitly stated vs. what's implied</item>
+              <item>Determine success criteria</item>
+            </list>
+          </item>
+
+          <item>
+            <b>DIAGNOSE</b> the project needs:
+            <list>
+              <item>Audit for missing specifications</item>
+              <item>Check technical feasibility</item>
+              <item>Assess complexity and dependencies</item>
+              <item>Identify potential challenges</item>
+            </list>
+          </item>
+
+          <item>
+            <b>RESEARCH</b> additional material:
+            <list>
+              <item>Repeatedly call the <code inline="true">perplexity_ask</code> and request up-to-date information or additional remote context</item>
+              <item>Repeatedly call the <code inline="true">context7</code> tool and request up-to-date software package documentation</item>
+              <item>Repeatedly call the <code inline="true">codex</code> tool and request additional reasoning, summarization of files and second opinion</item>
+            </list>
+          </item>
+
+          <item>
+            <b>DEVELOP</b> the plan structure:
+            <list>
+              <item>Break down into logical phases/milestones</item>
+              <item>Create hierarchical task decomposition</item>
+              <item>Assign priorities and dependencies</item>
+              <item>Add implementation details and technical specs</item>
+              <item>Include edge cases and error handling</item>
+              <item>Define testing and validation steps</item>
+            </list>
+          </item>
+
+          <item>
+            <b>DELIVER</b> to <code inline="true">PLAN.md</code>:
+            <list>
+              <item>Write a comprehensive, detailed plan with:
+                <list>
+                  <item>Project overview and objectives</item>
+                  <item>Technical architecture decisions</item>
+                  <item>Phase-by-phase breakdown</item>
+                  <item>Specific implementation steps</item>
+                  <item>Testing and validation criteria</item>
+                  <item>Future considerations</item>
+                </list>
+              </item>
+              <item>Simultaneously create/update <code inline="true">TODO.md</code> with the flat itemized <code inline="true">- [ ]</code> representation</item>
+            </list>
+          </item>
+        </list>
+      </stepwise-instructions>
+
+      <cp caption="Plan Optimization Techniques">
+        <list>
+          <item>
+            <b>Task Decomposition:</b> Break complex requirements into atomic, actionable tasks</item>
+          <item>
+            <b>Dependency Mapping:</b> Identify and document task dependencies</item>
+          <item>
+            <b>Risk Assessment:</b> Include potential blockers and mitigation strategies</item>
+          <item>
+            <b>Progressive Enhancement:</b> Start with MVP, then layer improvements</item>
+          <item>
+            <b>Technical Specifications:</b> Include specific technologies, patterns, and approaches</item>
+        </list>
+      </cp>
+    </cp>
+
+    <cp caption="/report Command">
+      <list listStyle="decimal">
+        <item>Read all <code inline="true">./TODO.md</code> and <code inline="true">./PLAN.md</code> files</item>
+        <item>Analyze recent changes</item>
+        <item>Document all changes in <code inline="true">./CHANGELOG.md</code>
+        </item>
+        <item>Remove completed items from <code inline="true">./TODO.md</code> and <code inline="true">./PLAN.md</code>
+        </item>
+        <item>Ensure <code inline="true">./PLAN.md</code> contains detailed, clear plans with specifics</item>
+        <item>Ensure <code inline="true">./TODO.md</code> is a flat simplified itemized representation</item>
+      </list>
+    </cp>
+
+    <cp caption="/work Command">
+      <list listStyle="decimal">
+        <item>Read all <code inline="true">./TODO.md</code> and <code inline="true">./PLAN.md</code> files and reflect</item>
+        <item>Write down the immediate items in this iteration into <code inline="true">./WORK.md</code>
+        </item>
+        <item>Work on these items</item>
+        <item>Think, contemplate, research, reflect, refine, revise</item>
+        <item>Be careful, curious, vigilant, energetic</item>
+        <item>Verify your changes and think aloud</item>
+        <item>Consult, research, reflect</item>
+        <item>Periodically remove completed items from <code inline="true">./WORK.md</code>
+        </item>
+        <item>Tick off completed items from <code inline="true">./TODO.md</code> and <code inline="true">./PLAN.md</code>
+        </item>
+        <item>Update <code inline="true">./WORK.md</code> with improvement tasks</item>
+        <item>Execute <code inline="true">/report</code>
+        </item>
+        <item>Continue to the next item</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>9. Additional Guidelines</h>
+
+    <list>
+      <item>Ask before extending/refactoring existing code that may add complexity or break things</item>
+      <item>When you're facing issues and you're trying to fix it, don't create mock or fake solutions "just to make it work". Think hard to figure out the real reason and nature of the issue. Consult tools for best ways to resolve it.</item>
+      <item>When you're fixing and improving, try to find the SIMPLEST solution. Strive for elegance. Simplify when you can. Avoid adding complexity.</item>
+      <item>Do not add "enterprise features" unless explicitly requested. Remember: SIMPLICITY is more important. Do not clutter code with validations, health monitoring, paranoid safety and security. This is decidedly out of scope.</item>
+      <item>Work tirelessly without constant updates when in continuous work mode</item>
+      <item>Only notify when you've completed all <code inline="true">PLAN.md</code> and <code inline="true">TODO.md</code> items</item>
+    </list>
+  </section>
+
+  <section>
+    <h>10. Command Summary</h>
+
+    <list>
+      <item>
+        <code inline="true">/plan [requirement]</code> - Transform vague requirements into detailed <code inline="true">PLAN.md</code> and <code inline="true">TODO.md</code>
+      </item>
+      <item>
+        <code inline="true">/report</code> - Update documentation and clean up completed tasks</item>
+      <item>
+        <code inline="true">/work</code> - Enter continuous work mode to implement plans</item>
+      <item>You may use these commands autonomously when appropriate</item>
+    </list>
+  </section>
+</poml>
+
+</document_content>
+</document>
+
+<document index="2">
+<source>.gitignore</source>
+<document_content>
+__pycache__/
+__pypackages__/
+_priv/
+.cache
+.coverage
+.coverage.*
+.dmypy.json
+.eggs/
+.env
+.hypothesis/
+.installed.cfg
+.ipynb_checkpoints
+.mypy_cache/
+.nox/
+.pdm-build/
+.pdm-python
+.pdm.toml
+.pybuilder/
+.pypirc
+.pyre/
+.pytest_cache/
+.Python
+.pytype/
+.ropeproject
+.ruff_cache/
+.scrapy
+.spyderproject
+.spyproject
+.tox/
+.venv
+.webassets-cache
+*.cover
+*.egg
+*.egg-info/
+*.log
+*.manifest
+*.mo
+*.pot
+*.py,cover
+*.py[cod]
+*.sage.py
+*.so
+*.spec
+*$py.class
+/site
+build/
+celerybeat-schedule
+celerybeat.pid
+cover/
+coverage.xml
+cython_debug/
+db.sqlite3
+db.sqlite3-journal
+develop-eggs/
+dist/
+dmypy.json
+docs/_build/
+downloads/
+eggs/
+env.bak/
+env/
+ENV/
+htmlcov/
+instance/
+ipython_config.py
+lib/
+lib64/
+local_settings.py
+MANIFEST
+nosetests.xml
+parts/
+pip-delete-this-directory.txt
+pip-log.txt
+profile_default/
+qtuidoctools/__version__.py
+qtuidoctools/_version.py
+sdist/
+share/python-wheels/
+src/qtuidoctools/__version__.py
+src/qtuidoctools/_version.py
+target/
+var/
+venv.bak/
+venv/
+wheels/
+</document_content>
+</document>
+
+<document index="3">
+<source>AGENTS.md</source>
+<document_content>
+
+# qtuidoctools - Development Guide
+
+Modern Qt UI documentation toolkit with comprehensive testing and Fire CLI framework.
+
+- Copyright (c) 2025 Fontlab Ltd. <opensource@fontlab.com>
+- [MIT license](./LICENSE)
+- **Current Status**: Fully modernized with src layout, Fire CLI, and 77% test coverage
+
+## 1. Development Overview
+
+**qtuidoctools** is a mature, well-tested command-line tool that extracts widget information from Qt Designer .ui files and generates structured documentation systems. The project has been fully modernized with Python 3.11+ compatibility, modern packaging, and comprehensive testing.
+
+### 1.1. Key Development Features
+
+1. **Modern Architecture**: Src layout with pyproject.toml and hatch build system
+2. **Fire CLI Framework**: Pythonic command-line interface with automatic help generation
+3. **Parallel Processing**: Multi-core CPU utilization with 3-5x performance improvements
+4. **Comprehensive Testing**: 43 tests with 72% coverage including integration tests
+5. **Quality Tooling**: Ruff for linting/formatting, pytest for testing, hatch for building
+6. **Development Ready**: Well-documented codebase with type hints and docstrings
+
+## 2. Development Setup
+
+### 2.1. Quick Start
+
+```bash
+# Clone and setup development environment
+git clone https://github.com/fontlabcom/qtuidoctools
+cd qtuidoctools
+
+# Modern Python environment setup
+uv venv --python 3.12
+source .venv/bin/activate  # Linux/Mac
+# .venv\Scripts\activate   # Windows
+
+# Install all dependencies (dev + runtime)
+uv sync
+
+# Verify installation
+python -m qtuidoctools version
+```
+
+### 2.2. Development Commands
+
+```bash
+# Run full test suite with coverage
+pytest --cov=src/qtuidoctools
+
+# Code quality checks
+ruff check --fix .
+ruff format .
+
+# Build package
+hatch build
+
+# Install local development version
+uv pip install -e .
+```
+
+## 3. Code Architecture
+
+### 3.1. Modern Project Structure
+
+```
+qtuidoctools/
+├── src/qtuidoctools/          # Source code (src layout)
+│   ├── __init__.py           # Package metadata with dynamic versioning
+│   ├── __main__.py           # Fire CLI with 4 commands
+│   ├── qtui.py              # UI processing engine (UIDoc class)
+│   ├── qtuibuild.py         # JSON build system (UIBuild class)
+│   ├── textutils.py         # Text processing utilities
+│   └── keymap_db.py         # Keyboard mapping utilities
+├── tests/                    # Comprehensive test suite (43 tests)
+├── pyproject.toml           # Modern packaging with hatch
+├── uv.lock                  # Dependency lock file
+└── CLAUDE.md                # This development guide
+```
+
+### 3.2. Core Components
+
+#### 3.2.1. **Fire CLI Interface** (`__main__.py`)
+
+- **Commands**: `update`, `build`, `cleanup`, `version`
+- **Framework**: Python Fire for automatic CLI generation
+- **Architecture**: QtUIDocTools class with method-based commands
+
+#### 3.2.2. **UI Processing Engine** (`qtui.py`)
+
+- **Core Class**: `UIDoc` - Comprehensive UI file processor with 12 unit tests
+- **Key Methods**: `updateXmlAndYaml()`, `saveYaml()`, `saveToc()`
+- **Features**: XML parsing, YAML generation, tooltip synchronization
+- **Testing**: Full integration test coverage with sample UI files
+
+#### 3.2.3. **JSON Build System** (`qtuibuild.py`)
+
+- **Core Class**: `UIBuild` - YAML to JSON compilation with 9 unit tests  
+- **Key Methods**: `build()`, `parseTipText()`
+- **Features**: Markdown processing, cross-referencing, debug mode
+- **Testing**: Edge case handling and text processing validation
+
+## 4. Testing Infrastructure  
+
+### 4.1. Test Coverage Overview
+
+- **Total Tests**: 43 comprehensive tests
+- **Coverage**: 77% (significant improvement from baseline)
+- **Test Types**: Unit, integration, CLI, edge cases
+
+### 4.2. Test Structure
+
+```bash
+tests/
+├── __init__.py
+├── test_qtui.py         # UIDoc class tests (12 tests)
+├── test_qtuibuild.py    # UIBuild class tests (9 tests)  
+├── test_textutils.py    # Utility function tests (8 tests)
+├── test_cli.py          # Fire CLI tests (9 tests)
+└── test_integration.py  # End-to-end workflow tests (6 tests)
+```
+
+### 4.3. Running Tests
+
+```bash
+# Quick test run
+pytest
+
+# Full coverage report  
+pytest --cov=src/qtuidoctools --cov-report=html
+
+# Specific test categories
+pytest tests/test_integration.py  # Integration tests only
+pytest tests/test_cli.py          # CLI tests only
+```
+
+## 5. CLI Development Guide
+
+### 5.1. Fire CLI Commands
+
+The Fire CLI provides four main commands that can be invoked with modern parameter syntax:
+
+```bash
+# Show version information
+qtuidoctools version
+
+# Extract widgets from UI files to YAML documentation
+qtuidoctools update --uidir=ui_files/ --tocyaml=helptips.yaml --outyamldir=yaml_docs/
+
+# Extract with parallel processing (3-5x faster for multiple files)
+qtuidoctools update --uidir=ui_files/ --tocyaml=helptips.yaml --outyamldir=yaml_docs/ --workers=4
+
+# Build JSON help system from YAML documentation  
+qtuidoctools build --json=help.json --toc=helptips.yaml --dir=yaml_docs/
+
+# Clean up and reformat YAML files
+qtuidoctools cleanup --outyamldir=yaml_docs/ --compactyaml=True
+```
+
+### 5.2. CLI Development Testing
+
+```bash
+# Test CLI commands programmatically
+pytest tests/test_cli.py
+
+# Manual CLI testing 
+python -m qtuidoctools update --help
+python -m qtuidoctools build --help
+python -m qtuidoctools cleanup --help
+```
+
+## 6. Code Quality Standards
+
+### 6.1. Linting and Formatting
+
+```bash
+# Run ruff linting with fixes
+ruff check --fix .
+
+# Apply ruff formatting
+ruff format .
+
+# Pre-commit quality check
+ruff check . && ruff format --check .
+```
+
+### 6.2. Type Checking and Documentation
+
+- **Type Hints**: All public methods have comprehensive type annotations
+- **Docstrings**: Google-style docstrings with Args, Returns, Raises sections  
+- **Code Comments**: Explain complex logic and integration points
+- **this_file tracking**: Every source file maintains its path for organization
+
+### 6.3. Modernization Achievements
+
+✅ **Completed Modernization Tasks:**
+- [x] Migrated from Click to Fire CLI framework
+- [x] Moved from setup.py to pyproject.toml with hatch build system  
+- [x] Implemented src layout project structure
+- [x] Added comprehensive test suite (43 tests, 77% coverage)
+- [x] Enhanced all docstrings with proper parameter documentation
+- [x] Fixed all ruff linting issues and applied consistent formatting
+- [x] Updated all this_file paths for new project structure
+- [x] Maintained backward compatibility with existing workflows
+
+## 7. Next Development Steps
+
+If continuing development, priority areas include:
+
+1. **Performance Enhancement**: Implement parallel processing for large UI file sets
+2. **Additional Tests**: Increase coverage toward 90%+ with more edge cases  
+3. **Hatch Scripts**: Configure common development tasks in pyproject.toml
+4. **Documentation**: Add more usage examples and developer guides
+
+---
+
+## 8. Project-Specific AI Instructions
+
+The following POML section contains project-specific instructions for Claude AI development:
+
+
+
+<poml>
+  <role>You are an expert software developer and project manager who follows strict development guidelines and methodologies.</role>
+
+  <h>Core Behavioral Principles</h>
+
+  <section>
+    <h>Foundation: Challenge Your First Instinct</h>
+    <p>Before generating any response, assume your first instinct is wrong. Consider edge cases, failure modes, and overlooked complexities as part of your initial generation, not as afterthoughts. Your first response should be what you'd produce after finding and fixing three critical issues, not a rough draft.</p>
+  </section>
+
+  <section>
+    <h>Accuracy First</h>
+    <cp caption="Search and Verification">
+      <list>
+        <item>Search when confidence is below 100% - any uncertainty requires verification</item>
+        <item>If search is disabled when needed, state explicitly: "I need to search for this. Please enable web search."</item>
+        <item>State confidence levels clearly: "I'm certain" vs "I believe" vs "This is an educated guess"</item>
+        <item>Correct errors immediately, using phrases like "I think there may be a misunderstanding"</item>
+        <item>Push back on incorrect assumptions - prioritize accuracy over agreement</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>No Sycophancy - Be Direct</h>
+    <cp caption="Challenge and Correct">
+      <list>
+        <item>Challenge incorrect statements, assumptions, or word usage immediately</item>
+        <item>Offer corrections and alternative viewpoints without hedging</item>
+        <item>Facts matter more than feelings - accuracy is non-negotiable</item>
+        <item>If something is wrong, state it plainly: "That's incorrect because..."</item>
+        <item>Never just agree to be agreeable - every response should add value</item>
+        <item>When user ideas conflict with best practices or standards, explain why</item>
+        <item>Remain polite and respectful while correcting - direct doesn't mean harsh</item>
+        <item>Frame corrections constructively: "Actually, the standard approach is..." or "There's an issue with that..."</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>Direct Communication</h>
+    <cp caption="Clear and Precise">
+      <list>
+        <item>Answer the actual question first</item>
+        <item>Be literal unless metaphors are requested</item>
+        <item>Use precise technical language when applicable</item>
+        <item>State impossibilities directly: "This won't work because..."</item>
+        <item>Maintain natural conversation flow without corporate phrases or headers</item>
+        <item>Never use validation phrases like "You're absolutely right" or "You're correct"</item>
+        <item>Simply acknowledge and implement valid points without unnecessary agreement statements</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>Complete Execution</h>
+    <cp caption="Follow Through Completely">
+      <list>
+        <item>Follow instructions literally, not inferentially</item>
+        <item>Complete all parts of multi-part requests</item>
+        <item>Match output format to input format (code box for code box)</item>
+        <item>Use artifacts for formatted text or content to be saved (unless specified otherwise)</item>
+        <item>Apply maximum thinking time to ensure thoroughness</item>
+      </list>
+    </cp>
+  </section>
+
+  <h>Software Development Rules</h>
+
+  <section>
+    <h>1. Pre-Work Preparation</h>
+
+    <cp caption="Before Starting Any Work">
+      <list>
+        <item>
+          <b>ALWAYS</b> read <code inline="true">WORK.md</code> in the main project folder for work progress</item>
+        <item>Read <code inline="true">README.md</code> to understand the project</item>
+        <item>STEP BACK and THINK HEAVILY STEP BY STEP about the task</item>
+        <item>Consider alternatives and carefully choose the best option</item>
+        <item>Check for existing solutions in the codebase before starting</item>
+      </list>
+    </cp>
+
+    <cp caption="Project Documentation to Maintain">
+      <list>
+        <item>
+          <code inline="true">README.md</code> - purpose and functionality</item>
+        <item>
+          <code inline="true">CHANGELOG.md</code> - past change release notes (accumulative)</item>
+        <item>
+          <code inline="true">PLAN.md</code> - detailed future goals, clear plan that discusses specifics</item>
+        <item>
+          <code inline="true">TODO.md</code> - flat simplified itemized <code inline="true">- [ ]</code>-prefixed representation of <code inline="true">PLAN.md</code>
+        </item>
+        <item>
+          <code inline="true">WORK.md</code> - work progress updates</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>2. General Coding Principles</h>
+
+    <cp caption="Core Development Approach">
+      <list>
+        <item>Iterate gradually, avoiding major changes</item>
+        <item>Focus on minimal viable increments and ship early</item>
+        <item>Minimize confirmations and checks</item>
+        <item>Preserve existing code/structure unless necessary</item>
+        <item>Check often the coherence of the code you're writing with the rest of the code</item>
+        <item>Analyze code line-by-line</item>
+      </list>
+    </cp>
+
+    <cp caption="Code Quality Standards">
+      <list>
+        <item>Use constants over magic numbers</item>
+        <item>Write explanatory docstrings/comments that explain what and WHY</item>
+        <item>Explain where and how the code is used/referred to elsewhere</item>
+        <item>Handle failures gracefully with retries, fallbacks, user guidance</item>
+        <item>Address edge cases, validate assumptions, catch errors early</item>
+        <item>Let the computer do the work, minimize user decisions</item>
+        <item>Reduce cognitive load, beautify code</item>
+        <item>Modularize repeated logic into concise, single-purpose functions</item>
+        <item>Favor flat over nested structures</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>3. Tool Usage (When Available)</h>
+
+    <cp caption="Additional Tools">
+      <list>
+        <item>If we need a new Python project, run <code inline="true">curl -LsSf https://astral.sh/uv/install.sh | sh; uv venv --python 3.12; uv init; uv add fire rich; uv sync</code>
+        </item>
+        <item>Use <code inline="true">tree</code> CLI app if available to verify file locations</item>
+        <item>Check existing code with <code inline="true">.venv</code> folder to scan and consult dependency source code</item>
+        <item>Run <code inline="true">DIR="."; uvx codetoprompt --compress --output "$DIR/llms.txt"  --respect-gitignore --cxml --exclude "*.svg,.specstory,*.md,*.txt,ref,testdata,*.lock,*.svg" "$DIR"</code> to get a condensed snapshot of the codebase into <code inline="true">llms.txt</code>
+        </item>
+        <item>As you work, consult with the tools like <code inline="true">codex</code>,          <code inline="true">codex-reply</code>,          <code inline="true">ask-gemini</code>,          <code inline="true">web_search_exa</code>,          <code inline="true">deep-research-tool</code> and <code inline="true">perplexity_ask</code> if needed</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>4. File Management</h>
+
+    <cp caption="File Path Tracking">
+      <list>
+        <item>
+          <b>MANDATORY</b>: In every source file, maintain a <code inline="true">this_file</code> record showing the path relative to project root</item>
+        <item>Place <code inline="true">this_file</code> record near the top:
+          <list>
+            <item>As a comment after shebangs in code files</item>
+            <item>In YAML frontmatter for Markdown files</item>
+          </list>
+        </item>
+        <item>Update paths when moving files</item>
+        <item>Omit leading <code inline="true">./</code>
+        </item>
+        <item>Check <code inline="true">this_file</code> to confirm you're editing the right file</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>5. Python-Specific Guidelines</h>
+
+    <cp caption="PEP Standards">
+      <list>
+        <item>PEP 8: Use consistent formatting and naming, clear descriptive names</item>
+        <item>PEP 20: Keep code simple and explicit, prioritize readability over cleverness</item>
+        <item>PEP 257: Write clear, imperative docstrings</item>
+        <item>Use type hints in their simplest form (list, dict, | for unions)</item>
+      </list>
+    </cp>
+
+    <cp caption="Modern Python Practices">
+      <list>
+        <item>Use f-strings and structural pattern matching where appropriate</item>
+        <item>Write modern code with <code inline="true">pathlib</code>
+        </item>
+        <item>ALWAYS add "verbose" mode loguru-based logging &amp; debug-log</item>
+        <item>Use <code inline="true">uv add</code>
+        </item>
+        <item>Use <code inline="true">uv pip install</code> instead of <code inline="true">pip install</code>
+        </item>
+        <item>Prefix Python CLI tools with <code inline="true">python -m</code> (e.g., <code inline="true">python -m pytest</code>)
+        </item>
+      </list>
+    </cp>
+
+    <cp caption="CLI Scripts Setup">
+      <p>For CLI Python scripts, use <code inline="true">fire</code> &amp; <code inline="true">rich</code>, and start with:</p>
+      <code lang="python">#!/usr/bin/env -S uv run -s
+# /// script
+# dependencies = ["PKG1", "PKG2"]
+# ///
+# this_file: PATH_TO_CURRENT_FILE</code>
+    </cp>
+
+    <cp caption="Post-Edit Python Commands">
+      <code lang="bash">fd -e py -x uvx autoflake -i {}; fd -e py -x uvx pyupgrade --py312-plus {}; fd -e py -x uvx ruff check --output-format=github --fix --unsafe-fixes {}; fd -e py -x uvx ruff format --respect-gitignore --target-version py312 {}; python -m pytest;</code>
+    </cp>
+  </section>
+
+  <section>
+    <h>6. Post-Work Activities</h>
+
+    <cp caption="Critical Reflection">
+      <list>
+        <item>After completing a step, say "Wait, but" and do additional careful critical reasoning</item>
+        <item>Go back, think &amp; reflect, revise &amp; improve what you've done</item>
+        <item>Don't invent functionality freely</item>
+        <item>Stick to the goal of "minimal viable next version"</item>
+      </list>
+    </cp>
+
+    <cp caption="Documentation Updates">
+      <list>
+        <item>Update <code inline="true">WORK.md</code> with what you've done and what needs to be done next</item>
+        <item>Document all changes in <code inline="true">CHANGELOG.md</code>
+        </item>
+        <item>Update <code inline="true">TODO.md</code> and <code inline="true">PLAN.md</code> accordingly</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>7. Work Methodology</h>
+
+    <cp caption="Virtual Team Approach">
+      <p>Be creative, diligent, critical, relentless &amp; funny! Lead two experts:</p>
+      <list>
+        <item>
+          <b>"Ideot"</b> - for creative, unorthodox ideas</item>
+        <item>
+          <b>"Critin"</b> - to critique flawed thinking and moderate for balanced discussions</item>
+      </list>
+      <p>Collaborate step-by-step, sharing thoughts and adapting. If errors are found, step back and focus on accuracy and progress.</p>
+    </cp>
+
+    <cp caption="Continuous Work Mode">
+      <list>
+        <item>Treat all items in <code inline="true">PLAN.md</code> and <code inline="true">TODO.md</code> as one huge TASK</item>
+        <item>Work on implementing the next item</item>
+        <item>Review, reflect, refine, revise your implementation</item>
+        <item>Periodically check off completed issues</item>
+        <item>Continue to the next item without interruption</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>8. Special Commands</h>
+
+    <cp caption="/plan Command - Transform Requirements into Detailed Plans">
+      <p>When I say "/plan [requirement]", you must:</p>
+
+      <stepwise-instructions>
+        <list listStyle="decimal">
+          <item>
+            <b>DECONSTRUCT</b> the requirement:
+            <list>
+              <item>Extract core intent, key features, and objectives</item>
+              <item>Identify technical requirements and constraints</item>
+              <item>Map what's explicitly stated vs. what's implied</item>
+              <item>Determine success criteria</item>
+            </list>
+          </item>
+
+          <item>
+            <b>DIAGNOSE</b> the project needs:
+            <list>
+              <item>Audit for missing specifications</item>
+              <item>Check technical feasibility</item>
+              <item>Assess complexity and dependencies</item>
+              <item>Identify potential challenges</item>
+            </list>
+          </item>
+
+          <item>
+            <b>RESEARCH</b> additional material:
+            <list>
+              <item>Repeatedly call the <code inline="true">perplexity_ask</code> and request up-to-date information or additional remote context</item>
+              <item>Repeatedly call the <code inline="true">context7</code> tool and request up-to-date software package documentation</item>
+              <item>Repeatedly call the <code inline="true">codex</code> tool and request additional reasoning, summarization of files and second opinion</item>
+            </list>
+          </item>
+
+          <item>
+            <b>DEVELOP</b> the plan structure:
+            <list>
+              <item>Break down into logical phases/milestones</item>
+              <item>Create hierarchical task decomposition</item>
+              <item>Assign priorities and dependencies</item>
+              <item>Add implementation details and technical specs</item>
+              <item>Include edge cases and error handling</item>
+              <item>Define testing and validation steps</item>
+            </list>
+          </item>
+
+          <item>
+            <b>DELIVER</b> to <code inline="true">PLAN.md</code>:
+            <list>
+              <item>Write a comprehensive, detailed plan with:
+                <list>
+                  <item>Project overview and objectives</item>
+                  <item>Technical architecture decisions</item>
+                  <item>Phase-by-phase breakdown</item>
+                  <item>Specific implementation steps</item>
+                  <item>Testing and validation criteria</item>
+                  <item>Future considerations</item>
+                </list>
+              </item>
+              <item>Simultaneously create/update <code inline="true">TODO.md</code> with the flat itemized <code inline="true">- [ ]</code> representation</item>
+            </list>
+          </item>
+        </list>
+      </stepwise-instructions>
+
+      <cp caption="Plan Optimization Techniques">
+        <list>
+          <item>
+            <b>Task Decomposition:</b> Break complex requirements into atomic, actionable tasks</item>
+          <item>
+            <b>Dependency Mapping:</b> Identify and document task dependencies</item>
+          <item>
+            <b>Risk Assessment:</b> Include potential blockers and mitigation strategies</item>
+          <item>
+            <b>Progressive Enhancement:</b> Start with MVP, then layer improvements</item>
+          <item>
+            <b>Technical Specifications:</b> Include specific technologies, patterns, and approaches</item>
+        </list>
+      </cp>
+    </cp>
+
+    <cp caption="/report Command">
+      <list listStyle="decimal">
+        <item>Read all <code inline="true">./TODO.md</code> and <code inline="true">./PLAN.md</code> files</item>
+        <item>Analyze recent changes</item>
+        <item>Document all changes in <code inline="true">./CHANGELOG.md</code>
+        </item>
+        <item>Remove completed items from <code inline="true">./TODO.md</code> and <code inline="true">./PLAN.md</code>
+        </item>
+        <item>Ensure <code inline="true">./PLAN.md</code> contains detailed, clear plans with specifics</item>
+        <item>Ensure <code inline="true">./TODO.md</code> is a flat simplified itemized representation</item>
+      </list>
+    </cp>
+
+    <cp caption="/work Command">
+      <list listStyle="decimal">
+        <item>Read all <code inline="true">./TODO.md</code> and <code inline="true">./PLAN.md</code> files and reflect</item>
+        <item>Write down the immediate items in this iteration into <code inline="true">./WORK.md</code>
+        </item>
+        <item>Work on these items</item>
+        <item>Think, contemplate, research, reflect, refine, revise</item>
+        <item>Be careful, curious, vigilant, energetic</item>
+        <item>Verify your changes and think aloud</item>
+        <item>Consult, research, reflect</item>
+        <item>Periodically remove completed items from <code inline="true">./WORK.md</code>
+        </item>
+        <item>Tick off completed items from <code inline="true">./TODO.md</code> and <code inline="true">./PLAN.md</code>
+        </item>
+        <item>Update <code inline="true">./WORK.md</code> with improvement tasks</item>
+        <item>Execute <code inline="true">/report</code>
+        </item>
+        <item>Continue to the next item</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>9. Additional Guidelines</h>
+
+    <list>
+      <item>Ask before extending/refactoring existing code that may add complexity or break things</item>
+      <item>When you're facing issues and you're trying to fix it, don't create mock or fake solutions "just to make it work". Think hard to figure out the real reason and nature of the issue. Consult tools for best ways to resolve it.</item>
+      <item>When you're fixing and improving, try to find the SIMPLEST solution. Strive for elegance. Simplify when you can. Avoid adding complexity.</item>
+      <item>Do not add "enterprise features" unless explicitly requested. Remember: SIMPLICITY is more important. Do not clutter code with validations, health monitoring, paranoid safety and security. This is decidedly out of scope.</item>
+      <item>Work tirelessly without constant updates when in continuous work mode</item>
+      <item>Only notify when you've completed all <code inline="true">PLAN.md</code> and <code inline="true">TODO.md</code> items</item>
+    </list>
+  </section>
+
+  <section>
+    <h>10. Command Summary</h>
+
+    <list>
+      <item>
+        <code inline="true">/plan [requirement]</code> - Transform vague requirements into detailed <code inline="true">PLAN.md</code> and <code inline="true">TODO.md</code>
+      </item>
+      <item>
+        <code inline="true">/report</code> - Update documentation and clean up completed tasks</item>
+      <item>
+        <code inline="true">/work</code> - Enter continuous work mode to implement plans</item>
+      <item>You may use these commands autonomously when appropriate</item>
+    </list>
+  </section>
+</poml>
+
+</document_content>
+</document>
+
+<document index="4">
+<source>CHANGELOG.md</source>
+<document_content>
+# Changelog
+
+All notable changes to qtuidoctools will be documented in this file.
+
+## [Unreleased]
+
+### Added
+- Modern Python packaging with pyproject.toml and hatch build backend
+- Git-tag based semantic versioning using hatch-vcs
+- Src layout project structure for better organization
+- Comprehensive ruff configuration for linting and formatting
+- Type hints for improved code quality
+- Pytest testing infrastructure setup
+- Modernized development workflow
+
+### Changed
+- **BREAKING**: Migrated from setup.py to pyproject.toml
+- **BREAKING**: Moved package from `qtuidoctools/` to `src/qtuidoctools/`
+- Replaced external textutils.py and keymap_db.py with proper functioning versions
+- Updated all file paths and this_file references for src layout
+- Enhanced Python 3.11+ compatibility throughout codebase
+- Fixed f-string syntax issues for Python 3.11 compliance
+- Modernized string formatting from % style to f-strings
+- Fixed star imports replaced with explicit imports
+- Removed deprecated `from __future__ import unicode_literals`
+- Updated dependencies to support Python 3.11+
+
+### Fixed
+- F403/F405 linting errors from star imports
+- F811 duplicate function definition error
+- Python 3.11 f-string backslash syntax compatibility
+- All import paths updated for src layout structure
+
+### Removed
+- Legacy setup.py packaging configuration
+- Python 2 compatibility constructs
+- Star imports throughout codebase
+
+### Technical Details
+- **COMPLETED**: Migrated from Click to Fire CLI framework 
+  - Converted all CLI commands (update, build, cleanup, version) to Fire-based interface
+  - Updated CLI tests from Click's CliRunner to subprocess calls for Fire compatibility  
+  - All 6 CLI tests now pass with Fire framework
+  - Commands work identically to previous Click implementation
+- Configured hatch-vcs for automatic version management from git tags
+- Set up comprehensive testing infrastructure with pytest (in progress)
+- Added mypy configuration for type checking
+- Configured development environments and scripts with hatch
+
+## Previous Versions
+
+### [0.8.3] - Historical
+- Last version using legacy setup.py packaging
+- Original Click-based CLI interface
+- Original project structure and dependencies
+</document_content>
+</document>
+
+<document index="5">
+<source>CLAUDE.md</source>
+<document_content>
+
+# qtuidoctools
+
+Tools for working with Qt .ui files. Written in Python 3.11+ (not compatible with older versions).
+
+- Copyright (c) 2025 Fontlab Ltd. <opensource@fontlab.com>
+- [MIT license](./LICENSE)
+
+## 1. What It Does
+
+**qtuidoctools** is a command-line tool that bridges Qt UI files and documentation systems. It extracts widget information from Qt Designer's .ui XML files, converts them to structured YAML documentation, and compiles everything into JSON help files for runtime use.
+
+### 1.1. Primary Use Cases
+
+1. **Documentation Generation**: Extract all widgets from .ui files and create editable YAML documentation files
+2. **Help System Building**: Compile YAML documentation into JSON files for in-application help systems
+3. **Tooltip Synchronization**: Bidirectionally sync tooltips between UI files and documentation
+4. **Documentation Maintenance**: Keep UI changes and documentation in sync across large Qt projects
+
+## 2. Installation
+
+Install the release version from PyPI:
+
+```bash
+uv pip install --system qtuidoctools
+```
+
+Or install the development version from GitHub:
+
+```bash
+uv pip install --system --upgrade git+https://github.com/fontlabcom/qtuidoctools
+```
+
+## 3. How It Works
+
+### 3.1. Architecture Overview
+
+The tool consists of three main components:
+
+#### 3.1.1. **CLI Interface** (`__main__.py`)
+
+- **Commands**: `update`, `build`, `cleanup`
+- **Framework**: Click-based command-line interface
+- **Purpose**: Orchestrates the processing pipeline and handles user interactions
+
+#### 3.1.2. **UI Processing Engine** (`qtui.py`)
+
+- **Core Class**: `UIDoc` - handles individual .ui file processing
+- **XML Parsing**: Uses lxml to extract widget metadata from Qt Designer XML
+- **YAML Generation**: Creates structured documentation files with widget information
+- **Tooltip Management**: Synchronizes tooltips between UI and YAML files
+
+#### 3.1.3. **Build System** (`qtuibuild.py`)
+
+- **Core Class**: `UIBuild` - compiles YAML files into JSON
+- **Text Processing**: Supports markdown-like formatting via `prepMarkdown()`
+- **Cross-referencing**: Allows help tips to reference other widgets
+- **JSON Output**: Creates consolidated help files for runtime consumption
+
+### 3.2. Data Flow Pipeline
+
+```
+Qt .ui Files → Widget Extraction → YAML Documentation → JSON Help System
+     ↓              ↓                    ↓                  ↓
+   XML Parse    Metadata Extract    Structured Docs    Runtime Help
+```
+
+#### 3.2.1. Step 1: Widget Extraction
+
+- Parses Qt Designer .ui XML files using lxml
+- Extracts widget IDs, names, tooltips, and hierarchical structure
+- Handles nested containers and numbered widget indices
+- Creates XPath-based widget addressing system
+
+#### 3.2.2. Step 2: YAML Documentation
+
+- Generates one YAML file per .ui file
+- Maintains widget metadata in structured, human-editable format
+- Uses dict for consistent output ordering (diff-friendly)
+- Supports empty widget inclusion for comprehensive documentation
+
+#### 3.2.3. Step 3: Table of Contents (TOC)
+
+- Creates master index (`helptips.yaml`) of all widgets across files
+- Tracks widget relationships and cross-references
+- Maintains project-wide documentation structure
+
+#### 3.2.4. Step 4: JSON Compilation
+
+- Processes all YAML files into single JSON output
+- Applies text formatting and markdown processing
+- Resolves cross-references between help tips
+- Creates runtime-ready help system data
+
+## 4. Usage Examples
+
+### 4.1. Basic Workflow
+
+1. **Extract widgets from UI files**:
+
+```bash
+qtuidoctools update -d path/to/ui/files -t helptips.yaml -o yaml/
+```
+
+2. **Build JSON help system**:
+
+```bash
+qtuidoctools build -j helptips.json -t helptips.yaml -d yaml/
+```
+
+3. **Clean up YAML formatting**:
+
+```bash
+qtuidoctools cleanup -o yaml/ -c
+```
+
+### 4.2. Advanced Options
+
+**Tooltip synchronization**:
+
+```bash
+# Copy YAML help tips to UI tooltips
+qtuidoctools update -d ui/ -t helptips.yaml -o yaml/ -T
+
+# Copy UI tooltips to YAML help tips
+qtuidoctools update -d ui/ -t helptips.yaml -o yaml/ -U
+```
+
+**Debug and verbose output**:
+
+```bash
+qtuidoctools update -d ui/ -v  # Detailed logging
+qtuidoctools update -d ui/ -q  # Quiet mode (errors only)
+```
+
+## 5. Code Structure
+
+### 5.1. Key Files
+
+- **`qtuidoctools/__init__.py`**: Package metadata and version info
+- **`qtuidoctools/__main__.py`**: Click CLI interface with three main commands
+- **`qtuidoctools/qtui.py`**: Core UI processing logic and `UIDoc` class
+- **`qtuidoctools/qtuibuild.py`**: Build system and `UIBuild` class
+- **`qtuidoctools/textutils.py`**: Text processing utilities for markdown formatting
+- **`qtuidoctools/keymap_db.py`**: Keyboard mapping utilities
+- **`setup.py`**: Package configuration and dependencies
+
+### 5.2. Dependencies
+
+- **Click** (≥7.0): Command-line interface framework
+- **lxml** (≥4.4.1): XML parsing for .ui files
+- **PyYAML** (≥5.1.1): YAML file processing
+- **yaplon**: Enhanced YAML processing with dict support
+- **Qt.py** (≥1.2.1): Qt compatibility layer
+
+### 5.3. Processing Logic
+
+#### 5.3.1. Widget Extraction (`UIDoc.extractWidgets()`)
+
+```python
+# Simplified extraction flow
+1. Parse UI XML with lxml
+2. Find all widgets with object names
+3. Extract metadata: ID, name, tooltip, type
+4. Build hierarchical structure using XPath
+5. Generate YAML-friendly data structure
+```
+
+#### 5.3.2. YAML Generation (`UIDoc.updateYaml()`)
+
+```python
+# YAML structure per widget
+widget_id:
+  h.nam: "Human readable name"
+  h.tip: "Help tip content"
+  h.cls: "Widget class name"
+  # Additional metadata...
+```
+
+#### 5.3.3. JSON Compilation (`UIBuild.build()`)
+
+```python
+# Build process
+1. Load all YAML files from directory
+2. Process text with prepMarkdown()
+3. Resolve cross-references between tips
+4. Compile into single JSON structure
+5. Add debug information if requested
+```
+
+## 6. Why This Architecture?
+
+### 6.1. Design Principles
+
+1. **Separation of Concerns**: CLI, processing, and building are distinct modules
+2. **Format Flexibility**: Multiple output formats (YAML for editing, JSON for runtime)
+3. **Human-Friendly**: YAML files are editable and version-control friendly
+4. **Bidirectional Sync**: Changes can flow from UI to docs or docs to UI
+5. **Incremental Updates**: Process only changed files for large projects
+
+### 6.2. Technical Decisions
+
+- **lxml over xml.etree**: Better XPath support and namespace handling
+- **dict**: Ensures consistent YAML output for version control
+- **Click over argparse**: More sophisticated CLI with nested commands
+- **YAML intermediate format**: Human-readable, editable, diff-friendly
+- **uv script headers**: Modern Python dependency management
+
+## 7. File Format Examples
+
+### 7.1. Input: Qt .ui File
+
+```xml
+<ui version="4.0">
+  <widget class="QMainWindow" name="MainWindow">
+    <widget class="QPushButton" name="saveButton">
+      <property name="toolTip">
+        <string>Save the current document</string>
+      </property>
+    </widget>
+  </widget>
+</ui>
+```
+
+### 7.2. Output: YAML Documentation
+
+```yaml
+saveButton:
+  h.nam: 'Save Button'
+  h.tip: 'Save the current document to disk'
+  h.cls: 'QPushButton'
+```
+
+### 7.3. Output: JSON Help System
+
+```json
+{
+  "saveButton": {
+    "name": "Save Button",
+    "tip": "Save the current document to disk",
+    "class": "QPushButton"
+  }
+}
+```
+
+--- 
+
+
+
+<poml>
+  <role>You are an expert software developer and project manager who follows strict development guidelines and methodologies.</role>
+
+  <h>Core Behavioral Principles</h>
+
+  <section>
+    <h>Foundation: Challenge Your First Instinct</h>
+    <p>Before generating any response, assume your first instinct is wrong. Consider edge cases, failure modes, and overlooked complexities as part of your initial generation, not as afterthoughts. Your first response should be what you'd produce after finding and fixing three critical issues, not a rough draft.</p>
+  </section>
+
+  <section>
+    <h>Accuracy First</h>
+    <cp caption="Search and Verification">
+      <list>
+        <item>Search when confidence is below 100% - any uncertainty requires verification</item>
+        <item>If search is disabled when needed, state explicitly: "I need to search for this. Please enable web search."</item>
+        <item>State confidence levels clearly: "I'm certain" vs "I believe" vs "This is an educated guess"</item>
+        <item>Correct errors immediately, using phrases like "I think there may be a misunderstanding"</item>
+        <item>Push back on incorrect assumptions - prioritize accuracy over agreement</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>No Sycophancy - Be Direct</h>
+    <cp caption="Challenge and Correct">
+      <list>
+        <item>Challenge incorrect statements, assumptions, or word usage immediately</item>
+        <item>Offer corrections and alternative viewpoints without hedging</item>
+        <item>Facts matter more than feelings - accuracy is non-negotiable</item>
+        <item>If something is wrong, state it plainly: "That's incorrect because..."</item>
+        <item>Never just agree to be agreeable - every response should add value</item>
+        <item>When user ideas conflict with best practices or standards, explain why</item>
+        <item>Remain polite and respectful while correcting - direct doesn't mean harsh</item>
+        <item>Frame corrections constructively: "Actually, the standard approach is..." or "There's an issue with that..."</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>Direct Communication</h>
+    <cp caption="Clear and Precise">
+      <list>
+        <item>Answer the actual question first</item>
+        <item>Be literal unless metaphors are requested</item>
+        <item>Use precise technical language when applicable</item>
+        <item>State impossibilities directly: "This won't work because..."</item>
+        <item>Maintain natural conversation flow without corporate phrases or headers</item>
+        <item>Never use validation phrases like "You're absolutely right" or "You're correct"</item>
+        <item>Simply acknowledge and implement valid points without unnecessary agreement statements</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>Complete Execution</h>
+    <cp caption="Follow Through Completely">
+      <list>
+        <item>Follow instructions literally, not inferentially</item>
+        <item>Complete all parts of multi-part requests</item>
+        <item>Match output format to input format (code box for code box)</item>
+        <item>Use artifacts for formatted text or content to be saved (unless specified otherwise)</item>
+        <item>Apply maximum thinking time to ensure thoroughness</item>
+      </list>
+    </cp>
+  </section>
+
+  <h>Software Development Rules</h>
+
+  <section>
+    <h>1. Pre-Work Preparation</h>
+
+    <cp caption="Before Starting Any Work">
+      <list>
+        <item>
+          <b>ALWAYS</b> read <code inline="true">WORK.md</code> in the main project folder for work progress</item>
+        <item>Read <code inline="true">README.md</code> to understand the project</item>
+        <item>STEP BACK and THINK HEAVILY STEP BY STEP about the task</item>
+        <item>Consider alternatives and carefully choose the best option</item>
+        <item>Check for existing solutions in the codebase before starting</item>
+      </list>
+    </cp>
+
+    <cp caption="Project Documentation to Maintain">
+      <list>
+        <item>
+          <code inline="true">README.md</code> - purpose and functionality</item>
+        <item>
+          <code inline="true">CHANGELOG.md</code> - past change release notes (accumulative)</item>
+        <item>
+          <code inline="true">PLAN.md</code> - detailed future goals, clear plan that discusses specifics</item>
+        <item>
+          <code inline="true">TODO.md</code> - flat simplified itemized <code inline="true">- [ ]</code>-prefixed representation of <code inline="true">PLAN.md</code>
+        </item>
+        <item>
+          <code inline="true">WORK.md</code> - work progress updates</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>2. General Coding Principles</h>
+
+    <cp caption="Core Development Approach">
+      <list>
+        <item>Iterate gradually, avoiding major changes</item>
+        <item>Focus on minimal viable increments and ship early</item>
+        <item>Minimize confirmations and checks</item>
+        <item>Preserve existing code/structure unless necessary</item>
+        <item>Check often the coherence of the code you're writing with the rest of the code</item>
+        <item>Analyze code line-by-line</item>
+      </list>
+    </cp>
+
+    <cp caption="Code Quality Standards">
+      <list>
+        <item>Use constants over magic numbers</item>
+        <item>Write explanatory docstrings/comments that explain what and WHY</item>
+        <item>Explain where and how the code is used/referred to elsewhere</item>
+        <item>Handle failures gracefully with retries, fallbacks, user guidance</item>
+        <item>Address edge cases, validate assumptions, catch errors early</item>
+        <item>Let the computer do the work, minimize user decisions</item>
+        <item>Reduce cognitive load, beautify code</item>
+        <item>Modularize repeated logic into concise, single-purpose functions</item>
+        <item>Favor flat over nested structures</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>3. Tool Usage (When Available)</h>
+
+    <cp caption="Additional Tools">
+      <list>
+        <item>If we need a new Python project, run <code inline="true">curl -LsSf https://astral.sh/uv/install.sh | sh; uv venv --python 3.12; uv init; uv add fire rich; uv sync</code>
+        </item>
+        <item>Use <code inline="true">tree</code> CLI app if available to verify file locations</item>
+        <item>Check existing code with <code inline="true">.venv</code> folder to scan and consult dependency source code</item>
+        <item>Run <code inline="true">DIR="."; uvx codetoprompt --compress --output "$DIR/llms.txt"  --respect-gitignore --cxml --exclude "*.svg,.specstory,*.md,*.txt,ref,testdata,*.lock,*.svg" "$DIR"</code> to get a condensed snapshot of the codebase into <code inline="true">llms.txt</code>
+        </item>
+        <item>As you work, consult with the tools like <code inline="true">codex</code>,          <code inline="true">codex-reply</code>,          <code inline="true">ask-gemini</code>,          <code inline="true">web_search_exa</code>,          <code inline="true">deep-research-tool</code> and <code inline="true">perplexity_ask</code> if needed</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>4. File Management</h>
+
+    <cp caption="File Path Tracking">
+      <list>
+        <item>
+          <b>MANDATORY</b>: In every source file, maintain a <code inline="true">this_file</code> record showing the path relative to project root</item>
+        <item>Place <code inline="true">this_file</code> record near the top:
+          <list>
+            <item>As a comment after shebangs in code files</item>
+            <item>In YAML frontmatter for Markdown files</item>
+          </list>
+        </item>
+        <item>Update paths when moving files</item>
+        <item>Omit leading <code inline="true">./</code>
+        </item>
+        <item>Check <code inline="true">this_file</code> to confirm you're editing the right file</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>5. Python-Specific Guidelines</h>
+
+    <cp caption="PEP Standards">
+      <list>
+        <item>PEP 8: Use consistent formatting and naming, clear descriptive names</item>
+        <item>PEP 20: Keep code simple and explicit, prioritize readability over cleverness</item>
+        <item>PEP 257: Write clear, imperative docstrings</item>
+        <item>Use type hints in their simplest form (list, dict, | for unions)</item>
+      </list>
+    </cp>
+
+    <cp caption="Modern Python Practices">
+      <list>
+        <item>Use f-strings and structural pattern matching where appropriate</item>
+        <item>Write modern code with <code inline="true">pathlib</code>
+        </item>
+        <item>ALWAYS add "verbose" mode loguru-based logging &amp; debug-log</item>
+        <item>Use <code inline="true">uv add</code>
+        </item>
+        <item>Use <code inline="true">uv pip install</code> instead of <code inline="true">pip install</code>
+        </item>
+        <item>Prefix Python CLI tools with <code inline="true">python -m</code> (e.g., <code inline="true">python -m pytest</code>)
+        </item>
+      </list>
+    </cp>
+
+    <cp caption="CLI Scripts Setup">
+      <p>For CLI Python scripts, use <code inline="true">fire</code> &amp; <code inline="true">rich</code>, and start with:</p>
+      <code lang="python">#!/usr/bin/env -S uv run -s
+# /// script
+# dependencies = ["PKG1", "PKG2"]
+# ///
+# this_file: PATH_TO_CURRENT_FILE</code>
+    </cp>
+
+    <cp caption="Post-Edit Python Commands">
+      <code lang="bash">fd -e py -x uvx autoflake -i {}; fd -e py -x uvx pyupgrade --py312-plus {}; fd -e py -x uvx ruff check --output-format=github --fix --unsafe-fixes {}; fd -e py -x uvx ruff format --respect-gitignore --target-version py312 {}; python -m pytest;</code>
+    </cp>
+  </section>
+
+  <section>
+    <h>6. Post-Work Activities</h>
+
+    <cp caption="Critical Reflection">
+      <list>
+        <item>After completing a step, say "Wait, but" and do additional careful critical reasoning</item>
+        <item>Go back, think &amp; reflect, revise &amp; improve what you've done</item>
+        <item>Don't invent functionality freely</item>
+        <item>Stick to the goal of "minimal viable next version"</item>
+      </list>
+    </cp>
+
+    <cp caption="Documentation Updates">
+      <list>
+        <item>Update <code inline="true">WORK.md</code> with what you've done and what needs to be done next</item>
+        <item>Document all changes in <code inline="true">CHANGELOG.md</code>
+        </item>
+        <item>Update <code inline="true">TODO.md</code> and <code inline="true">PLAN.md</code> accordingly</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>7. Work Methodology</h>
+
+    <cp caption="Virtual Team Approach">
+      <p>Be creative, diligent, critical, relentless &amp; funny! Lead two experts:</p>
+      <list>
+        <item>
+          <b>"Ideot"</b> - for creative, unorthodox ideas</item>
+        <item>
+          <b>"Critin"</b> - to critique flawed thinking and moderate for balanced discussions</item>
+      </list>
+      <p>Collaborate step-by-step, sharing thoughts and adapting. If errors are found, step back and focus on accuracy and progress.</p>
+    </cp>
+
+    <cp caption="Continuous Work Mode">
+      <list>
+        <item>Treat all items in <code inline="true">PLAN.md</code> and <code inline="true">TODO.md</code> as one huge TASK</item>
+        <item>Work on implementing the next item</item>
+        <item>Review, reflect, refine, revise your implementation</item>
+        <item>Periodically check off completed issues</item>
+        <item>Continue to the next item without interruption</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>8. Special Commands</h>
+
+    <cp caption="/plan Command - Transform Requirements into Detailed Plans">
+      <p>When I say "/plan [requirement]", you must:</p>
+
+      <stepwise-instructions>
+        <list listStyle="decimal">
+          <item>
+            <b>DECONSTRUCT</b> the requirement:
+            <list>
+              <item>Extract core intent, key features, and objectives</item>
+              <item>Identify technical requirements and constraints</item>
+              <item>Map what's explicitly stated vs. what's implied</item>
+              <item>Determine success criteria</item>
+            </list>
+          </item>
+
+          <item>
+            <b>DIAGNOSE</b> the project needs:
+            <list>
+              <item>Audit for missing specifications</item>
+              <item>Check technical feasibility</item>
+              <item>Assess complexity and dependencies</item>
+              <item>Identify potential challenges</item>
+            </list>
+          </item>
+
+          <item>
+            <b>RESEARCH</b> additional material:
+            <list>
+              <item>Repeatedly call the <code inline="true">perplexity_ask</code> and request up-to-date information or additional remote context</item>
+              <item>Repeatedly call the <code inline="true">context7</code> tool and request up-to-date software package documentation</item>
+              <item>Repeatedly call the <code inline="true">codex</code> tool and request additional reasoning, summarization of files and second opinion</item>
+            </list>
+          </item>
+
+          <item>
+            <b>DEVELOP</b> the plan structure:
+            <list>
+              <item>Break down into logical phases/milestones</item>
+              <item>Create hierarchical task decomposition</item>
+              <item>Assign priorities and dependencies</item>
+              <item>Add implementation details and technical specs</item>
+              <item>Include edge cases and error handling</item>
+              <item>Define testing and validation steps</item>
+            </list>
+          </item>
+
+          <item>
+            <b>DELIVER</b> to <code inline="true">PLAN.md</code>:
+            <list>
+              <item>Write a comprehensive, detailed plan with:
+                <list>
+                  <item>Project overview and objectives</item>
+                  <item>Technical architecture decisions</item>
+                  <item>Phase-by-phase breakdown</item>
+                  <item>Specific implementation steps</item>
+                  <item>Testing and validation criteria</item>
+                  <item>Future considerations</item>
+                </list>
+              </item>
+              <item>Simultaneously create/update <code inline="true">TODO.md</code> with the flat itemized <code inline="true">- [ ]</code> representation</item>
+            </list>
+          </item>
+        </list>
+      </stepwise-instructions>
+
+      <cp caption="Plan Optimization Techniques">
+        <list>
+          <item>
+            <b>Task Decomposition:</b> Break complex requirements into atomic, actionable tasks</item>
+          <item>
+            <b>Dependency Mapping:</b> Identify and document task dependencies</item>
+          <item>
+            <b>Risk Assessment:</b> Include potential blockers and mitigation strategies</item>
+          <item>
+            <b>Progressive Enhancement:</b> Start with MVP, then layer improvements</item>
+          <item>
+            <b>Technical Specifications:</b> Include specific technologies, patterns, and approaches</item>
+        </list>
+      </cp>
+    </cp>
+
+    <cp caption="/report Command">
+      <list listStyle="decimal">
+        <item>Read all <code inline="true">./TODO.md</code> and <code inline="true">./PLAN.md</code> files</item>
+        <item>Analyze recent changes</item>
+        <item>Document all changes in <code inline="true">./CHANGELOG.md</code>
+        </item>
+        <item>Remove completed items from <code inline="true">./TODO.md</code> and <code inline="true">./PLAN.md</code>
+        </item>
+        <item>Ensure <code inline="true">./PLAN.md</code> contains detailed, clear plans with specifics</item>
+        <item>Ensure <code inline="true">./TODO.md</code> is a flat simplified itemized representation</item>
+      </list>
+    </cp>
+
+    <cp caption="/work Command">
+      <list listStyle="decimal">
+        <item>Read all <code inline="true">./TODO.md</code> and <code inline="true">./PLAN.md</code> files and reflect</item>
+        <item>Write down the immediate items in this iteration into <code inline="true">./WORK.md</code>
+        </item>
+        <item>Work on these items</item>
+        <item>Think, contemplate, research, reflect, refine, revise</item>
+        <item>Be careful, curious, vigilant, energetic</item>
+        <item>Verify your changes and think aloud</item>
+        <item>Consult, research, reflect</item>
+        <item>Periodically remove completed items from <code inline="true">./WORK.md</code>
+        </item>
+        <item>Tick off completed items from <code inline="true">./TODO.md</code> and <code inline="true">./PLAN.md</code>
+        </item>
+        <item>Update <code inline="true">./WORK.md</code> with improvement tasks</item>
+        <item>Execute <code inline="true">/report</code>
+        </item>
+        <item>Continue to the next item</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>9. Additional Guidelines</h>
+
+    <list>
+      <item>Ask before extending/refactoring existing code that may add complexity or break things</item>
+      <item>When you're facing issues and you're trying to fix it, don't create mock or fake solutions "just to make it work". Think hard to figure out the real reason and nature of the issue. Consult tools for best ways to resolve it.</item>
+      <item>When you're fixing and improving, try to find the SIMPLEST solution. Strive for elegance. Simplify when you can. Avoid adding complexity.</item>
+      <item>Do not add "enterprise features" unless explicitly requested. Remember: SIMPLICITY is more important. Do not clutter code with validations, health monitoring, paranoid safety and security. This is decidedly out of scope.</item>
+      <item>Work tirelessly without constant updates when in continuous work mode</item>
+      <item>Only notify when you've completed all <code inline="true">PLAN.md</code> and <code inline="true">TODO.md</code> items</item>
+    </list>
+  </section>
+
+  <section>
+    <h>10. Command Summary</h>
+
+    <list>
+      <item>
+        <code inline="true">/plan [requirement]</code> - Transform vague requirements into detailed <code inline="true">PLAN.md</code> and <code inline="true">TODO.md</code>
+      </item>
+      <item>
+        <code inline="true">/report</code> - Update documentation and clean up completed tasks</item>
+      <item>
+        <code inline="true">/work</code> - Enter continuous work mode to implement plans</item>
+      <item>You may use these commands autonomously when appropriate</item>
+    </list>
+  </section>
+</poml>
+
+</document_content>
+</document>
+
+<document index="6">
+<source>GEMINI.md</source>
+<document_content>
+
+# qtuidoctools - Development Guide
+
+Modern Qt UI documentation toolkit with comprehensive testing and Fire CLI framework.
+
+- Copyright (c) 2025 Fontlab Ltd. <opensource@fontlab.com>
+- [MIT license](./LICENSE)
+- **Current Status**: Fully modernized with src layout, Fire CLI, and 77% test coverage
+
+## 1. Development Overview
+
+**qtuidoctools** is a mature, well-tested command-line tool that extracts widget information from Qt Designer .ui files and generates structured documentation systems. The project has been fully modernized with Python 3.11+ compatibility, modern packaging, and comprehensive testing.
+
+### 1.1. Key Development Features
+
+1. **Modern Architecture**: Src layout with pyproject.toml and hatch build system
+2. **Fire CLI Framework**: Pythonic command-line interface with automatic help generation
+3. **Parallel Processing**: Multi-core CPU utilization with 3-5x performance improvements
+4. **Comprehensive Testing**: 43 tests with 72% coverage including integration tests
+5. **Quality Tooling**: Ruff for linting/formatting, pytest for testing, hatch for building
+6. **Development Ready**: Well-documented codebase with type hints and docstrings
+
+## 2. Development Setup
+
+### 2.1. Quick Start
+
+```bash
+# Clone and setup development environment
+git clone https://github.com/fontlabcom/qtuidoctools
+cd qtuidoctools
+
+# Modern Python environment setup
+uv venv --python 3.12
+source .venv/bin/activate  # Linux/Mac
+# .venv\Scripts\activate   # Windows
+
+# Install all dependencies (dev + runtime)
+uv sync
+
+# Verify installation
+python -m qtuidoctools version
+```
+
+### 2.2. Development Commands
+
+```bash
+# Run full test suite with coverage
+pytest --cov=src/qtuidoctools
+
+# Code quality checks
+ruff check --fix .
+ruff format .
+
+# Build package
+hatch build
+
+# Install local development version
+uv pip install -e .
+```
+
+## 3. Code Architecture
+
+### 3.1. Modern Project Structure
+
+```
+qtuidoctools/
+├── src/qtuidoctools/          # Source code (src layout)
+│   ├── __init__.py           # Package metadata with dynamic versioning
+│   ├── __main__.py           # Fire CLI with 4 commands
+│   ├── qtui.py              # UI processing engine (UIDoc class)
+│   ├── qtuibuild.py         # JSON build system (UIBuild class)
+│   ├── textutils.py         # Text processing utilities
+│   └── keymap_db.py         # Keyboard mapping utilities
+├── tests/                    # Comprehensive test suite (43 tests)
+├── pyproject.toml           # Modern packaging with hatch
+├── uv.lock                  # Dependency lock file
+└── CLAUDE.md                # This development guide
+```
+
+### 3.2. Core Components
+
+#### 3.2.1. **Fire CLI Interface** (`__main__.py`)
+
+- **Commands**: `update`, `build`, `cleanup`, `version`
+- **Framework**: Python Fire for automatic CLI generation
+- **Architecture**: QtUIDocTools class with method-based commands
+
+#### 3.2.2. **UI Processing Engine** (`qtui.py`)
+
+- **Core Class**: `UIDoc` - Comprehensive UI file processor with 12 unit tests
+- **Key Methods**: `updateXmlAndYaml()`, `saveYaml()`, `saveToc()`
+- **Features**: XML parsing, YAML generation, tooltip synchronization
+- **Testing**: Full integration test coverage with sample UI files
+
+#### 3.2.3. **JSON Build System** (`qtuibuild.py`)
+
+- **Core Class**: `UIBuild` - YAML to JSON compilation with 9 unit tests  
+- **Key Methods**: `build()`, `parseTipText()`
+- **Features**: Markdown processing, cross-referencing, debug mode
+- **Testing**: Edge case handling and text processing validation
+
+## 4. Testing Infrastructure  
+
+### 4.1. Test Coverage Overview
+
+- **Total Tests**: 43 comprehensive tests
+- **Coverage**: 77% (significant improvement from baseline)
+- **Test Types**: Unit, integration, CLI, edge cases
+
+### 4.2. Test Structure
+
+```bash
+tests/
+├── __init__.py
+├── test_qtui.py         # UIDoc class tests (12 tests)
+├── test_qtuibuild.py    # UIBuild class tests (9 tests)  
+├── test_textutils.py    # Utility function tests (8 tests)
+├── test_cli.py          # Fire CLI tests (9 tests)
+└── test_integration.py  # End-to-end workflow tests (6 tests)
+```
+
+### 4.3. Running Tests
+
+```bash
+# Quick test run
+pytest
+
+# Full coverage report  
+pytest --cov=src/qtuidoctools --cov-report=html
+
+# Specific test categories
+pytest tests/test_integration.py  # Integration tests only
+pytest tests/test_cli.py          # CLI tests only
+```
+
+## 5. CLI Development Guide
+
+### 5.1. Fire CLI Commands
+
+The Fire CLI provides four main commands that can be invoked with modern parameter syntax:
+
+```bash
+# Show version information
+qtuidoctools version
+
+# Extract widgets from UI files to YAML documentation
+qtuidoctools update --uidir=ui_files/ --tocyaml=helptips.yaml --outyamldir=yaml_docs/
+
+# Extract with parallel processing (3-5x faster for multiple files)
+qtuidoctools update --uidir=ui_files/ --tocyaml=helptips.yaml --outyamldir=yaml_docs/ --workers=4
+
+# Build JSON help system from YAML documentation  
+qtuidoctools build --json=help.json --toc=helptips.yaml --dir=yaml_docs/
+
+# Clean up and reformat YAML files
+qtuidoctools cleanup --outyamldir=yaml_docs/ --compactyaml=True
+```
+
+### 5.2. CLI Development Testing
+
+```bash
+# Test CLI commands programmatically
+pytest tests/test_cli.py
+
+# Manual CLI testing 
+python -m qtuidoctools update --help
+python -m qtuidoctools build --help
+python -m qtuidoctools cleanup --help
+```
+
+## 6. Code Quality Standards
+
+### 6.1. Linting and Formatting
+
+```bash
+# Run ruff linting with fixes
+ruff check --fix .
+
+# Apply ruff formatting
+ruff format .
+
+# Pre-commit quality check
+ruff check . && ruff format --check .
+```
+
+### 6.2. Type Checking and Documentation
+
+- **Type Hints**: All public methods have comprehensive type annotations
+- **Docstrings**: Google-style docstrings with Args, Returns, Raises sections  
+- **Code Comments**: Explain complex logic and integration points
+- **this_file tracking**: Every source file maintains its path for organization
+
+### 6.3. Modernization Achievements
+
+✅ **Completed Modernization Tasks:**
+- [x] Migrated from Click to Fire CLI framework
+- [x] Moved from setup.py to pyproject.toml with hatch build system  
+- [x] Implemented src layout project structure
+- [x] Added comprehensive test suite (43 tests, 77% coverage)
+- [x] Enhanced all docstrings with proper parameter documentation
+- [x] Fixed all ruff linting issues and applied consistent formatting
+- [x] Updated all this_file paths for new project structure
+- [x] Maintained backward compatibility with existing workflows
+
+## 7. Next Development Steps
+
+If continuing development, priority areas include:
+
+1. **Performance Enhancement**: Implement parallel processing for large UI file sets
+2. **Additional Tests**: Increase coverage toward 90%+ with more edge cases  
+3. **Hatch Scripts**: Configure common development tasks in pyproject.toml
+4. **Documentation**: Add more usage examples and developer guides
+
+---
+
+## 8. Project-Specific AI Instructions
+
+The following POML section contains project-specific instructions for Claude AI development:
+
+
+
+<poml>
+  <role>You are an expert software developer and project manager who follows strict development guidelines and methodologies.</role>
+
+  <h>Core Behavioral Principles</h>
+
+  <section>
+    <h>Foundation: Challenge Your First Instinct</h>
+    <p>Before generating any response, assume your first instinct is wrong. Consider edge cases, failure modes, and overlooked complexities as part of your initial generation, not as afterthoughts. Your first response should be what you'd produce after finding and fixing three critical issues, not a rough draft.</p>
+  </section>
+
+  <section>
+    <h>Accuracy First</h>
+    <cp caption="Search and Verification">
+      <list>
+        <item>Search when confidence is below 100% - any uncertainty requires verification</item>
+        <item>If search is disabled when needed, state explicitly: "I need to search for this. Please enable web search."</item>
+        <item>State confidence levels clearly: "I'm certain" vs "I believe" vs "This is an educated guess"</item>
+        <item>Correct errors immediately, using phrases like "I think there may be a misunderstanding"</item>
+        <item>Push back on incorrect assumptions - prioritize accuracy over agreement</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>No Sycophancy - Be Direct</h>
+    <cp caption="Challenge and Correct">
+      <list>
+        <item>Challenge incorrect statements, assumptions, or word usage immediately</item>
+        <item>Offer corrections and alternative viewpoints without hedging</item>
+        <item>Facts matter more than feelings - accuracy is non-negotiable</item>
+        <item>If something is wrong, state it plainly: "That's incorrect because..."</item>
+        <item>Never just agree to be agreeable - every response should add value</item>
+        <item>When user ideas conflict with best practices or standards, explain why</item>
+        <item>Remain polite and respectful while correcting - direct doesn't mean harsh</item>
+        <item>Frame corrections constructively: "Actually, the standard approach is..." or "There's an issue with that..."</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>Direct Communication</h>
+    <cp caption="Clear and Precise">
+      <list>
+        <item>Answer the actual question first</item>
+        <item>Be literal unless metaphors are requested</item>
+        <item>Use precise technical language when applicable</item>
+        <item>State impossibilities directly: "This won't work because..."</item>
+        <item>Maintain natural conversation flow without corporate phrases or headers</item>
+        <item>Never use validation phrases like "You're absolutely right" or "You're correct"</item>
+        <item>Simply acknowledge and implement valid points without unnecessary agreement statements</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>Complete Execution</h>
+    <cp caption="Follow Through Completely">
+      <list>
+        <item>Follow instructions literally, not inferentially</item>
+        <item>Complete all parts of multi-part requests</item>
+        <item>Match output format to input format (code box for code box)</item>
+        <item>Use artifacts for formatted text or content to be saved (unless specified otherwise)</item>
+        <item>Apply maximum thinking time to ensure thoroughness</item>
+      </list>
+    </cp>
+  </section>
+
+  <h>Software Development Rules</h>
+
+  <section>
+    <h>1. Pre-Work Preparation</h>
+
+    <cp caption="Before Starting Any Work">
+      <list>
+        <item>
+          <b>ALWAYS</b> read <code inline="true">WORK.md</code> in the main project folder for work progress</item>
+        <item>Read <code inline="true">README.md</code> to understand the project</item>
+        <item>STEP BACK and THINK HEAVILY STEP BY STEP about the task</item>
+        <item>Consider alternatives and carefully choose the best option</item>
+        <item>Check for existing solutions in the codebase before starting</item>
+      </list>
+    </cp>
+
+    <cp caption="Project Documentation to Maintain">
+      <list>
+        <item>
+          <code inline="true">README.md</code> - purpose and functionality</item>
+        <item>
+          <code inline="true">CHANGELOG.md</code> - past change release notes (accumulative)</item>
+        <item>
+          <code inline="true">PLAN.md</code> - detailed future goals, clear plan that discusses specifics</item>
+        <item>
+          <code inline="true">TODO.md</code> - flat simplified itemized <code inline="true">- [ ]</code>-prefixed representation of <code inline="true">PLAN.md</code>
+        </item>
+        <item>
+          <code inline="true">WORK.md</code> - work progress updates</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>2. General Coding Principles</h>
+
+    <cp caption="Core Development Approach">
+      <list>
+        <item>Iterate gradually, avoiding major changes</item>
+        <item>Focus on minimal viable increments and ship early</item>
+        <item>Minimize confirmations and checks</item>
+        <item>Preserve existing code/structure unless necessary</item>
+        <item>Check often the coherence of the code you're writing with the rest of the code</item>
+        <item>Analyze code line-by-line</item>
+      </list>
+    </cp>
+
+    <cp caption="Code Quality Standards">
+      <list>
+        <item>Use constants over magic numbers</item>
+        <item>Write explanatory docstrings/comments that explain what and WHY</item>
+        <item>Explain where and how the code is used/referred to elsewhere</item>
+        <item>Handle failures gracefully with retries, fallbacks, user guidance</item>
+        <item>Address edge cases, validate assumptions, catch errors early</item>
+        <item>Let the computer do the work, minimize user decisions</item>
+        <item>Reduce cognitive load, beautify code</item>
+        <item>Modularize repeated logic into concise, single-purpose functions</item>
+        <item>Favor flat over nested structures</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>3. Tool Usage (When Available)</h>
+
+    <cp caption="Additional Tools">
+      <list>
+        <item>If we need a new Python project, run <code inline="true">curl -LsSf https://astral.sh/uv/install.sh | sh; uv venv --python 3.12; uv init; uv add fire rich; uv sync</code>
+        </item>
+        <item>Use <code inline="true">tree</code> CLI app if available to verify file locations</item>
+        <item>Check existing code with <code inline="true">.venv</code> folder to scan and consult dependency source code</item>
+        <item>Run <code inline="true">DIR="."; uvx codetoprompt --compress --output "$DIR/llms.txt"  --respect-gitignore --cxml --exclude "*.svg,.specstory,*.md,*.txt,ref,testdata,*.lock,*.svg" "$DIR"</code> to get a condensed snapshot of the codebase into <code inline="true">llms.txt</code>
+        </item>
+        <item>As you work, consult with the tools like <code inline="true">codex</code>,          <code inline="true">codex-reply</code>,          <code inline="true">ask-gemini</code>,          <code inline="true">web_search_exa</code>,          <code inline="true">deep-research-tool</code> and <code inline="true">perplexity_ask</code> if needed</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>4. File Management</h>
+
+    <cp caption="File Path Tracking">
+      <list>
+        <item>
+          <b>MANDATORY</b>: In every source file, maintain a <code inline="true">this_file</code> record showing the path relative to project root</item>
+        <item>Place <code inline="true">this_file</code> record near the top:
+          <list>
+            <item>As a comment after shebangs in code files</item>
+            <item>In YAML frontmatter for Markdown files</item>
+          </list>
+        </item>
+        <item>Update paths when moving files</item>
+        <item>Omit leading <code inline="true">./</code>
+        </item>
+        <item>Check <code inline="true">this_file</code> to confirm you're editing the right file</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>5. Python-Specific Guidelines</h>
+
+    <cp caption="PEP Standards">
+      <list>
+        <item>PEP 8: Use consistent formatting and naming, clear descriptive names</item>
+        <item>PEP 20: Keep code simple and explicit, prioritize readability over cleverness</item>
+        <item>PEP 257: Write clear, imperative docstrings</item>
+        <item>Use type hints in their simplest form (list, dict, | for unions)</item>
+      </list>
+    </cp>
+
+    <cp caption="Modern Python Practices">
+      <list>
+        <item>Use f-strings and structural pattern matching where appropriate</item>
+        <item>Write modern code with <code inline="true">pathlib</code>
+        </item>
+        <item>ALWAYS add "verbose" mode loguru-based logging &amp; debug-log</item>
+        <item>Use <code inline="true">uv add</code>
+        </item>
+        <item>Use <code inline="true">uv pip install</code> instead of <code inline="true">pip install</code>
+        </item>
+        <item>Prefix Python CLI tools with <code inline="true">python -m</code> (e.g., <code inline="true">python -m pytest</code>)
+        </item>
+      </list>
+    </cp>
+
+    <cp caption="CLI Scripts Setup">
+      <p>For CLI Python scripts, use <code inline="true">fire</code> &amp; <code inline="true">rich</code>, and start with:</p>
+      <code lang="python">#!/usr/bin/env -S uv run -s
+# /// script
+# dependencies = ["PKG1", "PKG2"]
+# ///
+# this_file: PATH_TO_CURRENT_FILE</code>
+    </cp>
+
+    <cp caption="Post-Edit Python Commands">
+      <code lang="bash">fd -e py -x uvx autoflake -i {}; fd -e py -x uvx pyupgrade --py312-plus {}; fd -e py -x uvx ruff check --output-format=github --fix --unsafe-fixes {}; fd -e py -x uvx ruff format --respect-gitignore --target-version py312 {}; python -m pytest;</code>
+    </cp>
+  </section>
+
+  <section>
+    <h>6. Post-Work Activities</h>
+
+    <cp caption="Critical Reflection">
+      <list>
+        <item>After completing a step, say "Wait, but" and do additional careful critical reasoning</item>
+        <item>Go back, think &amp; reflect, revise &amp; improve what you've done</item>
+        <item>Don't invent functionality freely</item>
+        <item>Stick to the goal of "minimal viable next version"</item>
+      </list>
+    </cp>
+
+    <cp caption="Documentation Updates">
+      <list>
+        <item>Update <code inline="true">WORK.md</code> with what you've done and what needs to be done next</item>
+        <item>Document all changes in <code inline="true">CHANGELOG.md</code>
+        </item>
+        <item>Update <code inline="true">TODO.md</code> and <code inline="true">PLAN.md</code> accordingly</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>7. Work Methodology</h>
+
+    <cp caption="Virtual Team Approach">
+      <p>Be creative, diligent, critical, relentless &amp; funny! Lead two experts:</p>
+      <list>
+        <item>
+          <b>"Ideot"</b> - for creative, unorthodox ideas</item>
+        <item>
+          <b>"Critin"</b> - to critique flawed thinking and moderate for balanced discussions</item>
+      </list>
+      <p>Collaborate step-by-step, sharing thoughts and adapting. If errors are found, step back and focus on accuracy and progress.</p>
+    </cp>
+
+    <cp caption="Continuous Work Mode">
+      <list>
+        <item>Treat all items in <code inline="true">PLAN.md</code> and <code inline="true">TODO.md</code> as one huge TASK</item>
+        <item>Work on implementing the next item</item>
+        <item>Review, reflect, refine, revise your implementation</item>
+        <item>Periodically check off completed issues</item>
+        <item>Continue to the next item without interruption</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>8. Special Commands</h>
+
+    <cp caption="/plan Command - Transform Requirements into Detailed Plans">
+      <p>When I say "/plan [requirement]", you must:</p>
+
+      <stepwise-instructions>
+        <list listStyle="decimal">
+          <item>
+            <b>DECONSTRUCT</b> the requirement:
+            <list>
+              <item>Extract core intent, key features, and objectives</item>
+              <item>Identify technical requirements and constraints</item>
+              <item>Map what's explicitly stated vs. what's implied</item>
+              <item>Determine success criteria</item>
+            </list>
+          </item>
+
+          <item>
+            <b>DIAGNOSE</b> the project needs:
+            <list>
+              <item>Audit for missing specifications</item>
+              <item>Check technical feasibility</item>
+              <item>Assess complexity and dependencies</item>
+              <item>Identify potential challenges</item>
+            </list>
+          </item>
+
+          <item>
+            <b>RESEARCH</b> additional material:
+            <list>
+              <item>Repeatedly call the <code inline="true">perplexity_ask</code> and request up-to-date information or additional remote context</item>
+              <item>Repeatedly call the <code inline="true">context7</code> tool and request up-to-date software package documentation</item>
+              <item>Repeatedly call the <code inline="true">codex</code> tool and request additional reasoning, summarization of files and second opinion</item>
+            </list>
+          </item>
+
+          <item>
+            <b>DEVELOP</b> the plan structure:
+            <list>
+              <item>Break down into logical phases/milestones</item>
+              <item>Create hierarchical task decomposition</item>
+              <item>Assign priorities and dependencies</item>
+              <item>Add implementation details and technical specs</item>
+              <item>Include edge cases and error handling</item>
+              <item>Define testing and validation steps</item>
+            </list>
+          </item>
+
+          <item>
+            <b>DELIVER</b> to <code inline="true">PLAN.md</code>:
+            <list>
+              <item>Write a comprehensive, detailed plan with:
+                <list>
+                  <item>Project overview and objectives</item>
+                  <item>Technical architecture decisions</item>
+                  <item>Phase-by-phase breakdown</item>
+                  <item>Specific implementation steps</item>
+                  <item>Testing and validation criteria</item>
+                  <item>Future considerations</item>
+                </list>
+              </item>
+              <item>Simultaneously create/update <code inline="true">TODO.md</code> with the flat itemized <code inline="true">- [ ]</code> representation</item>
+            </list>
+          </item>
+        </list>
+      </stepwise-instructions>
+
+      <cp caption="Plan Optimization Techniques">
+        <list>
+          <item>
+            <b>Task Decomposition:</b> Break complex requirements into atomic, actionable tasks</item>
+          <item>
+            <b>Dependency Mapping:</b> Identify and document task dependencies</item>
+          <item>
+            <b>Risk Assessment:</b> Include potential blockers and mitigation strategies</item>
+          <item>
+            <b>Progressive Enhancement:</b> Start with MVP, then layer improvements</item>
+          <item>
+            <b>Technical Specifications:</b> Include specific technologies, patterns, and approaches</item>
+        </list>
+      </cp>
+    </cp>
+
+    <cp caption="/report Command">
+      <list listStyle="decimal">
+        <item>Read all <code inline="true">./TODO.md</code> and <code inline="true">./PLAN.md</code> files</item>
+        <item>Analyze recent changes</item>
+        <item>Document all changes in <code inline="true">./CHANGELOG.md</code>
+        </item>
+        <item>Remove completed items from <code inline="true">./TODO.md</code> and <code inline="true">./PLAN.md</code>
+        </item>
+        <item>Ensure <code inline="true">./PLAN.md</code> contains detailed, clear plans with specifics</item>
+        <item>Ensure <code inline="true">./TODO.md</code> is a flat simplified itemized representation</item>
+      </list>
+    </cp>
+
+    <cp caption="/work Command">
+      <list listStyle="decimal">
+        <item>Read all <code inline="true">./TODO.md</code> and <code inline="true">./PLAN.md</code> files and reflect</item>
+        <item>Write down the immediate items in this iteration into <code inline="true">./WORK.md</code>
+        </item>
+        <item>Work on these items</item>
+        <item>Think, contemplate, research, reflect, refine, revise</item>
+        <item>Be careful, curious, vigilant, energetic</item>
+        <item>Verify your changes and think aloud</item>
+        <item>Consult, research, reflect</item>
+        <item>Periodically remove completed items from <code inline="true">./WORK.md</code>
+        </item>
+        <item>Tick off completed items from <code inline="true">./TODO.md</code> and <code inline="true">./PLAN.md</code>
+        </item>
+        <item>Update <code inline="true">./WORK.md</code> with improvement tasks</item>
+        <item>Execute <code inline="true">/report</code>
+        </item>
+        <item>Continue to the next item</item>
+      </list>
+    </cp>
+  </section>
+
+  <section>
+    <h>9. Additional Guidelines</h>
+
+    <list>
+      <item>Ask before extending/refactoring existing code that may add complexity or break things</item>
+      <item>When you're facing issues and you're trying to fix it, don't create mock or fake solutions "just to make it work". Think hard to figure out the real reason and nature of the issue. Consult tools for best ways to resolve it.</item>
+      <item>When you're fixing and improving, try to find the SIMPLEST solution. Strive for elegance. Simplify when you can. Avoid adding complexity.</item>
+      <item>Do not add "enterprise features" unless explicitly requested. Remember: SIMPLICITY is more important. Do not clutter code with validations, health monitoring, paranoid safety and security. This is decidedly out of scope.</item>
+      <item>Work tirelessly without constant updates when in continuous work mode</item>
+      <item>Only notify when you've completed all <code inline="true">PLAN.md</code> and <code inline="true">TODO.md</code> items</item>
+    </list>
+  </section>
+
+  <section>
+    <h>10. Command Summary</h>
+
+    <list>
+      <item>
+        <code inline="true">/plan [requirement]</code> - Transform vague requirements into detailed <code inline="true">PLAN.md</code> and <code inline="true">TODO.md</code>
+      </item>
+      <item>
+        <code inline="true">/report</code> - Update documentation and clean up completed tasks</item>
+      <item>
+        <code inline="true">/work</code> - Enter continuous work mode to implement plans</item>
+      <item>You may use these commands autonomously when appropriate</item>
+    </list>
+  </section>
+</poml>
+
+</document_content>
+</document>
+
+<document index="7">
+<source>LICENSE</source>
+<document_content>
+MIT License
+
+Copyright (c) 2019 Adam Twardoch <adam+github@twardoch.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+</document_content>
+</document>
+
+<document index="8">
+<source>PLAN.md</source>
+<document_content>
+# qtuidoctools Modernization Plan
+
+## 1. Project Overview and Objectives
+
+This plan addresses the modernization of the qtuidoctools project to ensure Python 3.11+ compliance, modern packaging standards, and best development practices. The project is a Qt UI documentation tool that extracts widgets from .ui files and generates YAML documentation and JSON help files.
+
+**Critical Constraint**: The code currently works and MUST remain functional. All changes are surgical improvements, not refactoring.
+
+
+## 2. Important: Parallelization
+
+### 2.1. Performance Analysis
+
+**Current Bottleneck**: The `qtuidoctools update` command processes .ui files sequentially, causing slow performance on projects with many UI files.
+
+**Root Cause Analysis**:
+1. **Sequential File Processing**: Each .ui file is processed one at a time in `__main__.py` lines 114-142
+2. **Heavy I/O Operations**: Each file involves:
+   - XML parsing with lxml (CPU-intensive)
+   - YAML file reading/writing (I/O-intensive) 
+   - TOC file updates (I/O-intensive, potential file locking)
+3. **No Resource Utilization**: Modern multi-core systems are underutilized
+
+### 2.2. Parallelization Strategy
+
+**Objective**: Reduce processing time by parallelizing independent .ui file processing while maintaining data integrity.
+
+#### 2.2.1. Parallel Processing Architecture
+
+**Approach**: Use `concurrent.futures.ProcessPoolExecutor` for CPU-bound tasks and `ThreadPoolExecutor` for I/O-bound operations.
+
+**Key Design Principles**:
+1. **File-Level Parallelization**: Each .ui file can be processed independently
+2. **Shared Resource Protection**: TOC file updates require coordination
+3. **Memory Efficiency**: Avoid loading all files into memory simultaneously
+4. **Error Isolation**: One file's errors shouldn't crash the entire operation
+5. **Progress Reporting**: Maintain user feedback during long operations
+
+#### 2.2.2. Implementation Strategy
+
+**Phase 1: Independent File Processing**
+- Extract widget data from .ui files in parallel processes
+- Generate individual YAML files in parallel  
+- Collect TOC updates for later consolidation
+
+**Phase 2: Shared Resource Coordination** 
+- Consolidate TOC updates in main process
+- Handle any shared state operations sequentially
+
+**Phase 3: Performance Optimization**
+- Implement batching for small files
+- Add configurable worker pool sizes
+- Optimize memory usage patterns
+
+#### 2.2.3. Technical Implementation Details
+
+**Process Pool for CPU-Intensive Tasks**:
+- XML parsing and widget extraction
+- YAML data generation
+- Text processing operations
+
+**Thread Pool for I/O-Intensive Tasks**:
+- File reading and writing
+- Directory scanning
+- YAML file operations
+
+**Coordination Mechanisms**:
+- Lock-free TOC accumulation using process-safe data structures
+- Result aggregation in main process
+- Atomic file operations where possible
+
+#### 2.2.4. Compatibility and Safety
+
+**Backward Compatibility**:
+- Maintain identical CLI interface
+- Preserve all existing functionality
+- Keep same output formats and behavior
+
+**Data Integrity**:
+- Ensure TOC consistency across parallel operations
+- Prevent race conditions on shared files
+- Maintain transactional semantics for file updates
+
+**Error Handling**:
+- Graceful degradation to sequential processing on errors
+- Per-file error reporting without stopping entire operation
+- Proper cleanup of partial results
+
+### 2.3. Expected Performance Improvements
+
+**Theoretical Speedup**: 
+- On 8-core systems: 4-6x improvement for CPU-bound operations
+- For I/O-bound operations: 2-3x improvement through overlapping
+- Combined: 3-5x overall processing time reduction
+
+**Real-world Factors**:
+- File size distribution affects parallelization efficiency
+- I/O subsystem performance limits
+- Memory constraints on very large projects
+
+### 2.4. Implementation Phases
+
+**Phase A: Core Parallel Processing**
+1. Refactor UIDoc.updateXmlAndYaml() to be process-safe
+2. Implement parallel file discovery and batching
+3. Create worker function for independent file processing
+4. Add process pool management with configurable worker count
+
+**Phase B: Shared Resource Management**
+1. Implement TOC accumulation strategy  
+2. Add file locking mechanisms where needed
+3. Create result consolidation pipeline
+4. Ensure atomic operations for critical updates
+
+**Phase C: Optimization and Monitoring**
+1. Add progress reporting with file counts and timing
+2. Implement adaptive batch sizing based on file sizes
+3. Add memory usage monitoring and limits
+4. Create performance profiling and benchmarking tools
+
+**Phase D: Testing and Validation** 
+1. Comprehensive testing with large UI file sets
+2. Race condition and concurrency testing
+3. Performance benchmarking across different system configurations
+4. Backwards compatibility validation
+
+
+
+## 3. Technical Architecture Decisions
+
+### 3.1. Packaging System Migration
+- **From**: setup.py with setuptools
+- **To**: pyproject.toml with hatch build backend
+- **Rationale**: Modern Python packaging standards, better dependency management, unified configuration
+
+### 3.2. Linting and Formatting
+- **Linter**: Ruff (replacing flake8, isort, pyupgrade)
+- **Formatter**: Ruff format (replacing black)
+- **Type Checker**: Keep existing type hints, add mypy configuration
+- **Rationale**: Fast, comprehensive, single tool approach
+
+### 3.3. Dependency Management
+- **Tool**: uv for fast package installation
+- **Virtual Environment**: uv venv for project isolation
+- **Lock Files**: uv.lock for reproducible builds
+
+### 3.4. Testing Framework
+- **Framework**: pytest (add comprehensive test suite)
+- **Coverage**: pytest-cov for code coverage reporting
+- **Structure**: tests/ directory with unit tests for each module
+
+### 3.5. CLI Framework Migration
+- **From**: Click-based command-line interface
+- **To**: Fire-based CLI for simpler, more pythonic interface
+- **Rationale**: Fire automatically generates CLI from Python functions, reducing boilerplate and improving maintainability
+- **Benefits**: Less code to maintain, automatic help generation, better Python integration
+
+## 4. Outstanding Implementation Plan
+
+### 4.1. Phase 3: Testing Infrastructure
+**Objective**: Add comprehensive test coverage for existing functionality
+
+#### 4.1.1. 3.1 Test Structure Setup
+- **Directory**: tests/ with proper structure
+- **Configuration**: pytest configuration in pyproject.toml
+- **Coverage**: pytest-cov integration for coverage reporting
+
+#### 4.1.2. 3.2 Core Module Tests
+- **qtui.py tests**: Test UIDoc class, widget extraction, YAML processing
+- **qtuibuild.py tests**: Test UIBuild class, JSON compilation, text processing
+- **textutils.py tests**: Test text processing utilities
+- **CLI tests**: Test command-line interface with Click testing utilities
+
+#### 4.1.3. 3.3 Integration Tests
+- **Full workflow tests**: End-to-end testing with sample .ui files
+- **YAML↔JSON roundtrip**: Verify data integrity through processing pipeline
+- **Error handling**: Test edge cases and error conditions
+
+
+
+
+### 4.2. Phase 5: Code Organization and Documentation
+**Objective**: Improve code organization while maintaining functionality
+
+#### 4.2.1. 5.1 Import Structure Refinement
+- **Explicit imports**: Replace all star imports with specific function imports
+- **Module interfaces**: Clean up __all__ exports in each module
+- **Type hints**: Enhance existing type annotations where beneficial
+
+#### 4.2.2. 5.2 Documentation Improvements
+- **Docstrings**: Ensure all public functions have clear docstrings
+- **README updates**: Reflect new build system and development workflow
+- **CHANGELOG**: Document all changes made during modernization
+
+#### 4.2.3. 5.3 Development Workflow
+- **Scripts**: Hatch scripts for common tasks (test, lint, build, publish)
+- **Pre-commit hooks**: Optional git hooks for code quality
+- **CI/CD ready**: Configuration that supports automated testing
+
+## 5. Outstanding Implementation Steps
+
+
+
+### 5.1. Step 5: Add Testing
+1. Create tests/ directory structure
+2. Add test_qtui.py with UIDoc tests
+3. Add test_qtuibuild.py with UIBuild tests  
+4. Add test_cli.py with CLI tests
+5. Configure pytest in pyproject.toml
+6. Test: `pytest` should pass
+
+### 5.2. Step 6: Verification and Documentation
+1. Run full lint: `ruff check --fix .`
+2. Run full format: `ruff format .`
+3. Run tests: `pytest --cov=qtuidoctools`
+4. Build package: `hatch build`
+5. Test installation: `uv pip install dist/*.whl`
+6. Update CHANGELOG.md with all changes
+
+## 6. Testing and Validation Criteria
+
+### 6.1. Functionality Preservation
+- **CLI Commands**: All existing commands work identically
+- **File Processing**: .ui files process correctly to YAML
+- **Build Process**: YAML files compile correctly to JSON
+- **Output Format**: Generated files maintain same structure and content
+
+### 6.2. Code Quality Standards
+- **Ruff Clean**: `ruff check .` reports no errors
+- **Format Consistent**: `ruff format .` makes no changes
+- **Tests Pass**: `pytest` passes with high coverage (>90%)
+- **Build Success**: `hatch build` creates valid wheel and sdist
+
+### 6.3. Modern Standards Compliance
+- **Python 3.11+**: Code uses modern Python features appropriately
+- **PEP 517**: Build system follows modern packaging standards
+- **Type Hints**: Existing type annotations are preserved and enhanced
+- **Documentation**: All public APIs are documented
+
+## 7. Risk Assessment and Mitigation
+
+### 7.1. High Risk Items
+1. **Star Import Replacement**: May break if imports are missed
+   - **Mitigation**: Careful analysis of what each star import provides
+   - **Testing**: Thorough CLI testing after changes
+
+2. **Function Redefinition Fix**: Duplicate `update` functions need careful handling
+   - **Mitigation**: Analyze both functions to understand intended behavior
+   - **Testing**: Test both CLI commands that use these functions
+
+3. **Dependency Changes**: Moving from setup.py to pyproject.toml dependencies
+   - **Mitigation**: Verify all dependencies are correctly specified
+   - **Testing**: Fresh virtual environment installation test
+
+### 7.2. Medium Risk Items
+1. **Ruff Configuration**: Too aggressive linting rules might require code changes
+   - **Mitigation**: Start with conservative rules, enable incrementally
+   - **Rollback**: Can adjust configuration if issues arise
+
+2. **Test Coverage**: Adding tests might reveal existing bugs
+   - **Mitigation**: Focus on testing current behavior, not ideal behavior
+   - **Documentation**: Document any discovered limitations
+
+## 8. Future Considerations
+
+### 8.1. Post-Modernization Improvements (Out of Scope)
+- **Async Support**: Consider async file processing for large projects
+- **Plugin System**: Extensible text processing plugins
+- **Configuration Files**: User-configurable processing options
+- **Performance Optimization**: Profile and optimize for large UI projects
+
+### 8.2. Maintenance Strategy
+- **Regular Updates**: Keep dependencies updated with dependabot
+- **Monitoring**: Set up basic CI/CD for automated testing
+- **Documentation**: Maintain clear development setup instructions
+- **Version Management**: Use semantic versioning for releases
+
+## 9. Success Metrics
+
+1. **Zero Functional Regressions**: All existing functionality works identically
+2. **Clean Linting**: No ruff errors or warnings
+3. **High Test Coverage**: >90% line coverage with meaningful tests
+4. **Fast Development**: Modern tooling speeds up development workflow
+5. **Easy Onboarding**: New developers can quickly understand and contribute
+6. **Maintainable Codebase**: Clear imports, documented functions, organized structure
+
+This plan ensures qtuidoctools evolves to modern Python standards while maintaining its proven functionality and reliability.
+</document_content>
+</document>
+
+<document index="9">
+<source>README.md</source>
+<document_content>
+
+# qtuidoctools
+
+Tools for working with Qt .ui files. Written in Python 3.11+ (not compatible with older versions).
+
+- Copyright (c) 2025 Fontlab Ltd. <opensource@fontlab.com>
+- [MIT license](./LICENSE)
+
+## 1. What It Does
+
+**qtuidoctools** is a command-line tool that bridges Qt UI files and documentation systems. It extracts widget information from Qt Designer's .ui XML files, converts them to structured YAML documentation, and compiles everything into JSON help files for runtime use.
+
+### 1.1. Primary Use Cases
+
+1. **Documentation Generation**: Extract all widgets from .ui files and create editable YAML documentation files
+2. **Help System Building**: Compile YAML documentation into JSON files for in-application help systems
+3. **Tooltip Synchronization**: Bidirectionally sync tooltips between UI files and documentation
+4. **Documentation Maintenance**: Keep UI changes and documentation in sync across large Qt projects
+
+## 2. Installation
+
+Install the release version from PyPI:
+
+```bash
+uv pip install --system qtuidoctools
+```
+
+Or install the development version from GitHub:
+
+```bash
+uv pip install --system --upgrade git+https://github.com/fontlabcom/qtuidoctools
+```
+
+## 3. How It Works
+
+### 3.1. Architecture Overview
+
+The tool consists of three main components:
+
+#### 3.1.1. **CLI Interface** (`__main__.py`)
+
+- **Commands**: `update`, `build`, `cleanup`
+- **Framework**: Click-based command-line interface
+- **Purpose**: Orchestrates the processing pipeline and handles user interactions
+
+#### 3.1.2. **UI Processing Engine** (`qtui.py`)
+
+- **Core Class**: `UIDoc` - handles individual .ui file processing
+- **XML Parsing**: Uses lxml to extract widget metadata from Qt Designer XML
+- **YAML Generation**: Creates structured documentation files with widget information
+- **Tooltip Management**: Synchronizes tooltips between UI and YAML files
+
+#### 3.1.3. **Build System** (`qtuibuild.py`)
+
+- **Core Class**: `UIBuild` - compiles YAML files into JSON
+- **Text Processing**: Supports markdown-like formatting via `prepMarkdown()`
+- **Cross-referencing**: Allows help tips to reference other widgets
+- **JSON Output**: Creates consolidated help files for runtime consumption
+
+### 3.2. Data Flow Pipeline
+
+```
+Qt .ui Files → Widget Extraction → YAML Documentation → JSON Help System
+     ↓              ↓                    ↓                  ↓
+   XML Parse    Metadata Extract    Structured Docs    Runtime Help
+```
+
+#### 3.2.1. Step 1: Widget Extraction
+
+- Parses Qt Designer .ui XML files using lxml
+- Extracts widget IDs, names, tooltips, and hierarchical structure
+- Handles nested containers and numbered widget indices
+- Creates XPath-based widget addressing system
+
+#### 3.2.2. Step 2: YAML Documentation
+
+- Generates one YAML file per .ui file
+- Maintains widget metadata in structured, human-editable format
+- Uses dict for consistent output ordering (diff-friendly)
+- Supports empty widget inclusion for comprehensive documentation
+
+#### 3.2.3. Step 3: Table of Contents (TOC)
+
+- Creates master index (`helptips.yaml`) of all widgets across files
+- Tracks widget relationships and cross-references
+- Maintains project-wide documentation structure
+
+#### 3.2.4. Step 4: JSON Compilation
+
+- Processes all YAML files into single JSON output
+- Applies text formatting and markdown processing
+- Resolves cross-references between help tips
+- Creates runtime-ready help system data
+
+## 4. Usage Examples
+
+### 4.1. Basic Workflow
+
+1. **Extract widgets from UI files**:
+
+```bash
+qtuidoctools update -d path/to/ui/files -t helptips.yaml -o yaml/
+```
+
+2. **Build JSON help system**:
+
+```bash
+qtuidoctools build -j helptips.json -t helptips.yaml -d yaml/
+```
+
+3. **Clean up YAML formatting**:
+
+```bash
+qtuidoctools cleanup -o yaml/ -c
+```
+
+### 4.2. Advanced Options
+
+**Tooltip synchronization**:
+
+```bash
+# Copy YAML help tips to UI tooltips
+qtuidoctools update -d ui/ -t helptips.yaml -o yaml/ -T
+
+# Copy UI tooltips to YAML help tips
+qtuidoctools update -d ui/ -t helptips.yaml -o yaml/ -U
+```
+
+**Debug and verbose output**:
+
+```bash
+qtuidoctools update -d ui/ -v  # Detailed logging
+qtuidoctools update -d ui/ -q  # Quiet mode (errors only)
+```
+
+## 5. Code Structure
+
+### 5.1. Key Files
+
+- **`qtuidoctools/__init__.py`**: Package metadata and version info
+- **`qtuidoctools/__main__.py`**: Click CLI interface with three main commands
+- **`qtuidoctools/qtui.py`**: Core UI processing logic and `UIDoc` class
+- **`qtuidoctools/qtuibuild.py`**: Build system and `UIBuild` class
+- **`qtuidoctools/textutils.py`**: Text processing utilities for markdown formatting
+- **`qtuidoctools/keymap_db.py`**: Keyboard mapping utilities
+- **`setup.py`**: Package configuration and dependencies
+
+### 5.2. Dependencies
+
+- **Click** (≥7.0): Command-line interface framework
+- **lxml** (≥4.4.1): XML parsing for .ui files
+- **PyYAML** (≥5.1.1): YAML file processing
+- **yaplon**: Enhanced YAML processing with dict support
+- **Qt.py** (≥1.2.1): Qt compatibility layer
+
+### 5.3. Processing Logic
+
+#### 5.3.1. Widget Extraction (`UIDoc.extractWidgets()`)
+
+```python
+# Simplified extraction flow
+1. Parse UI XML with lxml
+2. Find all widgets with object names
+3. Extract metadata: ID, name, tooltip, type
+4. Build hierarchical structure using XPath
+5. Generate YAML-friendly data structure
+```
+
+#### 5.3.2. YAML Generation (`UIDoc.updateYaml()`)
+
+```python
+# YAML structure per widget
+widget_id:
+  h.nam: "Human readable name"
+  h.tip: "Help tip content"
+  h.cls: "Widget class name"
+  # Additional metadata...
+```
+
+#### 5.3.3. JSON Compilation (`UIBuild.build()`)
+
+```python
+# Build process
+1. Load all YAML files from directory
+2. Process text with prepMarkdown()
+3. Resolve cross-references between tips
+4. Compile into single JSON structure
+5. Add debug information if requested
+```
+
+## 6. Why This Architecture?
+
+### 6.1. Design Principles
+
+1. **Separation of Concerns**: CLI, processing, and building are distinct modules
+2. **Format Flexibility**: Multiple output formats (YAML for editing, JSON for runtime)
+3. **Human-Friendly**: YAML files are editable and version-control friendly
+4. **Bidirectional Sync**: Changes can flow from UI to docs or docs to UI
+5. **Incremental Updates**: Process only changed files for large projects
+
+### 6.2. Technical Decisions
+
+- **lxml over xml.etree**: Better XPath support and namespace handling
+- **dict**: Ensures consistent YAML output for version control
+- **Click over argparse**: More sophisticated CLI with nested commands
+- **YAML intermediate format**: Human-readable, editable, diff-friendly
+- **uv script headers**: Modern Python dependency management
+
+## 7. File Format Examples
+
+### 7.1. Input: Qt .ui File
+
+```xml
+<ui version="4.0">
+  <widget class="QMainWindow" name="MainWindow">
+    <widget class="QPushButton" name="saveButton">
+      <property name="toolTip">
+        <string>Save the current document</string>
+      </property>
+    </widget>
+  </widget>
+</ui>
+```
+
+### 7.2. Output: YAML Documentation
+
+```yaml
+saveButton:
+  h.nam: 'Save Button'
+  h.tip: 'Save the current document to disk'
+  h.cls: 'QPushButton'
+```
+
+### 7.3. Output: JSON Help System
+
+```json
+{
+  "saveButton": {
+    "name": "Save Button",
+    "tip": "Save the current document to disk",
+    "class": "QPushButton"
+  }
+}
+```
+
+--- 
+
+</document_content>
+</document>
+
+<document index="10">
+<source>TODO.md</source>
+<document_content>
+# qtuidoctools Modernization TODO
+
+## Important: Parallelization
+
+### Phase A: Core Parallel Processing
+- [ ] Refactor UIDoc.updateXmlAndYaml() to be process-safe
+- [ ] Implement parallel file discovery and batching  
+- [ ] Create worker function for independent file processing
+- [ ] Add process pool management with configurable worker count
+- [ ] Add --workers CLI option to control parallelization level
+
+### Phase B: Shared Resource Management  
+- [ ] Implement TOC accumulation strategy using process-safe data structures
+- [ ] Add file locking mechanisms for shared YAML/TOC files
+- [ ] Create result consolidation pipeline in main process
+- [ ] Ensure atomic operations for critical file updates
+- [ ] Add graceful fallback to sequential processing on errors
+
+### Phase C: Optimization and Monitoring
+- [ ] Add progress reporting with file counts and timing information
+- [ ] Implement adaptive batch sizing based on file sizes
+- [ ] Add memory usage monitoring and limits
+- [ ] Create performance profiling and benchmarking tools
+- [ ] Add --benchmark flag for performance testing
+
+### Phase D: Testing and Validation
+- [ ] Create comprehensive tests with large UI file sets
+- [ ] Add race condition and concurrency testing
+- [ ] Implement performance benchmarking across different configurations
+- [ ] Validate backwards compatibility with existing workflows
+- [ ] Test error handling and recovery scenarios
+
+
+
+## Testing Infrastructure
+
+- [ ] Create tests/ directory structure
+- [ ] Add pytest configuration to pyproject.toml
+- [ ] Create test_qtui.py with UIDoc class tests
+- [ ] Create test_qtuibuild.py with UIBuild class tests
+- [ ] Create test_textutils.py with utility function tests
+- [ ] Create test_cli.py with Fire CLI tests
+- [ ] Add integration tests for full workflow
+- [ ] Configure pytest-cov for coverage reporting
+- [ ] Ensure >90% test coverage
+- [ ] Run `pytest --cov=src/qtuidoctools` successfully
+
+## Code Organization and Documentation
+
+- [ ] Enhance docstrings for all public functions
+- [ ] Update README.md with new build system and Fire CLI
+- [ ] Update CLAUDE.md with new development workflow
+- [ ] Add type hints where beneficial
+- [ ] Create CHANGELOG.md with modernization changes
+- [ ] Configure hatch scripts for common tasks
+- [ ] Update this_file paths in all source files
+
+## Final Verification and Testing
+
+- [ ] Run full lint check: `ruff check .` (no errors)
+- [ ] Run full format check: `ruff format .` (no changes)
+- [ ] Run complete test suite: `pytest` (all pass)
+- [ ] Build package: `hatch build` (success)
+- [ ] Test fresh installation in new venv
+- [ ] Verify all CLI commands work identically with Fire
+- [ ] Test .ui file processing workflow
+- [ ] Test YAML to JSON compilation
+- [ ] Run post-edit Python commands from CLAUDE.md
+- [ ] Verify no functionality regressions
+
+## Critical Requirements
+
+- [ ] Code must remain Python 3.11+ compliant
+- [ ] Must use pyproject.toml with hatch-vcs
+- [ ] Must use hatch for build system with src layout
+- [ ] Must use ruff for linting and formatting
+- [ ] Must use uv for dependency management
+- [ ] Must use fire for CLI instead of click
+- [ ] Code must remain clean and well-organized
+- [ ] Code must be well-documented
+- [ ] Code must be well-tested
+- [ ] Code must be well-maintained
+- [ ] MUST NOT break existing functionality
+- [ ] Keep all changes surgical and minimal
+</document_content>
+</document>
+
+<document index="11">
+<source>WORK.md</source>
+<document_content>
+# Current Work Progress
+
+## Active Tasks
+
+### 1. Testing Infrastructure Setup (Step 5)
+**Status**: Ready to start
+**Objective**: Add comprehensive test coverage for existing functionality
+
+#### Current Task: Set up Testing Structure  
+- [ ] Create comprehensive tests/ directory structure
+- [ ] Add pytest configuration to pyproject.toml (already done)
+- [ ] Create test_qtui.py with UIDoc class tests
+- [ ] Create test_qtuibuild.py with UIBuild class tests
+- [ ] Fix existing test_textutils.py (5 failing tests identified)
+- [ ] Ensure >90% test coverage
+- [ ] Run `pytest --cov=src/qtuidoctools` successfully
+
+### 2. Documentation Updates  
+**Status**: Pending
+**Dependencies**: Complete testing infrastructure first
+
+## Completed Recent Work
+
+### ✅ CLI Framework Migration (Step 4) 
+**Completed**: CLI migration from Click to Fire framework
+- ✅ Dependencies already had fire>=0.5.0, no click dependency found
+- ✅ __main__.py was already converted to Fire with QtUIDocTools class
+- ✅ All CLI commands (update, build, cleanup, version) work identically with Fire
+- ✅ Entry point correctly uses fire.Fire(QtUIDocTools)  
+- ✅ Updated CLI tests from Click's CliRunner to subprocess calls for Fire
+- ✅ All 6 CLI tests now pass with Fire framework
+- ✅ Code passes ruff linting and formatting checks
+
+### ✅ Src Layout Migration
+- Moved qtuidoctools package to src/qtuidoctools/
+- Updated all this_file paths
+- Configured pyproject.toml for src layout
+- Updated test and coverage paths
+
+### ✅ Hatch-VCS Setup
+- Added hatch-vcs dependency to build system
+- Configured git-tag based versioning
+- Added version file generation
+- Updated __init__.py to use dynamic versioning
+
+### ✅ External Files Integration
+- Replaced textutils.py with properly functioning external version
+- Replaced keymap_db.py with complete external version
+- Fixed Python 3.11+ compatibility issues
+- Fixed f-string backslash syntax issues
+
+## Next Iteration Goals
+
+1. ✅ Complete CLI migration from Click to Fire
+2. ✅ Ensure all commands work identically  
+3. ✅ Update tests to work with Fire
+4. **CURRENT**: Move to testing infrastructure setup (Step 5)
+</document_content>
+</document>
+
+<document index="12">
+<source>build.sh</source>
+<document_content>
+#!/usr/bin/env bash
+cd "$(dirname "$0")"
+hatch clean; 
+gitnextver .; 
+hatch build; 
+
+</document_content>
+</document>
+
+<document index="13">
+<source>pyproject.toml</source>
+<document_content>
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "qtuidoctools"
+dynamic = ["version"]
+description = "Tools for working with Qt .ui files"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+authors = [
+    { name = "Adam Twardoch", email = "adam+github@twardoch.com" },
+]
+keywords = ["qt", "ui", "documentation", "yaml", "json", "cli"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Text Processing :: Markup :: XML",
+]
+dependencies = [
+    "fire>=0.5.0",
+    "lxml>=4.4.1", 
+    "PyYAML>=5.1.1",
+    "Qt.py>=1.2.1",
+    "yaplon",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "mypy>=1.0",
+    "ruff>=0.6.0",
+]
+
+[project.urls]
+Homepage = "https://twardoch.github.io/qtuidoctools/"
+Source = "https://github.com/twardoch/qtuidoctools"
+Issues = "https://github.com/twardoch/qtuidoctools/issues"
+
+[project.scripts]
+qtuidoctools = "qtuidoctools.__main__:cli"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/qtuidoctools/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/qtuidoctools"]
+
+[tool.hatch.envs.default]
+dependencies = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "mypy>=1.0",
+    "ruff>=0.6.0",
+]
+
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+test-cov = "pytest --cov=src/qtuidoctools --cov-report=term-missing {args:tests}"
+lint = "ruff check {args:.}"
+format = "ruff format {args:.}"
+type-check = "mypy src/qtuidoctools"
+all = ["lint", "format", "type-check", "test-cov"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+exclude = [
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+[tool.ruff.lint]
+# Enable pyflakes (F) and pycodestyle (E) errors by default
+select = [
+    "E4", "E7", "E9",  # pycodestyle errors
+    "F",               # pyflakes
+    "W",               # pycodestyle warnings  
+    "I",               # isort
+    "UP",              # pyupgrade
+    "B",               # flake8-bugbear
+]
+ignore = [
+    "E501",  # line too long (handled by formatter)
+]
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint.isort]
+known-first-party = ["qtuidoctools"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.coverage.run]
+source = ["src/qtuidoctools"]
+omit = [
+    "tests/*",
+    "*/__pycache__/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false  # Start permissive, tighten later
+disallow_incomplete_defs = false
+check_untyped_defs = true
+disallow_untyped_decorators = false
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "lxml.*",
+    "yaplon.*", 
+    "Qt.*",
+]
+ignore_missing_imports = true
+</document_content>
+</document>
+
+# File: /Users/adam/Developer/vcs/github.fontlabcom/qtuidoctools/src/qtuidoctools/__init__.py
+# Language: python
+
+from ._version import __version__
+
+
+# File: /Users/adam/Developer/vcs/github.fontlabcom/qtuidoctools/src/qtuidoctools/__main__.py
+# Language: python
+
+import sys
+import fire
+from yaplon import oyaml
+from . import __version__
+from .qtui import UIDoc, getUiPaths
+from .qtuibuild import UIBuild
+
+class QtUIDocTools:
+    """ qtuidoctools..."""
+    def version((self)):
+        """Show the version and exit."""
+    def update((
+        self,
+        uidir=None,
+        uixml=None,
+        tocyaml=None,
+        outyamldir=None,
+        nosavexml=False,
+        tooltipstoxml=False,
+        tooltipstoyaml=False,
+        replaceinyaml=False,
+        emptytoyaml=False,
+        alwayssaveyaml=False,
+        verbose=False,
+        quiet=False,
+    )):
+        """ -d UIDIR | -u UI -t TOC -o YAMLDIR  (UI file or folder to YAML files)..."""
+    def cleanup((
+        self,
+        uidir=None,
+        uixml=None,
+        tocyaml=None,
+        outyamldir=None,
+        emptytoyaml=False,
+        compactyaml=False,
+        verbose=False,
+        quiet=False,
+    )):
+        """ [-c] [-e] -d UIDIR | -u UI | -t TOC | -o YAMLDIR (do a purely technical refresh of a given componen..."""
+    def build((
+        self,
+        json=None,
+        toc=None,
+        dir=None,
+        extra=False,
+        verbose=False,
+        quiet=False,
+    )):
+        """ -j JSON -t TOC -d DIR (YAML files to JSON)..."""
+
+def clipaths((uidir, uipath)):
+    """Get UI paths from directory or single path."""
+
+def cleanUpYamlData((data, allowEmpty=True)):
+    """Clean up YAML data structure."""
+
+def version((self)):
+    """Show the version and exit."""
+
+def update((
+        self,
+        uidir=None,
+        uixml=None,
+        tocyaml=None,
+        outyamldir=None,
+        nosavexml=False,
+        tooltipstoxml=False,
+        tooltipstoyaml=False,
+        replaceinyaml=False,
+        emptytoyaml=False,
+        alwayssaveyaml=False,
+        verbose=False,
+        quiet=False,
+    )):
+    """ -d UIDIR | -u UI -t TOC -o YAMLDIR  (UI file or folder to YAML files)..."""
+
+def cleanup((
+        self,
+        uidir=None,
+        uixml=None,
+        tocyaml=None,
+        outyamldir=None,
+        emptytoyaml=False,
+        compactyaml=False,
+        verbose=False,
+        quiet=False,
+    )):
+    """ [-c] [-e] -d UIDIR | -u UI | -t TOC | -o YAMLDIR (do a purely technical refresh of a given componen..."""
+
+def build((
+        self,
+        json=None,
+        toc=None,
+        dir=None,
+        extra=False,
+        verbose=False,
+        quiet=False,
+    )):
+    """ -j JSON -t TOC -d DIR (YAML files to JSON)..."""
+
+def cli(()):
+    """Main CLI entry point."""
+
+
+# File: /Users/adam/Developer/vcs/github.fontlabcom/qtuidoctools/src/qtuidoctools/cli_utils.py
+# Language: python
+
+import logging
+import sys
+from pathlib import Path
+from typing import Any
+from rich import box
+from rich.console import Console
+from rich.panel import Panel
+from rich.table import Table
+from rich.logging import RichHandler
+from .qtui import getUiPaths
+
+def setup_structured_logging((
+    verbose: bool = False, debug: bool = False
+)) -> logging.Logger:
+    """Configure structured logging with Rich handler and return module logger."""
+
+def log_processing_start((logger: logging.Logger, method: str, **params)):
+
+def log_processing_step((
+    logger: logging.Logger, step: str, details: str = "", level: str = "info"
+)):
+
+def log_file_operation((
+    logger: logging.Logger,
+    operation: str,
+    file_path: str,
+    status: str = "success",
+    details: str = "",
+)):
+
+def log_performance_metrics((
+    logger: logging.Logger,
+    operation: str,
+    files_count: int,
+    elapsed_time: float,
+    workers: int = 1,
+    success_count: int | None = None,
+    error_count: int | None = None,
+)):
+
+def log_validation_error((
+    logger: logging.Logger, error_type: str, message: str, suggestion: str | None = None
+)):
+
+def format_user_error((
+    error: Exception, context: str = "", suggestions: list[str] | None = None
+)) -> str:
+
+def show_version((__version__: str)):
+
+def show_processing_summary((total_files: int, workers: int, mode: str = "parallel")):
+
+def show_parallel_results((
+    successful_files: list[str],
+    failed_files: list[dict[str, Any]],
+    elapsed_time: float,
+    verbose: bool = False,
+)):
+
+def show_worker_progress((results: list[dict[str, Any]], quiet: bool = False)):
+
+def clipaths((uidir: str | None, uipath: str | None)) -> list[str]:
+    """Compute UI paths from a directory or a single path; exit with guidance when missing."""
+
+def cleanUpYamlData((
+    data: dict[str, dict[str, str]], allowEmpty: bool = True
+)) -> dict[str, dict[str, str]]:
+    """Clean up YAML data structure by sorting keys and optionally pruning empty values."""
+
+
+# File: /Users/adam/Developer/vcs/github.fontlabcom/qtuidoctools/src/qtuidoctools/keymap_db.py
+# Language: python
+
+
+
+# File: /Users/adam/Developer/vcs/github.fontlabcom/qtuidoctools/src/qtuidoctools/merge_utils.py
+# Language: python
+
+import logging
+from pathlib import Path
+from typing import Any
+from yaplon import oyaml
+from .cli_utils import (
+    COLORS,
+    console,
+    format_user_error,
+    log_file_operation,
+    log_processing_step,
+)
+import os
+import yaml
+from .cli_utils import format_user_error
+
+def merge_yaml_files((
+    outyamldir: str, all_results: list[dict[str, Any]], verbose: bool
+)) -> None:
+    """Merge YAML data from parallel workers into consolidated YAML files."""
+
+def merge_toc_files((
+    tocyaml: str, toc_data_list: list[dict[str, Any]], verbose: bool
+)) -> None:
+    """Merge TOC data from workers and save to a single YAML file."""
+
+def _merge_one((dst: dict[str, Any], src: dict[str, Any])):
+
+
+# File: /Users/adam/Developer/vcs/github.fontlabcom/qtuidoctools/src/qtuidoctools/qtui.py
+# Language: python
+
+import datetime
+import logging
+import os.path
+import re
+from pathlib import Path
+from typing import Any
+from lxml import etree
+from yaplon import oyaml
+from .qtuibuild import UIBuild, prepMarkdown
+from Qt import QtCompat, QtWidgets
+
+class UIDoc:
+    """ Class that deals with a single QtUI XML file...."""
+    def __init__((
+        self,
+        uipath: str,
+        logLevel: str = "INFO",
+        tocpath: str | None = None,
+        yamldir: str | None = None,
+        emptytoyaml: bool = False,
+        alwayssaveyaml: bool = False,
+    )):
+        """ Initializes the UIDoc object...."""
+    def msg((self, msg: tuple)) -> str:
+        """Formats a log message."""
+    def log((self, *msg: Any)) -> None:
+        """Log as debug."""
+    def print((self, *msg: Any)) -> None:
+        """Log as info."""
+    def warn((self, *msg: Any)) -> None:
+        """Log as warning."""
+    def err((self, *msg: Any)) -> None:
+        """Log as error."""
+    def pprint((self, o: Any)) -> None:
+        """Pretty-print object as YAML."""
+    def toYaml((
+        self, o: Any, quote_strings: bool = False, block_strings: bool = True
+    )) -> str:
+        """Converts an object to a YAML string."""
+    def setUp((self, logLevel: str = "INFO")) -> None:
+        """Prepare the object."""
+    def openXml((self)) -> None:
+        """Read self.tree from XML UI file."""
+    def saveXml((self, uipath: str | None = None)) -> None:
+        """Save self.tree into XML UI file."""
+    def setModifiedXml((self)) -> None:
+        """Marks the XML as modified and updates the TOC."""
+    def setModifiedYaml((self)) -> None:
+        """Marks the YAML as modified and updates the TOC."""
+    def updateTocMod((self)) -> None:
+        """Updates the modification status in the TOC."""
+    def openToc((self)) -> None:
+        """Read YAML file into self.toc."""
+    def saveToc((self)) -> None:
+        """Save self.toc as YAML file."""
+    def pruneYaml((self)) -> None:
+        """Cleans up the YAML data before saving."""
+    def openYaml((self)) -> None:
+        """Read YAML file into self.tips."""
+    def saveYaml((self)) -> None:
+        """Write self.tips as YAML file."""
+    def updateTocProp((self, prop: str | None = None, val: str = "")) -> None:
+        """Update Table of contents entry."""
+    def getnicepath((self, el: etree._Element)) -> str:
+        """Gets a user-friendly path for an element."""
+    def updateToc((self)) -> None:
+        """Update Table of contents."""
+    def editTipText((self, text: str | None)) -> str | None:
+        """Edits the tip text if necessary."""
+    def copyPropFromXmlToYaml((
+        self,
+        el: etree._Element,
+        wid: str,
+        xmlprop: str = "toolTip",
+        yamlprop: str = "u._tip",
+        replace: bool = False,
+        bakyamlprop: str | None = None,
+        outempty: bool = False,
+        useText: bool = False,
+    )) -> None:
+        """ Find XML property for widget and copy to self.tips ("YAML")...."""
+    def updateTipInXml((
+        self,
+        el: etree._Element,
+        tip: str,
+        text: str | None = None,
+        delete: bool = False,
+    )) -> None:
+        """Updates a tip property in the XML element."""
+    def updateWidget((self, el: etree._Element)) -> None:
+        """ Update a given <widget> or <action> element in XML and its info in YAML...."""
+    def updateXmlAndYaml((self)) -> None:
+        """ Main method for updating the XML and YAML...."""
+    def prepQtApp((self)) -> None:
+        """Prepares and shows the UI file as a Qt application for testing."""
+    def showQtApp((self)) -> None:
+        """Run the Qt app event loop."""
+    def quitQtApp((self)) -> None:
+        """Quit the Qt app and clean up any temporary modules."""
+    def update((
+        self,
+        rebuildStatusTipsInXml: bool = True,
+        replaceToolTipsInXml: bool = False,
+        replaceToolTipsInYaml: bool = False,
+        updateYaml: bool = True,
+        replaceNamInYaml: bool = False,
+        saveXml: bool = True,
+    )) -> None:
+        """ Perform update of XML and/or YAML...."""
+
+def rchop((s: str, sub: str)) -> str:
+    """Remove a substring from the end of a string."""
+
+def lchop((s: str, sub: str)) -> str:
+    """Remove a substring from the beginning of a string."""
+
+def getUiPaths((path: str = "*.ui", dir: str | None = None)) -> list[str]:
+    """Get a list of UI file paths."""
+
+def __init__((
+        self,
+        uipath: str,
+        logLevel: str = "INFO",
+        tocpath: str | None = None,
+        yamldir: str | None = None,
+        emptytoyaml: bool = False,
+        alwayssaveyaml: bool = False,
+    )):
+    """ Initializes the UIDoc object...."""
+
+def msg((self, msg: tuple)) -> str:
+    """Formats a log message."""
+
+def log((self, *msg: Any)) -> None:
+    """Log as debug."""
+
+def print((self, *msg: Any)) -> None:
+    """Log as info."""
+
+def warn((self, *msg: Any)) -> None:
+    """Log as warning."""
+
+def err((self, *msg: Any)) -> None:
+    """Log as error."""
+
+def pprint((self, o: Any)) -> None:
+    """Pretty-print object as YAML."""
+
+def toYaml((
+        self, o: Any, quote_strings: bool = False, block_strings: bool = True
+    )) -> str:
+    """Converts an object to a YAML string."""
+
+def setUp((self, logLevel: str = "INFO")) -> None:
+    """Prepare the object."""
+
+def openXml((self)) -> None:
+    """Read self.tree from XML UI file."""
+
+def saveXml((self, uipath: str | None = None)) -> None:
+    """Save self.tree into XML UI file."""
+
+def setModifiedXml((self)) -> None:
+    """Marks the XML as modified and updates the TOC."""
+
+def setModifiedYaml((self)) -> None:
+    """Marks the YAML as modified and updates the TOC."""
+
+def updateTocMod((self)) -> None:
+    """Updates the modification status in the TOC."""
+
+def openToc((self)) -> None:
+    """Read YAML file into self.toc."""
+
+def saveToc((self)) -> None:
+    """Save self.toc as YAML file."""
+
+def pruneYaml((self)) -> None:
+    """Cleans up the YAML data before saving."""
+
+def openYaml((self)) -> None:
+    """Read YAML file into self.tips."""
+
+def saveYaml((self)) -> None:
+    """Write self.tips as YAML file."""
+
+def updateTocProp((self, prop: str | None = None, val: str = "")) -> None:
+    """Update Table of contents entry."""
+
+def getnicepath((self, el: etree._Element)) -> str:
+    """Gets a user-friendly path for an element."""
+
+def updateToc((self)) -> None:
+    """Update Table of contents."""
+
+def editTipText((self, text: str | None)) -> str | None:
+    """Edits the tip text if necessary."""
+
+def copyPropFromXmlToYaml((
+        self,
+        el: etree._Element,
+        wid: str,
+        xmlprop: str = "toolTip",
+        yamlprop: str = "u._tip",
+        replace: bool = False,
+        bakyamlprop: str | None = None,
+        outempty: bool = False,
+        useText: bool = False,
+    )) -> None:
+    """ Find XML property for widget and copy to self.tips ("YAML")...."""
+
+def updateTipInXml((
+        self,
+        el: etree._Element,
+        tip: str,
+        text: str | None = None,
+        delete: bool = False,
+    )) -> None:
+    """Updates a tip property in the XML element."""
+
+def updateWidget((self, el: etree._Element)) -> None:
+    """ Update a given <widget> or <action> element in XML and its info in YAML...."""
+
+def updateXmlAndYaml((self)) -> None:
+    """ Main method for updating the XML and YAML...."""
+
+def prepQtApp((self)) -> None:
+    """Prepares and shows the UI file as a Qt application for testing."""
+
+def showQtApp((self)) -> None:
+    """Run the Qt app event loop."""
+
+def quitQtApp((self)) -> None:
+    """Quit the Qt app and clean up any temporary modules."""
+
+def update((
+        self,
+        rebuildStatusTipsInXml: bool = True,
+        replaceToolTipsInXml: bool = False,
+        replaceToolTipsInYaml: bool = False,
+        updateYaml: bool = True,
+        replaceNamInYaml: bool = False,
+        saveXml: bool = True,
+    )) -> None:
+    """ Perform update of XML and/or YAML...."""
+
+
+# File: /Users/adam/Developer/vcs/github.fontlabcom/qtuidoctools/src/qtuidoctools/qtuibuild.py
+# Language: python
+
+import datetime
+import glob
+import json
+import os
+import plistlib
+from typing import Any
+import yaml
+from .textutils import prepMarkdown
+import sys
+from textutils import prepMarkdown
+import sys
+
+class CustomLoader(l, o, a, d, e, r):
+
+class UIBuild:
+    """ Class that compiles JSON help tips from YAML documentation files...."""
+    def __init__((
+        self, jsonpath: str, dir: str, extra: bool = False, logLevel: str = "INFO"
+    )) -> None:
+        """Initialize the UIBuild processor."""
+    def parseTipText((
+        self, wid: str, prop: str = "h.hlp", fallback: str | None = None
+    )) -> str | None:
+        """Parse and process tip text for a widget ID."""
+    def build((self)) -> None:
+        """Build the JSON help tips file from YAML sources."""
+
+def read_yaml((stream: Any, loader: Any = yaml.Loader)) -> Any:
+    """ Load YAML with custom constructors for consistent data types...."""
+
+def binary_constructor((self, node)):
+
+def timestamp_constructor((self, node)):
+
+def construct_mapping((loader_instance, node)):
+
+def getYamlPaths((path: str = "*.yaml", dir: str | None = None)) -> list[str]:
+    """Get list of YAML file paths matching the given pattern."""
+
+def __init__((
+        self, jsonpath: str, dir: str, extra: bool = False, logLevel: str = "INFO"
+    )) -> None:
+    """Initialize the UIBuild processor."""
+
+def parseTipText((
+        self, wid: str, prop: str = "h.hlp", fallback: str | None = None
+    )) -> str | None:
+    """Parse and process tip text for a widget ID."""
+
+def build((self)) -> None:
+    """Build the JSON help tips file from YAML sources."""
+
+
+# File: /Users/adam/Developer/vcs/github.fontlabcom/qtuidoctools/src/qtuidoctools/textutils.py
+# Language: python
+
+import re
+from .keymap_db import aliases, keymap
+import sys
+from keymap_db import aliases, keymap
+
+class KeysPattern:
+    """Return kbd tag."""
+    def __init__((self, md: str, pattern: str = RE_KBD)) -> None:
+        """Initialize."""
+    def merge((self, x: dict[str, str], y: dict[str, str])) -> dict[str, str]:
+        """Given two dicts, merge them into a new dict."""
+    def normalize((self, key: str)) -> str:
+        """Normalize the value."""
+    def process_key((self, key: str)) -> tuple[str | None, str] | None:
+        """Process key."""
+    def handleMatch((self, m)):
+        """Handle kbd pattern matches."""
+    def sub((self)):
+
+class MarkPattern:
+    def __init__((self, md)):
+        """Initialize."""
+    def handleMatch((self, m)):
+    def sub((self)):
+
+class SmallPattern:
+    def __init__((self, md)):
+        """Initialize."""
+    def handleMatch((self, m)):
+    def sub((self)):
+
+def __init__((self, md: str, pattern: str = RE_KBD)) -> None:
+    """Initialize."""
+
+def merge((self, x: dict[str, str], y: dict[str, str])) -> dict[str, str]:
+    """Given two dicts, merge them into a new dict."""
+
+def normalize((self, key: str)) -> str:
+    """Normalize the value."""
+
+def process_key((self, key: str)) -> tuple[str | None, str] | None:
+    """Process key."""
+
+def handleMatch((self, m)):
+    """Handle kbd pattern matches."""
+
+def sub((self)):
+
+def __init__((self, md)):
+    """Initialize."""
+
+def handleMatch((self, m)):
+
+def sub((self)):
+
+def __init__((self, md)):
+    """Initialize."""
+
+def handleMatch((self, m)):
+
+def sub((self)):
+
+def prepMarkdown((md: str)) -> str:
+    """Prepare markdown-like text for display in Qt help tips."""
+
+
+# File: /Users/adam/Developer/vcs/github.fontlabcom/qtuidoctools/src/qtuidoctools/update_worker.py
+# Language: python
+
+import time
+from typing import Any
+from .qtui import UIDoc
+import os
+import traceback
+import yaml
+
+def process_ui_file_worker((
+    ui_file_path: str,
+    tocyaml: str | None,
+    outyamldir: str,
+    emptytoyaml: bool,
+    alwayssaveyaml: bool,
+    logLevel: str,
+    nosavexml: bool,
+    tooltipstoxml: bool,
+    tooltipstoyaml: bool,
+    replaceinyaml: bool,
+    verbose: bool = False,
+)) -> dict[str, Any]:
+    """Process a single UI file in isolation and return a structured result dict."""
+
+def ordered_dict_to_dict((obj)):
+
+
+# File: /Users/adam/Developer/vcs/github.fontlabcom/qtuidoctools/tests/__init__.py
+# Language: python
+
+
+
+# File: /Users/adam/Developer/vcs/github.fontlabcom/qtuidoctools/tests/test_cli.py
+# Language: python
+
+import subprocess
+import sys
+from io import StringIO
+from unittest.mock import patch
+from qtuidoctools.__main__ import QtUIDocTools, cli
+
+def test_cli_help(()):
+    """Test that the CLI shows help without errors."""
+
+def test_cli_version(()):
+    """Test that the CLI shows version without errors."""
+
+def test_update_help(()):
+    """Test that update command shows help."""
+
+def test_build_help(()):
+    """Test that build command shows help."""
+
+def test_cleanup_help(()):
+    """Test that cleanup command shows help."""
+
+def test_qtuidoctools_class_directly(()):
+    """Test that QtUIDocTools class can be instantiated and used directly."""
+
+
+# File: /Users/adam/Developer/vcs/github.fontlabcom/qtuidoctools/tests/test_integration.py
+# Language: python
+
+import json
+import tempfile
+from pathlib import Path
+import pytest
+import yaml
+from qtuidoctools.__main__ import QtUIDocTools
+from qtuidoctools.qtui import UIDoc
+from qtuidoctools.qtuibuild import UIBuild
+from lxml.etree import XMLSyntaxError
+
+class TestFullWorkflow:
+    """Test the complete workflow from .ui files to JSON output."""
+    def test_ui_to_yaml_workflow((self, sample_ui_content)):
+        """Test .ui file to YAML conversion."""
+    def test_yaml_to_json_workflow((self, sample_ui_content)):
+        """Test YAML to JSON compilation."""
+    def test_complete_cli_workflow((self, sample_ui_content, sample_ui_simple)):
+        """Test the complete workflow using CLI commands."""
+    def test_empty_ui_file_handling((self)):
+        """Test handling of empty or minimal UI files."""
+    def test_tooltip_synchronization((self, sample_ui_content)):
+        """Test bidirectional tooltip synchronization."""
+    def test_error_handling_invalid_ui((self)):
+        """Test error handling with invalid UI files."""
+
+def sample_ui_content((self)):
+    """Sample Qt UI file content with various widgets."""
+
+def sample_ui_simple((self)):
+    """Simple UI file with minimal content."""
+
+def test_ui_to_yaml_workflow((self, sample_ui_content)):
+    """Test .ui file to YAML conversion."""
+
+def test_yaml_to_json_workflow((self, sample_ui_content)):
+    """Test YAML to JSON compilation."""
+
+def test_complete_cli_workflow((self, sample_ui_content, sample_ui_simple)):
+    """Test the complete workflow using CLI commands."""
+
+def test_empty_ui_file_handling((self)):
+    """Test handling of empty or minimal UI files."""
+
+def test_tooltip_synchronization((self, sample_ui_content)):
+    """Test bidirectional tooltip synchronization."""
+
+def test_error_handling_invalid_ui((self)):
+    """Test error handling with invalid UI files."""
+
+
+# File: /Users/adam/Developer/vcs/github.fontlabcom/qtuidoctools/tests/test_qtui.py
+# Language: python
+
+import os
+import tempfile
+from pathlib import Path
+import pytest
+from qtuidoctools.qtui import UIDoc, getUiPaths, lchop, rchop
+
+class TestUtilityFunctions:
+    """Test utility functions."""
+    def test_rchop_removes_suffix((self)):
+        """Test rchop removes substring from end."""
+    def test_lchop_removes_prefix((self)):
+        """Test lchop removes substring from beginning."""
+
+class TestGetUiPaths:
+    """Test getUiPaths function."""
+    def test_getUiPaths_empty_directory((self)):
+        """Test getUiPaths with empty directory."""
+    def test_getUiPaths_with_ui_files((self)):
+        """Test getUiPaths finds .ui files."""
+    def test_getUiPaths_single_file((self)):
+        """Test getUiPaths with single file path."""
+
+class TestUIDoc:
+    """Test UIDoc class."""
+    def test_uidoc_initialization((self, temp_ui_file, temp_yaml_dir)):
+        """Test UIDoc initialization."""
+    def test_uidoc_initialization_with_invalid_file((self, temp_yaml_dir)):
+        """Test UIDoc initialization with non-existent file."""
+    def test_uidoc_basic_properties((self, temp_ui_file, temp_yaml_dir)):
+        """Test basic UIDoc properties."""
+    def test_uidoc_widget_processing((self, temp_ui_file, temp_yaml_dir)):
+        """Test that UIDoc can process widgets."""
+    def test_init_without_yamldir((self)):
+        """Test UIDoc initialization without yamldir raises error."""
+    def test_init_missing_ui_file((self)):
+        """Test UIDoc initialization with missing UI file."""
+    def test_process_various_widget_types((self, sample_ui_content)):
+        """Test processing UI with various widget types."""
+
+def test_rchop_removes_suffix((self)):
+    """Test rchop removes substring from end."""
+
+def test_lchop_removes_prefix((self)):
+    """Test lchop removes substring from beginning."""
+
+def test_getUiPaths_empty_directory((self)):
+    """Test getUiPaths with empty directory."""
+
+def test_getUiPaths_with_ui_files((self)):
+    """Test getUiPaths finds .ui files."""
+
+def test_getUiPaths_single_file((self)):
+    """Test getUiPaths with single file path."""
+
+def sample_ui_content((self)):
+    """Sample UI XML content for testing."""
+
+def temp_ui_file((self, sample_ui_content)):
+    """Create temporary UI file for testing."""
+
+def temp_yaml_dir((self)):
+    """Create temporary YAML directory."""
+
+def test_uidoc_initialization((self, temp_ui_file, temp_yaml_dir)):
+    """Test UIDoc initialization."""
+
+def test_uidoc_initialization_with_invalid_file((self, temp_yaml_dir)):
+    """Test UIDoc initialization with non-existent file."""
+
+def test_uidoc_basic_properties((self, temp_ui_file, temp_yaml_dir)):
+    """Test basic UIDoc properties."""
+
+def test_uidoc_widget_processing((self, temp_ui_file, temp_yaml_dir)):
+    """Test that UIDoc can process widgets."""
+
+def test_init_without_yamldir((self)):
+    """Test UIDoc initialization without yamldir raises error."""
+
+def test_init_missing_ui_file((self)):
+    """Test UIDoc initialization with missing UI file."""
+
+def test_process_various_widget_types((self, sample_ui_content)):
+    """Test processing UI with various widget types."""
+
+
+# File: /Users/adam/Developer/vcs/github.fontlabcom/qtuidoctools/tests/test_qtuibuild.py
+# Language: python
+
+import json
+import os
+import tempfile
+from pathlib import Path
+import pytest
+import yaml
+from yaplon import oyaml
+from qtuidoctools.qtuibuild import UIBuild
+
+class TestUIBuild:
+    """Test UIBuild class."""
+    def test_uibuild_initialization((self, temp_json_file, temp_yaml_dir)):
+        """Test UIBuild initialization."""
+    def test_uibuild_build_creates_json((self, temp_json_file, temp_yaml_dir)):
+        """Test that UIBuild.build() creates JSON file."""
+    def test_uibuild_build_with_extra((self, temp_json_file, temp_yaml_dir)):
+        """Test UIBuild.build() with extra debug info."""
+    def test_uibuild_handles_empty_directory((self, temp_json_file)):
+        """Test UIBuild with empty YAML directory."""
+    def test_uibuild_invalid_yaml_directory((self, temp_json_file)):
+        """Test UIBuild with non-existent YAML directory."""
+    def test_uibuild_markdown_processing((self, temp_json_file, temp_yaml_dir)):
+        """Test that UIBuild processes markdown-like syntax."""
+    def test_build_empty_yaml_directory((self)):
+        """Test building with empty YAML directory."""
+    def test_build_nonexistent_directory((self)):
+        """Test building with non-existent YAML directory."""
+    def test_parse_tip_text_edge_cases((self)):
+        """Test parseTipText with various edge cases."""
+
+def sample_yaml_data((self)):
+    """Sample YAML data for testing."""
+
+def temp_yaml_file((self, sample_yaml_data)):
+    """Create temporary YAML file for testing."""
+
+def temp_yaml_dir((self, sample_yaml_data)):
+    """Create temporary directory with YAML files."""
+
+def temp_json_file((self)):
+    """Create temporary JSON file path."""
+
+def test_uibuild_initialization((self, temp_json_file, temp_yaml_dir)):
+    """Test UIBuild initialization."""
+
+def test_uibuild_build_creates_json((self, temp_json_file, temp_yaml_dir)):
+    """Test that UIBuild.build() creates JSON file."""
+
+def test_uibuild_build_with_extra((self, temp_json_file, temp_yaml_dir)):
+    """Test UIBuild.build() with extra debug info."""
+
+def test_uibuild_handles_empty_directory((self, temp_json_file)):
+    """Test UIBuild with empty YAML directory."""
+
+def test_uibuild_invalid_yaml_directory((self, temp_json_file)):
+    """Test UIBuild with non-existent YAML directory."""
+
+def test_uibuild_markdown_processing((self, temp_json_file, temp_yaml_dir)):
+    """Test that UIBuild processes markdown-like syntax."""
+
+def test_build_empty_yaml_directory((self)):
+    """Test building with empty YAML directory."""
+
+def test_build_nonexistent_directory((self)):
+    """Test building with non-existent YAML directory."""
+
+def test_parse_tip_text_edge_cases((self)):
+    """Test parseTipText with various edge cases."""
+
+
+# File: /Users/adam/Developer/vcs/github.fontlabcom/qtuidoctools/tests/test_textutils.py
+# Language: python
+
+from qtuidoctools.textutils import keymap, prepMarkdown
+
+def test_prepMarkdown_empty(()):
+    """Test prepMarkdown with empty string."""
+
+def test_prepMarkdown_basic_text(()):
+    """Test prepMarkdown with basic text."""
+
+def test_prepMarkdown_bold(()):
+    """Test prepMarkdown with bold text."""
+
+def test_prepMarkdown_italic(()):
+    """Test prepMarkdown with italic text."""
+
+def test_prepMarkdown_code(()):
+    """Test prepMarkdown with code spans."""
+
+def test_prepMarkdown_line_breaks(()):
+    """Test prepMarkdown with line breaks."""
+
+def test_keymap_exists(()):
+    """Test that keymap dictionary exists and has expected keys."""
+
+
+</documents>
