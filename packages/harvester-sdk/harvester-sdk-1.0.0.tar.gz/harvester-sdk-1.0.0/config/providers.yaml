@@ -1,0 +1,228 @@
+# Standardized model groups and aliases
+groups:
+  # Fast, cost-effective models for quick analysis
+  grp-fast:
+    - goo-2  # Gemini 2.5 Flash (65k output)
+    - goo-3  # Gemini 2.5 Flash-Lite (32k output)
+    - gpt-5-nano  # GPT-5 Nano (128k output)
+    - grok-fast  # Grok 3 Mini (32k output)
+    - ds-1   # DeepSeek Chat (8k output)
+    
+  # High-quality reasoning models (excluding slow ones)
+  grp-quality:
+    - vtx-1  # Claude 4 Opus via Vertex (32k output)
+    - goo-1  # Gemini 2.5 Pro (64k output)
+    - gpt-5  # GPT-5 (128k output)
+    - grok-4  # Grok 4 (128k output)
+    - ds-2   # DeepSeek Reasoner (64k output)
+    
+  # Code-specialized models
+  grp-code:
+    - vtx-2  # Claude 4 Sonnet via Vertex (64k output)
+    - ds-1   # DeepSeek Chat (8k output)
+    - gpt-5  # GPT-5 (128k output)
+    - grok-3  # Grok 3 (64k output)
+    
+  # Budget-friendly options
+  grp-budget:
+    - goo-3  # Gemini 2.5 Flash-Lite (lowest cost)
+    - goo-2  # Gemini 2.5 Flash
+    - gpt-5-nano  # GPT-5 Nano (lowest GPT-5 cost)
+    
+  # Image generation model groups (chronological numbering)
+  grp-img-all:
+    - goo-1-img    # Imagen 3 (first)
+    - goo-2-img    # Imagen 4 (newer)
+    - goo-3-img    # Imagen 3 Fast
+    - goo-4-img    # Imagen 4 Ultra (highest quality)
+    - goo-5-img    # Imagen 4 Fast (newest fast model)
+    - dalle-3      # DALL-E 3
+    - gpt-image-1  # GPT Image 1
+    
+  grp-img-premium:
+    - goo-1-img    # Imagen 4 Ultra (newest/highest quality)
+    - goo-2-img    # Imagen 4 (high quality)
+    - dalle-3      # DALL-E 3
+    
+  grp-img-fast:
+    - goo-5-img    # Imagen 4 Fast (newest fast model)
+    - goo-3-img    # Imagen 3 Fast
+    - gpt-image-1  # GPT Image 1 (fast alternative)
+    
+  # Multimodal/Vision models (text models with image understanding)
+  grp-vision:
+    - gemini-exp  # Gemini 2.0 Flash Exp (generates text AND images!)
+    - grok-image  # Grok 2 Image (vision capabilities)
+    - goo-1       # Gemini 2.5 Pro (multimodal)
+    - gpt-5       # GPT-5 (multimodal)
+    
+  # Video generation model groups (chronological numbering)
+  grp-vid-all:
+    - goo-1-vid    # Veo 3 (newer)
+    - goo-2-vid    # Veo 2 (older)
+
+# Provider abstraction configuration
+providers:
+  anthropic:
+    # Direct Anthropic API (requires credits)
+    aliases:
+      # Latest Claude 4 models (actual API model IDs)
+      claude-opus-4-1-20250805: claude-opus-4-1-20250805
+      claude-sonnet-4-20250514: claude-sonnet-4-20250514
+      claude-3-5-haiku-20241022: claude-3-5-haiku-20241022
+
+      # Legacy aliases for backward compatibility
+      ant-1: claude-opus-4-1-20250805
+      ant-2: claude-sonnet-4-20250514  
+      ant-3: claude-3-5-haiku-20241022
+    endpoint: https://api.anthropic.com/v1/messages
+    headers:
+      anthropic-version: "2023-06-01"
+    enabled: true  # API key available
+    
+  # Google AI Studio (GenAI) - Simple API key authentication (no Google Cloud required!)
+  genai:
+    # Using google-genai SDK with simple API key authentication
+    aliases:
+      # Direct model names for Google AI Studio
+      gemini-2.5-pro: gemini-2.5-pro
+      gemini-2.5-flash: gemini-2.5-flash
+      gemini-2.5-flash-lite: gemini-2.5-flash-lite
+      gemini-1.5-pro: gemini-1.5-pro
+      gemini-1.5-flash: gemini-1.5-flash
+      # Convenience aliases
+      goo-1: gemini-2.5-pro            # Gemini 2.5 Pro (GenAI API)
+      goo-2: gemini-2.5-flash          # Gemini 2.5 Flash (GenAI API)  
+      goo-3: gemini-2.5-flash-lite     # Gemini 2.5 Flash-Lite (GenAI API)
+    authentication_method: api_key  # Just needs GEMINI_API_KEY env var
+    provider_class: genai_provider
+    enabled: true
+    
+  google:
+    # Google Vertex AI - Service account authentication (for enterprise/GCP users)
+    aliases:
+      # Vertex AI Gemini models with vtx- prefix for clarity
+      vtx-gemini-2.5-pro: vtx-gemini-2.5-pro           # Gemini 2.5 Pro via Vertex AI
+      vtx-gemini-2.5-flash: vtx-gemini-2.5-flash       # Gemini 2.5 Flash via Vertex AI
+      vtx-gemini-2.5-flash-lite: vtx-gemini-2.5-flash-lite  # Gemini 2.5 Flash-Lite via Vertex AI
+      vtx-gemini-1.5-pro: vtx-gemini-1.5-pro           # Gemini 1.5 Pro via Vertex AI
+      vtx-gemini-1.5-flash: vtx-gemini-1.5-flash       # Gemini 1.5 Flash via Vertex AI
+      # Legacy aliases (these now conflict with genai provider, should migrate)
+      # goo-1: vtx-gemini-2.5-pro        # DEPRECATED: Use genai provider instead
+      # goo-2: vtx-gemini-2.5-flash      # DEPRECATED: Use genai provider instead
+      # goo-3: vtx-gemini-2.5-flash-lite # DEPRECATED: Use genai provider instead
+      # Image generation models (Imagen 4 only - 3.0 deprecated)
+      imagen-4: imagen-4.0-generate-001           # Standard Imagen 4.0
+      imagen-4-ultra: imagen-4.0-ultra-generate-001  # Ultra Imagen 4.0  
+      imagen-4-fast: imagen-4.0-fast-generate-001    # Fast Imagen 4.0
+      goo-1-vid: veo-3                    # First video generation model
+      goo-2-vid: veo-2                    # Second (newer) video generation
+      goo-1-music: lyria                  # First music generation model
+      goo-1-tts: google-tts-pro           # First Google TTS
+      goo-2-tts: google-tts-fast          # Second Google TTS
+    # project_id: YOUR_PROJECT_ID  # Set GOOGLE_CLOUD_PROJECT env var or use google_cloud_setup.yaml
+    location: global
+    authentication_method: service_account  # Uses service account credentials
+    provider_class: google_provider  # Uses GoogleProvider (Vertex AI)
+    enabled: true
+    
+  openai:
+    aliases:
+      gpt-5: gpt-5-2025-08-07
+      gpt-5-mini: gpt-5-mini-2025-08-07
+      gpt-5-nano: gpt-5-nano-2025-08-07
+      # Media generation models (direct names)
+      dalle-3: dall-e-3                   # DALL-E 3 (primary)
+      gpt-image-1: gpt-image-1             # GPT Image 1 (alternative format)
+      gpt-tts-hd: openai-tts-hd             # OpenAI TTS HD
+      gpt-tts-standard: openai-tts-standard  # OpenAI TTS Standard
+    endpoint: https://api.openai.com/v1/chat/completions
+
+  vertex:
+    # Claude models via Vertex AI (using your exact working model names)
+    aliases:
+      vtx-1: claude-opus-4              # Claude 4 Opus via Vertex (32k output)
+      vtx-2: claude-sonnet-4            # Claude 4 Sonnet via Vertex (64k output)
+      vtx-3: claude-3-5-haiku           # Claude 3.5 Haiku (fast/budget)
+      vtx-4: llama-3.1-405b-instruct-maas  # Meta Llama via Vertex
+    # project_id: YOUR_PROJECT_ID  # Set in environment or override in config
+    location: us-east5
+    authentication_method: gcloud_cli
+    rate_limits:
+      requests_per_minute: 60
+      tokens_per_minute: 1000000
+
+  deepseek:
+    aliases:
+      ds-1: deepseek-chat
+      ds-2: deepseek-reasoner
+    endpoint: https://api.deepseek.com/v1/chat/completions
+    requests_per_minute: 60
+    tokens_per_minute: 200000
+
+  xai:
+    aliases:
+      # Direct model IDs from XAI API (ONLY THESE 4 EXIST)
+      grok-4-0709: grok-4-0709         # Grok 4 reasoning model
+      grok-3: grok-3                   # Grok 3 standard
+      grok-3-mini: grok-3-mini         # Grok 3 mini (lightweight)
+      grok-2-image-1212: grok-2-image-1212  # Grok 2 image generation
+      # Aliases for convenience
+      grok-4: grok-4-0709
+      grok-mini: grok-3-mini
+    endpoint: https://api.x.ai/v1/chat/completions
+    rate_limits:
+      requests_per_minute: 100
+      tokens_per_minute: 500000
+
+  # OpenAI image generation providers (separate due to format conflicts)
+  dalle3:
+    aliases:
+      dalle-3: dall-e-3          # Primary alias
+      dalle3: dall-e-3           # Alternative alias
+    endpoint: https://api.openai.com/v1/images/generations
+    rate_limits:
+      requests_per_minute: 50
+      images_per_minute: 100
+      
+  gpt_image:
+    aliases:
+      gpt-image-1: gpt-image-1   # Direct model name
+      gpt-img-1: gpt-image-1     # Alternative alias
+    endpoint: https://api.openai.com/v1/images/gpt-generate
+    rate_limits:
+      requests_per_minute: 40
+      images_per_minute: 80
+
+  vertex_image:
+    aliases:
+      goo-1-img: imagen-4                    # Second Imagen (Imagen 4.0 standard)
+      goo-2-img: imagen-4.0-ultra-generate-001  # Fourth Imagen (Imagen 4.0 Ultra)
+      goo-3-img: imagen-4.0-fast-generate-001   # Fifth Imagen (Imagen 4.0 Fast)
+      # Legacy support
+      g1: imagen-3.0-generate-001
+      g2: imagen-3.0-fast-generate-001
+      g3: imagen-4.0-ultra-generate-001
+      g4: imagen-4.0-fast-generate-001
+    project_id: 
+    location: us-central1
+    authentication_method: gcloud_cli
+    rate_limits:
+      requests_per_minute: 60
+      images_per_minute: 120
+      
+  vertex_video:
+    aliases:
+      goo-1-vid: veo-3           # First video generation
+      goo-2-vid: veo-2           # Second (newer) video generation
+    project_id: 
+    location: us-central1
+    authentication_method: gcloud_cli
+    rate_limits:
+      requests_per_minute: 30
+      videos_per_minute: 60
+
+rate_limits:
+  default:
+    requests_per_minute: 60
+    tokens_per_minute: 90000
