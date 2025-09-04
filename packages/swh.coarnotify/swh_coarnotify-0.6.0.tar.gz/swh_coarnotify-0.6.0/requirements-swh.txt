@@ -1,0 +1,7 @@
+# Add here internal Software Heritage dependencies, one per line.
+# [http] is required by swh.core.pytest_plugin
+swh.core[http]
+# write metadata...
+swh.model
+# to the storage
+swh.storage

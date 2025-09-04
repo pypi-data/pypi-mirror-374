@@ -1,0 +1,52 @@
+Metadata-Version: 2.4
+Name: swh.coarnotify
+Version: 0.6.0
+Summary: Software Heritage COAR Notify server
+Author-email: Software Heritage developers <swh-devel@inria.fr>
+Project-URL: Homepage, https://gitlab.softwareheritage.org/swh/devel/swh-coarnotify
+Project-URL: Bug Reports, https://gitlab.softwareheritage.org/swh/devel/swh-coarnotify/-/issues
+Project-URL: Funding, https://www.softwareheritage.org/donate
+Project-URL: Documentation, https://docs.softwareheritage.org/devel/swh-coarnotify/
+Project-URL: Source, https://gitlab.softwareheritage.org/swh/devel/swh-coarnotify.git
+Classifier: Programming Language :: Python :: 3
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 3 - Alpha
+Requires-Python: >=3.11
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+License-File: AUTHORS
+Requires-Dist: django
+Requires-Dist: pyld
+Requires-Dist: requests
+Requires-Dist: djangorestframework
+Requires-Dist: swh.core[http]
+Requires-Dist: swh.model
+Requires-Dist: swh.storage
+Provides-Extra: testing
+Requires-Dist: django; extra == "testing"
+Requires-Dist: pyld; extra == "testing"
+Requires-Dist: requests; extra == "testing"
+Requires-Dist: djangorestframework; extra == "testing"
+Requires-Dist: swh.core[http]; extra == "testing"
+Requires-Dist: swh.model; extra == "testing"
+Requires-Dist: swh.storage; extra == "testing"
+Requires-Dist: pytest>=8.1; extra == "testing"
+Requires-Dist: swh.core[testing]; extra == "testing"
+Requires-Dist: django-stubs[compatible-mypy]; extra == "testing"
+Requires-Dist: djangorestframework-stubs[compatible-mypy]; extra == "testing"
+Requires-Dist: pytest-django; extra == "testing"
+Requires-Dist: requests-mock; extra == "testing"
+Dynamic: license-file
+
+Software Heritage - COAR Notify
+===============================
+
+A `COAR Notify`_ server implementation in Django. It provides a receiving endpoint
+(Inbox) and handlers for `Announce Relationship pattern`_.
+
+It is currently experimental and **not** suited for production.
+
+.. _COAR Notify: https://coar-notify.net
+.. _Announce Relationship pattern: https://coar-notify.net/specification/1.0.1/announce-relationship/

@@ -1,0 +1,40 @@
+{% comment %}
+Copyright (C) 2025  The Software Heritage developers
+See the AUTHORS file at the top-level directory of this distribution
+License: GNU Affero General Public License version 3, or any later version
+See top-level LICENSE file for more information
+{% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Software Heritage COAR Notify Inbox</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <header>
+      <h1>Welcome to the Software Heritage COAR Notify Inbox</h1>
+    </header>
+    <h2>Overview</h2>
+    <p>
+      Software Heritage makes available to its partners an
+      <a href="https://www.w3.org/TR/activitypub/#inbox">Inbox</a>
+      for receiving data as
+      <a href="https://coar-notify.net/">COAR Notifications</a>, which will then be archived.
+    </p>
+    <p>
+      It is currently experimental and <strong>not</strong> suited for production.
+    </p>
+    <h2>Documentation</h2>
+    <ul>
+      <li>
+        <a href="https://docs.softwareheritage.org/devel/swh-coarnotify/">Developer documentation</a>
+      </li>
+      <li>
+        <a href="https://docs.softwareheritage.org/user/coarnotify/index.html">User manual</a>
+      </li>
+    </ul>
+    <footer>
+      swh-coarnotify v<span id="swh-coarnotify-version">{{ CN_VERSION }}</span>
+    </footer>
+  </body>
+</html>

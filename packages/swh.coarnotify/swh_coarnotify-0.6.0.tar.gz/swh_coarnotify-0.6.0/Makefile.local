@@ -1,0 +1,42 @@
+SETTINGS_DEV ?= swh.coarnotify.settings.development
+SETTINGS_PROD = swh.coarnotify.settings.production
+
+info: header
+define HEADER
+   ___ ___   _   ___   _  _     _   _  __
+  / __/ _ \ /_\ | _ \ | \| |___| |_(_)/ _|_  _
+ | (_| (_) / _ \|   / | .` / _ |  _| |  _| || |
+  \___\___/_/ \_|_|_\ |_|\_\___/\__|_|_|  \_, |
+                                       SWH|__/
+
+endef
+export HEADER
+
+define run_django_server
+	python3 swh/coarnotify/manage.py runserver --settings=$(1)
+endef
+
+define run_django_migrations
+	python3 swh/coarnotify/manage.py migrate --settings=$(1)
+endef
+
+define create_django_fixtures
+	python3 swh/coarnotify/manage.py devusers --settings=$(1)
+endef
+
+devfixtures: migrate ## Create local development users
+	$(call create_django_fixtures,$(SETTINGS_DEV))
+
+migrate: ## DB migration with the development settings
+	$(call run_django_migrations,$(SETTINGS_DEV))
+
+runserver: ## Development server with development settings
+	$(call run_django_server,$(SETTINGS_DEV))
+
+
+.PHONY: help
+help:
+	@echo "$$HEADER"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sed -e s/Makefile.local:// | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-25s\033[0m %s\n", $$1, $$2}'
+
+.DEFAULT_GOAL := help
