@@ -1,0 +1,87 @@
+[build-system]
+build-backend = "flit_core.buildapi"
+requires = ["flit_core >=3.8.0,<4"]
+
+[project] # https://packaging.python.org/en/latest/specifications/declaring-project-metadata/#declaring-project-metadata
+name = "autotuning_methodology"
+version = "1.1.0"
+authors = [{ name = "Floris-Jan Willemsen", email = "fjwillemsen97@gmail.com" }]
+description = "Software package easing implementation of the guidelines of the 2024 paper 'A Methodology for Comparing Auto-Tuning Optimization Algorithms' (https://doi.org/10.1016/j.future.2024.05.021). The DOI of this software is https://doi.org/10.5281/zenodo.11243974."
+keywords = ["autotuning", "auto-tuning", "methodology", "scientific"]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10,<4"       # NOTE when updating python version, also update classifiers and Nox test versions
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13"
+] # https://pypi.org/classifiers/
+dependencies = [
+    "numpy (>=2.0.0)",
+    "scipy >= 1.10.1",
+    "scikit-learn >= 1.0.2",
+    "matplotlib >= 3.7.1",
+    "yappi >= 1.4.0",
+    "progressbar2 >= 4.2.0",
+    "jsonschema >= 4.17.3",
+    "nonconformist >= 2.1.0",
+    "kernel_tuner >= 1.3.0",
+]
+
+[project.optional-dependencies]
+dev = ["pylint >=2.14.4", "black >= 23.3.0"]
+docs = [
+    "sphinx >= 7.2.1",
+    "sphinx_rtd_theme >= 2.0.0",
+    "sphinx-pyproject >= 0.3.0",
+]
+test = [
+    "ruff >= 0.0.263",
+    "pep440 >= 0.1.2",
+    "pytest >= 7.3.1",
+    "pytest-cov >= 4.0.0",
+    "nox >= 2023.4.22",
+    "crepes >= 0.2.0",
+    "tomli >= 2.0.1",      # can be replaced by built-in [tomllib](https://docs.python.org/3.11/library/tomllib.html) from Python 3.11
+]
+
+[project.scripts]
+autotuning_experiment = "autotuning_methodology.experiments:entry_point"
+autotuning_visualize = "autotuning_methodology.visualize_experiments:entry_point"
+
+[project.urls]
+"Repository" = "https://github.com/fjwillemsen/autotuning_methodology"
+"Documentation" = "https://fjwillemsen.github.io/autotuning_methodology/"
+"Bug Tracker" = "https://github.com/fjwillemsen/autotuning_methodology/issues"
+
+[tool.pytest.ini_options]
+minversion = "7.3"
+pythonpath = [
+    "src",
+] # necessary to get coverage reports without installing with `-e`
+addopts = "--cov --cov-config=.coveragerc --cov-report html --cov-report term-missing --cov-fail-under 75"
+testpaths = ["tests/unit", "tests/integration", "tests/release"]
+
+[tool.black]
+line-length = 120
+[tool.ruff]
+line-length = 120
+src = ["src"]
+respect-gitignore = true
+exclude = ["extra", "UML", "tests/autotuning_methodology/*mockfiles*"]
+# target-version = "py310"   # inferred from project.requires-python
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle
+    "F", # pyflakes,
+    "D", # pydocstyle,
+    "NPY201", # Numpy 2.0 compatibility
+]
+ignore = ["E501"]
+[tool.ruff.lint.pydocstyle]
+convention = "google"

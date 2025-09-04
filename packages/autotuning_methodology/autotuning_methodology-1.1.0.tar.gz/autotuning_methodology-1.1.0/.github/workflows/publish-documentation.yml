@@ -1,0 +1,24 @@
+# This workflow builds Sphinx documentation and deploys it to GitHub Pages.
+
+name: Publish documentation
+
+on:
+    push:
+        branches: [main] # branch to trigger deployment
+    release:
+        types: [published] # releases trigger deployment as well
+
+jobs:
+    pages:
+        runs-on: ubuntu-latest
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+        permissions:
+            pages: write
+            id-token: write
+        steps:
+            - name: Setup Graphviz
+              uses: ts-graphviz/setup-graphviz@v2
+            - id: deployment
+              uses: sphinx-notes/pages@v3
