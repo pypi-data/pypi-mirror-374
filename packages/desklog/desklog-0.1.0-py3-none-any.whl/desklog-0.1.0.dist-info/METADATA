@@ -1,0 +1,76 @@
+Metadata-Version: 2.4
+Name: desklog
+Version: 0.1.0
+Summary: A desktop logging application
+Home-page: https://github.com/yourusername/desklog
+Author: Your Name
+Author-email: your.email@example.com
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: flask
+Requires-Dist: requests
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# DeskLog
+
+A desktop logging application built with Python and Flask.
+
+## Features
+
+- Desktop logging functionality
+- Web-based interface
+- Easy to use and configure
+
+## Installation
+
+You can install DeskLog using pip:
+
+```bash
+pip install desklog
+```
+
+## Usage
+
+After installation, you can run DeskLog using:
+
+```bash
+desklog
+```
+
+## Development
+
+To set up the development environment:
+
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   pip install -e .
+   ```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
