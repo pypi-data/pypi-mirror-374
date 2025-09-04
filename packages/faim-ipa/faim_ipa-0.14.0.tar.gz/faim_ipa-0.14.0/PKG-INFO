@@ -1,0 +1,44 @@
+Metadata-Version: 2.4
+Name: faim-ipa
+Version: 0.14.0
+Summary: Tools used at FMI-FAIM for Image Processing and Analysis.
+Project-URL: Bug Tracker, https://github.com/fmi-faim/faim-ipa/issues
+Project-URL: Documentation, https://github.com/fmi-faim/faim-ipa#README.md
+Project-URL: Homepage, https://github.com/fmi-faim/faim-ipa.git
+Project-URL: Source Code, https://github.com/fmi-faim/faim-ipa
+Project-URL: User Support, https://github.com/fmi-faim/faim-ipa/issues
+Author-email: Tim-Oliver Buchholz <tim-oliver.buchholz@fmi.ch>, Jan Eglinger <jan.eglinger@fmi.ch>
+License-Expression: BSD-3-Clause
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.10
+Requires-Dist: defusedxml
+Requires-Dist: distributed
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: ome-zarr
+Requires-Dist: pandas
+Requires-Dist: pint
+Requires-Dist: pydantic>=2
+Requires-Dist: questionary
+Requires-Dist: scikit-image
+Requires-Dist: tqdm
+Requires-Dist: zarr<3
+Description-Content-Type: text/markdown
+
+[![DOI](https://zenodo.org/badge/483941812.svg)](https://zenodo.org/doi/10.5281/zenodo.11146937)
+[![test](https://github.com/fmi-faim/faim-ipa/actions/workflows/test.yml/badge.svg)](https://github.com/fmi-faim/faim-ipa/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/fmi-faim/faim-ipa/graph/badge.svg?token=YQ4W0A9RZL)](https://codecov.io/gh/fmi-faim/faim-ipa)
+[![PyPI - Version](https://img.shields.io/pypi/v/faim-ipa.svg)](https://pypi.org/project/faim-ipa)
+[![Anaconda-Server Badge](https://anaconda.org/conda-forge/faim-ipa/badges/version.svg)](https://anaconda.org/conda-forge/faim-ipa)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/faim-ipa.svg)](https://pypi.org/project/faim-ipa)
+
+# FAIM-IPA
+A collection of __I__mage __P__rocessing and __A__nalysis (IPA) functions we use at the Facility for Advanced Imaging and Microscopy (FAIM) at the Friedrich Miescher Institute for Biomedical Research (FMI).
