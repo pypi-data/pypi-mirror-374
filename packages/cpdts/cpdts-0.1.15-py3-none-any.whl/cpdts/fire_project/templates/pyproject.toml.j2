@@ -1,0 +1,20 @@
+[project]
+name = "{{project_name}}"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "your-name", email = "47287977+lipanpan-hub@users.noreply.github.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "fire>=0.7.1",
+]
+
+[project.scripts]
+{{ project_name }} = "{{ project_name }}:main"
+clean = "scripts.clean_dist:main"
+
+[build-system]
+requires = ["uv_build>=0.8.3,<0.9.0"]
+build-backend = "uv_build"
