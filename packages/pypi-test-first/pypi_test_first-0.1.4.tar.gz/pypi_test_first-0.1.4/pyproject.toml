@@ -1,0 +1,13 @@
+[project]
+name = "pypi-test-first"
+version = "0.1.4"
+description = "A simple test package"
+requires-python = ">=3.13"
+dependencies = []
+license = {text = "MIT"}
+readme = "README.md"
+[project.urls]
+Homepage = "https://github.com/zs856/pypi-test-first.git"
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
