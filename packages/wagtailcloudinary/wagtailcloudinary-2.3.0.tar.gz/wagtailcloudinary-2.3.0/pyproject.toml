@@ -1,0 +1,59 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wagtailcloudinary"
+version = "2.3.0"
+description = "Cloudinary support for Wagtail CMS"
+readme = "README.md"
+dependencies = [
+    "cloudinary (>=1.44.0,<1.45)",
+    "python-dateutil (>=2.9.0.post0)",
+    "wagtail (>=6.3)",
+]
+requires-python = ">=3.11"
+
+[project.license]
+text = "ISC"
+
+[[project.authors]]
+name = "thelab"
+email = "thelabdev@thelab.co"
+
+[project.urls]
+Homepage = "https://gitlab.com/thelabnyc/wagtailcloudinary"
+Repository = "https://gitlab.com/thelabnyc/wagtailcloudinary"
+
+[dependency-groups]
+dev = ["ruff (>=0.11.6)", "tox==4.29.0", "ipdb (==0.13.13)", "tox-uv>=1.26.1"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["wagtailcloudinary"]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+annotated_tag = true
+gpg_sign = true
+tag_format = "v$version"
+update_changelog_on_bump = true
+changelog_merge_prerelease = true
+version_provider = "pep621"
+version_scheme = "pep440"
+version_files = ["pyproject.toml:version"]
+pre_bump_hooks = ["pre-commit run --all-files || true"]
+post_bump_hooks = ["git push origin master $CZ_POST_CURRENT_TAG_VERSION"]
+
+[tool.isort]
+profile = "black"
+from_first = true
+
+[tool.ruff]
+line-length = 160
+exclude = ["migrations"]
+
+[tool.ruff.lint]
+ignore = ["E402", "E203"]
+
+[tool.ruff.lint.isort]
+from-first = true

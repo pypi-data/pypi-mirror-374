@@ -1,0 +1,53 @@
+{% load i18n wagtailadmin_tags %}
+{% load cloudinary %}
+
+{% if results %}
+    {% if is_searching %}
+        {% block search_results_count %}
+            <h2 role="alert">
+                {% blocktrans trimmed count counter=results.paginator.count %}
+                    There is {{ counter }} match
+                {% plural %}
+                    There are {{ counter }} matches
+                {% endblocktrans %}
+            </h2>
+        {% endblock %}
+    {% else %}
+        {% block listing_title %}
+            <h2>{% trans "Latest images" %}</h2>
+        {% endblock %}
+    {% endif %}
+
+    {% block results_listing %}
+        <ul class="listing horiz images chooser">
+            {% for image in results %}
+                <li>
+                    <a
+                        data-chooser-modal-choice
+                        class="image-choice"
+                        title="{{ image.pk }}"
+                        href="{% url 'wagtailcloudinary_chooser:chosen' image.pk %}"
+                    >
+                        <div class="image">
+                            {% cloudinary image.as_resource format="jpg" width=165 height=165 crop="limit" classes="show-transparency" secure=True %}
+                            <h3>natural size: {{ image.width }}x{{ image.height }}px</h3>
+                        </div>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endblock %}
+    {% include "wagtailcloudinary/include/pagination_nav.html" with items=results linkurl=results_url %}
+{% else %}
+    {% if is_searching %}
+        {% block no_search_results_message %}
+            <p role="alert">{% blocktrans trimmed %}Sorry, there are no matches for "<em>{{ search_query }}</em>"{% endblocktrans %}</p>
+        {% endblock %}
+    {% else %}
+        {% block no_items_message %}
+            <p>
+                {% trans "You haven't uploaded any images." %}
+            </p>
+        {% endblock %}
+    {% endif %}
+{% endif %}

@@ -1,0 +1,7 @@
+@media (hover: hover) {
+    :is(.w-field--admin_cloudinary_chooser)
+        :is(:hover, :focus-within)
+        .chooser__actions {
+        opacity: 1;
+    }
+}
