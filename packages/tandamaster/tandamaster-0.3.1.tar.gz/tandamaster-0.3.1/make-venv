@@ -1,0 +1,13 @@
+#!/usr/bin/bash
+
+python -m venv venv
+. venv/bin/activate
+
+pip install PyQt5
+pip install PyGObject
+pip install mutagen
+pip install Unidecode
+pip install bidict
+pip install systemd-python
+pip install pydantic
+pip install ctypesgen

@@ -1,0 +1,25 @@
+name: publish-to-PyPI
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  pypi-publish:
+    name: upload release to PyPI
+    runs-on: ubuntu-latest
+    # Specifying a GitHub environment is optional, but strongly encouraged
+    environment: pypi
+    permissions:
+      # IMPORTANT: this permission is mandatory for Trusted Publishing
+      id-token: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v5
+
+      - run: pip install build
+
+      - run: python -m build
+
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
