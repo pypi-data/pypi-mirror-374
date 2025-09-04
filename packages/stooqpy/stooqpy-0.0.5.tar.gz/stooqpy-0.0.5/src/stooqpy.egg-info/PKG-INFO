@@ -1,0 +1,62 @@
+Metadata-Version: 2.4
+Name: stooqpy
+Version: 0.0.5
+Summary: Automatyzuje pobieranie danych z serwisu stooq.pl do lokalnej bazy danych w SQLite.
+Author-email: Szymon Jan Marek <szymon.jan.marek@gmail.com>
+Maintainer-email: Szymon Jan Marek <szymon.jan.marek@gmail.com>
+License: MIT
+Project-URL: bugs, https://github.com/neon-symeon/stooqpy/issues
+Project-URL: changelog, https://github.com/neon-symeon/stooqpy/blob/master/changelog.md
+Project-URL: homepage, https://github.com/neon-symeon/stooqpy
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: Intended Audience :: Education
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Office/Business :: Financial :: Investment
+Requires-Python: >=3.08
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: typer
+Requires-Dist: platformdirs
+Requires-Dist: ruamel.yaml
+Requires-Dist: pandas
+Provides-Extra: test
+Requires-Dist: coverage; extra == "test"
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: ruff; extra == "test"
+Requires-Dist: ty; extra == "test"
+Requires-Dist: ipdb; extra == "test"
+Dynamic: license-file
+
+# stooqpy
+
+[![PyPI version](https://img.shields.io/pypi/v/stooqpy.svg)](https://pypi.org/project/stooqpy/)
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
+
+
+> ⚠️ **UWAGA – Projekt w budowie!**
+> Pakiet jest w fazie **aktywnego rozwoju**.
+> Nie realizuje jeszcze wszystkich obiecanych funkcji.
+
+
+Pakiet **stooqpy** umożliwia wygodne korzystanie z danych finansowych serwisu [stooq.pl](https://stooq.pl).
+
+## Główna idea
+- ułatwia **pobieranie i przechowywanie** wysokiej jakości danych giełdowych z serwisu stooq.pl,
+- dane gromadzone są w lekkiej i wydajnej bazie danych opartej na SQLite,
+- stooqpy oferuje także możliwość pobierania danych przez API stooq.pl, ale preferowanym podejściem pozostaje półautomatyczne, bo daje wyższą jakość i dokładność danych.
+
+---
+
+## Instalacja
+
+```bash
+pip install stooqpy
