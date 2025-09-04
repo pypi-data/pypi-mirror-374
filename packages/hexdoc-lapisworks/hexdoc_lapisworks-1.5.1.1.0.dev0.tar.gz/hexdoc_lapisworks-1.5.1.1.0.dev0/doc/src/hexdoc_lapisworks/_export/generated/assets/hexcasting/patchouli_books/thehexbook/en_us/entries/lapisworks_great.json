@@ -1,0 +1,69 @@
+{
+    "name": "pages.lapisworks.lapisworks_great.title",
+    "icon": "lapisworks:amel3",
+    "advancement": "hexcasting:enlightenment",
+    "category": "hexcasting:lapisworks",
+    "sortnum": 4,
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "pages.lapisworks.lapisworks_great.aahhhhelp"
+        },
+        {
+            "type": "patchouli:text",
+            "text": "pages.lapisworks.lapisworks_great.explanation"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:checkenchant",
+            "anchor": "lapisworks:checkenchant",
+            "input": "entity, num",
+            "output": "num",
+            "text": "pages.lapisworks.lapisworks_great.checkenchant.summary"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:fireyfists",
+            "anchor": "lapisworks:fireyfists",
+            "input": "entity",
+            "output": "",
+            "text": "pages.lapisworks.lapisworks_great.fireyfists.summary"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:lightningbending",
+            "anchor": "lapisworks:lightningbending",
+            "input": "entity",
+            "output": "",
+            "text": "pages.lapisworks.lapisworks_great.lightningbending.summary"
+        },
+        {
+            "type": "patchouli:text",
+            "text": "pages.lapisworks.lapisworks_great.lightningbending.detailed"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:falldmgres",
+            "anchor": "lapisworks:falldmgres",
+            "input": "entity",
+            "output": "",
+            "text": "pages.lapisworks.lapisworks_great.falldmgres.summary"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:longbreath",
+            "anchor": "lapisworks:longbreath",
+            "input": "entity",
+            "output": "",
+            "text": "pages.lapisworks.lapisworks_great.longbreath.summary"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:fireresist",
+            "anchor": "lapisworks:fireresist",
+            "input": "entity",
+            "output": "",
+            "text": "pages.lapisworks.lapisworks_great.fireresist.summary"
+        }
+    ]
+}

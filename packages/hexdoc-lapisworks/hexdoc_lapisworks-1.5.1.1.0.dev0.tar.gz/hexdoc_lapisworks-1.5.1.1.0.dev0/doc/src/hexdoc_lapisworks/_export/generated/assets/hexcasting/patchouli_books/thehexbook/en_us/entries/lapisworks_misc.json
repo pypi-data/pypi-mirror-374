@@ -1,0 +1,89 @@
+{
+    "name": "pages.lapisworks.lapisworks_misc.title",
+    "icon": "lapisworks:amel4",
+    "advancement": "lapisworks:got_lapis",
+    "category": "hexcasting:lapisworks",
+    "sortnum": 5,
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "pages.lapisworks.lapisworks_misc.intro"
+        },
+        {
+            "type": "patchouli:text",
+            "text": "pages.lapisworks.lapisworks_misc.intro2"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:conjure_color",
+            "anchor": "lapisworks:conjure_color",
+            "input": "vec, num",
+            "output": "",
+            "text": "pages.lapisworks.lapisworks_misc.conjure_color.summary"
+        },
+        {
+            "type": "patchouli:text",
+            "text": "pages.lapisworks.lapisworks_misc.conjure_color.detail"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:spherical_dstl",
+            "anchor": "lapisworks:spherical_dstl",
+            "input": "[pattern], vec, num",
+            "output": "[any]",
+            "text": "pages.lapisworks.lapisworks_misc.spherical_dstl.summary"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:cubic_exalt",
+            "anchor": "lapisworks:cubic_exalt",
+            "input": "[pattern], vec, vec, bool",
+            "output": "[any]",
+            "text": "pages.lapisworks.lapisworks_misc.cubic_exalt.summary"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:visible_dstl",
+            "anchor": "lapisworks:visible_dstl",
+            "input": "vec, num",
+            "output": "bool",
+            "text": "pages.lapisworks.lapisworks_misc.visible_dstl.summary"
+        },
+        {
+            "type": "patchouli:text",
+            "text": "pages.lapisworks.lapisworks_misc.rwpatternsheadsup"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:read_mainhand",
+            "anchor": "lapisworks:read_mainhand",
+            "input": "",
+            "output": "any",
+            "text": "pages.lapisworks.lapisworks_misc.read_mainhand.summary"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:readable_mainhand",
+            "anchor": "lapisworks:readable_mainhand",
+            "input": "",
+            "output": "bool",
+            "text": "pages.lapisworks.lapisworks_misc.readable_mainhand.summary"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:write_mainhand",
+            "anchor": "lapisworks:write_mainhand",
+            "input": "any",
+            "output": "",
+            "text": "pages.lapisworks.lapisworks_misc.write_mainhand.summary"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:writable_mainhand",
+            "anchor": "lapisworks:writable_mainhand",
+            "input": "",
+            "output": "bool",
+            "text": "pages.lapisworks.lapisworks_misc.writable_mainhand.summary"
+        }
+    ]
+}
