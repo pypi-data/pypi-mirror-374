@@ -1,0 +1,15 @@
+include README.md
+include LICENSE
+include Cargo.toml
+include Cargo.lock
+recursive-include src *.rs
+recursive-include python *.py *.pyi
+global-exclude *.pyc
+global-exclude __pycache__
+global-exclude .pytest_cache
+global-exclude *.pyd
+global-exclude *.so
+prune bench
+prune tests
+prune .github
+prune target

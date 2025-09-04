@@ -1,0 +1,154 @@
+{
+  "basic_benchmark": {
+    "rust_available": true,
+    "test_files": {
+      "BIG": {
+        "content_chars": 8056,
+        "content_lines": 279,
+        "python": {
+          "mean_time": 0.005851320002693683,
+          "std_time": 0.0003765988018967557,
+          "throughput": 1376783.3576511594,
+          "memory_mb": 24.375
+        },
+        "rust": {
+          "mean_time": 7.554000476375222e-05,
+          "std_time": 2.1056379615306627e-05,
+          "throughput": 106645479.10997303,
+          "memory_mb": 24.6015625
+        },
+        "speedup": 77.45988395146928
+      },
+      "CODE_HEAVY": {
+        "content_chars": 8861,
+        "content_lines": 332,
+        "python": {
+          "mean_time": 0.0013565000030212105,
+          "std_time": 0.00020482820970450815,
+          "throughput": 6532252.104876293,
+          "memory_mb": 24.62109375
+        },
+        "rust": {
+          "mean_time": 2.7229997795075177e-05,
+          "std_time": 3.1513734474332556e-06,
+          "throughput": 325413173.6140868,
+          "memory_mb": 24.62109375
+        },
+        "speedup": 49.81638313854536
+      },
+      "HUGE": {
+        "content_chars": 444990,
+        "content_lines": 15130,
+        "python": {
+          "mean_time": 0.2277397800120525,
+          "std_time": 0.003492489459705815,
+          "throughput": 1953940.5894589436,
+          "memory_mb": 42.3515625
+        },
+        "rust": {
+          "mean_time": 0.0021778799942694604,
+          "std_time": 0.00011049772540678643,
+          "throughput": 204322552.74435622,
+          "memory_mb": 40.6796875
+        },
+        "speedup": 104.56948069282608
+      },
+      "TABLE_HEAVY": {
+        "content_chars": 2176,
+        "content_lines": 47,
+        "python": {
+          "mean_time": 0.0018825299805030227,
+          "std_time": 9.905088989540672e-05,
+          "throughput": 1155891.2859483706,
+          "memory_mb": 40.00390625
+        },
+        "rust": {
+          "mean_time": 3.905000630766153e-05,
+          "std_time": 6.6394919090580665e-06,
+          "throughput": 55723422.4971962,
+          "memory_mb": 39.33203125
+        },
+        "speedup": 48.20818633603329
+      }
+    },
+    "summary": {
+      "total_python_time": 0.23683012999827044,
+      "total_rust_time": 0.0023197000031359495,
+      "overall_speedup": 102.09515440708074
+    }
+  },
+  "scaling_benchmark": {
+    "scaling_results": [
+      {
+        "multiplier": 1,
+        "size_chars": 473,
+        "python_time": 0.0005341400159522891,
+        "rust_time": 1.3819965533912183e-05,
+        "speedup": 38.64988046761675
+      },
+      {
+        "multiplier": 5,
+        "size_chars": 2365,
+        "python_time": 0.0022237200289964678,
+        "rust_time": 3.5079987719655036e-05,
+        "speedup": 63.38998880978899
+      },
+      {
+        "multiplier": 10,
+        "size_chars": 4730,
+        "python_time": 0.004545759968459606,
+        "rust_time": 4.416003357619047e-05,
+        "speedup": 102.9383268157323
+      },
+      {
+        "multiplier": 25,
+        "size_chars": 11825,
+        "python_time": 0.011250500031746925,
+        "rust_time": 7.451998535543681e-05,
+        "speedup": 150.97292327803865
+      },
+      {
+        "multiplier": 50,
+        "size_chars": 23650,
+        "python_time": 0.022635259991511704,
+        "rust_time": 0.00014365999959409237,
+        "speedup": 157.5613257376239
+      },
+      {
+        "multiplier": 100,
+        "size_chars": 47300,
+        "python_time": 0.04551425999961793,
+        "rust_time": 0.00043305999133735895,
+        "speedup": 105.09920313595022
+      }
+    ]
+  },
+  "equivalence_check": {
+    "equivalence_results": {
+      "BIG": {
+        "identical": false,
+        "python_length": 10305,
+        "rust_length": 10112,
+        "length_difference": 193
+      },
+      "CODE_HEAVY": {
+        "identical": false,
+        "python_length": 9766,
+        "rust_length": 9391,
+        "length_difference": 375
+      },
+      "HUGE": {
+        "identical": false,
+        "python_length": 533978,
+        "rust_length": 529278,
+        "length_difference": 4700
+      },
+      "TABLE_HEAVY": {
+        "identical": false,
+        "python_length": 2984,
+        "rust_length": 2678,
+        "length_difference": 306
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "content_size": 8056,
+  "iterations": 10,
+  "results": [
+    {
+      "library": "markdown-it-py (Python)",
+      "mean_time": 0.005717459984589368,
+      "std_time": 0.00010985270318277936,
+      "throughput": 1409017.2946927215,
+      "memory_mb": 22.56640625
+    },
+    {
+      "library": "markdown-it-accel (Rust)",
+      "mean_time": 8.01300280727446e-05,
+      "std_time": 1.178719896095148e-05,
+      "throughput": 100536592.75754285,
+      "memory_mb": 22.94921875
+    },
+    {
+      "library": "python-markdown",
+      "mean_time": 0.02499571000225842,
+      "std_time": 0.0005910822612013168,
+      "throughput": 322295.30584536796,
+      "memory_mb": 44.9140625
+    }
+  ]
+}

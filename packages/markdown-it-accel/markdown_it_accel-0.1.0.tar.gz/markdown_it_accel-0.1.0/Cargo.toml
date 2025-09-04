@@ -1,0 +1,23 @@
+[package]
+name = "markdown-it-accel"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "Rust-accelerated backend for markdown-it-py"
+repository = "https://github.com/ChungNYCU/markdown-it-accel"
+keywords = ["markdown", "python", "performance"]
+categories = ["text-processing", "api-bindings"]
+readme = "README.md"
+
+[lib]
+name = "_rust"
+crate-type = ["cdylib"]
+
+[dependencies]
+pulldown-cmark = { version = "0.11", default-features = false, features = ["html"] }
+pyo3 = { version = "0.22", features = ["extension-module", "abi3", "abi3-py38"] }
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"

@@ -1,0 +1,33 @@
+markdown-it-accel Performance Benchmark Report
+==================================================
+
+Overall Speedup: 102.10x
+Total Python Time: 236.83ms
+Total Rust Time: 2.32ms
+
+File Performance Breakdown:
+------------------------------
+
+BIG:
+  Size: 7.9KB
+  Python: 5.85ms
+  Rust: 75.5μs
+  Speedup: 77.46x
+
+CODE_HEAVY:
+  Size: 8.7KB
+  Python: 1.36ms
+  Rust: 27.2μs
+  Speedup: 49.82x
+
+HUGE:
+  Size: 434.6KB
+  Python: 227.74ms
+  Rust: 2.18ms
+  Speedup: 104.57x
+
+TABLE_HEAVY:
+  Size: 2.1KB
+  Python: 1.88ms
+  Rust: 39.1μs
+  Speedup: 48.21x

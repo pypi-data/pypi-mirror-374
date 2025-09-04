@@ -1,0 +1,86 @@
+[build-system]
+requires = ["maturin>=1.5,<2"]
+build-backend = "maturin"
+
+[project]
+name = "markdown-it-accel"
+version = "0.1.0"
+description = "Rust-accelerated backend for markdown-it-py with 50-200x performance improvements"
+readme = "README.md"
+authors = [
+    {name = "ChungNYCU", email = "chungncu@gmail.com"},
+]
+maintainers = [
+    {name = "ChungNYCU", email = "chungncu@gmail.com"},
+]
+license = {file = "LICENSE"}
+requires-python = ">=3.8"
+keywords = ["markdown", "rust", "acceleration", "performance", "pulldown-cmark", "commonmark", "gfm"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Rust",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Markup",
+    "Topic :: Text Processing :: Markup :: HTML",
+    "Typing :: Typed",
+]
+dependencies = [
+    "markdown-it-py>=3.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-benchmark",
+    "ruff",
+    "black",
+    "mypy",
+    "maturin",
+]
+benchmark = [
+    "pytest-benchmark",
+    "markdown",
+    "mistune",
+]
+
+[project.urls]
+Homepage = "https://github.com/ChungNYCU/markdown-it-accel"
+Repository = "https://github.com/ChungNYCU/markdown-it-accel.git"
+Issues = "https://github.com/ChungNYCU/markdown-it-accel/issues"
+Documentation = "https://github.com/ChungNYCU/markdown-it-accel#readme"
+Changelog = "https://github.com/ChungNYCU/markdown-it-accel#changelog"
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
+python-source = "python"
+module-name = "markdown_it_accel._rust"
+
+[tool.ruff]
+line-length = 88
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "B", "A", "C4", "UP", "SIM"]
+ignore = ["E501"]  # Line too long (handled by black)
+
+[tool.black]
+line-length = 88
+target-version = ["py38", "py39", "py310", "py311", "py312"]
+
+[tool.mypy]
+python_version = "3.8"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
