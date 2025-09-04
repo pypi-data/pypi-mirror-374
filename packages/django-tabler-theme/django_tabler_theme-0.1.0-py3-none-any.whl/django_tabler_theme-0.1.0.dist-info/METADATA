@@ -1,0 +1,81 @@
+Metadata-Version: 2.4
+Name: django-tabler-theme
+Version: 0.1.0
+Summary: Reusable Django theme app using Tabler (Bootstrap 5) with templates, components, and helpers.
+Author-email: Your Name <you@example.com>
+License: MIT
+Project-URL: Homepage, https://github.com/your-org/django-tabler-theme
+Project-URL: Issues, https://github.com/your-org/django-tabler-theme/issues
+Keywords: django,tabler,bootstrap,theme,templates
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 4.2
+Classifier: Framework :: Django :: 5.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: Django>=4.2
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-django; extra == "test"
+Dynamic: license-file
+
+# django-tabler-theme
+
+A reusable Django theme app using Tabler (Bootstrap 5) with templates, components, and helpers.
+
+## Features
+
+- Django templates based on Tabler UI kit
+- Bootstrap 5 integration
+- Reusable components and template tags
+- Easy integration with Django projects
+
+## Installation
+
+```bash
+pip install django-tabler-theme
+```
+
+## Quick Start
+
+1. Add `tabler_theme` to your `INSTALLED_APPS`:
+
+```python
+INSTALLED_APPS = [
+    ...
+    'tabler_theme',
+    ...
+]
+```
+
+2. Include the theme's context processor in your `TEMPLATES` setting:
+
+```python
+TEMPLATES = [
+    {
+        ...
+        'OPTIONS': {
+            'context_processors': [
+                ...
+                'django_tabler_theme.context_processors.tabler_theme',
+                ...
+            ],
+        },
+    },
+]
+```
+
+## Development
+
+1. Clone the repository
+2. Create a virtual environment
+3. Install development dependencies: `pip install -e .[dev]`
+4. Run tests: `pytest`
+
+## License
+
+MIT License
