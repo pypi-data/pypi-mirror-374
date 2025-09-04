@@ -1,0 +1,3 @@
+[sqlalchemy.dialects]
+doris = pydoris.sqlalchemy.dialect:DorisDialect
+pydoris = pydoris.sqlalchemy.dialect:DorisDialect
