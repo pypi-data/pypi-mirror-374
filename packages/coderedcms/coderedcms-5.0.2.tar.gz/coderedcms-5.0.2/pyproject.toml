@@ -1,0 +1,105 @@
+# -- PACKAGE --------------------------
+
+[build-system]
+requires = ["setuptools>=65.5"]
+build-backend = "setuptools.build_meta"
+
+[project]
+authors = [
+    {name = "CodeRed LLC", email = "info@coderedcorp.com"}
+]
+classifiers = [
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3 :: Only",
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Framework :: Django :: 5.1",
+    "Framework :: Wagtail",
+    "Framework :: Wagtail :: 6",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Internet :: WWW/HTTP :: Site Management",
+]
+dependencies = [
+    "beautifulsoup4>=4.8,<4.13",  # should be the same as wagtail
+    "django-eventtools==1.0.*",
+    "django-bootstrap5==24.3",
+    "Django>=4.2,<6.0",  # should be the same as wagtail
+    "geocoder==1.38.*",
+    "icalendar==6.1.*",
+    "wagtail>=6.3,<7.0",
+    "wagtail-cache>=2.4,<3",
+    "wagtail-flexible-forms==2.*",
+    "wagtail-seo==3.*",
+]
+description = "Wagtail + CodeRed Extensions enabling rapid development of marketing-focused websites."
+dynamic = ["version"]
+license = {file = "LICENSE.txt"}
+name = "coderedcms"
+readme = "README.md"
+requires-python = ">=3.9"
+
+[project.scripts]
+coderedcms = "coderedcms.bin.coderedcms:main"
+
+[project.urls]
+Source = "https://github.com/coderedcorp/coderedcms"
+Documentation = "https://docs.coderedcorp.com/wagtail-crx/"
+Changelog = "https://docs.coderedcorp.com/wagtail-crx/releases/"
+
+[tool.setuptools]
+packages = ["coderedcms"]
+
+[tool.setuptools.dynamic]
+version = {attr = "coderedcms.__version__"}
+
+
+# -- TOOLS ----------------------------
+
+[tool.codespell]
+skip = 'migrations,vendor,_build,*.css.map,*.jpg,*.png,*.pyc'
+ignore-words-list = 'assertIn'
+
+[tool.django-stubs]
+django_settings_module = "coderedcms.tests.settings"
+
+[tool.mypy]
+ignore_missing_imports = true
+plugins = ["mypy_django_plugin.main"]
+exclude = [
+    '^\..*',
+    'migrations',
+    'node_modules',
+    'venv',
+    'testproject',
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "coderedcms.tests.settings"
+addopts = "--cov --cov-report html --cov-report xml --junitxml junit/test-results.xml"
+python_files = "tests.py test_*.py"
+junit_family = "xunit2"
+junit_suite_name = "coderedcms"
+
+[tool.ruff]
+extend-exclude = ["migrations", "testproject"]
+line-length = 80
+
+[tool.ruff.lint]
+extend-select = ["I"]
+
+[tool.ruff.lint.isort]
+case-sensitive = false
+force-single-line = true
+lines-after-imports = 2

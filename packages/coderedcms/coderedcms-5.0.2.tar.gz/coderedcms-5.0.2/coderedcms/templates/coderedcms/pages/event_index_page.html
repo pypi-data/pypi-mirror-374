@@ -1,0 +1,37 @@
+{% extends "coderedcms/pages/web_page.html" %}
+{% load coderedcms_tags static wagtailcore_tags wagtailimages_tags %}
+{% block content_post_body %}
+{% if self.default_calendar_view %}
+<div class="container">
+  <div class="row">
+    <div class="col pt-5 pb-5">
+      {% include "coderedcms/includes/ical/calendar.html" %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col pb-5">
+      {% include "coderedcms/includes/ical/calendar_ical_button.html" %}
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+{% block index_content %}
+<div class="container">
+  <div class="row g-4">
+    {% for event in index_paginated %}
+    <div class="col-sm-6 col-lg-4">
+      {% include event.miniview_template with page=event h="h2" miniview_css_class="h-100" %}
+    </div>
+    {% endfor %}
+  </div>
+  {% include "coderedcms/includes/pagination.html" with items=index_paginated %}
+</div>
+{% endblock %}
+
+{% block coderedcms_scripts %}
+{{ block.super }}
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js" integrity="sha256-ZztCtsADLKbUFK/X6nOYnJr0eelmV2X3dhLDB/JK6fM=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/bootstrap5@6.1.15/index.global.min.js" integrity="sha256-TslkUnYKZuqQj4Ueu1WQesikFvl2DADWslCx3EfBHZM=" crossorigin="anonymous"></script>
+<script src="{% static 'coderedcms/js/crx-events.min.js' %}?v={% coderedcms_version %}"></script>
+{% endblock %}

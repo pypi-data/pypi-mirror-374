@@ -1,0 +1,15 @@
+/// Default article/blog styles
+
+.crx-article {
+  .article-body {
+    @media (min-width: 768px) {
+      font-size: 1.2em;
+    }
+    @media (min-width: 992px) {
+      max-width: 800px;
+    }
+  }
+  .article-author-img {
+    max-height: 3em;
+  }
+}
