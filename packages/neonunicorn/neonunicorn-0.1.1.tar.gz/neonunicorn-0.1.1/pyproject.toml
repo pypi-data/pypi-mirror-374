@@ -1,0 +1,28 @@
+[project]
+name = "neonunicorn"
+version = "0.1.1"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "neonunicorngh", email = "fm0032@uah.edu" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=2.3.2",
+    "twine>=6.1.0",
+]
+
+[tool.maturin]
+module-name = "neonunicorn._core"
+python-packages = ["neonunicorn"]
+python-source = "src"
+
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.30.1",
+    "jupyter>=1.1.1",
+]
