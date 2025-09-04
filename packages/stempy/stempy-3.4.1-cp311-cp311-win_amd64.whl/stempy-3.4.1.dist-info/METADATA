@@ -1,0 +1,26 @@
+Metadata-Version: 2.4
+Name: stempy
+Version: 3.4.1
+Summary: A package for the ingestion of 4D STEM data.
+Home-page: https://github.com/OpenChemistry/stempy
+Author: Kitware Inc
+License: BSD 3-Clause
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3
+License-File: LICENSE
+Requires-Dist: numpy<2.0; python_version <= "3.9" and platform_machine == "aarch64"
+Requires-Dist: numpy; python_version > "3.9" or platform_machine != "aarch64"
+Requires-Dist: h5py
+Requires-Dist: deprecation
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: summary
+
+A package for the ingestion of 4D STEM data.
