@@ -1,0 +1,25 @@
+Metadata-Version: 2.4
+Name: mcp-server-browser
+Version: 0.1.0
+Summary: A browser extension to use your own browser as an MCP server with WebSocket communication
+Project-URL: Homepage, https://github.com/hihuzhen/browser-mcp
+Project-URL: Issues, https://github.com/hihuzhen/browser-mcp/issues
+Author: huzhen
+License: MIT
+Keywords: browser-extension,mcp,server,websocket
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.11
+Requires-Dist: loguru>=0.7.3
+Requires-Dist: markdownify>=1.2.0
+Requires-Dist: mcp>=1.13.1
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: python-dotenv>=1.1.1
+Requires-Dist: websockets>=10.0
+Description-Content-Type: text/markdown
+
+## A Chrome extension to use your own Chrome as an MCP server with WebSocket communication
