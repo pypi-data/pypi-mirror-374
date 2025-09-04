@@ -1,0 +1,67 @@
+Metadata-Version: 2.2
+Name: qiftmp
+Version: 1.2.3
+Summary: Quantitative Information Flow library
+Home-page: https://github.com/chatziko/libqif
+Author: Kostas Chatzikokolakis
+Author-email: kostas@chatzi.org
+Project-URL: Bug Tracker, https://github.com/chatziko/libqif/issues
+Project-URL: Documentation, http://chatziko.github.io/libqif/
+Project-URL: Source Code, https://github.com/chatziko/libqif
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: summary
+
+# libqif
+
+## Install
+
+```bash
+pip install qiftmp
+```
+
+- Needs `python` >= 3.8 and a `sandybridge` or later CPU
+- On linux `pip` >= 19 is needed (make sure to `pip install -U pip`)
+
+
+## A sample program
+
+```python
+from qiftmp import *
+
+def compute_bayes(C):
+	pi = probab.uniform(C.shape[0])
+
+	print("Channel:\n", C)
+	print("Prior:\n", pi)
+
+	print("Bayes vulnerability", measure.bayes_vuln.posterior(pi, C))
+	print("Bayes mult-capacity", measure.bayes_vuln.mult_capacity(C))
+
+compute_bayes(channel.randu(5))
+
+# same, but using rational arithmetic
+set_default_type(rat)
+
+C = numpy.array([
+	[rat(1,2), rat(1,4), rat(1,4)],
+	[rat(1,6), rat(3,6), rat(2,6)],
+	[rat(1,2), rat(1,2), rat(0)],
+])
+compute_bayes(C)
+```
+
+## Documentation
+
+A list of methods provided by `qiftmp` is available [here](http://chatziko.github.io/libqif/).
+
+## Use libqif with C++
+
+See the [installation instructions](INSTALL.md).
