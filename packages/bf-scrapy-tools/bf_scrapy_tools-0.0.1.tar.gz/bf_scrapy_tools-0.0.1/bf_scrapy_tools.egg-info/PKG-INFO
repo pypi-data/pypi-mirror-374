@@ -1,0 +1,29 @@
+Metadata-Version: 2.4
+Name: bf_scrapy_tools
+Version: 0.0.1
+Summary: this is a tool package for bf, 此版本添加最小日志输出级别, 和备份日志文件名
+Home-page: https://github.com/pypa/sampleproject
+Author: Gie Gie
+Author-email: 593443714@qq.com
+License: MIT
+Keywords: bf utils
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Requires-Dist: pymongo
+Requires-Dist: pytz
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: summary
+
+1: cd to setup.py
+2: python setup.py sdist build
+3: twine upload dist/*
+4锛歱ython setup.py sdist upload -r local
