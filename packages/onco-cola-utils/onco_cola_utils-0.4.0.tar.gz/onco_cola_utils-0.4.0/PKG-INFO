@@ -1,0 +1,22 @@
+Metadata-Version: 2.3
+Name: onco-cola-utils
+Version: 0.4.0
+Summary: Мои общие утилиты для работы с Excel
+License: MIT
+Author: Volodin Alexandr Sergeevich
+Author-email: endocrinologist@ya.ru
+Requires-Python: >=3.9,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: build (>=1.3.0)
+Requires-Dist: deprecated (>=1.2)
+Requires-Dist: loguru (>=0.7.3,<0.8.0)
+Requires-Dist: openpyxl (>=3.0)
+Requires-Dist: pandas (>=1.5)
+Requires-Dist: tiktoken (>=0.11.0)
+Requires-Dist: twine (>=6.1.0)
