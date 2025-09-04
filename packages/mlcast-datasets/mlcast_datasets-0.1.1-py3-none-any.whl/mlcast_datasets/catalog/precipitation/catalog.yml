@@ -1,0 +1,24 @@
+plugins:
+  source:
+    - module: intake_xarray
+
+sources:
+  radklim_hourly:
+    description: "RADKLIM Hourly Precipitation Data from Deutscher Wetterdienst (DWD), hosted on ECMWF S3"
+    driver: zarr
+    args:
+      urlpath: "s3://mlcast-source-datasets/radklim/v0.1.0/hourly.zarr/"
+      consolidated: true
+      storage_options:
+        anon: true
+        endpoint_url: "https://object-store.os-api.cci2.ecmwf.int"
+
+  radklim_5_minutes:
+    description: "RADKLIM 5-Minute Precipitation Data from Deutscher Wetterdienst (DWD), hosted on ECMWF S3"
+    driver: zarr
+    args:
+      urlpath: "s3://mlcast-source-datasets/radklim/v0.1.0/5_minutes.zarr/"
+      consolidated: true
+      storage_options:
+        anon: true
+        endpoint_url: "https://object-store.os-api.cci2.ecmwf.int"

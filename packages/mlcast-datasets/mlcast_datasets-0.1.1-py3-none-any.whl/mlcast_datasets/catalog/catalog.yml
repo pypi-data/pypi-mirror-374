@@ -1,0 +1,12 @@
+metadata:
+  name: mlcast-source-datasets
+  description: |
+    MLCast Community Source Datasets: A curated collection of open-access datasets
+    for machine learning applications in nowcasting.
+
+sources:
+  precipitation:
+    description: "Precipitation-related datasets from RADKLIM and other sources"
+    driver: intake.catalog.local.YAMLFileCatalog
+    args:
+      path: "{{ CATALOG_DIR }}/precipitation/catalog.yml"
