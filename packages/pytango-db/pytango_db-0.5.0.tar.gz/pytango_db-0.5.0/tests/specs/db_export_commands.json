@@ -1,0 +1,159 @@
+[
+    {
+        "name": "DbExportDevice",
+        "setup": [
+            {
+                "command": "DbAddDevice",
+                "argument": [
+                    "Dummy/1",
+                    "test/dummy/2",
+                    "Dummy"
+                ]
+            }
+        ],
+        "check": [
+            {
+                "command": "DbExportDevice",
+                "argument": [
+                    "test/dummy/2",
+                    "THISISANIOR0101010101",
+                    "my.test.host",
+                    "12345",
+                    "5"
+                ]
+            },
+            {
+                "command": "DbImportDevice",
+                "argument": "test/dummy/2",
+                "result": [
+                    [1, 12345],
+                    [
+                        "test/dummy/2",
+                        "THISISANIOR0101010101",
+                        "5",
+                        "Dummy/1",
+                        "my.test.host",
+                        "Dummy"
+                    ]
+                ]
+            }
+        ],
+        "teardown": [
+            {
+                "command": "DbUnExportDevice",
+                "argument": "test/dummy/2"
+            },
+            {
+                "command": "DbDeleteDevice",
+                "argument": "test/dummy/2"
+            }
+        ]
+    },
+
+    {
+        "name": "DbExportEvent",
+        "skip": true,
+        "comment": "Not sure what this is supposed to do. I think it's obsolete anyway, related to the old event system.",
+        "check": [
+            {
+                "command": "DbExportEvent",
+                "argument": [
+                    "mytestevent",
+                    "THISISANIOR0101010101",
+                    "my.test.host",
+                    "54321",
+                    "5"
+                ]
+            },
+            {
+                "command": "DbImportEvent",
+                "argument": "mytestevent",
+                "result": [
+                    [
+                        1,
+                        54321
+                    ],
+                    [
+                        "mytestevent",
+                        "THISISANIOR0101010101",
+                        "5",
+                        "my.test.host"
+                    ]
+                ]
+            }
+        ],
+        "teardown": [
+            {
+                "command": "DbUnexportEvent",
+                "argument": "mytestevent"
+            }
+        ]
+    },
+    {
+        "name": "DbImportDevice",
+        "skip": true,
+        "comment": "Not sure what this is supposed to do. I think it's obsolete anyway, related to the old event system.",
+        "setup": [],
+        "check": [
+            {
+                "command": "DbImportDevice",
+                "argument": null,
+                "result": null
+            }
+        ],
+        "teardown": []
+    },
+    {
+        "name": "DbImportEvent",
+        "skip": true,
+        "setup": [],
+        "check": [
+            {
+                "command": "DbImportEvent",
+                "argument": null,
+                "result": null
+            }
+        ],
+        "teardown": []
+    },
+    {
+        "name": "DbUnExportDevice",
+        "skip": true,
+        "setup": [],
+        "check": [
+            {
+                "command": "DbUnExportDevice",
+                "argument": null,
+                "result": null
+            }
+        ],
+        "teardown": []
+    },
+    {
+        "name": "DbUnExportEvent",
+        "skip": true,
+        "comment": "Not sure what this is supposed to do. I think it's obsolete anyway, related to the old event system.",
+        "setup": [],
+        "check": [
+            {
+                "command": "DbUnExportEvent",
+                "argument": null,
+                "result": null
+            }
+        ],
+        "teardown": []
+    },
+    {
+        "name": "DbUnExportServer",
+        "skip": true,
+        "setup": [],
+        "check": [
+            {
+                "command": "DbUnExportServer",
+                "argument": null,
+                "result": null
+            }
+        ],
+        "teardown": []
+    }
+]

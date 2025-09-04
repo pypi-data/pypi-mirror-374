@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+version_file = "databaseds/_version.py"
+
+[tool.setuptools]
+packages = ["databaseds", "databaseds.db_access"]
+
+[[tool.mypy.overrides]]
+module = [
+    "tango",
+    "pytest_metadata.plugin",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+addopts = "-v"
+markers = [
+    "tangodb: Test requiring Tango DB",
+]
+
+[project]
+name = "pytango-db"
+dynamic = ["version"]
+authors = [
+  {name = "MAX IV KITS Software", email = "kits-sw@maxiv.lu.se"},
+]
+description = "Fork of PyTango's internal sqlite based database device."
+readme = "README.md"
+dependencies = [
+    "pytango",
+    "gevent",
+]
+requires-python = ">= 3.6"
+license = {file = "LICENSE.txt"}
+
+[project.optional-dependencies]
+tests = [
+    "pytest",
+    "psutil",
+]
+
+[project.scripts]
+PyDatabaseds = "databaseds.database:main"
+
+[project.entry-points.pytest11]
+pytango-db-fixtures = "databaseds.fixtures"
+
+[project.urls]
+Repository = "https://gitlab.com/tango-controls/incubator/pytango-db"
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E4",  # Import
+    "E7",  # Statement
+    "E9",  # Runtime
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]

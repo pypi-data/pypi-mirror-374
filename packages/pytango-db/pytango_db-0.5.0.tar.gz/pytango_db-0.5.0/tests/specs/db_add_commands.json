@@ -1,0 +1,103 @@
+[
+    {
+        "name": "DbAddDevice",
+        "check": [
+            {
+                "command": "DbAddDevice",
+                "argument": [
+                    "Dummy/1",
+                    "test/dummy/2",
+                    "Dummy"
+                ]
+            },
+            {
+                "command": "DbGetDeviceInfo",
+                "argument": "test/dummy/2",
+                "result": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        "test/dummy/2",
+                        "nada",
+                        "0",
+                        "Dummy/1",
+                        "nada",
+                        "?",
+                        "?",
+                        "Dummy"
+                    ]
+                ]
+            }
+        ],
+        "teardown": [
+            {
+                "command": "DbDeleteDevice",
+                "argument": "test/dummy/2"
+            }
+        ]
+    },
+    {
+        "name": "DbAddServer",
+        "check": [
+            {
+                "command": "DbAddServer",
+                "argument": [
+                    "Test/1",
+                    "test/dummy/2",
+                    "Dummy",
+                    "test/other/2",
+                    "Other"
+                ]
+            },
+            {
+                "command": "DbGetServerInfo",
+                "argument": "Test/1",
+                "result": [
+                    "Test/1",
+                    " ",
+                    " ",
+                    " "
+                ]
+            }
+        ],
+        "teardown": [
+            {
+                "command": "DbDeleteServer",
+                "argument": "Test/1"
+            }
+        ]
+    },
+    {
+        "name": "DbAddServer",
+        "check": [
+            {
+                "command": "DbAddServer",
+                "argument": [
+                    "Test/1",
+                    "test/dummy/2",
+                    "Dummy",
+                    "test/other/2",
+                    "Other"
+                ]
+            },
+            {
+                "command": "DbGetServerInfo",
+                "argument": "Test/1",
+                "result": [
+                    "Test/1",
+                    " ",
+                    " ",
+                    " "
+                ]
+            }
+        ],
+        "teardown": [
+            {
+                "command": "DbDeleteServer",
+                "argument": "Test/1"
+            }
+        ]
+    }
+]

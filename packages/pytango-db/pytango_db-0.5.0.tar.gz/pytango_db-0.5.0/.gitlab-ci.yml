@@ -1,0 +1,19 @@
+---
+include:
+  - project: 'tango-controls/gitlab-ci-templates'
+    file: 'PythonPublic.gitlab-ci.yml'
+
+variables:
+  TEST_WITH_TANGO_DB: "true"
+
+.run_pytest:
+  image: $PYTHON_TEST_IMAGE
+  parallel:
+    matrix:
+      - PYTHON_TEST_IMAGE:
+          - registry.gitlab.com/maxiv/docker/python-testing:3.11.12-9.3.6
+          - ghcr.io/astral-sh/uv:python3.9-bookworm
+          - ghcr.io/astral-sh/uv:python3.10-bookworm
+          - ghcr.io/astral-sh/uv:python3.11-bookworm
+          - ghcr.io/astral-sh/uv:python3.12-bookworm
+          - ghcr.io/astral-sh/uv:python3.13-bookworm

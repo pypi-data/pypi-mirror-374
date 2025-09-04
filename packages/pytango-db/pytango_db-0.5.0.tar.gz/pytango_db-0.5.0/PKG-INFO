@@ -1,0 +1,331 @@
+Metadata-Version: 2.4
+Name: pytango-db
+Version: 0.5.0
+Summary: Fork of PyTango's internal sqlite based database device.
+Author-email: MAX IV KITS Software <kits-sw@maxiv.lu.se>
+License:                    GNU LESSER GENERAL PUBLIC LICENSE
+                               Version 3, 29 June 2007
+        
+         Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
+         Everyone is permitted to copy and distribute verbatim copies
+         of this license document, but changing it is not allowed.
+        
+        
+          This version of the GNU Lesser General Public License incorporates
+        the terms and conditions of version 3 of the GNU General Public
+        License, supplemented by the additional permissions listed below.
+        
+          0. Additional Definitions.
+        
+          As used herein, "this License" refers to version 3 of the GNU Lesser
+        General Public License, and the "GNU GPL" refers to version 3 of the GNU
+        General Public License.
+        
+          "The Library" refers to a covered work governed by this License,
+        other than an Application or a Combined Work as defined below.
+        
+          An "Application" is any work that makes use of an interface provided
+        by the Library, but which is not otherwise based on the Library.
+        Defining a subclass of a class defined by the Library is deemed a mode
+        of using an interface provided by the Library.
+        
+          A "Combined Work" is a work produced by combining or linking an
+        Application with the Library.  The particular version of the Library
+        with which the Combined Work was made is also called the "Linked
+        Version".
+        
+          The "Minimal Corresponding Source" for a Combined Work means the
+        Corresponding Source for the Combined Work, excluding any source code
+        for portions of the Combined Work that, considered in isolation, are
+        based on the Application, and not on the Linked Version.
+        
+          The "Corresponding Application Code" for a Combined Work means the
+        object code and/or source code for the Application, including any data
+        and utility programs needed for reproducing the Combined Work from the
+        Application, but excluding the System Libraries of the Combined Work.
+        
+          1. Exception to Section 3 of the GNU GPL.
+        
+          You may convey a covered work under sections 3 and 4 of this License
+        without being bound by section 3 of the GNU GPL.
+        
+          2. Conveying Modified Versions.
+        
+          If you modify a copy of the Library, and, in your modifications, a
+        facility refers to a function or data to be supplied by an Application
+        that uses the facility (other than as an argument passed when the
+        facility is invoked), then you may convey a copy of the modified
+        version:
+        
+           a) under this License, provided that you make a good faith effort to
+           ensure that, in the event an Application does not supply the
+           function or data, the facility still operates, and performs
+           whatever part of its purpose remains meaningful, or
+        
+           b) under the GNU GPL, with none of the additional permissions of
+           this License applicable to that copy.
+        
+          3. Object Code Incorporating Material from Library Header Files.
+        
+          The object code form of an Application may incorporate material from
+        a header file that is part of the Library.  You may convey such object
+        code under terms of your choice, provided that, if the incorporated
+        material is not limited to numerical parameters, data structure
+        layouts and accessors, or small macros, inline functions and templates
+        (ten or fewer lines in length), you do both of the following:
+        
+           a) Give prominent notice with each copy of the object code that the
+           Library is used in it and that the Library and its use are
+           covered by this License.
+        
+           b) Accompany the object code with a copy of the GNU GPL and this license
+           document.
+        
+          4. Combined Works.
+        
+          You may convey a Combined Work under terms of your choice that,
+        taken together, effectively do not restrict modification of the
+        portions of the Library contained in the Combined Work and reverse
+        engineering for debugging such modifications, if you also do each of
+        the following:
+        
+           a) Give prominent notice with each copy of the Combined Work that
+           the Library is used in it and that the Library and its use are
+           covered by this License.
+        
+           b) Accompany the Combined Work with a copy of the GNU GPL and this license
+           document.
+        
+           c) For a Combined Work that displays copyright notices during
+           execution, include the copyright notice for the Library among
+           these notices, as well as a reference directing the user to the
+           copies of the GNU GPL and this license document.
+        
+           d) Do one of the following:
+        
+               0) Convey the Minimal Corresponding Source under the terms of this
+               License, and the Corresponding Application Code in a form
+               suitable for, and under terms that permit, the user to
+               recombine or relink the Application with a modified version of
+               the Linked Version to produce a modified Combined Work, in the
+               manner specified by section 6 of the GNU GPL for conveying
+               Corresponding Source.
+        
+               1) Use a suitable shared library mechanism for linking with the
+               Library.  A suitable mechanism is one that (a) uses at run time
+               a copy of the Library already present on the user's computer
+               system, and (b) will operate properly with a modified version
+               of the Library that is interface-compatible with the Linked
+               Version.
+        
+           e) Provide Installation Information, but only if you would otherwise
+           be required to provide such information under section 6 of the
+           GNU GPL, and only to the extent that such information is
+           necessary to install and execute a modified version of the
+           Combined Work produced by recombining or relinking the
+           Application with a modified version of the Linked Version. (If
+           you use option 4d0, the Installation Information must accompany
+           the Minimal Corresponding Source and Corresponding Application
+           Code. If you use option 4d1, you must provide the Installation
+           Information in the manner specified by section 6 of the GNU GPL
+           for conveying Corresponding Source.)
+        
+          5. Combined Libraries.
+        
+          You may place library facilities that are a work based on the
+        Library side by side in a single library together with other library
+        facilities that are not Applications and are not covered by this
+        License, and convey such a combined library under terms of your
+        choice, if you do both of the following:
+        
+           a) Accompany the combined library with a copy of the same work based
+           on the Library, uncombined with any other library facilities,
+           conveyed under the terms of this License.
+        
+           b) Give prominent notice with the combined library that part of it
+           is a work based on the Library, and explaining where to find the
+           accompanying uncombined form of the same work.
+        
+          6. Revised Versions of the GNU Lesser General Public License.
+        
+          The Free Software Foundation may publish revised and/or new versions
+        of the GNU Lesser General Public License from time to time. Such new
+        versions will be similar in spirit to the present version, but may
+        differ in detail to address new problems or concerns.
+        
+          Each version is given a distinguishing version number. If the
+        Library as you received it specifies that a certain numbered version
+        of the GNU Lesser General Public License "or any later version"
+        applies to it, you have the option of following the terms and
+        conditions either of that published version or of any later version
+        published by the Free Software Foundation. If the Library as you
+        received it does not specify a version number of the GNU Lesser
+        General Public License, you may choose any version of the GNU Lesser
+        General Public License ever published by the Free Software Foundation.
+        
+          If the Library as you received it specifies that a proxy can decide
+        whether future versions of the GNU Lesser General Public License shall
+        apply, that proxy's public statement of acceptance of any version is
+        permanent authorization for you to choose that version for the
+        Library.
+        
+        
+        Portions of the code are licensed under different licences, listed below:
+        
+        tango/asyncio_executor.py _coroutine function:  CPython, Python Software Foundation License Version 2, https://github.com/python/cpython/blob/3.10/LICENSE
+        
+        tango/asyncio_executor.py run_coroutine_threadsafe function method:  CPython, Python Software Foundation License Version 2, https://github.com/python/cpython/blob/3.12/LICENSE
+        
+        tango/utils.py adjust_thread_count method of PyTangoThreadPoolExecutor:  CPython, Python Software Foundation License Version 2, https://github.com/python/cpython/blob/3.12/LICENSE
+        
+Project-URL: Repository, https://gitlab.com/tango-controls/incubator/pytango-db
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: pytango
+Requires-Dist: gevent
+Provides-Extra: tests
+Requires-Dist: pytest; extra == "tests"
+Requires-Dist: psutil; extra == "tests"
+Dynamic: license-file
+
+# PyTango DatabaseDS
+
+This is a "fork" of some internal code from pytango, that runs a Tango database device server. This
+code was originally written by Tiago Coutinho. It uses sqlite for storing data and therefore
+doesn't have any dependencies beyond python and PyTango.
+
+It's currently under heavy development, but is pretty usable. Please report any problems!
+
+The repo also contains (the beginnings of) a test suite that runs on both this device and a C++ database, for compatibility checking.
+
+For discussion of the future of this device, see https://gitlab.com/tango-controls/pytango/-/issues/626
+
+
+## Usage
+
+Create a python environment and:
+
+    $ pip install pytango-db
+    $ TANGO_HOST=localhost:11000 PyDatabaseds 2
+
+To work from source, check out this repo, create a python environment, and
+
+    $ pip install -e .
+    $ TANGO_HOST=localhost:11000 PyDatabaseds 2
+
+Now you should be able to use any normal Tango stuff like Jive etc, as long as you set `TANGO_HOST=localhost:11000`. You can pick any port, but 10000 might be taken if you
+already have a Tango installation locally.
+
+The sqlite database is saved in the current working directory. It's possible to have
+any number of databases running on the same host, with different ports, but be careful
+about sharing the same database file, it will likely cause problems. You can configure
+where it is stored by setting the environment variable `PYTANGO_DATABASE_NAME`.
+For a pure in-memory db, use `:memory:`.
+
+For debugging, you can enable logging:
+
+    $ TANGO_HOST=localhost:11000 PyDatabaseds --logging_level=2 2
+
+## pytest fixture
+
+This project also includes two pytest fixtures to start a database:
+
+- `pytango_db`, a function-scoped fixture (database is started and stopped after each test)
+- `session_pytango_db`, a session-scoped fixture (database is started only once and stopped at the end of the test session)
+
+To use one of this fixture in your project, add `pytango-db` to your tests requirements.
+
+These fixtures will start a database on a random port and return the used `TANGO_HOST` variable,
+that has been set in the environment.
+The database runs in memory.
+
+Note: if you are using a PyTango version older than 9.4, you will need to install the `psutil` package in order to use the fixtures.
+
+
+## Use cases
+
+- Local Tango development. Easy setup, possibility of having several databases and switching between them, etc.
+- Continuous integration pipelines. Simpler setup, no service depencencies.
+- Small lab setups?
+
+
+## Drawbacks
+
+- Still buggy
+- Likely lower performance than the C++ device
+- No concurrency (for now)
+
+
+## Tests
+
+The test suite is implemented as two very simple tests, one runs agains the pytango database device (provided by a fixture) and the other assumes there is a C++ database server running at the configured TANGO_HOST.
+
+The test are run multiple times, with data provided by a JSON "spec". The spec contains separate definitions for each test run, e.g.
+
+```
+    {
+        "name": "DbAddDevice",
+        "check": [
+            {
+                "command": "DbAddDevice",
+                "argument": [
+                    "Dummy/1",
+                    "test/dummy/2",
+                    "Dummy"
+                ]
+            },
+            {
+                "command": "DbGetDeviceInfo",
+                "argument": "test/dummy/2",
+                "result": [
+                    [
+                        0,
+                        0
+                    ],
+                    [
+                        "test/dummy/2",
+                        "nada",
+                        "0",
+                        "Dummy/1",
+                        "nada",
+                        "?",
+                        "?",
+                        "Dummy"
+                    ]
+                ]
+            }
+        ],
+        "teardown": [
+            {
+                "command": "DbDeleteDevice",
+                "argument": "test/dummy/2"
+            }
+        ]
+    },
+
+```
+Here, the test is named after "DbAddDevice" since this is the command that is being tested.
+
+The "check" section contains several command runs that will be executed on the database device under test. "command" and "argument" describe what to run, and the optional "result" describes the expected outcome. It will be compared against the actual result, to determine if the test was successful. Multiple commands are run in sequence.
+
+The "teardown" section is optional, and will be run after the "check" section. If any modification is made to the database, this should be implemented in order to restore the database as far as possible, so that the test doesn't interfere with any other tests. At least in the case of the C++ database, we can't wipe it completely between tests so make sure to remove anything that was added by the test.
+
+There is another optional section, "setup" that is run before "check" and can be used in order to create prerequisites for the checks.
+
+The test may also contain a "comment" field for extra information, and a boolean "skip" field which if `true` will cause the test to be skipped. At the time of writing, many command tests are still empty "stubs", set to be skipped.
+
+
+### Check
+
+The check section also has a few more features:
+
+`result` is a list or a string, depending on the type returned by the command. Items in the list are usually strings, but sometimes it can be useful to match them in a less exact way, when we only care about the "format" of the item:
+
+* `null` means we don't care what the item is, it matches anything.
+* `{"regexp": "a.*"}` is an example of a *regular expression* matching any string starting with "a".
+* `{"timestamp": "%Y-%m-%d"}` matches any date in ISO format e.g. "2024-10-01". The matcher uses ordinary *strptime* syntax.
+
+Ordinary string values may contain special *template* syntax e.g. `{name}`. before matching, it will be substituted with the name of the current test. This is useful in order to name things uniquely, which simplifies tracking down cases of stuff being left in the database by mistake (which should be cleaned up in the "teardown" step). For now, only "name" is available.
+
+`result_slice` takes a list of arguments, corresponding to the python `slice` builtin; "start", "stop" and "step". Each is an integer or `None`. This can be used to get only part of the result, in case it contains things we aren't interested in.

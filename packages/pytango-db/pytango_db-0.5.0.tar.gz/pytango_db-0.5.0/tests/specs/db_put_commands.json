@@ -1,0 +1,318 @@
+[
+    {
+        "name": "DbPutAttributeAlias",
+        "skip": true,
+        "setup": [],
+        "check": [
+            {
+                "command": "DbPutAttributeAlias",
+                "argument": null,
+                "result": null
+            }
+        ],
+        "teardown": []
+    },
+    {
+        "name": "DbPutClassAttributeProperty",
+        "skip": true,
+        "setup": [],
+        "check": [
+            {
+                "command": "DbPutClassAttributeProperty",
+                "argument": null,
+                "result": null
+            }
+        ],
+        "teardown": []
+    },
+    {
+        "name": "DbPutClassAttributeProperty2",
+        "skip": true,
+        "setup": [],
+        "check": [
+            {
+                "command": "DbPutClassAttributeProperty2",
+                "argument": null,
+                "result": null
+            }
+        ],
+        "teardown": []
+    },
+    {
+        "name": "DbPutClassPipeProperty",
+        "skip": true,
+        "setup": [],
+        "check": [
+            {
+                "command": "DbPutClassPipeProperty",
+                "argument": null,
+                "result": null
+            }
+        ],
+        "teardown": []
+    },
+    {
+        "name": "DbPutClassProperty",
+        "check": [
+            {
+                "command": "DbPutClassProperty",
+                "argument": [
+                    "Dummy", "2",
+                    "{name}_prop1", "1", "row1a",
+                    "{name}_prop2", "2", "row1b", "row2b"
+                ],
+                "result": null
+            },
+            {
+                "command": "DbGetClassProperty",
+                "argument": ["Dummy", "{name}_prop1", "{name}_prop2"],
+                "result": [
+                    "Dummy",
+                    "2",
+                    "{name}_prop1",
+                    "1",
+                    "row1a",
+                    "{name}_prop2",
+                    "2",
+                    "row1b",
+                    "row2b"
+                ]
+            }
+        ],
+        "teardown": [
+            {
+                "command": "DbDeleteClassProperty",
+                "argument": ["Dummy", "{name}_prop1"]
+            },
+            {
+                "command": "DbDeleteClassProperty",
+                "argument": ["Dummy", "{name}_prop2"]
+            }
+        ]
+    },
+    {
+        "name": "DbPutDeviceAlias",
+        "setup": [],
+        "check": [
+            {
+                "command": "DbPutDeviceAlias",
+                "argument": ["test/dummy/1", "testalias"],
+                "result": null
+            },
+            {
+                "command": "DbGetDeviceAlias",
+                "argument": "test/dummy/1",
+                "result": "testalias"
+            }
+        ],
+        "teardown": [
+            {
+                "command": "DbDeleteDeviceAlias",
+                "argument": "testalias"
+            }
+        ]
+    },
+    {
+        "name": "DbPutDeviceAttributeProperty",
+        "check": [
+            {
+                "command": "DbPutDeviceAttributeProperty",
+                "argument": [
+                    "test/dummy/1",
+                    "2",
+                    "TestAttribute1_{name}",
+                    "2",
+                    "TestProperty1_{name}",
+                    "line1",
+                    "TestProperty2_{name}",
+                    "line1",
+                    "TestAttribute2_{name}",
+                    "1",
+                    "TestProperty3_{name}",
+                    "line1"
+                ]
+            },
+            {
+                "command": "DbGetDeviceAttributeProperty",
+                "argument": [
+                    "test/dummy/1",
+                    "TestAttribute1_{name}",
+                    "TestAttribute2_{name}"
+                ],
+                "result": [
+                    "test/dummy/1",
+                    "2",
+                    "TestAttribute1_{name}",
+                    "2",
+                    "TestProperty1_{name}",
+                    "line1",
+                    "TestProperty2_{name}",
+                    "line1",
+                    "TestAttribute2_{name}",
+                    "1",
+                    "TestProperty3_{name}",
+                    "line1"
+                ]
+            }
+        ],
+        "teardown": [
+            {
+                "command": "DbDeleteAllDeviceAttributeProperty",
+                "argument": [
+                    "test/dummy/1",
+                    "TestAttribute1_{name}",
+                    "TestAttribute2_{name}"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "DbPutDeviceAttributeProperty2",
+        "setup": [],
+        "check": [
+            {
+                "command": "DbPutDeviceAttributeProperty2",
+                "argument": [
+                    "test/dummy/1",
+                    "2",
+                    "TestAttribute1_{name}",
+                    "2",
+                    "TestProperty1_{name}",
+                    "2",
+                    "line1",
+                    "line2",
+                    "TestProperty2_{name}",
+                    "1",
+                    "line1",
+                    "TestAttribute2_{name}",
+                    "1",
+                    "TestProperty3_{name}",
+                    "3",
+                    "line1",
+                    "line2",
+                    "line3"
+                ]
+            },
+            {
+                "command": "DbGetDeviceAttributeProperty2",
+                "argument": [
+                    "test/dummy/1",
+                    "TestAttribute1_{name}",
+                    "TestAttribute2_{name}"
+                ],
+                "result": [
+                    "test/dummy/1",
+                    "2",
+                    "TestAttribute1_{name}",
+                    "2",
+                    "TestProperty1_{name}",
+                    "2",
+                    "line1",
+                    "line2",
+                    "TestProperty2_{name}",
+                    "1",
+                    "line1",
+                    "TestAttribute2_{name}",
+                    "1",
+                    "TestProperty3_{name}",
+                    "3",
+                    "line1",
+                    "line2",
+                    "line3"
+                ]
+            }
+        ],
+        "teardown": [
+            {
+                "command": "DbDeleteAllDeviceAttributeProperty",
+                "argument": [
+                    "test/dummy/1",
+                    "TestAttribute1_{name}",
+                    "TestAttribute2_{name}"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "DbPutDevicePipeProperty",
+        "skip": true,
+        "setup": [],
+        "check": [
+            {
+                "command": "DbPutDevicePipeProperty",
+                "argument": null,
+                "result": null
+            }
+        ],
+        "teardown": []
+    },
+    {
+        "name": "DbPutDeviceProperty",
+        "skip": true,
+        "setup": [],
+        "check": [
+            {
+                "command": "DbPutDeviceProperty",
+                "argument": [
+                    "test/dummy/1",
+                    "{name}_prop1",
+                    "2",
+                    "row1",
+                    "row2"
+                ],
+                "result": null
+            },
+            {
+                "command": "DbGetDeviceProperty",
+                "argument": [
+                    "test/dummy/1",
+                    "{name}_prop1"
+                ],
+                "result": [
+                    "test/dummy/1",
+                    "1",
+                    "{name}_prop1",
+                    "2",
+                    "row1",
+                    "row2"
+                ]
+            }
+        ],
+        "teardown": [
+            {
+                "command": "DbDeleteDeviceProperty",
+                "argument": [
+                    "test/dummy/1",
+                    "{name}_prop1"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "DbPutProperty",
+        "skip": true,
+        "setup": [],
+        "check": [
+            {
+                "command": "DbPutProperty",
+                "argument": null,
+                "result": null
+            }
+        ],
+        "teardown": []
+    },
+    {
+        "name": "DbPutServerInfo",
+        "skip": true,
+        "setup": [],
+        "check": [
+            {
+                "command": "DbPutServerInfo",
+                "argument": null,
+                "result": null
+            }
+        ],
+        "teardown": []
+    }
+
+]

@@ -1,0 +1,107 @@
+[
+    {
+        "name": "DbInfo",
+        "check": [
+            {
+                "command": "DbInfo",
+                "argument": null,
+                "result": [
+                    {"regexp": "TANGO Database .*"},
+                    " ",
+                    {"regexp": "Running since .*"},
+                    " ",
+                    {"regexp": "Devices defined .*"},
+                    {"regexp": "Devices exported .*"},
+                    {"regexp": "Device servers defined .*"},
+                    {"regexp": "Device servers exported .*"},
+                    " ",
+                    {"regexp": "Device properties defined .*"},
+                    {"regexp": "Class properties defined .*"},
+                    {"regexp": "Device attribute properties defined .*"},
+                    {"regexp": "Class attribute properties defined .*"},
+                    {"regexp": "Object properties defined .*"}
+                ]
+            }
+        ],
+        "teardown": []
+    },
+    {
+        "name": "DbMySqlSelect",
+        "skip": true,
+        "setup": [],
+        "check": [
+            {
+                "command": "DbMySqlSelect",
+                "argument": null,
+                "result": null
+            }
+        ],
+        "teardown": []
+    },
+    {
+        "name": "DbRenameServer",
+        "skip": true,
+        "setup": [],
+        "check": [
+            {
+                "command": "DbRenameServer",
+                "argument": null,
+                "result": null
+            }
+        ],
+        "teardown": []
+    },
+    {
+        "name": "Init",
+        "skip": true,
+        "setup": [],
+        "check": [
+            {
+                "command": "Init",
+                "argument": null,
+                "result": null
+            }
+        ],
+        "teardown": []
+    },
+    {
+        "name": "ResetTimingValues",
+        "skip": true,
+        "setup": [],
+        "check": [
+            {
+                "command": "ResetTimingValues",
+                "argument": null,
+                "result": null
+            }
+        ],
+        "teardown": []
+    },
+    {
+        "name": "State",
+        "skip": true,
+        "setup": [],
+        "check": [
+            {
+                "command": "State",
+                "argument": null,
+                "result": null
+            }
+        ],
+        "teardown": []
+    },
+    {
+        "name": "Status",
+        "skip": true,
+        "setup": [],
+        "check": [
+            {
+                "command": "Status",
+                "argument": null,
+                "result": null
+            }
+        ],
+        "teardown": []
+    }
+
+]
