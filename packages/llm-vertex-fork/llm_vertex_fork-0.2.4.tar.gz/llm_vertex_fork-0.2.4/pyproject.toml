@@ -1,0 +1,35 @@
+[project]
+name = "llm-vertex-fork"
+version = "0.2.4"
+description = "Plugin for LLM adding support for Google Cloud Vertex AI"
+dependencies = [
+    "llm",
+    "google-genai>=1.32.0",
+]
+readme = "README.md"
+authors = [{name = "Justyn Shull"}]
+license = {text = "Apache-2.0"}
+classifiers = [
+    "License :: OSI Approved :: Apache Software License"
+]
+requires-python = ">3.8"
+
+[project.urls]
+Homepage = "https://github.com/avoidik/llm-vertex-fork"
+Changelog = "https://github.com/avoidik/llm-vertex-fork/releases"
+Issues = "https://github.com/avoidik/llm-vertex-fork/issues"
+
+[project.optional-dependencies]
+dev = [
+    "build>=1.2.2.post1",
+    "twine>=6.1.0",
+    "pytest>=6.0",
+]
+
+[project.entry-points.llm]
+vertex = "llm_vertex"
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::DeprecationWarning:pydantic.*",
+]
