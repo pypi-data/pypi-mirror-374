@@ -1,0 +1,83 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "heroku_applink"
+version = "1.1.4"
+description = "Simple SDK for Heroku AppLink and Salesforce development"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "aiohttp>=3.11.12",
+    "orjson>=3.10.15",
+    "yarl>=1.20.0",
+]
+
+[dependency-groups]
+docs = ["pdoc3"]
+
+[tool.hatch.build]
+packages = ["heroku_applink", "heroku_applink.data_api"]
+
+[project.urls]
+Homepage = "https://github.com/heroku/heroku-applink-python"
+Documentation = "https://github.com/heroku/heroku-applink-python"
+Repository = "https://github.com/heroku/heroku-applink-python.git"
+"Bug Tracker" = "https://github.com/heroku/heroku-applink-python/issues"
+Changelog = "https://github.com/heroku/heroku-applink-python/CHANGELOG.md"
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+    "ruff>=0.1.0",
+    "coverage>=7.0.0",
+    "aioresponses>=0.7.8",
+    "fastapi>=0.115.0",
+    "uvicorn>=0.34.0",
+    "httpx>=0.28.1",
+    "flask>=3.1.1",
+]
+dev = [
+    "tox>=4.0.0",
+    "tox-uv>=0.1.0",
+    "ruff>=0.1.0",
+    "pdoc3>=0.11.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "--cov=heroku_applink --cov-report=term-missing -v"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff]
+line-length = 88
+fix = true
+
+[tool.ruff.lint]
+select = ["E", "W", "F"]
+ignore = ["E501"]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py310, py311, py312, py313
+skip_missing_interpreters = true
+
+[testenv]
+extras = test
+setenv =
+    COVERAGE_FILE = .coverage.{envname}
+commands_pre =
+    coverage erase
+commands =
+    ruff check .
+    pytest
+    coverage report --fail-under=80 --show-missing
+    coverage erase
+"""
