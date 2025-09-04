@@ -1,0 +1,7 @@
+__pycache__
+.venv
+# not ignore python dist in sast
+!dist
+
+# not ignore python egg in sast
+!uv.lock
