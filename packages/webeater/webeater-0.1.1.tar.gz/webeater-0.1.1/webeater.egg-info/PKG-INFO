@@ -1,0 +1,207 @@
+Metadata-Version: 2.4
+Name: webeater
+Version: 0.1.1
+Summary: A web content extraction tool designed to fetch and process web pages efficiently
+Author-email: Tiago Ribeiro <webeater@tiagoribeiro.pt>
+Maintainer-email: Tiago Ribeiro <webeater@tiagoribeiro.pt>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/tiagrib/webeater
+Project-URL: Repository, https://github.com/tiagrib/webeater.git
+Project-URL: Issues, https://github.com/tiagrib/webeater/issues
+Project-URL: Documentation, https://github.com/tiagrib/webeater#readme
+Keywords: web,scraping,extraction,selenium,beautifulsoup,content
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Browsers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Text Processing :: Markup :: HTML
+Classifier: Topic :: Utilities
+Classifier: Typing :: Typed
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: annotated-types>=0.7.0
+Requires-Dist: attrs>=25.3.0
+Requires-Dist: beautifulsoup4>=4.13.4
+Requires-Dist: bs4>=0.0.2
+Requires-Dist: certifi>=2025.8.3
+Requires-Dist: cffi>=1.17.1
+Requires-Dist: coloredlogs>=15.0.1
+Requires-Dist: h11>=0.16.0
+Requires-Dist: humanfriendly>=10.0
+Requires-Dist: idna>=3.10
+Requires-Dist: outcome>=1.3.0.post0
+Requires-Dist: pycparser>=2.22
+Requires-Dist: pydantic>=2.11.7
+Requires-Dist: pydantic_core>=2.33.2
+Requires-Dist: pyreadline3>=3.5.4
+Requires-Dist: PySocks>=1.7.1
+Requires-Dist: selenium>=4.34.2
+Requires-Dist: sniffio>=1.3.1
+Requires-Dist: sortedcontainers>=2.4.0
+Requires-Dist: soupsieve>=2.7
+Requires-Dist: trio>=0.30.0
+Requires-Dist: trio-websocket>=0.12.2
+Requires-Dist: typing-inspection>=0.4.1
+Requires-Dist: typing_extensions>=4.14.1
+Requires-Dist: urllib3>=2.5.0
+Requires-Dist: websocket-client>=1.8.0
+Requires-Dist: wsproto>=1.2.0
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: pytest-asyncio; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Provides-Extra: test
+Requires-Dist: pytest>=6.0; extra == "test"
+Requires-Dist: pytest-asyncio; extra == "test"
+Dynamic: license-file
+
+<img src="img/logo.png" alt="Logo" style="max-height: 100px;">
+
+# WebEater (weat)
+
+WebEater is a web content extraction tool designed to fetch and process web pages.\
+It is made for developers and researchers who need to extract structured data from web pages efficiently.\
+The tool goes straight to the point, focusing on extracting text and structured data from web pages,
+while providing some additional configurations and hits for better effectiveness.
+
+Its main purpose is to serve as a go-to-component that works out of the box for most general use cases.
+
+As it's currently at an early stage, it may not cover all edge cases or complex scenarios.\
+We welcome contributions and feedback to help improve its capabilities.
+
+## Main Features
+- Fetches web pages and extracts text content into Markdown format.
+- Return clean, plain text or a JSON object optionally containing lists of images and links found on the page.
+- Handles JavaScript-heavy pages using Selenium and BeautifulSoup
+- Can be used both as a library and a command-line tool (CLI).
+
+## Quick Start (CLI)
+To use WebEater from the command line, first install it using `pip`:
+
+```
+pip install webeater
+```
+
+Then, you can run it with a URL using the `weat` CLI tool
+
+```
+weat https://example.com
+```
+
+This will fetch the content of the page and print the extracted text to the console.
+
+### CLI Options
+You can customize the behavior of WebEater using various command-line options:
+
+- url (positional): URL to fetch content from. If omitted, WebEater starts an interactive prompt.
+- -c, --config FILE (default: weat.json): Config file to use.
+- --hints FILE [FILE ...]: Additional hint files to load (space-separated paths).
+- --debug: Enable debug logging.
+- --silent: Silent mode — suppress debug/info messages; only print results or errors to allow calling from scripts or subprocesses.
+- --json: Return content as JSON instead of plain text.
+- --content-only: Return only the main extracted content (skip extracting links and images).
+
+Examples:
+
+```
+# Basic usage
+webeater https://example.com
+
+# JSON output and content-only
+webeater --json --content-only https://example.com
+
+# Using a custom config and multiple hint files
+webeater -c weat.json --hints hints/news.json hints/sports.json https://example.com
+```
+
+Interactive mode (when no URL is provided):
+
+- Enter a URL when prompted to fetch content.
+- Prefix shortcuts per request:
+    - j!<url> → return JSON
+    - c!<url> → content only
+    - jc!<url> or cj!<url> → JSON + content only
+- q → quit the interactive session
+
+Notes:
+
+- URLs must start with http:// or https://.
+- In silent mode, only the result or an error line (prefixed with "Error:") is printed.
+
+
+## Quick Start (Python)
+To use WebEater, first install it using `pip`:
+
+```
+pip install webeater
+```
+
+You can then import the `Webeater` class and
+create an instance of it.\
+The engine will automatically load the necessary configurations
+and provide methods to perform web content extraction actions.
+
+Note that it must be loaded within an async context.
+
+Below is a minimal example:
+
+```
+import asyncio
+from webeater import Webeater
+
+async def main():
+    weat = await Webeater.create()
+    content = await weat.get(url="https://www.tiagoribeiro.pt")
+    print(content)
+
+asyncio.run(main())
+```
+
+## Help and Contributions
+
+For questions or discussions about changes and new features, please start a new [Discussion in the Webeater GitHub repository](https://github.com/tiagrib/webeater/discussions).
+
+If you find bugs or want to contribute, please open an [Issue](https://github.com/tiagrib/webeater/issues).
+
+## Develop with Source
+
+To develop with WebEater from source code, you can clone the repository at:
+```
+https://github.com/tiagrib/webeater.git
+```
+
+then navigate to the project directory and install the required dependencies:
+
+```
+pip install -r requirements.txt
+```
+The current code was tested using python version 3.12.3, though other versions may work.
+
+
+## Configuration and Advanced documentation
+Web Eater uses a configuration file to manage its settings.
+The configuration file is typically located at `config/weat.yaml`.
+
+You can customize the settings in this file to suit your needs,
+such as specifying the default user agent, timeout settings, and other parameters.
+
+For more detailed documentation on configuration options and advanced usage,
+please refer to the [Hints Documentation](hints/README.md).
+
+    
+    
