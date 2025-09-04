@@ -1,0 +1,258 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+
+[project]
+dynamic = ["version"]
+name = "hebrew-numbers"
+description = "Convert numbers to Hebrew."
+license = "MIT"
+license-files = ["LICEN[CS]E.*"]
+readme = "README.md"
+authors = [
+  {name = "Tsvika Shapira", email = "tsvikas@gmail.com"}
+]
+keywords = [
+  "hebrew",
+  "numbers",
+  "localization",
+  "i18n",
+  "language",
+  "nlp",
+  "linguistics",
+  "grammar",
+  "conversion",
+  "jinja2",
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Natural Language :: Hebrew",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Education",
+  "Topic :: Office/Business",
+  "Topic :: Software Development :: Libraries",
+  "Typing :: Typed",
+]
+# urls.homepage = "https://hebrew-numbers.readthedocs.io"
+urls.source = "https://github.com/tsvikas/hebrew-numbers"
+urls.changelog = "https://github.com/tsvikas/hebrew-numbers/blob/main/CHANGELOG.md"
+# urls.releasenotes = "https://github.com/tsvikas/hebrew-numbers/releases"
+# urls.documentation = "https://hebrew-numbers.readthedocs.io"
+urls.issues = "https://github.com/tsvikas/hebrew-numbers/issues"
+# urls.funding = "https://github.com/sponsors/tsvikas"
+
+requires-python = ">=3.9"
+dependencies = [
+    "typing-extensions>=4.5.0; python_version < '3.12'",
+]
+
+[project.optional-dependencies]
+jinja = ["jinja2 >=3.0.0"]
+
+[project.scripts]
+# hebrew-numbers = "hebrew_numbers.cli:app"
+
+[project.gui-scripts]
+# hebrew-numbers = "hebrew_numbers.gui:app.run"
+
+
+[tool.uv]
+required-version = ">=0.5.19"
+default-groups = ["dev", "test", "typing"]
+
+
+[dependency-groups]
+dev = [
+  ## used in the justfile
+  "rust-just ~=1.0",
+  "pre-commit ~=4.0",
+  "black ~=25.0",  # also update GHA version
+  "ruff ~=0.12.0",
+  ## can be used for debug
+  "icecream >=2",
+  "snoop >=0.3",
+  ## can be used for REPL
+  "ipython >=8",
+]
+test = [
+  "pytest ~=8.0",
+  ## running
+  "pytest-reverse ~=1.0",
+  "pytest-xdist[psutil] ~=3.0",
+  ## reporting
+  "pytest-clarity ~=1.0",
+  "pytest-github-actions-annotate-failures ~=0.3.0",
+  ## extras
+  "pytest-benchmark ~=5.0",
+  "pytest-cov ~=6.0",
+  ## fixtures
+  "pytest-regressions ~=2.0",
+]
+docs = [
+  "mkdocs ~=1.0",
+  "mkdocs-material ~=9.0",
+  "mkdocstrings-python ~=1.0",
+  "mkdocs-gen-files ~=0.5.0",
+  "mkdocs-literate-nav ~=0.6.0",
+  "mkdocs-section-index ~=0.3.0",
+]
+typing = [
+  "mypy ~=1.17.0",
+  # add "*-stubs" and "types-*" packages here (">=0")
+]
+
+
+[tool.hatch]
+version.source = "vcs"
+build.hooks.vcs.version-file = "src/hebrew_numbers/_version.py"
+
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = [
+  "src/",
+  "tests/",
+]
+addopts = [
+  ## testing
+  "--doctest-modules",
+  "--strict-markers",
+  "--strict-config",
+  ## reporting
+  "-ra",
+  ## addons: pytest-benchmark
+  "--benchmark-disable",
+  ## addons: pytest-cov
+  # this might affect debuggers.
+  # use `--no-cov` to disable in the debugger
+  # see https://pytest-cov.readthedocs.io/en/latest/debuggers.html
+  "--cov=src/hebrew_numbers",
+  "--cov-branch",
+  ## addons: pytest-reverse
+  "--reverse",
+  ## addons: pytest-xdist
+  # this enable parallel execution, but hides filenames in output
+  # "--numprocesses=auto",  # pytest-xdist
+]
+xfail_strict = true
+filterwarnings = [
+  "error",
+  "default::DeprecationWarning",
+  "error::DeprecationWarning:hebrew_numbers",
+]
+log_cli_level = "INFO"
+
+
+[tool.coverage]
+run.omit = [
+  "src/hebrew_numbers/__main__.py",
+  "src/hebrew_numbers/_version.py",
+]
+
+
+[tool.mypy]
+files = ["src", "tests"]
+mypy_path = "stubs"
+# set the platform
+python_version = "3.9"
+# enable checks [last updated: mypy 1.17]
+strict = true
+disallow_any_unimported = true
+warn_unreachable = true
+disallow_any_explicit = true
+enable_error_code = [
+  # from https://mypy.readthedocs.io/en/stable/error_code_list2.html
+  "redundant-self",
+  "deprecated",
+  "redundant-expr",
+  "possibly-undefined",
+  "truthy-bool",
+  "truthy-iterable",
+  "ignore-without-code",
+  "unused-awaitable",
+  "explicit-override",
+  "mutable-override",
+  "unimported-reveal",
+  "exhaustive-match",
+]
+
+
+[tool.ruff.format]
+docstring-code-format = true
+
+
+[tool.ruff.lint]
+# Use google-style conventions for docstrings
+pydocstyle.convention = "google"
+select = [
+  "ALL",
+  # extend rules outside pydocstyle google convention
+  "D401",  # pydocstyle/non-imperative-mood
+  "D404",  # pydocstyle/docstring-starts-with-this
+]
+ignore = [
+  # needed only in large codebases
+  "TD002",    # flake8-todos/missing-todo-author
+  "TD003",    # flake8-todos/missing-todo-link
+  # incompatible with other rules
+  "COM812",   # flake8-commas/missing-trailing-comma (incompatible with black)
+  # disagree:
+  "PD010",    # pandas-vet/pandas-use-of-dot-pivot-or-unstack
+  "PD013",    # pandas-vet/pandas-use-of-dot-stack
+  # annoying:
+  "EM10",     # flake8-errmsg/*-in-exception
+  "RET504",   # flake8-return/unnecessary-assign
+  # ban something useful for a possibly good reason
+  #"C901",     # mccabe/complex-structure
+  #"S101",     # flake8-bandit/assert
+  #"PD901",    # pandas-vet/pandas-df-variable-name
+  #"FIX00",    # flake8-fixme/line-contains-*
+  #"ERA001",   # eradicate/commented-out-code
+  #"PLR091",   # PyLint-Refactor/too-many-*
+  "TRY003",   # tryceratops/raise-vanilla-args
+]
+# objects that should be treated equivalently to a logging.Logger object.
+logger-objects = ["loguru.logger"]
+# allow the omission of a return type hint for __init__
+flake8-annotations.mypy-init-return = true
+# allow `dict(a=1, b=2)`
+flake8-comprehensions.allow-dict-calls-with-keyword-arguments = true
+
+# flag modules or module members that may not be imported or accessed
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"collections.namedtuple".msg = "Use typing.NamedTuple or @dataclasses.dataclass(frozen=True, slots=True)"
+
+[tool.ruff.lint.per-file-ignores]
+"src/hebrew_numbers/cli.py" = [
+  "T20",      # flake8-print
+]
+"src/hebrew_numbers/_version.py" = [
+  "ALL",
+]
+"scripts/*.py" = ["INP001", "T20"]
+"!tests/test_*.py" = [
+  "PT",       # flake8-pytest-style
+]
+"tests/test_*.py" = [
+  "INP001",   # flake8-no-pep420/implicit-namespace-package
+  "PLR2004",  # PyLint-Refactor/magic-value-comparison
+  "S101",     # flake8-bandit/assert
+  "D1",       # pydocstyle/undocumented-*
+]
+"run.py" = ["D"]
+"fib.py" = ["D"]
+
+
+[tool.pylint]
+py-version = "3.9"
+ignore-paths = [".*/_version.py"]
+reports.output-format = "colorized"
