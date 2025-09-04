@@ -1,0 +1,25 @@
+filelock>=3.12.3
+packaging>=24
+
+[:python_version < "3.11"]
+tomli>=2.0.1
+
+[:sys_platform == "win32"]
+cabarchive>=0.2.4
+striprtf>=0.0.26
+
+[:sys_platform == "win32" and platform_machine != "ARM64"]
+cx-logging>=3.1
+
+[dev]
+bump-my-version==1.2.1
+cibuildwheel==3.1.4
+pre-commit==4.3.0
+
+[tests]
+coverage==7.10.6
+pytest==8.4.1
+pluggy==1.6.0
+pytest-mock==3.14.1
+pytest-timeout==2.4.0
+pytest-xdist==3.8.0

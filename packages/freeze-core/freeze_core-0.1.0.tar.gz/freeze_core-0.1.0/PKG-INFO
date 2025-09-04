@@ -1,0 +1,52 @@
+Metadata-Version: 2.4
+Name: freeze_core
+Version: 0.1.0
+Summary: Create standalone executables from Python scripts
+Author-email: Marcelo Duarte <marcelotduarte@users.noreply.github.com>
+License-Expression: MIT
+Project-URL: Home, https://marcelotduarte.github.io/cx_Freeze
+Project-URL: Changelog, https://github.com/marcelotduarte/freeze-core/CHANGELOG.md
+Project-URL: Documentation, https://cx-freeze.readthedocs.io
+Project-URL: Source, https://github.com/marcelotduarte/freeze-core
+Project-URL: Tracker, https://github.com/marcelotduarte/cx_Freeze/issues
+Keywords: cx-freeze cxfreeze cx_Freeze freeze python
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: C
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Software Distribution
+Classifier: Topic :: Utilities
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: filelock>=3.12.3
+Requires-Dist: packaging>=24
+Requires-Dist: tomli>=2.0.1; python_version < "3.11"
+Requires-Dist: cabarchive>=0.2.4; sys_platform == "win32"
+Requires-Dist: cx-logging>=3.1; sys_platform == "win32" and platform_machine != "ARM64"
+Requires-Dist: striprtf>=0.0.26; sys_platform == "win32"
+Provides-Extra: dev
+Requires-Dist: bump-my-version==1.2.1; extra == "dev"
+Requires-Dist: cibuildwheel==3.1.4; extra == "dev"
+Requires-Dist: pre-commit==4.3.0; extra == "dev"
+Provides-Extra: tests
+Requires-Dist: coverage==7.10.6; extra == "tests"
+Requires-Dist: pytest==8.4.1; extra == "tests"
+Requires-Dist: pluggy==1.6.0; extra == "tests"
+Requires-Dist: pytest-mock==3.14.1; extra == "tests"
+Requires-Dist: pytest-timeout==2.4.0; extra == "tests"
+Requires-Dist: pytest-xdist==3.8.0; extra == "tests"
+Dynamic: license-file
+
+# freeze-core
