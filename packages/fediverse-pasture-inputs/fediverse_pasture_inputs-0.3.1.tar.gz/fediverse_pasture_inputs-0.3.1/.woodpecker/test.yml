@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: 2024 Helge
+#
+# SPDX-License-Identifier: MIT
+
+when:
+  branch: [main]
+  event: [push, pull_request]
+
+steps:
+  build:
+    image: ghcr.io/astral-sh/uv:python3.13-alpine
+    commands:
+      - uv sync --frozen
+  test_format:
+    image: ghcr.io/astral-sh/uv:python3.13-alpine
+    commands:
+      - uv run ruff format --check .
+      - uv run ruff check .
+  test_pytest:
+    image: ghcr.io/astral-sh/uv:python3.13-alpine
+    commands:
+      - uv run pytest
