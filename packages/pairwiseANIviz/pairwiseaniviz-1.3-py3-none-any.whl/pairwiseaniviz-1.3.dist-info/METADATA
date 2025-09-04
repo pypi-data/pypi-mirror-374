@@ -1,0 +1,154 @@
+Metadata-Version: 2.4
+Name: pairwiseANIviz
+Version: 1.3
+Summary: Pairwise ANI (Average Nucleotide Identity) visualization tool
+Home-page: https://github.com/RunJiaJi/pairwiseANIviz
+Author: Runjia Ji
+Author-email: jirunjia@gmail.com
+Project-URL: Bug Reports, https://github.com/RunJiaJi/pairwiseANIviz/issues
+Project-URL: Source, https://github.com/RunJiaJi/pairwiseANIviz
+Project-URL: Documentation, https://github.com/RunJiaJi/pairwiseANIviz#readme
+Keywords: bioinformatics,ANI,visualization,clustering,heatmap,microbiology
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas>=1.3.0
+Requires-Dist: matplotlib>=3.5.0
+Requires-Dist: seaborn>=0.11.0
+Requires-Dist: scipy>=1.7.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# pairwiseANIviz
+
+[![PyPI version](https://badge.fury.io/py/pairwiseANIviz.svg)](https://badge.fury.io/py/pairwiseANIviz)
+[![Downloads](https://static.pepy.tech/badge/pairwiseaniviz)](https://pepy.tech/project/pairwiseaniviz)
+[![Downloads](https://static.pepy.tech/badge/pairwiseaniviz/month)](https://pepy.tech/project/pairwiseaniviz)
+[![Downloads](https://static.pepy.tech/badge/pairwiseaniviz/week)](https://pepy.tech/project/pairwiseaniviz)
+
+Pairwise ANI (Average Nucleotide Identity) visulization tool. This tool is designed to help visualize the results of pairwise comparisons among multiple genomes.
+
+First, [Scipy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html#scipy.cluster.hierarchy.linkage) is used to perform hierarchical/agglomerative clustering, followed by generating a clustermap using [Seaborn](https://seaborn.pydata.org/generated/seaborn.clustermap.html) that supports various [Matplotlib](https://matplotlib.org/stable/users/explain/colors/colormaps.html) colormaps.
+
+
+#### Main features
+* Support various __matplotlib colormaps__
+* Taxonomic classification result can be included to __illustrate different taxa__
+* Specific __outrange ANI values__ can be set (eg. 95% ANI values) 
+* __Multi-format outputs (JPG, PNG, TIFF, SVG, PDF, EPS)__
+
+
+## Example
+#### 1. Using different [matplotlib colormaps](https://matplotlib.org/stable/users/explain/colors/colormaps.html)
+<img src="/static/example_with_diffferent_cmap.svg" alt="Figure"/>
+
+#### 2. With taxonomy indicated by different palettes
+<img src="/static/example_with_different_palette.svg" alt="Figure"/>
+
+#### 3. With ANI values illustrated
+<img src="/static/example_with_annotation.svg" alt="Figure"/>
+
+#### 4. With outrange ANI values (95%) colored red
+<img src="/static/example_with_outrangeValue.svg" alt="Figure"/>
+
+
+## Installation
+ 
+<!-- AsperaSRAgetter has been distributed on [pypi](https://pypi.org/project/AsperaSRAgetter/). You can easily install AsperaSRAgetter through pip. AsperaSRAgetter depends on Aspera-CLI to retrive sequencing data from ENA. It is recommended to install Aspera-CLI [with Conda](https://anaconda.org/hcc/aspera-cli). -->
+
+```shell
+# Dependencies: Matplotlib, Seaborn, Scipy, Pandas
+# Install pairwiseANIviz using pip
+pip install pairwiseANIviz==1.3
+```
+
+
+
+
+## Usage
+
+
+![overallUsage](./static/Overall_Usage.png) 
+
+#### Options
+
+```bash
+usage: pairwiseANIviz [options] anifile
+
+positional arguments:
+  anifile               File containing pairwise ANI analysis result.
+
+options:
+  -h, --help            show this help message and exit
+  -v, --version         Show pairwiseANIviz version number and exit.
+  -o OUTDIR, --outdir OUTDIR
+                        Directory to save the output figures (default 'pairwiseANIviz').
+  --method {single,complete,average,weighted,centroid,median,ward}
+                        Linkage method to use for calculating clusters (default 'average').
+                         See https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html#scipy.cluster.hierarchy.linkage
+  --metric {braycurtis,canberra,chebyshev,cityblock,correlation,cosine,dice,euclidean,hamming,jaccard,jensenshannon,kulczynski1,mahalanobis,matching,minkowski,rogerstanimoto,russellrao,seuclidean,sokalmichener,sokalsneath,sqeuclidean,yule}
+                        The distance metric to use (default 'euclidean').
+                         See https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.pdist.html#scipy.spatial.distance.pdist
+  -cmap COLORMAP, --colormap COLORMAP
+                        Matplotlib colormap used when drawing the heatmap of ANI values (default 'Blues').
+                         See https://matplotlib.org/stable/users/explain/colors/colormaps.html
+  --figWidth FIGWIDTH   Figure width (default '15').
+  --figHeight FIGHEIGHT
+                        Figure height (default '15').
+  --linewidth LINEWIDTH
+                        Line width of the main heatmap (default 0.5)
+  --linecolor LINECOLOR
+                        Line color of the main heatmap (default 'grey').
+  --rowCluster          Draw the row cluster.
+  --colCluster          Draw the column cluster.
+  --annotation          Show ANI values on the plot.
+  --outrangeValue OUTRANGEVALUE
+                        Cells have ANI values over specific threshold set to red (eg. cells have ANI value >=0.95 set to red) (default 100).
+  -c CLASSIFICATIONFILE, --classificationFile CLASSIFICATIONFILE
+                        File containing classification result generated by GTDBTk(https://github.com/Ecogenomics/GTDBTk).
+  -t {domain,phylum,class,order,family,genus,species}, --taxaLevel {domain,phylum,class,order,family,genus,species}
+                        Taxa level illustrated on the plot.
+                         Choose from "domain, phylum, class, order, family, genus, species".
+                         Note that this parameter only works if classification result was input.
+  --colorPalette COLORPALETTE
+                        Color palette used to return a specified number of evenly spaced hues which are then used to illustrate different taxa (default 'hls').
+                         Note that this parameter only works if classification result was input.
+
+General usage
+----------------
+1. ANI result visulization **without classification info**:
+   $ pairwiseANIviz ani_result.txt
+
+2. ANI result visulization **with classification info**:
+   $ pairwiseANIviz ani_result.txt --classificationFile classification_result.tsv
+
+3. ANI result visualization **with hierarchical clustering**:
+   $ pairwiseANIviz --rowCluster --colCluster ani_result.txt
+
+Runjia Ji, 2023
+
+```
+
+## Contact
+If you have any questions using pairwiseANIviz, feel free to open an issue or contact me jirunjia@gmail.com.
