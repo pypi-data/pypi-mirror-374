@@ -1,0 +1,117 @@
+include README.md
+include LICENSE
+include CHANGELOG.md
+include SECURITY.md
+include CONTRIBUTING.md
+include CODE_OF_CONDUCT.md
+
+# Documentation
+recursive-include docs *.md
+recursive-include docs *.rst
+recursive-include docs *.txt
+
+# Examples
+recursive-include examples *.py
+recursive-include examples *.md
+recursive-include examples *.txt
+
+# Tests
+recursive-include tests *.py
+recursive-include tests *.txt
+recursive-include tests *.md
+
+# Security
+recursive-include security *.py
+recursive-include security *.md
+
+# Bindings
+recursive-include bindings *.py
+
+# Desktop GUI
+recursive-include desktop_gui *.html
+recursive-include desktop_gui *.css
+recursive-include desktop_gui *.js
+recursive-include desktop_gui *.json
+
+# Web Interface
+recursive-include web_interface *.html
+recursive-include web_interface *.css
+recursive-include web_interface *.js
+recursive-include web_interface *.py
+recursive-include web_interface *.md
+
+# Static files
+recursive-include sudarshan/static *
+recursive-include sudarshan/templates *
+
+# Data files
+include sudarshan/data/*
+include packaging/*
+
+# Scripts
+include scripts/*
+recursive-include scripts *
+
+# Configuration
+include pyproject.toml
+include setup.cfg
+include tox.ini
+include .pre-commit-config.yaml
+
+# CI/CD
+recursive-include .github *
+recursive-include .gitlab-ci *
+
+# Exclude development files
+exclude .gitignore
+exclude .gitattributes
+exclude .pre-commit-config.yaml
+exclude tox.ini
+exclude .coverage
+exclude .pytest_cache
+exclude __pycache__
+exclude *.pyc
+exclude *.pyo
+exclude *.pyd
+exclude .Python
+exclude build/
+exclude develop-eggs/
+exclude dist/
+exclude downloads/
+exclude eggs/
+exclude .eggs/
+exclude lib/
+exclude lib64/
+exclude parts/
+exclude sdist/
+exclude var/
+exclude wheels/
+exclude *.egg-info/
+exclude .installed.cfg
+exclude *.spec
+exclude .DS_Store
+exclude Thumbs.db
+exclude .vscode/
+exclude .idea/
+exclude *.swp
+exclude *.swo
+exclude *~
+exclude .env
+exclude .venv
+exclude env/
+exclude venv/
+exclude ENV/
+exclude env.bak/
+exclude venv.bak/
+
+# Global excludes
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.pyd
+global-exclude __pycache__/*
+global-exclude .pytest_cache/*
+global-exclude .coverage.*
+global-exclude coverage.xml
+global-exclude *.cover
+global-exclude .DS_Store
+global-exclude Thumbs.db

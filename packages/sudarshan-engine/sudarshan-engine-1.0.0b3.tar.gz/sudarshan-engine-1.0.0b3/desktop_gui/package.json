@@ -1,0 +1,43 @@
+{
+  "name": "sudarshan-desktop",
+  "version": "1.0.0",
+  "description": "Sudarshan Engine Desktop GUI - Quantum-Safe Cybersecurity",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "NODE_ENV=development electron .",
+    "build": "electron-builder",
+    "dist": "electron-builder --publish=never"
+  },
+  "keywords": ["quantum-safe", "cryptography", "security", "pqc", "desktop"],
+  "author": "Sudarshan Engine",
+  "license": "AGPL-3.0",
+  "devDependencies": {
+    "electron": "^25.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "build": {
+    "appId": "com.sudarshan.engine.desktop",
+    "productName": "Sudarshan Engine",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!dist/**/*",
+      "!build/**/*",
+      "!*.md"
+    ],
+    "mac": {
+      "category": "public.app-category.security"
+    },
+    "linux": {
+      "target": "AppImage",
+      "category": "Security"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    }
+  }
+}

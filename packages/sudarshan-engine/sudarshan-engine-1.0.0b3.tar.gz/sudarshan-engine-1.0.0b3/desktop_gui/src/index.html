@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudarshan Engine - Quantum-Safe Desktop</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>🔐 Sudarshan Engine</h1>
+                    <span class="subtitle">Quantum-Safe Cybersecurity</span>
+                </div>
+                <div class="status">
+                    <div class="status-indicator" id="status-indicator">
+                        <span class="status-dot"></span>
+                        <span class="status-text">Ready</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <nav class="nav">
+                    <button class="nav-item active" data-section="dashboard">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Dashboard</span>
+                    </button>
+                    <button class="nav-item" data-section="encrypt">
+                        <span class="nav-icon">🔒</span>
+                        <span class="nav-text">Encrypt File</span>
+                    </button>
+                    <button class="nav-item" data-section="decrypt">
+                        <span class="nav-icon">🔓</span>
+                        <span class="nav-text">Decrypt File</span>
+                    </button>
+                    <button class="nav-item" data-section="keys">
+                        <span class="nav-icon">🔑</span>
+                        <span class="nav-text">Key Management</span>
+                    </button>
+                    <button class="nav-item" data-section="wallet">
+                        <span class="nav-icon">👛</span>
+                        <span class="nav-text">Quantum Wallet</span>
+                    </button>
+                    <button class="nav-item" data-section="info">
+                        <span class="nav-icon">ℹ️</span>
+                        <span class="nav-text">File Info</span>
+                    </button>
+                    <button class="nav-item" data-section="settings">
+                        <span class="nav-icon">⚙️</span>
+                        <span class="nav-text">Settings</span>
+                    </button>
+                </nav>
+            </aside>
+
+            <!-- Content Area -->
+            <div class="content">
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="section active">
+                    <div class="section-header">
+                        <h2>Dashboard</h2>
+                        <p>Overview of your quantum-safe operations</p>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">🔐</div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="files-encrypted">0</div>
+                                <div class="stat-label">Files Encrypted</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">🔑</div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="keys-generated">0</div>
+                                <div class="stat-label">Keys Generated</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">⚡</div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="operations-today">0</div>
+                                <div class="stat-label">Operations Today</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">🛡️</div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="security-score">100</div>
+                                <div class="stat-label">Security Score</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-activity">
+                        <h3>Recent Activity</h3>
+                        <div class="activity-list" id="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon">🚀</div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Sudarshan Engine Started</div>
+                                    <div class="activity-time">Just now</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Encrypt Section -->
+                <section id="encrypt" class="section">
+                    <div class="section-header">
+                        <h2>Encrypt File</h2>
+                        <p>Create a quantum-safe .spq encrypted file</p>
+                    </div>
+
+                    <div class="form-container">
+                        <form id="encrypt-form" class="encrypt-form">
+                            <div class="form-group">
+                                <label for="encrypt-input-file">Input File:</label>
+                                <div class="file-input-group">
+                                    <input type="text" id="encrypt-input-file" readonly placeholder="Select file to encrypt">
+                                    <button type="button" id="encrypt-browse-btn" class="btn-secondary">Browse</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="encrypt-output-file">Output File:</label>
+                                <div class="file-input-group">
+                                    <input type="text" id="encrypt-output-file" readonly placeholder="Choose save location">
+                                    <button type="button" id="encrypt-save-btn" class="btn-secondary">Save As</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="encrypt-algorithm">Algorithm:</label>
+                                <select id="encrypt-algorithm">
+                                    <option value="kyber1024">Kyber1024 (Recommended)</option>
+                                    <option value="kyber768">Kyber768</option>
+                                    <option value="kyber512">Kyber512</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="encrypt-compression">Compression:</label>
+                                <select id="encrypt-compression">
+                                    <option value="none">None</option>
+                                    <option value="zstd">Zstandard (Recommended)</option>
+                                    <option value="lz4">LZ4</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="encrypt-metadata">Metadata (JSON):</label>
+                                <textarea id="encrypt-metadata" rows="4" placeholder='{"author": "Your Name", "purpose": "File encryption"}'></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="encrypt-signature" checked>
+                                    Include digital signature
+                                </label>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-primary">Encrypt File</button>
+                                <button type="button" id="encrypt-reset-btn" class="btn-secondary">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="progress-container" id="encrypt-progress" style="display: none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="encrypt-progress-fill"></div>
+                        </div>
+                        <div class="progress-text" id="encrypt-progress-text">Encrypting...</div>
+                    </div>
+                </section>
+
+                <!-- Decrypt Section -->
+                <section id="decrypt" class="section">
+                    <div class="section-header">
+                        <h2>Decrypt File</h2>
+                        <p>Open and decrypt a .spq quantum-safe file</p>
+                    </div>
+
+                    <div class="form-container">
+                        <form id="decrypt-form" class="decrypt-form">
+                            <div class="form-group">
+                                <label for="decrypt-input-file">.spq File:</label>
+                                <div class="file-input-group">
+                                    <input type="text" id="decrypt-input-file" readonly placeholder="Select .spq file to decrypt">
+                                    <button type="button" id="decrypt-browse-btn" class="btn-secondary">Browse</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="decrypt-output-file">Output Location:</label>
+                                <div class="file-input-group">
+                                    <input type="text" id="decrypt-output-file" readonly placeholder="Choose save location">
+                                    <button type="button" id="decrypt-save-btn" class="btn-secondary">Save As</button>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-primary">Decrypt File</button>
+                                <button type="button" id="decrypt-reset-btn" class="btn-secondary">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="progress-container" id="decrypt-progress" style="display: none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="decrypt-progress-fill"></div>
+                        </div>
+                        <div class="progress-text" id="decrypt-progress-text">Decrypting...</div>
+                    </div>
+                </section>
+
+                <!-- Keys Section -->
+                <section id="keys" class="section">
+                    <div class="section-header">
+                        <h2>Key Management</h2>
+                        <p>Generate and manage quantum-safe cryptographic keys</p>
+                    </div>
+
+                    <div class="keys-grid">
+                        <div class="key-card">
+                            <h3>KEM Keys (Encryption)</h3>
+                            <p>Keys for quantum-safe key encapsulation</p>
+                            <button id="generate-kem-btn" class="btn-primary">Generate Kyber Keypair</button>
+                            <div class="key-info" id="kem-key-info" style="display: none;">
+                                <div class="key-details">
+                                    <strong>Algorithm:</strong> <span id="kem-algorithm"></span><br>
+                                    <strong>Public Key Size:</strong> <span id="kem-pub-size"></span><br>
+                                    <strong>Secret Key Size:</strong> <span id="kem-sec-size"></span>
+                                </div>
+                                <button id="save-kem-keys-btn" class="btn-secondary">Save Keys</button>
+                            </div>
+                        </div>
+
+                        <div class="key-card">
+                            <h3>Signature Keys</h3>
+                            <p>Keys for quantum-safe digital signatures</p>
+                            <button id="generate-sig-btn" class="btn-primary">Generate Dilithium Keypair</button>
+                            <div class="key-info" id="sig-key-info" style="display: none;">
+                                <div class="key-details">
+                                    <strong>Algorithm:</strong> <span id="sig-algorithm"></span><br>
+                                    <strong>Public Key Size:</strong> <span id="sig-pub-size"></span><br>
+                                    <strong>Secret Key Size:</strong> <span id="sig-sec-size"></span>
+                                </div>
+                                <button id="save-sig-keys-btn" class="btn-secondary">Save Keys</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="keys-list">
+                        <h3>Stored Keys</h3>
+                        <div class="keys-table-container">
+                            <table class="keys-table" id="keys-table">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Algorithm</th>
+                                        <th>Created</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="keys-table-body">
+                                    <tr>
+                                        <td colspan="4" class="no-keys">No keys stored</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Wallet Section -->
+                <section id="wallet" class="section">
+                    <div class="section-header">
+                        <h2>Quantum Wallet</h2>
+                        <p>Manage quantum-safe digital assets</p>
+                    </div>
+
+                    <div class="wallet-status">
+                        <div class="wallet-card">
+                            <h3>Wallet Status</h3>
+                            <div class="wallet-info" id="wallet-status">
+                                <p>No wallet loaded</p>
+                                <button id="create-wallet-btn" class="btn-primary">Create New Wallet</button>
+                                <button id="load-wallet-btn" class="btn-secondary">Load Existing Wallet</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="wallet-actions" id="wallet-actions" style="display: none;">
+                        <div class="action-grid">
+                            <button class="action-btn" id="wallet-balance-btn">
+                                <span class="action-icon">💰</span>
+                                <span class="action-text">Check Balance</span>
+                            </button>
+                            <button class="action-btn" id="wallet-send-btn">
+                                <span class="action-icon">📤</span>
+                                <span class="action-text">Send Transaction</span>
+                            </button>
+                            <button class="action-btn" id="wallet-receive-btn">
+                                <span class="action-icon">📥</span>
+                                <span class="action-text">Receive</span>
+                            </button>
+                            <button class="action-btn" id="wallet-history-btn">
+                                <span class="action-icon">📋</span>
+                                <span class="action-text">Transaction History</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Info Section -->
+                <section id="info" class="section">
+                    <div class="section-header">
+                        <h2>File Information</h2>
+                        <p>Analyze and inspect .spq quantum-safe files</p>
+                    </div>
+
+                    <div class="form-container">
+                        <form id="info-form" class="info-form">
+                            <div class="form-group">
+                                <label for="info-input-file">.spq File:</label>
+                                <div class="file-input-group">
+                                    <input type="text" id="info-input-file" readonly placeholder="Select .spq file to analyze">
+                                    <button type="button" id="info-browse-btn" class="btn-secondary">Browse</button>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-primary">Analyze File</button>
+                                <button type="button" id="info-reset-btn" class="btn-secondary">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="file-info-display" id="file-info-display" style="display: none;">
+                        <h3>File Analysis Results</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <strong>File Size:</strong> <span id="info-file-size">-</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Algorithm:</strong> <span id="info-algorithm">-</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Compression:</strong> <span id="info-compression">-</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Has Signature:</strong> <span id="info-signature">-</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Created:</strong> <span id="info-created">-</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Creator:</strong> <span id="info-creator">-</span>
+                            </div>
+                        </div>
+
+                        <div class="metadata-display">
+                            <h4>Metadata</h4>
+                            <pre id="info-metadata">No metadata available</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Settings Section -->
+                <section id="settings" class="section">
+                    <div class="section-header">
+                        <h2>Settings</h2>
+                        <p>Configure Sudarshan Engine preferences</p>
+                    </div>
+
+                    <div class="settings-container">
+                        <div class="settings-group">
+                            <h3>General Settings</h3>
+                            <div class="setting-item">
+                                <label for="setting-theme">Theme:</label>
+                                <select id="setting-theme">
+                                    <option value="light">Light</option>
+                                    <option value="dark">Dark</option>
+                                    <option value="auto">Auto</option>
+                                </select>
+                            </div>
+
+                            <div class="setting-item">
+                                <label for="setting-language">Language:</label>
+                                <select id="setting-language">
+                                    <option value="en">English</option>
+                                    <option value="es">Español</option>
+                                    <option value="fr">Français</option>
+                                    <option value="de">Deutsch</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <h3>Security Settings</h3>
+                            <div class="setting-item">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="setting-auto-lock" checked>
+                                    Auto-lock after inactivity
+                                </label>
+                            </div>
+
+                            <div class="setting-item">
+                                <label for="setting-lock-timeout">Lock Timeout (minutes):</label>
+                                <input type="number" id="setting-lock-timeout" value="15" min="1" max="60">
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <h3>Performance Settings</h3>
+                            <div class="setting-item">
+                                <label for="setting-compression">Default Compression:</label>
+                                <select id="setting-compression">
+                                    <option value="zstd">Zstandard</option>
+                                    <option value="lz4">LZ4</option>
+                                    <option value="none">None</option>
+                                </select>
+                            </div>
+
+                            <div class="setting-item">
+                                <label for="setting-algorithm">Default Algorithm:</label>
+                                <select id="setting-algorithm">
+                                    <option value="kyber1024">Kyber1024</option>
+                                    <option value="kyber768">Kyber768</option>
+                                    <option value="kyber512">Kyber512</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-actions">
+                            <button id="save-settings-btn" class="btn-primary">Save Settings</button>
+                            <button id="reset-settings-btn" class="btn-secondary">Reset to Defaults</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <span>Sudarshan Engine v1.0.0</span>
+                    <span>•</span>
+                    <span>Quantum-Safe Cybersecurity</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#" onclick="showAbout()">About</a>
+                    <span>•</span>
+                    <a href="#" onclick="showHelp()">Help</a>
+                    <span>•</span>
+                    <a href="#" onclick="showLicense()">License</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modals/Dialogs -->
+    <div id="about-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>About Sudarshan Engine</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Sudarshan Engine</strong> is a universal quantum-safe cybersecurity platform that protects digital assets against current and future threats.</p>
+                <p>Features:</p>
+                <ul>
+                    <li>Post-Quantum Cryptography (NIST-approved algorithms)</li>
+                    <li>Box-in-a-Box layered security model</li>
+                    <li>Proprietary .spq quantum-safe file format</li>
+                    <li>Multi-platform support (Desktop, CLI, SDK)</li>
+                    <li>Open-core with commercial extensions</li>
+                </ul>
+                <p>Version: 1.0.0<br>License: AGPL-3.0</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
