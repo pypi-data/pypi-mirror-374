@@ -1,0 +1,18 @@
+Metadata-Version: 2.4
+Name: anclient.py3
+Version: 0.1.6
+Summary: Semantic-jserv Python Client with bundled io.odysz.* data
+Author-email: Ody Z <odys.zhou@gmail.com>
+License: Apache-2.0
+Keywords: Semantics,AnClient,Semantier
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: anson.py3>=0.2.8
+Requires-Dist: semantics.py3
+Requires-Dist: requests
+Requires-Dist: typing_extensions
+
+# Anclient.py3
+
+Anclient in Python 3, the equivalent of [Typscript @anclient/semantier](https://github.com/odys-z/Anclient/tree/master/js)
+and [Java anclient.jserv](https://github.com/odys-z/Anclient/tree/master/java/eclipse-workspace/anclient.jserv).
