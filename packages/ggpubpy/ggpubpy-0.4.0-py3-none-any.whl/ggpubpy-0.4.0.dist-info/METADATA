@@ -1,0 +1,282 @@
+Metadata-Version: 2.4
+Name: ggpubpy
+Version: 0.4.0
+Summary: matplotlib Based Publication-Ready Plots with Statistical Tests
+Author-email: Turkalp Akbasli <akbaslint@gmail.com>
+Maintainer-email: Turkalp Akbasli <akbaslint@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2025 Izzet Turkalp Akbasli
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/turkalpmd/ggpubpy
+Project-URL: Repository, https://github.com/turkalpmd/ggpubpy.git
+Project-URL: Documentation, https://ggpubpy.readthedocs.io
+Project-URL: Bug Tracker, https://github.com/turkalpmd/ggpubpy/issues
+Project-URL: Source Code, https://github.com/turkalpmd/ggpubpy
+Project-URL: Download, https://pypi.org/project/ggpubpy/#files
+Keywords: matplotlib,plotting,visualization,statistics,publication,ggplot,data-science,alluvial,flow-diagram,correlation-matrix,boxplot,violin-plot,shift-plot
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Framework :: Matplotlib
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.20.0
+Requires-Dist: pandas>=1.3.0
+Requires-Dist: matplotlib>=3.5.0
+Requires-Dist: scipy>=1.7.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=22.0.0; extra == "dev"
+Requires-Dist: flake8>=5.0.0; extra == "dev"
+Requires-Dist: isort>=5.10.0; extra == "dev"
+Requires-Dist: mypy>=0.991; extra == "dev"
+Requires-Dist: pre-commit>=2.20.0; extra == "dev"
+Requires-Dist: twine>=4.0.0; extra == "dev"
+Requires-Dist: build>=0.8.0; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx>=4.0.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=1.0.0; extra == "docs"
+Requires-Dist: myst-parser>=0.18.0; extra == "docs"
+Requires-Dist: sphinx-autodoc-typehints>=1.12.0; extra == "docs"
+Requires-Dist: linkify-it-py>=2.0.0; extra == "docs"
+Provides-Extra: examples
+Requires-Dist: seaborn>=0.11.0; extra == "examples"
+Requires-Dist: jupyter>=1.0.0; extra == "examples"
+Requires-Dist: notebook>=6.4.0; extra == "examples"
+Dynamic: license-file
+
+# ggpubpy
+
+[![Documentation Status](https://readthedocs.org/projects/ggpubpy/badge/?version=latest)](https://ggpubpy.readthedocs.io/en/latest/?badge=latest)
+[![PyPI version](https://badge.fury.io/py/ggpubpy.svg)](https://badge.fury.io/py/ggpubpy)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+**ggpubpy** is a Python library for creating publication-ready plots with built-in statistical tests and automatic p-value annotations. Inspired by R's ggpubr package, ggpubpy provides easy-to-use functions for creating professional visualizations suitable for scientific publications.
+
+## Features
+
+- 📊 **Publication-ready plots**: Clean, professional appearance suitable for scientific publications
+- 🔬 **Built-in statistical tests**: Automatic ANOVA, t-tests, correlation analysis, and more
+- ⭐ **Automatic annotations**: P-values and significance stars added automatically
+- 🎨 **Flexible customization**: Extensive options for colors, styling, and layout
+- 📈 **Multiple plot types**: Box plots, violin plots, correlation matrices, shift plots, and alluvial plots
+- 🔗 **Easy integration**: Works seamlessly with pandas DataFrames and numpy arrays
+
+## Installation
+
+```bash
+pip install ggpubpy
+```
+
+## Quick Start
+
+```python
+from ggpubpy import plot_boxplot_with_stats, load_iris
+import matplotlib.pyplot as plt
+
+# Load sample data
+iris = load_iris()
+
+# Create a publication-ready boxplot with statistical annotations
+fig, ax = plot_boxplot_with_stats(
+    df=iris,
+    x="species",
+    y="sepal_length",
+    title="Sepal Length by Species"
+)
+
+plt.show()
+```
+
+## Available Plot Types
+
+### 📊 Box Plots
+Create box plots with statistical annotations including ANOVA/Kruskal-Wallis tests and pairwise comparisons.
+
+```python
+from ggpubpy import plot_boxplot_with_stats, load_iris
+
+fig, ax = plot_boxplot_with_stats(
+    df=load_iris(),
+    x="species",
+    y="sepal_length",
+    parametric=False  # Use non-parametric tests
+)
+```
+
+### 🎻 Violin Plots
+Visualize data distributions with violin plots that combine the benefits of box plots and density plots.
+
+```python
+from ggpubpy import plot_violin_with_stats, load_iris
+
+fig, ax = plot_violin_with_stats(
+    df=load_iris(),
+    x="species",
+    y="petal_length",
+    palette={"setosa": "#FF6B6B", "versicolor": "#4ECDC4", "virginica": "#45B7D1"}
+)
+```
+
+### 📈 Shift Plots
+Perfect for before-after comparisons and paired data analysis.
+
+```python
+from ggpubpy import plot_shift
+import numpy as np
+
+# Create sample paired data
+before = np.random.normal(10, 2, 30)
+after = before + np.random.normal(1, 1.5, 30)
+
+fig, ax = plot_shift(
+    x=before,
+    y=after,
+    x_label="Before Treatment",
+    y_label="After Treatment"
+)
+```
+
+### 🔗 Correlation Matrix
+Comprehensive visualization of relationships between multiple variables.
+
+```python
+from ggpubpy import plot_correlation_matrix, load_iris
+
+fig, ax = plot_correlation_matrix(
+    df=load_iris(),
+    columns=['sepal_length', 'sepal_width', 'petal_length', 'petal_width'],
+    title="Iris Dataset Correlation Matrix"
+)
+```
+
+### 🌊 Alluvial Plots
+Flow diagrams showing how data moves between categorical dimensions.
+
+```python
+from ggpubpy import plot_alluvial, load_titanic
+import pandas as pd
+import numpy as np
+
+# Load and prepare data
+titanic = load_titanic()
+titanic = titanic.dropna(subset=["Age"])
+titanic["Class"] = titanic["Pclass"].map({1: "1st", 2: "2nd", 3: "3rd"})
+titanic["AgeCat"] = np.where(titanic["Age"] < 18, "Child", "Adult")
+titanic["Survived"] = titanic["Survived"].astype(str).replace({"0": "No", "1": "Yes"})
+
+# Create frequency table
+titanic_tab = (titanic.groupby(["Class", "Sex", "AgeCat", "Survived"])
+                    .size()
+                    .reset_index(name="Freq")
+                    .rename(columns={"AgeCat": "Age"}))
+titanic_tab["alluvium"] = titanic_tab.index
+
+# Create alluvial plot
+fig, ax = plot_alluvial(
+    titanic_tab,
+    dims=["Class", "Sex", "Age"],
+    value_col="Freq",
+    color_by="Survived",
+    id_col="alluvium",
+    title="Titanic Survival Analysis"
+)
+```
+
+## Statistical Tests
+
+ggpubpy automatically performs appropriate statistical tests:
+
+- **Global Tests**: One-way ANOVA, Kruskal-Wallis
+- **Pairwise Comparisons**: t-tests, Mann-Whitney U tests
+- **Correlation Analysis**: Pearson, Spearman, Kendall
+- **Significance Levels**: `***` p < 0.001, `**` p < 0.01, `*` p < 0.05, `ns` p ≥ 0.05
+
+## Documentation
+
+📖 **Complete documentation** is available at [https://ggpubpy.readthedocs.io](https://ggpubpy.readthedocs.io)
+
+The documentation includes:
+- Detailed function references
+- Comprehensive examples
+- Statistical test explanations
+- Customization guides
+- Best practices
+
+## Examples
+
+Check out the `examples/` directory for complete working examples:
+
+- `basic_usage.py`: Introduction to ggpubpy functions
+- `alluvial_examples.py`: Alluvial plot examples
+- `correlation_matrix_example.py`: Correlation matrix examples
+
+## Dependencies
+
+- Python 3.8+
+- matplotlib
+- pandas
+- numpy
+- scipy (for statistical tests)
+
+## Contributing
+
+We welcome contributions! Please see our [contributing guidelines](CONTRIBUTING.md) for more information.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Citation
+
+If you use ggpubpy in your research, please cite:
+
+```bibtex
+@software{ggpubpy,
+  title={ggpubpy: Publication-Ready Plots for Python},
+  author={Izzet Turkalp Akbasli},
+  year={2024},
+  url={https://github.com/yourusername/ggpubpy}
+}
+```
+
+## Support
+
+For questions, bug reports, or feature requests, please open an issue on our [GitHub repository](https://github.com/yourusername/ggpubpy).
+
+---
+
+**Happy plotting! 📊✨**
