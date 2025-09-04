@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "migenpro"
+version = "0.1.0"
+description = ""
+authors = [ "Mike Loomans <mike.loomans@wur.nl>"]
+readme = "README.md"
+packages = [
+    { include = "migenpro"}
+]
+
+[tool.poetry.dependencies]
+python = "^3.11.4"
+scikit-learn = "1.5.2"
+ipython = "*"
+matplotlib = "*"
+imbalanced-learn = "0.12.4"
+imblearn = "*"  # optional; imblearn is part of imbalanced-learn
+pandas = "2.2.3"
+numpy = "2.1.3"
+requests = "*"
+pygenprop = "*"
+docker = "*"
+PyQt5 = "*"
+bio = "1.7.1"
+ete3 = "3.1.3"
+jinja2 = "*"
+seaborn = "0.13.2"
+
+[tool.poetry.scripts]
+migenpro = "migenpro.main:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "DEBUG"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
