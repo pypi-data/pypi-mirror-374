@@ -1,0 +1,85 @@
+mkdocs-glightbox-0.5.0 (2025-09-03)
+
+    * Updated glightbox to 3.3.1
+    * Migrated to uv and pyproject.toml for development and building
+    * Replaced regex with Selectolax to improve performance, availability and maintainability (#44, #56, #61)
+    * Updated tests and workflow
+    * Support auto themed (#49)
+
+mkdocs-glightbox-0.4.0 (2023-05-06)
+
+    * Supported manual mode (#29)
+    * Allow calling lightbox methods from other places (#34)
+    * Added id to appended script tag (#38)
+    * Access theme attribute directly (#40)
+    * Better JavaScript Error Handling (#36)
+
+mkdocs-glightbox-0.3.7 (2023-01-24)
+
+    * Supported custom background and shadow (#27)
+
+mkdocs-glightbox-0.3.6 (2023-12-30)
+
+    * Modified width default to auto prevent zooming large image bug (#21)
+    * Supported only enable glightbox with on-glb class in given page (#28)
+
+mkdocs-glightbox-0.3.5 (2023-11-18)
+
+    * Supported compatibility with the privacy plugin of Material for MkDocs insiders (#25)
+
+mkdocs-glightbox-0.3.4 (2023-04-25)
+
+    * Fixed regex bug: quote issue and empty alt issue (#14 #19)
+
+mkdocs-glightbox-0.3.3 (2023-04-20)
+
+    * Refactored processing logic with regex (#14)
+
+mkdocs-glightbox-0.3.2 (2023-03-19)
+
+    * Supported image without extension (#13)
+
+mkdocs-glightbox-0.3.1 (2022-11-22)
+
+    * Supported lightbox slide effect customization (#8)
+    * Supported synchronized lightbox caption dark mode with Material for MkDocs (#7)
+    * Supported glightbox built-in gallery feature (#11)
+    * Supported skip image in the anchor tag
+
+mkdocs-glightbox-0.3.0 (2022-09-29)
+
+    * Fixed width and height setting in config not working bug
+    * Supported specific skip class (#5)
+    * Supported glightbox built-in caption with title and description (#4)
+    * Fixed page jitter when lightbox closing issue using Material for MkDocs
+    * Add white background for lightbox images to prevent the displaying issue of the transparent image on black background
+
+mkdocs-glightbox-0.2.1 (2022-08-10)
+
+    * Updated readme
+
+mkdocs-glightbox-0.2.0 (2022-08-10)
+
+    * Added support for disabling glightbox with image class or page meta (#2)
+
+mkdocs-glightbox-0.1.7 (2022-07-26)
+
+    * Fixed #1: Ignore Emojis
+
+mkdocs-glightbox-0.1.6 (2022-07-16)
+
+    * Fixed some options not working bug
+
+mkdocs-glightbox-0.1.5 (2022-07-16)
+
+    * Fixed mkdocs-material header + sidebar vanishing issue when opening lightbox (Inspired from https://github.com/biati-digital/glightbox/issues/22)
+    * Fixed mkdocs-material content shrinking causing footer offset issue when open lightbox
+    * Supported compatible with mkdocs-material Instant loading feature
+
+mkdocs-glightbox-0.1.4 (2022-06-12)
+
+    * Fixed assets location bug
+
+mkdocs-glightbox-0.1.3 (2022-06-10)
+
+    * First release

@@ -1,0 +1,121 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema",
+    "title": "Supports image with lightbox effect",
+    "oneOf": [
+      {
+        "markdownDescription": "https://blueswen.github.io/mkdocs-glightbox/",
+        "enum": [
+          "glightbox"
+        ]
+      },
+      {
+        "type": "object",
+        "properties": {
+          "glightbox": {
+            "markdownDescription": "https://blueswen.github.io/mkdocs-glightbox/",
+            "type": "object",
+            "properties": {
+              "touchNavigation": {
+                "title": "Enable touch navigation (swipe)",
+                "markdownDescription": "https://blueswen.github.io/mkdocs-glightbox/#usage",
+                "type": "boolean",
+                "default": true
+              },
+              "loop": {
+                "title": "Enable loop slides on end",
+                "markdownDescription": "https://blueswen.github.io/mkdocs-glightbox/#usage",
+                "type": "boolean",
+                "default": false
+              },
+              "effect": {
+                "title": "Lightbox open effect",
+                "markdownDescription": "https://blueswen.github.io/mkdocs-glightbox/#usage",
+                "type": "string",
+                "enum": [
+                  "zoom", "fade", "none"
+                ],
+                "default": "zoom"
+              },
+              "slide_effect": {
+                "title": "Lightbox slide effect",
+                "markdownDescription": "https://blueswen.github.io/mkdocs-glightbox/#usage",
+                "type": "string",
+                "enum": [
+                  "slide", "zoom", "fade", "none"
+                ],
+                "default": "slide"
+              },
+              "width": {
+                "title": "Width for inline elements and iframes",
+                "markdownDescription": "https://blueswen.github.io/mkdocs-glightbox/#usage",
+                "type": "string",
+                "default": "auto"
+              },
+              "height": {
+                "title": "Height for inline elements and iframes",
+                "markdownDescription": "https://blueswen.github.io/mkdocs-glightbox/#usage",
+                "type": "string",
+                "default": "auto"
+              },
+              "zoomable": {
+                "title": "Enable zoomable images",
+                "markdownDescription": "https://blueswen.github.io/mkdocs-glightbox/#usage",
+                "type": "boolean",
+                "default": true
+              },
+              "draggable": {
+                "title": "Enable mouse drag to go prev and next slide",
+                "markdownDescription": "https://blueswen.github.io/mkdocs-glightbox/#usage",
+                "type": "boolean",
+                "default": true
+              },
+              "skip_classes": {
+                "title": "Custom image class name skip lightbox",
+                "markdownDescription": "https://blueswen.github.io/mkdocs-glightbox/#usage",
+                "type": "array",
+                "items": {
+                    "type": "string"
+                },
+                "default": []
+              },
+              "auto_caption": {
+                "title": "Enable using alt of image as caption title automatically",
+                "markdownDescription": "https://blueswen.github.io/mkdocs-glightbox/#usage",
+                "type": "boolean",
+                "default": false
+              },
+              "caption_position": {
+                "title": "Default captions position",
+                "markdownDescription": "https://blueswen.github.io/mkdocs-glightbox/#usage",
+                "type": "string",
+                "enum": [
+                  "bottom", "top", "left", "right"
+                ],
+                "default": "bottom"
+              },
+              "background": {
+                "title": "Background CSS of lightbox image",
+                "markdownDescription": "https://blueswen.github.io/mkdocs-glightbox/#usage",
+                "type": "string",
+                "default": "white"
+              },
+              "shadow": {
+                "title": "Enable the shadow of lightbox image",
+                "markdownDescription": "https://blueswen.github.io/mkdocs-glightbox/#usage",
+                "type": "boolean",
+                "default": true
+              },
+              "manual": {
+                "title": "When true, lightbox has to be enabled for each image manually by adding 'on-glb' class to it",
+                "markdownDescription": "https://blueswen.github.io/mkdocs-glightbox/#usage",
+                "type": "boolean",
+                "default": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    ]
+  }
