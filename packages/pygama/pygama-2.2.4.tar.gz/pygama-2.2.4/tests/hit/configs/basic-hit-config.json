@@ -1,0 +1,25 @@
+{
+  "outputs": ["calE", "AoE", "A_max"],
+  "operations": {
+    "AoE": {
+      "expression": "A_max/calE"
+    },
+    "calE": {
+      "expression": "sqrt(a + b * twice_trap_e_max**2)",
+      "parameters": {
+        "a": 1.23,
+        "b": 42.69
+      },
+      "lgdo_attrs": {
+        "units": "keV",
+        "hdf5_settings": {
+          "compression": "gzip",
+          "shuffle": true
+        }
+      }
+    },
+    "twice_trap_e_max": {
+      "expression": "2 * trapEmax"
+    }
+  }
+}
