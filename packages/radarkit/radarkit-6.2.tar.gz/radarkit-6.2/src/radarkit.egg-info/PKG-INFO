@@ -1,0 +1,58 @@
+Metadata-Version: 2.4
+Name: radarkit
+Version: 6.2
+Summary: RadarKit Python Package
+Author-email: Boonleng Cheong <boonleng@ou.edu>
+Project-URL: Repository, https://github.com/ouradar/radarkit
+Keywords: radar,chart
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: blib-py
+Requires-Dist: netCDF4
+Requires-Dist: numpy
+Requires-Dist: radar-data
+Requires-Dist: tqdm
+Requires-Dist: wheel
+Dynamic: license-file
+
+# Python RadarKit Utilities
+
+Some wrapped RadarKit functions and Python utilities for handling data
+
+
+## RHI Example
+
+The following plot can be produced as:
+
+```python
+import radarkit
+import radarkit.chart
+
+sweep = radarkit.sweep.Sweep(FILE)
+
+rhi = radarkit.chart.ChartRHI()
+rhi.set_data(sweep)
+```
+![RH∏I](blob/rhi.png)
+
+
+## PPI Example
+```python
+import radarkit
+import radarkit.chart
+
+sweep = radarkit.sweep.Sweep(FILE)
+
+ppi = radarkit.chart.ChartPPI((1920, 1080), titlecolor="skyblue")
+ppi.set_data(sweep)
+```
+![PPI](blob/ppi.png)
