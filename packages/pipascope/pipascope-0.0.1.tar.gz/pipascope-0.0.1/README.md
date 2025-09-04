@@ -1,0 +1,69 @@
+# PipaScope: A Dataset for CPU Microarchitecture Performance Characterization
+
+> **PipaScope** – Observe the pulse of performance, one cycle at a time.  
+> An open dataset initiative for microarchitectural behavior analysis, led by **ZJU-SPAIL**.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Git LFS](https://img.shields.io/badge/Git%20LFS-enabled-ff69b4.svg)](https://git-lfs.com)
+
+
+
+## 🍈 About the Name: PIPA & PipaScope
+
+**PIPA (Progressive Intelligent Performance Analytics)** draws inspiration from *loquat* (枇杷), a fruit native to Zhejiang, China. Its lifecycle—tree (collecting), flower (analysis), and fruit (conclusion)—mirrors the performance engineering pipeline.
+
+**PipaScope** extends this metaphor as the **observational lens** into the microarchitectural world. Just as the loquat tree absorbs nutrients from the soil, PipaScope captures low-level performance telemetry from real workloads, enabling deep insight into CPU behavior.
+
+This dataset serves as the foundational **"soil"** for training automated performance diagnosis systems.
+
+## 🏫 Project Ownership
+
+PipaScope is currently led and maintained by the System Performance Analytics and Intelligence Lab (ZJU-SPAIL) at Zhejiang University.  
+It is part of ongoing research into systematic performance characterization and bottleneck analysis.
+
+
+## 🎯 Focus: Microarchitectural Behavior
+
+PipaScope is designed to support research in **CPU microarchitecture performance characterization**, with a focus on:
+
+- Instruction per Cycle (IPC) degradation
+- Cache miss patterns (L1/L2/LLC)
+- Memory bandwidth saturation
+- Frontend/backend stalls
+- Branch misprediction penalties
+- TLB pressure
+
+The goal is to build a high-quality, version-controlled dataset that enables reproducible analysis and lays the foundation for automated bottleneck identification.
+
+## 🧩 Data Sources
+
+The dataset includes performance profiles from:
+
+- **SPEC CPU 2017** (both integer and floating-point benchmarks)
+- **Real-world applications**, starting with **RocksDB**
+
+Each workload is executed under diverse configurations (input sets, system settings, compiler flags) and on multiple hardware platforms (Intel/Arm) to capture a wide range of microarchitectural behaviors.
+
+
+## 🛠️ Data Collection
+
+All data is collected using standardized tools and methodologies:
+
+- **perf** (Linux Performance Events) for hardware counter sampling
+- Custom **run scripts** for SPEC CPU 2017 and real-world applications
+- Metric derivation based on **PIPA-SHU** principles (multiplexing-aware counter aggregation)
+
+All data is versioned using **Git LFS** to support large file storage and traceability.
+
+
+## 📌 Status
+
+This project is in the **early development phase**.  
+The dataset is actively being built by ZJU-SPAIL members.  
+Public access is read-only; contributions are not currently accepted.
+
+Documentation and tooling will be expanded as the dataset matures.
+
+---
+
+> *“PipaScope: where data grows like fruit, and insight blossoms from observation.”*
