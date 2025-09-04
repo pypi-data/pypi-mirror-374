@@ -1,0 +1,21 @@
+[project]
+name = "pytexturepacker-xxl"
+version = "0.1.1"
+description = "对PyTexturePacker做一个小的扩展，增加一个参数ignore_image_ext，key忽略图片后缀"
+readme = "README.rst"
+authors = [
+    { name = "lyonDan", email = "liangdan6690@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = []
+
+[project.scripts]
+pytexturepacker-xxl = "pytexturepacker_xxl:main"
+
+[build-system]
+requires = ["uv_build>=0.8.4,<0.9.0"]
+build-backend = "uv_build"
+
+[project.urls]
+Homepage = "https://github.com/lyonDan/PyTexturePacker"
+Repository = "https://github.com/lyonDan/PyTexturePacker"
