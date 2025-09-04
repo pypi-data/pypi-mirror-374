@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ADVfile_manager"
+version = "1.0.1"
+authors = [
+    { name = "Avi Twil" }
+]
+description = "Unified file abstractions with backups, context manager, and exit cleanup."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+dependencies = [
+    "pyyaml"
+]
+
+[project.urls]
+Homepage = "https://github.com/avitwil/ADVfile_manager"
