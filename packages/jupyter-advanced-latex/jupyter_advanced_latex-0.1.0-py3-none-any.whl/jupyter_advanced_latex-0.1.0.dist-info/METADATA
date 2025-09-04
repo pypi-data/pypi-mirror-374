@@ -1,0 +1,62 @@
+Metadata-Version: 2.4
+Name: jupyter-advanced-latex
+Version: 0.1.0
+Summary: IPython magic commands for advanced LaTeX rendering via plasTeX, providing support for displaying tables and figures as HTML.
+Project-URL: Homepage, https://github.com/jiboncom/jupyter-advanced-latex
+Project-URL: Issues, https://github.com/jiboncom/jupyter-advanced-latex/issues
+Author-email: Javier Boncompte <jiboncom@gmail.com>
+License: Apache 2.0
+License-File: LICENSE
+Keywords: ipython,jupyter,latex,magics,plastex
+Classifier: Framework :: Jupyter
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Text Processing :: Markup :: LaTeX
+Requires-Python: >=3.9
+Requires-Dist: ipython>=8.0
+Requires-Dist: plastex>=3.1
+Description-Content-Type: text/markdown
+
+# Advanced LaTeX Rendering for Jupyter Notebooks
+
+**jupyter-advanced-latex** provides new IPython magic commands for high-quality LaTeX rendering in Jupyter, powered by [plasTeX](https://github.com/plastex/plastex). It enables publication-ready tables, figures, and math directly as HTML within your notebook.
+
+## Installation
+
+```bash
+pip install jupyter-advanced-latex
+```
+
+## Demo
+
+<https://github.com/jiboncom/jupyter-advanced-latex/blob/demo/usage.ipynb>
+
+## Usage
+
+Import the package once to register the magic commands:
+
+```python
+import jupyter_advanced_latex
+```
+
+### Render a LaTeX file
+
+```python
+%texfile document.tex
+```
+
+### Render LaTeX code inline
+
+```python
+%%plasTeX
+\documentclass{article}
+\begin{document}
+Hello, \LaTeX!
+\end{document}
+```
+
+## License
+
+This project is licensed under the [Apache 2.0 License](LICENSE).
