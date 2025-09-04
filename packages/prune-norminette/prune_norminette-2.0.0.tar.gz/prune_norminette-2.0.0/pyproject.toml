@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+authors = [
+    {name = "Arnout", email = "bastien@prune.sh"},
+]
+requires-python = "<4.0,>=3.12"
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+keywords = ["norminette", "django", "code-quality"]
+urls = {Made_by = "https://prune.sh/"}
+name = "prune_norminette"
+version = "2.0.0"
+description = "A tool to ensure that code adheres to Prune's coding standards."
+readme = "README.md"
+dependencies = [
+    "build>=1.3.0",
+    "twine>=6.1.0",
+]
+
+[project.scripts]
+prune_norminette = "prune_norminette.main:main"
+norminette_display_rules = "prune_norminette.utils.rules.display_rules:display_rules_terminal"
+
