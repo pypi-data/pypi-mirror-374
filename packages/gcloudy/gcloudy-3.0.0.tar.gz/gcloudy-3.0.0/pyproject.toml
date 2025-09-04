@@ -1,0 +1,14 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel",
+    "google",
+    "google-cloud",
+    "google-cloud-bigquery",
+    "google-cloud-bigquery-storage",
+    "pyarrow",
+    "pandas",
+    "numpy",
+    "polars"
+]
+build-backend = "setuptools.build_meta"
