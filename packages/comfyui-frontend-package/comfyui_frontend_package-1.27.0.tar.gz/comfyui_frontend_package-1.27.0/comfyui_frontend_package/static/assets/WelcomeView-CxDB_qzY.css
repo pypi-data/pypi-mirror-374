@@ -1,0 +1,46 @@
+/*! tailwindcss v4.1.12 | MIT License | https://tailwindcss.com */
+@layer properties {
+@supports (((-webkit-hyphens: none)) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color: rgb(from red r g b)))) {
+[data-v-7c26fa33],[data-v-7c26fa33]:before,[data-v-7c26fa33]:after,[data-v-7c26fa33]::backdrop {
+      --tw-font-weight: initial;
+}
+}
+}
+.animated-gradient-text[data-v-7c26fa33] {
+  --tw-font-weight: var(--font-weight-bold, 700);
+  font-weight: var(--font-weight-bold, 700);
+  -webkit-text-fill-color: transparent;
+  background: linear-gradient(to right, #12c2e9, #c471ed, #f64f59, #12c2e9) 0 0 / 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-size: clamp(2rem, 8vw, 4rem);
+  animation: 8s linear infinite gradient-7c26fa33;
+}
+.text-glow[data-v-7c26fa33] {
+  filter: drop-shadow(0 0 8px #ffffff4d);
+}
+@keyframes gradient-7c26fa33 {
+0% {
+    background-position: 0%;
+}
+100% {
+    background-position: 300%;
+}
+}
+.fade-in-up[data-v-7c26fa33] {
+  animation: 1.5s ease-out both fadeInUp-7c26fa33;
+}
+@keyframes fadeInUp-7c26fa33 {
+0% {
+    opacity: 0;
+    transform: translateY(20px);
+}
+100% {
+    opacity: 1;
+    transform: translateY(0);
+}
+}
+@property --tw-font-weight {
+  syntax: "*";
+  inherits: false
+}
