@@ -1,0 +1,71 @@
+[build-system]
+requires = ["flit_core >=3.11,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "cblind"
+version = "2.3.2" # keep in sync with CITATION.cff
+description = "Colorblind friendly colormaps and color cycles for matplotlib"
+authors = [
+    { name = "G. Wafflard-Fernandez" },
+]
+classifiers = [
+    "Framework :: Matplotlib",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "matplotlib>=3.5.0",
+    "cycler>=0.10",
+    "numpy>=1.21.2",
+]
+license = { file = "LICENSE" }
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.urls]
+Homepage = "https://github.com/la-niche/cblind"
+
+[dependency-groups]
+test = [
+    "pytest>=7.0.0",
+]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+filterwarnings = [
+    "error",
+]
+
+[tool.ruff.lint]
+exclude = [
+    "*__init__.py",
+]
+ignore = [
+    "E501",
+    "PTH123", # `open()` should be replaced by `Path.open()`
+]
+select = [
+    "E",
+    "F",
+    "W",
+    "ARG", # flake8-unused-arguments
+    "C4",  # flake8-comprehensions
+    "PTH", # flake8-use-pathlib
+    "B",   # flake8-bugbear
+    "YTT", # flake8-2020
+    "I",   # isort
+    "UP",  # pyupgrade
+]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
