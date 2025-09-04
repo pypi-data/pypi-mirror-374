@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "codemood"
+version = "0.0.3"
+description = "A fun Code Mood Analyzer that assigns 'moods' to code snippets using AI"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Omkar Palika", email = "palikaomkar.22.cse@anits.edu.in" }
+]
+keywords = ["code", "sentiment", "analysis", "fun", "AI"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+dependencies = [
+    "transformers>=4.40.0",
+    "huggingface_hub>=0.23.0",
+    "matplotlib",
+]
+
+[project.urls]
+Homepage = "https://github.com/OmkarPalika/codemood"
+Issues = "https://github.com/OmkarPalika/codemood/issues"
+
+[tool.pylance]
+stubPath = "codemood/_stubs"
+
+[tool.setuptools.packages.find]
+where = ["."]

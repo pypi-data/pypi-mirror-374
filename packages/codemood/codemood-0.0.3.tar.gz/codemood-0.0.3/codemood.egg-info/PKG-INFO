@@ -1,0 +1,271 @@
+Metadata-Version: 2.4
+Name: codemood
+Version: 0.0.3
+Summary: A fun Code Mood Analyzer that assigns 'moods' to code snippets using AI
+Home-page: https://github.com/OmkarPalika/codemood
+Author: Omkar Palika
+Author-email: Omkar Palika <palikaomkar.22.cse@anits.edu.in>
+License: MIT License
+        
+        Copyright (c) 2025 Omkar Palika
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/OmkarPalika/codemood
+Project-URL: Issues, https://github.com/OmkarPalika/codemood/issues
+Keywords: code,sentiment,analysis,fun,AI
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: transformers>=4.40.0
+Requires-Dist: huggingface_hub>=0.23.0
+Requires-Dist: matplotlib
+Dynamic: license-file
+
+# 🌀 Codemood
+
+> *“Because even code has feelings…”*
+
+[![PyPI version](https://img.shields.io/pypi/v/codemood.svg?color=blue)](https://pypi.org/project/codemood/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/codemood.svg?color=green)](https://pypi.org/project/codemood/)
+[![License](https://img.shields.io/github/license/OmkarPalika/codemood.svg?color=yellow)](https://github.com/OmkarPalika/codemood/blob/main/LICENSE)
+[![Build](https://img.shields.io/github/actions/workflow/status/OmkarPalika/codemood/python-package.yml?branch=main)](https://github.com/OmkarPalika/codemood/actions)
+[![Made with ❤️](https://img.shields.io/badge/made%20with-%F0%9F%96%A4-red)](https://github.com/OmkarPalika/codemood)
+
+Codemood is a lighthearted Python package that **analyzes the “mood” of your code**.
+Under the hood, it uses AI sentiment analysis — but instead of just saying *positive/negative*, it explains *why* your code snippet made the model happy, sad, or confused.
+
+Perfect for:<br>
+✅ Adding humor to coding sessions<br>
+✅ Live demos & hackathons<br>
+✅ Side projects that surprise developers with witty feedback
+
+---
+
+## ✨ Features
+
+* 🚀 Works out-of-the-box (no setup needed).
+* 🧠 Uses Hugging Face Transformers locally if available.
+* ☁️ Falls back to Hugging Face API (if you provide `HF_TOKEN`).
+* 🎭 Funny explanations — not just *“Positive”*, but *“Model got happy because it saw print 🎉”*.
+* 🐍 Lightweight, pip-installable, hackathon-friendly.
+
+---
+
+## 📦 Installation
+
+```bash
+pip install codemood
+```
+
+---
+
+## ⚡ Quickstart
+
+```python
+from codemood import analyze_code
+
+snippet = "for i in range(10): print(i)"
+mood = analyze_code(snippet)
+
+print(mood)
+```
+
+**Output:**
+
+```python
+{
+  'label': 'POSITIVE',
+  'score': 0.98,
+  'reason': "Model got happy because it saw print 🎉"
+}
+```
+
+---
+
+## 🎯 Advanced Usage
+
+```python
+from codemood import CodeMoodAnalyzer
+
+analyzer = CodeMoodAnalyzer()
+
+# Analyze a function
+code = """
+def greet(name):
+    print("Hello", name)
+"""
+print(analyzer.analyze(code))
+
+# Alias method (same result)
+print(analyzer.explain_sentiment(code))
+```
+
+---
+
+## 🔑 Hugging Face API (Optional)
+
+By default, Codemood works offline with `transformers`.<br>If you want cloud inference, set your Hugging Face token:
+
+```bash
+export HF_TOKEN="your_hf_token_here"
+```
+
+No token? No worries → Codemood will gracefully skip cloud mode.
+
+---
+
+## 🛠️ Roadmap
+
+* [ ] Add more “emotions” beyond positive/negative.
+* [ ] Language-specific code mood tuning (Python vs JS vs C++).
+* [ ] VS Code extension for live code mood popups.
+
+---
+
+## 🤝 Contributing
+
+PRs are welcome! Fork the repo, create a branch, and send a PR with your funniest improvements.
+
+---
+
+## 📜 License
+
+MIT — Free to use, remix, and make your code smile 😄
+
+---
+
+🔥 With **Codemood**, your code reviews will never be boring again.
+
+---
+A4-red)](https://github.com/OmkarPalika/codemood)
+
+Codemood is a lighthearted Python package that **analyzes the “mood” of your code**.
+Under the hood, it uses AI sentiment analysis — but instead of just saying *positive/negative*, it explains *why* your code snippet made the model happy, sad, or confused.
+
+Perfect for:<br>
+✅ Adding humor to coding sessions<br>
+✅ Live demos & hackathons<br>
+✅ Side projects that surprise developers with witty feedback
+
+---
+
+## ✨ Features
+
+* 🚀 Works out-of-the-box (no setup needed).
+* 🧠 Uses Hugging Face Transformers locally if available.
+* ☁️ Falls back to Hugging Face API (if you provide `HF_TOKEN`).
+* 🎭 Funny explanations — not just *“Positive”*, but *“Model got happy because it saw print 🎉”*.
+* 🐍 Lightweight, pip-installable, hackathon-friendly.
+
+---
+
+## 📦 Installation
+
+```bash
+pip install codemood
+```
+
+---
+
+## ⚡ Quickstart
+
+```python
+from codemood import analyze_code
+
+snippet = "for i in range(10): print(i)"
+mood = analyze_code(snippet)
+
+print(mood)
+```
+
+**Output:**
+
+```python
+{
+  'label': 'POSITIVE',
+  'score': 0.98,
+  'reason': "Model got happy because it saw print 🎉"
+}
+```
+
+---
+
+## 🎯 Advanced Usage
+
+```python
+from codemood import CodeMoodAnalyzer
+
+analyzer = CodeMoodAnalyzer()
+
+# Analyze a function
+code = """
+def greet(name):
+    print("Hello", name)
+"""
+print(analyzer.analyze(code))
+
+# Alias method (same result)
+print(analyzer.explain_sentiment(code))
+```
+
+---
+
+## 🔑 Hugging Face API (Optional)
+
+By default, Codemood works offline with `transformers`.<br>If you want cloud inference, set your Hugging Face token:
+
+```bash
+export HF_TOKEN="your_hf_token_here"
+```
+
+No token? No worries → Codemood will gracefully skip cloud mode.
+
+---
+
+## 🛠️ Roadmap
+
+* [ ] Add more “emotions” beyond positive/negative.
+* [ ] Language-specific code mood tuning (Python vs JS vs C++).
+* [ ] VS Code extension for live code mood popups.
+
+---
+
+## 🤝 Contributing
+
+PRs are welcome! Fork the repo, create a branch, and send a PR with your funniest improvements.
+
+---
+
+## 📜 License
+
+MIT — Free to use, remix, and make your code smile 😄
+
+---
+
+🔥 With **Codemood**, your code reviews will never be boring again.
+
+---
