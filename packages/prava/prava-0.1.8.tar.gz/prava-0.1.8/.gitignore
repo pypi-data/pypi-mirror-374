@@ -1,0 +1,38 @@
+# OS / Editor
+.DS_Store
+.idea/
+.vscode/
+
+# Env and secrets
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+js/node_modules/
+js/dist/
+dist/
+*.log
+
+# Python
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+python/.venv/
+python/build/
+python/dist/
+*.pyc
+*.pyo
+*.pyd
+
+# Packaging
+*.egg-info/
+.python-version
+
+# Coverage
+.coverage*
+coverage*
+
