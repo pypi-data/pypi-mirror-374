@@ -1,0 +1,21 @@
+Metadata-Version: 2.4
+Name: pccg
+Version: 0.0.3
+Summary: Add your description here
+License-File: LICENSE
+Requires-Python: >=3.12
+Requires-Dist: matplotlib>=3.10.6
+Requires-Dist: numpy>=2.3.2
+Requires-Dist: scipy>=1.16.1
+Requires-Dist: torch>=2.8.0
+Description-Content-Type: text/markdown
+
+# Potential Contrasting Coarse Graining
+
+## Introduction
+
+[Potential contrasting](https://pubs.acs.org/doi/10.1021/acs.jctc.2c00616) is an efficient method for learning a potential energy function that can reproduce an ensemble of molecular conformations. It can be easily applied to can learn coarse-grained force fields based on all-atom simulations. It generalizes the [noise contrastive estimation method](https://proceedings.mlr.press/v9/gutmann10a) to use complex unnormalized noise distributions constructed using molecular dynamics techniques such as [umbrella sampling](https://en.wikipedia.org/wiki/Umbrella_sampling).
+
+## Getting Help
+
+Need help? Checkout the [documentation](https://pccg.readthedocs.io).
