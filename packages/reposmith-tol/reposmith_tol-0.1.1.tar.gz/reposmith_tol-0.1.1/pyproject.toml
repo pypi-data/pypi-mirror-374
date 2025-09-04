@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reposmith-tol"
+version = "0.1.1"
+description = "Portable project bootstrapper (venv, gitignore, license, vscode, etc.)"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{ name = "TamerOnLine" }]
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["reposmith*"]
+
+[project.scripts]
+reposmith = "reposmith.main:main"
