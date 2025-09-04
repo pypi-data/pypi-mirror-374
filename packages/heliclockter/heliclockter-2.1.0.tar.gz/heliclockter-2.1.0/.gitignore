@@ -1,0 +1,14 @@
+# Ignore compiled Python bytecode
+__pycache__
+*.pyc
+
+.idea/
+dist/
+build/
+venv/
+*.egg-info
+.virtualenv
+.venv
+.pytest_cache
+
+.junit_report.xml
