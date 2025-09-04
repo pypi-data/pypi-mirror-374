@@ -1,0 +1,18 @@
+Metadata-Version: 2.4
+Name: poc-reachy-mini-kinematics
+Version: 0.0.1
+Summary: Reachy mini kinematics library (POC)
+Requires-Python: >= 3.8
+License-Expression: MIT
+Author-email: Rhoban team <team@rhoban.com>
+Project-URL: Changelog, https://github.com/gregwar/reachy_mini_kinematics/blob/main/CHANGELOG.md
+Home-page: https://github.com/gregwar/reachy_mini_kinematics
+Project-URL: Repository, https://github.com/gregwar/reachy_mini_kinematics
+Requires-Dist: cmeel
+Requires-Dist: eigen
+Requires-Dist: eigenpy
+Provides-Extra: build
+Requires-Dist: cmeel-eigen ; extra == "build"
+Requires-Dist: eigenpy[build] ; extra == "build"
+Requires-Dist: doxystub >= 0.1.7 ; extra == "build"
+Requires-Dist: cmake<4 ; extra == "build"
