@@ -1,0 +1,119 @@
+Metadata-Version: 2.4
+Name: gitk
+Version: 0.1.3
+Summary: AI-powered CLI tool for generating git commit messages
+Author-email: xifOO <wedyi28111@gmail.com>
+License: MIT
+Keywords: git,commit,ai,cli
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Version Control
+Classifier: Environment :: Console
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: click<9.0.0,>=8.0.0
+Requires-Dist: questionary<2.0.0,>=1.10.0
+Requires-Dist: requests<3.0.0,>=2.25.0
+Requires-Dist: PyYAML<7.0,>=6.0
+Requires-Dist: pydantic<3.0.0,>=1.10.0
+Provides-Extra: dev
+Requires-Dist: black<24.0,>=23.0; extra == "dev"
+Requires-Dist: ruff<0.13.0,>=0.1.0; extra == "dev"
+Requires-Dist: mypy<2.0,>=1.0; extra == "dev"
+Requires-Dist: pytest<8.0,>=7.0; extra == "dev"
+Dynamic: license-file
+
+# GitK
+
+**GitK** is a CLI tool built with Python 3.11+ that leverages AI to generate meaningful commit messages based on your staged changes. It uses the OpenRouter provider to select AI models, helping you write better commits effortlessly.
+
+---
+
+## Features
+
+- AI-powered commit message generation from staged diffs  
+- Support for detailed and concise commit messages  
+- Customizable commit message templates  
+- Option to commit changes file-by-file for atomic commits (`--split`)  
+- Seamless integration with Git workflows  
+
+---
+
+## Installation
+
+```bash
+ pip install gitk
+```
+
+---
+
+## Key Dependencies
+
+- click — for building the CLI interface
+- requests - for HTTP requests
+- pydantic — for data validation and settings management
+- questionary — for interactive CLI prompts
+(Full list of dependencies is available in requirements.txt)
+
+
+--- 
+
+
+## Usage
+```bash
+gitk commit [OPTIONS] [EXTRA_GIT_FLAGS]...
+```
+Generate AI-based commit messages from your staged changes.
+
+
+## Options
+ 
+ - [detailed]
+   Generate a more detailed commit message, useful for complex diffs.
+- [yes]
+  Skip confirmation prompts and commit automatically with the generated message.
+- [split]
+  Generate and commit messages for each staged file separately for atomic commits.
+- [template-file] PATH
+  Use a custom commit message template file with placeholders like {{diff}} and {{instruction}}.
+- [template] TEXT
+  Inline template string that overrides the default template.
+- [instruction] TEXT
+  Provide additional context or instructions to guide AI when generating messages.
+- [EXTRA_GIT_FLAGS] ...
+  Pass extra flags directly to git commit (e.g., --signoff, --amend).
+
+# Examples
+  ``` bash
+  gitk commit --detailed
+  gitk commit --split --template-file=my_template.txt
+  gitk commit --template="Change summary: {{diff}}" --yes
+  gitk commit --instruction="Write in imperative tense"
+  ```
+
+---
+
+## Configuration
+
+  Before using GitK, run:
+
+
+  ```bash
+  gitk init
+  ```
+  This will guide you through setting up API keys, selecting AI models, and configuring your commit message templates.
+
+---
+
+## Logging
+
+Errors and important events are logged to:
+```bash
+~/.gitk_config/logs/gitk.log
+```
+
+This helps in troubleshooting without cluttering your CLI output.
+
