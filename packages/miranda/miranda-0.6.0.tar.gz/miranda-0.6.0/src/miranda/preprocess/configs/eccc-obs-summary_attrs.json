@@ -1,0 +1,160 @@
+{
+  "Header": {
+    "_miranda_version": true,
+    "_variable": true,
+    "acknowledgement": "This data is provided by Environment and Climate Change Canada (ECCC).",
+    "author": "Environment and Climate Change Canada (ECCC)",
+    "contact": "info.cccs-ccsc@canada.ca",
+    "dataset_id": "b24efb37-11b6-5d03-ab19-5759f83db546",
+    "documentation": "https://climate.weather.gc.ca/doc/Technical_Documentation.pdf",
+    "domain": "CAN",
+    "frequency": "mon",
+    "institution": "GovCan",
+    "license": "https://climate.weather.gc.ca/prods_servs/attachment1_e.html",
+    "license_preamble": "The data is owned by the Government of Canada (Environment and Climate Change Canada), and fall under the licence agreement for use of Environment and Climate Change Canada data.",
+    "license_type": "permissive",
+    "organization": "ECCC",
+    "processing_level": "raw",
+    "product": "A cross-country summary of the averages and extremes for the month, including precipitation totals, max-min temperatures, and degree days.",
+    "project": "ECCC-SUMMARIES",
+    "realm": "atmos",
+    "source": "msc",
+    "table_date": "2023-08-07",
+    "table_id": "ECCC",
+    "type": "station-obs"
+  },
+  "variable_entry": {
+    "cdd": {
+      "_variable_name": "cdd",
+      "cell_methods": "time: sum",
+      "comments": "Station data converted from Cool Deg Days (°C)",
+      "frequency": "day",
+      "grid_mapping": "regular_lon_lat",
+      "long_name": "Number of Degrees Celsius Over a Mean Temperature of 18 °C",
+      "original_field": "Cool Deg Days (°C)",
+      "type": "real",
+      "units": "degC"
+    },
+    "hdd": {
+      "_variable_name": "hdd",
+      "cell_methods": "time: sum",
+      "comments": "Station data converted from Heat Deg Days (°C)",
+      "frequency": "mon",
+      "grid_mapping": "regular_lon_lat",
+      "long_name": "Number of Degrees Celsius Under a Mean Temperature of 18 °C",
+      "original_field": "Heat Deg Days (°C)",
+      "type": "real",
+      "units": "degC"
+    },
+    "pr": {
+      "_variable_name": "pr",
+      "cell_methods": "time: mean",
+      "comments": "Station data converted from Total Precip (mm) using a density of 1000 kg/m³",
+      "frequency": "mon",
+      "grid_mapping": "regular_lon_lat",
+      "long_name": "Precipitation",
+      "original_field": "Total Precip (mm)",
+      "type": "real",
+      "units": "mm"
+    },
+    "prlp": {
+      "_variable_name": "prlp",
+      "cell_methods": "time: mean",
+      "comments": "Station data converted from Total Rain (mm) using a density of 1000 kg/m³",
+      "frequency": "mon",
+      "grid_mapping": "regular_lon_lat",
+      "long_name": "Liquid Precipitation",
+      "original_field": "Total Rain (mm)",
+      "type": "real",
+      "units": "mm"
+    },
+    "prsn": {
+      "_variable_name": "prsn",
+      "cell_methods": "time: mean",
+      "comments": "station data converted from Total Snow (cm) using a density of 100 kg/m³",
+      "frequency": "mon",
+      "grid_mapping": "regular_lon_lat",
+      "long_name": "Snowfall Flux",
+      "original_field": "Total Snow (cm)",
+      "type": "real",
+      "units": "cm"
+    },
+    "sfcWindAz": {
+      "_variable_name": "sfcWindAz",
+      "cell_methods": "time: mean",
+      "comments": "Station data converted from Dir of Max Gust (10s deg)",
+      "frequency": "mon",
+      "grid_mapping": "regular_lon_lat",
+      "long_name": "Direction from which the Daily Maximum Near-Surface Gust Wind Speed maximum Blows",
+      "original_field": "Dir of Max Gust (10s deg)",
+      "type": "real",
+      "units": "degree"
+    },
+    "sfcWindMax": {
+      "_variable_name": "sfcWindMax",
+      "cell_methods": "time: max",
+      "comments": "Station data converted from Spd of Max Gust (km/h)",
+      "frequency": "mon",
+      "grid_mapping": "regular_lon_lat",
+      "long_name": "Daily Maximum Near-Surface Gust Wind Speed maximum",
+      "original_field": "Spd of Max Gust (km/h)",
+      "type": "real",
+      "units": "km h-1"
+    },
+    "snd": {
+      "_variable_name": "snd",
+      "cell_methods": "time: mean",
+      "comments": "Station data converted from Snow on Grnd (cm)",
+      "frequency": "mon",
+      "grid_mapping": "regular_lon_lat",
+      "long_name": "Snow Depth",
+      "original_field": "Snow on Grnd (cm)",
+      "type": "real",
+      "units": "cm"
+    },
+    "tas": {
+      "_variable_name": "tas",
+      "cell_methods": "time: mean",
+      "comments": "Station data converted from Mean Temperature (°C)",
+      "frequency": "mon",
+      "grid_mapping": "regular_lon_lat",
+      "long_name": "Near-Surface Air Temperature",
+      "original_field": "Mean Temperature",
+      "type": "real",
+      "units": "degC"
+    },
+    "tas_days": {
+      "_variable_name": "tas_days",
+      "cell_methods": "time: count",
+      "comments": "Station data converted from Days With Valid Mean Temperature",
+      "frequency": "mon",
+      "grid_mapping": "regular_lon_lat",
+      "long_name": "Number of Days With Valid Near-Surface Air Temperature",
+      "original_field": "Days With Valid Mean Temp",
+      "type": "real",
+      "units": "1"
+    },
+    "tasmax": {
+      "_variable_name": "tasmax",
+      "cell_methods": "time: maximum",
+      "comments": "station data converted from Max Temp (°C)",
+      "frequency": "mon",
+      "grid_mapping": "regular_lon_lat",
+      "long_name": "Daily Maximum Near-Surface Air Temperature",
+      "original_field": "Max Temp (°C)",
+      "type": "real",
+      "units": "degC"
+    },
+    "tasmin": {
+      "_variable_name": "tasmin",
+      "cell_methods": "time: minimum",
+      "comments": "Station data converted from Min Temp (°C)",
+      "frequency": "mon",
+      "grid_mapping": "regular_lon_lat",
+      "long_name": "Daily Minimum Near-Surface Air Temperature",
+      "original_field": "Min Temp (°C)",
+      "type": "real",
+      "units": "degC"
+    }
+  }
+}

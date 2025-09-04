@@ -1,0 +1,152 @@
+{
+  "Header": {
+    "Conventions": "CF-1.9",
+    "_doi": {
+      "daymet-annual": "https://doi.org/10.3334/ORNLDAAC/2130",
+      "daymet-daily": "https://doi.org/10.3334/ORNLDAAC/2129",
+      "daymet-monthly": "https://doi.org/10.3334/ORNLDAAC/2131"
+    },
+    "_institution": {
+      "daymet-annual": "ornl-daac",
+      "daymet-daily": "ornl-daac",
+      "daymet-monthly": "ornl-daac"
+    },
+    "_miranda_version": true,
+    "license": "https://www.earthdata.nasa.gov/learn/use-data/data-use-policy",
+    "license_type": "open",
+    "processing_level": "raw",
+    "realm": "atmos",
+    "source": "daymet",
+    "table_date": "2023-01-17",
+    "table_id": "NASA",
+    "title": "Long-term, continuous, gridded estimates of daily weather and climatology variables from Oak Ridge National Laboratory",
+    "title_fr": "Estimations à long terme, continues et maillées, des variables météorologiques et climatologiques quotidiennes du Oak Ridge National Laboratory.",
+    "type": "reconstruction"
+  },
+  "dimensions": {
+    "time": {
+      "_corrected_units": {
+        "agcfsr": "days since 1980-01-01 12:00:00",
+        "agmerra2": "days since 1980-01-01 12:00:00"
+      }
+    }
+  },
+  "variables": {
+    "prate": {
+      "_cf_variable_name": {
+        "agcfsr": "pr",
+        "agmerra2": "pr"
+      },
+      "_corrected_units": {
+        "agcfsr": "mm d-1",
+        "agmerra2": "mm d-1"
+      },
+      "_invert_sign": false,
+      "_offset_time": false,
+      "_transformation": false,
+      "cell_methods": "time: mean",
+      "long_name": "Precipitation rate",
+      "standard_name": "precipitation_flux",
+      "units": "kg m-2 s-1"
+    },
+    "rhstmax": {
+      "_cf_variable_name": {
+        "agcfsr": "hurs",
+        "agmerra2": "hurs"
+      },
+      "_invert_sign": false,
+      "_offset_time": false,
+      "_transformation": false,
+      "cell_methods": "time: point",
+      "long_name": "Relative Humidity at time of Maximum Temperature",
+      "standard_name": "relative_humidity",
+      "units": "1"
+    },
+    "srad": {
+      "_cf_variable_name": {
+        "agcfsr": "rxds",
+        "agmerra2": "rxds"
+      },
+      "_corrected_units": {
+        "agcfsr": "MJ m-2 d-1",
+        "agmerra2": "MJ m-2 d-1"
+      },
+      "_invert_sign": false,
+      "_offset_time": false,
+      "_transformation": false,
+      "cell_methods": "time: mean within days",
+      "comment": "Combined longwave and shortwave radiation based on NASA/GEWEX SRB",
+      "long_name": "Solar radiation flux",
+      "standard_name": "surface_net_downward_radiative_flux",
+      "units": "W m-2 d-1"
+    },
+    "tavg": {
+      "_cf_variable_name": {
+        "agcfsr": "tas",
+        "agmerra2": "tas"
+      },
+      "_corrected_units": {
+        "agcfsr": "degC",
+        "agmerra2": "degC"
+      },
+      "_invert_sign": false,
+      "_offset_time": false,
+      "_transformation": false,
+      "cell_methods": "time: mean",
+      "long_name": "Average temperature",
+      "standard_name": "air_temperature",
+      "units": "K"
+    },
+    "tmax": {
+      "_cf_variable_name": {
+        "agcfsr": "tasmax",
+        "agmerra2": "tasmax"
+      },
+      "_corrected_units": {
+        "agcfsr": "degC",
+        "agmerra2": "degC"
+      },
+      "_invert_sign": false,
+      "_offset_time": false,
+      "_transformation": false,
+      "cell_methods": "time: maximum",
+      "long_name": "Maximum temperature",
+      "standard_name": "air_temperature",
+      "units": "K"
+    },
+    "tmin": {
+      "_cf_variable_name": {
+        "agcfsr": "tasmin",
+        "agmerra2": "tasmin"
+      },
+      "_corrected_units": {
+        "agcfsr": "degC",
+        "agmerra2": "degC"
+      },
+      "_invert_sign": false,
+      "_offset_time": false,
+      "_transformation": false,
+      "cell_methods": "time: minimum",
+      "long_name": "Minimum temperature",
+      "standard_name": "air_temperature",
+      "units": "K"
+    },
+    "wndspd": {
+      "_cf_variable_name": {
+        "agcfsr": "sfcWind",
+        "agmerra2": "sfcWind"
+      },
+      "_corrected_units": {
+        "agcfsr": "m s-1",
+        "agmerra2": "m s-1"
+      },
+      "_invert_sign": false,
+      "_offset_time": false,
+      "_transformation": false,
+      "cell_methods": "time: point",
+      "long_name": "Wind speed",
+      "standard_name": "wind_speed",
+      "units": "m s-1"
+    }
+  }
+}
