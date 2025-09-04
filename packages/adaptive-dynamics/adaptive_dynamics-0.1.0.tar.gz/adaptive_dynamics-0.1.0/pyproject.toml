@@ -1,0 +1,68 @@
+[build-system]
+requires = ["hatchling>=1.18"]
+build-backend = "hatchling.build"
+
+[project]
+name = "adaptive-dynamics"
+version = "0.1.0"
+description = "Adaptive Dynamics Toolkit: Adaptive π geometry, ARP optimizers, simulations, and compression."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{name = "Ryan McKenna", email = "contact@rdm3dc.dev"}]
+keywords = ["geometry", "optimization", "physics", "compression", "torch"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering",
+]
+
+dependencies = [
+  "numpy>=1.24",
+  "scipy>=1.11",
+  "matplotlib>=3.7",
+]
+
+[project.urls]
+Homepage = "https://github.com/rdm3dc/adaptive-dynamics-toolkit"
+Documentation = "https://rdm3dc.github.io/adaptive-dynamics-toolkit/"
+Source = "https://github.com/rdm3dc/adaptive-dynamics-toolkit"
+Issues = "https://github.com/rdm3dc/adaptive-dynamics-toolkit/issues"
+
+[project.optional-dependencies]
+torch = ["torch>=2.2"]
+sympy = ["sympy>=1.12"]
+cuda = ["cupy-cuda12x>=12.0"]  # adjust to your CUDA toolchain
+docs = ["mkdocs-material>=9.5", "mkdocstrings[python]>=0.24"]
+dev = ["pytest>=8.0", "pytest-cov>=4.1", "ruff>=0.5", "mypy>=1.10"]
+
+[tool.hatch.build]
+exclude = [
+  "src/adaptive_dynamics/pro/**",
+  "examples/**",
+  "docs/**",
+  "scripts/**",
+  "tests/**"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/adaptive_dynamics"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E","F","I","UP","ANN","B","SIM","RET"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = false
+warn_unused_ignores = true
+warn_redundant_casts = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"

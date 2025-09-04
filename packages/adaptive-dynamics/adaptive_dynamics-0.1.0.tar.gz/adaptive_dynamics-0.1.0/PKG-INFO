@@ -1,0 +1,188 @@
+Metadata-Version: 2.4
+Name: adaptive-dynamics
+Version: 0.1.0
+Summary: Adaptive Dynamics Toolkit: Adaptive π geometry, ARP optimizers, simulations, and compression.
+Project-URL: Homepage, https://github.com/rdm3dc/adaptive-dynamics-toolkit
+Project-URL: Documentation, https://rdm3dc.github.io/adaptive-dynamics-toolkit/
+Project-URL: Source, https://github.com/rdm3dc/adaptive-dynamics-toolkit
+Project-URL: Issues, https://github.com/rdm3dc/adaptive-dynamics-toolkit/issues
+Author-email: Ryan McKenna <contact@rdm3dc.dev>
+License: MIT License
+        
+        Copyright (c) 2025 Ryan McKenna and contributors
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+        Note: This license applies to the Adaptive Dynamics Toolkit Community Edition.
+        The ADT Pro features located in src/adaptive_dynamics/pro/ are licensed under
+        a separate commercial license.
+License-File: LICENSE
+Keywords: compression,geometry,optimization,physics,torch
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.10
+Requires-Dist: matplotlib>=3.7
+Requires-Dist: numpy>=1.24
+Requires-Dist: scipy>=1.11
+Provides-Extra: cuda
+Requires-Dist: cupy-cuda12x>=12.0; extra == 'cuda'
+Provides-Extra: dev
+Requires-Dist: mypy>=1.10; extra == 'dev'
+Requires-Dist: pytest-cov>=4.1; extra == 'dev'
+Requires-Dist: pytest>=8.0; extra == 'dev'
+Requires-Dist: ruff>=0.5; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: mkdocs-material>=9.5; extra == 'docs'
+Requires-Dist: mkdocstrings[python]>=0.24; extra == 'docs'
+Provides-Extra: sympy
+Requires-Dist: sympy>=1.12; extra == 'sympy'
+Provides-Extra: torch
+Requires-Dist: torch>=2.2; extra == 'torch'
+Description-Content-Type: text/markdown
+
+# Adaptive Dynamics Toolkit (ADT)
+
+<p align="center">
+  <a href="https://github.com/RDM3DC/adaptive-dynamics-toolkit/actions">
+    <img alt="CI" src="https://img.shields.io/github/actions/workflow/status/RDM3DC/adaptive-dynamics-toolkit/ci.yml?label=CI">
+  </a>
+  <a href="https://pypi.org/project/adaptive-dynamics/">
+    <img alt="PyPI" src="https://img.shields.io/pypi/v/adaptive-dynamics.svg">
+  </a>
+  <a href="https://pypi.org/project/adaptive-dynamics/">
+    <img alt="Python" src="https://img.shields.io/pypi/pyversions/adaptive-dynamics.svg">
+  </a>
+  <a href="LICENSE">
+    <img alt="License" src="https://img.shields.io/badge/license-MIT-blue.svg">
+  </a>
+  <a href="https://github.com/RDM3DC/adaptive-dynamics-toolkit/issues">
+    <img alt="Issues" src="https://img.shields.io/github/issues/RDM3DC/adaptive-dynamics-toolkit.svg">
+  </a>
+  <a href="https://github.com/sponsors/RDM3DC">
+    <img alt="Sponsors" src="https://img.shields.io/badge/sponsor-%E2%9D%A4-ff69b4.svg">
+  </a>
+</p>
+
+<p align="center">
+  <img src="docs/assets/hero.gif" alt="Adaptive π visualization" width="640"><br>
+  <img src="docs/assets/loss.gif" alt="ARP vs Adam loss (synthetic)" width="640">
+</p>
+
+A unified framework for adaptive computing paradigms, including adaptive π geometry, ARP optimization, physics simulations, and compression algorithms.
+
+## Installation
+
+```bash
+pip install adaptive-dynamics
+```
+
+For development or to include optional dependencies:
+
+```bash
+pip install "adaptive-dynamics[torch,sympy,dev]"
+# or with uv
+uv venv && uv pip install -e ".[dev,docs,torch,sympy]"
+```
+
+## Quick Examples
+
+### Curved Geometry with Adaptive π (πₐ)
+
+```python
+from adaptive_dynamics.pi.geometry import AdaptivePi
+
+# Create an instance with gentle positive curvature
+pi = AdaptivePi(curvature_fn=lambda x, y: 1e-3)
+
+# Calculate circumference in curved space
+circumference = pi.circle_circumference(1.0)
+print(f"Circumference of unit circle: {circumference:.6f}")
+# Output: Circumference of unit circle: 3.144159
+```
+
+### Neural Network Training with ARP Optimizer
+
+```python
+import torch
+import torch.nn as nn
+from adaptive_dynamics.arp.optimizers import ARP
+
+# Define a simple model
+model = nn.Sequential(nn.Flatten(), nn.Linear(28*28, 10))
+
+# Use ARP optimizer
+opt = ARP(model.parameters(), lr=3e-3, alpha=0.01, mu=0.001)
+
+# Training loop (example)
+# X, y = ... load a batch ...
+loss_fn = nn.CrossEntropyLoss()
+loss = loss_fn(model(X), y)
+loss.backward()
+opt.step()
+opt.zero_grad()
+```
+
+## Examples
+
+- [πₐ Curved Circles](examples/pi_a_curved_circles.ipynb)
+- [ARP Optimizer on MNIST](examples/arp_mnist.ipynb)
+
+## Documentation
+
+Full documentation is available at [https://RDM3DC.github.io/adaptive-dynamics-toolkit](https://RDM3DC.github.io/adaptive-dynamics-toolkit)
+
+- [Getting Started Guide](https://RDM3DC.github.io/adaptive-dynamics-toolkit/getting-started)
+- [API Reference](https://RDM3DC.github.io/adaptive-dynamics-toolkit/api)
+- [Tutorials](https://RDM3DC.github.io/adaptive-dynamics-toolkit/tutorials)
+
+## Features
+
+- **Adaptive π Geometry**: Curved space mathematics and Gauss-Bonnet inspired algorithms
+- **ARP Optimization**: Resistance-conductance model for neural network optimization
+- **Physics Simulations**: Gravity, beams, and ringdown simulations with adaptive precision
+- **Compression Tools**: Adaptive compression for text, curves, and tensors
+- **TSP Solvers**: Tools for 3D printing toolpath optimization
+
+## Pro Features
+
+ADT Pro extends the toolkit with advanced features for enterprise and research:
+- Advanced CUDA acceleration
+- Premium simulation capabilities
+- Enterprise-grade dashboards
+- Specialized slicer algorithms
+
+Contact us at [contact@example.com](mailto:contact@example.com) for licensing information.
+
+## Contributing
+
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+## License
+
+- Adaptive Dynamics Toolkit (Community Edition): [MIT License](LICENSE)
+- ADT Pro: Commercial license (see [pro/README_PRO.md](src/adaptive_dynamics/pro/README_PRO.md))
+
+## Support & Services
+
+- [Integration & Research Consulting](https://yourusername.github.io/adaptive-dynamics-toolkit/services)
+- [Training & Workshops](https://yourusername.github.io/adaptive-dynamics-toolkit/training)
+- [GitHub Sponsors](https://github.com/sponsors/yourusername)

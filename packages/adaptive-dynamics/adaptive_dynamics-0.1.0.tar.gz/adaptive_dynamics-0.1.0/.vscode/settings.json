@@ -1,0 +1,14 @@
+{
+    "python.defaultInterpreterPath": ".venv/bin/python",
+    "editor.formatOnSave": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "ruff.enable": true,
+    "ruff.lint.args": [
+        "--select=E,F,I,UP,ANN,B",
+        "--extend-select=SIM,RET"
+    ],
+    "ruff.format.args": [
+        "--line-length",
+        "100"
+    ]
+}

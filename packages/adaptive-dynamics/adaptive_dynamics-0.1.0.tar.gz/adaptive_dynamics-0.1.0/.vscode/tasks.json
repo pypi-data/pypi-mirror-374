@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Tests",
+            "type": "shell",
+            "command": "pytest -q --disable-warnings --maxfail=1",
+            "problemMatcher": []
+        },
+        {
+            "label": "Lint",
+            "type": "shell",
+            "command": "ruff check src tests",
+            "problemMatcher": []
+        },
+        {
+            "label": "Docs",
+            "type": "shell",
+            "command": "mkdocs serve -f docs/mkdocs.yml",
+            "problemMatcher": []
+        }
+    ]
+}

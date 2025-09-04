@@ -1,0 +1,1 @@
+"""Core utilities shared across Adaptive Dynamics Toolkit modules."""
