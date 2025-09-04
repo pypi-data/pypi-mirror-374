@@ -1,0 +1,2 @@
+class DeepApplyException(Exception):
+    pass
