@@ -1,0 +1,50 @@
+Metadata-Version: 2.4
+Name: omniadapters
+Version: 3.0.0
+Summary: A collection of code for omniadapters - unified interfaces for LLM providers.
+Project-URL: Homepage, https://github.com/gao-hongnan/omniadapters
+Project-URL: Documentation, https://github.com/gao-hongnan/omniadapters/tree/main/playbook
+Project-URL: Repository, https://github.com/gao-hongnan/omniadapters
+Project-URL: Issues, https://github.com/gao-hongnan/omniadapters/issues
+Project-URL: Changelog, https://github.com/gao-hongnan/omniadapters/releases
+Author-email: GAO Hongnan <hongnangao@gmail.com>
+Maintainer-email: GAO Hongnan <hongnangao@gmail.com>
+License: Apache-2.0
+Keywords: adapters,ai,anthropic,gemini,google,instructor,llm,openai,pydantic,structured-output
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Typing :: Typed
+Requires-Python: >=3.12
+Requires-Dist: anthropic>=0.59.0
+Requires-Dist: google-genai>=1.27.0
+Requires-Dist: instructor>=1.10.0
+Requires-Dist: openai>=1.97.1
+Requires-Dist: pydantic-settings>=2.10.1
+Requires-Dist: pydantic>=2.11.7
+Provides-Extra: all
+Requires-Dist: python-dotenv>=1.0.1; extra == 'all'
+Requires-Dist: rich>=13.12.0; extra == 'all'
+Requires-Dist: typer>=0.15.1; extra == 'all'
+Provides-Extra: playground
+Requires-Dist: python-dotenv>=1.0.1; extra == 'playground'
+Requires-Dist: rich>=13.12.0; extra == 'playground'
+Requires-Dist: typer>=0.15.1; extra == 'playground'
+Description-Content-Type: text/markdown
+
+# OmniAdapters
+
+[![CI](https://github.com/gao-hongnan/omniadapters/actions/workflows/ci.yml/badge.svg)](https://github.com/gao-hongnan/omniadapters/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.12%20%7C%203.13-blue.svg)](https://www.python.org/downloads/)
+[![PyPI](https://img.shields.io/badge/pypi-v22.0.0-blue.svg)](https://github.com/gao-hongnan/omniadapters)
+[![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![Mypy](https://img.shields.io/badge/typed-mypy-blue?style=flat-square&logo=python)](http://mypy-lang.org/)
+[![Pyright](https://img.shields.io/badge/typed-pyright-blue?style=flat-square&logo=python)](https://github.com/microsoft/pyright)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
