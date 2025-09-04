@@ -1,0 +1,5 @@
+[console_scripts]
+mobster=mobster.main:main
+process_component_sboms=mobster.tekton.component:main
+process_product_sbom=mobster.tekton.product:main
+
