@@ -1,0 +1,34 @@
+[project]
+version = "0.0.11"
+name = "muoblpsolvers"
+description = "Solvers for multi objective linear programming"
+
+authors = [
+    { name = "Piotr Skowron", email = "p.skowron@mimuw.edu.pl" },
+    { name = "Jan Sznajd", email = "j.sznajd@uw.edu.pl" }
+]
+license = "MIT"
+readme = "README.md"
+
+requires-python = ">=3.11"
+
+dynamic = [ "dependencies" ]
+
+[project.urls]
+repository = "https://github.com/jasieksz/multiobjective-lp"
+documentation = "https://jasieksz.github.io/multiobjective-lp"
+
+[tool.poetry]
+packages = [{include = "muoblpsolvers", from = "src"}]
+
+[tool.poetry.dependencies]
+muoblp = "1.0.2"
+pulp = "2.9.0"
+muoblpbindings = "0.0.16"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 79
