@@ -1,0 +1,45 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "etendo-mcp-atlassian"             # nombre único en PyPI
+version = "0.1.0"                  # sigue PEP 440 (ej: 0.1.1, 0.2.0)
+description = "MCP server for Atlassian (Jira/Confluence)."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Futit Services", email = "info@smfconsulting.es" }]
+keywords = ["mcp", "atlassian", "jira", "confluence"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent"
+]
+dependencies = [
+  "atlassian-python-api==4.0.4",
+  "httpx==0.28.1",
+  "requests==2.32.4",
+  "requests-oauthlib==2.0.0",
+  "pydantic==2.11.7",
+  "uvicorn==0.34.3",
+  "typer==0.16.0",
+  "click==8.2.1",
+  "rich==14.0.0",
+  "websockets==15.0.1",
+  "beautifulsoup4==4.13.4",
+  "lxml==5.4.0",
+  "python-dotenv==1.1.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/RomanMagnoli/mcp-atlassian"
+Issues = "https://github.com/RomanMagnoli/mcp-atlassian/issues"
+
+# Console script para que `uvx mcp-atlassian` funcione
+[project.scripts]
+etendo-mcp-atlassian = "mcp_atlassian.server:main"
+
+[tool.hatch.build.targets.wheel]
+# Ajustá la ruta según tu layout real
+packages = ["src/mcp_atlassalian"]

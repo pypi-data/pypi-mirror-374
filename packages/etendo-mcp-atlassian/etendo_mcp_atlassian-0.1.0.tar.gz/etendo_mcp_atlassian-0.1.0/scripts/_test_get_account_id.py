@@ -1,0 +1,2 @@
+cat > /tmp/payload.json <<'JSON' {"jsonrpc":"2.0","id":"call-1","method":"jira_find_user_account_id","params":{"identifier":"Francisco Roig"}} JSON
+curl -i -X POST 'http://127.0.0.1:3000/mcp/' -H 'Accept: application/json, text/event-stream' -H 'Content-Type: application/json' -H "Authorization: Bearer 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" --data-binary @/tmp/payload.json
