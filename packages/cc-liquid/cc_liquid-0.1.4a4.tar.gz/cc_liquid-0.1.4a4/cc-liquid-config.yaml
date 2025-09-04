@@ -1,0 +1,22 @@
+is_testnet: false
+active_profile: default
+profiles:
+  default:
+    owner: '0x1234567890abcdef1234567890abcdef12345678'
+    vault: null
+    signer_env: HYPERLIQUID_PRIVATE_KEY
+data:
+  source: crowdcent
+  path: predictions.parquet
+  date_column: release_date
+  asset_id_column: id
+  prediction_column: pred_10d
+portfolio:
+  num_long: 60
+  num_short: 50
+  target_leverage: 4
+  rebalancing:
+    every_n_days: 10
+    at_time: '18:05'
+execution:
+  slippage_tolerance: 0.005
