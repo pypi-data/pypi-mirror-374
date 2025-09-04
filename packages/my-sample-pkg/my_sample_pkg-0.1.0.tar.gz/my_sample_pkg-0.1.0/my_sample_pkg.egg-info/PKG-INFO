@@ -1,0 +1,71 @@
+Metadata-Version: 2.4
+Name: my-sample-pkg
+Version: 0.1.0
+Summary: A simple sample Python package for PyPI demonstration
+Author-email: kimseungtae <monogatree@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/kimseungtae/my-sample-pkg
+Project-URL: Bug Reports, https://github.com/kimseungtae/my-sample-pkg/issues
+Project-URL: Source, https://github.com/kimseungtae/my-sample-pkg
+Keywords: sample,example,demo
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# my-sample-pkg
+
+A simple sample Python package for PyPI demonstration.
+
+## Installation
+
+```bash
+pip install my-sample-pkg
+```
+
+## Usage
+
+```python
+from my_sample_pkg import hello
+
+hello()  # Prints "Hello, PyPI!"
+```
+
+## Requirements
+
+- Python 3.8 or higher
+
+## Build and Upload
+
+### Build the package
+
+```bash
+pip install build twine
+python -m build
+```
+
+### Upload to PyPI
+
+```bash
+# Upload to TestPyPI first (recommended)
+python -m twine upload --repository testpypi dist/*
+
+# Upload to PyPI
+python -m twine upload dist/*
+```
+
+
+
+## License
+
+MIT License
