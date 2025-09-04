@@ -1,0 +1,19 @@
+[package]
+name = "fw-file-py"
+version = "0.1.4"
+edition = "2021"
+authors = ["Flywheel <support@flywheel.io>"]
+readme = "README.md"
+license = "MIT"
+description = "Python bindings for fw-file rust crate"
+homepage = "https://gitlab.com/flywheel-io/tools/lib/fw-file-rs"
+repository = "https://gitlab.com/flywheel-io/tools/lib/fw-file-rs"
+
+[lib]
+name = "fw_file_rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+fw-file = { path = "../fw-file" }
+pyo3 = "0.25.0"
+smallvec = "1.15.1"
