@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=42", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nirviz"
+dynamic = ["version"]
+description = "Visualisation tool for the Neuromorphic Intermediate Representation"
+license-files = ["LICENSE"]
+license = "BSD-3-Clause"
+readme = "README.md"
+authors = [
+        { name = "Jens Egholm Pedersen", email = "jens@jepedersen.dk" },
+        { name = "Michail Rontionov", email = "mrontionov@mront.io" }
+]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = ["nir", "graphviz", "cairosvg", "pyyaml"]
+requires-python = ">=3.9"
+
+[project.urls]
+homepage = "https://github.com/open-neuromorphic/nirviz"
+
+[tool.setuptools]
+packages = ["nirviz"]
+
+[tool.setuptools.package-data]
+nirviz = ["style.yml"]
+
+[tool.setuptools_scm]
+version_scheme = "only-version"
+local_scheme = "no-local-version"
