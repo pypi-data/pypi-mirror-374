@@ -1,0 +1,154 @@
+[build-system]
+requires = ["hatchling>=1.5.0", "jupyterlab>=4.0.0,<5", "hatch-nodejs-version>=0.3.2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fileglancer"
+readme = "README.md"
+authors = [
+    { name = "Allison Truhlar", email = "truhlara@janelia.hhmi.org" },
+    { name = "Jody Clements", email = "clementsj@janelia.hhmi.org" },
+    { name = "Cristian Goina", email = "goinac@janelia.hhmi.org" },
+    { name = "Konrad Rokicki", email = "rokickik@janelia.hhmi.org" }
+]
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+classifiers = [
+    "Framework :: Jupyter",
+    "Framework :: Jupyter :: JupyterLab",
+    "Framework :: Jupyter :: JupyterLab :: 4",
+    "Framework :: Jupyter :: JupyterLab :: Extensions",
+    "Framework :: Jupyter :: JupyterLab :: Extensions :: Prebuilt",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dynamic = ["version", "description", "urls", "keywords"]
+dependencies = [
+    "jupyterlab>=4.3.0,<5",
+    "jupyter_server>=2.4.0,<3",
+    "pydantic>=2.10.6,<3"
+]
+
+[project.optional-dependencies]
+test = [
+    "coverage",
+    "pytest",
+    "pytest-asyncio",
+    "pytest-cov",
+    "pytest-jupyter[server]>=0.6.0",
+    "requests-mock"
+]
+release = [
+    "build",
+    "twine",
+    "hatch"
+]
+
+[tool.hatch.version]
+source = "nodejs"
+
+[tool.hatch.metadata.hooks.nodejs]
+fields = ["description", "urls", "keywords"]
+
+[tool.hatch.build.targets.sdist]
+artifacts = [
+  "fileglancer/labextension",
+  "fileglancer/ui"
+]
+exclude = [".github", "binder"]
+
+[tool.hatch.build.targets.wheel]
+artifacts = [
+  "fileglancer/ui"
+]
+
+[tool.hatch.build.targets.wheel.shared-data]
+"fileglancer/labextension" = "share/jupyter/labextensions/fileglancer"
+"install.json" = "share/jupyter/labextensions/fileglancer/install.json"
+"jupyter-config/server-config" = "etc/jupyter/jupyter_server_config.d"
+
+[tool.hatch.build.hooks.version]
+path = "fileglancer/_version.py"
+
+[tool.hatch.build.hooks.jupyter-builder]
+dependencies = ["hatch-jupyter-builder>=0.5"]
+build-function = "hatch_jupyter_builder.npm_builder"
+ensured-targets = [
+    "fileglancer/labextension/static/style.js",
+    "fileglancer/labextension/package.json",
+]
+skip-if-exists = ["fileglancer/labextension/static/style.js"]
+
+[tool.hatch.build.hooks.jupyter-builder.build-kwargs]
+build_cmd = "build:prod"
+
+[tool.hatch.build.hooks.jupyter-builder.editable-build-kwargs]
+build_cmd = "install:extension"
+source_dir = "src"
+build_dir = "fileglancer/labextension"
+
+[tool.jupyter-releaser.options]
+version_cmd = "hatch version"
+
+[tool.jupyter-releaser.hooks]
+before-build-npm = [
+    "python -m pip install 'jupyterlab>=4.0.0,<5'",
+    "npm install",
+    "npm run build:prod"
+]
+before-build-python = ["npm run clean:all"]
+
+[tool.check-wheel-contents]
+ignore = ["W002"]
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore:.*Jupyter is migrating.*:DeprecationWarning",
+]
+
+[tool.pixi.project]
+channels = ["conda-forge"]
+platforms = ["osx-arm64", "osx-64", "linux-64"]
+
+[tool.pixi.feature.test.tasks]
+test-backend = "pytest"
+test-frontend = "npm test"
+
+[tool.pixi.feature.release.tasks]
+set-version = "hatch version"
+pypi-build = "pip install build && python -m build"
+pypi-upload = "twine upload dist/*"
+
+[tool.pixi.environments]
+default = { solve-group = "default" }
+test = { features = ["test"], solve-group = "default" }
+release = { features = ["release"], solve-group = "default" }
+
+[tool.pixi.tasks]
+ext-clean = "rm -rf fileglancer/labextension && rm -rf .pixi/envs/default/share/jupyter/labextensions/fileglancer"
+pip-install = { cmd = "pip install -e .", depends-on = ["ext-clean"] }
+pip-uninstall = "pip uninstall -y fileglancer"
+node-install = "npm install"
+node-build = "npm run build"
+node-lint = "npm run lint || echo 'Run `pixi run node-lint-write` to fix issues.'"
+node-lint-write = "npx prettier --write '**/*.{ts,tsx,js,jsx,json,md}'"
+node-check = "npx tsc --noEmit -p tsconfig.app.json"
+ext-overwrite = { cmd = "jupyter labextension develop . --overwrite" }
+ext-enable = { cmd = "jupyter server extension enable fileglancer", depends-on = ["ext-overwrite"] }
+dev-install = { depends-on = ["pip-install", "node-install", "ext-enable"] }
+dev-watch = { cmd = "NODE_ENV=development npm run watch" }
+dev-launch = { cmd = "NODE_ENV=development jupyter lab --autoreload" }
+dev-launch-remote = { cmd = "NODE_ENV=development jupyter lab --autoreload --ip=0.0.0.0 --no-browser" }
+node-install-ui-test = "npm --prefix ui-tests install"
+test-frontend = "npm run test"
+ui-test = { cmd = "npm --prefix ui-tests run test", depends-on = ["node-install-ui-test"] }
+
+[tool.pixi.dependencies]
+python = ">=3.13.2,<4"
+pip = ">=25.0.1,<26"
+nodejs = ">=22.12.0,<23"
