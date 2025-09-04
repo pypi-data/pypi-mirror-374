@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "banana-mcp"
+version = "1.0.0"
+authors = [
+    {name = "SuperHuang", email = "superhuang@example.com"},
+]
+description = "Banana MCP - Gemini 2.5 Flash image generation server"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: WWW/HTTP",
+]
+keywords = ["mcp", "gemini", "image-generation", "ai", "model-context-protocol"]
+dependencies = [
+    "mcp>=1.0.0",
+    "httpx>=0.24.0",
+    "anyio>=3.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/gemini-mcp"
+Documentation = "https://github.com/yourusername/gemini-mcp#readme"
+Repository = "https://github.com/yourusername/gemini-mcp.git"
+"Bug Reports" = "https://github.com/yourusername/gemini-mcp/issues"
+
+[project.scripts]
+banana-mcp = "gemini_mcp.server:main"
+
+[tool.hatch.version]
+path = "src/gemini_mcp/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gemini_mcp"]
