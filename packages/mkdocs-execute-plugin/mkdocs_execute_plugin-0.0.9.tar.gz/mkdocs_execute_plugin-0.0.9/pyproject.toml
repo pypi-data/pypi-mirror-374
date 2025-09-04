@@ -1,0 +1,88 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mkdocs-execute-plugin"
+dynamic = ["version"]
+dependencies = [
+    "mkdocs>=1.4",
+    "nbconvert",
+    "jupytext",
+    "markdown",
+    "traitlets",
+    "ipykernel",
+]
+requires-python = ">=3.8"
+authors = [
+    {name = "MkDocs Execute Plugin Authors", email = "mkdocs-execute-plugin@antonakhmerov.org"},
+]
+description = "A MkDocs plugin to execute notebooks and embed the results in the documentation."
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = [
+    "Operating System :: OS Independent",
+    "Framework :: MkDocs",
+]
+
+[project.urls]
+Homepage = "https://gitlab.kwant-project.org/qt/mkdocs-execute-plugin"
+Issues = "https://gitlab.kwant-project.org/qt/mkdocs-execute-plugin/-/issues"
+Repository = "https://gitlab.kwant-project.org/qt/mkdocs-execute-plugin.git"
+
+[tool.hatch.version]
+source = "vcs"
+
+[project.entry-points."mkdocs.plugins"]
+execute = "mkdocs_execute_plugin.plugin:ExecutePlugin"
+
+[tool.pixi.project]
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+# Prefer installing these via conda for better ABI compatibility
+[tool.pixi.dependencies]
+mkdocs = ">=1.4"
+nbconvert = "*"
+jupytext = "*"
+markdown = "*"
+traitlets = "*"
+ipykernel = "*"
+
+# Install this project in editable mode so MkDocs can discover the plugin
+[tool.pixi.pypi-dependencies]
+mkdocs-execute-plugin = { path = ".", editable = true }
+
+[tool.pixi.feature.test.dependencies]
+pytest = "*"
+
+[tool.pixi.feature.lint.dependencies]
+pre-commit = "*"
+
+[tool.pixi.feature.docs.dependencies]
+mkdocs-material = "*"
+
+[tool.pixi.feature.release.dependencies]
+hatch = "*"
+twine = "*"
+
+[tool.pixi.environments]
+test = { features = ["test"]}
+lint = { features = ["lint"], no-default-feature = true }
+docs = { features = ["docs"]}
+release = { features = ["release"]}
+
+[tool.pixi.feature.release.tasks]
+build = "hatch build"
+check-dist = "twine check dist/*"
+clean-dist = "rm -rf dist build *.egg-info"
+
+[tool.pixi.feature.test.tasks]
+test = "pytest"
+
+[tool.pixi.feature.docs.tasks]
+docs-build = { cmd = "mkdocs build" }
+docs-serve = { cmd = "mkdocs serve -a 127.0.0.1:8000" }
+
+[tool.pixi.feature.lint.tasks]
+pre-commit = { cmd = "pre-commit" }

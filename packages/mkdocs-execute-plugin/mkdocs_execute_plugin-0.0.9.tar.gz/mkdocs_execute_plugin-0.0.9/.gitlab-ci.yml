@@ -1,0 +1,61 @@
+image: ghcr.io/prefix-dev/pixi:0.46.0
+
+stages:
+  - lint
+  - test
+  - publish
+
+variables:
+  PRE_COMMIT_HOME: ${CI_PROJECT_DIR}/.cache/pre-commit
+  FF_USE_FASTZIP: "true"
+  CACHE_COMPRESSION_LEVEL: "fastest"
+
+default:
+  before_script:
+    # Workaround for https://github.com/prefix-dev/pixi/issues/2923
+    - pixi global install git
+
+pre-commit:
+  stage: lint
+  variables:
+    GIT_STRATEGY: fetch
+  cache:
+    key: "$CI_JOB_NAME"
+    paths:
+      - .pixi
+      - ${PRE_COMMIT_HOME}
+  script:
+    - pixi run git config --global --add safe.directory $CI_PROJECT_DIR
+    - pixi run pre-commit install
+    - pixi run pre-commit run --all-files
+
+tests:
+  stage: test
+  variables:
+    GIT_STRATEGY: fetch
+  cache:
+    key: "$CI_JOB_NAME"
+    paths:
+      - .pixi
+  script:
+    - pixi run test
+
+publish to pypi:
+  stage: publish
+  needs:
+    - tests
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+[^+]*$/'
+  cache:
+    key: "$CI_JOB_NAME"
+    paths:
+      - .pixi
+  script:
+    # pixi.lock can have ephemeral changes, which confuse hatch-vcs
+    - git update-index --assume-unchanged pixi.lock
+    - pixi run build
+    - pixi run check-dist
+    - pixi run -e release hatch publish -u __token__ -a $PYPI_TOKEN
+  after_script:
+    # Otherwise the runner breaks on subsequent runs
+    - git update-index --no-assume-unchanged pixi.lock

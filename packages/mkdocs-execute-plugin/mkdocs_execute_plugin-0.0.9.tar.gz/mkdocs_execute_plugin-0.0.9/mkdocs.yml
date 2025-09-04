@@ -1,0 +1,25 @@
+site_name: MkDocs Execute Plugin
+repo_url: https://gitlab.kwant-project.org/qt/mkdocs-execute-plugin
+repo_name: mkdocs-execute-plugin
+docs_dir: docs
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.top
+    - content.code.copy
+    - content.action.edit
+    - content.action.view
+    - search.suggest
+    - search.highlight
+    - toc.integrate
+nav:
+  - Home: index.md
+plugins:
+  - search
+  - execute
+markdown_extensions:
+  - admonition
+  - codehilite
+  - toc:
+      permalink: true
