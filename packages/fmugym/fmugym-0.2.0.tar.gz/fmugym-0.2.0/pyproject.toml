@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "fmugym"
+version = "0.2.0"
+description = "Interface to connect Reinforcement Learning libraries to Functional Mock-up Units for control under uncertainties"
+authors = ["Konstantin Wrede <konstantin.wrede@eas.iis.fraunhofer.de>"]
+readme = "README.md"
+repository = "https://github.com/Fraunhofer-IIS/fmugym"
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+numpy = "*"
+fmpy = "^0.3.20"
+gymnasium = "^0.29.1"
+matplotlib = "^3.8.3"
+
+[tool.poetry.group.jupyter]
+optional = true
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.1.1"
+pytest-cov = "6.1.0"
+
+[tool.poetry.group.jupyter.dependencies]
+stable-baselines3 = "^2.3.2"
+jupyter = "^1.1.1"
+skrl = "^1.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
