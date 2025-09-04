@@ -1,0 +1,11 @@
+{
+  "pipeline":[
+    "./src/pdal/test/data/1.2-with-color.las",
+    {
+      "type": "filters.python",
+      "script": "./src/pdal/test/data/test1.py",
+      "module": "anything",
+      "function": "fff"
+    }
+  ]
+}
