@@ -1,0 +1,16 @@
+[project]
+name = "kumir-package"
+version = "0.1.1"
+description = ""
+authors = [
+    {name = "vovmomyt",email = "volodya.artemev.1999@mail.ru"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+]
+
+
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
