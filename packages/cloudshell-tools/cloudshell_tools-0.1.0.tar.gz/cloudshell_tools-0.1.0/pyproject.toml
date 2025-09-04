@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cloudshell-tools"
+version = "0.1.0"
+description = "CLI para automatizar tareas en AWS CloudShell"
+authors = [
+  { name="Santiago Rojas", email="santirojas20@gmail.com" }
+]
+dependencies = ["click"]
+
+[project.scripts]
+cloudshell-cli = "cloudshell_cli.cli:cli"
+
+[project.urls]
+Homepage = "https://gitlab.com/santirojas20/cloudshell-aws"
