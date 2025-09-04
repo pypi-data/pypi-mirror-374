@@ -1,0 +1,25 @@
+# pyproject.toml
+
+[build-system]
+requires      = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "space_-_coder-monopoly-calc"
+version = "0.0.2"
+description = "A simple calculator to keep track of you monopoly money"
+readme = "README.md"
+authors = [{ name = "Madhav Garg", email = "info@realpython.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "tabulate",
+]
+requires-python = ">=3.9"
+
+[project.scripts]
+run_calc = "calc.__main__:main"
