@@ -1,0 +1,102 @@
+[tool.poetry]
+name = "Panelformer"
+version = "0.2.4"
+description = "A transformer-based architecture for robust panel time series forecasting, extending the Temporal Fusion Transformer with multi-scale decomposition, Segment-wise Attention, cross-entity attention, and adaptive trend-seasonal modeling."
+authors = [
+    "Shabthana Johnson",
+    "Kajaani Balabavan",
+    "Sathurgini Uthayakumar",
+    "Uthayasanker Thayasivam"
+]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/aaivu/Panelformer/"
+repository = "https://github.com/aaivu/Panelformer/"
+documentation = "https://github.com/aaivu/Panelformer/blob/main/README.md"
+classifiers = [
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License"
+]
+
+packages = [
+    { include = "Panelformer" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.14"
+numpy = "<=3.0.0"
+pandas = ">=1.3.0,<3.0.0"
+scikit-learn = ">=1.2,<2.0"
+torch = ">=2.0.0,<3.0.0,!=2.0.1"
+lightning = ">=2.0.0,<3.0.0"
+pytorch-forecasting = ">=1.0.0,<2.0.0"
+
+[tool.poetry.extras]
+all_extras = [
+    "cpflows",
+    "matplotlib",
+    "optuna",
+    "optuna-integration",
+    "pytorch_optimizer",
+    "statsmodels"
+]
+
+tuning = [
+    "optuna",
+    "optuna-integration",
+    "statsmodels"
+]
+
+mqf2 = ["cpflows"]
+graph = ["networkx"]
+
+[tool.poetry.group.dev.dependencies]
+pydocstyle = ">=6.1.1,<7.0.0"
+pre-commit = ">=3.2.0,<5.0.0"
+invoke = "*"
+mypy = "*"
+pylint = "*"
+ruff = "*"
+pytest = "*"
+pytest-xdist = "*"
+pytest-cov = "*"
+pytest-sugar = "*"
+coverage = "*"
+pyarrow = "*"
+ipykernel = "*"
+nbconvert = "*"
+black = { extras = ["jupyter"], version = "*" }
+sphinx = "*"
+pydata-sphinx-theme = "*"
+nbsphinx = "*"
+recommonmark = "*"
+ipywidgets = ">=8.0.1,<9.0.0"
+pytest-dotenv = ">=0.5.2,<1.0.0"
+tensorboard = ">=2.12.1,<3.0.0"
+pandoc = ">=2.3,<3.0.0"
+scikit-base = "*"
+
+[tool.poetry.group.docs.dependencies]
+sphinx = ">3.2,<8.2.4"
+pydata-sphinx-theme = "*"
+nbsphinx = "*"
+pandoc = "*"
+nbconvert = "*"
+recommonmark = "*"
+docutils = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
