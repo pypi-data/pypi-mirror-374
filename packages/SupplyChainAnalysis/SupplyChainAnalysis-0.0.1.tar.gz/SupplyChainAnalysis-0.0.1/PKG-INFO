@@ -1,0 +1,120 @@
+Metadata-Version: 2.1
+Name: SupplyChainAnalysis
+Version: 0.0.1
+Summary: This module provides CLI and functions to analyse supply chain and dependencies in python packages and apt packages.
+Home-page: https://github.com/mauricelambert/SupplyChainAnalysis
+Author: Maurice Lambert
+Author-email: mauricelambert434@gmail.com
+Maintainer: Maurice Lambert
+Maintainer-email: mauricelambert434@gmail.com
+License: GPL-3.0 License
+Download-URL: https://mauricelambert.github.io/info/python/security/SupplyChainAnalysis.pyz
+Project-URL: Github, https://github.com/mauricelambert/SupplyChainAnalysis
+Project-URL: Documentation, https://mauricelambert.github.io/info/python/security/SupplyChainAnalysis.html
+Project-URL: Python Executable, https://mauricelambert.github.io/info/python/security/SupplyChainAnalysis.pyz
+Project-URL: Windows Executable, https://mauricelambert.github.io/info/python/security/SupplyChainAnalysis.exe
+Keywords: supplychain,supply-chain,dependencies,python,apt,linux,analysis
+Platform: Windows
+Platform: Linux
+Platform: MacOS
+Classifier: Topic :: System
+Classifier: Topic :: Security
+Classifier: Environment :: Console
+Classifier: Topic :: System :: Shells
+Classifier: Operating System :: POSIX
+Classifier: Natural Language :: English
+Classifier: Topic :: System :: Networking
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Programming Language :: Python
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: System :: System Shells
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Topic :: System :: Systems Administration
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+
+![SupplyChainAnalysis Logo](https://mauricelambert.github.io/info/python/security/SupplyChainAnalysis_small.png "SupplyChainAnalysis logo")
+
+# SupplyChainAnalysis
+
+## Description
+
+This module provides CLI and functions to analyse supply chain and
+dependencies in python packages and apt packages.
+
+## Requirements
+
+This package require:
+ - python3
+ - python3 Standard Library
+
+## Installation
+
+### Pip
+
+```bash
+python3 -m pip install SupplyChainAnalysis
+```
+
+### Git
+
+```bash
+git clone "https://github.com/mauricelambert/SupplyChainAnalysis.git"
+cd "SupplyChainAnalysis"
+python3 -m pip install .
+```
+
+### Wget
+
+```bash
+wget https://github.com/mauricelambert/SupplyChainAnalysis/archive/refs/heads/main.zip
+unzip main.zip
+cd SupplyChainAnalysis-main
+python3 -m pip install .
+```
+
+### cURL
+
+```bash
+curl -O https://github.com/mauricelambert/SupplyChainAnalysis/archive/refs/heads/main.zip
+unzip main.zip
+cd SupplyChainAnalysis-main
+python3 -m pip install .
+```
+
+## Usages
+
+### Command line
+
+```bash
+SupplyChainAnalysis              # Using CLI package executable
+python3 -m SupplyChainAnalysis   # Using python module
+python3 SupplyChainAnalysis.pyz  # Using python executable
+SupplyChainAnalysis.exe          # Using python Windows executable
+```
+
+### Python script
+
+```python
+from SupplyChainAnalysis import *
+```
+
+## Links
+
+ - [Pypi](https://pypi.org/project/SupplyChainAnalysis)
+ - [Github](https://github.com/mauricelambert/SupplyChainAnalysis)
+ - [Documentation](https://mauricelambert.github.io/info/python/security/SupplyChainAnalysis.html)
+ - [Python executable](https://mauricelambert.github.io/info/python/security/SupplyChainAnalysis.pyz)
+ - [Python Windows executable](https://mauricelambert.github.io/info/python/security/SupplyChainAnalysis.exe)
+
+## License
+
+Licensed under the [GPL, version 3](https://www.gnu.org/licenses/).
+
+
