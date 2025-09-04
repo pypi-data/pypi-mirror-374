@@ -1,0 +1,33 @@
+[[preset]] 
+name = "drums"
+
+channel.1 = {mode = "input", inst = 289, mute = false}
+
+channel.2.mode = "auto" 
+channel.2.mute = false
+channel.2.inst = 290
+channel.2.range = [76,77]
+channel.2.note_shift = -16
+
+channel.3.mode = "auto" 
+channel.3.mute = false
+channel.3.inst = 291
+channel.3.range = [76,77]
+channel.3.note_shift = -14
+
+
+[[preset]] 
+name = "melo"
+
+channel.1 = {mode = "input", inst = 116, mute = false}
+
+channel.2.mode = "auto" 
+channel.2.mute = false
+channel.2.inst = 116
+channel.2.range = [60,61]
+
+channel.3.mode = "auto" 
+channel.3.mute = false
+channel.3.inst = 116
+channel.3.range = [62,63]
+
