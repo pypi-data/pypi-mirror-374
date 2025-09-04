@@ -1,0 +1,54 @@
+{
+  "generated_at": "2025-09-04T09:37:42.810266",
+  "monitoring_duration": "0:00:03.945253",
+  "total_events": 2,
+  "system_info": {
+    "cpu_cores": 24,
+    "cpu_frequency_mhz": 3187.0,
+    "memory_total_mb": 65327.86328125,
+    "memory_available_mb": 41901.1875
+  },
+  "memory_usage": {
+    "average_mb": 27.619140625,
+    "maximum_mb": 27.68359375,
+    "minimum_mb": 27.5546875,
+    "current_mb": 27.68359375,
+    "average_bytes": 28960768.0,
+    "maximum_bytes": 29028352,
+    "minimum_bytes": 28893184,
+    "current_bytes": 29028352
+  },
+  "cpu_usage": {
+    "average_percent": 1.35,
+    "maximum_percent": 2.0,
+    "minimum_percent": 0.7,
+    "current_percent": 0.7
+  },
+  "thresholds": {
+    "max_memory_usage_mb": 1024.0,
+    "max_cpu_usage_percent": 80.0,
+    "max_execution_time_seconds": 300.0
+  },
+  "performance_analysis": {
+    "memory_threshold_exceeded": false,
+    "cpu_threshold_exceeded": false,
+    "memory_optimization_suggestions": [],
+    "cpu_optimization_suggestions": []
+  },
+  "events": [
+    {
+      "timestamp": "2025-09-04T09:37:38.663013",
+      "event": "start",
+      "memory_usage": 28893184,
+      "cpu_usage": 2.0,
+      "execution_time": 1756946258.7636049
+    },
+    {
+      "timestamp": "2025-09-04T09:37:42.608266",
+      "event": "stop",
+      "memory_usage": 29028352,
+      "cpu_usage": 0.7,
+      "execution_time": 1756946262.7091835
+    }
+  ]
+}
