@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "data-processing-utils"
+version = "0.1.8"
+authors = [
+    {name = "alex-smith"}
+]
+description = "A collection of awesome utility tools for Python developers"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Education", 
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8", 
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Education",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["utilities", "tools", "development", "awesome"]
+dependencies = []
+
+[project.urls]
+"Homepage" = "https://github.com/alex-smith/awesome-tools-collection"
+"Bug Reports" = "https://github.com/alex-smith/awesome-tools-collection/issues"
+"Source" = "https://github.com/alex-smith/awesome-tools-collection/"
+
+[tool.setuptools]
+packages = ["data_processing_utils"]
+
+[tool.setuptools.package-dir]
+data_processing_utils = "data_processing_utils"

@@ -1,0 +1,137 @@
+Metadata-Version: 2.4
+Name: data-processing-utils
+Version: 0.1.8
+Summary: A collection of awesome utility tools for Python developers
+Home-page: https://github.com/alex-smith/data-processing-utils
+Author: alex-smith
+Author-email: 
+License: MIT
+Project-URL: Homepage, https://github.com/alex-smith/awesome-tools-collection
+Project-URL: Bug Reports, https://github.com/alex-smith/awesome-tools-collection/issues
+Project-URL: Source, https://github.com/alex-smith/awesome-tools-collection/
+Keywords: utilities,tools,development,awesome
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Education
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Education
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# learning-pypi-demo-nisimi
+
+[![PyPI version](https://badge.fury.io/py/learning-pypi-demo-nisimi.svg)](https://badge.fury.io/py/learning-pypi-demo-nisimi)
+[![Python Version](https://img.shields.io/pypi/pyversions/learning-pypi-demo-nisimi.svg)](https://pypi.org/project/learning-pypi-demo-nisimi/)
+
+An educational Python package to demonstrate the PyPI publishing process. This package serves as a learning tool for understanding how to create, build, and publish Python packages to the Python Package Index (PyPI).
+
+## Features
+
+- **Installation Message**: Displays "HELLO NEW PACKAGE" during pip installation
+- **Simple API**: Includes a basic `hello()` function for demonstration
+- **Hash-based Installation**: Supports secure installation via `pip install -r requirements.txt --require-hashes`
+- **Educational Purpose**: Minimal codebase designed for learning PyPI publishing
+
+## Installation
+
+### Standard Installation
+
+```bash
+pip install learning-pypi-demo-nisimi
+```
+
+### Hash-verified Installation
+
+For secure, hash-verified installation:
+
+```bash
+pip install -r requirements.txt --require-hashes
+```
+
+## Usage
+
+```python
+from learning_pypi_demo_nisimi import hello
+
+# Basic usage
+print(hello())
+# Output: Hello, World! This is learning-pypi-demo-nisimi package.
+
+# Personalized greeting
+print(hello("Alice"))
+# Output: Hello, Alice! This is learning-pypi-demo-nisimi package.
+```
+
+## Package Structure
+
+```
+learning-pypi-demo-nisimi/
+├── learning_pypi_demo_nisimi/
+│   ├── __init__.py          # Package initialization
+│   └── core.py              # Core functionality
+├── setup.py                 # Setup configuration with custom install
+├── pyproject.toml          # Modern Python packaging configuration
+├── requirements.txt        # Hash-verified requirements
+├── README.md              # This file
+├── LICENSE                # MIT License
+└── MANIFEST.in           # Additional files for distribution
+```
+
+## Development
+
+This package is designed as an educational tool for learning PyPI publishing. The custom installation message demonstrates how to extend the standard pip installation process.
+
+### Building the Package
+
+```bash
+python -m build
+```
+
+### Publishing to PyPI
+
+```bash
+twine upload dist/*
+```
+
+## Educational Value
+
+This package demonstrates:
+
+- Custom installation commands in setup.py
+- Modern packaging with pyproject.toml
+- Hash-based dependency management
+- Proper package structure and documentation
+- PyPI publishing workflow
+
+## Requirements
+
+- Python 3.7 or higher
+- No external dependencies (kept minimal for educational purposes)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+This is an educational package. Feel free to fork and experiment with your own versions to learn about PyPI publishing!
+
+## Author
+
+**nisimi**
+
+## Acknowledgments
+
+- Python Packaging Authority for excellent packaging documentation
+- PyPI for providing the platform for package distribution
