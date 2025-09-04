@@ -1,0 +1,7 @@
+aiobotocore>=2.24.1
+
+[:python_version < "3.11"]
+typing-extensions>=4
+
+[signals]
+blinker<2.0,>=1.3
