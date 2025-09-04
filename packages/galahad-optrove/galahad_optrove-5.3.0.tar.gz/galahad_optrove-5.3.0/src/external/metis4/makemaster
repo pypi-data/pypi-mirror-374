@@ -1,0 +1,98 @@
+#  Makefile stub for nodend components of metis 4 (including those for GKlib)
+
+#  Nick Gould, for GALAHAD productions
+#  This version: 2025-03-03
+
+#  include standard GALAHAD makefile definitions
+
+include $(GALAHAD)/src/makedefs/definitions
+
+.SUFFIXES:
+.SUFFIXES: .c _4.o .h _4_64.o
+
+.PHONY: metis4 metis4_64 metis4_silent test test_64 test2
+.PHONY: 
+
+# Gklib and metis procedures used
+
+SRC = memory.c io.c timing.c fortran.c debug.c graph.c compress.c \
+      bucketsort.c initpart.c mincover.c separator.c refine.c \
+      srefine.c balance.c fm.c sfm.c coarsen.c util.c mmd.c \
+      ccgraph.c match.c pqueue.c myqsort.c pmetis.c ometis.c
+
+TEST = test_nodend.c
+TEST2 = test_nodend2.c
+
+OBJFILE = $(SRC:.c=_4.o)
+OBJFILE64 = $(SRC:.c=_4_64.o)
+TESTOBJ = $(TEST:.c=_4.o)
+TESTOBJ64 = $(TEST:.c=_4_64.o)
+TEST2OBJ = $(TEST2:.c=_4.o)
+TEST2OBJ64 = $(TEST2:.c=_4_64.o)
+
+CFLAGSM = $(CFLAGS) -DNDEBUG
+
+all: metis4$(HSL_64)
+	echo $(LM464)
+	@printf ' %-21s\n' "MeTiS 4 procedures ($(IPRECIS)$(ISUCC)"
+metis4_silent: metis4$(HSL_64)
+metis4: $(LM4)($(OBJFILE))
+metis4_64: $(LM464)($(OBJFILE64))
+
+$(LM4)($(OBJFILE)): $(METIS4SRC)/$(SRC)
+	@printf ' %-9s %-15s\t\t' "Compiling" $*"_4"
+	$(CP) $(METIS4SRC)/$*.c $(OBJ)/
+	$(CC) $(CFLAGSM) $(OBJ)/$*.c -o $(OBJ)/$*_4.o
+	cd $(OBJ); $(AR) $(ARREPFLAGS) $@ $*_4.o
+	$(RM) $(OBJ)/$*.c $(OBJ)/$*_4.o
+	@printf '[ OK ]\n'
+
+$(LM464)($(OBJFILE64)): $(METIS4SRC)/$(SRC)
+	@printf ' %-9s %-15s\t\t' "Compiling" $(*:_64=)"_4"
+	$(CP) $(METIS4SRC)/$*.c $(OBJ)/
+	$(CC) $(CFLAGSM) $(OBJ)/$*.c -o $(OBJ)/$*_4_64.o
+	cd $(OBJ); $(AR) $(ARREPFLAGS) $@ $*_4_64.o
+	$(RM) $(OBJ)/$*.c $(OBJ)/$*_4_64.o
+	printf '[ OK ]\n'
+
+# testing
+
+testall: test$(HSL_64)
+
+test: $(LM4)($(OBJFILE))
+	@echo [Run test]
+	$(CC) -c $(CFLAGSM) -o $(TESTOBJ) $(TEST)
+	$(CC) -o ./test_nodend $(TESTOBJ) -L .  -L $(OBJ) -lmetis4_nodend -lm
+	./test_nodend
+	$(RM) ./test_nodend $(TESTOBJ)
+
+test_64: $(LM464)($(OBJFILE64))
+	@echo [Run test 64]
+	$(CC) -c $(CFLAGSM) -o $(TESTOBJ64) $(TEST)
+	$(CC) -o ./test_nodend $(TESTOBJ64) -L . -L $(OBJ) \
+         -lmetis464_nodend -lm
+	./test_nodend
+	$(RM) ./test_nodend $(TESTOBJ64)
+
+test2: $(LM4)($(OBJFILE))
+	@echo [Run test2]
+	$(CC) -c $(CFLAGSM) -o $(TEST2OBJ) $(TEST2)
+	$(CC) -o ./test2_nodend $(TEST2OBJ) -L .  -L $(OBJ) -lmetis4_nodend -lm
+	./test2_nodend
+	$(RM) ./test2_nodend $(TEST2OBJ)
+
+test2_64: $(LM464)($(OBJFILE64))
+	@echo [Run test 64]
+	$(CC) -c $(CFLAGSM) -o $(TEST2OBJ64) $(TEST2)
+	$(CC) -o ./test_nodend $(TEST2OBJ64) -L . -L $(OBJ) \
+         -lmetis464_nodend -lm
+	./test_nodend
+	$(RM) ./test_nodend $(TEST2OBJ64)
+
+# book keeping
+
+cleanall:
+	@$(RM) $(OBJFILE) $(LM4) $(OBJFILE64) $(LM464)
+
+clean:
+	@$(RM) $(OBJFILE) $(OBJFILE64)

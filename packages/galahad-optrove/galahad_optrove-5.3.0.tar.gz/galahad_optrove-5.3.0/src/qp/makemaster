@@ -1,0 +1,63 @@
+#  Main body of the installation makefile for the GALAHAD QP package
+
+#  Nick Gould, for GALAHAD productions
+#  This version: 2021-05-29
+
+#  include standard GALAHAD makefile defaults before package-specifics
+
+include $(GALAHAD)/src/makedefs/defaults
+
+#  ===========================================================================
+#  ====================  package-dependent parts  ============================
+#  ===========================================================================
+
+#  package name
+
+package = qp
+PACKAGE = QP
+
+#  auxiliary packages that current package depends on (prepend with make_)
+
+DEPENDENCIES = make_qpd_deps make_qpd make_checkpoint make_qpa \
+               make_lsqp make_qpb make_eqp make_rpd make_cqp \
+               make_qpc make_dqp make_cdqp
+
+#  other packages that depend on package
+
+DEPENDS = warm
+
+#  auxiliary packages that are needed for tests (prepend with make_)
+
+TESTDEPS =
+
+#  tests to be performed (preprend with test_)
+
+TESTS = test_full test_cutest test_qplib
+
+#  CUTEst example for tests
+
+CUTEST_EXAMPLE = QPBAND.SIF
+
+#  QPLIB example for tests
+
+QPLIB_EXAMPLE = QPBAND.qplib
+
+#  ===========================================================================
+#  =================  end of package-dependent parts  ========================
+#  ===========================================================================
+
+#  include standard GALAHAD makefile definitions
+
+include $(GALAHAD)/src/makedefs/definitions
+
+#  include compilation and run instructions
+
+include $(GALAHAD)/src/makedefs/instructions
+
+#  include standard package compilation instructions
+
+include $(GALAHAD)/src/makedefs/compile
+
+#  include required package intermediaries
+
+include $(GALAHAD)/src/makedefs/intermediaries

@@ -1,0 +1,91 @@
+#  Main body of the installation makefile for the GALAHAD EXPO package
+
+#  Nick Gould, for GALAHAD productions
+#  This version: 2024-06-19
+
+#  include standard GALAHAD makefile defaults before package-specifics
+
+include $(GALAHAD)/src/makedefs/defaults
+
+#  ===========================================================================
+#  ====================  package-dependent parts  ============================
+#  ===========================================================================
+
+#  package name
+
+package = expo
+PACKAGE = EXPO
+
+#  auxiliary packages that current package depends on (prepend with make_)
+
+DEPENDENCIES = make_ssls_deps make_ssls make_roots make_norms \
+               make_lmt make_qpt make_lms make_rand \
+               make_gltr make_tools make_scu make_mi28 \
+               make_mop make_ir make_trs make_rqs \
+               make_userdata make_nlpt make_dps make_icfs \
+               make_lancelot_psls make_psls make_sec make_sha \
+               make_bsc make_tru make_ssls_deps make_ssls
+
+#  other packages that depend on package
+
+DEPENDS =
+
+#  auxiliary packages that the C interface to the current package depends
+#  on (prepend with make_ciface_)
+
+CDEPENDENCIES = make_ciface_common make_ciface_sls_deps \
+                make_ciface_sls make_ciface_ir make_ciface_trs \
+                make_ciface_mi28 make_ciface_gltr make_ciface_psls \
+                make_ciface_lms make_ciface_sha make_ciface_bsc \
+                make_ciface_sec make_ciface_dps make_ciface_tru \
+                make_ciface_ssls
+
+#  other C interface packages that depend on current interface package
+
+CDEPENDS =
+
+#  auxiliary packages that the python interface to the current package depends
+#  on (prepend with make_pyiface_)
+
+PYDEPENDENCIES = make_pyiface_sls_deps make_pyiface_sls make_pyiface_ir \
+                 make_pyiface_trs make_pyiface_gltr make_pyiface_psls \
+                 make_pyiface_lms make_pyiface_bsc make_pyiface_sha \
+                 make_pyiface_tru make_pyiface_dps make_pyiface_sec \
+                 make_pyiface_tru make_pyiface_ssls_deps make_pyiface_ssls
+
+#  other python interface packages that depend on current interface package
+
+PYDEPENDS =
+
+#  auxiliary packages that are needed for tests (prepend with make_)
+
+TESTDEPS =
+
+#  tests to be performed (preprend with test)
+
+TESTS = test_full test_cutest
+
+#  CUTEst example for tests
+
+CUTEST_EXAMPLE = ALLINITC.SIF
+#CUTEST_EXAMPLE = S2QPTOY.SIF
+
+#  ===========================================================================
+#  =================  end of package-dependent parts  ========================
+#  ===========================================================================
+
+#  include standard GALAHAD makefile definitions
+
+include $(GALAHAD)/src/makedefs/definitions
+
+#  include compilation and run instructions
+
+include $(GALAHAD)/src/makedefs/instructions
+
+#  include standard package compilation instructions
+
+include $(GALAHAD)/src/makedefs/compile
+
+#  include required package intermediaries
+
+include $(GALAHAD)/src/makedefs/intermediaries

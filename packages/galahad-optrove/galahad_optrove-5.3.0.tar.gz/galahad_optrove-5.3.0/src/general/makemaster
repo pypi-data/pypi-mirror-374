@@ -1,0 +1,817 @@
+#  Main body of the installation makefile for dummy and basic GALAHAD packages
+
+#  Nick Gould, for GALAHAD productions
+#  This version: 2025-08-27
+
+#  include standard GALAHAD makefile definitions
+
+include $(GALAHAD)/src/makedefs/definitions
+
+#  compilation agenda
+
+DUMMYS = kinds_silent clock_silent extend_silent symbols_silent \
+         dummy_silent cutest_dummy_silent dummy_hsl_silent dummy_hsl_c_silent \
+         dummy_spral_silent blas_silent lapack_silent blas_inter_silent \
+         lapack_inter_silent hsl_inter_silent \
+         pardiso_silent mkl_pardiso_silent wsmp_silent \
+         pastix_silent mpi_silent mumps_silent umfpack_silent \
+         string_silent version_silent buildspec_silent
+
+CORE = $(DUMMYS) space_silent specfile_silent sort_silent norms_silent
+
+BASICS = $(CORE) nodend_silent
+
+#  main compilations and runs
+
+all: basic
+
+#  all of the basic packages
+
+basic_silent: $(BASICS)
+
+basic: basic_$(PRECIS)
+	@printf ' %-21s\n' "GALAHAD: basic packages ($(PRECIS) $(SUCC)"
+basic_single: $(BASICS)
+	$(RANLIB) $(LGS)
+basic_double: $(BASICS)
+	$(RANLIB) $(LGD)
+basic_quadruple: $(BASICS)
+	$(RANLIB) $(LGQ)
+basic_single_64: $(BASICS)
+	$(RANLIB) $(LGS64)
+basic_double_64: $(BASICS)
+	$(RANLIB) $(LGD64)
+basic_quadruple_64: $(BASICS)
+	$(RANLIB) $(LGQ64)
+
+#  all of the core packages
+
+core_silent: $(CORE)
+
+core: core_$(PRECIS)
+	@printf ' %-21s\n' "GALAHAD: core packages ($(PRECIS) $(SUCC)"
+core_single: $(CORE)
+	$(RANLIB) $(LGS)
+core_double: $(CORE)
+	$(RANLIB) $(LGD)
+core_quadruple: $(CORE)
+	$(RANLIB) $(LGQ)
+core_single_64: $(CORE)
+	$(RANLIB) $(LGS64)
+core_double_64: $(CORE)
+	$(RANLIB) $(LGD64)
+core_quadruple_64: $(CORE)
+	$(RANLIB) $(LGQ64)
+
+dummys_silent: $(DUMMYS)
+
+dummys: dummy_$(PRECIS)
+	@printf ' %-21s\n' "GALAHAD: dummy packages ($(PRECIS) $(SUCC)"
+dummys_single: $(DUMMYS)
+	$(RANLIB) $(LGS)
+dummys_double: $(DUMMYS)
+	$(RANLIB) $(LGD)
+dummys_quadruple: $(DUMMYS)
+	$(RANLIB) $(LGQ)
+dummys_single_64: $(DUMMYS)
+	$(RANLIB) $(LGS64)
+dummys_double_64: $(DUMMYS)
+	$(RANLIB) $(LGD64)
+dummys_quadruple_64: $(DUMMYS)
+	$(RANLIB) $(LGQ64)
+
+#  kinds package
+
+kinds_silent:
+	( cd $(GALAHAD)/src/kinds ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) kinds_silent \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/kinds )
+
+#  clock package
+
+clock_silent:
+	( cd $(GALAHAD)/src/clock ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) clock_silent \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/clock )
+
+#  extend package
+
+extend_silent:
+	( cd $(GALAHAD)/src/extend ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) extend_silent \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/extend )
+
+#  symbols package
+
+symbols_silent:
+	( cd $(GALAHAD)/src/symbols ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) symbols_silent \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/symbols )
+
+#  string package
+
+string_silent:
+	( cd $(GALAHAD)/src/string ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) string_silent \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/string )
+
+#  version package
+
+version_silent:
+	( cd $(GALAHAD)/src/version ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) version_silent \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/version )
+
+#  space package
+
+space_silent:
+	( cd $(GALAHAD)/src/space ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) space_silent \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/space )
+
+#  specfile package
+
+specfile_silent:
+	( cd $(GALAHAD)/src/specfile ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) specfile_silent \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/specfile )
+
+#  buildspec package
+
+buildspec_silent:
+	( cd $(GALAHAD)/src/buildspec ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) buildspec_silent \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/buildspec )
+
+#  sort package
+
+sort_silent:
+	( cd $(GALAHAD)/src/sort ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) sort_silent \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/sort )
+
+#  norms package
+
+norms_silent:
+	( cd $(GALAHAD)/src/norms ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) norms_silent \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/norms )
+
+#  zd11 package
+
+zd11_silent:
+	( cd $(GALAHAD)/src/external/hsl ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) hsl_zd11_silent \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/external/hsl )
+
+#  smt package
+
+smt_silent:
+	( cd $(GALAHAD)/src/smt ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) smt_silent \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/smt )
+
+#  blas packages
+
+blas_silent: $(BLG)(blas_$(PRECIS).o)
+blas: $(BLG)(blas_$(PRECIS).o)
+	@printf ' %-21s\n' "GALAHAD: BLAS compiled successfully"
+
+blas.o: $(BLG)(blas_$(PRECIS).o)
+
+$(BLG)(blas_$(PRECIS).o): ../lapack/blas.f90
+	@printf ' %-9s %-15s\t\t' "Compiling" "blas  "
+	$(CP) ../lapack/blas.f90 $(OBJ)/blas.f90
+	cd $(OBJ); $(FORTRAN) -o blas_$(PRECIS).o $(FFLAGS) blas.f90
+	cd $(OBJ); $(BARR) blas_$(PRECIS).o ; $(RM) blas.f90 blas_$(PRECIS).o
+	$(RANLIB) $(BLG)
+	$(RMARFILES) blas_inter
+	@printf '[ OK ]\n'
+
+bblas.o: $(BLG)(bblas_$(PRECIS).o)
+
+$(BLG)(bblas_$(PRECIS).o): ../lapack/blas.f90
+	@printf ' %-9s %-15s\t\t' "Compiling" "blas  "
+	$(CP) ../lapack/blas.f90 $(OBJ)/blas.f90
+	cd $(OBJ); $(FORTRAN) -E -dD $(FFLAGS) blas.f90
+	@printf '[ OK ]\n'
+
+#  lapack packages
+
+lapack_silent: $(LLG)(lapack_$(PRECIS).o)
+lapack: $(LLG)(lapack_$(PRECIS).o)
+	@printf ' %-21s\n' "GALAHAD: LAPACK compiled successfully"
+
+lapack.o: $(LLG)(lapack_$(PRECIS).o)
+
+$(LLG)(lapack_$(PRECIS).o): ../lapack/lapack.f90
+	@printf ' %-9s %-15s\t\t' "Compiling" "lapack"
+#	$(CAT) ../lapack/lapack.f90 ../lapack/$(IEEECK)ieeeck.f90 > \
+#         $(OBJ)/lapack.f90
+	$(CP) ../lapack/lapack.f90 $(OBJ)/lapack.f90
+#	cd $(OBJ); $(FORTRAN) -o lapack_$(PRECIS).o -E $(FFLAGS) lapack.f90
+	cd $(OBJ); $(FORTRAN) -o lapack_$(PRECIS).o $(FFLAGS) lapack.f90
+	cd $(OBJ); $(LARR) lapack_$(PRECIS).o ; \
+          $(RM) lapack.f90 lapack_$(PRECIS).o
+	$(RANLIB) $(LLG)
+	$(RMARFILES) lapack_inter
+	@printf '[ OK ]\n'
+
+blapack.o: $(LLG)(blapack_$(PRECIS).o)
+
+$(LLG)(blapack_$(PRECIS).o): ../lapack/lapack.f90
+	@printf ' %-9s %-15s\t\t' "Compiling" "lapack"
+	$(CP) ../lapack/lapack.f90 $(OBJ)/lapack.f90
+	cd $(OBJ); $(FORTRAN) -E -dD $(FFLAGS) lapack.f90
+	@printf '[ OK ]\n'
+
+#  dummy package
+
+dummy_silent: $(DLG)(dummy_$(PRECIS).o)
+dummy: $(DLG)(dummy_$(PRECIS).o)
+	@printf ' %-21s\n' "GALAHAD: DUMMY compiled successfully"
+
+dummy.o: $(DLG)(dummy_$(PRECIS).o)
+
+$(DLG)(dummy_$(PRECIS).o): ../dum/dummy.f
+	@printf ' %-9s %-15s\t\t' "Compiling" "dummy"
+	$(CP) ../dum/dummy.f $(OBJ)/dummy.f90
+	cd $(OBJ); $(FORTRAN) -o dummy_$(PRECIS).o $(FFLAGS77) dummy.f90
+	cd $(OBJ); $(DARR) dummy_$(PRECIS).o ; $(RM) dummy.f90 dummy_$(PRECIS).o
+	$(RANLIB) $(DLG)
+	@printf '[ OK ]\n'
+
+# cutest_dummy package
+
+cutest_dummy_silent: $(CDLG)(cutest_dummy_$(PRECIS).o)
+cutest_dummy: $(CDLG)(cutest_dummy_$(PRECIS).o)
+	@printf ' %-21s\n' "GALAHAD: CUTEST_DUMMY compiled successfully"
+
+cutest_dummy.o: $(CDLG)(cutest_dummy_$(PRECIS).o)
+
+$(CDLG)(cutest_dummy_$(PRECIS).o): ../dum/cutest_dummy.F90
+	@printf ' %-9s %-15s\t\t' "Compiling" "cutest_dummy"
+	$(CUARR) ../dum/empty
+	$(CP) ../dum/cutest_dummy.F90 $(OBJ)/cutest_dummy.F90
+	cd $(OBJ); $(FORTRAN) -o cutest_dummy_$(PRECIS).o \
+           $(FFLAGS) -I $(CUTEST)/include cutest_dummy.F90
+	cd $(OBJ); $(CDARR) cutest_dummy_$(PRECIS).o ; \
+           $(RM) cutest_dummy.F90 cutest_dummy_$(PRECIS).o
+	$(RANLIB) $(CDLG)
+	@printf '[ OK ]\n'
+
+#  dummy_hsl package
+
+dummy_hsl_silent: $(HLG)(dummy_hsl_$(PRECIS).o)
+dummy_hsl: $(HLG)(dummy_hsl_$(PRECIS).o)
+	@printf ' %-21s\n' "GALAHAD: DUMMY compiled successfully"
+
+dummy_hsl.o: $(HLG)(dummy_hsl_$(PRECIS).o)
+
+$(HLG)(dummy_hsl_$(PRECIS).o): ../dum/dummy_hsl.F90
+	@printf ' %-9s %-15s\t\t' "Compiling" "dummy_hsl"
+	$(CP) ../dum/dummy_hsl.F90 $(OBJ)/dummy_hsl.F90
+	cd $(OBJ); $(FORTRAN) -o dummy_hsl_$(PRECIS).o $(FFLAGSS) dummy_hsl.F90
+	cd $(OBJ); $(HARR) dummy_hsl_$(PRECIS).o ; \
+           $(RM) dummy_hsl.F90 dummy_hsl_$(PRECIS).o
+	$(RANLIB) $(HLG)
+	@printf '[ OK ]\n'
+
+#  dummy_hsl c package
+
+dummy_hsl_c_silent: $(HCLG)(dummy_hsl_c_$(PRECIS).o)
+dummy_hsl_c: $(HCLG)(dummy_hsl_c_$(PRECIS).o)
+	@printf ' %-21s\n' "GALAHAD: DUMMY compiled successfully"
+
+dummy_hsl_c.o: $(HCLG)(dummy_hsl_c_$(PRECIS).o)
+
+$(HCLG)(dummy_hsl_c_$(PRECIS).o): ../dum/dummy_hsl_c.F90
+	@printf ' %-9s %-15s\t\t' "Compiling" "dummy_hsl_c"
+	$(CP) ../dum/dummy_hsl_c.F90 $(OBJ)/dummy_hsl_c.F90
+	cd $(OBJ); $(FORTRAN) -o dummy_hsl_c_$(PRECIS).o \
+                     $(FFLAGSS) dummy_hsl_c.F90
+	cd $(OBJ); $(HCARR) dummy_hsl_c_$(PRECIS).o ; \
+          $(RM) dummy_hsl_c.F90 dummy_hsl_c_$(PRECIS).o
+	$(RANLIB) $(HCLG)
+	@printf '[ OK ]\n'
+
+#  dummy_spral package
+
+dummy_spral_silent: $(DRLG)(dummy_spral_$(PRECIS).o)
+dummy_spral: $(DRLG)(dummy_spral_$(PRECIS).o)
+	@printf ' %-21s\n' "GALAHAD: DUMMY compiled successfully"
+
+dummy_spral.o: $(DRLG)(dummy_spral_$(PRECIS).o)
+
+$(DRLG)(dummy_spral_$(PRECIS).o): ../dum/dummy_spral.F90
+	@printf ' %-9s %-15s\t\t' "Compiling" "dummy_spral"
+	$(CP) ../dum/dummy_spral.F90 $(OBJ)/dummy_spral.F90
+	cd $(OBJ); $(FORTRAN) -o dummy_spral_$(PRECIS).o \
+                     $(FFLAGSS) dummy_spral.F90
+	cd $(OBJ); $(DRARR) dummy_spral_$(PRECIS).o ; \
+          $(RM) dummy_spral.F90 dummy_spral_$(PRECIS).o
+	$(RANLIB) $(DRLG)
+	@printf '[ OK ]\n'
+
+#  blas_inter package
+
+blas_inter_silent: $(BLG)(blas_$(PRECIS).o) \
+                         $(LG)(blas_inter_$(PRECIS).o)
+blas_inter: $(BLG)(blas_$(PRECIS).o) $(LG)(blas_inter_$(PRECIS).o)
+	@printf ' %-21s\n' "GALAHAD: BLAS_inter compiled successfully"
+
+blas_inter.o: $(BLG)(blas_$(PRECIS).o) $(LG)(blas_inter_$(PRECIS).o)
+
+$(LG)(blas_inter_$(PRECIS).o): ../lapack/blas_inter.F90
+	@printf ' %-9s %-15s\t\t' "Compiling" "blas_inter"
+	$(CP) ../lapack/blas_inter.F90 $(OBJ)/blas_inter.F90
+	cd $(OBJ); $(FORTRAN) -o blas_inter_$(PRECIS).o $(FFLAGSS) \
+           blas_inter.F90 || \
+         ( printf ' %-26s' "=> Disabling optimization " ; \
+            $(FORTRAN) -o blas_inter_$(PRECIS).o $(FFLAGSN) \
+             blas_inter.F90 )
+	cd $(OBJ); $(ARR) blas_inter_$(PRECIS).o ; \
+          $(RM) blas_inter.F90 blas_inter_$(PRECIS).o
+	$(RANLIB) $(LG)
+	$(RMARFILES) norms scu lstr lsrt l2rt sls sha
+	@printf '[ OK ]\n'
+
+#  lapack_inter package
+
+lapack_inter_silent: $(LLG)(lapack_$(PRECIS).o) \
+                           $(LG)(lapack_inter_$(PRECIS).o)
+lapack_inter: $(LLG)(lapack_$(PRECIS).o) \
+                    $(LG)(lapack_inter_$(PRECIS).o)
+	@printf ' %-21s\n' "GALAHAD: LAPACK_inter compiled successfully"
+
+lapack_inter.o: $(LLG)(lapack_$(PRECIS).o) \
+                      $(LG)(lapack_inter_$(PRECIS).o)
+
+$(LG)(lapack_inter_$(PRECIS).o): ../lapack/lapack_inter.F90
+	@printf ' %-9s %-15s\t\t' "Compiling" "lapack_inter"
+	$(CP) ../lapack/lapack_inter.F90 $(OBJ)/lapack_inter.F90
+	cd $(OBJ); $(FORTRAN) -o lapack_inter_$(PRECIS).o $(FFLAGSS) \
+           lapack_inter.F90 || \
+         ( printf ' %-26s' "=> Disabling optimization " ; \
+            $(FORTRAN) -o lapack_inter_$(PRECIS).o $(FFLAGSN) \
+              lapack_inter.F90 )
+	cd $(OBJ); $(ARR) lapack_inter_$(PRECIS).o ; \
+          $(RM) lapack_inter.F90 lapack_inter_$(PRECIS).o
+	$(RANLIB) $(LG)
+	$(RMARFILES) gltr glrt sls trs rqs sha
+	@printf '[ OK ]\n'
+
+#  hsl_inter package
+
+hsl_inter_silent: $(LG)(hsl_inter_$(PRECIS).o)
+hsl_inter: $(LG)(hsl_inter_$(PRECIS).o)
+	@printf ' %-21s\n' "GALAHAD: HSL_inter compiled successfully"
+
+hsl_inter.o: $(LG)(hsl_inter_$(PRECIS).o)
+
+$(LG)(hsl_inter_$(PRECIS).o): ../external/hsl/hsl_inter/hsl_inter.F90
+	@printf ' %-9s %-15s\t\t' "Compiling" "hsl_inter"
+	$(CP) ../external/hsl/hsl_inter/hsl_inter.F90 $(OBJ)/hsl_inter.F90
+	cd $(OBJ); $(FORTRAN) -o hsl_inter_$(PRECIS).o $(FFLAGSS) \
+           hsl_inter.F90 || \
+         ( printf ' %-26s' "=> Disabling optimization " ; \
+            $(FORTRAN) -o hsl_inter_$(PRECIS).o $(FFLAGSN) \
+             hsl_inter.F90 )
+	cd $(OBJ); $(ARR) hsl_inter_$(PRECIS).o ; \
+          $(RM) hsl_inter.F90 hsl_inter_$(PRECIS).o
+	$(RANLIB) $(LG)
+	$(RMARFILES) gls lpa sils sls psls uls
+	@printf '[ OK ]\n'
+
+#  metis package
+
+metis_silent: metis_$(PRECIS)
+metis: metis_$(PRECIS)
+	@printf ' %-21s\n' "GALAHAD: metis ($(PRECIS) $(SUCC)"
+metis_single: metis_32
+metis_double: metis_32
+metis_quadruple: metis_32
+metis_single_64: metis_64
+metis_double_64: metis_64
+metis_quadruple_64: metis_64
+
+metis_32:
+	( cd ../metis ; $(MAKE) -f \
+           $(GALAHAD)/makefiles/$(VERSION) build \
+           PRECIS=$(PRECIS) PWD=$(PWD)/../metis )
+metis_64:
+	( cd ../metis ; $(MAKE) -f \
+           $(GALAHAD)/makefiles/$(VERSION) build_64 \
+           PRECIS=$(PRECIS) PWD=$(PWD)/../metis )
+
+#metis_single: dummy_metis_single metis4_single metis5_single
+#metis_double: dummy_metis_double metis4_double metis5_double
+#metis_single_64: dummy_metis_single_64 metis4_single_64 metis5_single_64
+#metis_double_64: dummy_metis_double_64 metis4_double_64 metis5_double_64
+
+#  dummy metis package
+
+dummy_metis_silent: dummy_metis_$(PRECIS)
+dummy_metis: dummy_metis_$(PRECIS)
+	@printf ' %-21s\n' "GALAHAD: dummy_metis ($(PRECIS) $(SUCC)"
+dummy_metis_single: symbols_silent $(MDLGS)(dummy_metis.o)
+	$(RANLIB) $(MDLGS)
+dummy_metis_double: symbols_silent $(MDLGD)(dummy_metis.o)
+	$(RANLIB) $(MDLGD)
+dummy_metis_quadruple: symbols_silent $(MDLGQ)(dummy_metis.o)
+	$(RANLIB) $(MDLGQ)
+dummy_metis_single_64: symbols_silent $(MDLGS64)(dummy_metis.o)
+	$(RANLIB) $(MDLGS64)
+dummy_metis_double_64: symbols_silent $(MDLGD64)(dummy_metis.o)
+	$(RANLIB) $(MDLGD64)
+dummy_metis_quadruple_64: symbols_silent $(MDLGQ64)(dummy_metis.o)
+	$(RANLIB) $(MDLGQ64)
+
+dummy_metis.o: $(MDLG)(dummy_metis.o)
+
+$(MDLG)(dummy_metis.o): ../external/metis/dummy_metis.f90
+	@printf ' %-9s %-15s\t\t' "Compiling" "dummy metis  "
+	$(CP) ../external/metis/dummy_metis.f90 $(OBJ)/dummy_metis.f90
+	cd $(OBJ); $(FORTRAN) -o dummy_metis.o $(FFLAGS) dummy_metis.f90
+	cd $(OBJ); $(MDARR) dummy_metis.o ; $(RM) dummy_metis.f90 dummy_metis.o
+	@printf '[ OK ]\n'
+
+#  metis4 package
+
+metis4_silent: metis4_$(PRECIS)
+metis4: metis4_$(PRECIS)
+	@printf ' %-21s\n' "GALAHAD: metis4 ($(PRECIS) $(SUCC)"
+metis4_single: symbols_silent $(M4LGS)(metis4.o)
+	$(RANLIB) $(M4LGS)
+metis4_double: symbols_silent $(M4LGD)(metis4.o)
+	$(RANLIB) $(M4LGD)
+metis4_quadruple: symbols_silent $(M4LGQ)(metis4.o)
+	$(RANLIB) $(M4LGQ)
+metis4_single_64: symbols_silent $(M4LGS64)(metis4.o)
+	$(RANLIB) $(M4LGS64)
+metis4_double_64: symbols_silent $(M4LGD64)(metis4.o)
+	$(RANLIB) $(M4LGD64)
+metis4_quadruple_64: symbols_silent $(M4LGQ64)(metis4.o)
+	$(RANLIB) $(M4LGQ64)
+
+metis4.o: $(M4LG)(metis4.o)
+
+$(M4LG)(metis4.o): ../external/metis/metis4.f90
+	@printf ' %-9s %-15s\t\t' "Compiling" "metis4  "
+	$(CP) ../external/metis/metis4.f90 $(OBJ)/metis4.f90
+	cd $(OBJ); $(FORTRAN) -o metis4.o $(FFLAGS) metis4.f90
+	cd $(OBJ); $(M4ARR) metis4.o ; $(RM) metis4.f90 metis4.o
+	@printf '[ OK ]\n'
+
+#  metis51 package
+
+metis51_silent: metis51_$(PRECIS)
+metis51: metis51_$(PRECIS)
+	@printf ' %-21s\n' "GALAHAD: metis51 ($(PRECIS) $(SUCC)"
+metis51_single: symbols_silent $(M4LGS)(metis51.o)
+	$(RANLIB) $(M4LGS)
+metis51_double: symbols_silent $(M4LGD)(metis51.o)
+	$(RANLIB) $(M4LGD)
+metis51_quadruple: symbols_silent $(M4LGQ)(metis51.o)
+	$(RANLIB) $(M4LGQ)
+metis51_single_64: symbols_silent $(M4LGS64)(metis51.o)
+	$(RANLIB) $(M4LGS64)
+metis51_double_64: symbols_silent $(M4LGD64)(metis51.o)
+	$(RANLIB) $(M4LGD64)
+metis51_quadruple_64: symbols_silent $(M4LGQ64)(metis51.o)
+	$(RANLIB) $(M4LGQ64)
+
+metis51.o: $(M4LG)(metis51.o)
+
+$(M4LG)(metis51.o): ../external/metis/metis51.f90
+	@printf ' %-9s %-15s\t\t' "Compiling" "metis51  "
+	$(CP) ../external/metis/metis51.f90 $(OBJ)/metis51.f90
+	cd $(OBJ); $(FORTRAN) -o metis51.o $(FFLAGS) metis51.f90
+	cd $(OBJ); $(M4ARR) metis51.o ; $(RM) metis51.f90 metis51.o
+	@printf '[ OK ]\n'
+
+#  metis5 package
+
+metis5_silent: metis5_$(PRECIS)
+metis5: metis5_$(PRECIS)
+	@printf ' %-21s\n' "GALAHAD: metis5 ($(PRECIS) $(SUCC)"
+metis5_single: symbols_silent $(M5LGS)(metis5.o) $(M5LGS)(metis5_adapter.o)
+	$(RANLIB) $(M5LGS)
+metis5_double: symbols_silent $(M5LGD)(metis5.o) $(M5LGD)(metis5_adapter.o)
+	$(RANLIB) $(M5LGD)
+metis5_quadruple: symbols_silent $(M5LGQ)(metis5.o) $(M5LGQ)(metis5_adapter.o)
+	$(RANLIB) $(M5LGQ)
+metis5_single_64: symbols_silent $(M5LGS64)(metis5.o) \
+                  $(M5LGS64)(metis5_adapter.o)
+	$(RANLIB) $(M5LGS64)
+metis5_double_64: symbols_silent $(M5LGD64)(metis5.o) \
+                  $(M5LGD64)(metis5_adapter.o)
+	$(RANLIB) $(M5LGD64)
+metis5_quadruple_64: symbols_silent $(M5LGQ64)(metis5.o) \
+                  $(M5LGQ64)(metis5_adapter.o)
+	$(RANLIB) $(M5LGQ64)
+
+metis5.o: $(M5LG)(metis5.o)
+
+$(M5LG)(metis5.o): ../external/metis/metis5.f90
+	@printf ' %-9s %-15s\t\t' "Compiling" "metis5  "
+	$(CP) ../external/metis/metis5.f90 $(OBJ)/metis5.f90
+	cd $(OBJ); $(FORTRAN) -o metis5.o $(FFLAGS) metis5.f90
+	cd $(OBJ); $(M5ARR) metis5.o ; $(RM) metis5.f90 metis5.o
+	@printf '[ OK ]\n'
+
+metis5_adapter.o: $(M5LG)(metis5_adapter.o)
+
+$(M5LG)(metis5_adapter.o): ../external/metis/metis5_adapter.c
+	@printf ' %-9s %-15s\t\t' "Compiling" "metis5_adapter  "
+	$(CP) ../external/metis/metis5_adapter.c $(OBJ)/metis5_adapter.c
+	cd $(OBJ); $(CC) -o metis5_adapter.o $(CFLAGS) metis5_adapter.c
+	cd $(OBJ); $(M5ARR) metis5_adapter.o ; \
+          $(RM) metis5_adapter.c metis5_adapter.o
+	@printf '[ OK ]\n'
+
+#  nodend package
+
+nodend_silent:
+	( cd ../nodend ; $(MAKE) -f \
+           $(GALAHAD)/makefiles/$(VERSION) nodend_silent \
+           PRECIS=$(PRECIS) PWD=$(PWD)/../nodend )
+
+#  mpi package
+
+mpi_silent:
+	( cd ../external/mpi ; $(MAKE) -f \
+           $(GALAHAD)/makefiles/$(VERSION) mpi_silent \
+           PRECIS=$(PRECIS) PWD=$(PWD)/../external/mpi )
+
+#  pastix package
+
+pastix_silent:
+	( cd ../external/pastix ; $(MAKE) -f \
+           $(GALAHAD)/makefiles/$(VERSION) pastix_silent \
+           PRECIS=$(PRECIS) PWD=$(PWD)/../external/pastix )
+
+#  mumps package
+
+mumps_silent:
+	( cd ../external/mumps ; $(MAKE) -f \
+           $(GALAHAD)/makefiles/$(VERSION) mumps_silent \
+           PRECIS=$(PRECIS) PWD=$(PWD)/../external/mumps )
+
+#  pardiso package
+
+pardiso_silent:
+	( cd ../external/pardiso ; $(MAKE) -f \
+           $(GALAHAD)/makefiles/$(VERSION) pardiso_silent \
+           PRECIS=$(PRECIS) PWD=$(PWD)/../external/pardiso )
+
+#  mkl pardiso package
+
+mkl_pardiso_silent:
+	( cd ../external/mkl_pardiso ; $(MAKE) -f \
+           $(GALAHAD)/makefiles/$(VERSION) mkl_pardiso_silent \
+           PRECIS=$(PRECIS) \
+           PWD=$(PWD)/../external/mkl_pardiso )
+
+#  umfpack package
+
+umfpack_silent:
+	( cd ../external/umfpack ; $(MAKE) -f \
+           $(GALAHAD)/makefiles/$(VERSION) umfpack_silent \
+           PRECIS=$(PRECIS) PWD=$(PWD)/../external/umfpack )
+
+#  wsmp package
+
+wsmp_silent:
+	( cd ../external/wsmp ; $(MAKE) -f \
+           $(GALAHAD)/makefiles/$(VERSION) wsmp_silent \
+           PRECIS=$(PRECIS) PWD=$(PWD)/../external/wsmp )
+
+#  symmetric linear solver
+
+linearsolver_silent: linearsolver_silent_$(PRECIS)
+linearsolver_silent_single: $($(LINEARSOLVERS))
+linearsolver_silent_double: $($(LINEARSOLVERD))
+linearsolver_silent_quadruple: $($(LINEARSOLVERQ))
+linearsolver_silent_single_64: $($(LINEARSOLVERS))
+linearsolver_silent_double_64: $($(LINEARSOLVERD))
+linearsolver_silent_quadruple_64: $($(LINEARSOLVERQ))
+
+linearsolver: linearsolver_$(PRECIS)
+	@printf ' %-21s\n' "GALAHAD: $(LINEARSOLVER) ($(PRECIS) $(SUCC)"
+linearsolver_single: $($(LINEARSOLVERS))
+	$(RANLIB) $(LGS)
+linearsolver_double: $($(LINEARSOLVERD))
+	$(RANLIB) $(LGD)
+linearsolver_quadruple: $($(LINEARSOLVERQ))
+	$(RANLIB) $(LGQ)
+linearsolver_single_64: $($(LINEARSOLVERS))
+	$(RANLIB) $(LGS64)
+linearsolver_double_64: $($(LINEARSOLVERD))
+	$(RANLIB) $(LGD64)
+linearsolver_quadruple_64: $($(LINEARSOLVERQ))
+	$(RANLIB) $(LGQ64)
+
+#  unsymmetric linear solver
+
+ulinearsolver_silent: ulinearsolver_silent_$(PRECIS)
+ulinearsolver_silent_single: $($(ULINEARSOLVERS))
+ulinearsolver_silent_double: $($(ULINEARSOLVERD))
+ulinearsolver_silent_quadruple: $($(ULINEARSOLVERQ))
+ulinearsolver_silent_single_64: $($(ULINEARSOLVERS))
+ulinearsolver_silent_double_64: $($(ULINEARSOLVERD))
+ulinearsolver_silent_quadruple_64: $($(ULINEARSOLVERQ))
+
+ulinearsolver: ulinearsolver_$(PRECIS)
+	@printf ' %-21s\n' "GALAHAD: $(ULINEARSOLVER) ($(PRECIS) $(SUCC)"
+ulinearsolver_single: $($(ULINEARSOLVERS))
+	$(RANLIB) $(LGS)
+ulinearsolver_double: $($(ULINEARSOLVERD))
+	$(RANLIB) $(LGD)
+ulinearsolver_quadruple: $($(ULINEARSOLVERQ))
+	$(RANLIB) $(LGQ)
+ulinearsolver_single_64: $($(ULINEARSOLVERS))
+	$(RANLIB) $(LGS64)
+ulinearsolver_double_64: $($(ULINEARSOLVERD))
+	$(RANLIB) $(LGD64)
+ulinearsolver_quadruple_64: $($(ULINEARSOLVERQ))
+	$(RANLIB) $(LGQ64)
+
+SSIDSS = symbols_silent $(RLGS)(ssids_single.o)
+SSIDSD = symbols_silent $(RLGD)(ssids_double.o)
+SSIDSQ = symbols_silent $(RLGQ)(ssids_quadruple.o)
+SSIDSS64 = symbols_silent $(RLGS64)(ssids_single_64.o)
+SSIDSD64 = symbols_silent $(RLGD64)(ssids_double_64.o)
+SSIDSQ64 = symbols_silent $(RLGQ64)(ssids_quadruple_64.o)
+
+PARDISOS = symbols_silent $(PLGS)(pardiso.o)
+PARDISOD = symbols_silent $(PLGD)(pardiso.o)
+PARDISOQ = symbols_silent $(PLGQ)(pardiso.o)
+PARDISOS64 = symbols_silent $(PLGS64)(pardiso.o)
+PARDISOD64 = symbols_silent $(PLGD64)(pardiso.o)
+PARDISOQ64 = symbols_silent $(PLGQ64)(pardiso.o)
+
+METISS = symbols_silent $(MLGS)(metis4.o)
+METISD = symbols_silent $(MLGD)(metis4.o)
+METISQ = symbols_silent $(MLGQ)(metis4.o)
+METISS64 = symbols_silent $(MLGS64)(metis4.o)
+METISD64 = symbols_silent $(MLGD64)(metis4.o)
+METISQ64 = symbols_silent $(MLGQ64)(metis4.o)
+
+METIS51S = symbols_silent $(M51LGS)(metis51.o)
+METIS51D = symbols_silent $(M51LGD)(metis51.o)
+METIS51Q = symbols_silent $(M51LGQ)(metis51.o)
+METIS51S64 = symbols_silent $(M51LGS64)(metis51.o)
+METIS51D64 = symbols_silent $(M51LGD64)(metis51.o)
+METIS51Q64 = symbols_silent $(M51LGQ64)(metis51.o)
+
+WSMPS = symbols_silent $(WLGS)(wsmp.o)
+WSMPD = symbols_silent $(WLGD)(wsmp.o)
+WSMPQ = symbols_silent $(WLGQ)(wsmp.o)
+WSMPS64 = symbols_silent $(WLGS64)(wsmp.o)
+WSMPD64 = symbols_silent $(WLGD64)(wsmp.o)
+WSMPQ64 = symbols_silent $(WLGQ64)(wsmp.o)
+
+UMFPACKS = symbols_silent $(ULGS)(umfpack.o)
+UMFPACKD = symbols_silent $(ULGD)(umfpack.o)
+UMFPACKQ = symbols_silent $(ULGQ)(umfpack.o)
+UMFPACKS64 = symbols_silent $(ULGS64)(umfpack.o)
+UMFPACKD64 = symbols_silent $(ULGD64)(umfpack.o)
+UMFPACKQ64 = symbols_silent $(ULGQ64)(umfpack.o)
+
+MUMPSS = symbols_silent $(MULGS)(mumps.o)
+MUMPSD = symbols_silent $(MULGD)(mumps.o)
+MUMPSQ = symbols_silent $(MULGQ)(mumps.o)
+MUMPSS64 = symbols_silent $(MULGS64)(mumps.o)
+MUMPSD64 = symbols_silent $(MULGD64)(mumps.o)
+MUMPSQ64 = symbols_silent $(MULGQ64)(mumps.o)
+
+PASTIXS = symbols_silent $(PXLGS)(spmf.o) $(PXLGS)(pastixf.o)
+PASTIXD = symbols_silent $(PXLGD)(spmf.o) $(PXLGD)(pastixf.o)
+PASTIXQ = symbols_silent $(PXLGQ)(spmf.o) $(PXLGQ)(pastixf.o)
+PASTIXS64 = symbols_silent $(PXLGS64)(spmf.o) $(PXLGS64)(pastixf.o)
+PASTIXD64 = symbols_silent $(PXLGD64)(spmf.o) $(PXLGD64)(pastixf.o)
+PASTIXQ64 = symbols_silent $(PXLGQ64)(spmf.o) $(PXLGQ64)(pastixf.o)
+
+#  ssids
+
+ssids_dum_silent: ssids_dum_silent_$(PRECIS)
+ssids_dum_silent_single: $(SSIDSS)
+	$(RANLIB) $(RLGS)
+ssids_dum_silent_double: $(SSIDSD)
+	$(RANLIB) $(RLGD)
+ssids_dum_silent_quadruple: $(SSIDSQ)
+	$(RANLIB) $(RLGQ)
+ssids_dum_silent_single_64: $(SSIDSS64)
+	$(RANLIB) $(RLGS64)
+ssids_dum_silent_double_64: $(SSIDSD64)
+	$(RANLIB) $(RLGD64)
+ssids_dum_silent_quadruple_64: $(SSIDSQ64)
+	$(RANLIB) $(RLGQ64)
+
+ssids_dum: ssids_dum_$(PRECIS)
+	@printf ' %-21s\n' "GALAHAD: $(SSIDS) ($(PRECIS) $(SUCC)"
+ssids_dum_single: $(SSIDSS)
+	$(RANLIB) $(RLGS)
+ssids_dum_double: $(SSIDSD)
+	$(RANLIB) $(RLGD)
+ssids_dum_quadruple: $(SSIDSQ)
+	$(RANLIB) $(RLGQ)
+ssids_dum_single_64: $(SSIDSS64)
+	$(RANLIB) $(RLGS64)
+ssids_dum_double_64: $(SSIDSD64)
+	$(RANLIB) $(RLGD64)
+ssids_dum_quadruple_64: $(SSIDSQ64)
+	$(RANLIB) $(RLGQ64)
+
+ssids_silent:
+	( cd ../ssids ; $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) \
+            ssids_silent PRECIS=$(PRECIS) PWD=$(PWD)/../ssids )
+ssids:
+	( cd ../ssids ; $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) \
+            ssids PRECIS=$(PRECIS) PWD=$(PWD)/../ssids )
+
+ssids.o: $(RLG)(ssids_$(PRECIS).o)
+
+$(RLG)(ssids_$(PRECIS).o): ../dum/ssidss.F90
+	@printf ' %-9s %-15s\t\t' "Compiling" "ssidss_dum"
+	$(CP) ../dum/ssids.F90 $(OBJ)/ssids.F90
+	cd $(OBJ); $(FORTRAN) -o ssids_$(PRECIS).o $(FFLAGS) ssids.F90
+	cd $(OBJ); $(RARR) ssids_$(PRECIS).o ; $(RM) ssids.F90 ssids_$(PRECIS).o
+	$(MVMODS)
+	$(RMARFILE) sls_$(PRECIS).o
+	$(RANLIB) $(RLG)
+	@printf '[ OK ]\n'
+
+ssids_ciface.o: $(CLG)(ssids_ciface.o)
+
+$(CLG)(ssids_ciface.o): ../dum/C/ssids_ciface.F90
+	@printf ' %-9s %-15s\t\t' "Compiling" "ssids_ciface"
+	$(CP) ../dum/C/ssids_ciface.F90 $(OBJ)/ssids_ciface.F90
+	cd $(OBJ) ; $(FORTRAN) -o ssids_ciface_$(PRECIS).o $(FFLAGS) \
+                      ssids_ciface.F90
+	cd $(OBJ) ; $(CARR) ssids_ciface_$(PRECIS).o ; \
+                    $(RM) ssids_ciface.F90 ssids_ciface_$(PRECIS).o
+	$(CRMARFILE) sls_ciface_$(PRECIS).o
+	$(MVMODS)
+	@printf '[ OK ]\n'
+
+#  utility
+
+create: create_blas create_lapack
+
+create_blas:
+	$(FORTRAN) -o rebuild_blas -DBLAS rebuild.F90
+	./rebuild_blas < blas_original.f90 > blas.f90
+	$(MV) galahad_blas.h $(GALAHAD)/include/
+	$(RM) ./build_blas
+
+create_lapack:
+	$(FORTRAN) -o rebuild_lapack rebuild.F90
+	./rebuild_lapack < lapack_original.f90 > lapack.f90
+	$(MV) galahad_lapack.h $(GALAHAD)/include/
+	$(RM) ./build_lapack
+
+#  book keeping
+
+clean:
+	( cd $(GALAHAD)/src/clock ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) clean \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/clock )
+	( cd $(GALAHAD)/src/symbols ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) clean \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/symbols )
+	( cd $(GALAHAD)/src/string ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) clean \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/string )
+	( cd $(GALAHAD)/src/version ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) clean \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/version )
+	( cd $(GALAHAD)/src/space ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) clean \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/space )
+	( cd $(GALAHAD)/src/specfile ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) clean \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/specfile )
+	( cd $(GALAHAD)/src/buildspec ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) clean \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/buildspec )
+	( cd $(GALAHAD)/src/sort ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) clean \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/sort )
+	( cd $(GALAHAD)/src/norms ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) clean \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/norms )
+	( cd $(GALAHAD)/src/zd11 ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) clean \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/zd11 )
+	( cd $(GALAHAD)/src/smt ; \
+          $(MAKE) -f $(GALAHAD)/makefiles/$(VERSION) clean \
+          PRECIS=$(PRECIS) PWD=$(GALAHAD)/src/smt  )
+	@printf '[ OK ]\n'
+
+cleanall:
+	@printf ' %-14s\t\t' \
+          "Removing all $(PRECIS) precision object and module files"
+	$(RM) -r $(OBJ)/* $(MOD)/*
+	@printf '[ OK ]\n'

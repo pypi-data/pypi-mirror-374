@@ -1,0 +1,28 @@
+
+ error status -31 expected from FDH_estimate
+ *** error status = -31
+
+ error status -3 expected from FDH_analyse
+ *** error status = -3
+
+ error status -3 expected from FDH_analyse
+ *** error status = -3
+
+ error status -23 expected from FDH_analyse
+ *** error status = -23
+
+ error status -3 expected from FDH_estimate
+ *** error status = -3
+
+ *** error wrong analysis for the general case
+ *** error status = 0
+
+     products  =   3
+     ROW_perm  =   1  2  3  2  4  5  3  4  4  5  6
+     DIAG_perm =   1  4  6  9 10 11
+     GROUP     =   1  2  3  1  1  1
+     PERM      =   1  3  4  5  2  6
+     OLD       =   1  2  3  6  7  5  8  9 10  4 11
+
+
+ unsuccessful test of package FDH

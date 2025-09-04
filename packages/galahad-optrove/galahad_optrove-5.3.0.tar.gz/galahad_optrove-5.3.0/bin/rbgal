@@ -1,0 +1,357 @@
+#!/bin/bash
+
+# rbgal: generic script to run GALAHAD package on architecture on the
+#        data input in a Rutherford-Boeing problem-data file
+
+#  * version for Bourne/bash shell
+
+# Use: rbgal architecture package [-s] [-h] [--help] [-k] [-m] [-p] [-u]
+#                          [-o j] [-l secs] probname[.rb]||probname[.tar[.gz]]]
+#
+# where: options -s : run the single precision version
+#                     (Default: run the double precision version)
+#                -h : print this help and stop execution
+#                -k : keep the executable after use
+#                     (Default: remove the executable)
+#                -m : check for memory leaks (when possible) using valgrind
+#                -p : profile the code (when possible)
+#                -u : update the specfile to include the latest options
+#                -o : 0 for silent mode, 1 for brief description of
+#                     the stages executed.
+#                     (Default: -o 0)
+#                -l : limit the cputime used to secs seconds
+#                     (Default: 99999999 seconds)
+#
+#       probname      probname[.rb] is the name of the file in Rutherford-
+#                     Boeing containing the data for the problem of interest
+#                     or probname.tar[.gz] is a (compressed) tar file
+#                     containing probname.rb
+
+#  Copyright reserved, Gould/Orban/Toint, for GALAHAD productions
+#  Principal author: Nick Gould
+
+#  History -
+#   originally released with GALAHAD Version 4.0. March 10th 2022
+#   this version 2023-05-17
+
+if [[ -z $GALAHAD ]]; then
+  echo ' You have not the=true GALAHAD environment variable. '
+  echo ' This needs to point to the main directory in which '
+  echo ' you have installed the GALAHAD package. '
+  exit 5
+fi
+
+# Obtain number of arguments
+let last=$#
+#(( last=last-1 ))
+
+stop_early="false"
+if (( last < 2 )); then
+    stop_early="true"
+elif [[ "`echo $1 | grep -e '^-'`" != "" || "`echo $2 | grep -e '^-'`" != ""  ]]; then
+    stop_early="true"
+fi
+
+if [[ "$stop_early" == "true" ]]; then
+    echo ' Use: rbgal architecture package [-s] [-h] [--help] [-m] [-p] [-u]'
+    echo '              [-o j] [-l secs] probname[.rb]||probname[.tar[.gz]]]'
+    exit 1
+fi
+
+if [[ $2 == 'lanb'  ]]; then
+  METHARG="-m 0"
+else
+  METHARG=""
+fi
+
+#  directory for temporary files
+
+TMP=/tmp
+
+#  variables for each option
+
+#  LIMIT (maximum cputime for running object file)
+
+LIMIT=99999999
+#LIMIT=1800
+
+# PRECISION = 0 (single precision), = 1 (double precision)
+
+PRECISION=1
+
+# UPDATE = 0 (use existing specfile),
+#        = 1 (update specfile to include latest options)
+
+UPDATE=0
+
+# KEEP = 0 (do not keep the executable), = 1 (keep it)
+
+KEEP=0
+
+# MEMCHECK = 0 (do not grind the code for memory leaks), = 1 (grind it)
+
+MEMCHECK=0
+
+# PROFILE = 0 (do not profile the code), = 1 (profile it)
+
+PROFILE=0
+
+# OUTPUT = 0 (summary output), = 1 (detailed output from decoder)
+
+OUTPUT=0
+
+let i=3
+
+while (( i <= last ))
+do
+  opt=${!i}
+# echo " opt = $opt"
+# echo "${!#}"
+  if [[ "$opt" == '-h' || "$opt" == '--help' ]]; then
+    echo ' Use: rbgal architecture package [-s] [-h] [--help] [-m] [-p] [-u]'
+    echo '              [-o j] [-l secs] probname[.rb]||probname[.tar[.gz]]]'
+    echo ' '
+    echo ' where: options -s : run the single precision version'
+    echo '                     (Default: run the double precision version)'
+    echo '                -h : print this help and stop execution'
+    echo '                -m : check for memory leaks (when possible) using valgrind'
+    echo '                -p : profile the code (when possible)'
+    echo '                -u : update the specfile to include the latest options'
+    echo '                -o : 0 for silent mode, 1 for brief description of'
+    echo '                     the stages executed'
+    echo '                     (Default: -o 0)'
+    echo '                -l : limits the cputime to secs seconds'
+    echo '                     (Default: unlimited cputime)'
+    echo ' '
+    echo '       probname  probname[.rb] is the name of the file Rutherford-'
+    echo '                 Boeing containing the data for the problem of'
+    echo '                 interest or probname.tar[.gz] is a (compressed)'
+    echo '                 tar file containing probname.rb'
+    exit 0
+  elif [[ "$opt" == '-s' ]]; then
+    PRECISION=0
+  elif [[ "$opt" == '-u' ]]; then
+    UPDATE=1
+  elif [[ "$opt" == '-k' ]]; then
+    KEEP=1
+  elif [[ "$opt" == '-m' ]]; then
+    MEMCHECK=1
+  elif [[ "$opt" == '-p' ]]; then
+    PROFILE=1
+  elif [[ "$opt" == '-o' ]]; then
+    (( i++ ))
+    OUTPUT=${!i}
+  elif [[ "$opt" == '-m' ]]; then
+    (( i++ ))
+    METHARG=""
+  elif [[ "$opt" == '-l' ]]; then
+    (( i++ ))
+    LIMIT=${!i}
+  fi
+  (( i++ ))
+done
+
+if [[ $PRECISION == "1" ]]; then
+ p=""
+ up="d"
+ PRECIS=double
+else
+ p="-s"
+ up="s"
+ PRECIS=single
+fi
+
+#  machine-dependent bits
+
+eval "`cat $GALAHAD/bin/sys/$1`"
+#. $GALAHAD/bin/sys/$1
+
+if [[ $PROFILE == "1" ]]; then
+ pro="-p"
+else
+ pro=""
+fi
+
+probname=${!#}
+if [[ ! -e $probname ]]; then
+  if [[ -e $probname.rb ]]; then
+    probname=$probname.rb
+  elif [[ -e $probname.tar ]]; then
+    probname=$probname.tar
+  elif [[ -e $probname.tar.gz ]]; then
+    probname=$probname.tar.gz
+  else
+    echo " No problem-data file $probname or $probname.tar"
+    echo " or $probname.tar.gz in current"
+    echo " directory $cwd"
+    exit 3
+  fi
+fi
+
+#  uncompress .gz file
+
+if [[ ${probname##*.} == "gz" ]]; then
+ gzip -d $probname
+ probname=${probname%.*}
+ echo "problem $probname extracted from gunzip archive"
+fi
+
+#  unravel .tar file
+
+if [[ ${probname##*.} == "tar" ]]; then
+ tar xf $probname
+ probname=${probname%.*}
+ if [[ -e $probname/$probname.rb ]]; then
+   mv  $probname/$probname.rb $probname.rb
+   rm -r $probname
+   probname=${probname}.rb
+   echo "problem $probname extracted from tar archive"
+ else
+   echo "extracted directory $probname does not contain a file $probname.rb"
+   exit 3
+ fi
+fi
+#ls -l $probname
+
+#  save RB file name
+
+echo $probname > rbfilename
+
+set +C
+
+#  directory for the main executable file
+
+EXEC=$PWD
+
+#  name of executable module
+
+galmin=$1.$2
+
+#  minimizer object codes to link
+
+if [[ $PRECISION == "0" ]]; then
+   PRECIS=single
+   DOUBLE="s"
+else
+   PRECIS=double
+   DOUBLE="d"
+fi
+
+#  machine-dependent bits
+
+eval "`cat $GALAHAD/bin/sys/$1`"
+
+#  directory for object files
+
+GALOBJ=$GALAHAD/objects/$1/$PRECIS
+
+#  remove any hanging out-of-core files
+
+[[ -e factor_integer_ooc ]] && $RM factor_integer_ooc*
+[[ -e factor_real_ooc ]] && $RM factor_real_ooc*
+[[ -e work_indefinite_ooc ]] && $RM work_indefinite_ooc*
+[[ -e work_real_ooc ]] && $RM work_real_ooc*
+
+# link all the object files together.
+
+if [[ $OUTPUT == "1" ]]; then
+  echo ' '
+  echo 'linking all the object files together ... '
+  echo ' '
+fi
+
+#  ensure that package-dependent specification files are present
+
+# sls
+
+if [[ $2 == 'sls' ]]; then
+  RUNMAIN=$GALOBJ/runsls_rb_$PRECIS.o
+  [[ ! -e ~/.galahad/specs/RUNSLS.SPC ]] && $GALOBJ/buildspec sls
+  [[ $UPDATE == '1' ]] && $GALOBJ/buildspec sls update
+  [[ ! -e RUNSLS.SPC ]] && ln -s ~/.galahad/specs/RUNSLS.SPC RUNSLS.SPC
+else
+  echo " Unfortunately no RB file version of $2 is available at present."
+  exit 2
+fi
+
+#  create the executable
+
+#$FORTRAN $FFLAGS -o $galmin $RUNMAIN -L$GALOBJ -lgalahad $CUTERLIB -lgalahad \
+#         $HSLLIB $METISLIB $LAPACKLIB $BLASLIB
+
+#EXECUTABLE="$FORTRAN $FFLAGS -o $galmin $RUNMAIN \
+EXECUTABLE="$CUDACOMP $CUDAFLAGS -o $galmin $RUNMAIN \
+ -L$GALOBJ -lgalahad $PROBLIB $CUTESTLIB -lgalahad \
+ ${HSLLIB-${HSL--lgalahad_hsl}} \
+ ${SPRALLIB-${SPRAL--lgalahad_spral}} \
+ ${PARDISOLIB-${PARDISO--lgalahad_pardiso}} \
+ ${MKL_PARDISOLIB-${MKL_PARDISO--lgalahad_mkl_pardiso}} \
+ ${WSMPLIB-${WSMP--lgalahad_wsmp}} \
+ ${PASTIXLIB-${PASTIX--lgalahad_pastix}} \
+ ${MUMPSLIB-${MUMPS--lgalahad_mumps}} \
+ ${MPILIB-${MPI--lgalahad_mpi}} \
+ ${UMFPACKLIB-${UMFPACK--lgalahad_umfpack}} \
+ ${SUITESPARSELIB-${SUITESPARSE-}} \
+ ${METISLIB-${METIS--lgalahad_metis_dummy}} \
+ ${LAPACKLIB-${LAPACK--lgalahad_lapack}} \
+ ${BLASLIB-${BLAS--lgalahad_blas}} \
+ ${PLPLOTLIB-${PLPLOT-}} \
+ ${CUDALIBS-}"
+
+#echo $EXECUTABLE
+
+if [[ $OUTPUT == "1" ]]; then
+  echo " $EXECUTABLE"
+fi
+
+$EXECUTABLE
+
+[[ $PWD != $EXEC ]] && $MV $galmin $EXEC/$galmin
+
+#  run $galmin on the current test problem.
+
+if [[ $OUTPUT == "1" ]]; then
+  echo ' '
+  echo "running $2 on current test problem ... "
+  echo ' '
+fi
+
+ulimit -t $LIMIT
+if [[ $PROFILE == "1" ]]; then
+#  which pixie > /dev/null 2>&1
+  which gprof > /dev/null 2>&1
+  if [[ $? == "0" ]]; then
+#   atom $EXEC/$galmin -tool pixie -w0 -toolargs="-quiet" >  2>1/dev/null
+#    pixie -quiet $EXEC/$galmin > /dev/null 2>&1
+#    $EXEC/$galmin.pixie < $probname
+#    prof -pixie -lines $EXEC/$galmin > $EXEC/$galmin.pixie.out
+#    $RM $EXEC/$galmin.pixie $EXEC/$galmin.Counts $EXEC/$galmin.Addrs
+       $EXEC/$galmin
+       gprof $EXEC/$galmin > profile.out
+  else
+    if [[ $OUTPUT == "1" ]]; then
+      echo 'no profiling available, sorry ... '
+      echo ' '
+    fi
+    $EXEC/$galmin < $probname
+  fi
+elif [[ $MEMCHECK == "1" ]]; then
+  which valgrind > /dev/null 2>&1
+  if [[ $? == "0" ]]; then
+    valgrind $EXEC/$galmin < $probname
+  else
+    if [[ $OUTPUT == "1" ]]; then
+      echo 'no memory checking available, sorry ... '
+      echo ' '
+    fi
+    $EXEC/$galmin < $probname
+  fi
+else
+  $EXEC/$galmin < $probname
+fi
+
+#  tidy up the current directory, deleting all junk if required
+
+if [[ $KEEP == "0" ]]; then
+  $RM $EXEC/$galmin
+fi

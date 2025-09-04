@@ -1,0 +1,91 @@
+#  Main body of the installation makefile for the GALAHAD NODEND package
+
+#  Nick Gould, for GALAHAD productions
+#  This version: 2025-03-31
+
+#  include standard GALAHAD makefile defaults before package-specifics
+
+include $(GALAHAD)/src/makedefs/defaults
+
+#  ===========================================================================
+#  ====================  package-dependent parts  ============================
+#  ===========================================================================
+
+#  package name
+
+package = nodend
+PACKAGE = NODEND
+
+#  auxiliary packages that current package depends on (prepend with make_)
+
+DEPENDENCIES = make_core make_metis4 make_metis51 make_metis52 \
+               $(LG)(adapter_nodend_$(PRECIS).o)
+
+#  other packages that depend on package
+
+DEPENDS = sls
+
+#  auxiliary packages that the C interface to the current package depends
+#  on (prepend with make_ciface_)
+
+CDEPENDENCIES = make_ciface_hsl_dum
+
+#  other C interface packages that depend on current interface package
+
+CDEPENDS = sls
+
+#  auxiliary packages that the python interface to the current package depends
+#  on (prepend with make_pyiface_)
+
+PYDEPENDENCIES = 
+
+#  other python interface packages that depend on current interface package
+
+PYDEPENDS =
+
+#  auxiliary packages that are needed for tests (prepend with make_)
+
+TESTDEPS =
+
+#  tests to be performed (preprend with test_)
+
+TESTS = test_full
+
+#  CUTEst example for tests
+
+CUTEST_EXAMPLE = QPBAND.SIF
+
+#  QPLIB example for tests
+
+QPLIB_EXAMPLE =
+
+#  ===========================================================================
+#  =================  end of package-dependent parts  ========================
+#  ===========================================================================
+
+#  include standard GALAHAD makefile definitions
+
+include $(GALAHAD)/src/makedefs/definitions
+
+#  include compilation and run instructions
+
+include $(GALAHAD)/src/makedefs/instructions
+
+adapter_nodend.o: $(LG)(adapter_nodend_$(PRECIS).o)
+
+$(LG)(adapter_nodend_$(PRECIS).o): adapter_nodend.c
+	@printf ' %-9s %-15s\t\t' "Compiling" "adapter"
+	$(CP) ./adapter_nodend.c $(OBJ)/adapter_nodend.c
+	cd $(OBJ); $(CC) -o adapter_nodend_$(PRECIS).o \
+           $(CFLAGS) adapter_nodend.c
+	cd $(OBJ); $(ARR) adapter_nodend_$(PRECIS).o ; \
+           $(RM) adapter_nodend.c adapter_nodend_$(PRECIS).o
+	@printf '[ OK ]\n'
+
+#  include standard package compilation instructions
+
+include $(GALAHAD)/src/makedefs/compile
+
+#  include required package intermediaries
+
+include $(GALAHAD)/src/makedefs/intermediaries

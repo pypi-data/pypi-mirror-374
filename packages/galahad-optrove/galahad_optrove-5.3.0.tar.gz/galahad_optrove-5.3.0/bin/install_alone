@@ -1,0 +1,239 @@
+#!/bin/bash
+
+# Build script for GALAHAD
+# version for Bourne/bash shell
+
+# NB, best to use the up-to-date script $ARCHDEFS/install_optsuite
+# instead!
+
+# syntax: install_alone
+
+# N. Gould, D. Orban & Ph. Toint
+# ( Last modified on 29 March 2022 at 14:30 GMT )
+
+#  set DRYRUN to 1 to test install scripts without actually installing
+
+DRYRUN=0
+#DRYRUN=1
+
+#  check input arguments (if any)
+
+if [ $# != 0 ]; then
+   echo "Use: install_alone"
+   exit 1
+fi
+
+#  function to create missing symblic links
+
+galahad_create_missing_link () {
+ if [[ -f $1 && ! -L $2 ]] ;
+   then echo "creating missing link $2" ;
+#  else echo "link $2 already exists" ;
+ fi ;
+}
+
+AMPL_REQUIRED=0
+MATLAB_REQUIRED=0
+SIF_REQUIRED=0
+C_REQUIRED=0
+
+#  if we're going to build anything, we need ARCHDefs
+
+if [[ -z "$ARCHDEFS" || ! -f "$ARCHDEFS/version" ]]; then
+  if [[ ! -d "$PWD/../archdefs" || ! -f "$PWD/../archdefs/version" ]]; then
+    error 'environment variable ARCHDEFS is not set, nor does the
+ directory ../archdefs exist. Install the ARCHDefs package, set
+ the variable $ARCHDEFS to the archdefs directory and re-run.'
+    exit 1
+  else
+    export ARCHDEFS=$PWD/../archdefs
+  fi
+fi
+
+#  use generic, colourful helper functions
+
+. $ARCHDEFS/bin/helper_functions
+
+if [[ -z "$GALAHAD" || ! -f "$GALAHAD/version" ]]; then
+  if [[ ! -d "$PWD/../galahad" || ! -f "$PWD/../galahad/version" ]]; then
+    error 'environment variable GALAHAD is not set, nor does the
+irectory ../galahad exist. Install the GALAHAD package, set
+he variable $GALAHAD to the galahad directory and re-run.'
+    exit 1
+  else
+    export GALAHAD=$PWD/../galahad
+  fi
+fi
+
+CORRECT_SUBSET="false"
+while [ $CORRECT_SUBSET == "false" ]; do
+     echo ' Select required subset of GALAHAD packages'
+     echo ' (the chosen subset will optionally be installed below)'
+     echo
+     echo '    (1) Everything'
+     echo '    (2) LANCELOT B and its dependencies'
+     echo '    (3) the LP/QP packages and their dependencies'
+     echo '    (4) the regularised quadratic solvers and their dependencies'
+     echo '    (5) the un/bound-constrained solvers and their dependencies'
+     echo '    (6) FILTRANE and its dependencies'
+     echo '    (7) the global optimizationsolvers and their dependencies'
+
+     read CHOICE
+
+     case  $CHOICE  in
+         "1")
+              CORRECT_SUBSET="true"
+              SUBSET="all"
+  ;;
+         "2")
+              CORRECT_SUBSET="true"
+              SUBSET="lanb"
+  ;;
+         "3")
+              CORRECT_SUBSET="true"
+              SUBSET="qp"
+  ;;
+         "4")
+              CORRECT_SUBSET="true"
+              SUBSET="rq"
+  ;;
+         "5")
+              CORRECT_SUBSET="true"
+              SUBSET="ucbc"
+  ;;
+         "6")
+              CORRECT_SUBSET="true"
+              SUBSET="filtrane"
+  ;;
+         "7")
+              CORRECT_SUBSET="true"
+              SUBSET="go"
+  ;;
+         *)
+           echo ' Please give an integer between 1 and 7'
+     esac
+done
+
+echo ' Select required interfaces to GALAHAD packages -'
+
+#if [[ $SUBSET == "all" || $SUBSET == "qp" || \
+#      $SUBSET == "filtrane" ]] ; then
+#  yesno_default_no ' Do you require AMPL interfaces to GALAHAD'
+#  let install_ampl=$?
+#  if (( $install_ampl )); then
+#    AMPL_REQUIRED=1
+#  fi
+#fi
+
+if [[ $SUBSET == "all" || $SUBSET == "qp" || \
+      $SUBSET == "rq"  || $SUBSET == "ucbc" || \
+      $SUBSET == "go" ]] ; then
+  yesno_default_no ' Do you require MATLAB interfaces to GALAHAD'
+  let install_matlab=$?
+  if (( $install_matlab )); then
+    MATLAB_REQUIRED=1
+  fi
+  yesno_default_no ' Do you require C interfaces to GALAHAD'
+  let install_c=$?
+  if (( $install_c )); then
+    C_REQUIRED=1
+  fi
+fi
+
+echo -e '\nBuild schedule:'
+if (( $MATLAB_REQUIRED )) ; then
+  if (( $C_REQUIRED )) ; then
+    echo ' - GALAHAD with C and Matlab interfaces from'
+  else
+    echo ' - GALAHAD with Matlab interfaces from'
+  fi
+else
+  if (( $C_REQUIRED )) ; then
+    echo ' - GALAHAD with C interfaces from'
+  else
+    echo ' - GALAHAD from'
+  fi
+fi
+echo " -  $GALAHAD"
+
+topdir=$PWD
+
+# architecture/compiler selection
+
+. $ARCHDEFS/bin/select_arch
+
+echo " Version for architecture $VERSION will be installed"
+echo ""
+
+echo ' Installing GALAHAD ...'
+cd $GALAHAD
+. ./bin/install_galahad_main
+if [[ ! $? ]]; then
+    error 'An error occurred while installing GALAHAD.'
+    exit $?
+fi
+cd $topdir
+
+export -n GALAHAD_REQPREC
+success 'All builds succeeded!'
+
+echo ""
+echo " ----------------- for csh/tcsh users -----------------------------"
+echo ""
+echo " You should now add the following to your .cshrc file:"
+echo ""
+echo " setenv ARCHDEFS $ARCHDEFS"
+echo " setenv GALAHAD $GALAHAD"
+echo ' set path=(${GALAHAD}/bin $path)'
+echo ' setenv MANPATH ${GALAHAD}/man:${MANPATH}'
+if (( $C_REQUIRED )); then
+  echo ' setenv INCLUDE ${GALAHAD}/include:${INCLUDE}'
+fi
+echo ""
+echo " Optionally, if you also wish this to be your default version, set"
+echo ""
+echo " setenv MYARCH $VERSION"
+if (( $MATLAB_REQUIRED )); then
+  echo " setenv MYMATLABARCH $VERSION"
+  echo ""
+  echo " set MYMATLAB so that \$MYMATLAB/bin contains Matlab's mex executable:"
+  echo ""
+  echo " setenv MYMATLAB [directory containing your installed Matlab]"
+  echo ""
+  echo " and possibly extend your Matlab search path with"
+  echo ""
+  echo ' setenv MATLABPATH ${GALAHAD}/src/matlab:$(MATLABPATH)'
+fi
+
+echo ""
+echo " ----------------- for sh/bash users -----------------------------"
+echo ""
+echo " You should now add the following to your .bashrc file:"
+echo ""
+echo ' export GALAHAD="'"$GALAHAD"'"'
+echo ' export PATH="${GALAHAD}/bin:${PATH}"'
+echo ' export MANPATH="${GALAHAD}/man:${MANPATH}"'
+if (( $C_REQUIRED )); then
+  echo ' export INCLUDE="${GALAHAD}/include:${INCLUDE}"'
+fi
+
+echo ""
+echo " Optionally, if you also wish this to be your default version, add"
+echo ""
+echo ' export MYARCH="'"$VERSION"'"'
+if (( $MATLAB_REQUIRED )); then
+  echo ' export MYMATLABARCH="'"$VERSION"'"'
+  echo ""
+  echo " set MYMATLAB so that \$MYMATLAB/bin contains Matlab's mex executable:"
+  echo ""
+  echo " export MYMATLAB=[directory containing your installed Matlab]"
+  echo ""
+  echo " and possibly extend your Matlab search path with"
+  echo ""
+  echo ' export MATLABPATH="${GALAHAD}/src/matlab:$(MATLABPATH)"'
+fi
+exit 0
+
+# N. Gould, D. Orban and Ph. L. Toint, 17th March, 2002.
+# This version 29 March 2022.
+

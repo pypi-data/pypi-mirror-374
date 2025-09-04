@@ -1,0 +1,291 @@
+.TH qgal 1
+.SH NAME
+\fBqgal\fR \- Read a QPLib2014 problem-data-file and run a GALAHAD package
+on the result
+.SH USAGE
+.B qgal architecture package
+[options]
+.IR file[.qplib]
+,
+
+where
+.B architecture
+is a string of the form machine.os.compiler
+indicating the machine/operating system/compiler combination to be used and
+.B package
+indicates the package required.
+
+The name
+.B architecture
+must match that of one of the files in the directory
+$GALAHAD/bin/sys , while
+.B package
+may be one of
+.LP
+.TP 1i
+.BI qp
+QP for general quadratic programming
+.TP
+.BI qpa
+QPA for general quadratic programming using an active-set method
+.TP
+.BI qpb
+QPB for general quadratic programming using an interior-point method
+.TP
+.BI qpc
+QPC for general quadratic programming using a cross-over method
+.TP
+.BI cqp
+CQP for convex quadratic programming using an interior-point method
+.TP
+.BI dqp
+DQP for convex quadratic programming using an dual projection method
+.TP
+.BI ccqp
+CCQP for convex quadratic programming using a cross-over method
+.TP
+.BI l1qp
+L1QP for convex l_1 quadratic programming using a cross-over method
+.TP
+.BI eqp
+EQP for equality-constrained quadratic programming
+.TP
+.BI bqp
+BQP for bound-constrained quadratic programming using a projection method
+.TP
+.BI bqpb
+BQPB for bound-constrained quadratic programming using an interior-point method
+
+.SH DESCRIPTION
+.LP
+.B qgal
+reads a user-defined QPLib2014 problem-data file, and runs one of the GALAHAD
+large-scale linear/quadratic programming packages on the result.
+.SH OPTIONS
+.LP
+.TP 1i
+.BI \-s
+Run the single precision version of the package. The default is
+to run the double precision version.
+.TP
+.B \-h or \-\-help
+Print a list of these options and stop execution.
+.TP
+.BI \-u
+Update the option specification file to incorporate the latest options.
+The default is to leave the file alone (and create it if it does not exist).
+.TP
+.B \-k
+Keep the executable after use. A second file newfile.qplib may then be
+processed by issuing the command
+.ce 2
+
+.B ./architecture.package < \fR newfile[.qplib] .
+.ce 0
+
+.TP
+.B \-m
+Check for memory leaks (if possible).
+.TP
+.B \-p
+Profile the code (if possible).
+.TP
+.BI \-o " output"
+Specify the
+.IR output
+level, which must be one of
+.B 0
+(no output; the default)
+.B 1
+(a brief description of the steps performed)
+.B -1
+(a full debugging output, for experts only).
+.TP
+.BI \-l " secs"
+Set a limit of
+.IR secs
+seconds on the GALAHAD run. The default is 99999999 seconds.
+.SH FILES
+.TP 20
+.BI achitecture.package
+executable output file created by qgal
+.TP
+.IB RUN package .SPC
+user-supplied option specification file
+.TP
+.IB SOLUTION.d
+file containing solution created by qgal
+.TP
+.IB SUMMARY.d
+file containing summary of solution created by qgal
+.SH "ENVIRONMENT VARIABLES"
+Environment variables may be used to override default external library settings.
+By default these are unset, but if required they should be exported after
+being set.
+.TP
+.IB BLASLIB
+If there are compiled, library versions of the blas
+(basic linear algebra subprograms), set BLASLIB to a list of
+names of the object library suffix -lx, where the object library
+libx.a contains relevant blas. For instance if the blas are
+shared between object libraries libblas1.a and libblas2.a,
+BLASLIB should be set to "-lblas1 -lblas2", noting that those in
+libblas1.a will take precedence over those in libblas2.a.
+If compiled blas are unavailable, BLASLIB should either be unset or set to "".
+If the user wishes not to link blas separately, 
+for example if they are provided by one of the other external packages, 
+set BLASLIB to "-galahad_dummy",
+.TP
+.IB LAPACKLIB
+If there are compiled, library versions of the LAPACK library
+set LAPACKLIB to a list of names of the object library suffix -lx,
+where the object library libx.a contains relevant lapack. For instance
+if LAPACK is shared between object libraries liblapack1.a and liblapack2.a,
+LAPACKLIB should be set to "-llapack1 -llapack2", noting that those in
+liblapack1.a will take precedence over those in liblapack2.a. If compiled 
+lapack are unavailable, LAPACKLIB should either be unset or set to "".
+If the user wishes not to link lapack separately, 
+for example if they are provided by one of the other external packages, 
+set LAPACKLIB to "-galahad_dummy".
+.TP
+.IB HSLLIB
+If there is a compiled, library version of the HSL Mathematical 
+Software Library(formerly the Harwell Subroutine Library, 
+https://www.hsl.rl.ac.uk/), set HSLLIB to -lx, 
+where the object library libx.a contains the relevant HSL packages. 
+For instance if the HSL is contained in the object library libhsl.a, 
+HSLLIB should be set to "-lhsl". If a compiled version of HSL 
+is unavailable, HSLLIB should either be unset or set to "".
+N.B. HSL is only required optionally, but is recommended as it provides
+considerably improved performace for many GALAHAD packages.
+.TP
+.IB METISLIB
+If there is a compiled, library version of the Metis (versions 4 or 5) graph
+partitioning package (http://www-users.cs.umn.edu/~karypis/metis/), set
+METISLIB to "-lgalahad_metis4 -lx" ( "-lgalahad_metis5 -lx" for version 5).
+where the object library libx.a contains Metis.  For instance
+if Metis 5 is contained in the object library libmetis.a, METISLIB should be
+set to "-lgalahad_metis5 -lmetis".  If the library is in a "non-standard" 
+place, METISLIB should also point to the full path to the library. 
+For example, if libmetis.so is in the directory /mylibrary, METISLIB should
+be set to "-L/mylibrary -lgalahad_metis5 -lmetis" If a compiled version 
+of Metis is unavailable, METISLIB will be set to "-lgalahad_metis_dummy".
+N.B. Metis is only required by HSL and some other supported sparse matrix 
+packages.
+.TP
+.IB SPRALLIB
+If there is a compiled, library version of the SPRAL sparse factorization
+package (http://ccpforge.cse.rl.ac.uk/gf/project/asearchralna/), set SPRALLIB
+to -lx, where the object library libx.so contains SPRAL.  For instance if
+SPRAL is contained in the object library libspral.so, SPRALLIB should be
+set to "-lspral". If the library is in a "non-standard place", SPRALLIB
+should also point to the full path to the library. For example, if
+libspral.so is in the directory /mylibrary, SPRALLIB should be set to
+"-L/mylibrary -lspral" If a compiled version of SPRAL is unavailable,
+SPRALLIB will be set to "-lgalahad_spral".
+N.B. SPRAL is only optionally required but may improve performance.
+In addition, amny parts of SPRAL are included as part of GALAHAD.
+.TP
+.IB PARDISOLIB
+If there is a compiled, library version of the PARDISO sparse factorization
+package (http://www.pardiso-project.org/) , set PARDISOLIB to -lx,
+where the object library libx.so contains PARDISO.  For instance if PARDISO
+is contained in the object library libpardiso.so, PARDISOLIB should be set to
+"-lpardiso". If the library is in a "non-standard place", PARDISOLIB should
+also point to the full path to the library. For example, if libpardiso.so
+is in the directory /mylibrary, PARDISOLIB should be set to
+"-L/mylibrary -lpardiso" If a compiled version of PARDISO is unavailable,
+PARDISOLIB will be set to "-lgalahad_pardiso".
+N.B. PARDISO is only optionally required but may improve performance.
+.TP
+.IB MKL_PARDISOLIB
+If there is a compiled, library version of the MKL version of the PARDISO
+sparse factorization package (http://www.pardiso-project.org/) , set
+MKL_PARDISOLIB to -lx, where the object library libx.so contains PARDISO. For
+instance if PARDISO is contained in the object library libmkl_intel_lp64.a
+MKL_PARDISOLIB should be set to "-lmkl_intel_lp64". If the library is in a
+"non-standard place", MKL_PARDISOLIB should also point to the full path to the
+library. For example, if libmkl_intel_lp64.a is in the directory /mylibrary,
+MKL_PARDISOLIB should be set to "-L/mylibrary -lmkl_intel_lp64"
+If a compiled version of the MKL version of PARDISO is unavailable,
+MKL_PARDISOLIB will be set to "-lgalahad_mkl_pardiso".
+N.B. MKL PARDISO is only optionally required but may improve performance.
+.TP
+.IB WSMPLIB
+If there is a compiled, library version of the WSMP sparse factorization
+package (http://www.wsmp-project.org/) , set WSMPLIB to -lx,
+where the object library libx.so contains WSMPLIB.  For instance if WSMP
+is contained in the object library libwsmp.so, WSMPLIB should be set to
+"-lwsmp". If the library is in a "non-standard place", WSMPLIB should
+also point to the full path to the library. For example, if libwsmp.so
+is in the directory /mylibrary, WSMPLIB should be set to
+"-L/mylibrary -lwsmp" If a compiled version of WSMP is unavailable,
+WSMPLIB will be set to "-lgalahad_wsmp".
+N.B. WSMP is only optionally required but may improve performance.
+.TP
+.IB PASTIXLIB
+place-holder for future PaStiX codes.
+.TP
+.IB MPILIB
+place-holder for future MPI codes.
+.TP
+.IB MUMPSLIB
+place-holder for future MUMPS codes.
+.TP
+.IB UMFPACKLIB
+place-holder for future UMFPACK codes.
+.TP
+.IB SUITESPARSELIB
+place-holder for future SuitSparse codes.
+.TP
+.IB PLPLOTLIB
+If the PLplot graphics library is available, some packages optionally
+produce grapical output for debugging purposes. The precise list of
+link options required may be obtained by executing the command
+  pkg-config --cflags --libs plplotd-f95
+and PLPLOTLIB should be set to the output of this command.
+N.B. PLPLOTLIB is only optionally required.
+.SH DIAGNOSTICS
+The diagnostics produced by qgal itself are intended to be self-explanatory.
+.SH "SEE ALSO"
+
+N. I. M. Gould, D. Orban and Ph. L. Toint,
+"GALAHAD - a library of thread-safe fortran 90 packages for large-scale
+nonlinear optimization",
+.I ACM Transactions on Mathematic Software
+.B 29
+(4)
+(2003) 353-372.
+
+N. I. M. Gould and Ph. L. Toint,
+"Numerical methods for large-scale non-convex quadratic programming",
+in "Trends in Industrial and Applied Mathematics",
+(A. Siddiqi and M. Kocvara, eds.),
+Kluwer Academic Publishers, Dordrecht, The Netherlands
+(2002) 149-179.
+
+N. I. M. Gould and Ph. L. Toint,
+"An iterative working-set method for large-scale non-convex quadratic
+programming",
+.I Applied Numerical Mathematics.
+.B 43 (1-2)
+(2002) 109-128.
+
+A. R. Conn, N. I. M. Gould, D. Orban and Ph. L. Toint,
+``A primal-dual trust-region algorithm for non-convex nonlinear optimization''.
+.I Mathematical Programming
+.B 87
+(2)
+(2000) 215-249.
+
+QPlib2014, see http://www.lamsade.dauphine.fr/QPlib2014/
+
+.SH BUGS
+Please report any bugs found to
+.IB nick.gould@stfc.ac.uk ,
+along with any suggestions for improvements.
+.SH AUTHORS
+Nick Gould, Rutherford Appleton Laboratory,
+Dominique Orban, Polytechnique Montréal,
+and
+Philippe Toint, University of Namur

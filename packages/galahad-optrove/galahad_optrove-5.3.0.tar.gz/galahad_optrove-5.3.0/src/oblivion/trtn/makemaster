@@ -1,0 +1,136 @@
+#  Main body of the installation makefile for the GALAHAD TRTN package
+
+#  Nick Gould, for GALAHAD productions
+#  This version: 2021-05-30
+
+#  include standard GALAHAD makefile defaults before package-specifics
+
+include $(GALAHAD)/src/makedefs/defaults
+
+#  ===========================================================================
+#  ====================  package-dependent parts  ============================
+#  ===========================================================================
+
+#  package name
+
+package = trtn
+PACKAGE = TRTN
+
+#  auxiliary packages that current package depends on (prepend with make_)
+
+DEPENDENCIES = make_dummy make_specfile make_sort make_zd11 \
+               make_smt make_space  make_ma27 make_sils make_roots \
+               make_norms make_lmt make_qpt make_rand make_gltr \
+               make_tools make_userdata make_nlpt make_cutest_functions
+
+#  other packages that depend on package
+
+DEPENDS =
+
+#  auxiliary packages that are needed for tests (prepend with make_)
+
+TESTDEPS = make_copyright
+
+#  tests to be performed (preprend with test_)
+
+TESTS = test_cutest
+
+#  CUTEst example for tests
+
+CUTEST_EXAMPLE = ALLINIT.SIF
+
+#  ===========================================================================
+#  =================  end of package-dependent parts  ========================
+#  ===========================================================================
+
+#  include standard GALAHAD makefile definitions
+
+include $(GALAHAD)/src/makedefs/definitions
+
+#  include compilation and run instructions
+
+include $(GALAHAD)/src/makedefs/instructions
+
+#  non-standard package compilation instructions
+
+$(package).o: $(LG)($(package).o)
+
+$(LG)($(package).o): ../$(package)/$(package).F90
+	@printf ' %-9s %-15s\t\t' "Compiling" "$(package)   "
+	$(CP) ../$(package)/$(package).F90 $(OBJ)/$(package).F90
+	cd $(OBJ); $(FORTRAN) -o $(package).o $(FFLAGSS) $(package).F90 \
+                || ( printf ' %-26s' "=> Disabling optimization " ; \
+                   $(FORTRAN) -o $(package).o $(FFLAGSN) $(package).F90 )
+	cd $(OBJ); $(ARR) $(package).o ; $(RM) $(package).F90 $(package).o
+	$(RMARFILES) $(DEPENDS)
+	$(CURMARFILE) use$(package).o
+	$(RMOBFILE) in$(package).o
+	$(RMOBFILE) $(package)s.o
+	$(RMOBFILE) $(package)t.o
+	$(MVMODS)
+	@printf '[ OK ]\n'
+
+#  package coverage compilation
+
+$(package)_gcov: ../$(package)/$(package).F90
+	@printf ' %-9s %-15s\t\t' "Compiling" "$(package)   "
+	$(CP) ../$(package)/$(package).F90 $(package)_cov.F90
+	$(FORTRAN) -o $(package)_cov.o $(FFLAGSS) $(COVERAGE) \
+            $(package)_cov.F90 \
+          || ( printf ' %-26s' "=> Disabling optimization " ; \
+            $(FORTRAN) -o $(package)_cov.o $(FFLAGSN) $(COVERAGE) \
+              $(package)_cov.F90 )
+	$(CP) $(package)t.F90 $(package)t_cov.F90
+	$(RM) ./$(package)t_cov1.F90
+	$(FORTRAN) -g $(BASIC) $(NOOPTIMIZATION) $(MODULES) $(COVERAGE) \
+          $(package)t_cov.F90
+	$(FORTRAN) $(NOOPTIMIZATION) $(MODULES) $(COVERAGE) \
+          -o ./$(package)_cov $(package)_cov.o $(package)t_cov.o \
+           -L$(OBJ) $(LIBS)
+	./$(package)_gcov
+	gcov ./$(package)_gcov
+	$(MV) ./$(package)_cov.F90.cov ./$(package)_coverage
+	$(RM) ./$(package)*cov* ./galahad_$(package)_*.mod
+
+#  test programs for specification document
+
+$(package)s.o: $(OBJ)/$(package)s.o
+
+$(OBJ)/$(package)s.o: ../$(package)/$(package)s.F90
+	@printf ' %-9s %-15s\t\t' "Compiling" "$(package)s  "
+	$(CP) ../$(package)/$(package)s.F90 $(OBJ)/$(package)s.F90
+	cd $(OBJ) ; $(FORTRAN) -o $(package)s.o $(FFLAGS) $(package)s.F90
+	rm $(OBJ)/*.F90
+	@printf '[ OK ]\n'
+
+#  comprehensive test programs
+
+$(package)t.o: $(OBJ)/$(package)t.o
+
+$(OBJ)/$(package)t.o: ../$(package)/$(package)t.F90
+	@printf ' %-9s %-15s\t\t' "Compiling" "$(package)t  "
+	$(CP) ../$(package)/$(package)t.F90 $(OBJ)/$(package)t1.F90
+	cd $(OBJ) ; $(FORTRAN) -o $(package)t.o $(FFLAGSS) $(package)t.F90
+	rm $(OBJ)/*.f90
+	@printf '[ OK ]\n'
+
+#  CUTEst/AMPL interfaces
+
+use$(package).o: $(CULG)(use$(package).o)
+
+$(CULG)(use$(package).o): ../$(package)/use$(package).F90
+	@printf ' %-9s %-15s\t\t' "Compiling" "use$(package)   "
+	$(CP) ../$(package)/use$(package).F90 $(OBJ)/use$(package).F90
+	cd $(OBJ); \
+          $(FORTRAN) -o use$(package).o $(FFLAGSOMP) use$(package).F90 \
+                || ( printf ' %-26s' "=> Disabling optimization " ; \
+                   $(FORTRAN) -o use$(package).o $(FFLAGSN) use$(package).F90 )
+	cd $(OBJ); $(CUARR) use$(package).o ; \
+                   $(RM) use$(package).F90 use$(package).o
+	$(RMOBFILE) run$(package)_sif.o
+	$(MVMODS)
+	@printf '[ OK ]\n'
+
+#  include required package intermediaries
+
+include $(GALAHAD)/src/makedefs/intermediaries

@@ -1,0 +1,80 @@
+#  Main body of the installation makefile for the GALAHAD WARM package
+
+#  Nick Gould, for GALAHAD productions
+#  This version: 2021-05-29
+
+#  include standard GALAHAD makefile defaults before package-specifics
+
+include $(GALAHAD)/src/makedefs/defaults
+
+#  ===========================================================================
+#  ====================  package-dependent parts  ============================
+#  ===========================================================================
+
+#  package name
+
+package = warm
+PACKAGE = WARM
+
+#  auxiliary packages that current package depends on (prepend with make_)
+
+DEPENDENCIES = make_qpd_deps make_qpd make_checkpoint make_qpa \
+               make_lsqp make_qpb make_eqp make_rpd make_cqp \
+               make_qpc make_dqp make_cdqp make_qp
+
+#  other packages that depend on package
+
+DEPENDS =
+
+#  auxiliary packages that are needed for tests (prepend with make_)
+
+TESTDEPS =
+
+#  tests to be performed (preprend with test_)
+
+TESTS = test_cutest
+
+#  CUTEst example for tests
+
+CUTEST_EXAMPLE = QPBAND.SIF
+
+#  ===========================================================================
+#  =================  end of package-dependent parts  ========================
+#  ===========================================================================
+
+#  include standard GALAHAD makefile definitions
+
+include $(GALAHAD)/src/makedefs/definitions
+
+#  include compilation and run instructions
+
+include $(GALAHAD)/src/makedefs/instructions
+
+#  non-standard package compilation instructions
+
+$(package).o: $(LG)($(package).o)
+
+$(LG)($(package).o): ../$(package)/$(package).F90
+	@printf ' %-9s %-15s\t\t' "Compiling" "$(package)   "
+	@printf '[ OK ]\n'
+
+#  CUTEst/AMPL interfaces
+
+use$(package).o: $(CULG)(use$(package).o)
+
+$(CULG)(use$(package).o): ../$(package)/use$(package).F90
+	@printf ' %-9s %-15s\t\t' "Compiling" "use$(package)   "
+	$(CP) ../$(package)/use$(package).F90 $(OBJ)/use$(package).F90
+	cd $(OBJ); \
+          $(FORTRAN) -o use$(package).o $(FFLAGSOMP) use$(package).F90 \
+                || ( printf ' %-26s' "=> Disabling optimization " ; \
+                   $(FORTRAN) -o use$(package).o $(FFLAGSN) use$(package).F90 )
+	cd $(OBJ); $(CUARR) use$(package).o ; \
+                   $(RM) use$(package).F90 use$(package).o
+	$(RMOBFILE) run$(package)_sif.o
+	$(MVMODS)
+	@printf '[ OK ]\n'
+
+#  include required package intermediaries
+
+include $(GALAHAD)/src/makedefs/intermediaries
