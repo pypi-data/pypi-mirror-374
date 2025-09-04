@@ -1,0 +1,176 @@
+name: Publish to PyPI
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write  # Required for trusted publishing
+
+jobs:
+  build:
+    name: Build distribution
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        # Fetch full history for proper version detection
+        fetch-depth: 0
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+      with:
+        version: "latest"
+
+    - name: Set up Python
+      run: uv python install 3.11
+
+    - name: Install build dependencies
+      run: uv sync --extra dev
+
+    - name: Display version from VCS
+      run: |
+        # Show the version that will be used (auto-detected from git tag)
+        echo "Release tag: ${GITHUB_REF#refs/tags/}"
+        echo "Package version will be auto-detected from git tag by hatchling-vcs"
+
+    - name: Build package
+      run: uv build
+
+    - name: Verify wheel contents
+      run: |
+        echo "📦 Built packages:"
+        ls -la dist/
+
+        echo -e "\n🔍 Wheel contents:"
+        unzip -l dist/*.whl
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: python-package-distributions
+        path: dist/
+        retention-days: 7
+
+  test-install-ubuntu:
+    name: Test installation (Ubuntu - Required)
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12']
+    steps:
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: python-package-distributions
+        path: dist/
+
+    - name: Test wheel installation
+      run: |
+        pip install dist/*.whl
+        fdprof --help
+
+    - name: Test basic functionality
+      run: |
+        # Test that fdprof can run a simple command
+        fdprof python -c "print('PyPI install test successful')"
+
+  test-install-cross-platform:
+    name: Test installation (Cross-platform - Optional)
+    needs: build
+    runs-on: ${{ matrix.os }}
+    continue-on-error: true  # Don't fail the workflow if these tests fail
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest]
+        python-version: ['3.11', '3.12']
+    steps:
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: python-package-distributions
+        path: dist/
+
+    - name: Test wheel installation
+      run: |
+        pip install dist/*.whl
+        fdprof --help
+
+    - name: Test basic functionality
+      run: |
+        # Test that fdprof can run a simple command
+        fdprof python -c "print('PyPI install test successful')"
+
+  publish-to-pypi:
+    name: Publish to PyPI
+    needs: [build, test-install-ubuntu]
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/fdprof
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: python-package-distributions
+        path: dist/
+
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        # Using trusted publishing (no API token required)
+        # You'll need to configure this at https://pypi.org/manage/account/publishing/
+        verbose: true
+        print-hash: true
+
+  publish-to-testpypi:
+    name: Publish to TestPyPI
+    needs: [build, test-install-ubuntu]
+    runs-on: ubuntu-latest
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/fdprof
+    # Only publish to TestPyPI for pre-releases
+    if: github.event.release.prerelease == true
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: python-package-distributions
+        path: dist/
+
+    - name: Publish to TestPyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: https://test.pypi.org/legacy/
+        verbose: true
+        print-hash: true
+
+  create-github-release-assets:
+    name: Upload release assets
+    needs: [build, test-install-ubuntu]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: python-package-distributions
+        path: dist/
+
+    - name: Upload wheel and source to GitHub release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: dist/*
+        fail_on_unmatched_files: true
