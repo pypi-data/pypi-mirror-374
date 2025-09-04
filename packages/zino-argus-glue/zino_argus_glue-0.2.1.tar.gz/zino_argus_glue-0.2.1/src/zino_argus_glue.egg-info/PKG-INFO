@@ -1,0 +1,88 @@
+Metadata-Version: 2.4
+Name: zino-argus-glue
+Version: 0.2.1
+Summary: Argus glue service for Zino
+Author-email: Sikt - Norwegian Agency for Shared Services in Education and Research <kontakt@sikt.no>
+Maintainer-email: Morten Brekkevold <morten.brekkevold@sikt.no>
+License-Expression: Apache-2.0
+Project-URL: Homepage, https://github.com/Uninett/zino-argus-glue
+Project-URL: Changelog, https://github.com/Uninett/zino-argus-glue/blob/master/CHANGELOG.md
+Platform: any
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: System Administrators
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: System :: Networking :: Monitoring
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: argus-api-client
+Requires-Dist: requests
+Requires-Dist: pydantic<2.11
+Requires-Dist: zinolib>=1.3.4
+Requires-Dist: tomli; python_version < "3.11"
+Dynamic: license-file
+
+# Zino ↔ Argus glue service
+
+This is a [glue
+service](https://argus-server.readthedocs.io/en/latest/integrations/glue-services/index.html)
+for integration between [Argus](https://github.com/Uninett/Argus), the alert
+aggregation server, and [Zino](https://github.com/Uninett/zino), the network
+state monitor provided by Sikt.
+
+This is still a work in progress and more information will be added here later.
+
+## Installing zino-argus-glue
+
+### From Python Package Index (PyPI)
+
+```console
+$ pip install zino-argus-glue
+...
+$ zinoargus --help
+usage: zinoargus [-h] [-v] [-c CONFIG_FILE]
+
+options:
+  -h, --help            show this help message and exit
+  -v, --verbose
+  -c CONFIG_FILE, --config-file CONFIG_FILE
+$
+```
+
+### From source (this repository)
+
+```console
+$ pip install .
+...
+$ zinoargus --help
+usage: zinoargus [-h] [-v] [-c CONFIG_FILE]
+
+options:
+  -h, --help            show this help message and exit
+  -v, --verbose
+  -c CONFIG_FILE, --config-file CONFIG_FILE
+$
+```
+
+## Configuring zino-argus-glue
+
+The `zino-argus-glue` program needs to know how to connect to both a Zino API
+server and an Argus API server in order to synchronize incidents from Zino to
+Argus.  Addresses and authentication tokens for these APIs are configured in
+`zinoargus.toml`.  `zinoargus` reads this file the current working directory,
+or you can specify an alternate path to a configuration file using the `-c`
+command line option.  See [zinoargus.toml.example](./zinoargus.toml.example)
+for an example configuration file.
+
+## Copying
+
+Copyright 2025 Sikt (The Norwegian Agency for Shared Services in Education and
+Research)
+
+Licensed under the Apache License, Version 2.0; See [LICENSE](./LICENSE) for a
+full copy of the License.

@@ -1,0 +1,28 @@
+[argus]
+# The Argus API url and token settings are the minimal required config settings to
+# access an Argus API server:
+url = "https://path.to.api/api/v2/"
+token = "1234543654778675647436245234"
+
+[zino]
+# The configuration used to establish a zino server session
+server = "zino.server"
+port = 8001
+user = "zinouser"
+secret = "1234123412341234123412341324123413241"
+
+# Synchronization behavior options
+[sync]
+#  Argus incident acknowledgments can be synchronized back to Zino.  The
+# "`acknowledge.setstate` option controls how. A value of "none" means
+# acknowledgments are not synchronized.  "waiting" or "working" will set
+# the corresponding Zino case state to either of those states.
+acknowledge.setstate = "none"
+
+# Argus incident ticket URLs can be synchronized back to Zino as history
+# entries.  Set this to `true` to do so:
+ticket.enable = false
+
+[metadata]
+# Optional circuit metadata from telemator
+ports_url = "http://telemator.circuit.mapping.server/tm/curitz_circuitmapping.json"
