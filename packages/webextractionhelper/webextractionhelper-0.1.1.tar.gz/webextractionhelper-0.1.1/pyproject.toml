@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "webextractionhelper"
+dynamic = ["version"]
+description = "A comprehensive web scraping helper package with XPath selectors, regex patterns, and CSS selectors"
+readme = "README.MD"
+license = {text = "CC-BY-SA-4.0"}
+authors = [
+    {name = "Jens Verneuer", email = "Jens@Aristotle.ventures"}
+]
+maintainers = [
+    {name = "Jens Verneuer", email = "Jens@Aristotle.ventures"}
+]
+keywords = ["web scraping", "xpath", "css selectors", "regex", "google search", "serp"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Markup :: HTML",
+]
+requires-python = ">=3.7"
+dependencies = [
+    "lxml>=4.6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+    "black>=21.0",
+    "flake8>=3.8",
+]
+
+[project.urls]
+Homepage = "https://github.com/Artistotle-ai/webextractionhelper"
+Documentation = "https://github.com/Artistotle-ai/webextractionhelper#readme"
+Repository = "https://github.com/Artistotle-ai/webextractionhelper"
+Issues = "https://github.com/Artistotle-ai/webextractionhelper/issues"
+
+[tool.setuptools]
+packages = ["webextractionhelper"]
+
+[tool.setuptools.package-data]
+"*" = ["*.txt", "*.md"]
+
+[tool.setuptools.dynamic]
+version = {attr = "webextractionhelper.__version__"}
