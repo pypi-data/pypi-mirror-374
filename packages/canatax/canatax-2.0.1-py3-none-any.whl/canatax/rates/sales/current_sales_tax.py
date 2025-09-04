@@ -1,0 +1,1 @@
+from .sales_tax_rates.rates_2025 import *
