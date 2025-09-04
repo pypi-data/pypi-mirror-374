@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pypackx"
+version = "1.0.1"
+description = "React + Tailwind Dev-Server, Hot-live-Reloader and Production-Bundler (Rohit c.)"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+authors = [{ name = "Rohit Chauhan" }]
+dependencies = [
+    "aiohttp>=3.9",
+    "watchfiles>=0.21",
+]
+
+[project.scripts]
+pypack = "commands.cli:main"
+
+# Let setuptools find your packages (commands/, utils/)
+[tool.setuptools.packages.find]
+include = ["commands", "utils"]
+
+# Include templates in the wheel
+[tool.setuptools.package-data]
+commands = ["_templates/**"]
