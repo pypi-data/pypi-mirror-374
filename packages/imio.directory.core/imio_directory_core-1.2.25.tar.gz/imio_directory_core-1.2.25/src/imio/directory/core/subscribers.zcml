@@ -1,0 +1,36 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope">
+
+  <subscriber for="imio.directory.core.contents.IEntity
+                   zope.lifecycleevent.interfaces.IObjectAddedEvent"
+              handler=".subscribers.added_entity" />
+
+  <subscriber for="imio.directory.core.contents.IContact
+                   zope.lifecycleevent.interfaces.IObjectAddedEvent"
+              handler=".subscribers.added_contact" />
+
+  <subscriber for="imio.directory.core.contents.IContact
+                   zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+              handler=".subscribers.modified_contact" />
+
+  <subscriber for="imio.directory.core.contents.IEntity
+                   zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+              handler=".subscribers.modified_entity" />
+
+  <subscriber for="imio.directory.core.contents.IContact
+                   zope.lifecycleevent.interfaces.IObjectMovedEvent"
+              handler=".subscribers.moved_contact" />
+
+  <subscriber for="imio.directory.core.contents.IEntity
+                   zope.lifecycleevent.interfaces.IObjectRemovedEvent"
+              handler=".subscribers.removed_entity" />
+
+  <subscriber for="imio.directory.core.contents.IContact
+                   zope.lifecycleevent.interfaces.IObjectRemovedEvent"
+              handler=".subscribers.removed_contact" />
+
+  <subscriber for="imio.directory.core.contents.IContact
+                   Products.DCWorkflow.interfaces.IAfterTransitionEvent"
+              handler=".subscribers.published_contact_transition" />
+
+</configure>

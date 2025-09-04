@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope">
+
+  <adapter
+      for="Products.CMFCore.interfaces.IFolderish"
+      factory="imio.directory.core.contents.contact.content.ContactNameChooser"
+      provides="zope.container.interfaces.INameChooser"
+      />
+
+  <adapter
+      factory=".converters.i18n_message_converter"
+      />
+
+</configure>
