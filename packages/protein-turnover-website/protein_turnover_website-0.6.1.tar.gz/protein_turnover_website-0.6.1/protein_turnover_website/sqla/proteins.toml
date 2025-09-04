@@ -1,0 +1,34 @@
+
+[[Column]]
+name = "group_number"
+title = "Group"
+search = false
+[[Column]]
+name = "protein_name"
+title = "Protein"
+[[Column]]
+name = "protein_description"
+title = "Description"
+[[Column]]
+name = "#Peptides"
+aggregate = { column = "peptideid", aggfunc = "count" }
+[[Column]]
+name = "num_found_peptides"
+title = "#Found Peptides"
+search = false
+[[Column]]
+name = "Filtered STD LPF"
+aggregate = { column = "relativeIsotopeAbundance", aggfunc = "std" }
+[[Column]]
+name = "lpf_std"
+title = "STD LPF"
+search = false
+[[Column]]
+name = "nnls_min"
+title = "NNLS (min)"
+aggregate = { column = "nnls_residual", aggfunc = "min", denom = "totalNNLSWeight" }
+
+# [[Column]]
+# name = "lpf_median"
+# title = "Median LPF"
+# search = false

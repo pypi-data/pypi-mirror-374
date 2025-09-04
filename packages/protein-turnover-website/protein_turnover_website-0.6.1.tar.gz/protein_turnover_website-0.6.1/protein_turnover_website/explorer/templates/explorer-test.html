@@ -1,0 +1,61 @@
+{% extends base_template %}
+
+{% import "explorer.html" as exp %}
+
+{% block css %}
+{{ include_css("explorer.css") }}
+{% endblock css %}
+
+{% block content %}
+<button id="hide" class="btn btn-primary">Hide</button>
+<div id="a" class="container mt-5 mb-5">
+  <div class="card">
+    <div class="card-header">
+      MzML Files
+      <button type="button" class="btn-close float-end" aria-label="Close"></button>
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Special title treatment</h5>
+      <div id="{{eid}}">
+        {{exp.explorer(mountpoints, explorer)}}
+      </div>
+
+    </div>
+    <div class="card-footer">
+      <button id="bbb" class="btn btn-primary float-end">Done</button>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+{{super()}}
+<script>
+
+  {% include "explorer.js" %}
+
+  jQuery(function ($) {
+    const e = {
+      change_directory_url: "{{url_for('explorer.change_directory')}}",
+      selector: "#{{eid}}",
+      multi: true
+    }
+    const m = explorer(e)
+    let mm = e.multi
+    $('#bbb').on('click', e => { m.multi(!mm); mm = !mm })
+    var hidden = false;
+    $('#hide').on('click', function (e) {
+      if (hidden) {
+        $('#a').show('slow')
+      } else {
+        $('#a').hide('slow')
+      }
+      hidden = !hidden;
+    })
+
+    $(e.selector).on('selected.to', (e, data) => {
+      console.log(data)
+    })
+  })
+</script>
+{% endblock js %}

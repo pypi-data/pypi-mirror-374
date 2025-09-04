@@ -1,0 +1,192 @@
+<table class="table">
+    <tr>
+        <th>Column</th>
+        <th>Type</th>
+        <th>Explaination</th>
+    </tr>
+    <tr>
+        <td>agg_count</td>
+        <td><code> integer </code></td>
+        <td> how many peptides were aggregated together from the pep.xml file </td>
+    </tr>
+    <tr>
+        <td>assumed_charge</td>
+        <td><code> integer </code></td>
+        <td> Precursor ion charge used for search </td>
+    </tr>
+    <tr>
+        <td>calc_neutral_pep_mass</td>
+        <td><code> double </code></td>
+        <td> theoretical mass </td>
+    </tr>
+    <tr>
+        <td>protein_descr</td>
+        <td><code> string </code></td>
+        <td> single concatenated string of protein descriptions &mdash; used for text search &mdash; (see
+            <code>protein_descr</code>) </td>
+    </tr>
+    <tr>
+        <td>eics</td>
+        <td><code> float[] </code></td>
+        <td> flat array of a matrix of [isoMax+2,rt,2] with isoMax+2 hits of retention time,intensity </td>
+    </tr>
+    <tr>
+        <td>eics_shape</td>
+        <td><code> integer[] </code></td>
+        <td> actual shape of eics matrix (Since the parquet storage only allows 1D arrays) </td>
+    </tr>
+    <tr>
+        <td>enrichment</td>
+        <td><code> double </code></td>
+        <td> Average Enrichment found from NNLS fitting </td>
+    </tr>
+    <tr>
+        <td>fail</td>
+        <td><code> integer </code></td>
+        <td> bit wise OR of failures and warnings of the envelope fit (<code>0</code> means no problem!) </td>
+    </tr>
+    <tr>
+        <td>heavyCor</td>
+        <td><code> double </code></td>
+        <td> pearson R statistic between <code>heavy distribution</code> and the
+            <a href="{{url_for('inspect.about', _anchor='theoretical-dist')}}">theoretical distribution</a>
+
+        </td>
+    </tr>
+    <tr></tr>
+        <td>heavyCor2</td>
+        <td><code> double </code></td>
+        <td> pearson R statistic between <code>isotopeEnvelopes</code> and the
+            <a href="{{url_for('inspect.about', _anchor='theoretical-dist')}}">theoretical distribution</a>
+
+        </td>
+    </tr>
+    <tr>
+        <td>isLabelledRun</td>
+        <td><code> boolean </code></td>
+        <td> search hit was in a labelled run </td>
+    </tr>
+    <tr>
+        <td>is_decoy</td>
+        <td><code> boolean </code></td>
+        <td> if protein has a DECOY_ prefix </td>
+    </tr>
+    <tr>
+        <td>isotopeEnvelopes</td>
+        <td><code> float[] </code></td>
+        <td> Experimental Intensities from EIC Spectrum Data</td>
+    </tr>
+    <tr>
+        <td>labelledElementCount</td>
+        <td><code> integer </code></td>
+        <td> number of labelled atoms of this type on this peptide </td>
+    </tr>
+    <tr>
+        <td>labelledEnvelopes</td>
+        <td><code> float[] </code></td>
+        <td> weight calculated from <a href="{{url_for('inspect.about', _anchor='nnls')}}">NNLS fitting</a>
+
+        </td>
+    </tr>
+    <tr>
+        <td>maxIso</td>
+        <td><code> integer </code></td>
+        <td> maximum number of heavy isotopes considered for this peptide </td>
+    </tr>
+    <tr>
+        <td>modcol</td>
+        <td><code> string </code></td>
+        <td> string form of the <code>modifications</code> of this peptide
+            '<code>{mass1}@{position1}:{mass2}@{position2}...</code>'. The mass is formatted to 3 decimal places </td>
+    </tr>
+    <tr>
+        <td>modifications</td>
+        <td><code> <table class="table"><tr><th>Column</th><th>Type</th><th>Explaination</th></tr><tr><td>monoDelta</td><td><code> double </code>
+        </td>
+        <td> mass difference of static or variable modification </td>
+    </tr>
+    <tr>
+        <td>monoMass</td>
+        <td><code> double </code></td>
+        <td> modified mass of aminoacid </td>
+    </tr>
+    <tr>
+        <td>position</td>
+        <td><code> integer </code></td>
+        <td> modified aminoacid position in peptide [ranging from 1 to peptide length] </td>
+    </tr>
+</table> </code></td>
+<td> list of modifications </td>
+</tr>
+<tr>
+    <td>monoFitParams</td>
+    <td><code> float[] </code></td>
+    <td> array of 4 gaussian curve fitted params: <code>mu, sigma, scale, baseline</code> </td>
+</tr>
+<tr>
+    <td>mz</td>
+    <td><code> double </code></td>
+    <td> <code>calc_neutral_pep_mass/assumed_charge + H+</code> </td>
+</tr>
+<tr>
+    <td>mzranges</td>
+    <td><code> float[] </code></td>
+    <td> array of [maxIso+2,2] mz min and max for each isotope of the peptide </td>
+</tr>
+<tr>
+    <td>num_missed_cleavages</td>
+    <td><code> integer </code></td>
+    <td> Number of sample enzyme cleavage sites internal to peptide </td>
+</tr>
+<tr>
+    <td>observed_mz</td>
+    <td><code> double </code></td>
+    <td> <code>precursor_neutral_mass/assumed_charge + H+</code> </td>
+</tr>
+<tr>
+    <td>peptide</td>
+    <td><code> string </code></td>
+    <td> the peptide as amino acid string e.g. <code>FYLQPLPPAEAAAR</code> </td>
+</tr>
+<tr>
+    <td>peptideprophet_probability</td>
+    <td><code> double </code></td>
+    <td> Peptide Prophet probability </td>
+</tr>
+<tr>
+    <td>precursor_neutral_mass</td>
+    <td><code> double </code></td>
+    <td> observed mass </td>
+</tr>
+<tr>
+    <td>protein_descr</td>
+    <td><code> string[] </code></td>
+    <td> list of decriptions of the proteins (from some database) </td>
+</tr>
+<tr>
+    <td>proteins</td>
+    <td><code> string[] </code></td>
+    <td> list of protein IDs </td>
+</tr>
+<tr>
+    <td>relativeIsotopeAbundance</td>
+    <td><code> double </code></td>
+    <td> see <a href="{{url_for('inspect.about', _anchor='relative-isotope-abundance')}}">here</a> </td>
+</tr>
+
+<tr>
+    <td>retention_time_sec</td>
+    <td><code> double </code></td>
+    <td> retention time associated with start_scan </td>
+</tr>
+<tr>
+    <td>run</td>
+    <td><code> string </code></td>
+    <td> run associated with this search hit </td>
+</tr>
+<tr></tr>
+    <td>result_index</td>
+    <td><code> integer </code></td>
+    <td> relates back to index of original pepxml (for debugging) </td>
+</tr>
+</table>

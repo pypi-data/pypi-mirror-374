@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+{%- from "fragments/macros.html" import offsite, maintainer, nav_link -%}
+{%- if config.DEBUG -%}
+{%- from "fragments/theme.html" import theme_html, theme_js -%}
+{%- endif -%}
+<html lang="en">
+
+<head>
+    {% include "fragments/meta.html" %}
+    <title>{% block title %}{{config.APP_NAME}}{% endblock %}</title>
+    {% block meta %}{% endblock meta %}
+    <link rel="icon" href="{{url_for('static', filename='img/turnover.png')}}" />
+    <link rel="apple-touch-icon" href="{{url_for('static', filename='img/turnover.png')}}" />
+
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Gruppo" />
+    {% include "fragments/google.html" %}
+    {{ cdn_css("bootstrap") }}
+    {{ cdn_css("toastr") }}
+
+    {% if config.FONT_ICONS %}
+
+    {{ cdn_css("fontawesome") }}
+
+    {% endif %}
+    {# see https://themesguide.github.io/top-hat/dist/
+    or https://github.com/ThemesGuide/top-hat/tree/master/dist #}
+    {% set theme = config.THEME %}
+    {% if theme or config.DEBUG %}
+    <link id="bootstrap-theme-css" rel="stylesheet" type="text/css"
+        href="{% if theme %}https://themesguide.github.io/top-hat/dist/{{theme}}/theme.css{% endif %}" />
+    {% endif %}
+    {% block cdn_css %}{% endblock %}
+    <style>
+        @view-transition {
+            navigation: auto;
+        }
+        /*{# from https://www.smashingmagazine.com/2015/11/using-system-ui-fonts-practical-guide/ #}*/
+        :root {
+            --footer-a-color: #66aaff;
+            --turnover-dark: #222;
+            --turnover-light: #999;
+            --gruppo: Gruppo, "Ubuntu", var(--bs-font-sans-serif);
+        }
+
+        #turnover-navbar {
+            z-index: 500;
+        }
+
+        .turnover-bg-dark {
+            background-color: var(--turnover-dark);
+            color: var(--bs-light);
+        }
+
+        .turnover-bg-light {
+            background-color: var(--turnover-light);
+            color: var(--bs-dark);
+        }
+
+        .turnover-bg-dark a {
+            color: var(--bs-light);
+        }
+
+        .turnover-bg-dark .dropdown-menu {
+            background-color: var(--turnover-dark);
+        }
+
+        #turnover-footer.turnover-bg-dark a:hover {
+            color: var(--bs-white);
+        }
+
+        #turnover-footer.turnover-bg-dark a {
+            color: var(--footer-a-color);
+        }
+
+        /* {# image from: https://www.flickr.com/photos/104656857@N06/29954222197 #}  */
+        #hero {
+            width: 100%;
+            height: 170px;
+            background: bottom / cover url('{{url_for("static", filename="img/wheat4.jpg")}}'),
+            var(--turnover-dark);
+            background-repeat: repeat-x;
+        }
+
+        #wrap {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex-grow: 1;
+        }
+
+        .header-text {
+            height: 100%;
+            font-size: 4.5em;
+            font-family: var(--gruppo);
+            color: var(--bs-white);
+            text-shadow: 2px 2px black;
+        }
+
+        .header-font {
+            font-family: var(--gruppo);
+        }
+
+        a.offsite {
+            background-position: right center;
+            background-repeat: no-repeat;
+            padding-right: 12px;
+            background-image: url("{{offsite('#007bff', '#ffffff')}}");
+        }
+
+
+        .turnover-bg-dark a.offsite {
+            background-image: url("{{offsite('#66aaff', '#000000')}}");
+        }
+
+        #toast-container>.toast-error {
+            background-color: var(--bs-danger) !important;
+        }
+
+        #toast-container>.toast-warning {
+            background-color: var(--bs-warning) !important;
+        }
+
+        #toast-container>.toast-success {
+            background-color: var(--bs-success) !important;
+        }
+
+        #toast-container>.toast-info {
+            background-color: var(--bs-info) !important;
+        }
+    </style>
+
+    {% block css %}{% endblock css %}
+
+    {% block header_js %}{% endblock %}
+    {# PEB greens clockwise darkest to lightest #768d28 #a6bd28 #becf5a #dee5a2 #}
+
+</head>
+
+<body>
+    {% block body_top %}{% endblock %}
+    {# include "fragments/beta.html" #}
+    <a href="#main-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    {# needs to be outside any effects divs #}
+    {% block dialogs %}{% endblock dialogs %}
+
+    <div id="wrap">
+
+        {% block header %}
+        <header>
+            <div id="hero" class="d-none d-lg-block turnover-bg-dark text-white">
+                <span class="header-text">
+                    <span>{{config.APP_NAME}}</span>
+                </span>
+
+            </div>
+
+            <div class="d-lg-none header-font text-white text-center bg-info" style="height:2.5em;">
+                <div style="font-size:1.8em;">
+                    {{config.APP_NAME}}
+                </div>
+            </div>
+
+        </header>
+        {% endblock header %}
+        {% block navbar %}
+        {% set can_view = not config.SITE_PASSWORD or current_user.is_authenticated %}
+        <nav id="turnover-navbar" class="navbar sticky-top navbar-expand-md navbar-dark turnover-bg-dark" id="top">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="{{url_for('static', filename='img/turnover.png')}}" style="height:1.1em; margin-top:-2px"
+                        alt="{{config.APP_NAME}} logo" />
+                    {{config.APP_NAME}}
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#turnover-navbar-collapse" aria-controls="turnover-navbar-collapse"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div id="turnover-navbar-collapse" class="collapse navbar-collapse" role="navigation">
+                    <ul class="navbar-nav me-auto">
+                        {% if can_view %}
+                        <li class="nav-item">
+                            <a {{ nav_link('job.index') }} title="View all jobs">
+                                View Jobs <i class="fas fa-list"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a {{ nav_link('job.create_job_page') }} title="Create a Job">
+                                Create a Job <i class="fas fa-user-md"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% if config.DEBUG -%}
+                        <li class="nav-item">
+                            <a {{ nav_link('explorer.explorer_test') }} title="Explorer">
+                                Explorer Test <i class="fas fa-list"></i>
+                            </a>
+                        </li>
+                        {%- endif %}
+                        {% if config.SITE_PASSWORD -%}
+                        {% if current_user.is_authenticated -%}
+                        <li class="nav-item">
+                            <a {{ nav_link('login.logout_cmd') }} title="Logout">
+                                Logout <i class="fas fa-sign-out-alt"></i>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a {{ nav_link('login.login_cmd') }} title="Login">
+                                Login <i class="fas fa-sign-in-alt"></i>
+                            </a>
+                        </li>
+                        {%- endif %}
+                        {%- endif %}
+                        {% block navbar_left %}{% endblock %}
+
+                    </ul>
+                    {% if not config.SITE_PASSWORD and config.WEBSITE_STATE == 'multi_user' %}
+                        <span class="navbar-text me-3"><strong style="color:red">This site is not secure!</strong></span>
+                    {%- endif %}
+                    <ul class="navbar-nav">
+                        {%- block navbar_right -%}
+                        {%- if config.DEBUG -%}
+                        <li class="nav-item d-none d-xl-block">{{ theme_html(theme) }}</li>
+                        {%- endif -%}
+                        {% if can_view %}
+                        <li class="nav-item">
+                            <a {{ nav_link('view.configuration') }} title="Configuration {{config.APP_NAME}}">
+                                Configuration <i class="far fa-question-circle"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a {{ nav_link('inspect.about') }} title="About {{config.APP_NAME}}">
+                                Calculations <i class="fas fa-calculator"></i>
+                            </a>
+                        </li>
+
+                        {% endblock navbar_right %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        {% endblock navbar %}
+
+        {% block precontent %}{% endblock %}
+
+        <main id="main-content">
+            {% block content %}{% endblock %}
+        </main>
+
+        {% block postcontent %}{% endblock %}
+
+        {% block footer %}
+        <footer id="turnover-footer" class="turnover-bg-dark text-light">
+            <div class="container">
+                <div class="d-flex justify-content-around">
+                    <div>
+                        <ul class="list-inline text-center" style="padding-top:.5em">
+                            <li class="list-inline-item">
+                                <a class="offsite" href="https://plantenergy.edu.au" target="_blank">Plant Energy
+                                    Biology</a>
+                            </li>
+                            <li class="list-inline-item">|</li>
+                            <i class="fas fa-camera"></i> <a class="offsite"
+                                href="https://www.flickr.com/photos/104656857@N06/29954222197">Photo Credit</a>
+                            <li class="list-inline-item">|</li>
+                            <li class="list-inline-item">version:
+                                <span class="text-muted">
+                                    {{ config['GIT_VERSION'] }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-3 text-center">
+                        <img src="{{url_for('static', filename='img/UWA-Full-Hor-CMYK-wt-opt.svgz')}}"
+                            style="margin-top:10px;height:4em" alt="UWA logo" />
+                    </div>
+                    <div class="col-6 text-center">
+                        If you find this resource useful please cite the following:<br/>
+                        [TBD]
+                        <br />
+                        PMID: <a target="pubmed" class="offsite"
+                            href="https://ncbi.nlm.nih.gov/pubmed/XXXXXX">PUBMED</a>
+                        doi: <a target="doi" class="offsite" href="https://doi.org/XXXXX">DOI</a>
+                    </div>
+                    <div class="col-3 text-center">
+                        <img src="{{url_for('static', filename='img/PEB.Logo-Colour.CMYK-wt-notarc-opt.svgz')}}"
+                            style="margin-top:10px;height:5em" alt="Plant Energy Biology Logo" />
+                    </div>
+
+                </div>
+
+                <div class="text-center mb-1">
+                    <div class="d-none d-lg-flex justify-content-around">
+                        <img alt="Creative Commons License" style="border-width:0"
+                            src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
+                    </div>
+                    <div class="d-flex justify-content-around">
+                        <small>
+                            &copy; 2022-{{year}}.
+                            This work is licensed under a <a rel="license" class="offsite"
+                                href="https://creativecommons.org/licenses/by/4.0/">
+                                Creative Commons Attribution 4.0 International License</a>.
+                            <i class="fas fa-code"></i> with <i class="fas fa-heart"></i> by IRC.
+                            {{ maintainer('footer') }} {% if cf_challenge is defined %}🛡️{% endif %}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        {% endblock footer %}
+    </div> {# id=wrap #}
+    {{ cdn_js("jquery") }}
+    {{ cdn_js("bootstrap") }}
+    {{ cdn_js("toastr") }}
+
+    {% if cf_challenge is defined %}
+    {{ cf_challenge(use_toastr=True) }}
+    {% endif %}
+
+    {% if not config.FONT_ICONS %}
+
+    {{ cdn_js("fontawesome") }}
+
+    {% endif %}
+    {% if config.DEBUG %}{{ theme_js() }}{% endif %}
+    {% block js %}{% endblock js %}
+    {% block stream %}{% endblock %}
+</body>
+
+</html>

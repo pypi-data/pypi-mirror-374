@@ -1,0 +1,43 @@
+{% extends base_template %}
+{% block title %}Login::{{config.APP_NAME}}{% endblock %}
+
+{% block content %}
+<div class="container mb-3 mt-3 p-2">
+    <form action="{{url_for('login.login_cmd')}}" method="POST" class="mx-auto mt-2 w-50">
+        <h3 class="text-center">You need to login to use this site:</h3>
+        {% if email_required %}
+        <p>
+            A valid email requires <i>at least</i> an <code>@</code>. Otherwise you
+            can't log in.
+        </p>
+        {% endif %}
+
+        <div class="form-group mb-2">
+            <input type="hidden" name="next" value="{{request.values.get('next') or ''}}" />
+            {% if email_required %}
+            <label for="email">Email: </label>
+            <input type="email" class="form-control {% if bademail %}is-invalid{% endif %}" name="email" id="email"
+                value="{{email or ''}}" />
+            {% if bademail %}<div class="invalid-feedback">Invalid email</div>{% endif %}
+            {% endif %}
+            <label for="password">Password: </label>
+            <input autocomplete="off" class="form-control {% if badpwd %}is-invalid{% endif %}" name="password"
+                id="password" type="password" />
+            {% if badpwd %}<div class="invalid-feedback">Invalid password</div>{% endif %}
+        </div>
+        <button type="submit" name="submit" class="btn btn-outline-primary"><i class="fas fa-sign-in-alt"></i>
+            Login</button>
+    </form>
+</div>
+{% endblock %}
+
+
+
+{% block js %}
+{{super()}}
+{% if badpwd or bademail %}
+<script>
+    {% include "login.js" %}
+</script>
+{% endif %}
+{% endblock js %}

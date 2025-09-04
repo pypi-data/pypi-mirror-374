@@ -1,0 +1,71 @@
+{# type: explorer:Explorer #}
+{% macro explorer_table(explorer) %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        {# crum:BreadCrumb #}
+        {% for crum in explorer.breadcrumbs -%}
+            <li class="breadcrumb-item">
+                {%- if not loop.last -%}<a href="#" data-state='{{crum.state|tojson}}'>{{crum.name}}</a>
+                {%- else -%}
+                {{crum.name}}
+                {%- endif -%}
+            </li>
+        {%- endfor %}
+    </ol>
+</nav>
+<div class="explorer-wrap">
+    {% set s = explorer.sorted %}
+    <table class="table table-hover explorer" data-state='{{explorer.state|tojson}}' >
+        <thead>
+            <tr>
+            <th><div data-sorton="type">Type{{s('type')}}</div></th>
+            <th><div data-sorton="name">Name{{s('name')}}</div></th>
+            <th><div data-sorton="size">Size{{s('size')}}</div></th>
+            <th><div data-sorton="time">Modified{{s('time')}}</div></th>
+            </tr>
+        </thead>
+        <tbody>
+        {# explorer.path:list[FileDisplay] #}
+        {% for p in explorer.directory_listing %}
+            <tr class="{{'dir' if p.is_dir else 'file'}}" data-name="{{p.name}}">
+                <td>{{p.icon|safe}}</td>
+                <td>{{p.name}}</td>
+                <td>{{p.size|human}}</td>
+                <td>{{p.mtime.strftime('%Y-%m-%d %H:%M:%S')}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endmacro %}
+{# type: mountpoints:MountPoints, explorer:Explorer #}
+{% macro explorer(mountpoints, explorer) %}
+<div class="container p-2 rounded">
+    <div class="row">
+        <div class="col-3 pt-5 mountpoints">
+            <h4>Mount Points</h4>
+            {% set mp = explorer.mountpoint %}
+            {% for m in mountpoints.mountpoints %}
+                {% set active = m.label == mp %}
+                <div class="row {% if active %}current{% endif %}">
+                    <div class="col-4">
+                        <i class="far fa-folder" style="font-size:2em;"></i>
+                    </div>
+                    <div class="col-8">
+                        <h5 class="w-100">
+                            <a class="btn btn-outline-{% if active %}primary{% else %}secondary{% endif %} w-100"
+                                data-mountpoint="true" href="{{url_for('explorer.change_directory', mountpoint=m.label)}}">
+                                {{m.label}}</a>
+                        </h5>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-9">
+            <div>
+                {{ explorer_table(explorer) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}

@@ -1,0 +1,50 @@
+{% extends base_template %}
+
+{% block title %}About::{{config.APP_NAME}}{% endblock %}
+
+{% block css %}
+{{super()}}
+<style>
+    .about h2, .about h3, .about h4 {
+        text-align: center !important;
+    }
+    /* class="mx-auto w-75 d-block rounded" */
+    .about img {
+        margin-right: auto !important;
+        margin-left: auto !important;
+        width: 75% !important;
+        display: block;
+        border-radius: .25rem !important;
+    }
+</style>
+{{ include_css("print.css") }}
+{% endblock css %}
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="w-75 mx-auto about">
+        {# file generated from `flask turnover about` command #}
+        {% include "about-frag.html" %}
+    </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+{{super()}}
+
+<script>
+//https://docs.mathjax.org/en/v3.2-latest/options/input/tex.html
+    window.MathJax = {
+        tex: {
+            tags: 'ams',
+            inlineMath: [ ['$`','`$'], ["\\(","\\)"] ],
+            displayMath: [             // start/end delimiter pairs for display math
+                ['$$', '$$'],
+                ['\\[', '\\]']
+            ]
+        }
+
+    };
+</script>
+
+{{cdn_js('mathjax')}}
+{% endblock %}

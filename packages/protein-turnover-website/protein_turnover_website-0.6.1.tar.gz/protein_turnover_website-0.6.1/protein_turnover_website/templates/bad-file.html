@@ -1,0 +1,12 @@
+{% extends base_template %}
+
+{% block title %}Error{% endblock %}
+
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <h2>Unable to read data file {{dataid}}</h2>
+    reason: <code>{{error}}</code>
+    <a href="{{request.referrer or '/' }}">Go Back</a>
+</div>
+{% endblock content %}

@@ -1,0 +1,95 @@
+[project]
+name = "protein-turnover-website"
+version = "0.6.1"
+description = "Protein Turnover web pipeline"
+authors = [{ name = "Ian Castleden", email = "ian.castleden@uwa.edu.au" }]
+# using tomllib
+requires-python = ">=3.11"
+readme = "README.md"
+license = "MIT"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = [
+    "Flask>=3.1,<4",
+    "python-dotenv>=1.0.1,<2",
+    "openpyxl>=3.0,<4",
+    "Flask-Login>=0.6,<0.7",
+    "protein-turnover[psutil,unidecode]>=0.6.1,<0.7",
+    "typing-extensions>=4.8,<5",
+    "tomli-w>=1.2.0,<2",
+]
+
+[project.urls]
+Repository = "https://github.com/arabidopsis/protein_turnover_website.git"
+
+[project.scripts]
+turnover = "protein_turnover.__main__:cli"
+
+[project.optional-dependencies]
+cloudflare = [
+    "cloudflare-challenge>=0.1.4",
+]
+install = [
+    "flask-nginx",
+    "gunicorn>=23.0.0,<24",
+]
+gunicorn = [
+    "gunicorn>=23.0.0,<24",
+]
+
+[dependency-groups]
+dev = [
+    "aiosmtpd>=1.4.6",
+    "coverage>=7.10.4",
+    "pytest>=8.4.1",
+    "pytest-cov>=6.2.1",
+    "pytest-mock>=3.14.1",
+]
+markdown = [
+    "markdown>=3.6",
+    "python-markdown-math>=0.8,<0.9",
+]
+
+# [tool.uv.sources]
+# cloudflare-challenge = { path = "../cloudflare-challenge", editable = true }
+
+[tool.hatch.build.targets.sdist]
+include = ["protein_turnover_website"]
+exclude = ["tests/**"]
+
+[tool.hatch.build.targets.wheel]
+include = ["protein_turnover_website"]
+exclude = ["tests/**"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# [tool.mypy]
+# ignore_missing_imports = true
+
+[tool.ruff.lint]
+# lambda expressions
+ignore = ['E731']
+
+[tool.uv.sources]
+protein-turnover = { path = "../protein_turnover", editable = true }
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["protein_turnover_website"]
+omit = [
+    "fabfile.py",
+    "protein_turnover_website/wsgi.py",
+    "protein_turnover_website/wsgi_view.py",
+    "protein_turnover_website/commands.py",
+]

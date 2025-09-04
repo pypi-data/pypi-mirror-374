@@ -1,0 +1,318 @@
+{% extends base_template %}
+
+{% import "explorer.html" as exp %}
+
+{% block title %}Create a Job{% endblock %}
+
+{% block css %}
+{{ include_css("explorer.css") }}
+
+<style>
+    table.count-table {
+        font-size: smaller;
+    }
+
+    table.count-table td {
+        padding: 0;
+    }
+
+    span.norun {
+        color: var(--bs-danger)
+    }
+
+    #pepxml-counts {
+        max-height: 20em;
+        overflow-y: auto;
+    }
+
+    #mzml-file-counts {
+        max-height: 20em;
+        overflow-y: auto;
+    }
+    form#job > .row.files > .col {
+        border: solid rgba(200,200,200,.5) 1px;
+        margin: .2em;
+        padding: .2em;
+        border-radius: .2em;
+    }
+
+    .file-list ul.files > li {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: .8em;
+        word-break: break-all; /* long directory pathnames */
+    }
+    table.file-list tbody tr td:first-child {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: .8em;
+        word-break: break-all; /* long directory pathnames */
+    }
+    .error {
+        color: var(--bs-danger);
+        text-align: center;
+    }
+    #file-explorer table.explorer tr {
+        user-select: none; /* prevent user selecting ... allow only clicking */
+
+    }
+</style>
+{% endblock css %}
+
+{% block dialogs %}
+<div class="modal fade" id="explorer-modal" tabindex="-1" aria-labelledby="pepxml-label" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pepxml-label">Peptide XML/mzML files</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="file-explorer">
+                    {{exp.explorer(mountpoints, explorer)}}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock dialogs %}
+
+{% macro showfile(f) %}
+{% if f.files|length > 0 %}
+<ul class="files">
+    {% for file in f.files %}
+    <li><b>{{f.mountpoint}}</b>:{{f.parent}}/{{file}}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endmacro %}
+
+{% macro enrichmentColumnsName(val) %}
+{% if val == 0 %}labelled Element Count
+{% elif val == 1 %}maxIso
+{% else %}{{val}}
+{% endif %}
+{% endmacro %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <h2>Create a Job</h2>
+    {% if not is_running %}
+    <div class="alert alert-danger text-center" role="alert">
+        The background Job queue is currently not running.
+    </div>
+    {% endif %}
+    {% if message %}
+    <div class="alert alert-warning text-center" role="alert">
+        {{message|safe}}
+    </div>
+    {% endif %}
+    <form id="job" method="POST" action="{{url_for('job.create_job')}}">
+        <div class="row files">
+            <div class="col">
+                <button type="button" class="peptide btn btn-outline-primary d-block mx-auto" id="show-pepxml"
+                    data-bs-toggle="modal"
+                    data-bs-target="#explorer-modal">Peptide List <i class="far fa-file-code"></i></button>
+                <div id="pepxml-pp" class="text-danger mx-auto text-center"></div>
+                <div id="pepxml-file" class="file-list">
+                    {{showfile(pepxmlfiles)}}
+                </div>
+                <div id="pepxml-counts"></div>
+                <input type="hidden" name="pepxmlfiles" id="pepxmlfiles" value='{{pepxmlfiles.todict()|tojson}}' />
+            </div>
+            <div class="col">
+                <button type="button" class="protxml btn btn-outline-primary d-block mx-auto" id="show-protxml"
+                    data-bs-toggle="modal"
+                    data-bs-target="#explorer-modal">Protein Info <i class="far fa-file-code"></i></i></button>
+                <div id="protxml-file" class="file-list">
+                    {{showfile(protxmlfile)}}
+                </div>
+                <div id="protxml-counts"></div>
+                <input type="hidden" name="protxmlfile" id="protxmlfile" value='{{protxmlfile.todict()|tojson}}' />
+            </div>
+            <div class="col">
+                <button type="button" class="mzml btn btn-outline-primary d-block mx-auto" id="show-mzml"
+                    data-bs-toggle="modal"
+                    data-bs-target="#explorer-modal">Spectrum Files <i class="fas fa-list"></i></button>
+                <div id="mzml-files" class="file-list">
+                    {{showfile(mzmlfiles)}}
+                </div>
+                <div id="mzml-file-error"></div>
+                <div id="mzml-file-counts"></div>
+                <input type="hidden" name="mzmlfiles" id="mzmlfiles" value='{{mzmlfiles.todict()|tojson}}' />
+
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-10 offset-1">
+                <div class="form-check mx-auto w-50 mt-2">
+                    <label class="form-check-label me-2">
+                        <input class="form-check-input" type="checkbox" value="yes" name="match_runNames" id="match-runNames"
+                        {% if job.match_runNames %}checked{% endif %}
+                            >
+                            Match spectra to mzML files by file name.
+
+
+                    </label>
+                    <button type="button" class="btn btn-sm btn-outline-primary"
+                                data-bs-title="Matching spectra"
+                                data-bs-toggle="popover"
+                                data-bs-container="body"
+                                data-bs-content="If checked, then spectra names in the peptides file will be matched with the mzML
+                            file *names* and spectrum intensities will only be searched in the matched files."><i class="fas fa-question-circle" ></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-12">
+                <label class="form-label w-100">job name
+                    <input class="form-control" type="text" class="form-control" name="job_name"
+                        value="{{job.job_name}}" required title="job name" minlength="8" />
+                </label>
+                <div class="text-info m-1">The website uses job name to create unique identifiers
+                    so there is a minimum length specification of 8.
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <label class="form-label w-100">retention time tolerance (sec)
+                    <input class="form-control" type="number" class="form-control" name="rtTolerance"
+                        value="{{job.settings.rtTolerance}}" step="1.0" max="inf" min="0"
+                        title="retention time tolerance (sec)" />
+                </label>
+            </div>
+            <div class="col-6">
+                <label class="form-label w-100">m/z tolerance (PPM)
+                    <input class="form-control" type="number" class="form-control" name="mzTolerance"
+                        value="{{job.settings.mzTolerance * 1e6}}" step="5" max="inf" min="0"
+                        title="m/z tolerance (ppm)" />
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label class="form-label w-100">labelled element
+                    <select class="form-select" name="labelledElement">
+                        {% for e in elements %}
+                        <option value="{{e}}" {% if e == job.settings.labelledElement %}selected{% endif %}>{{e}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+            <div class="col-6">
+                <label class="form-label w-100">isotope Number
+                    <select class="form-select" name="labelledIsotopeNumber">
+                        {% for n in atomicProperties[job.settings.labelledElement] %}
+                        <option value="{{n}}" {% if n == job.settings.labelledIsotopeNumber %}selected{% endif %}>
+                            {{n}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label class="form-label w-100">max label enrichment
+                    <input class="form-control" type="number" class="form-control" name="maximumLabelEnrichment"
+                        value="{{job.settings.maximumLabelEnrichment}}" step="0.01" max="1" min="0"
+                        title="max label enrichment" />
+                </label>
+            </div>
+            <div class="col-6">
+                <label class="form-label w-100">retention time correction
+                    <select class="form-select" name="retentionTimeCorrection">
+                        {% for rtc in ['SimpleMedian', 'UseInSample'] %}
+                        <option value="{{rtc}}" {% if rtc == job.settings.retentionTimeCorrection %}selected{% endif %}>
+                            {{rtc}}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label class="form-label w-100">Number of Enrichment Columns
+                    <select class="form-select" name="enrichmentColumns">
+                    {% for val in [0, 1, 10, 15, 20, 25, 30] %}
+                        <option value="{{val}}" {% if val == job.settings.enrichmentColumns %}selected{% endif %}>
+                        {{enrichmentColumnsName(val)}}
+                        </option>
+                    {% endfor %}
+                    </select>
+                    {# <input class="form-control" type="number" class="form-control" name="enrichmentColumns"
+                        value="{{ job.settings.enrichmentColumns }}" min="3" step="1" /> #}
+                </label>
+            </div>
+            <div class="col-6">
+                <label class="form-label w-100">minimum probability cutoff
+                    <input class="form-control" type="number" class="form-control" name="minProbabilityCutoff"
+                        value="{{ job.settings.minProbabilityCutoff }}" min="0.0" max="1.0" step="0.01"
+                        title="minimum peptide prophet probability" />
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                {% if config.WANT_EMAIL > 0  %}
+                <label class="form-label w-100">email me when done
+                    <input class="form-control" type="email" class="form-control" name="email"
+                        {% if config.WANT_EMAIL > 1 %}required{% endif %}
+                        value="{{ job.email or '' }}" placeholder="{{config.MAIL_PLACEHOLDER}}"
+                        title="email me when done" />
+                </label>
+                {% endif %}
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <div class="form-check rounded border p-2 ps-5 w-100">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="yes" name="useObservedMz" id="useObservedMz"
+                        {% if job.useObservedMz %}checked{% endif %}
+                            >
+                            Use observed M/Z.
+                    </label>
+                    {# <i class="fas fa-question-circle text-primary" style="cursor:pointer"
+
+                                data-bs-title="Use Observed M/Z"
+                                data-bs-toggle="popover"
+                                data-bs-container="body"
+                                data-bs-content="....?"></i> #}
+
+                </div>
+            </div>
+            <div class="col-3 offset-6">
+                <button type="submit" class="btn btn-primary">Queue job <i class="fas fa-rocket"></i></button>
+            </div>
+        </div>
+
+    </form>
+
+    <div id="jobby"></div>
+</div>
+{% endblock content %}
+
+{% block js %}
+{{super()}}
+<script>
+    const JobConfig = {
+        check_pepxml_url: "{{url_for('job.check_pepxml')}}",
+        check_protxml_url: "{{url_for('job.check_protxml')}}",
+        check_mzml_url: "{{url_for('job.check_mzml')}}",
+        change_directory_url: "{{url_for('explorer.change_directory')}}",
+        job_index_url: "{{url_for('job.index')}}",
+        atomicProperties: {{ atomicProperties| tojson }}
+    }
+    {% include "explorer.js" %}
+    {% include "create-job.js" %}
+
+</script>
+{% endblock js %}
