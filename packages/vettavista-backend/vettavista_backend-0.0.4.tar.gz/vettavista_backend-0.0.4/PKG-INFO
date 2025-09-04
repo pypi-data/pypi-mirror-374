@@ -1,0 +1,61 @@
+Metadata-Version: 2.4
+Name: vettavista-backend
+Version: 0.0.4
+Summary: Backend for VettaVista - Smart Job Search & Application Assistant
+Project-URL: Homepage, https://github.com/wchen342/VettaVista/tree/master/Backend
+Author-email: Will Chen <wc_public@tuta.io>
+License-Expression: BSD-3-Clause
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9
+Requires-Dist: anthropic[aiohttp]>=0.64.0
+Requires-Dist: demjson3==3.0.6
+Requires-Dist: fastapi==0.116.1
+Requires-Dist: fasttext==0.9.3; sys_platform == 'linux'
+Requires-Dist: huggingface-hub==0.34.4
+Requires-Dist: lingua-language-detector==2.1.1
+Requires-Dist: pandas==2.3.2
+Requires-Dist: platformdirs>=4.3.8
+Requires-Dist: pylatex==1.4.2
+Requires-Dist: pyyaml==6.0.2
+Requires-Dist: rapidfuzz==3.13.0
+Requires-Dist: sentence-transformers==5.1.0
+Requires-Dist: tenacity==9.1.2
+Requires-Dist: uvicorn[standard]>=0.34.0
+Requires-Dist: watchdog>=6.0.0
+Description-Content-Type: text/markdown
+
+# VettaVista Backend
+
+Local Python server that powers VettaVista's AI-driven job search and application enhancement features.
+
+## Overview
+
+This backend component of VettaVista provides:
+- Two-stage job filtering logic
+- AI integration with Claude
+- Resume and cover letter customization
+- Data storage and management
+- Local API endpoints for frontend communication
+
+## Development
+
+### Requirements
+- Python 3.9+
+- `pip` or Poetry for dependency management
+
+### Setup
+
+```bash
+# Install with Poetry
+poetry install
+
+# Or with pip
+pip install -e .
+
+# Run development server
+python modules/server.py
+
+# Build package
+python -m build
+```
