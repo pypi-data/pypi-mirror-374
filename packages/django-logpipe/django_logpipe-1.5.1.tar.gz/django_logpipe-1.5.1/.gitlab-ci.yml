@@ -1,0 +1,74 @@
+variables:
+  ADVERTISED_HOST: "spotify__kafka"
+  ADVERTISED_PORT: "9092"
+  AUTO_CREATE_TOPICS: "true"
+  POSTGRES_HOST_AUTH_METHOD: "trust"
+
+stages:
+  - test
+  - release
+
+services:
+  - spotify/kafka@sha256:cf8f8f760b48a07fb99df24fab8201ec8b647634751e842b67103a25a388981b
+  - postgres:latest@sha256:29e0bb09c8e7e7fc265ea9f4367de9622e55bae6b0b97e7cce740c2d63c2ebc0
+
+cache:
+  key: "$CI_PROJECT_NAME"
+  paths:
+    - $HOME/.cache/pip
+
+include:
+  - component: gitlab.com/thelabnyc/thelab-ci-components/precommit@0.4.0
+    rules:
+      - if: $CI_PIPELINE_SOURCE == "schedule"
+        when: never
+      - if: $CI_COMMIT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true"
+      - if: $CI_COMMIT_TAG && $CI_COMMIT_REF_PROTECTED == "true"
+      - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+  - component: gitlab.com/thelabnyc/thelab-ci-components/publish-gitlab-release@0.4.0
+  - component: gitlab.com/thelabnyc/thelab-ci-components/publish-to-pypi@0.4.0
+
+test:lib:
+  stage: test
+  image: "registry.gitlab.com/thelabnyc/python:${IMAGE}"
+  rules:
+    - if: $CI_COMMIT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true"
+    - if: $CI_COMMIT_TAG && $CI_COMMIT_REF_PROTECTED == "true"
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+  script:
+    - uv sync
+    - uv run tox
+  coverage: '/^TOTAL.+?(\d+\%)$/'
+  parallel:
+    matrix:
+      - IMAGE: py311
+        TOX_SKIP_ENV: "^(?!py311-)"
+      - IMAGE: py312
+        TOX_SKIP_ENV: "^(?!py312-)"
+      - IMAGE: py313
+        TOX_SKIP_ENV: "^(?!py313-)"
+
+test:docs:
+  stage: test
+  image: "registry.gitlab.com/thelabnyc/python:3.13.929@sha256:4a624777eb546e355c4287fb56b89466be1e8ce74e1a25e9d760acb1b902bfef"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+  script:
+    - uv sync
+    - make docs
+
+pages:
+  stage: release
+  image: "registry.gitlab.com/thelabnyc/python:3.13.929@sha256:4a624777eb546e355c4287fb56b89466be1e8ce74e1a25e9d760acb1b902bfef"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true"
+  needs:
+    - test:lib
+  script:
+    - uv sync
+    - make docs
+  artifacts:
+    paths:
+      - public
