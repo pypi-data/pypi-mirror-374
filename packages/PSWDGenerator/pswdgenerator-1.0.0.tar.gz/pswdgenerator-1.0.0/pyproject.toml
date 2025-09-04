@@ -1,0 +1,11 @@
+[build-system]
+requires = ["flit_core >=3.11,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "PSWDGenerator"
+authors = [{name = "Den*Ram"}]
+license = "MIT"
+readme="README.md"
+license-files = ["LICENSE"]
+dynamic = ["version", "description"]
