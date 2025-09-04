@@ -1,0 +1,17 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "eyycheev-gemini-mcp"
+version = "0.1.1"
+description = "uvx wrapper that launches @eyycheev/gemini-mcp (Node) via npx"
+requires-python = ">=3.8"
+dependencies = []
+
+[project.scripts]
+gemini_mcp = "gemini_mcp.cli:main"
+gemini-mcp = "gemini_mcp.cli:main"
+
+[tool.hatch.build]
+include = ["src/gemini_mcp/**"]
