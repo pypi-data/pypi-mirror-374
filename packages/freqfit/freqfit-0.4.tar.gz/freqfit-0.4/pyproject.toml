@@ -1,0 +1,104 @@
+[build-system]
+requires = [
+    "setuptools>=61.2",
+    "setuptools_scm[toml]>=7",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "freqfit"
+description = "Python package for constructing frequentist limits from unbinned data"
+authors = [
+    { name = "" },
+]
+maintainers = [
+    { name = "" },
+]
+readme = "README.md"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Scientific/Engineering",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "h5py>=3.2",
+    "colorlog",
+    "iminuit>=2.31",
+    "matplotlib",
+    "numba>=0.58.1",
+    "numpy>=1.21",
+    "tabulate>=0.9.0",
+    "pyyaml>=6.0.2",
+    "scipy>=1.16.0",
+    "jinja2>=3.1.5",
+]
+dynamic = [
+    "version",
+]
+
+[project.urls]
+Homepage = "https://github.com/cenpa/freqfit"
+"Bug Tracker" = "https://github.com/cenpa/freqfit/issues"
+Discussions = "https://github.com/cenpa/freqfit/discussions"
+Changelog = "https://github.com/cenpa/freqfit/releases"
+
+[tool.setuptools_scm]
+write_to = "src/freqfit/_version.py"
+
+[project.optional-dependencies]
+all = [
+    "freqfit[test]",
+]
+test = [
+    "pre-commit",
+    "pytest>=6.0",
+    "pytest-cov",
+]
+
+[tool.setuptools]
+include-package-data = true
+zip-safe = false
+license-files = [
+    "LICENSE",
+]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = [
+    "src",
+]
+namespaces = false
+
+[tool.setuptools.package-data]
+"*" = [
+    "*.json",
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
+xfail_strict = true
+filterwarnings = ["error", 'ignore:\nPyarrow:DeprecationWarning', 'ignore::UserWarning']
+log_cli_level = "info"
+testpaths = "tests"
+pythonpath = [
+  "src"
+]
+
+[tool.codespell]
+ignore-words-list = "gaus"
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
