@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Relatório de Modelos</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 40px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+        h2 { margin-top: 40px; }
+        h1 { border-bottom: 2px solid #000; padding-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Experiment Report</h1>
+
+    {% for report in reports_by_score %}
+        <h2>Score Target: {{ report.score_target }}</h2>
+
+        <h3>Context Result Statistics</h3>
+        <table>
+            <tr>
+                <th>Context Name</th>
+                <th>Mean</th>
+                <th>Std</th>
+                <th>Median</th>
+                <th>Min</th>
+                <th>Max</th>
+                <th>Mode</th>
+            </tr>
+            {% for model in report.score_described %}
+            <tr>
+                <td>{{ model.context_name }}</td>
+                <td>{{ '%.4f' | format(model.mean) }}</td>
+                <td>{{ '%.4f' | format(model.std) }}</td>
+                <td>{{ '%.4f' | format(model.median) }}</td>
+                <td>{{ '%.4f' | format(model.minimum) }}</td>
+                <td>{{ '%.4f' | format(model.maximum) }}</td>
+                <td>{{ '%.4f' | format(model.mode) }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h3>A/B Test Pipeline</h3>
+        <ul>
+            {% for etapa in report.ab_tests.pipeline_track %}
+            <li>{{ etapa }}</li>
+            {% endfor %}
+        </ul>
+
+        {% if "check_normality_with_shapiro" in report.ab_tests.pipeline_track %}
+            <h3>Shapiro-Wilk</h3>
+            <table>
+                <tr>
+                    <th>Context</th>
+                    <th>Stat</th>
+                    <th>p-value</th>
+                    <th>Normal?</th>
+                </tr>
+                {% for test in report.ab_tests.shapirowilk %}
+                <tr>
+                    {% if test.stat is none and test.p_value is none%}
+                        <td>{{ test.context }}</td>
+                        <td> NaN </td>
+                        <td> NaN </td>
+                        <td>{{ 'Yes' if test.is_normal else 'No' }}</td>
+                    {% else %}
+                        <td>{{ test.context }}</td>
+                        <td>{{ '%.4f' | format(test.stat) }}</td>
+                        <td>{{ '%.4e' | format(test.p_value) }}</td>
+                        <td>{{ 'Yes' if test.is_normal else 'No' }}</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+        
+        {% if "check_homocedasticity_with_levene" in report.ab_tests.pipeline_track %}
+            <h3>Levene</h3>
+            {% if report.ab_tests.levene.stat is none and report.ab_tests.levene.p_value is none%}
+                <p>Stat: NaN |
+                    p-value: NaN |
+                    Homoscedastic: {{ 'Yes' if report.ab_tests.levene.is_homoscedastic else 'No' }}</p>
+            {% else %}
+                <p>Stat: {{ '%.2f' | format(report.ab_tests.levene.stat) }} |
+                p-value: {{ '%.4e' | format(report.ab_tests.levene.p_value) }} |
+                Homoscedastic: {{ 'Yes' if report.ab_tests.levene.is_homoscedastic else 'No' }}</p>
+            {% endif %}
+        {% endif %}
+
+        {% if "perform_bartlett" in report.ab_tests.pipeline_track %}
+            <h3>Bartlett</h3>
+            {% if report.ab_tests.bartlett.stat is none and report.ab_tests.bartlett.p_value is none%}
+                <p>Stat: NaN |
+                p-value: NaN |
+                Homoscedastic: {{ 'Yes' if report.ab_tests.bartlett.is_homoscedastic else 'No' }}</p>
+            {% else %}
+                <p>Stat: {{ '%.2f' | format(report.ab_tests.bartlett.stat) }} |
+                p-value: {{ '%.4e' | format(report.ab_tests.bartlett.p_value) }} |
+                Homoscedastic: {{ 'Yes' if report.ab_tests.bartlett.is_homoscedastic else 'No' }}</p>
+            {% endif %}
+        {% endif %}
+
+        {% if "perform_kurskalwallis" in report.ab_tests.pipeline_track %}
+            <h3>Kruskal-Wallis</h3>
+            {% if report.ab_tests.kurskalwallis.stat is none or report.ab_tests.kurskalwallis.p_value is none%}
+                <p>Stat: NaN |
+                p-value: NaN |
+                Significant: {{ 'Yes' if report.ab_tests.kurskalwallis.is_significant else 'No' }}</p>
+            {% else %}
+                <p>Stat: {{ '%.2f' | format(report.ab_tests.kurskalwallis.stat) }} |
+                p-value: {{ '%.4e' | format(report.ab_tests.kurskalwallis.p_value) }} |
+                Significant: {{ 'Yes' if report.ab_tests.kurskalwallis.is_significant else 'No' }}</p>
+            {% endif %}
+        {% endif %}
+
+        {% if "perform_mannwhitney" in report.ab_tests.pipeline_track %}
+            <h3>Mann-Whitney</h3>
+            <table>
+                <tr>
+                    <th>Comparison</th>
+                    <th>Stat</th>
+                    <th>p-value</th>
+                    <th>Significant?</th>
+                </tr>
+                {% for test in report.ab_tests.mannwhitney %}
+                <tr>
+                    <td>{{ test.context }}</td>
+                    <td>{{ '%.2f' | format(test.stat) }}</td>
+                    <td>{{ '%.4e' | format(test.p_value) }}</td>
+                    <td>{{ 'Yes' if test.is_significant else 'No' }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+
+    {% endfor %}
+
+    <h2>Significance Conclusions</h2>
+    <ul>
+        {% for message in message_about_significancy %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Best Context</h2>
+    <ul>
+        {% for better_context in better_context_by_score %}
+        <li>{{ better_context }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
