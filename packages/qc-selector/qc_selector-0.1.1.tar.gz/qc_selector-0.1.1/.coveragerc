@@ -1,0 +1,13 @@
+[run]
+omit =
+    selector/*/tests/*
+    selector/tests/*
+    selector/__init__.py
+    selector/_version.py
+
+[report]
+show_missing = True
+exclude_also =
+    pragma: no cover
+    raise NotImplementedError
+    if __name__ == .__main__.:
