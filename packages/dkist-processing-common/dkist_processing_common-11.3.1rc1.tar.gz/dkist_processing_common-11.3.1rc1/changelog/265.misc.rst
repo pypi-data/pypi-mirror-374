@@ -1,0 +1,2 @@
+Change classes that inherit from `str` and `Enum` to inherit `StrEnum` instead: BudName, StemName, TaskName.  Convert
+strings to class members where relevant.

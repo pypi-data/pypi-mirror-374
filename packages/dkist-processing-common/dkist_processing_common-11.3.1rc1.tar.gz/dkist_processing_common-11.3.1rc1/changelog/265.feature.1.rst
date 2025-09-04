@@ -1,0 +1,3 @@
+Add `_set_metadata_key_value` method to FitsAccessBase that takes a StrEnum and sets
+a class attribute.  The attribute name is the StrEnum name and the attribute value
+gets the header value with the StrEnum value as key.
