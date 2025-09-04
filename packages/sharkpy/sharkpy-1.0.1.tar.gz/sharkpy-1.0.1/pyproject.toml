@@ -1,0 +1,100 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sharkpy"
+version = "1.0.1"
+description = "A friendly machine learning framework with shark-themed feedback 🦈"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    { name = "Ezz Eldin Ahmed", email = "ezzeldinahmad96@gmail.com" }
+]
+maintainers = [
+    { name = "Ezz Eldin Ahmed", email = "ezzeldinahmad96@gmail.com" }
+]
+keywords = [
+    "machine learning",
+    "data science",
+    "visualization",
+    "education",
+    "model comparison",
+    "automated ml",
+    "reporting"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Education",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
+dependencies = [
+    "pandas>=2.2.3",        # Python 3.13 support added in v2.2.3
+    "numpy>=2.1.0",         # Python 3.13 support added in v2.1.0
+    "scikit-learn>=1.2.0",  # tested safe on 3.11–3.13
+    "matplotlib>=3.6.0",    # 3.6+ supports newer Python versions
+    "seaborn>=0.12.0",      # works with modern pandas/matplotlib
+    "statsmodels>=0.13.0",  # supports 3.11+ cleanly
+    "joblib>=1.2.0",        # 1.2+ tested on Python 3.11+
+    "optuna>=3.0.0",        # modern version with Py 3.11+ support
+    "xgboost>=1.7.0",       # 1.7+ supports Python 3.11+
+    "shapash>=2.3.0",       # 2.3+ tested with 3.11–3.13
+    "python-docx>=0.8.11",  # pure-Python, no issues
+    "docx2pdf>=0.1.8"       # pure-Python, no issues
+]
+
+[project.optional-dependencies]
+full = [
+    "lightgbm>=3.3.2",      # 3.3.2+ required for Python 3.11/3.12
+    "catboost>=1.2"         # 1.2+ stable on Python 3.12/3.13
+]
+dev = [
+    "pytest>=6.0.0",
+    "pytest-cov>=2.12.0",
+    "black>=21.5b2",
+    "flake8>=3.9.0"
+]
+docs = [
+    "sphinx>=4.0.0",
+    "sphinx-rtd-theme>=0.5.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/Ezzio11/sharkpy"
+Documentation = "https://sharkpy.readthedocs.io/"
+Repository = "https://github.com/Ezzio11/sharkpy.git"
+Issues = "https://github.com/Ezzio11/sharkpy/issues"
+Changelog = "https://github.com/Ezzio11/sharkpy/blob/main/CHANGELOG.md"
+
+[tool.hatch.build.targets.wheel]
+packages = ["sharkpy"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests"
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312', 'py313']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+
+multi_line_output = 3
+
