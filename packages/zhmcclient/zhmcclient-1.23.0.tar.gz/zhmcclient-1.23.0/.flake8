@@ -1,0 +1,18 @@
+[flake8]
+
+# Keep in sync with ruff
+max_line_length = 80
+
+# Keep in sync with ruff
+ignore =
+    # unable to detect undefined names (when using wildcard import)
+    F403
+
+exclude =
+    .git,
+    .tox,
+    __pycache__,
+    *.pyc,
+    docs/conf.py,
+    build_doc,
+    dist

@@ -1,0 +1,52 @@
+---
+# HMC inventory file for zhmcclient projects
+#
+# This file defines real HMCs and mocked HMCs (using the zhmcclient mock
+# support) for use by the zhmcclient projects. Their credentials are defined
+# in a corresponding HMC vault file.
+#
+# The format of HMC inventory files is described in
+# https://python-zhmcclient.readthedocs.io/en/master/development.html#hmc-inventory-file
+
+all:
+  hosts:
+
+    HMC1:
+      description: "my dev systems"
+      contact: "John Doe"
+      access_via: "VPN to dev network"
+      ansible_host: "10.11.12.13"
+      cpcs:
+        XYZ1:
+          machine_type: "2964"
+          dpm_enabled: true
+        XYZ2:
+          machine_type: "3906"
+          dpm_enabled: true
+
+    MOCKED_Z16_CLASSIC:
+      description: "Example mocked HMC with a z16 in classic mode"
+      mock_file: "example_mocked_z16_classic.yaml"
+      cpcs:
+        CPC1:
+          machine_type: "3906"
+          dpm_enabled: false
+
+    MOCKED_Z16_DPM:
+      description: "Example mocked HMC with a z16 in DPM mode"
+      mock_file: "example_mocked_z16_dpm.yaml"
+      cpcs:
+        CPC1:
+          machine_type: "3906"
+          dpm_enabled: true
+
+  children:
+
+    default:
+      hosts:
+        MOCKED_Z16_CLASSIC:
+        MOCKED_Z16_DPM:
+
+    dev:
+      hosts:
+        HMC1:
