@@ -1,0 +1,44 @@
+[project]
+  name = "bdd-file-client"
+  version = "0.7.5"
+  description = "BDD 平台文件服务客户端"
+  readme = "README.md"
+  license = "MIT"
+  authors = [{ name = "蔡涛", email = "caitao@zhejianglab.cn" }]
+  requires-python = ">=3.10"
+  classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+  ]
+  dependencies = ["pydantic>=2,<3", "pydantic-settings>=2,<3", "requests>=2,<3"]
+
+[dependency-groups]
+  dev = ["ipython>=8.37.0", "pytest>=8,<9", "rich>=14.0.0"]
+
+[build-system]
+  requires = ["hatchling"]
+  build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+  packages = ["bdd_file"]
+
+[tool.ruff]
+  line-length = 120
+  target-version = "py312"
+
+  [tool.ruff.lint]
+    extend-select = ["I"]
+
+    [tool.ruff.lint.isort]
+      split-on-trailing-comma = false
+      known-first-party = ["bdd_file"]
+
+  [tool.ruff.format]
+    skip-magic-trailing-comma = true
+    line-ending = "lf"

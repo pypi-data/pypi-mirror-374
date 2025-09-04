@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "debug pytest",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "debug test_multipart_upload",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "args": [
+                "test/test_multipart_upload.py::test_multipart_upload"
+            ],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
