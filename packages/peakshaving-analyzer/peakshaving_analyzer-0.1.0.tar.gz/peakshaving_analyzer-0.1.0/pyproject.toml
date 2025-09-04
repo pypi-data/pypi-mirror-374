@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools >= 78.1.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "peakshaving-analyzer"
+version = "0.1.0"
+description = "Peak shaving analysis for industrial load profiles"
+authors = [
+    { name = "Christoph Komanns", email = "c.komanns@gmail.com" },
+    { name = "Florian Maurer", email = "fmaurer@disroot.org" }]
+readme = "README.md"
+license = "MIT"
+keywords = ["peak shaving", "energy framework", "energy optimization", "optimization"]
+
+classifiers=[
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy >=1.26.4",
+    "python-dateutil >=2.8.2",
+    "sqlalchemy >=2.0.9",
+    "pandas >=2.0.0",
+    "psycopg2-binary >=2.9.5",
+    "pyyaml >=6.0",
+    "pyyaml-include >=2.2a",
+    "fine >=2.4.1",
+    "pyomo >=6.8.0",
+    "pgeocode >=0.5.0",
+    "highspy",
+    "gurobipy",
+    "argcomplete",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff >=0.11.5",
+    "build >=1.2.2",
+]
+
+[project.scripts]
+psa = "psa_cli.main:cli"
+
+[project.urls]
+Issues = "https://github.com/assume-framework/assume/issues"
+Repository = "https://github.com/NOWUM/peakshaving-analyzer"
+
+[tool.setuptools.packages.find]
+exclude = ["data*", "examples*", "docker_configs*"]
+include = ["peakshaving_analyzer*", "psa_cli*"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "G", "PIE"]
+ignore = ["E501", "G004", "E731"]
