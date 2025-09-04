@@ -1,0 +1,23 @@
+Metadata-Version: 2.4
+Name: gztarchiver
+Version: 0.1.0
+Summary: Sri Lankan Gazette Archiver
+Author-email: Yasandu Imanjith <yasanduyaka2005@gmail.com>
+Requires-Python: >=3.7
+Requires-Dist: PyYAML>=6.0.0
+Requires-Dist: scrapy>=2.13.0
+Requires-Dist: google-api-python-client>=2.170.0
+Requires-Dist: google-auth-oauthlib>=1.2.0
+Requires-Dist: google-auth>=2.0.0
+Requires-Dist: requests>=2.32.0
+Requires-Dist: PyPDF2>=3.0.0
+Requires-Dist: pymongo>=4.0.0
+Requires-Dist: pyfiglet>=0.8
+Requires-Dist: termcolor>=2.3.0
+Requires-Dist: PyMuPDF>=1.26.3
+Requires-Dist: protobuf<6.0,>=3.20.2
+Requires-Dist: packaging<25,>=21
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
