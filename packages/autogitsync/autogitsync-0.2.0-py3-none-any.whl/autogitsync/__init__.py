@@ -1,0 +1,142 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import os
+import sys
+import time
+from pathlib import Path
+from typing import Optional
+
+import click
+from git import Repo, GitCommandError, InvalidGitRepositoryError, NoSuchPathError  # type: ignore
+from rich.console import Console
+from rich.panel import Panel
+from rich.text import Text
+
+console = Console()
+
+
+def _print(msg: str | Panel, *, verbose: bool, style: Optional[str] = None) -> None:
+    if verbose:
+        console.print(msg, style=style)
+
+
+def _find_remote(repo: Repo) -> Optional[str]:
+    names = [r.name for r in repo.remotes]
+    if not names:
+        return None
+    return "origin" if "origin" in names else names[0]
+
+
+@click.command(context_settings={"help_option_names": ["-h", "--help"]})
+@click.argument(
+    "path",
+    type=click.Path(file_okay=False, dir_okay=True, exists=True, path_type=Path),
+    metavar="REPO_PATH",
+)
+@click.option(
+    "--interval",
+    type=click.IntRange(min=1),
+    default=60,
+    show_default=True,
+    metavar="SECONDS",
+    help="How often (in seconds) to attempt syncing.",
+)
+@click.option(
+    "--verbose/--quiet",
+    default=True,
+    show_default=True,
+    help="Turn logging on/off.",
+)
+@click.option(
+    "--amend",
+    is_flag=True,
+    default=False,
+    help="Amend first sync commit with subsequent changes.",
+)
+@click.option(
+    "--message",
+    "-m",
+    default="Auto sync commit",
+    show_default=True,
+    metavar="MSG",
+    help="Commit message to use.",
+)
+def gitsync(
+    path: Path, interval: int, verbose: bool, amend: bool, message: str
+) -> None:
+    """Automatically sync outgoing local changes into a git repository."""
+    try:
+        repo_folder = path.resolve()
+        os.chdir(repo_folder)
+        repo = Repo(repo_folder)
+    except InvalidGitRepositoryError:
+        console.print(f"[red]Not a valid repo:[/red] {path}")
+        sys.exit(1)
+    except NoSuchPathError:
+        console.print(f"[red]Not a valid path:[/red] {path}")
+        sys.exit(1)
+
+    start_msg = Text(f"gitsync starting at {repo_folder}", style="bold")
+    _print(Panel(start_msg, title="GitSync", expand=False), verbose=verbose)
+
+    remote_name = _find_remote(repo)
+    if remote_name is None:
+        console.print(
+            "[red]Error:[/red] No Git remotes configured for this repository."
+        )
+        sys.exit(2)
+
+    _print(
+        f"Using remote [bold]{remote_name}[/bold]. Press Ctrl+C to stop.",
+        verbose=verbose,
+    )
+
+    first_commit = True
+    while True:
+        try:
+            if not repo.is_dirty(untracked_files=True):
+                _print("No new changes to sync.", verbose=verbose)
+                time.sleep(interval)
+                continue
+
+            repo.index.add("*")  # type: ignore
+
+            will_amend = amend and not first_commit
+            if will_amend:
+                try:
+                    repo.git.commit("--amend", "-m", message)
+                except GitCommandError as exc:  # Regular commit if amending fails.
+                    _print(
+                        f"Amending failed, doing a regular commit instead.\n{exc}",
+                        verbose=verbose,
+                    )
+                    repo.index.commit(message)
+                    will_amend = False
+            else:
+                repo.index.commit(message)
+                first_commit = False
+
+            push_info_list = repo.remote(remote_name).push(
+                force=amend and not first_commit
+            )
+            push_info_list.raise_if_error()
+
+            _print(
+                "Amended changes." if will_amend else "Pushed changes.",
+                verbose=verbose,
+                style="green",
+            )
+
+        except KeyboardInterrupt:
+            _print("\nStopping autogitsync. Bye!", verbose=True)
+            break
+        except Exception as exc:
+            _print(f"Sync failed: {exc!s}", verbose=verbose, style="red")
+            sys.exit(3)
+
+        time.sleep(interval)
+
+
+if __name__ == "__main__":
+    gitsync()
