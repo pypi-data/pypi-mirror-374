@@ -1,0 +1,227 @@
+import numpy as np
+from ase.atoms import Atoms
+from pytest import raises
+
+from wfl.configset import ConfigSet, OutputSpec
+from wfl.select.by_descriptor import greedy_fps_conf_global, prep_descs_and_exclude, write_selected_and_clean
+
+ref_array = np.array(
+    [[0.0811798824414939, 3.376462146801568e-41, 4.517906904815916e-09, 5.071838824434324e-40, 7.738483955606834e-09, 0.13748622689157006, -3.951900406740839e-38, 7.103500926875331e-06, -8.682219818541645e-37, 1.2169409518976006e-05, 0.11642331829257838, 7.590201060616165e-34, 0.005584414090015234, 1.4074995901471532e-33, 0.009568704898790241, 0.360771892485311, -2.679254513044637e-39, -8.998607882003368e-07, 5.542588813452849e-37, 4.995628627914309e-06, 0.43204449140420054, -7.489909576306544e-34, -0.0010002011717865455, -6.843062563404267e-34, 0.005557948617873647, 0.8016540212486514, 3.909074795435546e-34, 0.0006133494064842332, 9.30924610492094e-34, 0.007686211095334954, 0.010159298697305523, -1.6745340706528977e-39, 2.1099761588375965e-08, 2.966699164637416e-39, -1.3245870822139012e-07, 0.012166327616222024, -8.573614441742837e-36, 2.3450352415720044e-05, -1.1365815035181793e-35, -0.00014733813823422073, 0.03192515452593199, 5.787189748176415e-36, -2.6793459382971976e-05, -8.082357358351495e-36, -0.00019768205457215617, 0.0006356953651383872, 2.60496367271047e-37, 4.056614601728433e-06, 2.8347551837163097e-37, 2.267969717555951e-05, 0.0],
+ [0.09869445227987941, 4.224142798929791e-40, 2.800564966944415e-09, 3.1622524703139977e-40, 1.3565847510980702e-08, 0.16859070548439223, 3.903363973006478e-37, 4.403829972768077e-06, 1.5136643994208085e-38, 2.133623585124315e-05, 0.14399404079533842, 4.281690267546252e-34, 0.003462465460637143, 4.536144155358786e-34, 0.016778714753339165, 0.3864533096956036, 9.904057841956735e-38, 9.41578377326268e-07, 1.1465709860179672e-37, 1.7121370878393617e-05, 0.4667914794184222, -5.727108835857146e-34, 0.001047332141117763, 1.786762829204814e-34, 0.01904294769256722, 0.7566086903809327, 2.1856657831255185e-33, 0.0009596588287229952, 2.9203922609720108e-34, 0.0144706611156529, 0.007282712177015185, -1.2471102245846256e-38, -1.2005853424820726e-07, -8.134456319722061e-39, -4.929704992747862e-07, 0.008796684893099132, 9.601110190320411e-36, -0.0001335082812434318, -1.8306996200868994e-36, -0.0005482341259596412, 0.02016426695362631, -4.6514116358930917e-35, -6.992781078229031e-05, -5.766703803273733e-36, -0.0003996242790621959, 0.00026869745678733526, 8.743734214196158e-37, 6.119764679105014e-06, 2.079965029619776e-37, 1.6072585915681598e-05, 0.0],
+ [0.089062052374824, 5.948999630811735e-42, 2.425213811616283e-09, 1.016258980995514e-39, 7.232618530163144e-09, 0.11368762689012003, -8.351452618322874e-39, 3.813535395550753e-06, -4.741648084692445e-37, 1.137066238506708e-05, 0.07256107490938948, 1.6125593679665155e-35, 0.0029983031718003096, 4.596953896708704e-34, 0.008938118058367627, 0.3862682259468972, -3.1718648328175765e-38, 6.288657526474827e-07, -6.289062239515208e-37, -4.941232072338743e-06, 0.34865386933718123, -1.1609835125941987e-34, 0.0006995034631002862, 4.288809095281958e-34, -0.005483267720662427, 0.8376358864279881, 2.3299039595346505e-33, 0.0006543843239083901, 9.225897730068128e-34, 0.022175471752303614, 0.008802779972072036, -2.3198479495341318e-40, -1.2770235360051541e-07, -1.20115124437527e-39, -7.599520093579786e-08, 0.007945575359358427, -2.937011862217466e-36, -0.00014200276417263333, 5.8812782952178745e-36, -8.463528299650167e-05, 0.02699610663131433, 2.0040786824542713e-35, -5.757979296039076e-05, 3.845451193027072e-36, -0.00042074017506427505, 0.0004350277877641694, 5.6500659673069204e-37, 2.0445572214708235e-05, 3.5551316316915285e-37, 8.032683111898535e-06, 0.0],
+ [0.08454743624233088, 1.9375925995704764e-41, 1.2066741326489792e-08, 3.1909498332955195e-40, 7.0213245291262185e-09, 0.11055500649364133, -2.2447470450002407e-38, 1.8972901728210022e-05, 1.7490156195065733e-37, 1.1034759417064984e-05, 0.07228137246987042, 1.8691760498722348e-34, 0.014915833163141988, 3.3950029332578023e-34, 0.008671150189745156, 0.3773663570887812, 6.734241135000723e-38, -1.2873117536055774e-06, -5.648513213027999e-38, -1.58592788076369e-05, 0.3489202324255363, 1.034379438336111e-34, -0.001431081658106154, -8.831886675849958e-35, -0.01762322134440483, 0.8421625408858852, 2.1129816215947006e-34, 0.00040180980241931333, 5.599588120723178e-34, 0.02021163073606835, 0.009185559653911848, -4.2089007093754516e-39, 2.843720742203392e-07, -1.4035177648225057e-38, -1.005762160554875e-08, 0.00849314611436737, 1.436638108800154e-35, 0.0003161767828787456, 2.883037882226811e-36, -1.1226169663129714e-05, 0.028990343459351975, -7.18319054400077e-36, 9.453799233994622e-06, -2.7039386827893377e-36, -0.0001302389316127406, 0.0004989773191568927, 1.1428386174490567e-36, 1.1326255474953109e-05, 9.401564069530659e-37, 8.502302000052098e-06, 0.0],
+ [0.09064704915852988, 1.183095712678731e-40, 9.843628517836235e-10, 2.711012859326584e-40, 8.31253653613241e-09, 0.15671371837715262, -8.070943747383114e-38, 1.5480383956900128e-06, -1.946616350111246e-37, 1.3072902552130683e-05, 0.13546601767831776, 7.740720300524372e-35, 0.0012172457180571023, 1.4397043849443793e-34, 0.010279701314542604, 0.37441171914929317, 9.5860156438217e-37, 7.72109911758752e-07, 7.69376938377302e-38, 7.5893171240333335e-06, 0.4577072379840198, -1.0138691216361804e-33, 0.0008587237795889162, -3.1323837953790104e-35, 0.008440790923873676, 0.7732415822558403, 7.31536515685814e-33, 0.0005641101261580024, 2.9037394383988914e-34, 0.005793232029838467, 0.009881486032018284, -1.1504634727629442e-38, -6.327257420182441e-08, 5.21415093779798e-39, -5.673734414246331e-07, 0.01207982402145197, 6.796584208322624e-36, -7.034259391864836e-05, 1.8390889707717677e-36, -0.0006309191155161788, 0.028860445184562388, -9.057581221624619e-35, 1.724594790900176e-05, 5.902882341670673e-36, -0.000285167664703882, 0.0005385931870225926, 8.650639408698594e-37, 1.4105249897779844e-05, 5.828676447369379e-37, 3.0426499736988803e-05, 0.0],
+ [0.08913436033287184, 8.271579951393169e-42, 1.3670611813932206e-09, 6.190947029281806e-40, 3.726898973971221e-09, 0.13147675178678142, 1.4162846963665227e-37, 2.1493637867817973e-06, 3.2016928294888918e-37, 5.857864975555146e-06, 0.09696673760740489, 1.3831490455301616e-33, 0.001689670132927525, 4.9330957154205e-34, 0.004603638636023352, 0.3807484982880831, -2.254781606155658e-38, -4.663229828932496e-07, 4.665286576926746e-37, -6.496359003765247e-06, 0.39712480553130497, -4.747668149921354e-34, -0.0005181140860225365, 4.2555993418954774e-35, -0.007214434078295022, 0.8132072660152762, 2.0509993224017893e-34, 0.0007530302499871954, 3.3475504901958263e-34, 0.017700031829487765, 0.009404261526831636, 7.486579551688708e-40, 1.8758499615601763e-07, 2.1266702518298852e-39, -2.774252262630099e-07, 0.009808746578910503, 7.26039677182122e-36, 0.00020851357521268045, -1.228473571079658e-35, -0.0003081813577849987, 0.0284055202098781, 9.379891481607538e-36, -0.00014625384802851053, -1.9927364244047503e-37, 0.0007985591948825496, 0.0004961057359629127, 8.31066073384587e-37, 2.195098264639471e-05, 5.919266856684643e-37, 3.3533131968171924e-05, 0.0],
+ [0.10418755757288345, 9.402995341912182e-42, 1.9837005087989765e-08, 8.775633697044106e-41, 1.543883802712692e-08, 0.13565714142153518, -6.310313265946267e-39, 3.119063573017204e-05, 1.3999434372051345e-37, 2.4271195103610543e-05, 0.08831601607413073, 1.9454980468549988e-34, 0.024521235790725536, 8.114897934030478e-34, 0.019078215510217968, 0.40989597269633027, 4.64970451174988e-39, -1.1834685737387737e-06, -3.500538045273177e-38, -1.2817095958626381e-05, 0.37738571557348183, 2.92479698659101e-35, -0.0013156900433985872, -2.943617662000846e-34, -0.014241582892278998, 0.8063088930515411, 7.370768249209606e-35, 0.00026632716938546135, 6.409770656628442e-34, 0.01862658256462942, 0.00944701499433062, -3.0721261952633136e-39, 4.45428716983203e-07, 1.3928771336975956e-39, -5.703228596509974e-07, 0.008697739795336105, -2.8907877193050682e-36, 0.0004952171558526162, 1.925513349623556e-36, -0.0006338895544133163, 0.02628072858022728, 2.1468349974250876e-36, -7.18730351773788e-05, -8.008187408913146e-36, 0.0006331775154049662, 0.000428295347266761, 6.50052460804069e-37, 1.585485688087328e-05, 1.3191106178192256e-37, 2.841718588478333e-05, 0.0],
+ [0.15299159155863018, 4.258307359982758e-40, 9.777348976899232e-09, 2.065171089430696e-40, 9.457729519540252e-09, 0.09643541735108273, -1.237870807139638e-37, 1.5372627102966792e-05, 1.7040407189675777e-37, 1.486277125446644e-05, 0.030393139991989677, 3.1791889002014686e-35, 0.01208495606666924, 1.927728701918477e-34, 0.011678385085851565, 0.4991975575571003, 8.814985499631114e-37, -2.8090677895800476e-06, 3.863768731321991e-37, -2.4509187564291954e-05, 0.2224981763402723, -2.887056909808845e-34, -0.003122667132160663, 2.844836626089081e-34, -0.027224877453104288, 0.8144179654980436, 1.414355228457656e-33, 0.001136950525323058, 8.57738761508063e-34, 0.052968910864061226, 0.0091711628355038, 3.198868742608338e-39, 7.310745425456907e-07, 1.4180395027925418e-38, -2.5346883036050055e-07, 0.004087694290423022, -5.8961548663756885e-37, 0.0008127803465279379, 2.0206476552467669e-35, -0.00028182328632339723, 0.021159933371682205, -1.0388463335995261e-36, -0.00015100015415420658, 5.955335114917701e-36, -2.632918008037148e-05, 0.0002748851322430127, 1.8405743398595618e-37, 3.1926936192446454e-05, 1.6931420202231993e-36, 1.7700991302557195e-05, 0.0],
+ [0.0789418657983976, 1.907256873634429e-40, 1.4751699890673517e-09, 5.405630063246819e-40, 1.084739705272695e-08, 0.14534627451116147, -5.226980711899749e-38, 2.3195639247221237e-06, -4.705535659553183e-37, 1.7057485913741874e-05, 0.1338044097426357, 1.3697148171955713e-35, 0.001823646407627478, 1.5441240410051254e-33, 0.013411412387625997, 0.3523598339330882, -7.73261273569931e-38, 1.6852020825902574e-07, -1.5376653385308916e-37, 4.1834995126632376e-06, 0.45874137980343366, -8.83575456975358e-36, 0.00018751525205310752, 1.284099924670149e-34, 0.004652640979666999, 0.7863853439088191, 1.7782262539030225e-34, 0.0003139618962816661, 3.122089605253566e-34, 0.002728853806378153, 0.010969030330434894, 3.733557651356963e-40, -1.579337831496468e-07, 1.8331404159455168e-40, -3.324170653164367e-07, 0.014280708594740019, 7.561366891423738e-36, -0.0001755982948109562, 4.860260857949722e-35, -0.0003696020705052175, 0.034620413394242204, -2.1239794638830725e-35, -7.887376046117315e-06, 2.2386582335884574e-36, -3.14188005031973e-05, 0.0007620774171798392, 4.468093838987747e-36, 8.132226077485412e-05, 1.1823117560992045e-36, 2.0851548590770857e-05, 0.0],
+ [0.08820854166399106, 4.987296553060301e-40, 4.473576441894495e-09, 2.583074160946151e-40, 7.87912252306929e-09, 0.15623077312971365, 1.114564333813644e-37, 7.035317616094792e-06, -2.8651065964446107e-37, 1.2392380129129384e-05, 0.13835425692493922, 7.989604746477685e-35, 0.00553200497962346, 6.245689892671328e-34, 0.009745443455214536, 0.3692564420019142, -1.2393955392007722e-36, 3.6213925640696044e-06, -9.728715098283909e-39, 1.0453285497133275e-05, 0.4624545138334701, 1.118487600268668e-34, 0.004027235768860171, -2.4917963406932613e-34, 0.011625791236749084, 0.7728861479158464, 4.632356691392112e-33, 0.001808984440642151, 7.4608389201472105e-34, 0.00737515526590579, 0.008224548554272636, -3.4133532723042844e-39, -2.664429677875896e-07, -2.128156427749605e-39, -4.802611657993224e-07, 0.010300374402530276, -9.094844963919334e-37, -0.0002962890331840833, -3.4245077145959355e-37, -0.0005341225264785804, 0.02434526519310001, -4.740019198842665e-35, -0.0001473731406960919, 1.6188581923544426e-35, -0.0004562067829964986, 0.0003834277137199389, 5.827461045636747e-37, 8.397039663456514e-06, 9.156268996662133e-37, 2.034328712679663e-05, 0.0]])
+
+
+def calc_desc_fake(configs_in, configs_out, descs, key, per_atom):
+    # fake descriptor calculator for envs with no quippy installed
+    if descs != "soap n_max=4 l_max=4 cutoff=4.0 atom_sigma=0.25 average" or per_atom:
+        raise ValueError("pre-calculated descriptors are not for the given desc, fix your tests")
+
+    for i, at in enumerate(configs_in):
+        at.info[key] = ref_array[i]
+        configs_out.store(at)
+
+    configs_out.close()
+
+    return configs_out.to_ConfigSet()
+
+
+def get_indices(selected_configset):
+    return [at0.info['config_i'] for at0 in selected_configset]
+
+
+def test_greedy_fps_fake_descriptor(tmp_path):
+    
+    greedy_fps(calc_desc_fake, tmp_path)
+
+
+def test_greedy_fps_quippy_descriptor(tmp_path, quippy):
+
+    from wfl.descriptors.quippy import calculate
+    greedy_fps(calculate, tmp_path) # , print_descs=True)
+    
+
+def greedy_fps(calc_desc, tmp_path, print_descs=False):
+
+    rng = np.random.default_rng(5)
+
+    ats = [Atoms('Si4', cell=(2, 2, 2), pbc=[True] * 3, scaled_positions=rng.uniform(size=(4, 3))) for _ in
+           range(10)]
+    for at_i, at in enumerate(ats):
+        at.info['config_i'] = at_i
+
+    ats_desc = calc_desc(ConfigSet(ats),
+                         OutputSpec('test.select_greedy_FPS.desc.xyz', file_root=tmp_path),
+                         descs='soap n_max=4 l_max=4 cutoff=4.0 atom_sigma=0.25 average', key='desc',
+                         per_atom=False)
+
+    if print_descs:
+        print([at.info["desc"].tolist() for at in ats_desc])
+
+    print('try with desc in Atoms.info no exclude')
+    rng = np.random.default_rng(42)
+    selected_indices = get_indices(greedy_fps_conf_global(
+        ats_desc, OutputSpec('test.select_greedy_FPS.selected_no_exclude.xyz', file_root=tmp_path),
+        num=5, at_descs_info_key='desc', rng=rng))
+    print("real descs no exclude selected_indices", selected_indices)
+    assert selected_indices == [1, 3, 6, 7, 8]
+
+    exclude_list = [list(ats_desc)[1]]
+
+    print('try with desc in Atoms.info')
+    rng = np.random.default_rng(42)
+    selected_indices1 = get_indices(greedy_fps_conf_global(
+        ats_desc, OutputSpec('test.select_greedy_FPS.selected.xyz', file_root=tmp_path),
+        num=5, at_descs_info_key='desc', exclude_list=exclude_list, rng=rng))
+    print("real descs selected_indices", selected_indices1)
+    assert selected_indices1 == [3, 5, 6, 7, 8]
+
+    print('try with desc in separate array')
+    separate_descs = [at.info['desc'] for at in ats_desc]
+    ats = list(ats_desc)
+    for at in ats:
+        del at.info['desc']
+    rng = np.random.default_rng(42)
+    selected_indices2 = get_indices(greedy_fps_conf_global(
+        ats, OutputSpec('test.select_greedy_FPS.selected_separate_array.xyz', file_root=tmp_path),
+        num=5, at_descs=separate_descs, exclude_list=exclude_list, rng=rng))
+    print("separate selected_indices", selected_indices2)
+    assert selected_indices2 == [3, 5, 6, 7, 8]
+
+    # test output being done
+    selected_indices2_from_output = get_indices(greedy_fps_conf_global(
+        ats[::-1],  # this changes the indices, so if the calculation is performed then this should fail
+        outputs=OutputSpec('test.select_greedy_FPS.selected_separate_array.xyz', file_root=tmp_path),
+        num=5, at_descs=separate_descs, exclude_list=exclude_list, rng=rng))
+    assert selected_indices2_from_output == selected_indices2
+
+    # test if errors are raised
+    with raises(RuntimeError, match="Asked for 20 configs but only 10 are available"):
+        _ = greedy_fps_conf_global(inputs=ats_desc, outputs=OutputSpec("dummy.xyz", file_root=tmp_path),
+                                   num=20, at_descs_info_key='desc', rng=rng)
+
+
+def test_write_selected_and_clean():
+    cfs_in = ConfigSet([Atoms('Si', cell=[i, i, i]) for i in range(3)])
+    cfs_out = OutputSpec()
+
+    # expected errors
+    with raises(RuntimeError, match=r".*Got False.*"):
+        write_selected_and_clean(cfs_in, cfs_out, [1, 2], keep_descriptor_info=False)
+    with raises(AssertionError):
+        write_selected_and_clean(cfs_in, cfs_out, [1, 1])
+
+    # deleting the keys
+    for at in cfs_in:
+        at.info["dummy_desc"] = 'dummy'
+    write_selected_and_clean(cfs_in, cfs_out, [0, 1], "dummy_desc", False)
+
+    for at in cfs_out.to_ConfigSet():
+        assert "dummy_desc" not in at.info.keys()
+
+
+def test_prep_descs_and_exclude():
+    cfs_in = ConfigSet([Atoms('Si') for _ in range(3)])
+
+    with raises(AssertionError):
+        _ = prep_descs_and_exclude(cfs_in, "None", "None", "None")
+
+
+def test_speed(tmp_path):
+    import time
+
+    rng = np.random.default_rng(5)
+    ats_desc = [Atoms('Si4', cell=(2, 2, 2), pbc=[True] * 3, scaled_positions=rng.uniform(size=(4, 3))) for _ in
+                range(10000)]
+    for at_i, at in enumerate(ats_desc):
+        at.info['config_i'] = at_i
+        at.info['desc'] = rng.uniform(size=50)
+        at.info['desc'] /= np.linalg.norm(at.info['desc'])
+
+    rng = np.random.default_rng(42)
+    t0 = -time.perf_counter()
+    selected = greedy_fps_conf_global(ats_desc,
+                                      OutputSpec('test.select_greedy_FPS.no_real_desc.selected_O_N_sq.xyz', file_root=tmp_path),
+                                      num=50, at_descs_info_key='desc', O_N_sq=True, rng=rng)
+    t0 += time.perf_counter()
+    print("O_N_sq 50/10000 runtime", t0)
+
+    selected_inds_N_sq = [at.info['config_i'] for at in selected]
+    print("fake descs selected_inds", selected_inds_N_sq)
+
+    rng = np.random.default_rng(42)
+    t0 = -time.perf_counter()
+    selected = greedy_fps_conf_global(ats_desc,
+                                      OutputSpec('test.select_greedy_FPS.no_real_desc.selected_O_N.xyz', file_root=tmp_path),
+                                      num=50, at_descs_info_key='desc', O_N_sq=False, rng=rng)
+    t0 += time.perf_counter()
+    print("O_N 50/10000 runtime", t0)
+
+    selected_inds_N = [at.info['config_i'] for at in selected]
+    print("fake descs selected_inds", selected_inds_N)
+
+    assert selected_inds_N_sq == selected_inds_N
+
+
+def test_prev_excl(tmp_path):
+    rng = np.random.default_rng(5)
+    ats_desc = [Atoms('Si4', cell=(2, 2, 2), pbc=[True] * 3, scaled_positions=rng.uniform(size=(4, 3))) for _ in
+                range(6)]
+    for at_i, at in enumerate(ats_desc):
+        at.info['config_i'] = at_i
+        at.info['desc'] = rng.uniform(size=50)
+        at.info['desc'] /= np.linalg.norm(at.info['desc'])
+
+    descs_prev = []
+    for _ in enumerate(ats_desc):
+        v = rng.uniform(size=50)
+        v /= np.linalg.norm(v)
+        descs_prev.append(v)
+    descs_prev = np.asarray(descs_prev)
+
+    rng = np.random.default_rng(42)
+    no_excl_selected_O_N_2 = get_indices(greedy_fps_conf_global(
+        inputs=ats_desc, outputs=OutputSpec('test.select_greedy_FPS.no_real_desc.no_prev_excl_O_Nsq.xyz', file_root=tmp_path),
+        num=3, at_descs_info_key='desc', O_N_sq=True, rng=rng))
+
+    descs_prev = descs_prev[no_excl_selected_O_N_2]
+
+    rng = np.random.default_rng(42)
+    selected_O_N_2 = get_indices(greedy_fps_conf_global(
+        inputs=ats_desc, outputs=OutputSpec('test.select_greedy_FPS.no_real_desc.prev_excl_O_Nsq.xyz', file_root=tmp_path),
+        num=3, at_descs_info_key='desc', prev_selected_descs=descs_prev, O_N_sq=True, rng=rng))
+    # with previous descriptors specified, the result is not the same
+    assert no_excl_selected_O_N_2 != selected_O_N_2
+
+    rng = np.random.default_rng(42)
+    selected_O_N = get_indices(greedy_fps_conf_global(
+        inputs=ats_desc, outputs=OutputSpec('test.select_greedy_FPS.no_real_desc.prev_excl_O_N.xyz', file_root=tmp_path),
+        num=3, at_descs_info_key='desc', prev_selected_descs=descs_prev, O_N_sq=False, rng=rng))
+    # O_N and O_N_2 are the same
+    assert selected_O_N_2 == selected_O_N
+
+    # make sure that with verbose on, the code runs and the same results is observed
+    rng = np.random.default_rng(42)
+    indices_on2_verbose = get_indices(greedy_fps_conf_global(
+        inputs=ats_desc, outputs=OutputSpec('test.select_greedy_FPS.no_real_desc.prev_excl_O_N1.xyz', file_root=tmp_path),
+        num=3, at_descs_info_key='desc', prev_selected_descs=descs_prev, O_N_sq=True, verbose=True, rng=rng))
+    rng = np.random.default_rng(42)
+    indices_on_verbose = get_indices(greedy_fps_conf_global(
+        inputs=ats_desc, outputs=OutputSpec('test.select_greedy_FPS.no_real_desc.prev_excl_O_N2.xyz', file_root=tmp_path),
+        num=3, at_descs_info_key='desc', prev_selected_descs=descs_prev, O_N_sq=False, verbose=True, rng=rng))
+
+    assert selected_O_N_2 == indices_on2_verbose
+    assert indices_on_verbose == indices_on2_verbose
+
+    rng = np.random.default_rng(42)
+    indices_desc_conversion = get_indices(greedy_fps_conf_global(
+        inputs=ats_desc, outputs=OutputSpec('test.select_greedy_FPS.no_real_desc.prev_excl_O_N3.xyz', file_root=tmp_path),
+        num=3, at_descs_info_key='desc', prev_selected_descs=descs_prev.tolist(), O_N_sq=False, verbose=True, rng=rng))
+
+    assert indices_desc_conversion == indices_on2_verbose

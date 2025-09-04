@@ -1,0 +1,39 @@
+[project]
+
+name = "wfl"
+requires-python = ">=3.9"
+dependencies = [ "click>=7.0", "numpy<2", "ase>=3.22.1", "pyyaml", "spglib",
+                 "docstring_parser", "expyre-wfl", "universalSOAP", "pandas" ]
+readme = "README.md"
+license = { file = "LICENSE" }
+dynamic = ["version"]
+
+[project.scripts]
+    wfl = "wfl.cli.cli:cli"
+    gap_rss_iter_fit = "wfl.cli.gap_rss_iter_fit:cli"
+    dft_convergence_test = "wfl.cli.dft_convergence_test:cli"
+    reactions_iter_fit = "wfl.cli.reactions_iter_fit:cli"
+
+[tool.setuptools.packages.find]
+    include = [ "wfl*" ]
+
+[tool.setuptools.dynamic]
+version = {attr  = "wfl.__version__"}
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "mace-torch",
+    "quippy-ase",
+    "requests",
+    "rdkit==2024.3.3",
+]
+doc = [
+    "sphinx",
+    "sphinx_click",
+    "nbsphinx",
+    "myst_parser",
+    "sphinx_book_theme",
+]
+all = ["wfl[test,doc]"]
+    
