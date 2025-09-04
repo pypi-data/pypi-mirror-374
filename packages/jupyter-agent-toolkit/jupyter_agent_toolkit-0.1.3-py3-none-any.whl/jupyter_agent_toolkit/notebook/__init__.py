@@ -1,0 +1,29 @@
+"""
+Jupyter notebook manipulation toolkit.
+
+This package provides high-level interfaces for working with Jupyter notebooks
+across different storage backends and collaboration systems. It includes transport
+abstractions, session management, cell manipulation utilities, and output handling.
+
+Key Components:
+- NotebookSession: High-level notebook manipulation interface
+- NotebookDocumentTransport: Storage/collaboration backend protocol
+- Factory functions: Automatic transport selection and configuration
+- Cell utilities: Create and manipulate notebook cells
+- Output handling: Process and format notebook execution outputs
+"""
+
+from .factory import make_document_transport
+from .transport import NotebookDocumentTransport
+from .session import NotebookSession
+from .cells import create_code_cell, create_markdown_cell
+from . import utils
+
+__all__ = [
+    "make_document_transport",
+    "NotebookDocumentTransport", 
+    "NotebookSession",
+    "create_code_cell",
+    "create_markdown_cell",
+    "utils",
+]
