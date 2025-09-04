@@ -1,0 +1,16 @@
+"""
+File: /setup.py
+Created Date: Friday July 27th 2025
+Author: Harsh Kumar <fyo9329@gmail.com>
+-----
+Last Modified: Friday July 27th 2025
+Modified By: the developer formerly known as Harsh Kumar at <fyo9329@gmail.com>
+-----
+"""
+
+include README.md
+include LICENSE
+include requirements.txt
+recursive-include lumen_tools *.py
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
