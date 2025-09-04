@@ -1,0 +1,89 @@
+// Auto-generated SystemRDL from Excel
+// Source: mychip.xlsx
+
+addrmap GPIO {
+
+    name = "GPIO Register File";
+    desc = "Register file description for GPIO Factory FPGA";
+    addressing=regalign;
+
+    default accesswidth = 32;
+    default regwidth = 32;
+    default sw = rw;
+    default hw = r;
+
+    reg {
+        field {
+            name = "ENABLE";
+            desc = "Enable GPIO";
+            sw = rw;
+            hw = r;
+            reset = 0x00;
+        } ENABLE[0:0];
+        field {
+            name = "MODE";
+            desc = "Mode Select";
+            sw = rw;
+            hw = r;
+            reset = 0x00;
+        } MODE[3:1];
+    } CRTL_REG @ 0x00;
+
+    reg {
+        field {
+            name = "READY";
+            desc = "Ready flag";
+            sw = r;
+            hw = r;
+            reset = 0x00;
+        } READY[0:0];
+    } STATUS_REG @ 0x04;
+
+};
+
+addrmap UART {
+
+    name = "UART Register File";
+    desc = "Register file description for UART Factory FPGA";
+    addressing=regalign;
+
+    default accesswidth = 32;
+    default regwidth = 32;
+    default sw = rw;
+    default hw = r;
+
+    reg {
+        field {
+            name = "PAUSE";
+            desc = "Pause txn UART";
+            sw = rw;
+            hw = r;
+            reset = 0x00;
+        } PAUSE[0:0];
+        field {
+            name = "START";
+            desc = "Start Txn UART";
+            sw = rw;
+            hw = r;
+            reset = 0x00;
+        } START[3:1];
+    } RESET_REG @ 0x08;
+
+    reg {
+        field {
+            name = "END";
+            desc = "Stop Txn UART";
+            sw = r;
+            hw = r;
+            reset = 0x00;
+        } END[0:0];
+    } STOP_REG @ 0x016;
+
+};
+
+addrmap mychip {
+    GPIO gpio0 @ 0x1000;
+    GPIO gpio1 @ 0x1100;
+    UART uart0 @ 0x2000;
+    UART uart1 @ 0x3000;
+};
