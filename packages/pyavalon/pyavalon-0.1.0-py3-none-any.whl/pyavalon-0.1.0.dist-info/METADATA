@@ -1,0 +1,38 @@
+Metadata-Version: 2.1
+Name: pyavalon
+Version: 0.1.0
+Summary: 
+Author: Mark Baggett
+Author-email: markpbaggett@gmail.com
+Requires-Python: >=3.12,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: click (>=8.2.1,<9.0.0)
+Requires-Dist: fpdf (>=1.7.2,<2.0.0)
+Requires-Dist: requests (>=2.32.4,<3.0.0)
+Requires-Dist: ruff (>=0.12.11,<0.13.0)
+Requires-Dist: tqdm (>=4.67.1,<5.0.0)
+Requires-Dist: weasyprint (>=66.0,<67.0)
+Description-Content-Type: text/markdown
+
+# pyavalon
+
+Tools for doing things in batches in Avalon.
+
+**This is a work in progress.**
+
+## Get File Ids in a Collection
+
+Creates a CSV with `id,label,parent label,derivative`
+
+```
+pyavalon get_file_ids_from_a_collection -c "mk61rh127"
+```
+
+## Add PDFs, Transcripts or Captions to Files
+
+Requires a CSV with `id,filename,label,type`
+
+```
+pyavalon upload_supplemental_files -c test_avalon.csv
+```
