@@ -1,0 +1,19 @@
+include README.md
+include LICENSE
+include pyproject.toml
+
+# Include package data inside weboasis (excluding media files)
+recursive-include weboasis *.js *.txt *.yaml *.yml *.md *.png *.jpg *.jpeg *.svg *.ico
+
+# Include config files
+recursive-include weboasis/config *.yaml *.yml
+
+# Exclude tests and docs from source distribution
+prune tests
+prune docs
+prune logs
+prune scripts
+
+# Keep top-level examples out of sdist
+prune weboasis/examples
+
