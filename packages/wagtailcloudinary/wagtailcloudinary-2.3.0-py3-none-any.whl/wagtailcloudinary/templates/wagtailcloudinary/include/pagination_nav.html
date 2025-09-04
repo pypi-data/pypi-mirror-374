@@ -1,0 +1,26 @@
+{% load i18n %}
+{% load wagtailadmin_tags %}
+
+{% resolve_url linkurl as url_path %}
+
+<nav class="pagination" aria-label="{% trans 'Pagination' %}">
+    <p>&nbsp;</p>
+    <ul>
+        <li class="prev">
+            {% if items.has_previous %}
+                <a href="{{ url_path }}{% querystring p=items.previous_page_number %}">
+                    {% icon name="arrow-left" classname="default" %}
+                    {% trans 'Previous' %}
+                </a>
+            {% endif %}
+        </li>
+        <li class="next">
+            {% if items.has_next %}
+                <a href="{{ url_path }}{% querystring p=items.next_page_number %}">
+                    {% trans 'Next' %}
+                    {% icon name="arrow-right" classname="default" %}
+                </a>
+            {% endif %}
+        </li>
+    </ul>
+</nav>
