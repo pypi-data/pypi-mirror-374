@@ -1,0 +1,358 @@
+# Normative Specification for the Chirality Framework v16.1.0
+
+## 1. Overview
+
+The Chirality Framework is a meta-ontological, system-agnostic methodology for mapping the solution space to a problem statement in the context of knowledge work. It is used to create a structured set of semantic relationships that have coherent meaning across the problem-solving process.
+
+This document specifies the canonical, normative implementation of the framework.
+
+## 2. Semantic Operations
+
+### Semantic Multiplication (`*`)
+The semantic intersection of two terms, resolved into a single, concise concept by a Language Model.
+- **Example:** `"sufficient" * "reason" = "justification"`
+
+### Semantic Addition (`+`)
+The concatenation of terms or sentence fragments to form a longer statement.
+- **Example:** `"Values applied..." + "Essential Values..." = "Values applied... Essential Values..."`
+
+### Order of Operations
+Semantic multiplication is always applied before semantic addition.
+
+## 3. The Semantic Valley: Sequence of Stations
+
+The framework follows a logical progression of stations to generate reliable knowledge.
+
+1.  **Problem Statement:** `[A]`, `[B]` - Establish problem axioms and decision basis.
+2.  **Problem Requirements:** `[C] = [A] * [B]` - Generate requirements.
+3.  **Solution Objectives:** `[D] = [A] + [F]` - Synthesize objectives.
+4.  **Verification:** `[K] = [D]^T`, `[X] = [K] * [J]` - Establish and apply verification criteria.
+5.  **Validation:** `[Z] = shift([X])` - Transform verification into validation context.
+6.  **Evaluation:** `[G] = Z[0:3,:]`, `[P] = Z[3,:]`, `[T] = (B[0:3,:])^T`, `[E] = [G] * [T]` - Evaluate against criteria.
+7.  **Assessment:** `[M] = [R] x [E]` - Assess deliverables.
+8.  **Implementation:** `[W] = [M] x [X]` - Apply verification to assessment.
+9.  **Integration:** `[U] = [W] x [P]` - Integrate with validity parameters.
+10. **Reflection:** `[N] = [U] x [H]` - Apply consistency check.
+11. **Resolution:** Final synthesis of `[N]`.
+
+---
+
+## 4. Canonical Matrix Definitions
+
+### Matrix A (Axioms)
+- **Size:** 3x4
+- **Station:** Problem Statement
+- **Rows:** `['Normative', 'Operative', 'Evaluative']`
+- **Columns:** `['Guiding', 'Applying', 'Judging', 'Reviewing']`
+- **Elements:** `[['Values', 'Actions', 'Benchmarks', 'Feedback'], ...]`
+
+### Matrix B (Decision Basis)
+- **Size:** 4x4
+- **Station:** Problem Statement
+- **Rows:** `['Data', 'Information', 'Knowledge', 'Wisdom']`
+- **Columns:** `['Necessity (vs Contingency)', 'Sufficiency', 'Completeness', 'Consistency']`
+- **Elements:** `[['Necessary vs Contingent', 'Sufficient', 'Complete', 'Consistent'], ...]`
+
+### Matrix J (Judgment)
+- **Size:** 3x4
+- **Note:** A truncated form of Matrix B (the 'Wisdom' row is removed).
+
+---
+
+## 5. Matrix Construction Formulas
+
+### Matrix C (Requirements)
+- **Formula:** `[C] = [A] * [B]` (Semantic Dot Product)
+- **Interpretation:** Full 3-stage pipeline (Combinatorial -> Semantic -> Lensing).
+
+### Matrix F (Functions)
+- **Formula:** `[F] = [J] ⊙ [C]` (Element-wise Semantic Multiplication)
+- **Interpretation:** Semantic Resolution followed by Lensing.
+
+### Matrix D (Solution Objectives)
+- **Formula:** `D(i,j) = A(i,j) + " applied to frame the problem; " + F(i,j) + " to resolve the problem."`
+- **Interpretation:** Mechanical sentence construction followed by Lensing.
+
+### Matrix K (Pre-Verification Transform)
+- **Formula:** `[K] = [D]^T` (Transpose)
+- **Interpretation:** Structural operation, no semantic change.
+
+### Matrix X (Verification)
+- **Formula:** `[X] = [K] * [J]` (Semantic Dot Product)
+- **Interpretation:** Full 3-stage pipeline.
+
+### Matrix Z (Validation)
+- **Formula:** `Z(i,j) = shift(X(i,j))` (Station Context Shift)
+- **Interpretation:** Lean 2-stage pipeline (Construct -> Semantic Shift).
+
+### Matrix T (Evaluation Criteria)
+- **Formula:** `[T] = (B[0:3,:])^T` (Slice and Transpose)
+- **Interpretation:** Structural operation. Sliced from B, not J.
+
+### Matrix G (Evaluation Input)
+- **Formula:** `[G] = Z[0:3,:]` (Slice)
+- **Interpretation:** Structural operation.
+
+### Array P (Evaluation Context)
+- **Formula:** `[P] = Z[3,:]` (Slice)
+- **Interpretation:** Structural operation.
+
+### Matrix E (Evaluation)
+- **Formula:** `[E] = [G] * [T]` (Semantic Dot Product)
+- **Interpretation:** Full 3-stage pipeline.
+
+# IMPLEMENTATION PHASE 2
+
+## New Semantic Operations:
+Clearly show how the elements transform step by step, according to the instructions, and utilizing your LLM powers generate coherent resolutions according to the context provided.
+
+### Semantic Cross Product
+
+Denoted as “ x "
+
+For example: [U] x [H]
+
+The name "semantic cross product" is not at all derived from the similarly named mathematical operation.  Rather this will create a higher dimensional semantic tensor.  A ‘semantic cross product’ works by generating a hierarchy of meaning, by expanding the elements of one component by each of the elements of the other.  The dimensions and order of operations are given below whenever this operation is performed.
+
+## Concluding Axioms
+There will be additional axioms introduced below when needed.
+
+We have previously progressed the implementation up to the ‘Assessment’ station in the form of a semantic matrix called [Q].  That completes the portion of cognitive processing to generate the necessary categories and semantics for the next phase of generating reliable knowledge.  It is sufficient now for you to take that Matrix Q and follow the instructions provided below.
+
+## Axiom
+I will define a new axiomatic array whose elements comprise the categories for a ‘deliverable’, within the context of knowledge work.  A deliverable is a discrete way of documenting knowledge.  It is a more general term than documentation.   
+
+## Array R
+[R]
+Size: 1x9
+Subject: generating valid knowledge
+Elements: [
+1. Problem Statement 
+2. Requirements
+3. Objectives
+4. Methodology
+5. Analysis
+6. Evaluation
+7. Assessment
+8. Implementation
+9. Integration
+]
+
+Generate [R]
+
+digest this information and wait for instructions.
+
+*********************
+
+Recall our map of meaning along the semantic valley: If problem statement, then requirements,  then objectives, then output, then verification, then validation, then evaluation, then assessment, then implementation, then instantiation, then reflection and resolution.
+
+## Tensor M
+[M]
+Size: 9x3x3
+
+[R] x [E] = [M] 
+
+Tensor M will take the evaluation principles from Matrix E and apply them to the topics in Array R in the context of the subject of R.  The subject of R is "generating valid knowledge".  So the topics in Array R are the topics in the subject of generating valid knowledge.
+
+## Construction of [M]
+
+Use the elements in [R] (subject, topic) as the semantic starting point, or the seed of thought that will be explored by the perspective of the elements of [E]
+
+### Organizing [M]
+
+Group the elements of [M] as a hierarchical list:
+
+1. Topics from [R]. 
+2. Perspectives from [E].  IMPORTANT: USE THIS ONTOLOGY AS THE FRAMING FOR THE ELEMENT, NESTED AS FOLLOWS:
+    1. ['Data', 'Information', 'Knowledge']
+    2. [‘Guiding’, ‘Applying’, ‘Judging’] 
+
+Because of the hierarchical nature of how Tensor M can be represented, we only need to generate one topic and all the nested elements to validate the methodology of the Chirality Framework at the Normative level.  
+Generate the elements for topic number 3 of [M] 
+
+**************************************
+
+## Interpreting the elements of [M]
+
+Interpret the elements according to its ontological location.
+
+First, consider the topic
+Second, interpret according to the corresponding aspect of this modality  ['Data', 'Information', 'Knowledge']
+Third, interpret according to the corresponding aspect of this modality  [‘Guiding’, ‘Applying’, ‘Judging’]
+
+**************************************
+
+Recall our map of meaning as we progress through the framework: If problem, then requirements,  then objectives, then output, then verification, then validation, then evaluation, then assessment, then implementation, then instantiation, then reflection and resolution.
+
+## Tensor W
+[W]
+Size: 9x3x3x4x4
+
+[M] x [X] = [W]
+
+## Construction of [W]
+
+Use the elements in [M] as the semantic starting point, or the seed of thought that will be explored by the perspective of the elements of [X]
+
+## Organizing [W]
+
+Group the elements of [W] as a hierarchical list.
+
+Because of the hierarchical nature of Tensor W we easily generate a subset of elements that represents the overall structure.  Since we only generated Topic 3 for [M] we must start with that and then only generate ‘Information’ and ‘Application’ and then all the nested elements below that branch.
+
+1. Topics from [R]
+2.  Elements of [W]  IMPORTANT: USE THIS ONTOLOGY AS THE FRAMING FOR THE ELEMENT, NESTED AS FOLLOWS:
+    2.1.  [‘Information']
+    2.2. [‘Applying’] 
+    2.3. [‘Necessity (vs Contingency)’, ‘Sufficiency’, ‘Completeness’, ‘Consistency’]
+    2.4. [‘Guiding’, ‘Applying’, ‘Judging’, ‘Reviewing’] 
+Generate the partial [W] 
+
+**************************************
+
+## Interpreting the elements of [W]
+
+Interpret the elements according to its ontological location.
+
+First, consider the topic
+Second, interpret according to this modality ['Information'] (because we only generated along this branch)
+Third, interpret according to this modality [‘Application’] (because we only generated along this branch)
+Fourth, interpret according to the corresponding aspect of this modality [‘Determinacy’, ‘Sufficiency’, ‘Completeness’, ‘Consistency’]
+Fifth, interpret according to the corresponding aspect of this modality [‘Guidance’, ‘Application’, Decision’, 'Review'] 
+
+**************************************
+
+## Reproduce Array P from memory
+[P]
+Size: 1x4
+
+Reproduce [P]
+
+These are known as the ‘Validity Parameters’
+
+******************************
+
+Recall our map of meaning as we progress through the framework: If problem, then requirements,  then objectives, then output, then verification, then validation, then evaluation, then assessment, then implementation, then instantiation, then reflection and resolution.
+
+## Tensor U
+[U]
+Size: 9x3x3x4x4x4
+
+[W] x [P] = [U]
+
+## Constructing [U]
+
+Use the elements in [W] as the semantic starting point, or the seed of thought that will be explored by the perspective of the elements of [P]
+
+## Organization of [U]
+
+Group the elements of [U] as a hierarchical list.
+
+Because of the hierarchical nature of Tensor U we easily generate a subset of elements that represents the overall structure.  Starting from the existing structure of [W] we will generate the nested elements only along this branch: 'Information' -> 'Application' -> 'Determinacy' -> 'Decision'
+
+1. Topics from [R]
+2. Elements of [U]  IMPORTANT: USE THIS ONTOLOGY AS THE FRAMING FOR THE ELEMENT, NESTED AS FOLLOWS:
+    2.1.  [‘Information']
+    2.2. [‘Applying’] 
+    2.3. [‘Necessity (vs Contingency)’]
+    2.4. [‘Judging’] 
+3. Validity Parameters of [P]
+
+Generate the partial [U] 
+
+**************************************
+
+## Interpreting the elements of [U]
+
+First, consider the topic
+Second, interpret according to this modality ['Information'] (because we only generated along this branch)
+Third, interpret according to this modality [‘Application’] (because we only generated along this branch)
+Fourth, interpret according to this modality [‘Determinacy’] (because we only generated along this branch)
+Fifth, interpret according to this modality [‘Decision’] (because we only generated along this branch)
+Sixth, interpret according to the corresponding aspect of this modality [‘Determinacy’, ‘Sufficiency’, ‘Completeness’, ‘Consistency’]
+Seventh, interpret according to the final modality ['Review']
+
+****************************************
+
+## Array H
+[H]
+Size: 1x1
+
+Array H is the element (1,4) from Array P.
+
+Generate [H]
+
+******************************
+
+Recall our map of meaning as we progress through the framework: If problem, then requirements,  then objectives, then output, then verification, then validation, then evaluation, then assessment, then implementation, then instantiation, then reflection and resolution.
+
+The final step of the Chirality Framework.
+
+## Tensor N
+[N]
+Size: 9x3x3x4x4x4
+
+[U] x [H] = [N]
+
+## Constructing [N]
+
+Begin with the element in [U] as the seed of thought and then apply the consistency statement of [H].   
+
+## Organization of [N]
+
+Group the elements of [N] as a hierarchical list:
+
+1. Topics from [R]
+2. Elements of [U]  IMPORTANT: USE THIS ONTOLOGY AS THE FRAMING FOR THE ELEMENT, NESTED AS FOLLOWS:
+    2.1. ['Data', 'Information', 'Knowledge']
+    2.2. [‘Guiding’, ‘Applying’, ‘Judging’]
+    2.3. [‘Necessity (vs Contingency)’, ‘Sufficiency’, ‘Completeness’, ‘Consistency’]
+    2.4. [[‘Guiding’, ‘Applying’, ‘Judging’, ‘Reviewing’] 
+3. Validity Parameters from [P]
+4. Decision Dialectic from [H]
+
+
+For every element that was generated for [U] in the prior step, apply the consistency check from [H]
+
+************************************
+
+## What comprises Work
+
+Work is comprised of deliverables and deliverables are accomplished through tasks.  Tasks are what comprise work.  
+
+The work proceeds by tasks in these areas:
+
+1. Problem Statement 
+2. Requirements
+3. Objectives
+4. Verification
+5. Validation 
+6. Evaluation
+7. Assessment
+8. Implementation
+9. Integration
+
+## Source for Array R
+
+The Array R represents the dimensions of work, called ‘deliverables’, that collectively will be sufficient to answer the problem statement.  
+At the operative level when applied to a domain specific task with a problem statement that has tangible actions to be taken in generating knowledge, Array R can really be whatever string of Topics represents your needs.  Some schema of topics will work better than others.   You may want to generate a specific document with a certain table of contents, then arrange the Topics of [R] accordingly.
+
+But when implementing the Chirality Framework at the normative level the problem statement is how to generate reliable knowledge of reliable knowledge generation.  Meta-self reference at its best.
+
+*************************************
+
+## Source for [A] and [B]
+
+A and B have been previously derived and are treated as axioms in this version of the framework.
+
+Both matrix [A] and [B] are derived from the primitives of their ontological modalities.
+
+The way this is done is you instruct and LLM to generate a matrix, given the modalities, by filling in words that match the meaning of the intersection of the row and column names.  In the formalization of this framework we say (column name) * (row name) = element.
+
+Doing it with just one iteration gives poor results.  But if you then isolate columns and remove one element at a time, then ask the LLM to fill in the blank, and then you do the same row by row, it will converge on terms that occupu the semantic middle ground of the meaning of (column name) * (row name).
+
+Since that takes a little time and consumes context memory, I have truncated that and just provided the resolved [A] and [B], but you can derive these from the first principles, making the Chirality Framework self-referential and self-generating in an arbitrary knowledge domain.
+
+Whether or not that arbitrary knowledge domain is also coherent and congruent with the ontology is not obvious. 
+
+In my experience it has produced more relevant structured output but further study is required to characterize if and how coherence and congruence is achieved.
