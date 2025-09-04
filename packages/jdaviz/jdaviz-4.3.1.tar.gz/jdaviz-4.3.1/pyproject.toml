@@ -1,0 +1,193 @@
+[project]
+name = "jdaviz"
+description = "Astronomical data analysis development leveraging the Jupyter platform"
+requires-python = ">=3.11"
+authors = [
+    { name = "JDADF Developers", email = "help@stsci.edu" },
+]
+dependencies = [
+    "packaging",
+    "astropy>=6",
+    "matplotlib>=3.6",
+    "traitlets>=5.0.5",
+    "bqplot>=0.12.45,<0.13",
+    "glue-core>=1.22.0",
+    "glue-jupyter>=0.23.0",
+    "echo>=0.11.0",
+    "ipykernel>=6.19.4",
+    "ipyvue>=1.6",
+    "ipyvuetify>=1.7.0",
+    "ipysplitpanes>=0.1.0",
+    "ipygoldenlayout>=0.3.0",
+    "ipywidgets>=8.0.6",
+    "solara>=1.49.0",
+    "pyyaml>=5.4.1",
+    "specutils>=2.0.0",
+    "specreduce>=1.6.0",
+    "photutils>=2.2",
+    "glue-astronomy>=0.12.0",
+    "asteval>=0.9.23",
+    "idna",
+    "vispy>=0.6.5",
+    "asdf>=2.14.3",
+    "stdatamodels>=1.3",
+    "gwcs>=0.16.1",
+    "regions>=0.6",
+    "scikit-image",
+    "sidecar>=0.5.2",
+    "ipypopout>=2.0.0",
+    "astroquery",
+    "requests",
+    "nbclassic",
+    # pyvo pin can be removed once astroquery's pyvo dep pulls in 1.5.3
+    "pyvo>=1.5.3",
+    "s3fs>=2024.10.0"
+]
+license-files = ["LICENSE.rst", "licenses/IPYFILECHOOSER_LICENSE.rst", "licenses/IMEXAM_LICENSE.txt", "licenses/GINGA_LICENSE.txt", "licenses/TEMPLATE_LICENCE.rst"]
+dynamic = [
+    "version",
+]
+
+[project.readme]
+file = "README.rst"
+content-type = "text/x-rst"
+
+[project.urls]
+Homepage = "https://jdaviz.readthedocs.io/en/latest/"
+
+[project.scripts]
+jdaviz = "jdaviz.cli:_main"
+
+[project.entry-points.jdaviz_plugins]
+default = "jdaviz.configs.default"
+cubeviz = "jdaviz.configs.cubeviz"
+specviz = "jdaviz.configs.specviz"
+mosviz = "jdaviz.configs.mosviz"
+imviz = "jdaviz.configs.imviz"
+
+[project.optional-dependencies]
+all = [
+    "opencv-python",
+    "pysiaf",
+    "strauss",
+    "qtpy",
+    "PySide6",
+    "roman_datamodels>=0.22.0"
+]
+test = [
+    "pytest",
+    "pytest-astropy",
+    "pytest-tornasync"
+]
+docs = [
+    "sphinx-astropy[confv2]>=1.9.1",
+    "sphinx_design"
+]
+roman = [
+    "roman_datamodels>=0.26.0",
+]
+strauss = [
+    "strauss",
+]
+qt = [
+    "qtpy",
+    "PySide6"
+]
+
+[build-system]
+requires = [
+    "setuptools>=61.2",
+    "setuptools_scm"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+zip-safe = false
+include-package-data = true
+
+[tool.setuptools.packages.find]
+namespaces = true
+
+[tool.setuptools.package-data]
+jdaviz = [
+    "data/*",
+    "data/*/*",
+    "*.vue",
+    "*.css",
+    "components/*.vue",
+    "configs/*/*/*/*.vue",
+    "configs/*/*.yaml",
+    "jdaviz_cli.ipynb",
+    "jdaviz_cli_launcher.ipynb",
+]
+"jdaviz.configs.imviz.tests" = [
+    "data/*",
+]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "jdaviz",
+    "docs",
+]
+astropy_header = true
+doctest_plus = "enabled"
+text_file_format = "rst"
+addopts = "--doctest-rst --import-mode=append --ignore-glob='*/jdaviz/qt.py'"
+xfail_strict = true
+filterwarnings = [
+    "error",
+    # This line handles the DeprecationWarning from jupyter_core
+    "ignore:Jupyter is migrating its paths.*:DeprecationWarning:jupyter_core.utils",
+    "ignore:numpy\\.ufunc size changed:RuntimeWarning",
+    "ignore:numpy\\.ndarray size changed:RuntimeWarning",
+    "ignore:Passing unrecognized arguments to super:DeprecationWarning",
+    "ignore:.*With traitlets 4\\.1, metadata should be set using the \\.tag\\(\\) method:DeprecationWarning",
+    "ignore:The unit 'Angstrom' has been deprecated in the VOUnit standard\\. Suggested.* 0\\.1nm\\.",
+    "ignore:((.|\n)*)Sentinel is not a public part of the traitlets API((.|\n)*)",
+    "ignore:'audioop' is deprecated and slated for removal in Python 3.13",
+    "ignore:Parsing dates involving a day of month without a year:DeprecationWarning", # ipykernel<7
+    "ignore::DeprecationWarning:glue",
+    "ignore::DeprecationWarning:asteval",
+    "ignore:::specutils.spectra.spectrum1d",
+    "ignore:use_side_effect is deprecated:DeprecationWarning",
+    "ignore:.*is deprecated and will be removed in Pillow 13.*",
+    "ignore:.*The TestRunner class will be deprecated in a future version.*",
+    "ignore:.*The TestRunnerBase class will be deprecated in a future version.*",
+    # Ignore numpy 2.0 warning, see https://github.com/astropy/astropy/pull/15495
+    # and https://github.com/scipy/scipy/pull/19275
+    "ignore:.*numpy\\.core.*:DeprecationWarning",
+    "ignore:The load_data function is deprecated.*",
+    "ignore:.*Set OBSGEO-L to.*",
+    "ignore:.*path should be string, bytes, os.PathLike or integer, not ndarray",
+    # This warning will not fail in CI, but causes issues running tests locally on Windows so test locally if considering
+    # removing this in the future
+    "ignore:Importing display from IPython.core.display is deprecated since IPython 7.14, please import from IPython.display",
+]
+
+
+[tool.coverage.run]
+omit = [
+    "jdaviz/conftest.py",
+    "jdaviz/*setup_package*",
+    "jdaviz/tests/*",
+    "jdaviz/**/tests/*",
+    "jdaviz/extern/*",
+    "jdaviz/version*",
+    "*/jdaviz/conftest.py",
+    "*/jdaviz/*setup_package*",
+    "*/jdaviz/tests/*",
+    "*/jdaviz/**/tests/*",
+    "*/jdaviz/extern/*",
+    "*/jdaviz/version*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "except ImportError",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "def main\\(.*\\):",
+    "pragma: py{ignore_python_version}",
+    "def _ipython_key_completions_",
+]

@@ -1,0 +1,55 @@
+settings:
+  configuration: mosviz
+  visible:
+    menu_bar: false
+    toolbar: true
+    tray: true
+    tab_headers: false
+  dense_toolbar: false
+  server_is_remote: false
+  context:
+    notebook:
+      max_height: 860px
+toolbar:
+  - g-data-tools
+  - g-subset-tools
+  - g-row-lock
+  - g-coords-info
+tray:
+  - g-metadata-viewer
+  - g-plot-options
+  - g-subset-tools
+  - g-markers
+  - g-gaussian-smooth
+  - g-slit-overlay
+  - g-model-fitting
+  - g-line-list
+  - specviz-line-analysis
+  - export
+  - about
+  - logger
+viewer_area:
+  - container: col
+    children:
+    - container: col
+      children:
+      - container: row
+        children:
+        - container: col
+          viewers:
+          - name: Image viewer
+            plot: mosviz-image-viewer
+            reference: image-viewer
+        - container: col
+          viewers:
+            - name: 2D Spectrum viewer
+              plot: mosviz-profile-2d-viewer
+              reference: spectrum-2d-viewer
+            - name: Spectrum
+              plot: mosviz-profile-viewer
+              reference: spectrum-viewer
+      - container: row
+        viewers:
+        - name: Table viewer
+          plot: mosviz-table-viewer
+          reference: table-viewer

@@ -1,0 +1,83 @@
+name: Release
+
+on:
+  # NOTE: PR trigger is to ensure changes do not break packaging.
+  pull_request:
+  release:
+    types: [released]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-n-publish:
+    name: Build and publish Python 🐍 distributions 📦 to PyPI
+    runs-on: ubuntu-latest
+    if: github.repository == 'spacetelescope/jdaviz'
+
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+      with:
+        fetch-depth: 0
+
+    - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
+      with:
+        python-version: '3.11'
+
+    - name: Install python-build and twine
+      run: python -m pip install build "twine>=3.3" "importlib_metadata!=8.0.0"
+
+    - name: Build package
+      run: python -m build --sdist --wheel .
+
+    - name: List result
+      run: ls -l dist
+
+    - name: Check dist
+      run: python -m twine check --strict dist/*
+
+    - name: Get components for cache key
+      id: date
+      run: |
+        echo "year=$(date +'%Y')" >> $GITHUB_OUTPUT
+        echo "week=$(date +'%V')" >> $GITHUB_OUTPUT
+        echo "day=$(date +'%j')" >> $GITHUB_OUTPUT
+
+    - name: Restore MAST cache
+      id: cache-restore
+      uses: actions/cache/restore@v4
+      with:
+        path: ./
+        key: use-restore-keys-below-to-match-in-priority-order
+        restore-keys: |
+          mast-cache-${{ steps.date.outputs.year }}-${{ steps.date.outputs.week }}-${{ steps.date.outputs.day }}-
+          mast-cache-${{ steps.date.outputs.year }}-${{ steps.date.outputs.week }}-
+          mast-cache-${{ steps.date.outputs.year }}-
+          mast-cache-
+
+    - name: Move cache to working directory
+      run: |
+        # Check if any fits files exist and move them to the working directory
+        if ls ./*.fits 1> /dev/null 2>&1; then
+          mv ./*.fits "/home/runner/work/jdaviz/"
+          echo "Files in working directory:"
+          ls -la "/home/runner/work/jdaviz/"*.fits
+        else
+          echo "No .fits files found in cache - tests will download files as needed"
+        fi
+
+    - name: Test package
+      run: |
+        cd ..
+        python -m venv testenv
+        testenv/bin/pip install pytest pytest-astropy pytest-tornasync jdaviz/dist/*.whl
+        testenv/bin/pytest -p no:warnings --astropy-header --remote-data --pyargs jdaviz
+
+    # NOTE: Do not run this part for PR testing.
+    - name: Publish distribution 📦 to PyPI
+      uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc  # v1.12.4
+      if: github.event_name != 'pull_request'
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_TOKEN }}

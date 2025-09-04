@@ -1,0 +1,198 @@
+name: Build standalone
+
+on:
+  push:
+    branches:
+    - main
+    - 'v*'
+    tags:
+    - 'v*'
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, labeled, unlabeled]
+
+defaults:
+  run:
+    shell: bash {0}
+
+jobs:
+  build_binary_not_osx:
+    runs-on: ${{ matrix.os }}
+    if: (github.repository == 'spacetelescope/jdaviz' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'Build standalone')))
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, windows-latest]
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+      with:
+        fetch-depth: 0
+
+    - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
+      with:
+        python-version: "3.11"
+
+    - uses: ConorMacBride/install-package@v1
+      with:
+          # mirrored from glue-qt
+          #  https://github.com/glue-viz/glue-qt/blob/main/.github/workflows/ci_workflows.yml
+          #  using
+          #   https://github.com/OpenAstronomy/github-actions-workflows/blob/5edb24fa432c75c0ca723ddea8ea14b72582919d/.github/workflows/tox.yml#L175C15-L175C49
+          # Linux PyQt 5.15 and 6.x installations require apt-getting xcb and EGL deps
+          # and headless X11 display;
+          apt: '^libxcb.*-dev libxkbcommon-x11-dev libegl1-mesa libopenblas-dev libhdf5-dev'
+
+    - name: Setup headless display
+      uses: pyvista/setup-headless-display-action@v4
+
+    - name: Install jdaviz
+      run: pip install .[test,qt]
+
+    - name: Install pyinstaller
+      # see https://github.com/erocarrera/pefile/issues/420 for performance issues on
+      # windows for pefile == 2024.8.26
+      # also see https://github.com/widgetti/solara/pull/724
+      # or https://solara.dev/documentation/advanced/howto/standalone (currently unpublished)
+      run: pip install "pyinstaller" "pefile<2024.8.26"
+
+    - name: Create standalone binary
+      env:
+        DEVELOPER_ID_APPLICATION: ${{ secrets.DEVELOPER_ID_APPLICATION }}
+      run: (cd standalone; pyinstaller ./jdaviz.spec)
+
+    - name: Run jdaviz cmd in background
+      run: ./standalone/dist/jdaviz/jdaviz-cli imviz --port 8765 &
+
+    - name: Install playwright
+      run: (pip install playwright; playwright install chromium)
+
+    - name: Install pytest
+      run: pip install pytest-playwright
+
+    - name: Wait for Solara to get online
+      uses: ifaxity/wait-on-action@a7d13170ec542bdca4ef8ac4b15e9c6aa00a6866  # v1.2.1
+      with:
+        resource: tcp:8765
+        timeout: 60000
+
+    - name: Test standalone
+      run: (cd standalone; touch pytest.ini; JUPYTER_PLATFORM_DIRS=1 pytest test_standalone.py --video=on)
+
+    - name: Upload Test artifacts
+      if: github.event_name != 'pull_request'
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+      with:
+        name: test-results-${{ matrix.os }}
+        path: standalone/test-results
+
+    - name: Upload jdaviz standalone (non-OSX)
+      if: github.event_name != 'pull_request'
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+      with:
+        name: jdaviz-standlone-${{ matrix.os }}
+        path: |
+          standalone/dist/jdaviz
+
+  # Do not want to deal with OSX certs in pull request builds.
+  build_binary_osx:
+    runs-on: ${{ matrix.os }}
+    if: (github.repository == 'spacetelescope/jdaviz' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'Build standalone')))
+    strategy:
+      matrix:
+        os: [macos-14]
+    steps:
+    # osx signing based on https://melatonin.dev/blog/how-to-code-sign-and-notarize-macos-audio-plugins-in-ci/
+    - name: Import Certificates (macOS)
+      uses: apple-actions/import-codesign-certs@65cfbc37e1464d733524cb555b724878f278b8c3  # v5.0.2
+      if: ${{ matrix.os == 'macos-14' }}
+      with:
+        p12-file-base64: ${{ secrets.DEV_ID_APP_CERT }}
+        p12-password: ${{ secrets.DEV_ID_APP_PASSWORD }}
+
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+      with:
+        fetch-depth: 0
+
+    - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
+      with:
+        python-version: "3.11"
+
+    - name: Install jdaviz
+      run: pip install .[test,qt]
+
+    - name: Install pyinstaller
+      run: pip install "pyinstaller"
+
+    - name: Create standalone binary
+      env:
+        DEVELOPER_ID_APPLICATION: ${{ secrets.DEVELOPER_ID_APPLICATION }}
+      run: (cd standalone; pyinstaller ./jdaviz.spec)
+
+    - name: Codesign (OSX)
+      if: ${{ matrix.os == 'macos-14' }}
+      run: |
+        cd standalone/dist
+        codesign --deep --force --options=runtime --entitlements ../entitlements.plist --sign ${{ secrets.DEVELOPER_ID_APPLICATION }} --timestamp jdaviz.app
+
+    - name: Create dmg (OSX)
+      # if we do not call always() GHA will && with success()
+      if: ${{ always() && (matrix.os == 'macos-14') }}
+      # it seems ditto (not zip) should be used in combination with notarization
+      # see https://developer.apple.com/forums/thread/116831
+      # but dmg also works
+      # see https://github.com/glue-viz/glue-standalone-apps/blob/main/.github/workflows/build_stable.yml
+      run: |
+        rm -rf standalone/dist/jdaviz
+        hdiutil create -volname "Jdaviz" -srcfolder standalone/dist -ov -format UDZO standalone/dist/jdaviz.dmg
+
+    - name: Notary step + stapling (OSX)
+      if: ${{ matrix.os == 'macos-14' }}
+      run: |
+        output=$(xcrun notarytool submit standalone/dist/jdaviz.dmg --apple-id ${{ secrets.NOTARIZATION_USERNAME }} --team-id ${{ secrets.TEAM_ID }} --wait --password ${{ secrets.NOTARIZATION_PASSWORD }}) || true
+        echo "$output"
+        uuid=$(echo "$output" | awk -F '[ :]+' '/id:/ {print $3; exit}')
+        echo "UUID: $uuid"
+        if [[ $output == *"status: Accepted"* ]]; then
+          echo "Great, notarization succeeded, staple it!"
+          xcrun stapler staple standalone/dist/jdaviz.dmg
+        else
+          echo "Log output for failed notarization: $uuid"
+          xcrun notarytool log --apple-id ${{ secrets.NOTARIZATION_USERNAME }} --team-id ${{ secrets.TEAM_ID }} --password ${{ secrets.NOTARIZATION_PASSWORD }} $uuid || true
+        fi
+
+    - name: Validate app (OSX)
+      if: ${{ matrix.os == 'macos-14' }}
+      run: |
+        spctl -a -vvv -t execute standalone/dist/jdaviz.app
+
+    - name: Run jdaviz cmd in background
+      if: ${{ matrix.os == 'macos-14' }}
+      run: ./standalone/dist/jdaviz.app/Contents/MacOS/jdaviz-cli imviz --port=8765 &
+
+    - name: Install playwright
+      run: (pip install playwright; playwright install chromium)
+
+    - name: Install pytest
+      run: pip install pytest-playwright
+
+    - name: Wait for Solara to get online
+      uses: ifaxity/wait-on-action@a7d13170ec542bdca4ef8ac4b15e9c6aa00a6866  # v1.2.1
+      with:
+        resource: tcp:8765
+        timeout: 60000
+
+    - name: Test standalone
+      run: (cd standalone; touch pytest.ini; JUPYTER_PLATFORM_DIRS=1 pytest test_standalone.py --video=on)
+
+    - name: Upload Test artifacts
+      if: always()
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+      with:
+        name: test-results-${{ matrix.os }}
+        path: standalone/test-results
+
+    - name: Upload jdaviz standalone (OSX)
+      if: ${{ always() && (matrix.os == 'macos-14') }}
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+      with:
+        name: jdaviz-standlone-${{ matrix.os }}
+        path: standalone/dist/jdaviz.dmg

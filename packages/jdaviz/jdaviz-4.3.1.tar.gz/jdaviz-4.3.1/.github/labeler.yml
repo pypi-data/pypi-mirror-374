@@ -1,0 +1,67 @@
+documentation:
+- changed-files:
+  - any-glob-to-any-file:
+    - docs/**/*
+    - licenses/*
+    - notebooks/**/*
+    - .mailmap
+    - .readthedocs.yaml
+    - README.rst
+    - LICENSE.rst
+    - '*.md'
+    - '*.cff'
+
+testing:
+- changed-files:
+  - any-glob-to-any-file:
+    - .github/workflows/*
+    - jdaviz/conftest.py
+    - jdaviz/tests/*
+    - .bandit.yaml
+    - .flake8
+    - codecov.yml
+    - conftest.py
+    - '**/conftest.py'
+    - tox.ini
+
+embed:
+- changed-files:
+  - any-glob-to-any-file:
+    - jdaviz/*.vue
+    - share/**/*
+
+plugin:
+- changed-files:
+  - all-globs-to-any-file:
+    - '**/plugins/**/*'
+    - '!**/plugins/viewers.py'
+
+cubeviz:
+- changed-files:
+  - any-glob-to-any-file:
+    - jdaviz/configs/cubeviz/**/*
+
+imviz:
+- changed-files:
+  - any-glob-to-any-file:
+    - jdaviz/configs/imviz/**/*
+
+mosviz:
+- changed-files:
+  - any-glob-to-any-file:
+    - jdaviz/configs/mosviz/**/*
+
+specviz:
+- changed-files:
+  - any-glob-to-any-file:
+    - jdaviz/configs/specviz/**/*
+
+specviz2d:
+- changed-files:
+  - any-glob-to-any-file:
+    - jdaviz/configs/specviz2d/**/*
+
+rampviz:
+- changed-files:
+  - any-glob-to-any-file:
+    - jdaviz/configs/rampviz/**/*
