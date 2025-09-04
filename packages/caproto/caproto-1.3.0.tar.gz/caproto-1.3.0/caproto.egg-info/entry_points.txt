@@ -1,0 +1,8 @@
+[console_scripts]
+caproto-defaultdict-server = caproto.ioc_examples.pathological.defaultdict_server:main
+caproto-get = caproto.commandline.get:main
+caproto-monitor = caproto.commandline.monitor:main
+caproto-put = caproto.commandline.put:main
+caproto-repeater = caproto.commandline.repeater:main
+caproto-shark = caproto.commandline.shark:main
+caproto-spoof-beamline = caproto.ioc_examples.pathological.spoof_beamline:main
