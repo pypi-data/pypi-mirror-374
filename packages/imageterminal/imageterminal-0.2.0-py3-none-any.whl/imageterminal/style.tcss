@@ -1,0 +1,103 @@
+#upload_button {
+    border: round white;
+    width: 17;
+    height: 3;
+    background: red;
+    margin-top: 2;
+}
+
+#title {
+    text-align: center;
+    text-style: bold;
+    margin-bottom: 2;
+}
+
+Screen {
+    align: center middle;
+}
+
+#main-container {
+    align: center middle;
+    height: 100%;
+    width: 100%;
+}
+
+#selectBt1, #selectBt2, #selectBt3 {
+    border: round white;
+    background: red;
+    margin-top: 1;
+    width: 22;
+    height: 3;
+}
+
+#button-container {
+    align: center middle;
+    height: auto;
+    width: 100%;
+    margin-top: 2;
+}
+
+#PNG, #JPG, #JPEG, #BMP, #WEBP, #AVIF {
+    width: 8;
+    height: 3;
+    border: round white;
+    background: red;
+    margin: 0 1;
+}
+
+#conversionTitle {
+    text-align: center;
+    text-style: bold;
+    margin-bottom: 2;
+    width: 100%;
+}
+
+#bgRemoveTitle {
+    margin-bottom: 2;
+}
+
+#bgRemoveInstructions {
+    margin-top: 1;
+}
+
+#x2, #x3, #x4 {
+    width: 8;
+    height: 3;
+    border: round white;
+    background: red;
+    margin: 0 1;
+}
+
+#res {
+    margin-bottom: 1;
+}
+
+#main-container-scale {
+    align: center middle;
+    height: 100%;
+    width: 100%;
+}
+
+#button-container-scale {
+    align: center middle;
+    height: auto;
+    width: 100%;
+    margin-top: 1;
+}
+
+#scaleDisclaimer {
+    margin-top: 1;
+}
+
+#homeButton {
+    width: 8;
+    height: 3;
+    border: round white;
+    background: red;
+    margin: 0 1;
+    margin-top: 1;
+}
+
+#upload_button, #selectBt1, #selectBt2, #selectBt3, #PNG, #JPG, #JPEG, #BMP, #WEBP, #AVIF, #x2, #x3, #x4, #homeButton, #title {
+    color: white;
+}
