@@ -1,0 +1,189 @@
+Metadata-Version: 2.4
+Name: st-tschart
+Version: 0.1.0
+Summary: A Streamlit component for rendering interactive timeseries charts with CDF integration
+Author-email: Everton Colling <evertoncolling@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/evertoncolling/st-tschart
+Project-URL: Repository, https://github.com/evertoncolling/st-tschart
+Project-URL: Issues, https://github.com/evertoncolling/st-tschart/issues
+Keywords: streamlit,timeseries,chart,visualization,component,cognite,cdf
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: streamlit>=1.28.0
+Dynamic: license-file
+
+# st-tschart
+
+A Streamlit component for rendering interactive timeseries charts with Cognite Data Fusion (CDF) integration.
+
+## Features
+
+- 📊 **Multiple Timeseries Display**: Visualize multiple timeseries on the same chart
+- 🔍 **Interactive Zoom & Pan**: Explore your data with intuitive controls
+- 📈 **Min/Max Bands**: Display aggregated data with min/max visualization
+- 🎨 **Unit Grouping**: Automatically group timeseries with the same units
+- 🌙 **Theme Support**: Inherits Streamlit's light/dark theme
+- ⚡ **CDF Integration**: Direct integration with Cognite Data Fusion
+- 📱 **Responsive Design**: Adapts to different screen sizes
+
+## Installation
+
+```bash
+pip install st-tschart
+```
+
+## Quick Start
+
+```python
+import streamlit as st
+from st_tschart import timeseries_chart
+
+# Basic usage
+result = timeseries_chart(
+    items=[1222, 2323, 3333],  # List of timeseries IDs
+    merge_units=True,           # Group same units on same y-axis
+    show_min_max=True,          # Show min/max bands
+    cdf_token="your-token",     # CDF API token
+    cdf_project="your-project", # CDF project name
+    cdf_base_url="https://api.cognitedata.com",
+    height=600                  # Chart height in pixels
+)
+
+# Access the returned data
+if result:
+    st.write("Selected time range:", result['timerange'])
+    st.write("Timeseries metadata:", result['items'])
+```
+
+## Parameters
+
+### Required Parameters
+
+- `items` (List[Union[int, str]]): List of timeseries IDs to display
+- `cdf_token` (str): CDF API token for authentication
+- `cdf_project` (str): CDF project name
+
+### Optional Parameters
+
+- `merge_units` (bool, default=False): Whether to merge timeseries with the same units on the same y-axis
+- `show_min_max` (bool, default=False): Whether to show min/max bands for aggregated data
+- `cdf_base_url` (str, default="https://api.cognitedata.com"): CDF base URL
+- `height` (int, default=600): Height of the chart in pixels
+- `start_date` (str, optional): Start date for the time range (ISO format)
+- `end_date` (str, optional): End date for the time range (ISO format)
+- `max_data_points` (int, default=1000): Maximum number of data points to fetch per timeseries
+- `key` (str, optional): Unique component key for Streamlit
+
+## Return Value
+
+The component returns a dictionary with two keys:
+
+```python
+{
+    'items': [...],      # List of metadata for the displayed timeseries
+    'timerange': {       # The selected time range
+        'start': '...',  # ISO format timestamp
+        'end': '...'     # ISO format timestamp
+    }
+}
+```
+
+## Development
+
+### Prerequisites
+
+- Node.js and npm
+- Python 3.9+
+- uv (for Python package management)
+
+### Building from Source
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/st-tschart.git
+cd st-tschart
+```
+
+2. Build the component:
+```bash
+./build.sh
+```
+
+3. Test locally:
+```bash
+uv run streamlit run example_app.py
+```
+
+### Project Structure
+
+```
+st-tschart/
+├── st_tschart/
+│   ├── __init__.py           # Python package entry point
+│   └── frontend/             # React frontend
+│       ├── src/
+│       │   ├── components/   # React components
+│       │   ├── services/     # CDF client service
+│       │   ├── hooks/        # React hooks
+│       │   ├── types/        # TypeScript types
+│       │   └── main.tsx      # Frontend entry point
+│       └── package.json      # Frontend dependencies
+├── example_app.py            # Example Streamlit app
+├── build.sh                  # Build script
+├── pyproject.toml           # Python package configuration
+└── README.md                # This file
+```
+
+## Example App
+
+Run the example app to see the component in action:
+
+```bash
+uv run streamlit run example_app.py
+```
+
+The example app demonstrates:
+- How to configure CDF credentials
+- Adding multiple timeseries IDs
+- Adjusting display options
+- Handling the component's return value
+
+## Theme Integration
+
+The component automatically inherits Streamlit's theme colors. It adapts to both light and dark themes without any additional configuration.
+
+## Troubleshooting
+
+### Component not displaying
+
+1. Ensure CDF credentials are correctly provided
+2. Verify timeseries IDs exist in your CDF project
+3. Check browser console for any JavaScript errors
+
+### Build issues
+
+1. Ensure Node.js and npm are installed
+2. Run `npm install` in the frontend directory
+3. Check that uv is installed for Python package management
+
+## License
+
+MIT License - see LICENSE file for details
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Support
+
+For issues and questions, please use the [GitHub Issues](https://github.com/yourusername/st-tschart/issues) page.
