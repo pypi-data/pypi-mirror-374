@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+# tells setup tools to include the data in the coastsat directory
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"*"=["*.kml","*.pkl"]
+
+[project]
+name = "coastsat_package"
+dynamic = ["readme"]
+version = "0.3.4"
+authors = [
+  { name="Sharon Fitzpatrick" },
+]
+# find` directive with `include` or `exclude`
+description = "A packaged version of CoastSat: A Global shoreline mapping tool from satellite imagery"
+dependencies = [ "scikit-image",
+  "earthengine-api>=0.1.304",
+  "jupyterlab>=3.0.0",
+  "geopandas",
+  "matplotlib",
+  "astropy",
+  "tqdm",
+  "importlib-resources",
+  "pyqt5",
+  "scipy",
+  "numpy",
+  "imageio",
+  "scikit-learn"]
+license = { file="LICENSE" }
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/SatelliteShorelines/coastsat_package"
+"Bug Tracker" = "https://github.com/SatelliteShorelines/coastsat_package/issues"
