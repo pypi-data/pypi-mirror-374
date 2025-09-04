@@ -1,0 +1,21 @@
+[project]
+name = "whitepossum"
+version = "0.1.0"
+description = "This package implements differential functions"
+readme = "README.md"
+authors = [
+    { name = "whitepossum", email = "whitepossum@andrewnw.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "twine>=6.1.0",
+]
+
+[tool.maturin]
+module-name = "whitepossum._core"
+python-packages = ["whitepossum"]
+python-source = "src"
+
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
