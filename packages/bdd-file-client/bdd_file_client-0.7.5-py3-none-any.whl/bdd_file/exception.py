@@ -1,0 +1,2 @@
+class BddFileError(Exception):
+    pass
