@@ -1,0 +1,105 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-pagination-widget"
+version = "0.1.1"
+description = "A reusable Django pagination component with modern, clean styling and interactive JavaScript behavior"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+authors = [
+    {name = "Priyesh Shukla", email = "priyesh.shukla070@gmail.com"},
+]
+maintainers = [
+    {name = "Priyesh Shukla", email = "priyesh.shukla070@gmail.com"},
+]
+keywords = ["django", "pagination", "widget", "modern", "javascript"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+dependencies = [
+    "Django>=4.2",
+    "tzdata; platform_system=='Windows'",
+]
+
+[project.urls]
+Homepage = "https://github.com/priyesh-04/django-pagination-widget"
+Documentation = "https://django-pagination-widget.readthedocs.io/"
+Repository = "https://github.com/priyesh-04/django-pagination-widget"
+Issues = "https://github.com/priyesh-04/django-pagination-widget/issues"
+Changelog = "https://github.com/priyesh-04/django-pagination-widget/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+exclude = ["tests*", "docs*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["django_pagination_widget"]
+known_third_party = ["django"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --cov=django_pagination_widget --cov-report=html --cov-report=term-missing"
+testpaths = ["tests"]
+django_settings_module = "tests.settings"
+
+[tool.coverage.run]
+source = ["django_pagination_widget"]
+omit = [
+    "*/tests/*",
+    "*/migrations/*",
+    "*/__pycache__/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
