@@ -1,0 +1,68 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 5 1,15 * *"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    # to fail on error in multiline statements (-e), in pipes (-o pipefail), and on unset variables (-u).
+    shell: bash -euo pipefail {0}
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python: "3.11"
+          - os: ubuntu-latest
+            python: "3.13"
+          - os: ubuntu-latest
+            python: "3.13"
+            pip-flags: "--pre"
+            name: PRE-RELEASE DEPENDENCIES
+
+    name: ${{ matrix.name }} Python ${{ matrix.python }}
+
+    env:
+      OS: ${{ matrix.os }}
+      PYTHON: ${{ matrix.python }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Cache datasets
+        uses: actions/cache@v3
+        with:
+          path: ./ehrapy_data
+          key: dataset-cache-${{ hashFiles('src/ehrdata/dt/dataloader.py', 'src/ehrdata/dt/datasets.py') }}
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          cache-dependency-glob: pyproject.toml
+      - name: run tests using hatch
+        env:
+          MPLBACKEND: agg
+          PLATFORM: ${{ matrix.os }}
+          DISPLAY: :42
+        run: uvx hatch test --cov=ehrdata --cov-report=xml --python ${{ matrix.python }}
+      - name: Upload coverage
+        if: matrix.python == '3.11'
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+      - name: List contents of dataset cache
+        run: ls -lh ./ehrapy_data
