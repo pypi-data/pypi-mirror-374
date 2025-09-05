@@ -1,0 +1,50 @@
+Metadata-Version: 2.1
+Name: tezos-smartpy
+Version: 0.22.0
+Summary: A comprehensive solution for developing, testing, and deploying smart contracts on the Tezos blockchain.
+Author: The SmartPy Team
+Requires-Python: >=3.10,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: requests (>=2.25.1,<3.0.0)
+Description-Content-Type: text/markdown
+
+# SmartPy - Smart Contracts on Tezos
+
+A comprehensive solution for developing, testing, and deploying smart contracts
+on the Tezos blockchain. All in familiar Python syntax.
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.10 or later.
+- Pip (Python package installer)
+
+### Installation
+
+SmartPy is available on the Python Package Index (PyPi). To install it, just run
+the following command in your terminal:
+
+```sh
+pip install tezos-smartpy
+```
+
+If you're using a system with both Python 2 and Python 3, you might need to use
+pip3 instead:
+
+```sh
+pip3 install tezos-smartpy
+```
+
+## Documentation
+
+You can find more detailed documentation and tutorials at the official SmartPy
+documentation site: https://smartpy.io/docs
+
+## License
+
+This project is licensed under the MIT License - see the
+[LICENSE.md](LICENSE.md) file for details.
+
