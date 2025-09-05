@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "railsutra"
+version = "0.1.0"
+description = "Pandas integrated Indian Railways Information Provider"
+authors = [{name="Avinash Gupta", email="avinash11016@gmail.com"}]
+dependencies = ["requests",'bs4','pandas','numpy']
+requires-python = ">=3.8"
+
+[pypi]
+username = "__token__"
+password = "pypi-AgEIcHlwaS5vcmcCJDcxNzI1ZDQ5LTRiMGMtNGNkYS05ZmNiLWNmNDA1OTgyMmE3MQACKlszLCI1ZmM1MWZjYy02YzA5LTQ1NjAtOTA4Ni0yMmUzMGNmOGM2MjgiXQAABiBd8NCeI_C65hFOEo8LtqDdUZepFhvN2r-hQSl1zHaGeg"
