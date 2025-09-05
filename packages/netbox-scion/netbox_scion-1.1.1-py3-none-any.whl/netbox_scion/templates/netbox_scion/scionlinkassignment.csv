@@ -1,0 +1,4 @@
+{% load helpers %}
+ID,ISD-AS,Core,Interface ID,Relationship,Customer ID,Customer Name,Zendesk Ticket,Zendesk URL,Created,Last Updated
+{% for obj in queryset %}{{ obj.pk }},{{ obj.isd_as.isd_as|csvformat }},{{ obj.core|csvformat }},{{ obj.interface_id }},{{ obj.get_relationship_display|csvformat }},{{ obj.customer_id|csvformat }},{{ obj.customer_name|csvformat }},{{ obj.zendesk_ticket }},{{ obj.get_zendesk_url }},{{ obj.created|isodatetime }},{{ obj.last_updated|isodatetime }}
+{% endfor %}
