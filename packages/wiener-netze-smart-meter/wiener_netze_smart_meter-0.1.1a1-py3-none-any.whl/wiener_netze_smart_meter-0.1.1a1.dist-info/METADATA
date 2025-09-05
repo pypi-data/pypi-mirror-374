@@ -1,0 +1,189 @@
+Metadata-Version: 2.4
+Name: wiener-netze-smart-meter
+Version: 0.1.1a1
+Summary: Add your description here
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: pydantic>=2.11.7
+
+# Wiener Netze Smart Meter
+
+A Python client library for the Wiener Netze Smart Meter API with OAuth2 authentication support.
+
+## Features
+
+- 🔐 **OAuth2 Authentication**: Automatic token management with refresh
+- 🧵 **Thread Safe**: Safe for concurrent usage
+- ✅ **Type Safe**: Full type hints with Pydantic models
+- 🧪 **Well Tested**: Comprehensive test coverage
+
+## Installation
+
+```bash
+pip install wiener-netze-smart-meter
+```
+
+## Quick Start
+
+The simplest way to get started is using the `with_auth()` class method with production defaults:
+
+```python
+import asyncio
+from wn_smart_meter import WNClient
+
+async def main():
+    # Create authenticated client (uses production URLs by default)
+    client = WNClient.with_auth(
+        client_id="your-client-id",
+        client_secret="your-client-secret",
+        api_key="your-api-key"
+    )
+    
+    try:
+        # Fetch your metering points
+        metering_points = await client.get_metering_points()
+        
+        for mp in metering_points:
+            print(f"Metering Point: {mp.id}")
+            if mp.device:
+                print(f"  Device: {mp.device.equipment_number}")
+            if mp.consumption_point:
+                print(f"  Address: {mp.consumption_point.address}")
+    
+    finally:
+        await client._session.aclose()
+
+# Run the example
+asyncio.run(main())
+```
+
+## Configuration Options
+
+### Using Environment Variables
+
+For security, it's recommended to use environment variables:
+
+```python
+import os
+from wn_smart_meter import WNClient
+
+client = WNClient.with_auth(
+    client_id=os.getenv("WN_CLIENT_ID"),
+    client_secret=os.getenv("WN_CLIENT_SECRET"),
+    api_key=os.getenv("WN_API_KEY")
+)
+```
+
+### Custom URLs and Advanced Options
+
+For testing, staging environments, or advanced configuration:
+
+```python
+client = WNClient.with_auth(
+    client_id="your-client-id",
+    client_secret="your-client-secret",
+    api_key="your-api-key",
+    base_url="https://staging-api.wienernetze.at/smart-meter/v1/",
+    token_url="https://staging-log.wien.gv.at/auth/realms/logwien/protocol/openid-connect/token",
+    follow_redirects=True  # Additional httpx options
+)
+```
+
+### Advanced Usage with Manual Setup
+
+For full control over the HTTP client:
+
+```python
+import httpx
+from wn_smart_meter import WNClient, LogWienTokenAuth
+
+# Create custom auth instance
+auth = LogWienTokenAuth(
+    token_url="https://log.wien.gv.at/auth/realms/logwien/protocol/openid-connect/token",
+    client_id="your-client-id",
+    client_secret="your-client-secret",
+    api_key="your-api-key"
+)
+
+# Create custom HTTP client with additional configuration
+async with httpx.AsyncClient(
+    base_url="https://api.wienernetze.at/smart-meter/v1/",
+    auth=auth,
+    follow_redirects=True
+) as session:
+    
+    client = WNClient(session)
+    metering_points = await client.get_metering_points()
+```
+
+## API Reference
+
+### WNClient.with_auth()
+
+Create an authenticated client with sensible defaults:
+
+**Parameters:**
+- `client_id` (str): OAuth2 client ID **(required)**
+- `client_secret` (str): OAuth2 client secret **(required)**
+- `api_key` (str): API gateway key **(required)**
+- `base_url` (str): API base URL (default: production URL)
+- `token_url` (str): OAuth2 token endpoint (default: production URL)
+- `**kwargs`: Additional arguments passed to `httpx.AsyncClient` (e.g., `timeout`, `follow_redirects`)
+
+### Default URLs
+
+- **Production API**: `https://api.wienernetze.at/smart-meter/v1/`
+- **Production Auth**: `https://log.wien.gv.at/auth/realms/logwien/protocol/openid-connect/token`
+
+### API Methods
+
+#### `get_metering_points()`
+
+Retrieves all metering points associated with your account.
+
+```python
+metering_points = await client.get_metering_points()
+for mp in metering_points:
+    print(f"ID: {mp.id}")
+    print(f"Device: {mp.device.equipment_number}")
+    print(f"Address: {mp.consumption_point.address}")
+```
+
+## Error Handling
+
+The client provides specific exception types:
+
+```python
+from wn_smart_meter.exceptions import WNAuthException, WNApiException, WNNetworkException
+
+try:
+    metering_points = await client.get_metering_points()
+except WNAuthException as e:
+    print(f"Authentication failed: {e}")
+except WNApiException as e:
+    print(f"API error: {e}")
+except WNNetworkException as e:
+    print(f"Network error: {e}")
+```
+
+## Development
+
+```bash
+# Clone the repository
+git clone https://github.com/leonardstruck/wiener-netze-smart-meter.git
+cd wiener-netze-smart-meter
+
+# Install dependencies with uv
+uv sync
+
+# Run tests
+PYTHONPATH=src uv run python -m pytest
+
+# Run with coverage
+PYTHONPATH=src uv run python -m pytest --cov=wn_smart_meter
+```
+
+## License
+
+This project is licensed under the MIT License.
