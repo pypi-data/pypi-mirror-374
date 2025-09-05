@@ -1,0 +1,90 @@
+docs/man/*.gz
+docs/source/api/generated
+docs/source/config.rst
+docs/gh-pages
+nbclassic/i18n/*/LC_MESSAGES/nbjs.json
+nbclassic/static/components
+nbclassic/static/style/*.min.css*
+nbclassic/static/*/js/built/
+nbclassic/static/*/built/
+nbclassic/static/built/
+nbclassic/static/*/js/main.min.js*
+nbclassic/static/lab/*bundle.js
+node_modules
+*.py[co]
+__pycache__
+*.egg-info
+*~
+*.bak
+.ipynb_checkpoints
+.tox
+.DS_Store
+\#*#
+.#*
+.pytest_cache
+
+*.swp
+*.map
+.idea/
+Read the Docs
+config.rst
+*.iml
+/.project
+/.pydevproject
+
+package-lock.json
+geckodriver.log
+*.iml
+
+# jetbrains IDE stuff
+*.iml
+.idea/
+
+# ms IDE stuff
+*.code-workspace
+.history
+.vscode
+
+# copied changelog
+docs/source/changelog.md
+
+.jupyter_releaser_checkout
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+.vscode/
+
+/build
+/dist
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Sphinx documentation
+docs/_build/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
