@@ -1,0 +1,256 @@
+# samlibs-generate-password (Python)
+
+[![PyPI version](https://badge.fury.io/py/samlibs-generate-password.svg)](https://badge.fury.io/py/samlibs-generate-password)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.6+](https://img.shields.io/badge/python-3.6+-blue.svg)](https://www.python.org/downloads/)
+
+A **lightweight**, **fast**, and **optimized** password generator library for Python. Unlike other libraries that require complex setup, this package provides simple functions that accept configuration parameters to generate secure passwords.
+
+## 🚀 Features
+
+- **Ultra Lightweight**: Zero dependencies and optimized code
+- **Fast Performance**: Efficient character pool generation and selection
+- **Type Hints**: Full type annotations for better IDE support
+- **Cryptographically Secure**: Uses `secrets` module for secure random generation
+- **Flexible API**: Both function parameters and dictionary-based configuration
+- **Character Exclusion**: Exclude specific characters from password generation
+- **Python 3.6+**: Compatible with modern Python versions
+
+## 📦 Installation
+
+```bash
+pip install samlibs-generate-password
+```
+
+## 🔧 Usage
+
+### Basic Usage
+
+```python
+from samlibs_generate_password import generate_password
+
+# Generate a simple password with default settings
+password = generate_password()
+print(password)  # e.g., "K9$mN7#qR2@x"
+
+# Generate password with custom parameters
+custom_password = generate_password(
+    length=16,
+    uppercase=True,
+    lowercase=True,
+    numbers=True,
+    special=False,
+    exclude=['0', 'O', 'l', '1']
+)
+print(custom_password)  # e.g., "KmN7qR2xPzWcJbVn"
+```
+
+### Dictionary API (Node.js Style)
+
+```python
+from samlibs_generate_password import generate_password_dict
+
+# Generate password using dictionary configuration
+password = generate_password_dict({
+    'length': 20,
+    'quantity': 1,
+    'lowercase': True,
+    'uppercase': True,
+    'numbers': True,
+    'special': True,
+    'exclude': ['@', '#', '$']
+})
+print(password)
+```
+
+### Multiple Passwords
+
+```python
+# Generate multiple passwords
+passwords = generate_password(length=12, quantity=5)
+print(passwords)  # List of 5 passwords
+```
+
+### Type Hints Support
+
+```python
+from typing import List
+from samlibs_generate_password import generate_password
+
+# Type hints work perfectly
+single_password: str = generate_password(quantity=1)
+multiple_passwords: List[str] = generate_password(quantity=5)
+```
+
+## ⚙️ Function Parameters
+
+### `generate_password()` Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `length` | `int` | `12` | Length of each password |
+| `quantity` | `int` | `1` | Number of passwords to generate |
+| `lowercase` | `bool` | `True` | Include lowercase letters (a-z) |
+| `uppercase` | `bool` | `True` | Include uppercase letters (A-Z) |
+| `numbers` | `bool` | `True` | Include numbers (0-9) |
+| `special` | `bool` | `True` | Include special characters (!@#$%^&*()_+-=[]{}|;:,.<>?) |
+| `exclude` | `List[str]` | `None` | List of characters to exclude |
+
+### Return Types
+
+- **Single password** (`quantity=1`): Returns `str`
+- **Multiple passwords** (`quantity>1`): Returns `List[str]`
+
+## 📋 Examples
+
+### Character Type Control
+
+```python
+# Only letters and numbers, 16 characters
+password = generate_password(length=16, special=False)
+
+# Only uppercase letters, 8 characters
+password = generate_password(
+    length=8,
+    lowercase=False,
+    numbers=False,
+    special=False
+)
+
+# Only numbers, 6 characters (PIN-like)
+pin = generate_password(
+    length=6,
+    lowercase=False,
+    uppercase=False,
+    special=False
+)
+```
+
+### Exclude Similar Characters
+
+```python
+# Exclude confusing characters like 0, O, l, 1
+password = generate_password(
+    length=12,
+    exclude=['0', 'O', 'l', '1', 'I']
+)
+
+# Database-safe password (no quotes or backslashes)
+db_password = generate_password(
+    length=32,
+    special=False,
+    exclude=['\\\\', '/', '"', "'", '`']
+)
+```
+
+### Batch Generation
+
+```python
+# Generate 10 unique passwords
+passwords = generate_password(length=15, quantity=10)
+for i, pwd in enumerate(passwords, 1):
+    print(f"Password {i}: {pwd}")
+```
+
+### Error Handling
+
+```python
+try:
+    # This will raise ValueError
+    password = generate_password(
+        lowercase=False,
+        uppercase=False,
+        numbers=False,
+        special=False
+    )
+except ValueError as e:
+    print(f"Error: {e}")
+    # Output: Error: At least one character set must be enabled
+```
+
+## 🔒 Security Features
+
+- Uses Python's `secrets` module for cryptographically secure randomness
+- No predictable patterns in password generation
+- Efficient character pool filtering to prevent bias
+- Secure random selection without replacement bias
+
+## 🚀 Performance
+
+This library is optimized for:
+- **Minimal memory footprint** - Zero dependencies
+- **Fast character pool generation** - Efficient string operations
+- **Optimized exclusion filtering** - Set-based operations for O(1) lookups
+- **Bulk generation** - Efficient batch password creation
+
+### Performance Benchmark
+
+```python
+import time
+from samlibs_generate_password import generate_password
+
+# Benchmark: Generate 10,000 passwords
+start_time = time.time()
+passwords = generate_password(length=12, quantity=10000)
+end_time = time.time()
+
+print(f"Generated 10,000 passwords in {(end_time - start_time)*1000:.2f}ms")
+# Typical output: Generated 10,000 passwords in 45.67ms
+```
+
+## 📊 Comparison with Other Libraries
+
+```python
+# Other password libraries
+from other_lib import PasswordGenerator
+generator = PasswordGenerator(length=12, uppercase=True, ...)
+password = generator.generate()
+
+# samlibs-generate-password (simpler and faster)
+from samlibs_generate_password import generate_password
+password = generate_password(length=12, uppercase=True, ...)
+```
+
+## 🧪 Testing
+
+Run the comprehensive test suite:
+
+```bash
+cd samlibs-generate-password-python
+python test.py
+```
+
+The test suite includes:
+- ✅ 25 comprehensive test cases
+- ✅ Error handling validation
+- ✅ Performance benchmarks
+- ✅ Randomness verification
+- ✅ API compatibility tests
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create a feature branch
+3. Add tests for new functionality
+4. Ensure all tests pass
+5. Submit a pull request
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+## 🔗 Links
+
+- [PyPI package](https://pypi.org/project/samlibs-generate-password/)
+- [GitHub repository](https://github.com/themrsami/samlibs-generate-password)
+- [Documentation](https://github.com/themrsami/samlibs-generate-password#readme)
+
+## 🆚 Related Projects
+
+- [samlibs-generate-password (Node.js)](https://www.npmjs.com/package/samlibs-generate-password) - The original JavaScript/TypeScript version
+
+---
+
+Made with ❤️ for Python developers who value simplicity and performance.
