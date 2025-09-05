@@ -1,0 +1,627 @@
+"""WebDataset processor implementation using webshart TarDataLoader."""
+
+import logging
+import threading
+import gc
+import os
+from typing import Dict, Any, List, Optional, Iterator, Set, Deque, Tuple
+from collections import deque, defaultdict
+from pathlib import Path
+import json
+from datetime import datetime
+from PIL import Image
+import io
+
+from caption_flow.storage import StorageManager
+from .base import OrchestratorProcessor, WorkerProcessor, ProcessorConfig, WorkUnit, WorkResult
+from ..utils import ChunkTracker
+
+import webshart
+import cv2
+import numpy as np
+
+logger = logging.getLogger(__name__)
+
+
+class WebDatasetOrchestratorProcessor(OrchestratorProcessor):
+    """Orchestrator processor for WebDataset shards using webshart with ChunkTracker."""
+
+    def __init__(self):
+        logger.info("Initializing WebDatasetOrchestratorProcessor with webshart + ChunkTracker")
+        self.dataset: Optional[webshart.DiscoveredDataset] = None
+        self.chunk_tracker: Optional[ChunkTracker] = None
+        self.chunk_size: int = 1000
+
+        # Work unit management
+        self.work_units: Dict[str, WorkUnit] = {}
+        self.pending_units: Deque[str] = deque()
+        self.assigned_units: Dict[str, Set[str]] = defaultdict(set)
+        self.lock = threading.Lock()
+
+        # Shard info cache
+        self.shard_info_cache: Dict[int, Dict] = {}
+
+        # Background thread for creating work units
+        self.unit_creation_thread: Optional[threading.Thread] = None
+        self.stop_creation = threading.Event()
+        self.min_buffer = 10
+        self.buffer_multiplier = 3
+
+    def initialize(self, config: ProcessorConfig, storage: StorageManager) -> None:
+        """Initialize with webshart dataset discovery and ChunkTracker."""
+        logger.info("Initializing orchestrator with config")
+
+        cfg = config.config
+        dataset_cfg = cfg.get("dataset", {})
+        self.dataset_path = dataset_cfg.get("dataset_path")
+        metadata_path = dataset_cfg.get("metadata_path", None)
+
+        # Chunk settings
+        self.chunk_size = cfg.get("chunk_size", 1000)
+        self.min_buffer = cfg.get("min_chunk_buffer", 10)
+        self.buffer_multiplier = cfg.get("chunk_buffer_multiplier", 3)
+
+        # Cache configuration
+        cache_dir = Path(cfg.get("cache_dir", "./webshart_cache"))
+        cache_dir.mkdir(parents=True, exist_ok=True)
+
+        if self.dataset_path:
+            # Initialize dataset with webshart
+            self.dataset = webshart.discover_dataset(
+                source=self.dataset_path,
+                metadata=metadata_path,
+            )
+
+            # Enable caching for efficient access
+            self.dataset.enable_metadata_cache(location=str(cache_dir / "metadata_cache"))
+            self.dataset.enable_shard_cache(
+                location=str(cache_dir / "shard_cache"),
+                cache_limit_gb=cfg.get("shard_cache_gb", 10.0),
+            )
+
+            logger.info(f"Dataset discovered: {self.dataset.num_shards} shards")
+
+            # Initialize chunk tracker
+            checkpoint_dir = Path(cfg.get("checkpoint_dir", "./checkpoints"))
+            checkpoint_dir.mkdir(parents=True, exist_ok=True)
+            self.chunk_tracker = ChunkTracker(checkpoint_dir / "chunks.json")
+
+            # Restore existing state from chunk tracker
+            self._restore_state(storage)
+
+            # Start background unit creation
+            self.unit_creation_thread = threading.Thread(
+                target=self._create_units_background, daemon=True
+            )
+            self.unit_creation_thread.start()
+        else:
+            logger.error("No dataset_path provided")
+
+    def _get_shard_info_cached(self, shard_idx: int) -> Optional[Dict]:
+        """Get shard info with caching."""
+        if shard_idx not in self.shard_info_cache:
+            try:
+                self.shard_info_cache[shard_idx] = self.dataset.get_shard_info(shard_idx)
+            except Exception as e:
+                logger.error(f"Error getting shard info for idx {shard_idx}: {e}")
+                return None
+        return self.shard_info_cache[shard_idx]
+
+    def _restore_state(self, storage: StorageManager) -> None:
+        """Restore state from chunk tracker."""
+        logger.debug("Restoring state from chunk tracker")
+        if not self.chunk_tracker:
+            return
+
+        shards_summary = self.chunk_tracker.get_shards_summary()
+
+        with self.lock:
+            for shard_name, shard_info in shards_summary.items():
+                chunks = shard_info.get("chunks", [])
+                for chunk_state in chunks:
+                    # Only add incomplete chunks
+                    if chunk_state.status != "completed":
+                        logger.debug(f"Restoring incomplete chunk {chunk_state.chunk_id}")
+
+                        # Get unprocessed ranges
+                        unprocessed_ranges = chunk_state.get_unprocessed_ranges()
+                        if not unprocessed_ranges:
+                            continue
+
+                        # Convert relative ranges to absolute file indices
+                        absolute_ranges = []
+                        for start, end in unprocessed_ranges:
+                            abs_start = chunk_state.start_index + start
+                            abs_end = chunk_state.start_index + end
+                            absolute_ranges.append((abs_start, abs_end))
+
+                        unit = WorkUnit(
+                            unit_id=chunk_state.chunk_id,
+                            chunk_id=chunk_state.chunk_id,
+                            source_id=shard_name,
+                            data={
+                                "shard_url": chunk_state.shard_url,
+                                "shard_name": shard_name,
+                                "start_index": chunk_state.start_index,
+                                "chunk_size": chunk_state.chunk_size,
+                                "unprocessed_ranges": absolute_ranges,
+                            },
+                            metadata={
+                                "shard_name": shard_name,
+                                "chunk_index": chunk_state.start_index // self.chunk_size,
+                            },
+                        )
+
+                        self.work_units[unit.unit_id] = unit
+                        self.pending_units.append(unit.unit_id)
+
+    def _create_units_background(self) -> None:
+        """Background thread to create work units on demand."""
+        logger.info("Starting work unit creation thread")
+
+        current_shard_idx = 0
+        current_file_idx = 0
+
+        while not self.stop_creation.is_set():
+            # Check if we need more units
+            with self.lock:
+                pending_count = len(self.pending_units)
+                assigned_count = sum(len(units) for units in self.assigned_units.values())
+                worker_count = max(1, len(self.assigned_units))
+
+                target_buffer = max(self.min_buffer, worker_count * self.buffer_multiplier)
+                units_needed = max(0, target_buffer - (pending_count + assigned_count))
+
+            if units_needed == 0:
+                threading.Event().wait(5)
+                continue
+
+            # Create units as needed
+            units_created = 0
+            while units_created < units_needed and not self.stop_creation.is_set():
+                # Get current shard info
+                if current_shard_idx >= self.dataset.num_shards:
+                    logger.info("All shards processed")
+                    break
+
+                shard_info = self._get_shard_info_cached(current_shard_idx)
+                if not shard_info:
+                    current_shard_idx += 1
+                    current_file_idx = 0
+                    continue
+
+                shard_name = shard_info["name"]
+                shard_files = shard_info["num_files"]
+
+                # Check if we need to move to next shard
+                if current_file_idx >= shard_files:
+                    current_shard_idx += 1
+                    current_file_idx = 0
+                    continue
+
+                # Create chunk for current position
+                chunk_size = min(self.chunk_size, shard_files - current_file_idx)
+                chunk_id = f"{shard_name}:chunk:{current_file_idx // self.chunk_size}"
+
+                with self.lock:
+                    # Skip if already exists
+                    if chunk_id in self.work_units:
+                        current_file_idx += self.chunk_size
+                        continue
+
+                    # Check if chunk is already completed
+                    if self.chunk_tracker:
+                        chunk_state = self.chunk_tracker.chunks.get(chunk_id)
+                        if chunk_state and chunk_state.status == "completed":
+                            current_file_idx += self.chunk_size
+                            continue
+
+                    # Get shard URL (path for webshart)
+                    shard_url = shard_info.get("path", f"{shard_name}.tar")
+
+                    # Create work unit
+                    unit = WorkUnit(
+                        unit_id=chunk_id,
+                        chunk_id=chunk_id,
+                        source_id=shard_name,
+                        data={
+                            "shard_url": shard_url,
+                            "shard_name": shard_name,
+                            "shard_idx": current_shard_idx,
+                            "start_index": current_file_idx,
+                            "chunk_size": chunk_size,
+                            "unprocessed_ranges": [
+                                (current_file_idx, current_file_idx + chunk_size - 1)
+                            ],
+                        },
+                        metadata={
+                            "shard_name": shard_name,
+                            "chunk_index": current_file_idx // self.chunk_size,
+                        },
+                    )
+
+                    self.work_units[chunk_id] = unit
+                    self.pending_units.append(chunk_id)
+
+                    # Add to chunk tracker
+                    if self.chunk_tracker:
+                        self.chunk_tracker.add_chunk(
+                            chunk_id, shard_name, shard_url, current_file_idx, chunk_size
+                        )
+
+                    units_created += 1
+
+                current_file_idx += self.chunk_size
+
+            if units_created > 0:
+                logger.debug(f"Created {units_created} work units")
+
+        logger.info("Work unit creation thread exiting")
+
+    def get_work_units(self, count: int, worker_id: str) -> List[WorkUnit]:
+        """Get available work units for a worker."""
+        assigned = []
+
+        with self.lock:
+            while len(assigned) < count and self.pending_units:
+                unit_id = self.pending_units.popleft()
+                unit = self.work_units.get(unit_id)
+
+                if unit:
+                    self.assigned_units[worker_id].add(unit_id)
+                    assigned.append(unit)
+
+                    if self.chunk_tracker:
+                        self.chunk_tracker.mark_assigned(unit_id, worker_id)
+
+        logger.debug(f"Assigned {len(assigned)} units to worker {worker_id}")
+        return assigned
+
+    def mark_completed(self, unit_id: str, worker_id: str) -> None:
+        """Mark a work unit as completed."""
+        with self.lock:
+            if unit_id in self.work_units:
+                self.assigned_units[worker_id].discard(unit_id)
+
+                if self.chunk_tracker:
+                    self.chunk_tracker.mark_completed(unit_id)
+
+                # Remove from memory
+                del self.work_units[unit_id]
+
+    def mark_failed(self, unit_id: str, worker_id: str, error: str) -> None:
+        """Mark a work unit as failed."""
+        logger.error(f"Unit {unit_id} failed on {worker_id}: {error}")
+        with self.lock:
+            if unit_id in self.work_units:
+                self.assigned_units[worker_id].discard(unit_id)
+                self.pending_units.append(unit_id)
+
+                if self.chunk_tracker:
+                    self.chunk_tracker.mark_failed(unit_id)
+
+    def release_assignments(self, worker_id: str) -> None:
+        """Release all assignments for a disconnected worker."""
+        with self.lock:
+            unit_ids = list(self.assigned_units.get(worker_id, []))
+
+            for unit_id in unit_ids:
+                if unit_id in self.work_units and self.chunk_tracker:
+                    # Get updated unprocessed ranges from chunk tracker
+                    chunk_state = self.chunk_tracker.chunks.get(unit_id)
+                    if chunk_state:
+                        unprocessed_ranges = chunk_state.get_unprocessed_ranges()
+                        # Convert relative to absolute
+                        absolute_ranges = []
+                        for start, end in unprocessed_ranges:
+                            abs_start = chunk_state.start_index + start
+                            abs_end = chunk_state.start_index + end
+                            absolute_ranges.append((abs_start, abs_end))
+
+                        # Update work unit
+                        self.work_units[unit_id].data["unprocessed_ranges"] = absolute_ranges
+
+                    self.pending_units.append(unit_id)
+
+            if worker_id in self.assigned_units:
+                del self.assigned_units[worker_id]
+
+            if self.chunk_tracker:
+                self.chunk_tracker.release_worker_chunks(worker_id)
+
+        logger.info(f"Released {len(unit_ids)} assignments from {worker_id}")
+
+    def handle_result(self, result: WorkResult) -> Dict[str, Any]:
+        """Handle result from worker."""
+        # Track processed items if we have chunk tracker
+        if self.chunk_tracker and "item_indices" in result.metadata:
+            indices = result.metadata["item_indices"]
+
+            # Convert to ranges and mark as processed
+            if indices:
+                indices.sort()
+                ranges = []
+                start = indices[0]
+                end = indices[0]
+
+                for i in range(1, len(indices)):
+                    if indices[i] == end + 1:
+                        end = indices[i]
+                    else:
+                        ranges.append((start, end))
+                        start = indices[i]
+                        end = indices[i]
+
+                ranges.append((start, end))
+
+                # Mark ranges as processed
+                for start_idx, end_idx in ranges:
+                    self.chunk_tracker.mark_items_processed(result.chunk_id, start_idx, end_idx)
+
+        return {
+            "source_id": result.source_id,
+            "chunk_id": result.chunk_id,
+            "outputs": result.outputs,
+            "metadata": result.metadata,
+        }
+
+    def update_from_storage(self, processed_job_ids: Set[str]) -> None:
+        """Update work units based on what's been processed."""
+        logger.info(f"Updating from {len(processed_job_ids)} processed jobs")
+
+        with self.lock:
+            # Group by chunk
+            processed_by_chunk = defaultdict(set)
+
+            for job_id in processed_job_ids:
+                # Parse job_id to extract chunk and index
+                # Expected format: "shard:chunk:X:idx:Y"
+                parts = job_id.split(":")
+                if len(parts) >= 5 and parts[3] == "idx":
+                    chunk_id = ":".join(parts[:3])  # "shard:chunk:X"
+                    try:
+                        idx = int(parts[4])
+                        processed_by_chunk[chunk_id].add(idx)
+                    except ValueError:
+                        continue
+
+            # Update chunk tracker with processed items
+            if self.chunk_tracker:
+                for chunk_id, indices in processed_by_chunk.items():
+                    if indices:
+                        # Sort indices and convert to ranges
+                        sorted_indices = sorted(indices)
+                        for idx in sorted_indices:
+                            self.chunk_tracker.mark_items_processed(chunk_id, idx, idx)
+
+    def get_stats(self) -> Dict[str, Any]:
+        """Get processor statistics."""
+        with self.lock:
+            # Get chunk tracker stats if available
+            if self.chunk_tracker:
+                shards_summary = self.chunk_tracker.get_shards_summary()
+                total_chunks = sum(len(s.get("chunks", [])) for s in shards_summary.values())
+                completed_chunks = sum(
+                    1
+                    for s in shards_summary.values()
+                    for c in s.get("chunks", [])
+                    if c.status == "completed"
+                )
+            else:
+                total_chunks = len(self.work_units)
+                completed_chunks = 0
+
+            return {
+                "total_shards": self.dataset.num_shards if self.dataset else 0,
+                "total_chunks": total_chunks,
+                "pending_units": len(self.pending_units),
+                "assigned_units": sum(len(units) for units in self.assigned_units.values()),
+                "completed_chunks": completed_chunks,
+                "workers": len(self.assigned_units),
+            }
+
+    def cleanup(self):
+        """Clean up resources."""
+        logger.info("Cleaning up orchestrator")
+
+        # Stop background threads
+        self.stop_creation.set()
+        if self.unit_creation_thread:
+            self.unit_creation_thread.join(timeout=5)
+
+        # Save checkpoint
+        if self.chunk_tracker:
+            self.chunk_tracker.save_checkpoint()
+
+
+class WebDatasetWorkerProcessor(WorkerProcessor):
+    """Worker processor for WebDataset shards using webshart."""
+
+    def __init__(self):
+        logger.info("Initializing WebDatasetWorkerProcessor with webshart")
+        self.loader: Optional[webshart.TarDataLoader] = None
+        self.dataset: Optional[webshart.DiscoveredDataset] = None
+        self.mock_results = False
+
+    def initialize(self, config: ProcessorConfig) -> None:
+        """Initialize worker with webshart loader."""
+        cfg = config.config
+        dataset_cfg = cfg.get("dataset", {})
+
+        self.dataset_path = dataset_cfg.get("dataset_path")
+        metadata_path = dataset_cfg.get("metadata_path", None)
+        self.mock_results = dataset_cfg.get("mock_results", False)
+
+        # Cache configuration
+        cache_dir = Path(cfg.get("cache_dir", "./webshart_cache"))
+        cache_dir.mkdir(parents=True, exist_ok=True)
+
+        if self.dataset_path and not self.mock_results:
+            # Discover dataset
+            self.dataset = webshart.discover_dataset(
+                source=self.dataset_path,
+                metadata=metadata_path,
+            )
+
+            # Enable caching
+            self.dataset.enable_metadata_cache(location=str(cache_dir / "metadata_cache"))
+            self.dataset.enable_shard_cache(
+                location=str(cache_dir / "shard_cache"),
+                cache_limit_gb=cfg.get("shard_cache_gb", 10.0),
+            )
+
+            # Create loader
+            self.loader = webshart.TarDataLoader(
+                self.dataset,
+                buffer_size=cfg.get("buffer_size", 10),
+                max_file_size=cfg.get("max_file_size", 100 * 1024 * 1024),
+                load_file_data=True,
+            )
+
+            logger.info("webshart TarDataLoader initialized")
+
+    def _create_mock_image(self, idx: int) -> Image.Image:
+        """Create a dummy test image."""
+        color = ((idx * 37) % 256, (idx * 53) % 256, (idx * 71) % 256)
+        image = Image.new("RGB", (256, 256), color=color)
+        return image
+
+    def process_unit(self, unit: WorkUnit, context: Dict[str, Any]) -> Iterator[Dict[str, Any]]:
+        """Process a work unit by iterating specified ranges."""
+        logger.debug(f"Processing unit: {unit.unit_id}")
+
+        shard_name = unit.data["shard_name"]
+        shard_idx = unit.data.get("shard_idx")
+        unprocessed_ranges = unit.data.get("unprocessed_ranges", [])
+
+        # For chunk tracking
+        chunk_index = unit.metadata.get("chunk_index", 0)
+        processed_indices = []
+
+        if self.mock_results:
+            # Generate mock results for unprocessed ranges
+            for start_idx, end_idx in unprocessed_ranges:
+                for idx in range(start_idx, end_idx + 1):
+                    job_id = f"{shard_name}:chunk:{chunk_index}:idx:{idx}"
+
+                    yield {
+                        "image": self._create_mock_image(idx),
+                        "image_data": None,
+                        "item_key": f"mock_{idx}",
+                        "item_index": idx,
+                        "metadata": {
+                            "_item_index": idx,
+                            "_chunk_relative_index": idx - unit.data["start_index"],
+                            "_job_id": job_id,
+                            "_mock": True,
+                        },
+                        "job_id": job_id,
+                    }
+
+                    processed_indices.append(idx)
+        else:
+            # Use webshart to process unprocessed ranges
+            for start_idx, end_idx in unprocessed_ranges:
+                try:
+                    # Jump to shard and starting position
+                    if shard_idx is not None:
+                        self.loader.shard(shard_idx=shard_idx, cursor_idx=start_idx)
+                    else:
+                        # Try to find shard by name
+                        self.loader.shard(filename=shard_name, cursor_idx=start_idx)
+
+                    # Iterate through the range
+                    for idx in range(start_idx, end_idx + 1):
+                        try:
+                            entry = next(self.loader)
+
+                            # Decode image
+                            image = None
+                            if entry.data:
+                                try:
+                                    # Use cv2 to decode from memory
+                                    nparr = np.frombuffer(entry.data, np.uint8)
+                                    img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+                                    if img_np is not None:
+                                        # Convert from BGR (OpenCV default) to RGB (PIL default)
+                                        img_rgb = cv2.cvtColor(img_np, cv2.COLOR_BGR2RGB)
+                                        image = Image.fromarray(img_rgb)
+                                    else:
+                                        logger.warning(f"cv2.imdecode failed for {entry.path}")
+
+                                except ImportError:
+                                    logger.warning(
+                                        "cv2 or numpy not installed, falling back to PIL"
+                                    )
+                                    image = Image.open(io.BytesIO(entry.data))
+                                except Exception as img_e:
+                                    logger.error(
+                                        f"Error decoding image {entry.path} with cv2: {img_e}"
+                                    )
+
+                            # Generate job ID compatible with chunk tracker
+                            job_id = f"{shard_name}:chunk:{chunk_index}:idx:{idx}"
+
+                            yield {
+                                "image": image,
+                                "image_data": entry.data,
+                                "item_key": Path(entry.path).stem,
+                                "item_index": idx,
+                                "metadata": {
+                                    "_item_index": idx,
+                                    "_chunk_relative_index": idx - unit.data["start_index"],
+                                    "_job_id": job_id,
+                                    "_filename": entry.path,
+                                    "_file_size": entry.size,
+                                },
+                                "job_id": job_id,
+                            }
+
+                            processed_indices.append(idx)
+
+                            if len(processed_indices) % 10 == 0:
+                                gc.collect()
+
+                        except StopIteration:
+                            logger.warning(f"Unexpected end of shard at index {idx}")
+                            break
+                        except Exception as e:
+                            logger.error(f"Error processing index {idx}: {e}")
+                            continue
+
+                except Exception as e:
+                    logger.error(f"Error processing range {start_idx}-{end_idx}: {e}")
+                    continue
+
+        # Store processed indices for result
+        context["_processed_indices"] = processed_indices
+        logger.info(f"Processed {len(processed_indices)} items from unit {unit.unit_id}")
+
+    def prepare_result(
+        self, unit: WorkUnit, outputs: List[Dict[str, Any]], processing_time_ms: float
+    ) -> WorkResult:
+        """Prepare result with processing details."""
+        result = super().prepare_result(unit, outputs, processing_time_ms)
+
+        # Add processed indices for chunk tracker
+        if outputs and "_processed_indices" in outputs[0].get("metadata", {}):
+            result.metadata["item_indices"] = outputs[0]["metadata"]["_processed_indices"]
+
+        return result
+
+    def get_dataset_info(self) -> Dict[str, Any]:
+        """Get dataset information."""
+        if self.dataset:
+            stats = self.dataset.get_stats()
+            return {
+                "dataset_name": self.dataset.name,
+                "format": self.dataset.dataset_format,
+                "total_shards": stats["total_shards"],
+                "total_files": stats.get("total_files", "Unknown"),
+                "mock_results": self.mock_results,
+            }
+        return {
+            "dataset_name": "Mock Dataset" if self.mock_results else "Unknown",
+            "mock_results": self.mock_results,
+        }
