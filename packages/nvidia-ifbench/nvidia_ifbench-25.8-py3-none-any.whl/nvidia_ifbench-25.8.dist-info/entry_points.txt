@@ -1,0 +1,4 @@
+[console_scripts]
+core-evals-ifbench = core_evals.ifbench.framework_entrypoint:main
+core_evals_ifbench = core_evals.ifbench.framework_entrypoint:main
+ifbench = ifbench.run_eval:run
