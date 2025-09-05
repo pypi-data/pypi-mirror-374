@@ -1,0 +1,21 @@
+*__pycache__/
+*.egg-info/
+*.egg
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+dist/
+build/
+.coverage
+*.log
+.DS_Store
+*.ipynb_checkpoints/
+
+# Custom
+.mypy_cache/
+.ruff_cache/
+.coverage
+.pre-commit-cache/
+.python-version
+uv.lock
