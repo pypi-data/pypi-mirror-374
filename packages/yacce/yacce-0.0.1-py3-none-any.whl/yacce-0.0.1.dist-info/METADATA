@@ -1,0 +1,25 @@
+Metadata-Version: 2.4
+Name: yacce
+Version: 0.0.1
+Summary: Non-intrusive bazel compile_commands.json extractor
+Author-email: Aleksei Rechinskii <5dpea9nhd@mozmail.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/Arech/yacce
+Keywords: bazel,compile_commands.json,extractor
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Software Development
+Classifier: Topic :: Utilities
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: rich
+Dynamic: license-file
+
+# Yacce is a non-intrusive compile_commands.json extractor for Bazel (experimental)
+
