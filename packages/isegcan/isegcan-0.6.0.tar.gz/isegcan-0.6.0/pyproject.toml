@@ -1,0 +1,31 @@
+[build-system]
+
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+    name = "isegcan"
+    description = "Simple library to control older ISEG HV supplies over CAN interface."
+    readme = "README.md"
+    authors = [
+        {name = "Timo Hildén", email="timo.hilden@helsinki.fi"},
+    ]
+    version = '0.6.0'
+    dependencies = [
+        "python-can",
+    ]
+    requires-python = ">=3.9"
+    classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: POSIX :: Linux",
+    "Development Status :: 4 - Beta",
+    ]
+    license = "MIT"
+    license-files = ["LICENCE"]
+
+[tool.setuptools.packages]
+    find = {}
+
+[project.urls]
+Homepage = "https://codeberg.org/stgermain77/isegcan"
+Issues = "https://codeberg.org/stgermain77/isegcan/issues"
