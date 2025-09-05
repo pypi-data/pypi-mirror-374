@@ -1,0 +1,15 @@
+include README.md
+include LICENSE
+include CHANGELOG.md
+include pyproject.toml
+recursive-include fasthtml_auth *.py
+recursive-include fasthtml_auth py.typed
+recursive-include tests *.py
+recursive-include examples *.py
+recursive-exclude fasthtml_auth __pycache__
+recursive-exclude fasthtml_auth *.py[co]
+global-exclude *.db
+global-exclude *.sqlite*
+global-exclude data/
+global-exclude __pycache__
+global-exclude *.py[co]

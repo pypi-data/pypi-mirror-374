@@ -1,0 +1,125 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fasthtml-auth"
+version = "0.1.0"
+description = "Complete authentication system for FastHTML applications with beautiful UI, role-based access control, and session management"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "John Richmond", email = "confusedjohn46@gmail.com"}
+]
+maintainers = [
+    {name = "John Richmond", email = "confusedjohn46@gmail.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: User Interfaces",
+]
+keywords = ["fasthtml", "authentication", "web", "framework", "auth", "login", "session", "bcrypt", "monsterui"]
+requires-python = ">=3.8"
+dependencies = [
+    "python-fasthtml>=0.12.0",
+    "monsterui>=1.0.20",
+    "fastlite>=0.2.0", 
+    "bcrypt>=4.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "pre-commit>=3.0.0",
+]
+docs = [
+    "mkdocs>=1.4.0",
+    "mkdocs-material>=8.5.0",
+    "mkdocs-autorefs>=0.4.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/fromLittleAcorns/fasthtml-auth"
+Documentation = "https://github.com/fromLittleAcorns/fasthtml-auth#readme"
+Repository = "https://github.com/fromLittleAcorns/fasthtml-toolkit"
+Issues = "https://github.com/fromLittleAcorns/fasthtml-auth/issues"
+Changelog = "https://github.com/fromLittleAcorns/fasthtml-auth/blob/main/CHANGELOG.md"
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = true
+disallow_untyped_decorators = false
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --cov=fasthtml_auth --cov-report=term-missing"
+
+[tool.coverage.run]
+source = ["fasthtml_auth"]
+omit = ["tests/*", "examples/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError", 
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["fasthtml_auth*"]
+
+[tool.setuptools.package-data]
+fasthtml_auth = ["py.typed"]
