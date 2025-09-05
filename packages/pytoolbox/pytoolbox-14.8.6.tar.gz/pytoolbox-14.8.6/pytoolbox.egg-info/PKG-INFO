@@ -1,0 +1,297 @@
+Metadata-Version: 2.1
+Name: pytoolbox
+Version: 14.8.6
+Summary: Toolbox for Python scripts
+Home-page: https://github.com/davidfischer-ch/pytoolbox
+Author: David Fischer
+Author-email: david@fisch3r.net
+License: EUPL 1.1
+Keywords: celery,ffmpeg,django,flask,json,juju,mock,pillow,rsync,rtp,selenium,smpte 2022-1,screen,subprocess
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Framework :: Django
+Classifier: Framework :: Flask
+Classifier: License :: OSI Approved :: European Union Public Licence 1.1 (EUPL 1.1)
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.11
+License-File: LICENSE.rst
+License-File: AUTHORS.md
+Requires-Dist: argparse
+Requires-Dist: python-magic
+Requires-Dist: pytz
+Requires-Dist: requests
+Requires-Dist: ruamel.yaml
+Requires-Dist: termcolor
+Provides-Extra: atlassian
+Requires-Dist: jira; extra == "atlassian"
+Provides-Extra: aws
+Requires-Dist: boto3; extra == "aws"
+Provides-Extra: django
+Requires-Dist: django; extra == "django"
+Provides-Extra: django-filter
+Requires-Dist: django-filter; extra == "django-filter"
+Provides-Extra: django-formtools
+Requires-Dist: django-formtools; extra == "django-formtools"
+Provides-Extra: flask
+Requires-Dist: flask; extra == "flask"
+Provides-Extra: imaging
+Requires-Dist: pillow; extra == "imaging"
+Requires-Dist: PyGObject; extra == "imaging"
+Provides-Extra: jinja2
+Requires-Dist: jinja2; extra == "jinja2"
+Provides-Extra: mongodb
+Requires-Dist: pymongo; extra == "mongodb"
+Provides-Extra: network
+Requires-Dist: tldextract; extra == "network"
+Provides-Extra: pandas
+Requires-Dist: ezodf; extra == "pandas"
+Requires-Dist: lxml; extra == "pandas"
+Requires-Dist: pandas; extra == "pandas"
+Provides-Extra: rest-framework
+Requires-Dist: django-oauth-toolkit; extra == "rest-framework"
+Requires-Dist: djangorestframework>=3; extra == "rest-framework"
+Provides-Extra: selenium
+Requires-Dist: selenium; extra == "selenium"
+Provides-Extra: smpte2022
+Requires-Dist: fastxor; extra == "smpte2022"
+Provides-Extra: vision
+Requires-Dist: dlib; extra == "vision"
+Requires-Dist: keras; extra == "vision"
+Requires-Dist: numpy; extra == "vision"
+Requires-Dist: opencv-python; extra == "vision"
+Requires-Dist: tensorflow; extra == "vision"
+Provides-Extra: voluptuous
+Requires-Dist: voluptuous; extra == "voluptuous"
+Provides-Extra: all
+Requires-Dist: PyGObject; extra == "all"
+Requires-Dist: boto3; extra == "all"
+Requires-Dist: django; extra == "all"
+Requires-Dist: django-filter; extra == "all"
+Requires-Dist: django-formtools; extra == "all"
+Requires-Dist: django-oauth-toolkit; extra == "all"
+Requires-Dist: djangorestframework>=3; extra == "all"
+Requires-Dist: dlib; extra == "all"
+Requires-Dist: ezodf; extra == "all"
+Requires-Dist: fastxor; extra == "all"
+Requires-Dist: flask; extra == "all"
+Requires-Dist: jinja2; extra == "all"
+Requires-Dist: jira; extra == "all"
+Requires-Dist: keras; extra == "all"
+Requires-Dist: lxml; extra == "all"
+Requires-Dist: numpy; extra == "all"
+Requires-Dist: opencv-python; extra == "all"
+Requires-Dist: pandas; extra == "all"
+Requires-Dist: pillow; extra == "all"
+Requires-Dist: pymongo; extra == "all"
+Requires-Dist: selenium; extra == "all"
+Requires-Dist: tensorflow; extra == "all"
+Requires-Dist: tldextract; extra == "all"
+Requires-Dist: voluptuous; extra == "all"
+Provides-Extra: doc
+Requires-Dist: sphinx>=7.2.6; extra == "doc"
+Requires-Dist: sphinx-rtd-theme>=2.0.0; extra == "doc"
+Provides-Extra: test
+Requires-Dist: colored>=2.2.4; extra == "test"
+Requires-Dist: coverage>=7.4.4; extra == "test"
+Requires-Dist: flake8>=7.0.0; extra == "test"
+Requires-Dist: mypy>=1.9.0; extra == "test"
+Requires-Dist: pylint>=3.1.0; extra == "test"
+Requires-Dist: pytest>=8.1.1; extra == "test"
+Requires-Dist: pytest-cov>=4.1.0; extra == "test"
+Requires-Dist: pytest-pylint>=0.21.0; extra == "test"
+Requires-Dist: pytest-ruff>=0.3.1; extra == "test"
+Requires-Dist: ruff>=0.3.3; extra == "test"
+Requires-Dist: PyGObject-stubs>=2.10.0; extra == "test"
+Requires-Dist: types-pytz>=2024.1.0.20240203; extra == "test"
+Requires-Dist: types-requests>=2.31.0.20240311; extra == "test"
+Requires-Dist: types-urllib3>=1.26.25.14; extra == "test"
+
+=========
+Pytoolbox
+=========
+
+.. image:: https://badge.fury.io/py/pytoolbox.png
+   :target: http://badge.fury.io/py/pytoolbox
+
+.. image:: https://github.com/davidfischer-ch/pytoolbox/actions/workflows/python-package.yml/badge.svg
+   :target: https://github.com/davidfischer-ch/pytoolbox
+
+.. image:: https://coveralls.io/repos/davidfischer-ch/pytoolbox/badge.png
+   :target: https://coveralls.io/r/davidfischer-ch/pytoolbox
+
+Afraid of red status ? Please click on the link, sometimes this is not my fault ;-)
+
+This module is a Toolbox for Python scripts.
+
+Documentation: https://pytoolbox.readthedocs.org
+
+Repository: https://github.com/davidfischer-ch/pytoolbox
+
+This library supports Python 3.11 and more recent.
+
+------------------------------------
+What the release number stands for ?
+------------------------------------
+
+I do my best to follow this interesting recommendation : `Semantic Versioning 2.0.0 <http://semver.org/>`_
+
+-------------------
+How to install it ?
+-------------------
+
+Install some packages that are not handled by pip::
+
+    $ sudo apt install liblzma-dev libxml2-dev libxslt-dev libyaml-dev libz-dev
+    $ sudo apt install ffmpeg git-core python3-dev python3-gi python3-pip screen
+
+If planning to use the `imaging` extra, especially the `exif` classes, then you'll have to install::
+
+    $ sudo apt install libcairo2 libcairo2-dev libexiv2-dev libgexiv2-dev libgirepository-2.0-dev
+
+The gir1.2-gexiv2-0.10 should also be installed, maybe its already the case.
+
+You may find useful to read `PyGObject's documentation <https://pygobject.readthedocs.io/en/latest/getting_started.html>`_.
+
+If planning to use the vision feature, then you have to install some requirements for dlib::
+
+    $ sudo apt install build-essential cmake pkg-config
+
+See https://learnopencv.com/install-dlib-on-ubuntu/ for an up-to-date procedure.
+
+Make sure that pip is up-to-date (PIPception)::
+
+    $ source /some/python3/venv/bin/active
+    $ pip install --upgrade pip setuptools wheel
+
+Then, you only need to run ``setup.py``::
+
+    $ source /some/python3/venv/bin/activate
+    $ pip install .
+
+--------------------------------
+How to enable features/modules ?
+--------------------------------
+
+Example::
+
+    $ python setup.py install --help
+
+    Common commands: (see '--help-commands' for more)
+
+      setup.py build      will build the package underneath 'build/'
+      setup.py install    will install the package
+
+    Global options:
+      --verbose (-v)  run verbosely (default)
+      --quiet (-q)    run quietly (turns verbosity off)
+      --dry-run (-n)  don't actually do anything
+      --help (-h)     show detailed help message
+      --no-user-cfg   ignore pydistutils.cfg in your home directory
+
+    Options for 'WithExtra' command:
+      ...
+      --extra-all                          Install dependencies for All Modules.
+      --extra-atlassian                    Install dependencies for Atlassian.
+      --extra-aws                          Install dependencies for AWS.
+      --extra-django                       Install dependencies for Django.
+      --extra-django-filter                Install dependencies for Django Filter.
+      --extra-django-formtools             Install dependencies for Django Form Tools.
+      --extra-flask                        Install dependencies for Flask.
+      --extra-imaging                      Install dependencies for Imaging.
+      --extra-jinja2                       Install dependencies for Jinja2.
+      --extra-mongodb                      Install dependencies for MongoDB.
+      --extra-network                      Install dependencies for Networking.
+      --extra-pandas                       Install dependencies for Pandas.
+      --extra-rest-framework               Install dependencies for Django REST Framework.
+      --extra-selenium                     Install dependencies for Selenium.
+      --extra-smpte2022                    Install dependencies for SMPTE-2022.
+      --extra-unittest                     Install dependencies for Unit Test.
+      --extra-vision                       Install dependencies for Vision.
+      --extra-voluptuous                   Install dependencies for Voluptuous.
+      --extra-doc                          Install dependencies for Pytoolbox Docs.
+      --extra-test                         Install dependencies for Pytoolbox Tests.
+
+    usage: setup.py [global_opts] cmd1 [cmd1_opts] [cmd2 [cmd2_opts] ...]
+       or: setup.py --help [cmd1 cmd2 ...]
+       or: setup.py --help-commands
+       or: setup.py cmd --help
+
+
+    $ python setup.py install --extra-smpte2022
+
+Another way to do this, with ``pip``::
+
+    $ pip install -e .[django,flask,mongo,smpte2022]
+
+-----------------------
+How to check coverage ?
+-----------------------
+
+::
+
+    $ source /some/python3/venv/bin/activate
+    $ pip install -e .[all,test]
+    $ flake8 pytoolbox
+    $ pytest
+    $ xdg-open htmlcov/index.html
+
+Remarks:
+
+* All Django related modules are excluded from tests!
+* However I am using them with Django 1.8 up to 3.1.0.
+
+---------------
+How to use it ?
+---------------
+
+Here is an example ``hello.py`` using the cmd function provided by ``pytoolbox``::
+
+    $ from pytoolbox.subprocess import cmd
+    $ print(cmd('echo Hello World!')['stdout'])
+
+-------------------------------
+How to generate documentation ?
+-------------------------------
+
+The documentation is generated by `Sphinx <http://sphinx-doc.org/ext/autodoc.html>`_.
+In fact most of this documentation is extracted from the docstrings of the code.
+
+Here is the procedure::
+
+    $ source /some/python3/venv/bin/activate
+    $ pip install -e .[docs]
+    $ xdg-open docs/build/html/index.html
+
+-------------------------------------------------
+How to add it to dependencies of my own project ?
+-------------------------------------------------
+
+Here is an example ``setup.py`` for a project called *my-cool-project*::
+
+	from setuptools import setup
+
+	setup(
+      name='my-cool-project',
+		  version='0.8',
+		  author='Firstname Lastname',
+		  author_email='author@something.com',
+		  install_requires=['...', 'pytoolbox>=14<15', '...'],
+		  tests_require=['...', 'pytest', '...'],
+		  license='GPLv3',
+		  url='https://github.com/nickname/my-cool-project',
+		  packages=['my_cool_project'])
+
+
+See `pip vcs support <http://www.pip-installer.org/en/latest/logic.html#vcs-support>`_ to get further details about this.
+
+You also need to install ``git-core``, but it is probably already the case, at least on your development computer ;-)
+
+2012 - 2025 David Fischer
