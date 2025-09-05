@@ -1,0 +1,161 @@
+# Core configuration
+storage_config_path: "agentmap_config_storage.yaml"
+
+# Directory paths
+paths:
+  custom_agents: "agentmap_data/custom_agents"
+  functions: "agentmap_data/custom_functions"
+  csv_repository: "agentmap_data/workflows"  # Directory for storing workflow CSV files
+
+# Memory configuration
+memory:
+  enabled: false
+  default_type: "buffer"  # Options: buffer, buffer_window, summary, token_buffer
+  buffer_window_size: 5
+  max_token_limit: 2000
+  memory_key: "conversation_memory"
+
+# Execution tracking configuration
+execution:
+  # What to record during execution
+  tracking:
+    enabled: true
+    track_outputs: true
+    track_inputs: true
+
+  # How to determine success
+  success_policy:
+    type: "all_nodes"
+    critical_nodes: []
+    custom_function: ""
+
+# Separate LangChain tracing for debugging
+tracing:
+  enabled: false
+  mode: "local"
+  local_exporter: "file"
+  local_directory: "agentmap_data/traces"
+  project: "your_project_name"  # Replace with your project name`
+  langsmith_api_key: ""
+  trace_all: true
+  trace_graphs: []
+
+# Logging configuration
+logging:
+  version: 1
+  disable_existing_loggers: False
+  file_path: null  # Set to a path to enable file logging
+  formatters:
+    default:
+      format: "[%(asctime)s] [%(levelname)s] %(name)s: %(message)s"
+  handlers:
+    console:
+      class: logging.StreamHandler
+      formatter: default
+      level: DEBUG # TRACE, DEBUG, INFO, WARNING, ERROR
+  root:
+    level: INFO
+    handlers: [console]
+
+# Storage-specific configurations
+# storage: look in separate file storage_config.yaml
+
+# LLM configuration
+llm:
+  openai:
+    api_key: ""  # Or use env: OPENAI_API_KEY
+    model: "gpt-4o-mini-2024-07-18"
+    temperature: 0.7
+  anthropic:
+    api_key: ""  # Or use env: ANTHROPIC_API_KEY
+    model: "claude-3-5-sonnet-20241022"
+    temperature: 0.7
+  google:
+    api_key: ""  # Or use env: GOOGLE_API_KEY
+    model: "gemini-1.5-flash"
+    temperature: 0.7
+
+routing:
+  enabled: true
+
+  # Provider × Complexity Matrix
+  # This is the core routing table that maps (provider, complexity) → model
+  routing_matrix:
+    anthropic:
+      low: "claude-3-5-haiku-20241022"
+      medium: "claude-3-5-sonnet-20241022"
+      high: "claude-sonnet-4-20250514"
+      critical: "claude-opus-4-20250514"
+
+    openai:
+      low: "gpt-4o-mini-2024-07-18"
+      medium: "gpt-4o-2024-11-20"
+      high: "gpt-4o-2024-11-20"
+      critical: "o3-mini-2025-01-31"
+
+    google:
+      low: "gemini-1.5-flash"
+      medium: "gemini-1.5-pro"
+      high: "gemini-1.5-pro"
+      critical: "gemini-1.5-pro"
+
+  # Complexity Analysis Configuration
+  complexity_analysis:
+    # Prompt length thresholds (characters)
+    prompt_length_thresholds:
+      low: 100      # < 100 chars = low complexity
+      medium: 300   # 100-300 chars = medium complexity
+      high: 800     # 300-800 chars = high complexity
+      # > 800 chars = critical complexity
+
+    # Enable different analysis methods
+    methods:
+      prompt_length: true
+      keyword_analysis: true
+      context_analysis: true
+      memory_analysis: true
+
+    # Keyword weighting (how much each type of keyword affects complexity)
+    keyword_weights:
+      complexity_keywords: 0.4
+      task_specific_keywords: 0.3
+      prompt_structure: 0.3
+
+    # Context analysis settings
+    context_analysis:
+      memory_size_threshold: 10  # Messages in memory that indicate complexity
+      input_field_count_threshold: 5  # Number of input fields
+
+  # Cost Optimization Settings
+  cost_optimization:
+    enabled: true
+    # Prefer cheaper models when complexity allows
+    prefer_cost_effective: true
+    # Maximum cost tier (low, medium, high, critical)
+    max_cost_tier: "medium"
+
+  # Fallback Configuration
+  fallback:
+    # Default provider when preferences unavailable
+    default_provider: "anthropic"
+    # Default model when routing fails
+    default_model: "claude-3-5-haiku-20241022"
+    # Retry with lower complexity if model unavailable
+    retry_with_lower_complexity: true
+
+  # Performance Settings
+  performance:
+    # Cache routing decisions for identical inputs
+    enable_routing_cache: true
+    # Cache TTL in seconds
+    cache_ttl: 300
+    # Maximum cache size
+    max_cache_size: 1000
+
+# Environment Variable Overrides
+# These allow runtime configuration without changing the file
+environment_overrides:
+  routing_enabled: ${AGENTMAP_ROUTING_ENABLED:true}
+  default_task_type: ${AGENTMAP_DEFAULT_TASK_TYPE:general}
+  cost_optimization: ${AGENTMAP_COST_OPTIMIZATION:true}
+  routing_cache_enabled: ${AGENTMAP_ROUTING_CACHE:true}
