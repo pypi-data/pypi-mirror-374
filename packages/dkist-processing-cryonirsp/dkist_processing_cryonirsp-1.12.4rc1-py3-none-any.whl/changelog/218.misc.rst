@@ -1,0 +1,3 @@
+Remove constants num_cs_steps and num_modstates from CryonirspConstants and refer
+explicitly to the retarder_name constant.  These three constants are now defined
+in the dkist-processing-common parent class.
