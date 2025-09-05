@@ -1,0 +1,117 @@
+Metadata-Version: 2.2
+Name: hrenpack
+Version: 1.3.1
+Summary: Универсальная библиотека python для большинства задач
+Home-page: https://github.com/MagIlyas-DOMA/hrenpack
+Author: Маг Ильяс DOMA (MagIlyas_DOMA)
+License: BSD 3-Clause License
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: bs4
+Requires-Dist: chardet
+Requires-Dist: Pillow
+Requires-Dist: clipboard
+Requires-Dist: filetype
+Requires-Dist: gps
+Requires-Dist: bcrypt
+Requires-Dist: tqdm
+Requires-Dist: requests
+Requires-Dist: urllib3
+Requires-Dist: screeninfo
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# A universal python library for most tasks.
+
+## The library is divided into several packages:
+`__init__` - basic functions and functions that cannot be assigned to any category  
+`boolwork` - working with boolean values    
+`classes` - classes  
+`clipboard_work` - working with the clipboard  
+`cmd` - working with OS tools  
+`constants` - various useful constants
+`date_and_time_work` - working with date and time values  
+`decorators` - decorators  
+`functionwork` - working with functions  
+`gpswork` - working with GPS  
+`hashwork` - working with hashing  
+`encapsulation` - full encapsulation  
+`kwargswork` - working with **kwargs  
+`listwork` - working with lists, tuples and dictionaries  
+`network` - working with the Internet  
+`numwork` - working with numbers  
+`print_color` - color console. May not work in all consoles  
+`resolution` - screen resolution detection  
+`slugwork` - working with slug, i.e. with strings that match the rules  
+`strwork` - working with strings  
+`taskmgr` - working with tasks  
+`type_define` - determining whether the data belongs to a certain type or not  
+`windows_registry` - working with the Windows registry  
+
+### In addition to packages, hrenpack has several sublibraries:
+`custom_methods` - additional methods for existing objects  
+`filework` - working with files  
+`framework` - additional functions for existing libraries and frameworks
+
+### Resources:
+The resource folder contains resource files for the correct operation of hrenpack
+
+## Usage:
+This library is distributed under the 3-clause BSD license
+
+## Updates in version 1.1.1
+1. Removed modules `dec_to_hex`, `dbwork`, `office` due to their instability
+2. Removed requirement `pyodbc`
+3. Added requirements `gps`, `bcrypt`
+4. Removed some functions from module `__init__`
+
+-------
+
+# Универсальная библиотека python для большинства задач.
+
+## Библиотека делится на несколько пакетов:  
+`__init__` - основные функции и функции, которые не могут быть отнесены ни к одной категории  
+`boolwork` - работа с булевыми значениями  
+`classes` - классы  
+`clipboard_work` - работа с буфером обмена  
+`cmd` - работа с инструментам ОС  
+`constants` - разные полезные константы
+`date_and_time_work` - работа со значениями даты и времени  
+`decorators` - декораторы  
+`functionwork` - работа с функциями  
+`gpswork` - работа с GPS  
+`hashwork` - работа с хешированием  
+`encapsulation` - полноценная инкапсуляция  
+`kwargswork` - работа с **kwargs  
+`listwork` - работа со списками, кортежами и словарями   
+`network` - работа с интернетом  
+`numwork` - работа с числами  
+`print_color` - цветная консоль. Может работать не во всех консолях  
+`resolution` - определение разрешения экрана  
+`slugwork` - работа со slug, т. е. с строками, которые соответствуют правилам   
+`strwork` - работа со строками  
+`taskmgr` - работа с задачами  
+`type_define` - определение, относятся ли данные к определнному типу, или нет  
+`windows_registry` - работа с реестром Windows 
+`algebra` - работа с алгебраическими выражениями и математическими моделями
+
+### Помимо пакетов, в hrenpack есть несколько подбиблиотек:  
+`custom_methods` - дополнительные методы для уже существующих объектов   
+`filework` - работа с файлами  
+`framework` - дополнительные функции для уже существующих библиотек и фреймворков  
+
+### Ресурсы:
+В папке ресурсов находятся файлы ресурсов для корректной работы hrenpack
+
+## Использование:
+Данная библиотека распостраняется по 3-пунктной лицензии BSD
