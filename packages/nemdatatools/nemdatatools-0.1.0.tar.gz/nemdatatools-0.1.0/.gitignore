@@ -1,0 +1,47 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# setuptools_scm generated version file
+src/nemdatatools/_version.py
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+coverage.xml
+*.cover
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Documentation
+docs/_build/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# UV specific
+.uv/
+
+# MacOS specific
+.DS_Store
+
+# local development
+cache/
+data/
