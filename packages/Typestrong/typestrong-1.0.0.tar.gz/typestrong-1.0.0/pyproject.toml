@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools >= 61.0",]
+build-backend = "setuptools.build_meta"
+
+[project]
+dynamic = ["version"]
+name="Typestrong"
+requires-python = ">=3.8"
+authors = [
+    {name = "Phillip Harry T", email = "philliptinsley44@gmail.com"}
+]
+description = "Enforce Typehints at Runtime"
+readme = "README.md"
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: Other/Proprietary License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Information Technology", 
+]
+keywords = ["strongly typed", "strictly typed", "typehint", "typescript", "Literal", "enforce"]
+
+[tool.setuptools.dynamic]
+version = {attr = "Typestrong.__version__"}
+
+[project.scripts]
