@@ -1,0 +1,245 @@
+# :auto build-system:
+[build-system]
+requires = ["poetry-core>=1.8.5,<2.0"]
+build-backend = "poetry.core.masonry.api"
+# :auto build-system:
+
+# :auto package-meta:
+[tool.poetry]
+name = "xaitk-saliency"
+license = "Apache-2.0"
+readme = "README.md"
+packages = [{include = "xaitk_saliency", from="src"}]
+documentation = "https://xaitk-saliency.readthedocs.io/"
+classifiers = [
+    'Development Status :: 3 - Alpha',
+    'Intended Audience :: Developers',
+    'Intended Audience :: Science/Research',
+    'Operating System :: MacOS :: MacOS X',
+    'Operating System :: Unix',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
+]
+# :auto package-meta:
+# package-specific meta, don't put this in "generated package-meta"
+authors = ["Kitware, Inc. <xaitk@kitware.com>"]
+version = "0.14.1"
+description = "Visual saliency map generation interfaces and baseline implementations for explainable AI."
+
+[tool.poetry.dependencies]
+# :auto python-version:
+python = "^3.10"
+# :auto python-version:
+
+# Python capped to <3.13 because of:
+# https://stackoverflow.com/questions/77431252/why-doesnt-poetry-select-the-good-version-of-my-dependency
+numpy = [
+    {version = ">=1.22,^1.25", python = "<3.12" }, # CVE-2021-34141
+    {version = ">=2.1", python = ">=3.13" } # numpy==2.1 is the first release supporting python 3.13
+]
+scikit-image = ">=0.25"
+scikit-learn = ">=1.7.0"
+smqtk-classifier = ">=0.20.0"
+smqtk-core = ">=0.20.0"
+smqtk-descriptors = ">=0.20.0"
+smqtk-detection = ">=0.23.0"
+scipy = ">=1.15.0"
+click = ">=8.0.3"
+setuptools = ">=78.1.1"  # CVE-2025-47273
+# Optionals for "example" extra
+notebook = { version = ">=7.2.2", optional = true }
+matplotlib = { version=">=3.4.1", optional = true }
+papermill = { version = ">=2.3.3", optional = true }
+torch = {version = ">=2.2.0", optional = true}
+torchvision = {version = ">=0.10.0", optional = true}
+tqdm = { version = ">=4.66.3", optional = true } # CVE-2024-34062
+# Optionals for "tools" extra"
+kwcoco = { version = ">=0.2.18", optional = true}
+
+[tool.poetry.extras]
+example_deps = [ "notebook", "matplotlib", "papermill", "torch", "torchvision", "tqdm" ]
+tools = [ "kwcoco", "matplotlib"]
+
+
+[tool.poetry.scripts]
+sal-on-coco-dets= "xaitk_saliency.utils.bin.sal_on_coco_dets:sal_on_coco_dets"
+
+[tool.poetry.plugins."smqtk_plugins"]
+# Add implementation sub-module exposure here.
+"impls.perturb_image.sliding_window" = "xaitk_saliency.impls.perturb_image.sliding_window"
+"impls.perturb_image.mc_rise" = "xaitk_saliency.impls.perturb_image.mc_rise"
+"impls.perturb_image.rise" = "xaitk_saliency.impls.perturb_image.rise"
+"impls.perturb_image.random_grid" = "xaitk_saliency.impls.perturb_image.random_grid"
+"impls.perturb_image.sliding_radial" = "xaitk_saliency.impls.perturb_image.sliding_radial"
+"impls.gen_classifier_conf_sal.occlusion_scoring" = "xaitk_saliency.impls.gen_classifier_conf_sal.occlusion_scoring"
+"impls.gen_classifier_conf_sal.mc_rise_scoring" = "xaitk_saliency.impls.gen_classifier_conf_sal.mc_rise_scoring"
+"impls.gen_classifier_conf_sal.rise_scoring" = "xaitk_saliency.impls.gen_classifier_conf_sal.rise_scoring"
+"impls.gen_descriptor_sim_sal.similarity_scoring" = "xaitk_saliency.impls.gen_descriptor_sim_sal.similarity_scoring"
+"impls.gen_image_classifier_blackbox_sal.occlusion_based" = "xaitk_saliency.impls.gen_image_classifier_blackbox_sal.occlusion_based"
+"impls.gen_image_classifier_blackbox_sal.mc_rise" = "xaitk_saliency.impls.gen_image_classifier_blackbox_sal.mc_rise"
+"impls.gen_image_classifier_blackbox_sal.rise" = "xaitk_saliency.impls.gen_image_classifier_blackbox_sal.rise"
+"impls.gen_detector_prop_sal.drise_scoring" = "xaitk_saliency.impls.gen_detector_prop_sal.drise_scoring"
+"impls.gen_object_detector_blackbox_sal.drise" = "xaitk_saliency.impls.gen_object_detector_blackbox_sal.drise"
+"impls.gen_object_detector_blackbox_sal.occlusion_based" = "xaitk_saliency.impls.gen_object_detector_blackbox_sal.occlusion_based"
+"impls.gen_image_similarity_blackbox_sal.occlusion_based" = "xaitk_saliency.impls.gen_image_similarity_blackbox_sal.occlusion_based"
+"impls.gen_image_similarity_blackbox_sal.sbsm" = "xaitk_saliency.impls.gen_image_similarity_blackbox_sal.sbsm"
+"impls.saliency_metric.entropy" = "xaitk_saliency.impls.saliency_metric.entropy"
+
+# :auto linting:
+# Linting
+[tool.poetry.group.linting]
+optional = true
+
+[tool.poetry.group.linting.dependencies]
+pre-commit = ">=2.20"
+ruff = "^0.11.0"
+types-setuptools = ">=65.6.0.1"
+sphinx-lint = ">=1.0.0"
+pyright = {version=">=1.1.320",extras=["nodejs"]}
+# :auto linting:
+
+# :auto docs:
+# Docs
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+Sphinx = ">=5.3.0"
+sphinx-copybutton = "^0.5.2"
+sphinx-rtd-theme = ">=1.1.1"
+sphinx-prompt = ">=1.5.0"
+sphinx-click = ">=5.0.0"
+livereload = ">=2.6.3"
+myst-nb = "^1.1.2"
+# :auto docs:
+
+# :auto tests:
+# Testing
+[tool.poetry.group.tests]
+optional = true
+
+[tool.poetry.group.tests.dependencies]
+coverage = ">=6.5.0"
+pytest = ">=7.2.0"
+pytest-cov = ">=4.0.0"
+syrupy = ">=4.0.0"
+# Jupyter notebook testing
+notebook = ">=7.2.2"
+papermill = ">=2.4.0"
+pyright = {version=">=1.1.320",extras=["nodejs"]}
+# :auto tests:
+
+# :auto pytest:
+[tool.pytest.ini_options]
+addopts = [
+    "-lv",                              # Show local in trace-backs.
+    "--doctest-modules",                # Increased verbosity.
+    "--tb=long",                        # Trace-back print mode.
+    "--cov=./src/xaitk_saliency",          # Cover our package specifically
+    "--cov=./tests",                    # Also cover our tests for dead spots
+    "--cov-report=term",                # Coverage report to terminal
+    "--cov-report=xml:coverage.xml",    # for external tool reporting
+    "--snapshot-warn-unused",           # Prevent test failure when skipping tests
+]
+testpaths = [
+    "tests",
+    "src/xaitk_saliency",
+]
+doctest_optionflags = [
+    "NORMALIZE_WHITESPACE",
+    "IGNORE_EXCEPTION_DETAIL",
+]
+# :auto pytest:
+
+# :auto ruff:
+[tool.ruff]
+# Exclude content as appropriate.
+extend-exclude = [
+    "__pycache__",
+    "demos",
+    "scripts",
+    "docs/_build",
+    "docs/_implementations",
+]
+
+line-length = 120
+indent-width = 4
+
+# Assume Python 3.10
+target-version = "py310"
+
+extend-include = ["*.ipynb"]
+
+[tool.ruff.lint]
+select = [
+    "F", "E", "W", "C90", "I", "N", "D1", "D200", "D201", "D211", "D403", "D419", "UP",
+    "YTT", "ANN", "S",  "BLE", "B", "A", "COM", "C4", "T10", "ISC", "ICN", "PYI", "PT", "Q",
+    "RSE", "RET", "SLF", "SIM", "TID252", "ARG", "FIX", "PD", "FLY", "NPY", "RUF027",
+    "RUF100", "PERF", "UP045", "RUF013"
+]
+preview = true  # needed for RUF027
+explicit-preview-rules = true
+
+# From program suggested config
+ignore = ["ANN101","ANN102","C408","C416"]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = [
+  "S101",  # Allow asserts in tests
+  "SLF001",  # Allow private member access for introspection in tests
+  "D100", "D101", "D102", "D103", "D104", "D105", "D107"  # Allow missing docstring in test dir
+]
+
+[tool.ruff.lint.flake8-annotations]
+allow-star-arg-any = true  # Allow Any for *args and **kwargs
+
+[tool.ruff.lint.isort]
+known-first-party = ["xaitk_saliency"]
+
+[tool.ruff.lint.mccabe]
+# Flag errors (`C901`) whenever the complexity level exceeds 5.
+max-complexity = 5
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 120
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
+# :auto ruff:
+
+# :auto pyright:
+[tool.pyright]
+pythonVersion = "3.10"
+reportMissingImports = "warning"
+typeCheckingMode = "standard"
+include = [
+    "src/xaitk_saliency",
+    "tests",
+    "demos",
+    "scripts",
+    "docs",
+    ]
+exclude = [
+    "**/__pycache__",
+    "docs/_build",
+    "docs/_implementations",
+    ]
+# :auto pyright:
