@@ -1,0 +1,12 @@
+dagster-dg-core==1.11.9
+dagster==1.11.9
+dagster-cloud-cli==1.11.9
+typer
+
+[:python_version >= "3.10"]
+anthropic
+claude-code-sdk>=0.0.19
+mcp
+
+[test]
+syrupy>=4.0.0
