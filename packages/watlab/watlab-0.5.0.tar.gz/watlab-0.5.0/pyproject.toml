@@ -1,0 +1,69 @@
+
+# ====================================================
+# Build system properties (setuptools)
+# ====================================================
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+
+# ====================================================
+# Project metadata
+# ====================================================
+[project]
+name = "watlab"
+version = "0.5.0"
+license = { text = "GNU General Public License v3 or later (GPLv3+)" }
+authors = [
+    {name = "Sandra Soares-Frazão", email = "sandra.soares-frazao@uclouvain.be"},
+]
+maintainers = [
+    {name = "Pierre-Yves Gousenbourger", email = "pierre-yves.gousenbourger@uclouvain.be"},
+    {name = "Nathan Delpierre", email = "nathan.delpierre@uclouvain.be"},
+    {name = "Martin Petitjean", email = "martin.petitjean@uclouvain.be"},
+]
+description = "The watlab package is a Python interface for the C++-based hydraulical simulation sandbox. It is intended mainly for scholars."
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: C++",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: OS Independent",
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+]
+# This part is important for dependencies based on requirements.txt
+dynamic = ["dependencies"]
+
+[project.urls]
+"Homepage" = "https://sites.uclouvain.be/hydraulics-group/watlab/"
+"Bug Tracker" = "https://forge.uclouvain.be/hydraulics-simulations/hydroflow/-/issues"
+
+# ====================================================
+# Setuptools configuration
+# ====================================================
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.packages.find]
+# scanning for namespace packages is true by default in pyproject.toml, so
+# you do NOT need to include the following line.
+namespaces = true
+where = ["src"]
+
+[tool.setuptools.package-data]
+"watlab.bin" = [
+    "hydroflow-win.exe",
+    "hydroflow-parallel-win.exe",
+    "meshchecker-win.exe",
+    "hydroflow-linux",
+    "hydroflow-parallel-linux",
+    "meshchecker-linux",
+    "hydroflow-darwin",
+    "hydroflow-parallel-darwin",
+    "meshchecker-darwin",
+    "libgcc_s_seh-1.dll","libwinpthread-1.dll","libgomp-1.dll"]

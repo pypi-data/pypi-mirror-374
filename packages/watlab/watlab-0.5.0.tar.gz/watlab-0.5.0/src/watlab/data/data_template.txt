@@ -1,0 +1,106 @@
+! ======================================
+! Simulation name
+! ======================================
+{Simulation Name}
+
+! ======================================
+! Main parameters of the simulation
+! ======================================
+! Parameters of the simulation: t0, tend, CFL number
+{t0} {tend} {CFL}
+
+! Output folder path
+{output_folder}
+
+! ======================================
+! Files describing the mesh
+! ======================================
+! Nodes
+{nodes_file}
+
+! Cells described by the nodes
+{cells_file}
+
+! Interfaces between cells
+{interfaces_file}
+
+! ======================================
+! Algorithm parmeters
+! ======================================
+! Physical model
+! SWE, SWE_Exner, SWE_2L, ... (1, 2, 3,..)
+{physical_model}
+! Flux scheme
+! HydroFluxLHLLC, HydroFluxRoe, ...(1, 2, 3,..)
+{flux_scheme}
+
+! Order of spatial reconstruction
+! First order: 1, Second order: 2.
+{reconstruction_order}
+
+! SlopeLimiter (only if second order)
+! default : 0, Minmod : 1.0, Superbee : 2.0
+{slope_limiter}
+
+! ======================================
+! Hydrodynamic part: initialization
+! ======================================
+! File with hydrodynamic initial conditions (zw, qx, qy)
+{hydrodynamic_initial_conditions}
+
+! FixedBedLevel (non-erodible bed)
+{fixed_bed_level}
+{fixed_bed_level_file}
+
+! ======================================
+! Friction parameters
+! ======================================
+{isFriction}
+{isFrictionFile}
+
+! ======================================
+! Sediment transport data and parameters
+! ======================================
+! Sediment transport (1 = yes, 0 = no)
+{is_sediment_transport}
+! Sedimentological parameters (only if sediments)
+{sedimentological_parameters_file}
+! Initial sediment level (only if sediments)
+{is_initial_sediment_level}
+{initial_sediments_level_file}
+
+! ======================================
+! Bank-Failure tool (only if sediments)
+! ======================================
+{is_bank_failure}
+{bank_failure_parameters_file}
+{fixed_bank_file}
+
+! ======================================
+! Tests (only if sediments)
+! ======================================
+! Check mass conservation (water and sediments)
+{mass_conservation_check}
+
+! ======================================
+! Output systems
+! ======================================
+
+! Enveloppe of results
+{enveloppe_of_results}
+
+! Snapshots of the flow and file name
+{is_picture}
+{snapshots_of_flow}
+
+! Gauges
+{is_gauges}
+{gauges}
+
+! Discharge measured in given cross sections
+! timeStep (every X seconds)
+! nSections
+!   nbInterfaces
+!       list of interfaces forming the section
+{is_discharge_measured}
+{discharge_measured}
