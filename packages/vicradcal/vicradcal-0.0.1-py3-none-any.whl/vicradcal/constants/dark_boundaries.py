@@ -1,0 +1,1 @@
+DARK_BOUNDARIES = (0, 2752, 0, 50)
