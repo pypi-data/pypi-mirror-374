@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling>=1.19.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "validador-cnpj"
+version = "0.1.0"
+description = "UDFs PySpark para limpeza, reparo, normalização e validação de CNPJ (numérico e alfanumérico)."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "Yuri Arthur Ferreira Santana", email = "yuriarthurf@gmail.com" }]
+keywords = ["cnpj", "pyspark", "spark", "databricks", "brasil", "data-quality"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Software Development :: Libraries",
+  "Topic :: Database :: Database Engines/Servers",
+]
+
+dependencies = ["pyspark>=3.3,<4.0"]
+
+[project.urls]
+Homepage = "https://github.com/data-engineering-bp/validador-cnpj"
+Issues = "https://github.com/data-engineering-bp/validador-cnpj/issues"
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "README.md", "LICENSE", "CHANGELOG.md", "tests"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/validador_cnpj"]
