@@ -1,0 +1,37 @@
+[build-system]
+requires = ["flit_core >=3.4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "cts-api"
+dynamic = ["version", "description"]
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.9"
+dependencies = [
+  "aiohttp"
+]
+authors = [
+  {name = "Guillaume Scheidt", email = "theggz@proton.me"}
+]
+maintainers = [
+  {name = "Guillaume Scheidt", email = "theggz@proton.me"}
+]
+keywords = ["cts", "public", "transport", "strasbourg", "async", "api"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Build Tools",
+
+  "License :: OSI Approved :: MIT License",
+
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+]
+
+[project.urls]
+Repository = "https://github.com/theggz/cts-api"
+Issues = "https://github.com/theggz/cts-api/issues"
+Changelog = "https://github.com/theggz/cts-api/blob/main/CHANGELOG.md"

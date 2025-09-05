@@ -1,0 +1,76 @@
+name: CI & Publish
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  release:
+    types: [ published ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    environment: Development
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install flake8 pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Lint with flake8
+        run: |
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+      - name: "Check if CTS_API_TOKEN exists"
+        env:
+          CTS_API_TOKEN: ${{ secrets.CTS_API_TOKEN }}
+        run: |
+          if [ -z "$CTS_API_TOKEN" ]; then
+            echo "The secret CTS_API_TOKEN has not been created. Please go to 'settings > secrets > actions' to create it.";
+            exit 1;
+          fi
+
+      - name: Tests with pytest
+        env:
+          CTS_API_TOKEN: ${{ secrets.CTS_API_TOKEN }}
+        run: |
+          python -m pip install -e .
+          pytest
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install flit
+        run: pip install flit
+
+      - name: Publish to PyPI
+        uses: AsifArmanRahman/to-pypi-using-flit@v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}

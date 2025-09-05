@@ -1,0 +1,46 @@
+{
+  "ServiceDelivery": {
+    "ResponseTimestamp": "2023-01-01T12:00:00+00:00",
+    "RequestMessageRef": "test-request",
+    "StopMonitoringDelivery": [],
+    "VehicleMonitoringDelivery": [],
+    "EstimatedTimetableDelivery": [],
+    "GeneralMessageDelivery": [
+      {
+        "version": "2.0",
+        "ResponseTimestamp": "2023-01-01T12:00:00+00:00",
+        "ShortestPossibleCycle": "PT1M",
+        "InfoMessage": [
+          {
+            "formatRef": "plaintext",
+            "RecordedAtTime": "2023-01-01T11:59:00+00:00",
+            "ItemIdentifier": "msg:1",
+            "InfoMessageIdentifier": "msg:1",
+            "InfoChannelRef": "channel:1",
+            "ValidUntilTime": "2023-01-01T13:00:00+00:00",
+            "Content": {
+              "ImpactStartDateTime": "2023-01-01T12:00:00+00:00",
+              "ImpactEndDateTime": "2023-01-01T13:00:00+00:00",
+              "ImpactedGroupOfLinesRef": "",
+              "ImpactedLineRef": [],
+              "TypeOfPassengerEquipmentRef": "",
+              "Priority": "Normal",
+              "SendUpdatedNotificationsToCustomers": false,
+              "Message": [
+                {
+                  "MessageZoneRef": "zone:1",
+                  "MessageText": [
+                    {
+                      "Value": "Test message",
+                      "Lang": "en"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

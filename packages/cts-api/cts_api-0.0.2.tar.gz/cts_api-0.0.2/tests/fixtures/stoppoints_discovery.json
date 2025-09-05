@@ -1,0 +1,23 @@
+{
+  "StopPointsDelivery": {
+    "ResponseTimestamp": "2023-01-01T12:00:00+00:00",
+    "RequestMessageRef": "test-request",
+    "AnnotatedStopPointRef": [
+      {
+        "StopPointRef": "stop:1",
+        "Lines": [],
+        "Location": {
+          "Longitude": 7.74,
+          "Latitude": 48.58
+        },
+        "StopName": "Stop 1",
+        "Extension": {
+          "StopCode": "123",
+          "LogicalStopCode": "123",
+          "IsFlexhopStop": false,
+          "distance": 0.0
+        }
+      }
+    ]
+  }
+}

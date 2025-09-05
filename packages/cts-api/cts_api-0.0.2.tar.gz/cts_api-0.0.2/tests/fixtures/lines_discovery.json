@@ -1,0 +1,27 @@
+{
+  "LinesDelivery": {
+    "ResponseTimestamp": "2023-01-01T12:00:00+00:00",
+    "RequestMessageRef": "test-request",
+    "ValidUntil": "2023-01-01T13:00:00+00:00",
+    "ShortestPossibleCycle": "PT1M",
+    "AnnotatedLineRef": [
+      {
+        "LineRef": "line:1",
+        "LineName": "Line 1",
+        "Destinations": [
+          {
+            "DirectionRef": 1,
+            "DestinationName": [
+              "Destination A"
+            ]
+          }
+        ],
+        "Extension": {
+          "RouteType": "bus",
+          "RouteColor": "FF0000",
+          "RouteTextColor": "FFFFFF"
+        }
+      }
+    ]
+  }
+}

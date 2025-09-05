@@ -1,0 +1,51 @@
+{
+  "ServiceDelivery": {
+    "ResponseTimestamp": "2023-01-01T12:00:00+00:00",
+    "RequestMessageRef": "test-request",
+    "StopMonitoringDelivery": [
+      {
+        "version": "2.0",
+        "ResponseTimestamp": "2023-01-01T12:00:00+00:00",
+        "ValidUntil": "2023-01-01T13:00:00+00:00",
+        "ShortestPossibleCycle": "PT1M",
+        "MonitoringRef": [
+          "stop:1"
+        ],
+        "MonitoredStopVisit": [
+          {
+            "RecordedAtTime": "2023-01-01T11:59:00+00:00",
+            "MonitoringRef": "stop:1",
+            "StopCode": "123",
+            "MonitoredVehicleJourney": {
+              "LineRef": "line:1",
+              "DirectionRef": 1,
+              "FramedVehicleJourneyRef": {},
+              "VehicleMode": "bus",
+              "PublishedLineName": "Line 1",
+              "DestinationName": "Destination A",
+              "DestinationShortName": "Dest A",
+              "Via": "",
+              "MonitoredCall": {
+                "StopPointName": "Stop 1",
+                "StopCode": "123",
+                "Order": 1,
+                "ExpectedDepartureTime": "2023-01-01T12:05:00+00:00",
+                "ExpectedArrivalTime": "2023-01-01T12:05:00+00:00",
+                "Extension": {
+                  "IsRealTime": true,
+                  "DataSource": "live",
+                  "Experimentation": ""
+                }
+              },
+              "PreviousCall": [],
+              "OnwardCall": []
+            }
+          }
+        ]
+      }
+    ],
+    "VehicleMonitoringDelivery": [],
+    "EstimatedTimetableDelivery": [],
+    "GeneralMessageDelivery": []
+  }
+}
