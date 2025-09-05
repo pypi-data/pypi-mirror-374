@@ -1,0 +1,5 @@
+[console_scripts]
+core-evals-mtbench = core_evals.mtbench.framework_entrypoint:main
+core_evals_mtbench = core_evals.mtbench.framework_entrypoint:main
+mtbench-evaluator = mtbench_evaluator.entrypoint:main
+mtbench_evaluator = mtbench_evaluator.entrypoint:main
