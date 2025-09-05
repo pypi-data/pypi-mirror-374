@@ -1,0 +1,110 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hashid-analyzer"
+version = "2.0.0"
+description = "Comprehensive hash and token analyzer with persistent mode for security professionals"
+authors = [
+    {name = "XPAlchemnist", email = "xpalchemnist@gmail.com"}
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "Topic :: Security",
+    "Topic :: Security :: Cryptography",
+    "Topic :: System :: Systems Administration",
+    "Topic :: Utilities",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+]
+keywords = [
+    "hash", "analyzer", "identification", "security", "cryptography",
+    "md5", "sha1", "sha256", "sha512", "ntlm", "jwt", "token",
+    "bcrypt", "scrypt", "pbkdf2", "cryptocurrency", "bitcoin",
+    "ethereum", "penetration-testing", "red-team", "blue-team",
+    "cybersecurity", "forensics", "malware-analysis"
+]
+dependencies = [
+    "requests>=2.25.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+    "black>=21.0",
+    "flake8>=3.8",
+    "mypy>=0.812",
+]
+full = [
+    "bcrypt>=3.2.0",
+    "PyJWT>=2.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/ninxp07/hash-id"
+"Bug Tracker" = "https://github.com/ninxp07/hash-id/issues"
+"Source Code" = "https://github.com/ninxp07/hash-id"
+Documentation = "https://github.com/ninxp07/hash-id#readme"
+
+[project.scripts]
+hashid = "hashid.cli.main:main"
+hash-analyzer = "hashid.cli.main:main"
+hash-id = "hashid.cli.main:main"
+
+[tool.setuptools]
+packages = ["hashid", "hashid.core", "hashid.cli"]
+
+[tool.setuptools.package-data]
+hashid = ["py.typed"]
+
+[tool.black]
+line-length = 88
+target-version = ['py37', 'py38', 'py39', 'py310', 'py311']
+include = '\.pyi?$'
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --strict-markers --strict-config"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.mypy]
+python_version = "3.7"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.coverage.run]
+source = ["hashid"]
+omit = ["*/tests/*", "*/test_*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
