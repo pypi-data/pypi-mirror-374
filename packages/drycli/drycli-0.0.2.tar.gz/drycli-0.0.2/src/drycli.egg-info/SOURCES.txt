@@ -1,0 +1,17 @@
+.gitignore
+.pre-commit-config.yaml
+LICENSE
+README.md
+pyproject.toml
+pytest.ini
+.github/workflows/ci-cd.yml
+src/drycli/__init__.py
+src/drycli/_version.py
+src/drycli/py.typed
+src/drycli.egg-info/PKG-INFO
+src/drycli.egg-info/SOURCES.txt
+src/drycli.egg-info/dependency_links.txt
+src/drycli.egg-info/requires.txt
+src/drycli.egg-info/top_level.txt
+tests/__init__.py
+tests/test_placeholder.py
