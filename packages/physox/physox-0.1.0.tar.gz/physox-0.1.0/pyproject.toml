@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "physox"
+version = "0.1.0"
+description = "PhysOx — physics utilities in voxel and tick space"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Dr. Ippy", email = "admin@jdplumbingsoflo.com" }
+]
+requires-python = ">=3.9"
+keywords = ["physics", "simulation", "voxel", "time", "space"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+]
+
+[project.urls]
+Homepage = "https://github.com/JDPlumbing/physox"
+Repository = "https://github.com/JDPlumbing/physox"
