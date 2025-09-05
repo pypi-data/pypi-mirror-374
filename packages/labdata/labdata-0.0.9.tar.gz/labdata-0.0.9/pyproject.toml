@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=64.0","pip>=21.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "labdata"
+dynamic = ["version"]
+authors = [
+  { name="Joao Couto", email="jpcouto@gmail.com" },
+]
+description = "Package to manage data in experimental neuroscience labs"
+readme = "README.md"
+requires-python = ">=3.0"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+	     "datajoint",
+	     "boto3",
+	     "tqdm",
+	     "safe-exit",
+	     "joblib>=1.4.0", # has return_as and generator_unordered
+	     "natsort",
+	     "pandas"
+]
+
+[project.optional-dependencies]
+    dashboard = [
+        "dash",
+		"dash_bootstrap_components",
+		"dash-extensions",
+		"plotly",
+		"streamlit",
+		"streamlit-bokeh",
+		"scipy",
+		"scikit-image"
+    ]
+
+[project.urls]
+Homepage = "https://github.com/jcouto/labdata"
+Issues = "https://github.com/jcouto/labdata/issues"
+
+[project.scripts]
+labdata2 = "labdata.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."] 
+include = ["labdata","labdata.dashboard","labdata.compute","labdata.schema","labdata.rules"]
+namespaces = false  # disable PEP 420 namespaces
+
+[tool.setuptools.dynamic]
+version = {attr = "labdata.VERSION"}
