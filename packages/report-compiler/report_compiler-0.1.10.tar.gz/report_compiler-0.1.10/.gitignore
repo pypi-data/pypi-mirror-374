@@ -1,0 +1,70 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+build/
+dist/
+*.egg-info/
+*.egg
+src/report_compiler/_version.py
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.idea/
+
+# VS Code
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/extensions.json
+.vscode/c_cpp_properties.json
+.vscode/launch.json.backup
+
+# Windows
+Thumbs.db
+*.tmp
+*.temp
+~$*
+Desktop.ini
+
+# macOS
+.DS_Store
+._*
+
+# Project-specific temporary files
+~temp_*.docx
+~temp_*.pdf
+*_temp.docx
+*_temp.pdf
+temp_modified_report_*.docx
+temp_base_*.pdf
+examples/
+
+# Debug output files
+debug_*.pdf
+*_debug.pdf
+test_*.pdf
+
+# Legacy files
+# report_compiler_legacy.py  # Original monolithic implementation (kept for reference)
+
+# Word temporary files
+~$*.doc*
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Log files
+*.log
+
+uv.lock

@@ -1,0 +1,33 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Debug report-compiler CLI",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "args": [
+                "compile",
+                "${input:docxFile}",
+                "${input:outputPdf}",
+                "--verbose"
+            ],
+            "console": "integratedTerminal"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "docxFile",
+            "description": "Path to the input DOCX file",
+            "default": "${workspaceFolder}/examples/simple-report/bridge_report.docx",
+            "type": "promptString"
+        },
+        {
+            "id": "outputPdf",
+            "description": "Path for the output PDF file",
+            "default": "${workspaceFolder}/examples/simple-report/custom_debug_output.pdf",
+            "type": "promptString"
+        }
+    ]
+}
