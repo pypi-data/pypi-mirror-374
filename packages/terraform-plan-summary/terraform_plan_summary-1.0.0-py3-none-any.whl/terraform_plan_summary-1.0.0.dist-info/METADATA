@@ -1,0 +1,17 @@
+Metadata-Version: 2.4
+Name: terraform-plan-summary
+Version: 1.0.0
+Summary: A tool to summarize Terraform plan outputs.
+Author-email: nbr23 <max@23.tf>
+License-Expression: MIT
+License-File: LICENSE
+Requires-Python: >=3.13
+Requires-Dist: requests
+Provides-Extra: dev
+Requires-Dist: black; extra == 'dev'
+Requires-Dist: pytest; extra == 'dev'
+Requires-Dist: ruff; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# terraform-plan-summary
+
