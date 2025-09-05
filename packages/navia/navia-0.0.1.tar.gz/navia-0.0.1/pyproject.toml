@@ -1,0 +1,11 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "navia"
+version = "0.0.1"
+description = "Python navigation package"
+readme = "README.md"
+requires-python = ">=3.13"
+authors = [{name = "Tershire"}]
