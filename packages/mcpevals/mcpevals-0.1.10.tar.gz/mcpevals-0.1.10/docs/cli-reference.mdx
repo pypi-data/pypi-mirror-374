@@ -1,0 +1,402 @@
+---
+title: "CLI Reference"
+description: "Complete reference for MCP-Eval command-line interface, including commands and flags"
+sidebarTitle: "CLI Reference"
+icon: "terminal"
+keywords: ["cli", "init", "generate", "run", "validate", "doctor", "issue", "server", "agent", "update", "dataset", "version"]
+---
+
+# CLI reference
+
+> Complete reference for MCP-Eval command-line interface, including commands and flags.
+
+## CLI commands
+
+| Command | Description | Example |
+| :------ | :---------- | :------ |
+| `mcp-eval init` | Initialize a new MCP-Eval project | `mcp-eval init` |
+| `mcp-eval generate` | Generate test scenarios for MCP servers | `mcp-eval generate --style pytest` |
+| `mcp-eval run` | Execute test files and datasets | `mcp-eval run tests/` |
+| `mcp-eval dataset` | Run dataset evaluation | `mcp-eval dataset datasets/basic.yaml` |
+| `mcp-eval validate` | Validate configuration | `mcp-eval validate --quick` |
+| `mcp-eval doctor` | Diagnose setup issues | `mcp-eval doctor --full` |
+| `mcp-eval issue` | Create GitHub issue with diagnostics | `mcp-eval issue --title "Bug report"` |
+| `mcp-eval server add` | Add MCP server to config | `mcp-eval server add` |
+| `mcp-eval server list` | List configured servers | `mcp-eval server list -v` |
+| `mcp-eval agent add` | Add test agent to config | `mcp-eval agent add` |
+| `mcp-eval agent list` | List configured agents | `mcp-eval agent list --name default` |
+| `mcp-eval version` | Show version information | `mcp-eval version` |
+
+## Setup & Configuration
+
+### init
+
+Initialize a new MCP-Eval project with interactive setup.
+
+```bash
+mcp-eval init [OPTIONS]
+```
+
+| Flag | Description | Default | Example |
+| :--- | :---------- | :------ | :------ |
+| `--out-dir` | Project directory for configs | `.` | `--out-dir ./my-project` |
+| `--template` | Bootstrap template: `empty`, `basic`, `sample` | `basic` | `--template sample` |
+
+**What it does:**
+- Creates `mcpeval.yaml` and `mcpeval.secrets.yaml`
+- Prompts for LLM provider and API key
+- Auto-detects and imports servers from `.cursor/mcp.json` or `.vscode/mcp.json`
+- Configures default agent with instructions
+- Sets up judge configuration for test evaluation
+
+Source: [generator.py:841-1015](https://github.com/lastmile-ai/mcp-eval/blob/main/src/mcp_eval/cli/generator.py)
+
+### server add
+
+Add MCP server to configuration.
+
+```bash
+mcp-eval server add [OPTIONS]
+```
+
+| Flag | Description | Default | Example |
+| :--- | :---------- | :------ | :------ |
+| `--out-dir` | Project directory | `.` | `--out-dir ./project` |
+| `--from-mcp-json` | Import from mcp.json file | - | `--from-mcp-json .cursor/mcp.json` |
+| `--from-dxt` | Import from DXT file | - | `--from-dxt manifest.dxt` |
+
+Source: [generator.py:1529-1633](https://github.com/lastmile-ai/mcp-eval/blob/main/src/mcp_eval/cli/generator.py)
+
+### agent add
+
+Add test agent configuration.
+
+```bash
+mcp-eval agent add [OPTIONS]
+```
+
+| Flag | Description | Default | Example |
+| :--- | :---------- | :------ | :------ |
+| `--out-dir` | Project directory | `.` | `--out-dir ./project` |
+
+Source: [generator.py:1635-1701](https://github.com/lastmile-ai/mcp-eval/blob/main/src/mcp_eval/cli/generator.py)
+
+## Test Generation
+
+### generate
+
+Generate test scenarios and write test files for MCP servers.
+
+```bash
+mcp-eval generate [OPTIONS]
+```
+
+| Flag | Description | Default | Example |
+| :--- | :---------- | :------ | :------ |
+| `--out-dir` | Project directory | `.` | `--out-dir ./tests` |
+| `--style` | Test format: `pytest`, `decorators`, `dataset` | - | `--style pytest` |
+| `--n-examples` | Number of scenarios to generate | `6` | `--n-examples 10` |
+| `--provider` | LLM provider: `anthropic`, `openai` | - | `--provider anthropic` |
+| `--model` | Specific model to use | - | `--model claude-3-opus-20240229` |
+| `--verbose` | Show detailed error messages | `False` | `--verbose` |
+| `--output` | Explicit output file path | - | `--output tests/custom.py` |
+| `--update` | Append tests to existing file instead of creating new | - | `--update tests/test.py` |
+
+**What it does:**
+- Discovers server tools via MCP protocol
+- Generates test scenarios with AI
+- Refines assertions for each scenario
+- Validates generated Python code
+- Outputs test files or datasets
+
+Source: [generator.py:1017-1346](https://github.com/lastmile-ai/mcp-eval/blob/main/src/mcp_eval/cli/generator.py)
+
+**Update mode:**
+When using `--update`, the command appends new tests to an existing file rather than creating a new one. The file path provided to `--update` becomes the target file.
+
+Example:
+```bash
+# Append 5 new tests to existing file
+mcp-eval generate --update tests/test_server.py --n-examples 5
+```
+
+## Test Execution
+
+### run
+
+Execute test files and generate reports.
+
+```bash
+mcp-eval run <path|file|file::function> [OPTIONS]
+```
+
+| Flag | Description | Default | Example |
+| :--- | :---------- | :------ | :------ |
+| `-v, --verbose` | Detailed output | `False` | `-v` |
+| `--json` | Output JSON report | - | `--json results.json` |
+| `--markdown` | Output Markdown report | - | `--markdown results.md` |
+| `--html` | Output HTML report | - | `--html results.html` |
+| `--max-concurrency` | Parallel execution limit | - | `--max-concurrency 4` |
+
+**Accepts all standard pytest options**
+
+Source: [runner.py](https://github.com/lastmile-ai/mcp-eval/blob/main/src/mcp_eval/runner.py)
+
+### dataset
+
+Run dataset evaluation.
+
+```bash
+mcp-eval dataset <dataset_file> [OPTIONS]
+```
+
+Same options as `run` command.
+
+Source: [runner.py](https://github.com/lastmile-ai/mcp-eval/blob/main/src/mcp_eval/runner.py)
+
+## Inspection & Validation
+
+### server list
+
+List configured MCP servers.
+
+```bash
+mcp-eval server list [OPTIONS]
+```
+
+| Flag | Description | Default | Example |
+| :--- | :---------- | :------ | :------ |
+| `--project-dir` | Project directory | `.` | `--project-dir ./project` |
+| `-v, --verbose` | Show full details | `False` | `-v` |
+
+Source: [list_command.py:20-102](https://github.com/lastmile-ai/mcp-eval/blob/main/src/mcp_eval/cli/list_command.py)
+
+### agent list
+
+List configured agents.
+
+```bash
+mcp-eval agent list [OPTIONS]
+```
+
+| Flag | Description | Default | Example |
+| :--- | :---------- | :------ | :------ |
+| `--project-dir` | Project directory | `.` | `--project-dir ./project` |
+| `-v, --verbose` | Show full instructions | `False` | `-v` |
+| `--name` | Show specific agent | - | `--name default` |
+
+Source: [list_command.py:104-185](https://github.com/lastmile-ai/mcp-eval/blob/main/src/mcp_eval/cli/list_command.py)
+
+### validate
+
+Validate MCP-Eval configuration and connections.
+
+```bash
+mcp-eval validate [OPTIONS]
+```
+
+| Flag | Description | Default | Example |
+| :--- | :---------- | :------ | :------ |
+| `--project-dir` | Project directory | `.` | `--project-dir ./project` |
+| `--servers/--no-servers` | Validate servers | `True` | `--no-servers` |
+| `--agents/--no-agents` | Validate agents | `True` | `--no-agents` |
+| `--quick` | Skip connection tests | `False` | `--quick` |
+
+**What it checks:**
+- API keys are configured
+- Judge model is set
+- Servers can be connected to
+- Agents reference valid servers
+- LLM connections work
+
+Source: [validate.py:342-514](https://github.com/lastmile-ai/mcp-eval/blob/main/src/mcp_eval/cli/validate.py)
+
+## Debugging & Diagnostics
+
+### doctor
+
+Comprehensive diagnostics for troubleshooting.
+
+```bash
+mcp-eval doctor [OPTIONS]
+```
+
+| Flag | Description | Default | Example |
+| :--- | :---------- | :------ | :------ |
+| `--project-dir` | Project directory | `.` | `--project-dir ./project` |
+| `--full` | Include connection tests | `False` | `--full` |
+
+**What it checks:**
+- Python version and packages
+- Configuration files
+- Environment variables
+- System information
+- Recent test errors
+- Provides fix suggestions
+
+Source: [doctor.py](https://github.com/lastmile-ai/mcp-eval/blob/main/src/mcp_eval/cli/doctor.py)
+
+### issue
+
+Create GitHub issues with diagnostic information.
+
+```bash
+mcp-eval issue [OPTIONS]
+```
+
+| Flag | Description | Default | Example |
+| :--- | :---------- | :------ | :------ |
+| `--project-dir` | Project directory | `.` | `--project-dir ./project` |
+| `--title` | Issue title | - | `--title "Connection timeout"` |
+| `--no-include-outputs` | Skip test outputs | `False` | `--no-include-outputs` |
+| `--no-open-browser` | Don't open browser | `False` | `--no-open-browser` |
+
+Source: [issue.py](https://github.com/lastmile-ai/mcp-eval/blob/main/src/mcp_eval/cli/issue.py)
+
+### version
+
+Show version information.
+
+```bash
+mcp-eval version
+```
+
+Source: [__init__.py:34-42](https://github.com/lastmile-ai/mcp-eval/blob/main/src/mcp_eval/cli/__init__.py)
+
+## Configuration Files
+
+MCP-Eval uses two primary configuration files:
+
+### mcpeval.yaml
+
+Main configuration containing:
+- Server definitions (transport, command, args, env)
+- Agent definitions (name, instruction, server_names)
+- Judge configuration (provider, model, min_score)
+- Default agent setting
+- Reporting configuration
+
+### mcpeval.secrets.yaml
+
+Sensitive configuration containing:
+- API keys for LLM providers
+- Authentication tokens
+- Other secrets
+
+Both files are created by `mcp-eval init` and can be edited manually.
+
+## Environment Variables
+
+MCP-Eval respects these environment variables:
+
+| Variable | Description | Example |
+| :------- | :---------- | :------ |
+| `ANTHROPIC_API_KEY` | Anthropic Claude API key | `sk-ant-...` |
+| `OPENAI_API_KEY` | OpenAI API key | `sk-...` |
+| `GOOGLE_API_KEY` | Google API key | `...` |
+| `COHERE_API_KEY` | Cohere API key | `...` |
+| `AZURE_API_KEY` | Azure OpenAI API key | `...` |
+| `MCPEVAL_CONFIG` | Path to config file | `./config/mcpeval.yaml` |
+| `MCPEVAL_SECRETS` | Path to secrets file | `./config/secrets.yaml` |
+
+## Typical Workflow
+
+### 1. Initialize Project
+
+```bash
+# Create new project
+mcp-eval init
+
+# Or with sample files
+mcp-eval init --template sample
+```
+
+### 2. Configure Servers & Agents
+
+```bash
+# Add server interactively
+mcp-eval server add
+
+# Import from existing config
+mcp-eval server add --from-mcp-json .cursor/mcp.json
+
+# Add test agent
+mcp-eval agent add
+
+# List what's configured
+mcp-eval server list -v
+mcp-eval agent list
+```
+
+### 3. Validate Setup
+
+```bash
+# Full validation with connections
+mcp-eval validate
+
+# Quick config check only
+mcp-eval validate --quick
+
+# Diagnose issues
+mcp-eval doctor --full
+```
+
+### 4. Generate Tests
+
+```bash
+# Generate pytest tests
+mcp-eval generate --style pytest --n-examples 10
+
+# Add more tests to existing file
+mcp-eval generate --update tests/test_server.py --n-examples 5
+
+# Generate dataset for batch testing
+mcp-eval generate --style dataset
+```
+
+### 5. Execute Tests
+
+```bash
+# Run all tests
+mcp-eval run tests/
+
+# Run specific test with reports
+mcp-eval run tests/test_fetch.py -v --json report.json --markdown report.md
+
+# Run dataset
+mcp-eval dataset datasets/basic.yaml
+```
+
+### 6. Debug Issues
+
+```bash
+# If tests fail
+mcp-eval doctor
+
+# Create GitHub issue
+mcp-eval issue --title "Tests failing with timeout"
+```
+
+## Test Styles
+
+MCP-Eval supports three test formats:
+
+### pytest
+Standard pytest format with test functions and assertions.
+Best for integration with existing Python test suites.
+
+### decorators
+MCP-Eval's decorator-based format using `@task` and `@setup`.
+Provides rich async support and session management.
+
+### dataset
+YAML-based test cases for batch evaluation.
+Ideal for non-programmers and test data management.
+
+## See also
+
+- [Quickstart guide](quickstart) - Getting started with MCP-Eval
+- [Test Generation](generation) - Generating tests with AI
+- [Writing Tests](writing-tests) - Manual test creation
+- [Configuration](configuration) - Detailed configuration options
+- [GitHub Repository](https://github.com/lastmile-ai/mcp-eval) - Source code and issues
