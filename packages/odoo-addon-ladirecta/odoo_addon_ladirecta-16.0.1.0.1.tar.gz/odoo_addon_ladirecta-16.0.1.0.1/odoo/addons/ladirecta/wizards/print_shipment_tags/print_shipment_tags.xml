@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="print_shipment_tags_wizard" model="ir.ui.view">
+        <field name="name">print.shipment.tags.wizard</field>
+        <field name="model">print.shipment.tags.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Print Shipment Tags">
+                <group>
+                    <field name="correos_shipment_code_id" />
+                </group>
+                <footer>
+                    <button
+                        name="print_shipment_tags"
+                        string="Print Shipment Tags"
+                        type="object"
+                        class="oe_highlight"
+                    />
+                    <button string="Cancel" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <!-- Add button to Accounting/Customers menu to open the wizard-->
+    <record id="action_print_shipment_tags" model="ir.actions.act_window">
+        <field name="name">Print Shipment Tags</field>
+        <field name="res_model">print.shipment.tags.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    <menuitem
+        id="menu_print_shipment_tags"
+        name="Print Shipment Tags"
+        parent="account.menu_finance_receivables"
+        action="action_print_shipment_tags"
+        sequence="999"
+    />
+</odoo>
