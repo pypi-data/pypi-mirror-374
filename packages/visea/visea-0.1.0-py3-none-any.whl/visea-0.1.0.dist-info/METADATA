@@ -1,0 +1,66 @@
+Metadata-Version: 2.4
+Name: visea
+Version: 0.1.0
+Summary: Exploratory Rendering ENgine: target-aware tabular EDA and visualization
+Project-URL: Homepage, https://pypi.org/project/visea/
+Project-URL: Repository, https://github.com/your-user/visea
+Author: Eren
+License: MIT
+License-File: LICENSE
+Keywords: eda,ml,pandas,statistics,visualization
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Requires-Python: >=3.10
+Requires-Dist: matplotlib>=3.5
+Requires-Dist: numpy>=1.22
+Requires-Dist: pandas>=1.5
+Requires-Dist: scikit-learn>=1.1
+Requires-Dist: scipy>=1.9
+Requires-Dist: seaborn>=0.12
+Provides-Extra: dev
+Requires-Dist: black; extra == 'dev'
+Requires-Dist: build; extra == 'dev'
+Requires-Dist: mypy; extra == 'dev'
+Requires-Dist: pytest-cov; extra == 'dev'
+Requires-Dist: pytest>=7; extra == 'dev'
+Requires-Dist: ruff; extra == 'dev'
+Requires-Dist: twine; extra == 'dev'
+Provides-Extra: plotly
+Requires-Dist: plotly>=5.0; extra == 'plotly'
+Description-Content-Type: text/markdown
+
+Visea — Visual Insights for Tabular EDA
+
+Bu depo, PyPI’ye yüklenebilir “visea” kütüphanesinin kaynak kodunu içerir. Amaç: tabular veri setlerinde hedef odaklı keşif (EDA), otomatik istatistiksel özetler ve görselleştirme ile tek dosya HTML rapor üretimi.
+
+Hızlı Başlangıç
+- Python 3.10+
+- Yerel kurulum:
+
+  pip install -e .
+
+- Kullanım (Python API):
+
+  from visea import analyze
+  report = analyze(df, target="y", task="auto")
+  report.to_html("report.html")
+
+- CLI:
+
+  visea report --csv data.csv --target y --out report.html
+
+Önemli Dosyalar
+- visea/analyze.py: Ana giriş noktası (`analyze`)
+- visea/report.py: HTML rapor oluşturucu
+- visea/stats.py: Özet istatistikler ve testler
+- visea/assoc.py: Hedef ilişkileri ve metrikler
+- visea/plots.py: Matplotlib/Seaborn grafikler
+- visea/typing.py: Tip çıkarım heuristikleri
+- visea/cli.py: Komut satırı aracı
+
+Örnek
+- examples/quickstart.py — sentetik veri ile örnek rapor üretimi
