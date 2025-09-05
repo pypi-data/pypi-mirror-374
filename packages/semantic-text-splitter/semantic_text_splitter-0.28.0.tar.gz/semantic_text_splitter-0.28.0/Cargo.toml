@@ -1,0 +1,105 @@
+[workspace]
+members = ["bindings/*"]
+
+[workspace.package]
+version = "0.28.0"
+authors = ["Ben Brandt <benjamin.j.brandt@gmail.com>"]
+edition = "2021"
+description = "Split text into semantic chunks, up to a desired chunk size. Supports calculating length by characters and tokens, and is callable from Rust and Python."
+repository = "https://github.com/benbrandt/text-splitter"
+license = "MIT"
+keywords = ["text", "split", "tokenizer", "nlp", "ai"]
+categories = ["text-processing"]
+
+
+[workspace.lints.rust]
+future_incompatible = { level = "warn", priority = -1 }
+missing_debug_implementations = "warn"
+missing_docs = "warn"
+nonstandard_style = { level = "warn", priority = -1 }
+rust_2018_compatibility = { level = "warn", priority = -1 }
+rust_2018_idioms = { level = "warn", priority = -1 }
+rust_2021_compatibility = { level = "warn", priority = -1 }
+rust_2024_compatibility = { level = "warn", priority = -1 }
+unused = { level = "warn", priority = -1 }
+
+[workspace.lints.clippy]
+cargo = "warn"
+pedantic = "warn"
+
+[package]
+name = "text-splitter"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+description.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords.workspace = true
+categories.workspace = true
+exclude = [
+    ".github/**",
+    ".vscode/**",
+    "/bindings/**",
+    "/benches/output.txt",
+    "/docs/**",
+    # Rely on large test files
+    "/tests/snapshots/**",
+    "/tests/text_splitter_snapshots.rs",
+    "/tests/inputs/**",
+    "/tests/tokenizers/**",
+    "*.yml",
+    "*.yaml",
+]
+rust-version = "1.82.0"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ahash = "0.8.12"
+auto_enums = "0.8"
+either = "1.15"
+icu_provider = { version = "2", features = ["sync"] }
+icu_segmenter = "2"
+itertools = "0.14"
+memchr = "2.7.5"
+pulldown-cmark = { version = "0.13", default-features = false, optional = true }
+strum = { version = "0.27", features = ["derive"] }
+thiserror = "2.0.16"
+tiktoken-rs = { version = "0.7", optional = true }
+tokenizers = { version = "0.22", default-features = false, optional = true }
+tree-sitter = { version = "0.25", optional = true }
+
+[dev-dependencies]
+dirs = "6.0.0"
+divan = "0.1.21"
+fake = "4"
+insta = { version = "1.43", features = ["glob", "yaml"] }
+more-asserts = "0.3"
+rayon = "1.11"
+tokenizers = { version = "0.22.0", default-features = false, features = [
+    "onig",
+    "http",
+] }
+tree-sitter-rust = "0.24"
+
+[[bench]]
+name = "chunk_size"
+harness = false
+
+[features]
+code = ["dep:tree-sitter"]
+markdown = ["dep:pulldown-cmark"]
+tiktoken-rs = ["dep:tiktoken-rs"]
+tokenizers = ["dep:tokenizers", "tokenizers/onig"]
+
+[lints]
+workspace = true
+
+# Tokenizers and indirect deps can cause slow runtime
+[profile.dev.package."*"]
+opt-level = 3
