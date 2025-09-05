@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "elsevier-latex-preparation"
+version = "0.1.0"
+description = "Merge LaTeX files and resources for Elsevier Editorial Manager submission"
+authors = [
+    {name = "Pietro Ungar", email = "pietro.ungar@unifi.it"}
+]
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    "ttkthemes",
+]
+
+[project.scripts]
+latex-gui = "elsevier_latex_preparation.latex_coversion_code:run_gui"
