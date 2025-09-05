@@ -1,0 +1,216 @@
+#!/usr/bin/env python3
+#
+# (c) 2022 Fetal-Neonatal Neuroimaging & Developmental Science Center
+#                   Boston Children's Hospital
+#
+#              http://childrenshospital.org/FNNDSC/
+#                        dev@babyMRI.org
+#
+
+import sys
+import os
+import json
+from argparse import ArgumentParser
+
+sys.path.insert(1, os.path.join(os.path.dirname(__file__), '..'))
+
+from chrisclient import client
+
+
+list_resources = ['feed', 'comment', 'tag', 'note', 'user', 'plugin', 'pluginmeta',
+                  'computeresource', 'plugininstance', 'pipeline', 'pipelineinstance',
+                  'userfile', 'pacsseries', 'pacsfile', 'workflow']
+
+add_resources = ['comment', 'tag', 'plugin', 'plugininstance', 'pipeline',
+                 'pipelineinstance', 'userfile', 'pacsseries', 'workflow']
+
+modify_resources = ['feed', 'comment', 'tag', 'note', 'user', 'plugininstance',
+                    'pipeline', 'pipelineinstance', 'userfile', 'plugin']
+
+remove_resources = ['feed', 'comment', 'tag', 'plugininstance', 'pipeline',
+                    'pipelineinstance', 'userfile', 'workflow']
+
+
+parser = ArgumentParser(description='Manage Chris resources')
+parser.add_argument('url', help="url of ChRIS")
+parser.add_argument('-u', '--username', help="username for ChRIS")
+parser.add_argument('-p', '--password', help="password for ChRIS")
+parser.add_argument('-t', '--token', help="token for ChRIS")
+parser.add_argument('--timeout', type=int, default=30, help="requests' timeout")
+subparsers = parser.add_subparsers(dest='subparser_name', title='subcommands',
+                                   description='valid subcommands',
+                                   help='sub-command help')
+
+# create the parser for the "list" command
+parser_list = subparsers.add_parser('list', help='list a ChRIS resource')
+parser_list.add_argument('list_resource_name', choices=list_resources,
+                         help="resource name")
+parser_list.add_argument('queryparameters', nargs='*', help="query parameters")
+parser_list.add_argument('-v', '--verbose',
+                         help="increase output verbosity by also including the "
+                              "resources' parameter list", action='store_true')
+
+# create the parser for the "add" command
+parser_add = subparsers.add_parser('add', help='add a new resource')
+parser_add.add_argument('add_resource_name', choices=add_resources, help="resource name")
+
+plugins_group = parser_add.add_argument_group('plugins arguments')
+plugins_group.add_argument('--computenames', help='a string reprsenting a '
+                                                  'comma-separated list of compute '
+                                                  'resource names')
+plugins_group.add_argument('--fname', help="plugin representation file's path")
+
+plugin_instances_group = parser_add.add_argument_group('plugin instances arguments')
+plugin_instances_group.add_argument('--pluginid', help='plugin id')
+plugin_instances_group.add_argument('--instancedata', type=json.loads,
+                                    help='plugin instance JSON data string')
+
+pipelines_group = parser_add.add_argument_group('pipelines arguments')
+pipelines_group.add_argument('--pipelinedata', type=json.loads,
+                             help='pipeline JSON data string')
+
+workflows_group = parser_add.add_argument_group('workflows arguments')
+workflows_group.add_argument('--pipelineid', help='pipeline id')
+workflows_group.add_argument('--workflowdata', type=json.loads,
+                             help='workflow JSON data string')
+
+pacs_series_group = parser_add.add_argument_group('PACS series arguments')
+pacs_series_group.add_argument('--pacsseriespath', help='PACS series path')
+pacs_series_group.add_argument('--ndicom', help='number of DICOM files in the PACS '
+                                                'series')
+pacs_series_group.add_argument('--PatientID', help='patient id')
+pacs_series_group.add_argument('--PatientName', help='patient name')
+pacs_series_group.add_argument('--StudyInstanceUID', help='study id')
+pacs_series_group.add_argument('--StudyDescription', help='study description')
+pacs_series_group.add_argument('--SeriesInstanceUID', help='series id')
+pacs_series_group.add_argument('--SeriesDescription', help='series description')
+pacs_series_group.add_argument('--pacsname', help='PACS name identifier')
+
+# create the parser for the "modify" command
+parser_modify = subparsers.add_parser('modify', help='modify an existing resource')
+parser_modify.add_argument('modify_resource_name', choices=modify_resources,
+                           help="resource name")
+
+feed_group = parser_modify.add_argument_group('feed arguments')
+feed_group.add_argument('--feedid', help='feed id')
+
+plugin_group = parser_modify.add_argument_group('plugin arguments')
+plugin_group.add_argument('--pluginid', help='plugin id')
+plugin_group.add_argument('--computenames', help='a string reprsenting a '
+                                                  'comma-separated list of compute '
+                                                  'resource names')
+
+# create the parser for the "remove" command
+parser_remove = subparsers.add_parser('remove', help='Remove an existing resource')
+parser_remove.add_argument('resource_name', choices=remove_resources,
+                           help="resource name")
+parser_remove.add_argument('id', help="resource id")
+
+
+# Parse the arguments and perform the appropriate action with the client
+args = parser.parse_args()
+timeout = args.timeout
+
+client = client.Client(args.url, args.username, args.password, args.token)
+client.set_urls(timeout)
+
+if args.subparser_name == 'list':
+    resource_name = args.list_resource_name
+    methods = {
+        'feed': client.get_feeds,
+        'plugin': client.get_plugins,
+        'plugininstance': client.get_plugin_instances,
+        'pipeline': client.get_pipelines,
+        'workflow': client.get_workflows,
+        'pacsfile': client.get_pacs_files,
+        'pacsseries': client.get_pacs_series_list
+    }
+    if resource_name not in methods:
+        raise NotImplementedError(f"'list' not implemented for {resource_name} yet")
+
+    search_params = {}
+    for param_str in args.queryparameters:
+        param_tuple = param_str.partition('==')
+        search_params[param_tuple[0]] = param_tuple[2]
+    result = methods[resource_name](search_params, timeout)
+
+    i = 0
+    for i, res in enumerate(result['data'], 1):
+        print('\n\n[%i] ' % i)
+        for descriptor in res:
+            print('%s: %s' % (descriptor, res[descriptor]))
+
+        if args.verbose and resource_name in ('plugin', 'pipeline'):
+            param_method = None
+            param_list_name = ''
+
+            if resource_name == 'plugin':
+                param_method = client.get_plugin_parameters
+                param_list_name = 'parameters'
+            elif resource_name == 'pipeline':
+                param_method = client.get_pipeline_default_parameters
+                param_list_name = 'plugin_parameter_defaults'
+
+            parameters = []
+            offset = 0
+            limit = 50
+            while True:
+                result = param_method(res['id'], {'limit': limit, 'offset': offset},
+                                      timeout)
+                parameters.extend(result['data'])
+                offset += limit
+                if not result['hasNextPage']: break
+
+            print(f'\n{param_list_name}: {json.dumps(parameters)}')
+
+            if resource_name == 'pipeline':
+                nodes_info = json.dumps(client.compute_workflow_nodes_info(parameters))
+                workflow_data = {"previous_plugin_inst_id": 0, "nodes_info": nodes_info}
+                print(f'\nworkflowdata: {json.dumps(workflow_data)}')
+    print('\n')
+
+elif args.subparser_name == 'modify':
+    resource_name = args.modify_resource_name
+    if resource_name == 'plugin':
+        result = client.admin_register_plugin_with_computes(args.pluginid,
+                                                            args.computenames, timeout)
+        print('Done')
+
+elif args.subparser_name == 'add':
+    resource_name = args.add_resource_name
+    result = []
+
+    if resource_name == 'pacsseries':
+        data = {'path': args.pacsseriespath,
+                'ndicom': args.ndicom,
+                'PatientID': args.PatientID,
+                'PatientName': args.PatientName,
+                'StudyInstanceUID': args.StudyInstanceUID,
+                'StudyDescription': args.StudyDescription,
+                'SeriesInstanceUID': args.SeriesInstanceUID,
+                'SeriesDescription': args.SeriesDescription,
+                'pacs_name': args.pacsname
+                }
+        result = client.admin_register_pacs_series(data, timeout)
+
+    elif resource_name == 'pipeline':
+        data = args.pipelinedata
+        result = client.create_pipeline(data, timeout)
+
+    elif resource_name == 'plugin':
+        result = client.admin_upload_plugin(args.computenames, args.fname, timeout)
+
+    elif resource_name == 'plugininstance':
+        plugin_id = args.pluginid
+        data = args.instancedata
+        result = client.create_plugin_instance(plugin_id, data, timeout)
+
+    elif resource_name == 'workflow':
+        pipeline_id = args.pipelineid
+        data = args.workflowdata
+        result = client.create_workflow(pipeline_id, data, timeout)
+
+    print('\n')
+    for descriptor in result:
+        print('%s: %s' % (descriptor, result[descriptor]))
+    print('\n')
