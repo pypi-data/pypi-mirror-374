@@ -1,0 +1,113 @@
+Metadata-Version: 2.4
+Name: cntc260
+Version: 0.0.2
+Home-page: https://github.com/OPN48/cntc260
+Author: cuba3
+Author-email: cuba3@163.com
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: home-page
+Dynamic: license-file
+
+cnTC260
+=======
+
+基于TC260，TC260-PG-20258A和GB45438—2025 人工智能生成合成内容标识方法
+元数据隐式标识
+https://www.tc260.org.cn/front/postDetail.html?id=20250828165129
+
+GB45438—2025
+============
+
+https://www.xiongan.gov.cn/20250617/99e8309670814bdba91b3bcbfaca4e6c/2025061799e8309670814bdba91b3bcbfaca4e6c_38598ff9004470443c9195f1655adb29a0.pdf
+
+.. code:: bash
+
+   # macOS
+   brew install exempi
+   # linux
+   sudo apt-get install libexempi3
+
+.. code:: bash
+
+   pip3 install python-xmp-toolkit
+
+::
+
+   pip3 install cntc260
+
+.. code:: python
+
+   from cntc260.tc260 import GBxmp
+
+   xmpAigcVal = {"Label": "1","ContentProducer": "公司名 或 备案号","ProduceID": "A2012102390129310","ReservedCode1": "","ContentPropagator": "云空间服务商或你自己的服务器","PropagateID": "此处传入空间名、文件名或唯一识别编号","ReservedCode2": "computer,1|human,0|" }
+   xmpDcVal = {"title":"标题cnTC260","description":"作品描述cnTC260","contentProducer":"工具或平台名称cnTC260","creator":"作者cnTC260","id": "100001","rights":"Copyright 2025 作者/工具或平台名称 cntc260 保留所有权利。未经许可，不得商用。","CreateDate": '2025-09-04T15:30:00+08:00'}
+
+   w = GBxmp("./aigc.jpg", isTest=True)
+   w.setHashPrefix("cnTC260_")
+   w.setDCDic(xmpDcVal)
+   w.setAIGC(xmpAigcVal)
+   w.writeXmp()
+
+.. code:: commandline
+
+   # 示例调用：写入到 ./aigc.jpg
+   xmpDcVal={"title":"标题cnTC260",
+             "description":"作品描述cnTC260",
+             "contentProducer":"工具或平台名称cnTC260",
+             "creator":"作者cnTC260",
+             "id": "100001",
+             "rights":"Copyright 2025 作者/工具或平台名称 cntc260 保留所有权利。未经许可，不得商用。",
+             "CreateDate":"2025-09-04T15:30:00+08:00"
+             }
+
+.. code:: gb45438—2025
+
+   xmpAigcVal = {
+       # GB45438—2025
+       # https://www.xiongan.gov.cn/20250617/99e8309670814bdba91b3bcbfaca4e6c/2025061799e8309670814bdba91b3bcbfaca4e6c_38598ff9004470443c9195f1655adb29a0.pdf
+       # 生成合成标签要素由 Label表示,取值为value1,应符合以下要求。
+       # 1) 存储内容属于、可能、疑似为人工智能生成合成的属性信息:
+       # 属于人工智能生成合成内容的,value1 的值取1;
+       # 可能为人工智能生成合成内容的,value1 的值取2;
+       # 疑似为人工智能生成合成内容的,value1 的值取3。
+       # 2) 类型为字符串。
+       "Label": "1",
+
+       # ) 生成合成服务提供者要素由 ContentProducer表示,取值为value2,应符合以下要求:
+       # 1) 存储生成合成服务提供者的名称或编码;
+       # 2) 类型为字符串。
+       "ContentProducer": "公司名 或 备案号",
+
+       # 内容制作编号要素由 ProduceID表示,取值为value3,应符合以下要求:
+       # 1) 存储生成合成服务提供者对该【内容的唯一编号】;
+       # 2) 类型为字符串。
+       "ProduceID": "A2012102390129310",
+
+       # 预留字段1由 ReservedCode1表示,取值为value4,要求如下:
+       # 1) 可存储用于生成合成服务提供者自主开展安全防护,保护内容、标识完整性的信息;
+       # 2) 类型应为字符串。
+       # 注2:生成合成服务提供者使用预留字段1进行文件元数据隐式标识安全防护的示例见附录 F的 F.4。
+       # 生成合成服务提供者使用杂凑算法对文件元数据信息进行数字签名,并将结果存储在预留字段1
+       # 中的示例如下所示。
+       # "ReservedCode1":"e862483430d978cbf828b8b24296ef9328d843a0"
+       # by cuba3 建议杂凑算法（SHA-256，性能有问题可以考虑降低为MD5）
+       "ReservedCode1": "",
+
+       # g) 内容传播服务提供者要素由 ContentPropagator表示,取值为value5,应符合以下要求:
+       # 1) 存储内容传播服务提供者的名称或编码;
+       # 2) 类型为字符串。
+       "ContentPropagator": "传播平台、云空间服务商或你自己的服务器",
+
+       # h) 内容传播编号要素由 PropagateID表示,取值为value6,应符合以下要求:
+       # 1) 存储内容传播服务提供者对该内容的唯一编号;
+       # 2) 类型为字符串。
+       "PropagateID": "此处传入空间名、文件名或唯一识别编号",
+
+       # ) 预留字段2由 ReservedCode2表示,取值为value7,要求如下:
+       # 1) 可存储用于内容传播服务提供者自主开展安全防护,保护内容、标识完整性的信息;
+       # 2) 类型应为字符串。
+       "ReservedCode2": "computer,1|human,0|"
+   }
