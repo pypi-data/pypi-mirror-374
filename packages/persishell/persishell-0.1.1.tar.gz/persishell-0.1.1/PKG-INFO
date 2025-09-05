@@ -1,0 +1,92 @@
+Metadata-Version: 2.1
+Name: persishell
+Version: 0.1.1
+Summary: A simple wrapper around subprocess with persistent environment variables
+Author-email: Jiakun Yan <jiakunyan1998@gmail.com>
+License: MIT License
+        
+        Copyright (c) [year] [fullname]
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# persishell
+
+**Lightweight replacement for `os.system()` with a persistent environment.**
+
+`persishell` is a simple Python library that wraps a persistent Bash subprocess, allowing you to run shell commands sequentially — with shared environment state across runs. It's useful when you need to maintain `export`ed variables, `cd` into directories, interact with `module load`, or configure shell settings once and use them across multiple commands.
+
+I use it extensively on SLURM clusters to write all my experiment scripts (including the sbatch scripts) in Python.
+
+## Installation
+
+```bash
+pip install persishell
+```
+Or for development:
+
+```bash
+pip install -e .
+```
+
+## Quick Start
+```python
+from persishell import PersiShell
+
+sh = PersiShell()
+
+# Set environment variables
+sh.export("FOO", "bar")
+
+# Commands use the persistent environment
+sh.run("echo $FOO")  # prints: bar
+
+# Change directories
+sh.run("cd /tmp")
+sh.run("pwd")  # prints: /tmp
+
+# Unset environment variables
+sh.unset("FOO")
+sh.run("echo $FOO")  # prints an empty line
+```
+
+## API Summary
+```python
+PersiShell.run(command: str | list, optinal arguments)
+```
+Run a command inside the persistent shell. Accepts a string or a list of arguments.
+
+```python
+PersiShell.export(key: str, value: str)
+```
+Export a persistent environment variable.
+
+```python
+PersiShell.unset(key: str)
+```
+Unset a previously defined environment variable.
+
+## Limitations
+Currently designed for Unix-like systems (uses bash, fcntl). It has not been tested on Windows.
+
+## License
+MIT License
