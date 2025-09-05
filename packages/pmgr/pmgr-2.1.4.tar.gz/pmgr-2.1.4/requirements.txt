@@ -1,0 +1,10 @@
+docopt
+# Note: modern mysql>=9.0.0 removes native auth, breaking this app
+# pip installation requires sql system packages, so those would need to be pinned
+# outside the pip recipe
+mysqlclient >=2.0.3
+pcdsutils
+pykerberos >=1.1.14
+pyqt5
+# LCLS's pyca is not on pypi:
+# pyca =3.1.1
