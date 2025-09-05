@@ -1,0 +1,88 @@
+# Quave SDK
+
+`quave-sdk` provides a Python interface to Quave's platform for executing 
+quantum circuits, and retrieving results in hybrid quantum-classical workflows. 
+
+## Installation
+
+```bash
+# For users
+pip install quave-sdk
+
+# For developers
+pip install -e .
+```
+
+## Usage
+
+```python
+from qiskit import QuantumCircuit
+from quave_sdk.quave import Quave
+
+# build a simple circuit
+qc = QuantumCircuit(1)
+qc.h(0)
+qc.t(0)
+qc.measure_all()
+
+# initialize a quave object using environment variable authentication
+email = os.getenv("EMAIL")
+password = os.getenv("PASSWORD")
+quave = Quave(email, password)
+# or using command line inputs
+quave = Quave()
+
+# see all available backends
+backends = quave.list_backends()
+# or for a specific QPU provider
+backends = quave.list_backends("braket")
+
+# retrieve statistics for a specific backend
+backend_stats = quave.get_backend_stats(backend_name="ibm_brisbane", provider="ibm")
+
+# execute a simple circuit
+result_id = quave.execute(circuit=qc, shots=10, backend="simulate")
+
+# check the status and retrieve results
+status = quave.check_status(result_id)
+if status == "COMPLETED":
+    result = quave.get_result(result_id)
+    print(result.counts)
+
+# or wait for the job to be complete
+result = asyncio.run(quave.await_result(result_id))
+
+# define and execute a simple parameterized circuit
+theta = Parameter("θ")
+qc = QuantumCircuit(1, 1)
+qc.rx(theta, 0)
+qc.measure(0, 0)
+
+result_id = quave.execute(circuit=qc, parameters={"θ": 0}, shots=10, backend="simulate")
+result = asyncio.run(quave.await_result(result_id))
+
+# or execute an iterative workload
+# define a function to generate new parameters from result counts
+def update_parameters(counts):
+    if counts.get("0", 0) > 0:
+        return {"θ": pi}
+    else:
+        return {"θ": 0}
+
+# execute the iterative workload
+result_ids = asyncio.run(quave.iterative_execute(
+    circuit=qc, 
+    parameter_update_fn=change_theta, 
+    initial_parameters={"θ": 0}, 
+    num_iterations=3, 
+    shots=10, 
+    backend="simulate",
+    timeout=10000))
+
+# retrieve the results for each iteration
+for result_id in result_ids:
+    result = quave.get_result(result_id)
+    print(f"Status: {result.status}")
+
+```
+
