@@ -1,0 +1,18 @@
+Metadata-Version: 2.4
+Name: shipkit
+Version: 0.0.1
+Summary: Simplify your Docker deployment workflow. ShipKit helps you build images, push to a server, and configure services with ease.
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: click>=8.2.1
+Requires-Dist: icecream>=2.1.7
+Requires-Dist: pydantic>=2.11.7
+Requires-Dist: rich>=14.1.0
+Dynamic: license-file
+
+# ShipKit
+
+Simplify your Docker deployment workflow.
+ShipKit helps you build images, push to a server, and configure services with ease.
+

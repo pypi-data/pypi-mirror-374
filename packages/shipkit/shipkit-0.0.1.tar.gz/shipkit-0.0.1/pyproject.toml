@@ -1,0 +1,59 @@
+[project]
+name = "shipkit"
+version = "0.0.1"
+description = "Simplify your Docker deployment workflow. ShipKit helps you build images, push to a server, and configure services with ease."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "click>=8.2.1",
+    "icecream>=2.1.7",
+    "pydantic>=2.11.7",
+    "rich>=14.1.0",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.17.1",
+    "ruff>=0.12.12",
+]
+
+
+[tool.ruff]
+line-length = 100
+indent-width = 4
+exclude = []
+
+[tool.ruff.lint]
+select = [
+    "F", # Pyflakes
+    "E", # pycodestyle error
+    "W",
+    "N", # pep8-naming
+    "I", # isort
+    "RET", # return type
+    "SLF001", # private-member-access
+    "RUF100", # unused-noqa
+]
+ignore = [
+    "E501", # handled by Formatter
+    "RET504",
+    "RET501",
+    "RET505",
+    "I001",
+]
+
+[tool.ruff.format]
+indent-style = "space"
+quote-style = "double"
+docstring-code-format = true
+skip-magic-trailing-comma = false
+
+[tool.mypy]
+warn_return_any = false
+warn_unused_configs = true
+show_error_context = true
+ignore_missing_imports = true
+check_untyped_defs = true
+plugins = []
+exclude = []
+
