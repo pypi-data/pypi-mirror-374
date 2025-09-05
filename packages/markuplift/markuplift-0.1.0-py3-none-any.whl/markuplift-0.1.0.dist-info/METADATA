@@ -1,0 +1,12 @@
+Metadata-Version: 2.4
+Name: markuplift
+Version: 0.1.0
+Summary: A configurable XML and HTML formatter.
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: click>=8.2.1
+Requires-Dist: lxml>=6.0.1
+Requires-Dist: pytest>=8.4.1
+Provides-Extra: dev
+Requires-Dist: pytest>=8.4.1; extra == "dev"
+Requires-Dist: approvaltests>=15.3.2; extra == "dev"
