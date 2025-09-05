@@ -1,0 +1,107 @@
+Metadata-Version: 2.4
+Name: dapper
+Version: 1.7.2
+Summary: DAPPER benchmarks the performance of data assimilation (DA) methods.
+Author: Patrick N. Raanes
+Author-email: patrick.n.raanes@gmail.com
+Project-URL: Documentation, https://nansencenter.github.io/DAPPER/
+Project-URL: Source, https://github.com/nansencenter/DAPPER
+Project-URL: Tracker, https://github.com/nansencenter/DAPPER/issues
+Keywords: data-assimilation enkf kalman-filtering state-estimation particle-filter kalman bayesian-methods bayesian-filter chaos
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENCE.txt
+Requires-Dist: scipy>=1.14
+Requires-Dist: numpy~=2.0
+Requires-Dist: matplotlib>=3.10
+Requires-Dist: pyyaml>=6.0.2
+Requires-Dist: ipython>=7.34
+Requires-Dist: ipdb
+Requires-Dist: jupyter
+Requires-Dist: notebook<7
+Requires-Dist: mpl-tools==0.4.1
+Requires-Dist: tqdm~=4.67
+Requires-Dist: colorama~=0.4.1
+Requires-Dist: tabulate~=0.8.3
+Requires-Dist: pathos~=0.3
+Requires-Dist: dill==0.3.8
+Requires-Dist: patlib==0.3.7
+Requires-Dist: struct-tools==0.2.5
+Requires-Dist: threadpoolctl<4.0.0,>=3.0.0
+Provides-Extra: qt
+Requires-Dist: PyQt5; extra == "qt"
+Requires-Dist: qtpy; extra == "qt"
+Provides-Extra: debug
+Requires-Dist: line_profiler; extra == "debug"
+Requires-Dist: pre-commit; extra == "debug"
+Provides-Extra: test
+Requires-Dist: tox; extra == "test"
+Requires-Dist: coverage>=5.1; extra == "test"
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: pytest-sugar; extra == "test"
+Requires-Dist: pytest-benchmark; extra == "test"
+Requires-Dist: pytest-clarity; extra == "test"
+Requires-Dist: pytest-xdist; extra == "test"
+Requires-Dist: pytest-timeout; extra == "test"
+Provides-Extra: lint
+Requires-Dist: ruff; extra == "lint"
+Provides-Extra: doc
+Requires-Dist: mkdocs-material; extra == "doc"
+Requires-Dist: mkdocstrings; extra == "doc"
+Requires-Dist: mkdocstrings-python; extra == "doc"
+Requires-Dist: mkdocs-gen-files; extra == "doc"
+Requires-Dist: mkdocs-literate-nav; extra == "doc"
+Requires-Dist: mkdocs-section-index; extra == "doc"
+Requires-Dist: mkdocs-glightbox; extra == "doc"
+Requires-Dist: mkdocs-jupyter; extra == "doc"
+Requires-Dist: pybtex; extra == "doc"
+Provides-Extra: build
+Requires-Dist: twine; extra == "build"
+Requires-Dist: jupytext<=1.15; extra == "build"
+Provides-Extra: dev
+Requires-Dist: line_profiler; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: tox; extra == "dev"
+Requires-Dist: coverage>=5.1; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: pytest-sugar; extra == "dev"
+Requires-Dist: pytest-benchmark; extra == "dev"
+Requires-Dist: pytest-clarity; extra == "dev"
+Requires-Dist: pytest-xdist; extra == "dev"
+Requires-Dist: pytest-timeout; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Requires-Dist: jupytext<=1.15; extra == "dev"
+Requires-Dist: mkdocs-material; extra == "dev"
+Requires-Dist: mkdocstrings; extra == "dev"
+Requires-Dist: mkdocstrings-python; extra == "dev"
+Requires-Dist: mkdocs-gen-files; extra == "dev"
+Requires-Dist: mkdocs-literate-nav; extra == "dev"
+Requires-Dist: mkdocs-section-index; extra == "dev"
+Requires-Dist: mkdocs-glightbox; extra == "dev"
+Requires-Dist: mkdocs-jupyter; extra == "dev"
+Requires-Dist: pybtex; extra == "dev"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+It is usually best to install from source (github),
+so that you the code is readily available to play with.
+See full README on [github](https://github.com/nansencenter/DAPPER).
