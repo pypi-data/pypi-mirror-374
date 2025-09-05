@@ -1,0 +1,80 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {
+    "id": "saxs_loop",
+    "schema_version": "1.1"
+  },
+  "nodes": [
+    {
+      "task_type": "class",
+      "task_identifier": "ewoksid02.tasks.normalizationtask.NormalizationTask",
+      "force_start_node": true,
+      "default_inputs" : [{"name": "reading_node", "value": true}],
+      "id": "norm"
+    },
+    {
+      "task_type": "class",
+      "task_identifier": "ewoksid02.tasks.secondaryscatteringtask.SecondaryScatteringTask",
+      "id": "2scat"
+    },
+    {
+      "task_type": "class",
+      "task_identifier": "ewoksid02.tasks.cavingtask.CavingBeamstopTask",
+      "id": "cave"
+    },
+    {
+      "task_type": "class",
+      "task_identifier": "ewoksid02.tasks.azimuthaltask.AzimuthalTask",
+      "id": "azim"
+    },
+    {
+      "task_type": "class",
+      "task_identifier": "ewoksid02.tasks.averagetask.AverageTask",
+      "id": "ave"
+    },
+    {
+      "task_type": "class",
+      "task_identifier": "ewoksid02.tasks.scalerstask.ScalersTask",
+      "id": "scalers"
+    }
+  ],
+  "links": [
+    {
+      "map_all_data": true,
+      "source": "norm",
+      "target": "2scat",
+      "conditions": [
+        {
+          "source_output": "continue_pipeline",
+          "value": true
+        }
+      ]
+    },
+    {
+      "map_all_data": true,
+      "source": "2scat",
+      "target": "cave"
+    },
+    {
+      "map_all_data": true,
+      "source": "cave",
+      "target": "azim"
+    },
+    {
+      "map_all_data": true,
+      "source": "azim",
+      "target": "ave"
+    },
+    {
+      "map_all_data": true,
+      "source": "ave",
+      "target": "scalers"
+    },
+    {
+      "map_all_data": true,
+      "source": "scalers",
+      "target": "norm"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+[console_scripts]
+ewoksid02 = ewoksid02.scripts.__main__:main
+
+[ewoks.tasks.class]
+ewoksid02.tasks.* = ewoksid02

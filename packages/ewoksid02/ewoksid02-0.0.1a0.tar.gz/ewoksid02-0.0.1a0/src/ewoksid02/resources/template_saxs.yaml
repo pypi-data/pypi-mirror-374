@@ -1,0 +1,38 @@
+###########################
+## ewoksid02 template SAXS.yaml
+###########################
+
+# File parameters
+bliss_filenames: 
+    - /data/visitor/xxx/id02/xxx/RAW_DATA/xxx/.../file1.h5
+    #- /data/visitor/xxx/id02/xxx/RAW_DATA/xxx/.../file2.h5
+detectors: 
+    - eiger2
+scans: 
+    - 1
+tag: t1
+output_root:
+
+# Processing parameters
+to_process: "norm 2scat cave azim ave"
+to_save: "norm 2scat cave azim ave"
+datatype: "float32"
+max_slice_size: 34
+save_variance: False
+algorithm_norm: cython
+algorithm_2scat: 
+algorithm_cave: 
+
+# Correction parameters
+filename_flatfield: 
+filename_darkcurrent: 
+filename_maskgaps: 
+filename_maskbeamstop: 
+filename_window_wagon: 
+window_roi_size: 120
+
+# Submit parameters
+submit: True
+slurm_job_parameters:
+    time_limit: 01:00:00
+    memory_per_cpu: 50GB
