@@ -1,0 +1,107 @@
+# Bash-Script-Maker - Paketlisten für verschiedene Linux-Distributionen
+# Diese Datei enthält alle notwendigen Pakete für die Installation
+
+# =============================================================================
+# ERFORDERLICHE PAKETE (müssen installiert werden)
+# =============================================================================
+
+# Ubuntu/Debian (apt)
+# sudo apt update
+# sudo apt install python3 python3-tk python3-pip zenity xterm
+
+# Fedora/RHEL/CentOS (dnf/yum)
+# sudo dnf install python3 python3-tkinter python3-pip zenity xterm
+# oder für ältere Versionen:
+# sudo yum install python3 python3-tkinter python3-pip zenity xterm
+
+# Arch Linux (pacman)
+# sudo pacman -S python python-tk python-pip zenity xterm
+
+# openSUSE (zypper)
+# sudo zypper install python3 python3-tk python3-pip zenity xterm
+
+# Gentoo (emerge)
+# sudo emerge dev-lang/python dev-python/tkinter dev-python/pip x11-misc/zenity x11-terms/xterm
+
+# =============================================================================
+# DETAILLIERTE PAKETLISTE PRO DISTRIBUTION
+# =============================================================================
+
+# Ubuntu/Debian-basierte Distributionen:
+# - python3: Python 3 Interpreter
+# - python3-tk: Tkinter GUI-Bibliothek
+# - python3-pip: Python Package Installer
+# - zenity: GTK+ Dialogprogramme für Shell-Scripts
+# - xterm: Terminal-Emulator
+
+# Fedora/RHEL/CentOS-basierte Distributionen:
+# - python3: Python 3 Interpreter
+# - python3-tkinter: Tkinter GUI-Bibliothek
+# - python3-pip: Python Package Installer
+# - zenity: GTK+ Dialogprogramme für Shell-Scripts
+# - xterm: Terminal-Emulator
+
+# Arch Linux-basierte Distributionen:
+# - python: Python 3 Interpreter (python ist in Arch python3)
+# - python-tk: Tkinter GUI-Bibliothek
+# - python-pip: Python Package Installer
+# - zenity: GTK+ Dialogprogramme für Shell-Scripts
+# - xterm: Terminal-Emulator
+
+# =============================================================================
+# OPTIONALE PAKETE (empfohlen für bessere Erfahrung)
+# =============================================================================
+
+# Entwicklungstools:
+# - git: Versionskontrolle
+# - vim oder nano: Texteditoren
+# - gedit oder kate: GUI-Texteditoren
+
+# =============================================================================
+# MANUELLE INSTALLATION (Fallback)
+# =============================================================================
+
+# Wenn die automatischen Scripts nicht funktionieren:
+
+# 1. Python 3 installieren:
+#    - Ubuntu/Debian: sudo apt install python3 python3-pip
+#    - Fedora/CentOS: sudo dnf install python3 python3-pip
+#    - Arch: sudo pacman -S python python-pip
+#    - openSUSE: sudo zypper install python3 python3-pip
+
+# 2. Tkinter installieren:
+#    - Ubuntu/Debian: sudo apt install python3-tk
+#    - Fedora/CentOS: sudo dnf install python3-tkinter
+#    - Arch: sudo pacman -S python-tk
+#    - openSUSE: sudo zypper install python3-tk
+
+# 3. Zenity installieren:
+#    - Ubuntu/Debian: sudo apt install zenity
+#    - Fedora/CentOS: sudo dnf install zenity
+#    - Arch: sudo pacman -S zenity
+#    - openSUSE: sudo zypper install zenity
+
+# =============================================================================
+# VERIFIKATION DER INSTALLATION
+# =============================================================================
+
+# Nach der Installation können Sie folgende Befehle ausführen:
+
+# Python-Version überprüfen:
+# python3 --version
+
+# Tkinter testen:
+# python3 -c "import tkinter; print('Tkinter funktioniert!')"
+
+# Zenity testen:
+# zenity --info --text="Zenity funktioniert!" --title="Test"
+
+# =============================================================================
+# SUPPORT
+# =============================================================================
+
+# Wenn Sie Probleme haben, überprüfen Sie:
+# 1. Ihre Python-Version (muss 3.8+ sein)
+# 2. Dass alle Pakete korrekt installiert sind
+# 3. Dass Sie in einer grafischen Umgebung arbeiten (nicht nur SSH)
+# 4. DISPLAY-Variable ist gesetzt (für entfernte Installationen)

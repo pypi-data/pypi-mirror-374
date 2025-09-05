@@ -1,0 +1,95 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bash-script-maker"
+version = "1.1.0"
+description = "Ein GUI-Programm zur Erstellung von Bash-Scripts mit visueller Unterstützung"
+readme = "README.md"
+license = "MIT"
+authors = [
+    {name = "Marcel Dellmann", email = "support@secure-bits.org"},
+]
+maintainers = [
+    {name = "Marcel Dellmann", email = "support@secure-bits.org"},
+]
+keywords = ["bash", "script", "gui", "editor", "generator", "linux"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Utilities",
+    "Topic :: Text Editors :: Integrated Development Environments (IDE)",
+    "Topic :: Software Development :: Code Generators",
+]
+requires-python = ">=3.8"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0.0",
+    "pytest-cov>=2.10.0",
+    "flake8>=3.8.0",
+    "black>=21.0.0",
+    "mypy>=0.800",
+    "tox>=3.20.0",
+    "twine>=3.0.0",
+    "build>=0.7.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/securebitsorg/bash-script-maker"
+Documentation = "https://github.com/securebitsorg/bash-script-maker#readme"
+Repository = "https://github.com/securebitsorg/bash-script-maker"
+"Bug Reports" = "https://github.com/securebitsorg/bash-script-maker/issues"
+Changelog = "https://github.com/securebitsorg/bash-script-maker/blob/main/CHANGELOG.md"
+
+[project.scripts]
+bash-script-maker = "bash_script_maker:main"
+
+[tool.setuptools]
+py-modules = ["bash_script_maker", "syntax_highlighter"]
+include-package-data = true
+zip-safe = false
+
+
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --strict-markers --disable-warnings"
+testpaths = [
+    "tests",
+]
+python_files = "test_*.py"
+
+[tool.coverage.run]
+source = ["bash_script_maker", "syntax_highlighter"]
+omit = [
+    "*/tests/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+]
+
+[tool.semantic_release]
+version_toml = ["pyproject.toml:project.version"]
+upload_to_release = true
+upload_to_pypi = false
+branch = "main"
+changelog_file = "CHANGELOG.md"
+build_command = "pip install build && python -m build"
+major_on_zero = false
+tag_format = "v{version}"
+commit_parser = "conventional"
+
