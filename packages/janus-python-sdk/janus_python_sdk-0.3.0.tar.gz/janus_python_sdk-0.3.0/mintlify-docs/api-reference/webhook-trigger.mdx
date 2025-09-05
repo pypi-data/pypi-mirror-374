@@ -1,0 +1,76 @@
+---
+title: "WebhookTrigger"
+description: "Create webhook target agents for run_simulations to test external workflows"
+---
+
+## create_webhook_target_agent
+
+Create a target agent function that triggers external workflows via webhook for use with `run_simulations`.
+
+### Function Signature
+
+```python
+async def create_webhook_target_agent(
+    n8n_base_url: str, 
+    api_key: str, 
+    workflow_id: str, 
+    payload: dict
+) -> Callable[[int], Awaitable[str]]
+```
+
+### Usage with run_simulations
+
+```python
+import asyncio
+from janus_sdk import run_simulations, create_webhook_target_agent
+
+async def main():
+    # Create webhook target agent
+    target_agent = await create_webhook_target_agent(
+        n8n_base_url="https://your-n8n-instance.com",
+        api_key="your_api_key",
+        workflow_id="your_workflow_id",
+        payload={"case_id": "CASE-123", "priority": "High"}
+    )
+    
+    # Run simulations with webhook trigger
+    results = await run_simulations(
+        num_simulations=5,
+        max_turns=1,  # Single webhook trigger = 1 turn
+        target_agent=target_agent,
+        api_key="your_janus_api_key"
+    )
+
+asyncio.run(main())
+```
+
+### Parameters
+
+<ParamField path="n8n_base_url" type="string" required>
+  Base URL of your N8N instance (e.g., "https://n8n.example.com")
+</ParamField>
+
+<ParamField path="api_key" type="string" required>
+  API key for authenticating with your N8N instance
+</ParamField>
+
+<ParamField path="workflow_id" type="string" required>
+  ID of the workflow to trigger via webhook
+</ParamField>
+
+<ParamField path="payload" type="dict" required>
+  JSON payload to send with the webhook trigger
+</ParamField>
+
+### Return Value
+
+Returns a target agent function that can be used directly with `run_simulations`. The function:
+- Triggers the specified workflow via webhook
+- Waits for workflow completion
+- Returns the final result as a string for evaluation
+
+### Related Functions
+
+<Card title="run_simulations" icon="play" href="/api-reference/run-simulations">
+  Run multiple simulations with webhook triggers
+</Card>
