@@ -1,0 +1,73 @@
+CHANGES
+=======
+
+1.5
+---
+
+* Allow node network detach to work if Neutron port does not exist
+* Fix network\_attach error handling for HTTP 409 responses
+* Update test OS to Ubuntu 24.04
+* Clean up dependencies
+
+1.4
+---
+
+* Teach esi.lib.nodes how to detach multiple ports or all ports
+* Remove erroneous .gitignore entry
+* Bump actions/setup-python from 4 to 5
+* Bump actions/checkout from 3 to 4
+* Some minor README formatting updates
+* Reformat and lint all files
+* Add pre-commit configuration and workflow
+* Add token ttl
+* Improve perfomance of node network functions
+
+1.3
+---
+
+* Added port creation method
+
+1.2
+---
+
+* Change default for ignore\_missing to False when deleting resources
+
+1.1
+---
+
+* Added missing lease query parameter (offer\_uuid)
+
+1.0
+---
+
+* Add console auth token resource
+
+0.5
+---
+
+* Migrate Node Network Detach Functionality Into esisdk
+* Migrate Node Network Attach Functionality Into esisdk
+* Update Openstacksdk and Python Version
+
+0.4
+---
+
+* Migrate Node Network List Functionality Into esisdk
+
+0.3
+---
+
+* Allow filtering of nodes, with resource\_class
+
+0.2
+---
+
+* skip endpoint discovery
+
+0.1
+---
+
+* updates to object attributes, addition of functional tests
+* add offer/lease/node/event apis
+* Initial commit for esisdk resource class
+* Initial commit
