@@ -1,0 +1,2 @@
+- 单元测试放到 tests 目录下
+- 必须使用 virtualenv 虚拟环境，venv 命名
