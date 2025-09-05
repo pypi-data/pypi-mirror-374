@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: sangreal_wind
+Version: 0.0.84
+Summary: short cut api for wind
+Home-page: https://github.com/liubola/sangreal-wind
+Author: liubola
+Author-email: lby3523@gmail.com
+License: GNU General Public License v3.0
+Platform: all
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Topic :: Software Development :: Libraries
+License-File: LICENSE
+Requires-Dist: sangreal-db
+Requires-Dist: sangreal-calendar>=0.0.36
+Requires-Dist: sqlalchemy
+Requires-Dist: attrs
