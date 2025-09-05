@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "derivx-quant"
+# versão lida dinamicamente de src/derivx/_version.py
+dynamic = ["version"]
+
+description = "Precificador de derivativos por building blocks (MC/LSMC, PDE CN, Heston FFT, IR Black-76) com DSL declarativa."
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Walter C. Neto" }]
+
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Mathematics",
+  "Topic :: Office/Business :: Financial",
+]
+
+# Dependências mínimas em runtime
+dependencies = [
+  "numpy>=1.24",
+]
+
+[project.optional-dependencies]
+# para os relatórios/plots
+viz = ["matplotlib>=3.8"]
+# para desenvolvimento
+dev = [
+  "pytest>=7",
+  "pytest-cov",
+  "build",
+  "twine",
+  "ruff",
+  "black",
+]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+packages = { find = { where = ["src"], include = ["derivx*"] } }
+include-package-data = true
+
+# <- AQUI fica a versão dinâmica
+[tool.setuptools.dynamic]
+version = { attr = "derivx._version.__version__" }
