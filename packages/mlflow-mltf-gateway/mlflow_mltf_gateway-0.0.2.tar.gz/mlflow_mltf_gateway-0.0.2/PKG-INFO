@@ -1,0 +1,47 @@
+Metadata-Version: 2.4
+Name: mlflow-mltf-gateway
+Version: 0.0.2
+Project-URL: Documentation, https://github.com/PerilousApricot/mlflow-mltf-gateway#readme
+Project-URL: Issues, https://github.com/PerliousApricot/mlflow-mltf-gateway/issues
+Project-URL: Source, https://github.com/PerilousApricot/mlflow-mltf-gateway
+Author-email: Andrew Melo <andrew.melo@gmail.com>
+License-Expression: MIT
+License-File: LICENSE.txt
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.8
+Requires-Dist: black
+Requires-Dist: flask
+Requires-Dist: jinja2
+Requires-Dist: mlflow-skinny
+Requires-Dist: requests
+Description-Content-Type: text/markdown
+
+# MLFlow MLTF Gateway
+
+[![PyPI - Version](https://img.shields.io/pypi/v/mlflow-mltf-gateway.svg)](https://pypi.org/project/mlflow-mltf-gateway)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mlflow-mltf-gateway.svg)](https://pypi.org/project/mlflow-mltf-gateway)
+
+-----
+
+## Table of Contents
+
+- [Installation](#installation)
+- [License](#license)
+
+## Installation
+
+```console
+pip install mlflow-mltf-gateway
+```
+
+## License
+
+`mlflow-mltf-gateway` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
