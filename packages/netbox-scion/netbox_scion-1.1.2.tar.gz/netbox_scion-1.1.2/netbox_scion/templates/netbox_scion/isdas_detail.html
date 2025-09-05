@@ -1,0 +1,154 @@
+{% extends 'generic/object.html' %}
+{% load helpers %}
+{% load buttons %}
+
+{% block content %}
+<div class="row">
+    <div class="col col-md-6">
+        <div class="card">
+            <h5 class="card-header">ISD-AS</h5>
+            <div class="card-body">
+                <table class="table table-hover attr-table">
+                    <tr>
+                        <th scope="row">ISD-AS</th>
+                        <td>{{ object.isd_as }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Organization</th>
+                        <td>
+                            {% if object.organization %}
+                                <a href="{% url 'plugins:netbox_scion:organization' object.organization.pk %}">{{ object.organization.short_name }}</a>
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Appliance Type</th>
+                        <td>
+                            <span class="badge badge-{% if object.appliance_type == 'CORE' %}primary{% else %}success{% endif %}">
+                                {{ object.get_appliance_type_display }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% if object.description %}
+                    <tr>
+                        <th scope="row">Description</th>
+                        <td>{{ object.description|linebreaksbr }}</td>
+                    </tr>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+        
+        <!-- Appliances Management Section -->
+        <div class="card">
+            <h5 class="card-header">
+                Appliances
+                <div class="card-actions">
+                    <a href="{% url 'plugins:netbox_scion:add_core' object.pk %}" class="btn btn-primary btn-sm">
+                        <i class="mdi mdi-plus-thick"></i> Add Appliance
+                    </a>
+                </div>
+            </h5>
+            <div class="card-body">
+                {% if object.cores %}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Appliance</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for core in object.cores %}
+                        <tr>
+                            <td>{{ core }}</td>
+                            <td>
+                                <a href="{% url 'plugins:netbox_scion:edit_core' object.pk core %}" 
+                                   class="btn btn-outline-primary btn-sm">
+                                    <i class="mdi mdi-pencil"></i> Edit
+                                </a>
+                                <a href="{% url 'plugins:netbox_scion:remove_core' object.pk core %}" 
+                                   class="btn btn-outline-danger btn-sm"
+                                   onclick="return confirmCoreDelete('{{ core }}', '{{ object.pk }}');">
+                                    <i class="mdi mdi-trash-can-outline"></i> Remove
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <span class="text-muted">None</span>
+                {% endif %}
+            </div>
+        </div>
+        
+        {% include 'inc/panels/custom_fields.html' %}
+        {% include 'inc/panels/tags.html' %}
+        {% include 'inc/panels/comments.html' %}
+    </div>
+    <div class="col col-md-6">
+        <div class="card">
+            <h5 class="card-header">
+                SCION Link Assignments
+                <div class="card-actions">
+                    <a href="{% url 'plugins:netbox_scion:scionlinkassignment_add' %}?isd_as={{ object.pk }}" class="btn btn-primary btn-sm">
+                        <i class="mdi mdi-plus-thick"></i> Add
+                    </a>
+                </div>
+            </h5>
+            <div class="card-body">
+                {% if object.link_assignments.exists %}
+                <table class="table table-hover">
+                    <tr>
+                        <th>Interface</th>
+                        <th>Appliance</th>
+                        <th>Customer</th>
+                        <th>Zendesk</th>
+                    </tr>
+                    {% for assignment in object.link_assignments.all %}
+                    <tr>
+                        <td><a href="{% url 'plugins:netbox_scion:scionlinkassignment' assignment.pk %}">{{ assignment.interface_id }}</a></td>
+                        <td>{{ assignment.core }}</td>
+                        <td>{{ assignment.customer_name }}</td>
+                        <td>
+                            {% if assignment.zendesk_ticket %}
+                                <a href="{{ assignment.get_zendesk_url }}" target="_blank">{{ assignment.zendesk_ticket }}</a>
+                            {% else %}
+                                <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                <span class="text-muted">None</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+async function confirmCoreDelete(coreName, isdasPk) {
+    try {
+        // Count how many SCION link assignments would be affected
+        const response = await fetch(`/api/plugins/scion/link-assignments/?isd_as_id=${isdasPk}&core=${encodeURIComponent(coreName)}`);
+        const data = await response.json();
+        const assignmentCount = data.count || 0;
+        
+        let message = `Are you sure you want to remove core "${coreName}"?`;
+        if (assignmentCount > 0) {
+            message += `\n\nThis will also delete ${assignmentCount} SCION link assignment(s) that use this core.`;
+        }
+        
+        return confirm(message);
+    } catch (error) {
+        // Fallback message if API call fails
+        return confirm(`Are you sure you want to remove core "${coreName}"?\n\nThis may also delete associated SCION link assignments.`);
+    }
+}
+</script>
+{% endblock %}
