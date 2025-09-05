@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "llm-launchpad"
+version = "0.0.2"
+description = "One-click personal LLM deployment with coding agent + chat UI."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "Thomas Rochefort-Bedard" }]
+keywords = ["llm", "deployment", "modal", "agent", "chat"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: GNU Affero General Public License v3",
+  "Operating System :: OS Independent",
+]
+
+# Minimal runtime dependencies for using the Modal application entrypoints
+dependencies = [
+  "modal>=0.60.0",
+  "typer>=0.12.3",
+  "rich>=13.7.1",
+  "InquirerPy>=0.3.4",
+  "requests>=2.32.0",
+]
+
+[project.optional-dependencies]
+# Optional extras for faster/model downloads and utilities
+hf = ["huggingface_hub[hf_transfer]>=0.26.2"]
+
+[project.scripts]
+llm-launchpad = "llm_launchpad.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/ThomasRochefortB/llm-launchpad"
+Issues = "https://github.com/ThomasRochefortB/llm-launchpad/issues"
+
+[tool.setuptools]
+packages = ["llm_launchpad"]
