@@ -1,0 +1,13 @@
+name: napari-omero-downloader-cci
+display_name: Omero Downloader CCI
+visibility: public
+# see https://napari.org/stable/plugins/technical_references/manifest.html#fields for valid categories
+# categories: []
+contributions:
+  commands:
+    - id: napari-omero-downloader-cci.open_widget
+      python_name: napari_omero_downloader_cci:OmeroDownloaderWidget
+      title: OmeroDownloaderCCI
+  widgets:
+    - command: napari-omero-downloader-cci.open_widget
+      display_name: OmeroDownloaderWidget

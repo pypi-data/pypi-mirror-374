@@ -1,0 +1,19 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v1.1.0
+_src_path: https://github.com/napari/napari-plugin-template
+display_name: Omero Downloader CCI
+email: simon.leclerc@gu.se
+full_name: Simon Leclerc
+github_repository_url: https://github.com/CCI-GU-Sweden/napari-omero-downloader-cci
+github_username_or_organization: CCI-GU-Sweden
+include_reader_plugin: false
+include_sample_data_plugin: false
+include_widget_plugin: true
+include_writer_plugin: false
+install_dependabot: true
+install_precommit: true
+license: MIT
+module_name: napari_omero_downloader_cci
+plugin_name: napari-omero-downloader-cci
+short_description: A plugin that allows napari to connect to the Omero CCI server
+    to visualize and download image data
