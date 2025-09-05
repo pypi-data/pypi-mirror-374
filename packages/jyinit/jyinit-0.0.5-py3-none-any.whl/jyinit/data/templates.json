@@ -1,0 +1,228 @@
+{
+  "library": {
+    "README.md": "# {name}\nA Python library called {name}.\n",
+    "pyproject.toml": "[build-system]\nrequires = [\"setuptools>=61.0\", \"wheel\"]\nbuild-backend = \"setuptools.build_meta\"\n\n[project]\nname = \"{package_name}\"\nversion = \"0.0.0\"\ndescription = \"A Python library\"\nreadme = \"README.md\"\nlicense = {{text = \"{license_id}\"}}\nrequires-python = \">={py_min}\"\n\n[tool.setuptools.packages.find]\nwhere = [\"src\"]\n",
+    "src/{package_name}/__init__.py": "# {package_name} package\n__version__ = \"0.0.0\"\n",
+    "tests/test_basic.py": "def test_import():\n    import {package_name}\n    assert True\n",
+    ".gitignore": "__pycache__/\n*.pyc\n.venv/\n"
+  },
+  "package": {
+    "README.md": "# {name}\n\nA Python application package called {name}.\n",
+    "pyproject.toml": "[build-system]\nrequires = [\"setuptools>=61.0\", \"wheel\"]\nbuild-backend = \"setuptools.build_meta\"\n\n[project]\nname = \"{package_name}\"\nversion = \"0.0.0\"\ndescription = \"Simple application\"\nreadme = \"README.md\"\nlicense = {{text = \"{license_id}\"}}\nrequires-python = \">={py_min}\"\n\n[project.scripts]\n{cli_name} = \"{module_path}:main\"\n",
+    "{module_path}.py": "def main():\n    print(\"Hello from {name}\")\n\nif __name__ == \"__main__\":\n    main()\n",
+    "tests/test_basic.py": "def test_import():\n    import {package_name}\n    assert True\n",
+    ".gitignore": "__pycache__/\n*.pyc\n.venv/\n"
+  },
+  "cli": {
+    "README.md": "# {name}\n\nA simple CLI tool.\n",
+    "pyproject.toml": "[build-system]\nrequires = [\"setuptools>=61.0\", \"wheel\"]\nbuild-backend = \"setuptools.build_meta\"\n\n[project]\nname = \"{package_name}\"\nversion = \"0.0.0\"\ndescription = \"CLI tool\"\nreadme = \"README.md\"\nlicense = {{text = \"{license_id}\"}}\nrequires-python = \">={py_min}\"\n\n[project.scripts]\n{cli_name} = \"{module_path}:main\"\n",
+    "{module_path}.py": "import argparse\n\ndef main():\n    parser = argparse.ArgumentParser(prog=\"{cli_name}\")\n    parser.add_argument('--version', action='store_true')\n    args = parser.parse_args()\n    if args.version:\n        print(\"{name} 0.0.0\")\n    else:\n        print(\"Hello from {name}\")\n\nif __name__ == \"__main__\":\n    main()\n",
+    "tests/test_basic.py": "def test_import():\n    import {package_name}\n    assert True\n",
+    ".gitignore": "__pycache__/\n*.pyc\n.venv/\n"
+  },
+  "flask": {
+    "README.md": "# {name}\n\nA small Flask app.\n",
+    "pyproject.toml": "[build-system]\nrequires = [\"setuptools>=61.0\", \"wheel\"]\nbuild-backend = \"setuptools.build_meta\"\n\n[project]\nname = \"{package_name}\"\nversion = \"0.0.0\"\ndescription = \"Flask web app\"\nreadme = \"README.md\"\nlicense = {{text = \"{license_id}\"}}\nrequires-python = \">={py_min}\"\ndependencies = [\"flask>=2.0\"]\n",
+    "app.py": "from flask import Flask, render_template_string\napp = Flask(__name__)\n\n@app.route('/')\ndef index():\n    return render_template_string('<h1>Hello from {name}</h1>')\n\nif __name__ == '__main__':\n    app.run(debug=True)\n",
+    "requirements.txt": "flask>=2.0",
+    "tests/test_basic.py": "def test_import():\n    import {package_name}\n    assert True\n",
+    "templates/": "",
+    "static/": "",
+    ".gitignore": "__pycache__/\n*.pyc\n.venv/\n"
+  },
+  "fastapi": {
+    "README.md": "# {name}\n\nA small FastAPI app.\n",
+    "pyproject.toml": "[build-system]\nrequires = [\"setuptools>=61.0\", \"wheel\"]\nbuild-backend = \"setuptools.build_meta\"\n\n[project]\nname = \"{package_name}\"\nversion = \"0.0.0\"\ndescription = \"FastAPI web app\"\nreadme = \"README.md\"\nlicense = {{text = \"{license_id}\"}}\nrequires-python = \">={py_min}\"\ndependencies = [\"fastapi>=0.70\", \"uvicorn>=0.15\"]\n",
+    "main.py": "from fastapi import FastAPI\napp = FastAPI()\n\n@app.get('/')\ndef read_root():\n    return {'message': 'Hello from {name}'}\n",
+    "requirements.txt": "fastapi>=0.70\nuvicorn>=0.15\n",
+    "tests/test_basic.py": "def test_import():\n    import {package_name}\n    assert True\n",
+    "templates/": "",
+    "static/": "",
+    ".gitignore": "__pycache__/\n*.pyc\n.venv/\n"
+  },
+  "django": {
+    "README.md": "# {name}\n\nA minimal Django project scaffold.\n",
+    "requirements.txt": "django>=4.0",
+    "manage.py": "#!/usr/bin/env python\nimport os\nimport sys\n\nif __name__ == '__main__':\n    os.environ.setdefault('DJANGO_SETTINGS_MODULE', '{module_path}.settings')\n    try:\n        from django.core.management import execute_from_command_line\n    except ImportError as exc:\n        raise\n    execute_from_command_line(sys.argv)\n",
+    "{module_path}/__init__.py": "",
+    "{module_path}/settings.py": "SECRET_KEY = 'replace-me'\nDEBUG = True\nALLOWED_HOSTS = []\n\nINSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n]\n\nROOT_URLCONF = '{module_path}.urls'\n",
+    "{module_path}/urls.py": "from django.urls import path\nfrom django.http import HttpResponse\n\ndef index(request):\n    return HttpResponse('Hello from {name}')\n\nurlpatterns = [path('', index)]\n",
+    "migrations/": "",
+    "tests/test_basic.py": "def test_import():\n    import {package_name}\n    assert True\n",
+    ".gitignore": "__pycache__/\n*.pyc\n.venv/\n"
+  },
+  "data-science": {
+    "README.md": "# {name}\n\nData-science project layout with a simple src/ and notebooks/.\n",
+    "requirements.txt": "numpy\npandas\nmatplotlib\nscikit-learn\n",
+    "src/": "",
+    "notebooks/README.md": "# Notebooks\n\nAdd your exploratory notebooks here.\n",
+    "data/": "",
+    "models/": "",
+    "tests/test_basic.py": "def test_import():\n    assert True\n",
+    ".gitignore": "__pycache__/\n.ipynb_checkpoints/\n.venv/\n"
+  },
+  "notebook": {
+    "README.md": "# {name} Notebook Project\n\nSingle notebook project.\n",
+    "notebook.ipynb": "",
+    "tests/test_basic.py": "def test_import():\n    assert True\n",
+    ".gitignore": "__pycache__/\n.ipynb_checkpoints/\n.venv/\n"
+  },
+  "poetry": {
+    "README.md": "# {name}\n\nA project scaffold using Poetry.\n",
+    "pyproject.toml": "[tool.poetry]\nname = \"{package_name}\"\nversion = \"0.0.0\"\ndescription = \"{name}\"\nauthors = [\"{author}\"]\n\n[tool.poetry.dependencies]\npython = \">={py_min}\"\n\n[tool.poetry.dev-dependencies]\npytest = \"*\"\n",
+    "tests/test_basic.py": "def test_import():\n    import {package_name}\n    assert True\n",
+    ".gitignore": "__pycache__/\n.venv/\n"
+  },
+  "docker": {
+    "README.md": "# {name}\n\nDockerized Python app scaffold.\n",
+    "Dockerfile": "FROM python:{py_min}-slim\nWORKDIR /app\nCOPY . /app\nRUN pip install -r requirements.txt\nCMD [\"python\", \"{module_path}.py\"]\n",
+    "requirements.txt": "# Add your dependencies",
+    "tests/test_basic.py": "def test_import():\n    assert True\n",
+    ".dockerignore": "__pycache__/\n*.pyc\n.venv/\n",
+    ".gitignore": "__pycache__/\n*.pyc\n.venv/\n"
+  },
+  "streamlit": {
+    "README.md": "# {name}\n\nA Streamlit app scaffold.\n",
+    "app.py": "import streamlit as st\n\nst.title('Hello from {name}')\n\nif __name__ == '__main__':\n    pass\n",
+    "requirements.txt": "streamlit",
+    "tests/test_basic.py": "def test_import():\n    assert True\n",
+    ".gitignore": "__pycache__/\n.venv/\n"
+  },
+  "gradio": {
+    "README.md": "# {name}\n\nA Gradio demo scaffold.\n",
+    "app.py": "import gradio as gr\n\ndef greet(name):\n    return f'Hello {name} from {name}'\n\niface = gr.Interface(fn=greet, inputs='text', outputs='text')\n\nif __name__ == '__main__':\n    iface.launch()\n",
+    "requirements.txt": "gradio",
+    "tests/test_basic.py": "def test_import():\n    assert True\n",
+    ".gitignore": "__pycache__/\n.venv/\n"
+  },
+  "aws-lambda": {
+    "README.md": "# {name}\n\nAWS Lambda function scaffold (handler-based).\n",
+    "handler.py": "def handler(event, context):\n    return {'statusCode': 200, 'body': 'Hello from {name}'}\n",
+    "template.yml": "AWSTemplateFormatVersion: '2010-09-09'\nResources:\n  {name}Function:\n    Type: AWS::Serverless::Function\n    Properties:\n      Handler: handler.handler\n      Runtime: python3.9\n      CodeUri: ./\n",
+    "requirements.txt": "# Add dependencies for lambda",
+    "tests/test_basic.py": "def test_import():\n    assert True\n",
+    ".gitignore": "__pycache__/\n.venv/\n"
+  },
+  "telegram-bot": {
+    "README.md": "# {name}\n\nA Telegram bot scaffold using python-telegram-bot (add dependency manually).\n",
+    "bot.py": "from telegram import Update\nfrom telegram.ext import Updater, CommandHandler, CallbackContext\n\ndef start(update: Update, context: CallbackContext):\n    update.message.reply_text('Hello from {name}')\n\ndef main():\n    updater = Updater('YOUR_TOKEN')\n    dp = updater.dispatcher\n    dp.add_handler(CommandHandler('start', start))\n    updater.start_polling()\n    updater.idle()\n\nif __name__ == '__main__':\n    main()\n",
+    "requirements.txt": "python-telegram-bot",
+    "tests/test_basic.py": "def test_import():\n    assert True\n",
+    ".gitignore": "__pycache__/\n.venv/\n"
+  },
+  "sanic": {
+    "README.md": "# {name}\n\nA Sanic async web app scaffold.\n",
+    "app.py": "from sanic import Sanic\nfrom sanic.response import json\n\napp = Sanic(__name__)\n\n@app.get('/')\nasync def test(request):\n    return json({'message': 'Hello from {name}'})\n\nif __name__ == '__main__':\n    app.run(host='0.0.0.0', port=8000)\n",
+    "requirements.txt": "sanic",
+    "templates/": "",
+    "static/": "",
+    "tests/test_basic.py": "def test_import():\n    assert True\n",
+    ".gitignore": "__pycache__/\n.venv/\n"
+  },
+  "aiohttp": {
+    "README.md": "# {name}\n\nAn aiohttp server scaffold.\n",
+    "app.py": "from aiohttp import web\n\nasync def handle(request):\n    return web.Response(text='Hello from {name}')\n\napp = web.Application()\napp.router.add_get('/', handle)\n\nif __name__ == '__main__':\n    web.run_app(app, port=8080)\n",
+    "requirements.txt": "aiohttp",
+    "templates/": "",
+    "static/": "",
+    "tests/test_basic.py": "def test_import():\n    assert True\n",
+    ".gitignore": "__pycache__/\n.venv/\n"
+  },
+  "mlops": {
+    "README.md": "# {name}\n\nMLOps project scaffold: src/, experiments/, models/, data/ and a simple Makefile.\n",
+    "Makefile": ".PHONY: venv train\n\nvenv:\n\tpython -m venv .venv\n\ntrain:\n\tpython -m src.train\n",
+    "src/__init__.py": "",
+    "src/train.py": "def main():\n    print('Training placeholder for {name}')\n\nif __name__ == '__main__':\n    main()\n",
+    "data/README.md": "# data\n\nPlace datasets here.\n",
+    "models/README.md": "# models\n\nTrained models will be stored here.\n",
+    "tests/test_basic.py": "def test_import():\n    assert True\n",
+    ".gitignore": "__pycache__/\n.venv/\nmodels/\ndata/\n"
+  },
+  "qt": {
+    "README.md": "# {name}\n\nA PyQt5/6 desktop app scaffold.\n",
+    "app.py": "import sys\ntry:\n    from PyQt6.QtWidgets import QApplication, QLabel\nexcept Exception:\n    from PyQt5.QtWidgets import QApplication, QLabel\n\napp = QApplication(sys.argv)\nlabel = QLabel('Hello from {name}')\nlabel.show()\napp.exec()\n",
+    "requirements.txt": "pyqt6",
+    "tests/test_basic.py": "def test_import():\n    assert True\n",
+    ".gitignore": "__pycache__/\n*.venv/\n"
+  },
+  "jupyter-poetry": {
+    "README.md": "# {name}\n\nJupyter + Poetry project.\n",
+    "pyproject.toml": "[tool.poetry]\nname = \"{package_name}\"\nversion = \"0.0.0\"\ndescription = \"{name}\"\nauthors = [\"{author}\"]\n\n[tool.poetry.dependencies]\npython = \">={py_min}\"\njupyter = \"*\"\n\n[tool.poetry.dev-dependencies]\npytest = \"*\"\n",
+    "notebooks/": "",
+    "tests/test_basic.py": "def test_import():\n    assert True\n",
+    ".gitignore": "__pycache__/\n.venv/\n.ipynb_checkpoints/\n"
+  },
+  "pandas-analysis": {
+    "README.md": "# {name}\n\nData analysis project with Pandas.\n",
+    "requirements.txt": "pandas\nmatplotlib\nseaborn\n",
+    "analysis.ipynb": "",
+    "data/": "",
+    "tests/test_basic.py": "def test_import():\n    assert True\n",
+    ".gitignore": "__pycache__/\n.venv/\n.ipynb_checkpoints/\n"
+  },
+  "scrapy": {
+    "README.md": "# {name}\n\nA Scrapy project.\n",
+    "requirements.txt": "scrapy",
+    "scrapy.cfg": "[settings]\ndefault = {package_name}.settings",
+    "{package_name}/spiders/example_spider.py": "import scrapy\n\nclass ExampleSpider(scrapy.Spider):\n    name = 'example'\n    start_urls = ['https://example.com']\n\n    def parse(self, response):\n        yield {'title': response.css('title::text').get()}\n",
+    "tests/test_basic.py": "def test_import():\n    import scrapy\n    assert True\n",
+    ".gitignore": "__pycache__/\n.venv/\n"
+  },
+  "pygame": {
+    "README.md": "# {name}\n\nA PyGame starter project.\n",
+    "requirements.txt": "pygame",
+    "main.py": "import pygame\n\npygame.init()\nscreen = pygame.display.set_mode((640, 480))\npygame.display.set_caption('{name}')\n\nrunning = True\nwhile running:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:\n            running = False\npygame.quit()\n",
+    "assets/": "",
+    "tests/test_basic.py": "def test_import():\n    import pygame\n    assert True\n",
+    ".gitignore": "__pycache__/\n.venv/\nassets/\n"
+  },
+  "tkinter": {
+    "README.md": "# {name}\n\nA Tkinter GUI app.\n",
+    "main.py": "import tkinter as tk\n\nroot = tk.Tk()\nroot.title('{name}')\nlabel = tk.Label(root, text='Hello from {name}')\nlabel.pack(padx=20, pady=20)\nroot.mainloop()\n",
+    "tests/test_basic.py": "def test_import():\n    assert True\n",
+    ".gitignore": "__pycache__/\n.venv/\n"
+  },
+  "pytorch": {
+    "README.md": "# {name}\n\nPyTorch starter project.\n",
+    "requirements.txt": "torch\ntorchvision",
+    "src/train.py": "import torch\n\ndef main():\n    print('Training placeholder for {name}')\n\nif __name__ == '__main__':\n    main()\n",
+    "models/": "",
+    "data/": "",
+    "tests/test_basic.py": "def test_import():\n    import torch\n    assert True\n",
+    ".gitignore": "__pycache__/\n.venv/\nmodels/\ndata/\n"
+  },
+  "tensorflow": {
+    "README.md": "# {name}\n\nTensorFlow/Keras starter project.\n",
+    "requirements.txt": "tensorflow",
+    "src/train.py": "import tensorflow as tf\n\ndef main():\n    print('Training placeholder for {name}')\n\nif __name__ == '__main__':\n    main()\n",
+    "models/": "",
+    "data/": "",
+    "tests/test_basic.py": "def test_import():\n    import tensorflow as tf\n    assert True\n",
+    ".gitignore": "__pycache__/\n.venv/\nmodels/\ndata/\n"
+  },
+  "airflow": {
+    "README.md": "# {name}\n\nApache Airflow starter project.\n",
+    "requirements.txt": "apache-airflow",
+    "dags/example_dag.py": "from airflow import DAG\nfrom airflow.operators.dummy import DummyOperator\nfrom datetime import datetime\n\ndag = DAG(\n    '{package_name}',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False\n)\n\nstart = DummyOperator(task_id='start', dag=dag)\nend = DummyOperator(task_id='end', dag=dag)\n\nstart >> end\n",
+    "tests/test_basic.py": "def test_import():\n    import airflow\n    assert True\n",
+    ".gitignore": "__pycache__/\n.venv/\n"
+  },
+  "flask-sqlalchemy": {
+    "README.md": "# {name}\n\nA Flask + SQLAlchemy project.\n",
+    "requirements.txt": "flask\nsqlalchemy",
+    "app.py": "from flask import Flask\nfrom models import db\n\napp = Flask(__name__)\napp.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'\ndb.init_app(app)\n\n@app.route('/')\ndef index():\n    return 'Hello from {name}'\n\nif __name__ == '__main__':\n    app.run(debug=True)\n",
+    "models/__init__.py": "from flask_sqlalchemy import SQLAlchemy\n\ndb = SQLAlchemy()\n",
+    "templates/": "",
+    "static/": "",
+    "tests/test_basic.py": "def test_import():\n    import flask\n    assert True\n",
+    ".gitignore": "__pycache__/\n.venv/\n"
+  },
+  "fastapi-sqlmodel": {
+    "README.md": "# {name}\n\nA FastAPI + SQLModel project.\n",
+    "requirements.txt": "fastapi\nuvicorn\nsqlmodel",
+    "main.py": "from fastapi import FastAPI\nfrom sqlmodel import SQLModel, Field, create_engine\n\napp = FastAPI()\n\nclass Item(SQLModel, table=True):\n    id: int = Field(default=None, primary_key=True)\n    name: str\n\n@app.get('/')\nasync def root():\n    return {\"message\": \"Hello from {name}\"}\n",
+    "models/": "",
+    "tests/test_basic.py": "def test_import():\n    import fastapi\n    assert True\n",
+    ".gitignore": "__pycache__/\n.venv/\n"
+  }
+}
