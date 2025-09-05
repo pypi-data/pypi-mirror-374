@@ -1,0 +1,151 @@
+name: Security Audit
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+jobs:
+  security-audit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run security audit
+      run: |
+        python security/security_audit.py
+
+    - name: Check for hardcoded secrets
+      run: |
+        # Check for common patterns of hardcoded secrets
+        if grep -r "password\|secret\|key\|token" --include="*.py" --include="*.json" --include="*.env" . \
+           --exclude-dir=.git --exclude-dir=__pycache__ --exclude-dir=.pytest_cache \
+           | grep -v "import\|def\|class\|#" | grep -v "test_" | head -10; then
+          echo "⚠️ Potential hardcoded secrets found"
+          exit 1
+        else
+          echo "✅ No obvious hardcoded secrets detected"
+        fi
+
+    - name: Check file permissions
+      run: |
+        # Check for world-readable sensitive files
+        find . -name "*.key" -o -name "*.pem" -o -name "*.env" -o -name "secrets" -type f | while read file; do
+          if [ -f "$file" ] && [ $(stat -c %a "$file" | cut -c2-) -gt 0 ]; then
+            echo "⚠️ Insecure permissions on $file"
+            exit 1
+          fi
+        done
+        echo "✅ File permissions look secure"
+
+    - name: Dependency vulnerability scan
+      run: |
+        pip install safety
+        safety check --full-report || echo "⚠️ Vulnerabilities found in dependencies"
+
+    - name: CodeQL Analysis
+      uses: github/codeql-action/init@v2
+      with:
+        languages: python
+        queries: security-and-quality
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+
+  dependency-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Check for outdated dependencies
+      run: |
+        pip install pip-tools
+        pip list --outdated || echo "Some dependencies may be outdated"
+
+    - name: Check for known vulnerabilities
+      run: |
+        pip install safety
+        safety check || exit 1
+
+  crypto-validation:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Test cryptographic functions
+      run: |
+        python -c "
+        from sudarshan.crypto import SudarshanCrypto
+        crypto = SudarshanCrypto()
+        print('Testing crypto engine...')
+        test_data = b'Hello, quantum world!'
+        key = crypto.generate_random_bytes(32)
+        encrypted = crypto.encrypt_data(test_data, key)
+        decrypted = crypto.decrypt_data(encrypted['ciphertext'], key, encrypted['nonce'], encrypted['tag'])
+        assert decrypted == test_data
+        print('✅ Basic crypto tests passed')
+        "
+
+    - name: Check for insecure crypto patterns
+      run: |
+        # Check for insecure patterns
+        if grep -r "MD5\|SHA1\|random\.random\|os\.urandom" --include="*.py" . --exclude-dir=.git; then
+          echo "⚠️ Insecure crypto patterns found"
+          exit 1
+        else
+          echo "✅ No obvious insecure crypto patterns"
+        fi
+
+    - name: Validate entropy quality
+      run: |
+        python -c "
+        import secrets
+        # Test entropy quality
+        samples = [secrets.token_bytes(32) for _ in range(100)]
+        unique_samples = len(set(samples))
+        if unique_samples < 95:
+            print('⚠️ Low entropy detected in random generation')
+            exit(1)
+        else:
+            print('✅ Random generation entropy looks good')
+        "
