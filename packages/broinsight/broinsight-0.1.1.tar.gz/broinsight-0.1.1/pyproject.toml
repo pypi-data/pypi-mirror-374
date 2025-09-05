@@ -1,0 +1,25 @@
+[project]
+name = "broinsight"
+version = "0.1.1"
+description = "If you don't know what to do with your data, I got you, Bro!"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "broflow>=0.1.5",
+    "brollm>=0.1.2",
+    "broprompt>=0.1.5",
+    "duckdb>=1.3.2",
+    "pandas>=2.3.2",
+    "pydantic>=2.11.7",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.30.1",
+]
+
+[tool.setuptools]
+packages = ["broinsight", "broinsight.actions", "broinsight.metadata"]
+
+[tool.setuptools.package-data]
+broinsight = ["prompt_hub/*.md"]
