@@ -1,0 +1,39 @@
+Metadata-Version: 2.4
+Name: CellFreeGMF
+Version: 0.0.1
+Summary: cfRNA
+Author: Wenxiang Zhang
+Author-email: 
+Keywords: python,windows,mac,linux,cfRNA,CellFreeGMF
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: keywords
+Dynamic: summary
+
+
+# CellFreeGMF v0.0.1
+
+## Overview
+we developed CellFreeGMF, an open-source Python package to identify cfRNA biomarkers and analyze the functional alterations in their originating cells. CellFreeGMF not only enables diagnostic classification of disease samples and identification of cfRNA biomarkers but also elucidate the functional alterations of cfRNA source cells based on cell-free transcriptome and single-cell sequencing data.
+
+## Getting started
+See [Documentation and Tutorials](https://cellfreegmf.readthedocs.io).
+
+## Installation
+cd CellFreeGMF-main
+
+python setup.py build
+
+python setup.py install
+
+## Citation
+Wenxiang Zhang, et al. "Integrative Biomarker Discovery and Cell-of-Origin Tracing from Cell-Free Transcriptomes via Graph Matrix Factorization with Comparative Single-Cell Landscape Modeling in Health and Disease." Submitted.
