@@ -1,0 +1,12 @@
+#!/bin/bash
+## Mount the volume d:\myvolume as the first free drive letter, using the password prompt
+#################################
+## NOTE #########################
+## https://veracrypt.io/en/Command%20Line%20Usage.html
+## https://github.com/arcanecode/VeraCrypt-CommandLine-Examples
+#################################
+## ARGUMENTS ####################
+## 
+## SCRIPT #####################
+
+veracrypt /q /v d:\myvolume

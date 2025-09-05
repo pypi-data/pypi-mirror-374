@@ -1,0 +1,80 @@
+#!/bin/bash
+## 
+#################################
+## NOTE #########################
+## 
+#################################
+## ARGUMENTS ####################
+## 
+## SCRIPT #####################
+
+python3 <<EOF
+
+import re
+
+# match: Match pattern only at the beginning of the string.
+print("match")
+m = re.match(r"\d+", "123abc")
+print(m.group())  # 123
+
+m = re.match(r"\d+", "abc123")
+print(m)  # None
+
+# search: Find first occurrence anywhere in the string.
+print("search")
+s = re.search(r"\d+", "abc123xyz456")
+print(s.group())  # 123
+
+# findall: Return all matches as a list of strings.
+print("findall")
+print(re.findall(r"\d+", "abc123xyz456"))  
+# ['123', '456']
+
+#fullmatch: Match the entire string.
+print("fullmatch")
+print(re.fullmatch(r"\d+", "12345"))  # match <re.Match object; span=(0, 5), match='12345'>
+print(re.fullmatch(r"\d+", "123abc"))  # None
+
+# split: Split string by regex pattern.
+print("split")
+print(re.split(r"\d+", "abc123def456ghi"))
+# ['abc', 'def', 'ghi']
+
+# sub: Replace all matches.
+print("sub")
+print(re.sub(r"\d+", "#", "abc123def456"))
+
+# subn: Replace all matches.
+# Like sub, but also return number of replacements.
+print(re.subn(r"\d+", "#", "abc123def456"))
+# ('abc#def#', 2)
+
+# compile: Compile a regex for repeated use.
+pattern = re.compile(r"\d+")
+print(pattern.findall("test123end456"))  # ['123', '456']
+
+# Groups and Capturing
+m = re.search(r"(\d+)-(\w+)", "Order 123-apple")
+print(m.group(0))  # 123-apple
+print(m.group(1))  # 123
+print(m.group(2))  # apple
+print(m.groups())  # ('123', 'apple')
+
+# Named Groups and Capturing
+m = re.search(r"(?P<id>\d+)-(?P<name>\w+)", "Order 123-apple")
+print(m.group("id"))   # 123
+print(m.group("name")) # apple
+print(m.groupdict())   # {'id': '123', 'name': 'apple'}
+
+# escape: Escape all special characters.
+print(re.escape("Hello. How are you?"))
+# Hello\.\ How\ are\ you\?
+ 
+# re.sub with a function
+def repl(m):
+    return str(int(m.group()) * 2)
+
+print(re.sub(r"\d+", repl, "2 apples, 5 oranges"))
+# 4 apples, 10 oranges
+
+EOF

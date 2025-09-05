@@ -1,0 +1,36 @@
+#!/bin/bash
+## 
+#################################
+## NOTE #########################
+## Prefix	Meaning
+## "..." / '...'	Normal string
+## r"..."	Raw string (no escape sequences)
+## f"..."	f-string (formatted, expressions allowed)
+## b"..."	Bytes (ASCII only)
+## u"..."	Unicode (redundant in Py3, kept for Py2 compat)
+## rb"..." / br"..."	Raw bytes
+## rf"..." / fr"..."	Raw f-string
+## '''...''' / """..."""	Multi-line strings
+#################################
+## ARGUMENTS ####################
+## 
+## SCRIPT #####################
+
+python3 <<EOF
+
+s = "Hello\nWorld"
+print(s)
+
+s = r"Hello\nWorld"
+print(s)
+
+name = "Peter"
+age = 30
+s = f"My name is {name}, I am {age+1} years old."
+print(s)
+
+s = b"hello"
+print(s)         # b'hello'
+print(s[0])      # 104 (ASCII for 'h')
+
+EOF
