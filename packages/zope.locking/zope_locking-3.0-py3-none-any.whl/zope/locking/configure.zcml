@@ -1,0 +1,9 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="zope.locking">
+  <adapter factory=".adapters.TokenBroker" />
+  <adapter factory=".adapters.ExclusiveLockHandler" />
+  <adapter factory=".adapters.SharedLockHandler" />
+
+  <include file="generations.zcml" />
+</configure>
