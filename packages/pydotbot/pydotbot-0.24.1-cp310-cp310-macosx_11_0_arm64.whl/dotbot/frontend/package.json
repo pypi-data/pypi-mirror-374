@@ -1,0 +1,80 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@popperjs/core": "^2.11.6",
+    "@react-spring/web": "^9.5.5",
+    "@use-gesture/react": "^10.2.22",
+    "axios": "^0.27.2",
+    "bootstrap": "^5.2.0",
+    "bootstrap-icons": "^1.9.1",
+    "futoin-hkdf": "^1.5.3",
+    "geodist": "^0.2.1",
+    "jose": "^5.2.0",
+    "moment": "^2.29.4",
+    "mqtt": "^5.3.4",
+    "pino": "^8.17.2",
+    "qrkey": "^0.9.1",
+    "react": "^18.2.0",
+    "react-colorful": "^5.6.1",
+    "react-dom": "^18.2.0",
+    "react-leaflet": "^4.2.0",
+    "react-router-dom": "^6.22.0",
+    "react-scripts": "5.0.1",
+    "react-use-websocket": "^4.2.0",
+    "sass": "^1.54.5",
+    "use-interval": "^1.4.0",
+    "vm-browserify": "^1.1.2"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
+    "assert": "^2.1.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "gh-pages": "^6.1.1",
+    "https-browserify": "^1.0.0",
+    "jest-websocket-mock": "^2.4.0",
+    "mock-socket": "^9.1.5",
+    "msw": "^0.45.0",
+    "os-browserify": "^0.3.0",
+    "process": "^0.11.10",
+    "react-app-rewired": "^2.2.1",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "url": "^0.11.3"
+  },
+  "browser": {
+    "crypto": false
+  },
+  "scripts": {
+    "start": "react-app-rewired --openssl-legacy-provider start",
+    "build": "react-app-rewired build",
+    "lint": "eslint src/.",
+    "test": "react-app-rewired test --watchAll=false --collectCoverage --colors --transformIgnorePatterns \"node_modules/(?!react-leaflet)/\"",
+    "eject": "react-app-rewired eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
