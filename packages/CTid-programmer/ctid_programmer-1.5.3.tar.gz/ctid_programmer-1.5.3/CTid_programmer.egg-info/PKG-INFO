@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: CTid-programmer
+Version: 1.5.3
+Summary: A graphical user interface for programming CTid sensors.
+Home-page: https://bitbucket.org/egauge/CTid-programmer/
+Author: David Mosberger-Tang
+Author-email: davidm@egauge.net
+License: MIT License
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Manufacturing
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Topic :: System :: Hardware
+Requires-Python: >=3.11
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Requires-Dist: egauge-python!=0.21,>=0.8.0
+Requires-Dist: importlib_metadata
+Requires-Dist: importlib_resources
+Requires-Dist: pexpect
+Requires-Dist: PySide6
+Requires-Dist: wheel
+
+***************
+CTid-programmer
+***************
+
+A graphical-user interface for programming CTid®-enabled sensors.
+
+The avrdude enhancements which enable programming of ATtiny
+microcontrollers with a standard FTDI serial cable have been merged
+into the official release.  If you have avrdude v7 or newer installed,
+you should be all set.
