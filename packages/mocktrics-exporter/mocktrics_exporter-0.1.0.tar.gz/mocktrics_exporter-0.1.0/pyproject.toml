@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mocktrics-exporter"
+version = "0.1.0"
+description = "A FastAPI-based mock Prometheus exporter with configurable metrics and UI."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "mocktrics Exporter Maintainers" }]
+requires-python = ">=3.9"
+dependencies = [
+  "prometheus_client",
+  "PyYAML",
+  "pydantic",
+  "fastapi",
+  "uvicorn",
+  "jinja2",
+  "aiofiles",
+  "python-multipart",
+]
+keywords = ["prometheus", "exporter", "mock", "fastapi", "metrics"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Framework :: FastAPI",
+  "Topic :: Internet :: WWW/HTTP",
+  "Topic :: System :: Monitoring",
+]
+
+[project.urls]
+Homepage = "https://github.com/mbrunhoej/mocktrics-exporter"
+Repository = "https://github.com/mbrunhoej/mocktrics-exporter"
+
+[project.scripts]
+mocktrics-exporter = "mocktrics_exporter.main:cli"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["mocktrics_exporter*"]
+
+[tool.setuptools.package-data]
+mocktrics_exporter = [
+  "templates/*.html",
+  "templates/partials/*.html",
+  # Include empty static dir via .gitkeep so wheels don't break
+  "static/*",
+  "static/.gitkeep",
+]
+
+# Centralized tool config migrated from pytest.ini and mypy.ini
+[tool.pytest.ini_options]
+pythonpath = ["src", "src/mocktrics_exporter"]
+
+[tool.mypy]
+check_untyped_defs = true
