@@ -1,0 +1,18 @@
+# Global code owners
+* @leegyurak
+
+# Core library files
+/sq3m/ @leegyurak
+
+# Configuration files
+/pyproject.toml @leegyurak
+/uv.lock @leegyurak
+/.github/ @leegyurak
+
+# Documentation
+*.md @leegyurak
+/docs/ @leegyurak
+
+# CI/CD and infrastructure
+/.github/workflows/ @leegyurak
+/.github/scripts/ @leegyurak
