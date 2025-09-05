@@ -1,0 +1,66 @@
+{% extends "catalog_books/base_list.html" %}
+{% load i18n l10n cms_tags thumbnail catalog_books static %}
+
+{% block catalog_book_list_navigation %}
+    <span>
+        <a href="{% if is_catalog_config %}{% url "catalog_books:book_list_order" list_type="tiles" order=books_list_order %}{% endif %}{{ page_params|books_list_page_params }}" title="{% translate "tiles" %}">
+            <img src="{% static "catalog_books/img/tiles-type.svg" %}" width="24" height="24" alt="tiles">
+        </a>
+        <a name="list" title="{% translate "list" %}">
+            <img src="{% static "catalog_books/img/list-type.svg" %}" width="24" height="24" alt="list">
+        </a>
+    </span>
+    {% include "catalog_books/book_list_order_by.html" %}
+{% endblock %}
+
+{% block catalog_book_content %}
+    <div class="books-list list-type-list {{ books_css_name|default_if_none:"" }}">
+        <div class="books-items" data-group_by_items="{{ group_by_items }}">
+            {% for book in book_list %}
+                <div class="book-item{% if book.hide %} hidden{% endif %}{% if forloop.counter > group_by_items %} get-more{% endif %}"
+                    data-types="{{ book.get_book_types|join:"|" }}"
+                    data-categories="{% for category in book.category.all %}{{ category.slug }}{% if not forloop.last %}|{% endif %}{% endfor %}"
+                    data-authors="{% for author in book.authors.all %}{{ author.last_name }} {{ author.first_name }}{% if not forloop.last %}|{% endif %}{% endfor %}"
+                    data-issue-years="{{ book.issue|date:"Y" }}"
+                    data-licenses="{{ book.license|default_if_none:"" }}"
+                    data-formats="{% for ebook in book.ebooks.all %}{{ ebook|file_extension }}{% if not forloop.last %}|{% endif %}{% endfor %}"
+                    data-book_id="{{ book.pk|unlocalize }}"
+                    >
+                    <div class="side-one">
+                        {% if book.new %}
+                            <div class="new"><div>{% translate "New" context "new-book" %}</div></div>
+                        {% endif %}
+                        {% if book.bestseller %}
+                            <div class="bestseller"><div>{% translate "Bestseller" %}</div></div>
+                        {% endif %}
+                        {% if book.coming_soon %}
+                            <div class="coming-soon"><div>{% translate "Coming soon" %}</div></div>
+                        {% endif %}
+                        {% if book.preview %}
+                            <img class="preview" width="{{ thumbnail_width }}" height="{{ thumbnail_height }}" src="{% thumbnail book.preview thumbnail_size crop upscale subject_location=book.preview.subject_location %}" alt="{{ book.preview.alt }}">
+                        {% else %}
+                            {% with img_src="catalog_books/img/without-cover-LANGUAGE_CODE.svg"|map_language_code:LANGUAGE_CODE %}
+                                <img class="preview without-cover" width="{{ thumbnail_width }}" height="{{ thumbnail_height }}" src="{% static img_src %}" alt="{{ book.preview.alt }}">
+                            {% endwith %}
+                        {% endif %}
+                    </div>
+                    <div class="side-two">
+                        <a class="book-title" href="{% url "catalog_books:book_detail" pk=book.pk %}" title="{% translate "Go to book detail." %}">{{ book.name }}</a>
+                        <div class="authors">
+                            {% for author in book.authors.all %}
+                                <span class="author">{% spaceless %}
+                                    {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %},{% endif %}
+                                {% endspaceless %}</span>
+                            {% endfor %}<span class="and-team">{% if book.authors_and_team %} {% translate "and team" %}{% endif %}</span>
+                        </div>
+                        <div class="publication-year">{{ book.issue|date:"Y" }}</div>
+                        <div class="book-description">{{ book.description|default_if_none:"" }}</div>
+                        <a class="book-detail-link" href="{% url "catalog_books:book_detail" pk=book.pk %}">{% translate "Book detail" %}</a>
+                    </div>
+                </div>
+            {% empty %}
+                <p>{% translate "No items available" %}</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

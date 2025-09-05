@@ -1,0 +1,32 @@
+{% extends CMS_TEMPLATE %}
+{% load cms_tags catalog_books %}
+
+{% block content %}
+    <div class="catalog-books-content">
+        <div class="before-catalog-books">
+            {% block catalog_book_before_content %}
+                {% static_placeholder 'catalog_book_before_content' %}
+            {% endblock %}
+        </div>
+        <div class="catalog-books">
+            <div class="container">
+                <form class="row books-list">
+                    <div class="col col-12 col-lg-3 col-md-12 books-list-side">
+                        {% block catalog_book_side %}{% placeholder_catalog_book_page_content %}{% endblock %}
+                    </div>
+                    <div class="col col-12 col-lg-9 col-md-12">
+                        <div class="books-list-navigation">{% block catalog_book_list_navigation %}{% endblock %}</div>
+                        <div class="pagination-top">{% include "catalog_books/pagination.html" %}</div>
+                        {% block catalog_book_content %}{% endblock %}
+                        <div class="pagination-bottom">{% include "catalog_books/pagination.html" %}</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="after-catalog-books">
+            {% block catalog_book_after_content %}
+                {% static_placeholder 'catalog_book_after_content' %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock content %}

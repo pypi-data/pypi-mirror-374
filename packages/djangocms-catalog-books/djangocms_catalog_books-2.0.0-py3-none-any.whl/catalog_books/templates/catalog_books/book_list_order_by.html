@@ -1,0 +1,9 @@
+{% load i18n catalog_books %}
+<div class="navigation-sort">
+    <label for="sort-by">{% translate "Order by" context "imperative" %}:</label>
+    <select name="sort-by" id="sort-by">
+        {% for code, label in BOOKS_LIST_ORDER.items %}
+            <option value="sort_{{ code }}"{% if code == current_order_by %} selected{% endif %} data-url="{% url "catalog_books:book_list_order" list_type=books_list_type order=code %}{{ page_params|books_list_page_params }}">{{ label }}</option>
+        {% endfor %}
+    </select>
+</div>

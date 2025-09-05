@@ -1,0 +1,18 @@
+{% load i18n catalog_books %}
+<div class="catalog-books-filter books-{{ class_suffix }}">
+    <h4 data-bs-toggle="collapse" href="#collapse-{{ class_suffix }}" role="link" aria-expanded="false" aria-controls="collapse-{{ class_suffix }}" class="collapsed">{{ title }}</h4>
+    <div class="collapse" id="collapse-{{ class_suffix }}">
+        <ul>
+            {% for item in object_list %}
+                <li>
+                    <label for="catalog-books-{{ input_name }}_{{ item.value }}">
+                        <input type="checkbox" id="catalog-books-{{ input_name }}_{{ item.value }}" name="{{ input_name }}" value="{{ item.value }}"{% if item.checked %} checked{% endif %} data-section="{{ class_suffix|camel_case }}" data-slug="{{ item.slug }}">
+                        <span class="names-count" title="{% blocktranslate with amount=item.number count counter=item.number %}{{ amount }} book.{% plural %}{{ amount }} books.{% endblocktranslate %}">{{ item.name }}</span>
+                    </label>
+                </li>
+            {% empty %}
+                <li>{% trans "No items available" %}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
