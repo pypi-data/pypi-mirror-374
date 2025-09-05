@@ -1,0 +1,113 @@
+Metadata-Version: 2.4
+Name: splitgill
+Version: 3.1.1
+Summary: Versioned search library
+Author-email: Natural History Museum <data@nhm.ac.uk>
+License: GPL-3.0-or-later
+Project-URL: repository, https://github.com/NaturalHistoryMuseum/splitgill
+Project-URL: changelog, https://github.com/NaturalHistoryMuseum/splitgill/blob/main/CHANGELOG.md
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: elasticsearch[async]>=8.0.0
+Requires-Dist: elasticsearch-dsl>=8.9.0
+Requires-Dist: pymongo>=4.4.1
+Requires-Dist: cytoolz>=0.12.3
+Requires-Dist: fastnumbers>=5.0.1
+Requires-Dist: pyproj>=3.5.0
+Requires-Dist: shapely>=2.0.5
+Requires-Dist: regex>=2024.7.24
+Requires-Dist: orjson>=3.10.6
+Requires-Dist: StrEnum>=0.4.15
+Provides-Extra: test
+Requires-Dist: mock; extra == "test"
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: coveralls; extra == "test"
+Requires-Dist: freezegun; extra == "test"
+Requires-Dist: pytest-asyncio; extra == "test"
+Provides-Extra: docs
+Requires-Dist: mkdocs; extra == "docs"
+Requires-Dist: mkdocstrings[python]; extra == "docs"
+Requires-Dist: mkdocs-material; extra == "docs"
+Requires-Dist: mkdocs-gen-files; extra == "docs"
+Requires-Dist: mkdocs-section-index; extra == "docs"
+Requires-Dist: mkdocs-include-markdown-plugin; extra == "docs"
+Dynamic: license-file
+
+<!--header-start-->
+
+# splitgill
+
+[![Tests](https://img.shields.io/github/actions/workflow/status/NaturalHistoryMuseum/splitgill/tests.yml?branch=main&style=flat-square)](https://github.com/NaturalHistoryMuseum/splitgill/actions/workflows/tests.yml)
+[![Coveralls](https://img.shields.io/coveralls/github/NaturalHistoryMuseum/splitgill/main?style=flat-square)](https://coveralls.io/github/NaturalHistoryMuseum/splitgill)
+[![Python version](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11-blue?style=flat-square)](https://www.python.org/downloads)
+[![Docs](https://img.shields.io/readthedocs/splitgill?style=flat-square)](https://splitgill.readthedocs.io)
+<!--header-end-->
+
+## Overview
+
+<!--overview-start-->
+Splitgill is a library providing functionality to create, update, and query versioned
+data.
+Uses MongoDB and Elasticsearch.
+
+Note that this library is relatively stable but is still quite new and could still be
+significantly altered.
+
+### Split-gill mushroom
+
+The split-gill mushroom is a fungus with
+a [very high level of genetic diversity](https://doi.org/10.1093/molbev/msv153) (a lot
+of _versions_, you could say).
+
+<!--overview-end-->
+
+## Installation
+
+<!--installation-start-->
+splitgill can be installed from PyPI:
+
+```shell
+pip install splitgill
+```
+
+Or from Github:
+
+```shell
+pip install git+git://github.com/NaturalHistoryMuseum/splitgill.git#egg=splitgill
+```
+
+Splitgill requires:
+
+- MongoDB >= version 6
+- Elasticsearch >= version 8
+
+This library has not been tested across many MongoDB and Elasticsearch versions, your
+mileage may vary, and it'd be worth running the test suite against the versions you're
+targeting before using this library in earnest.
+
+<!--installation-end-->
+
+## Tests
+
+<!--tests-start-->
+Tests are run through docker-compose so that MongoDB and Elasticsearch are available for
+real testing.
+
+To run the tests:
+
+```bash
+docker compose build
+docker compose run test
+```
+
+<!--tests-end-->

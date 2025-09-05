@@ -1,0 +1,93 @@
+[project]
+name = "splitgill"
+version = "3.1.1"
+description = "Versioned search library"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "GPL-3.0-or-later" }
+authors = [
+    { name = "Natural History Museum", email = "data@nhm.ac.uk" }
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+dependencies = [
+    "elasticsearch[async]>=8.0.0",
+    "elasticsearch-dsl>=8.9.0",
+    "pymongo>=4.4.1",
+    "cytoolz>=0.12.3",
+    "fastnumbers>=5.0.1",
+    "pyproj>=3.5.0",
+    "shapely>=2.0.5",
+    "regex>=2024.7.24",
+    "orjson>=3.10.6",
+    # only needed while we run on <python3.11
+    "StrEnum>=0.4.15",
+]
+
+[project.optional-dependencies]
+test = [
+    "mock",
+    "pytest",
+    "pytest-cov",
+    "coveralls",
+    "freezegun",
+    "pytest-asyncio",
+]
+docs = [
+    "mkdocs",
+    "mkdocstrings[python]",
+    "mkdocs-material",
+    "mkdocs-gen-files",
+    "mkdocs-section-index",
+    "mkdocs-include-markdown-plugin",
+]
+
+[project.urls]
+repository = "https://github.com/NaturalHistoryMuseum/splitgill"
+changelog = "https://github.com/NaturalHistoryMuseum/splitgill/blob/main/CHANGELOG.md"
+
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+[tool]
+[tool.setuptools]
+zip-safe = false
+
+[tool.setuptools.packages.find]
+exclude = ["tests", "docs"]
+
+[tool.commitizen]
+name = "cz_nhm"
+version = "3.1.1"
+tag_format = "v$version"
+update_changelog_on_bump = true
+changelog_incremental = false
+version_files = [
+    "pyproject.toml:version"
+]
+
+[tool.pylint]
+max-line-length = 88
+disable = ["C0114", "R0903"]
+
+[tool.docformatter]
+wrap-summaries = 88
+wrap-descriptions = 88
+pre-summary-newline = true
+make-summary-multi-line = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
