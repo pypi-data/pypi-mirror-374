@@ -1,0 +1,64 @@
+Metadata-Version: 2.4
+Name: spyctl
+Version: 0.24.0
+Summary: A command line tool for viewing and managing Spyderbat Resources
+Author-email: Brent Haub <dev@spyderbat.com>, Kyle Smith Hanna <dev@spyderbat.com>, Guy Duchatelet <dev@spyderbat.com>, Ruhika Bulani <dev@spyderbat.com>
+Maintainer-email: Brent Haub <dev@spyderbat.com>
+Project-URL: Homepage, https://spyctl.readthedocs.io/en/latest/
+Project-URL: Documentation, https://spyctl.readthedocs.io/en/latest/
+Project-URL: Source, https://github.com/spyderbat/spyctl
+Project-URL: Spyderbat, https://www.spyderbat.com/
+Keywords: spyctl,spyderbat,kubectl,kubernetes
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: click>=8.1.8
+Requires-Dist: click-aliases>=1.0.5
+Requires-Dist: pydantic>=2.11.4
+Requires-Dist: python-dateutil>=2.9.0.post0
+Requires-Dist: pyyaml>=6.0.2
+Requires-Dist: requests>=2.32.3
+Requires-Dist: tabulate>=0.9.0
+Requires-Dist: tqdm>=4.67.1
+Requires-Dist: typing-extensions>=4.13.2
+Requires-Dist: zulu>=2.0.1
+Dynamic: license-file
+
+<p align="center">
+  <a href="" rel="noopener">
+ <img width=200px height=200px src="https://i.imgur.com/nkMr2fl.png" alt="Project logo"></a>
+</p>
+
+<h1 align="center">Spyctl</h1>
+
+Spyctl, is a command-line utility for viewing and managing Spyderbat Resources. It provides basic
+mechanisms for retrieving and uploading data via the [Spyderbat API](https://api.spyderbat.com/openapi.pdf).
+
+Spyctl is the answer for those wanting a command-line solution to interact with Spyderbat.
+
+---
+
+<p align="center"> 
+    <br> 
+</p>
+
+## Getting Started <a name = "getting_started"></a>
+
+Follow the [Installation Guide](https://docs.spyderbat.com/installation/spyctl)
+
+Or if you already have Spyctl installed explore the [Tutorials](https://docs.spyderbat.com/tutorials) section of the Spyderbat Docs
+
+## Support <a name = "support"></a>
+
+If you need support, you can reach out to us at dev@spyderbat.com or on our [community Slack workspace](https://join.slack.com/t/spyderbatcommunity/shared_invite/zt-1ncqumr1c-WVVRwJTNfTQSW2Y8_maGOw)
+
+
+## ✍️ Authors <a name = "authors"></a>
+
+- [@brent-spyder](https://github.com/brent-spyder) - Developer/Admin
+- [@spyder-kyle](https://github.com/spyder-kyle) - Developer
+- [@spyder-guy](https://github.com/spyder-guy) - Developer
+- [@spyder-ruhika](https://github.com/spyder-ruhika) - Developer
