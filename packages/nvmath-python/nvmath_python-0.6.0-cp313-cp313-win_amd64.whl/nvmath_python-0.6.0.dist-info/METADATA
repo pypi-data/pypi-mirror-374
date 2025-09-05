@@ -1,0 +1,124 @@
+Metadata-Version: 2.4
+Name: nvmath-python
+Version: 0.6.0
+Summary: NVIDIA Math Python libraries
+Author: NVIDIA Corporation
+License-Expression: Apache-2.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Topic :: Education
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Environment :: GPU :: NVIDIA CUDA
+Classifier: Environment :: GPU :: NVIDIA CUDA :: 11
+Classifier: Environment :: GPU :: NVIDIA CUDA :: 12
+Requires-Python: <3.14,>=3.10
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Requires-Dist: cuda-bindings
+Requires-Dist: cuda-core<0.4,>=0.3.2
+Requires-Dist: cuda-pathfinder<2.0,>=1.2.1
+Requires-Dist: numpy<3,>=1.25
+Requires-Dist: pywin32; platform_system == "Windows"
+Provides-Extra: cpu
+Requires-Dist: cuda-core<0.4,>=0.3.2; extra == "cpu"
+Requires-Dist: mkl; platform_machine == "x86_64" and extra == "cpu"
+Requires-Dist: nvpl-fft~=0.3; (platform_system == "Linux" and platform_machine == "aarch64") and extra == "cpu"
+Provides-Extra: cu11
+Requires-Dist: cuda-bindings<12,>=11.8.7; extra == "cu11"
+Requires-Dist: cuda-core[cu11]==0.3.2; extra == "cu11"
+Requires-Dist: cupy-cuda11x; extra == "cu11"
+Requires-Dist: nvidia-cublas-cu11; extra == "cu11"
+Requires-Dist: nvidia-cuda-nvrtc-cu11; extra == "cu11"
+Requires-Dist: nvidia-cufft-cu11; extra == "cu11"
+Requires-Dist: nvidia-curand-cu11; extra == "cu11"
+Requires-Dist: nvidia-cusolver-cu11; extra == "cu11"
+Requires-Dist: nvidia-cusparse-cu11; extra == "cu11"
+Provides-Extra: cu12
+Requires-Dist: cuda-bindings<13,>=12.9.1; extra == "cu12"
+Requires-Dist: cuda-core[cu12]<0.4,>=0.3.2; extra == "cu12"
+Requires-Dist: cupy-cuda12x; extra == "cu12"
+Requires-Dist: nvidia-cublas-cu12; extra == "cu12"
+Requires-Dist: nvidia-cuda-nvrtc-cu12; extra == "cu12"
+Requires-Dist: nvidia-cuda-runtime-cu12; extra == "cu12"
+Requires-Dist: nvidia-cudss-cu12==0.5.0.16; extra == "cu12"
+Requires-Dist: nvidia-cufft-cu12; extra == "cu12"
+Requires-Dist: nvidia-curand-cu12; extra == "cu12"
+Requires-Dist: nvidia-cusolver-cu12; extra == "cu12"
+Requires-Dist: nvidia-cusparse-cu12; extra == "cu12"
+Provides-Extra: cu12-distributed
+Requires-Dist: cuda-bindings<13,>=12.9.1; extra == "cu12-distributed"
+Requires-Dist: cuda-core[cu12]<0.4,>=0.3.2; extra == "cu12-distributed"
+Requires-Dist: cupy-cuda12x; extra == "cu12-distributed"
+Requires-Dist: nvidia-cublas-cu12; extra == "cu12-distributed"
+Requires-Dist: nvidia-cuda-nvrtc-cu12; extra == "cu12-distributed"
+Requires-Dist: nvidia-cuda-runtime-cu12; extra == "cu12-distributed"
+Requires-Dist: nvidia-cudss-cu12==0.5.0.16; extra == "cu12-distributed"
+Requires-Dist: nvidia-cufft-cu12; extra == "cu12-distributed"
+Requires-Dist: nvidia-curand-cu12; extra == "cu12-distributed"
+Requires-Dist: nvidia-cusolver-cu12; extra == "cu12-distributed"
+Requires-Dist: nvidia-cusparse-cu12; extra == "cu12-distributed"
+Requires-Dist: mpi4py; extra == "cu12-distributed"
+Requires-Dist: nvidia-cublasmp-cu12>=0.4.0; extra == "cu12-distributed"
+Requires-Dist: nvidia-cufftmp-cu12; extra == "cu12-distributed"
+Requires-Dist: nvidia-nvshmem-cu12>=3.2.5; extra == "cu12-distributed"
+Provides-Extra: dx
+Requires-Dist: cuda-bindings<13,>=12.9.1; extra == "dx"
+Requires-Dist: cuda-core[cu12]<0.4,>=0.3.2; extra == "dx"
+Requires-Dist: cupy-cuda12x; extra == "dx"
+Requires-Dist: numba; extra == "dx"
+Requires-Dist: numba-cuda>=0.18.1; extra == "dx"
+Requires-Dist: nvidia-cuda-cccl-cu12>12.4.127; extra == "dx"
+Requires-Dist: nvidia-cuda-nvcc-cu12; extra == "dx"
+Requires-Dist: nvidia-cuda-nvrtc-cu12!=12.4.*,!=12.5.0; extra == "dx"
+Requires-Dist: nvidia-libmathdx-cu12<0.3,>=0.2.3; extra == "dx"
+Provides-Extra: sysctk11
+Requires-Dist: cuda-bindings<12,>=11.8.7; extra == "sysctk11"
+Requires-Dist: cuda-core==0.3.2; extra == "sysctk11"
+Requires-Dist: cupy-cuda11x; extra == "sysctk11"
+Provides-Extra: sysctk12
+Requires-Dist: cuda-bindings<13,>=12.9.1; extra == "sysctk12"
+Requires-Dist: cuda-core<0.4,>=0.3.2; extra == "sysctk12"
+Requires-Dist: cupy-cuda12x; extra == "sysctk12"
+Provides-Extra: sysctk12-dx
+Requires-Dist: cuda-bindings<13,>=12.9.1; extra == "sysctk12-dx"
+Requires-Dist: cuda-core<0.4,>=0.3.2; extra == "sysctk12-dx"
+Requires-Dist: cupy-cuda12x; extra == "sysctk12-dx"
+Requires-Dist: numba; extra == "sysctk12-dx"
+Requires-Dist: numba-cuda>=0.18.1; extra == "sysctk12-dx"
+Dynamic: license-file
+
+*************************************************************
+nvmath-python: NVIDIA Math Libraries for the Python Ecosystem
+*************************************************************
+
+`nvmath-python <https://developer.nvidia.com/nvmath-python>`_ brings the power and
+performance of NVIDIA math libraries to the Python ecosystem with intuitive, pythonic APIs.
+The ultimate goal is to provide users full access to all of the available library features
+in a variety of execution spaces.
+
+* `Documentation <https://docs.nvidia.com/cuda/nvmath-python/index.html>`_
+* `Examples <https://github.com/NVIDIA/nvmath-python/tree/main/examples>`_
+
+Installation
+============
+
+.. code-block:: bash
+
+   pip install nvmath-python[cu12]
+
+Please refer to the `installation instructions
+<https://docs.nvidia.com/cuda/nvmath-python/latest/installation.html>`_ for different
+ways of installing nvmath-python, including building from source.
