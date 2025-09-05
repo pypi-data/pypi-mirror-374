@@ -1,0 +1,14 @@
+setuptools
+grpcio-tools>=1.49
+
+[quality]
+doc8
+ruff
+
+[test]
+build
+pytest
+pytest-cov
+testfixtures
+wheel
+wheel-inspect

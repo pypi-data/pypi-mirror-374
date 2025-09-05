@@ -1,0 +1,5 @@
+[distutils.commands]
+build_grpc = setuptools_grpc.build_grpc:build_grpc
+
+[setuptools.finalize_distribution_options]
+setuptools_grpc = setuptools_grpc:inject_build
