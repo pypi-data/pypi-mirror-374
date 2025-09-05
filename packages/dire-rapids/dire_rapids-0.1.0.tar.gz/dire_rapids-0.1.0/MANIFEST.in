@@ -1,0 +1,11 @@
+include README.md
+include LICENSE
+include requirements*.txt
+include pytest.ini
+include .pylintrc
+recursive-include tests *.py
+global-exclude examples/*
+global-exclude benchmarking/*
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * .DS_Store
