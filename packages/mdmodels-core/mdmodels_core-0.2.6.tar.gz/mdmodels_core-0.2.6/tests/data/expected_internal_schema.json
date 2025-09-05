@@ -1,0 +1,256 @@
+{
+  "objects": [
+    {
+      "name": "Test",
+      "attributes": [
+        {
+          "name": "name",
+          "multiple": false,
+          "is_id": true,
+          "dtypes": [
+            "string"
+          ],
+          "docstring": "The name of the test. This is a unique identifier that helps track individual test cases across the system. It should be descriptive and follow the standard naming conventions.",
+          "options": [],
+          "term": "schema:hello",
+          "required": true,
+          "default": 2.0,
+          "xml": {
+            "is_attr": true,
+            "name": "name",
+            "wrapped": null
+          },
+          "is_enum": false,
+          "position": {
+            "line": 15,
+            "column": {
+              "start": 1,
+              "end": 11
+            },
+            "offset": {
+              "start": 399,
+              "end": 883
+            }
+          }
+        },
+        {
+          "name": "number",
+          "multiple": false,
+          "is_id": false,
+          "dtypes": [
+            "float",
+            "string"
+          ],
+          "docstring": "",
+          "options": [],
+          "term": "schema:one",
+          "required": false,
+          "default": 1.0,
+          "xml": {
+            "is_attr": true,
+            "name": "number",
+            "wrapped": null
+          },
+          "is_enum": false,
+          "position": {
+            "line": 23,
+            "column": {
+              "start": 1,
+              "end": 9
+            },
+            "offset": {
+              "start": 692,
+              "end": 780
+            }
+          }
+        },
+        {
+          "name": "test2",
+          "multiple": true,
+          "is_id": false,
+          "dtypes": [
+            "Test2"
+          ],
+          "docstring": "",
+          "options": [],
+          "term": "schema:something",
+          "required": false,
+          "xml": {
+            "is_attr": false,
+            "name": "SomeTest2",
+            "wrapped": null
+          },
+          "is_enum": false,
+          "position": {
+            "line": 28,
+            "column": {
+              "start": 1,
+              "end": 8
+            },
+            "offset": {
+              "start": 780,
+              "end": 852
+            }
+          }
+        },
+        {
+          "name": "ontology",
+          "multiple": false,
+          "is_id": false,
+          "dtypes": [
+            "Ontology"
+          ],
+          "docstring": "",
+          "options": [],
+          "term": null,
+          "required": false,
+          "xml": {
+            "is_attr": false,
+            "name": "ontology",
+            "wrapped": null
+          },
+          "is_enum": true,
+          "position": {
+            "line": 32,
+            "column": {
+              "start": 1,
+              "end": 11
+            },
+            "offset": {
+              "start": 852,
+              "end": 883
+            }
+          }
+        }
+      ],
+      "docstring": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "position": {
+        "line": 11,
+        "column": {
+          "start": 1,
+          "end": 9
+        },
+        "offset": {
+          "start": 156,
+          "end": 165
+        }
+      }
+    },
+    {
+      "name": "Test2",
+      "attributes": [
+        {
+          "name": "names",
+          "multiple": true,
+          "is_id": false,
+          "dtypes": [
+            "string"
+          ],
+          "docstring": "",
+          "options": [],
+          "term": "schema:hello",
+          "required": false,
+          "xml": {
+            "is_attr": false,
+            "name": "name",
+            "wrapped": null
+          },
+          "is_enum": false,
+          "position": {
+            "line": 37,
+            "column": {
+              "start": 1,
+              "end": 8
+            },
+            "offset": {
+              "start": 894,
+              "end": 1038
+            }
+          }
+        },
+        {
+          "name": "number",
+          "multiple": false,
+          "is_id": false,
+          "dtypes": [
+            "float"
+          ],
+          "docstring": "",
+          "options": [
+            {
+              "key": "minimum",
+              "value": "0"
+            }
+          ],
+          "term": "schema:one",
+          "required": false,
+          "xml": {
+            "is_attr": true,
+            "name": "number",
+            "wrapped": null
+          },
+          "is_enum": false,
+          "position": {
+            "line": 41,
+            "column": {
+              "start": 1,
+              "end": 9
+            },
+            "offset": {
+              "start": 958,
+              "end": 1038
+            }
+          }
+        }
+      ],
+      "docstring": "",
+      "position": {
+        "line": 35,
+        "column": {
+          "start": 1,
+          "end": 10
+        },
+        "offset": {
+          "start": 883,
+          "end": 893
+        }
+      }
+    }
+  ],
+  "enums": [
+    {
+      "name": "Ontology",
+      "mappings": {
+        "ECO": "https://www.evidenceontology.org/term/",
+        "GO": "https://amigo.geneontology.org/amigo/term/",
+        "SIO": "http://semanticscience.org/resource/"
+      },
+      "docstring": "",
+      "position": {
+        "line": 50,
+        "column": {
+          "start": 1,
+          "end": 13
+        },
+        "offset": {
+          "start": 1055,
+          "end": 1068
+        }
+      }
+    }
+  ],
+  "config": {
+    "id": null,
+    "id-field": true,
+    "prefixes": {
+      "schema": "http://schema.org/"
+    },
+    "nsmap": {
+      "tst": "http://example.com/test/"
+    },
+    "repo": "https://www.github.com/my/repo/",
+    "prefix": "tst",
+    "imports": {},
+    "allow-empty": false
+  }
+}

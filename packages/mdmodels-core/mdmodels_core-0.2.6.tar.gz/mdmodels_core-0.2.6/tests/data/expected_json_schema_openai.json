@@ -1,0 +1,127 @@
+{
+  "title": "Test",
+  "type": "object",
+  "properties": {
+    "array_valued": {
+      "title": "array_valued",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Test2"
+      }
+    },
+    "multiple_types": {
+      "title": "multiple_types",
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "$ref": "#/$defs/Test2"
+        }
+      ]
+    },
+    "multiple_types_array": {
+      "title": "multiple_types_array",
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "$ref": "#/$defs/Test2"
+          }
+        ]
+      }
+    },
+    "name": {
+      "title": "name",
+      "type": "string",
+      "description": "A test description"
+    },
+    "number": {
+      "title": "number",
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "ontology": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/Ontology"
+        }
+      ]
+    },
+    "single_valued": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/Test2"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "Ontology": {
+      "title": "Ontology",
+      "type": "string",
+      "enum": [
+        "https://www.evidenceontology.org/term/",
+        "https://amigo.geneontology.org/amigo/term/",
+        "http://semanticscience.org/resource/"
+      ]
+    },
+    "Test2": {
+      "title": "Test2",
+      "type": "object",
+      "properties": {
+        "names": {
+          "title": "names",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "number": {
+          "title": "number",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      },
+      "required": [
+        "names",
+        "number"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "array_valued",
+    "multiple_types",
+    "multiple_types_array",
+    "name",
+    "number",
+    "ontology",
+    "single_valued"
+  ],
+  "additionalProperties": false
+}

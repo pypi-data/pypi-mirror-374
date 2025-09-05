@@ -1,0 +1,195 @@
+{
+    "is_valid": false,
+    "errors": [
+        {
+            "message": "Name '1number' must start with a letter.",
+            "object": "Test",
+            "attribute": "1number",
+            "location": "Global",
+            "solution": "Resolve the issue by using 'number'.",
+            "error_type": "NameError",
+            "positions": [
+                {
+                    "line": 13,
+                    "column": {
+                        "start": 1,
+                        "end": 10
+                    },
+                    "offset": {
+                        "start": 173,
+                        "end": 267
+                    }
+                }
+            ]
+        },
+        {
+            "message": "Name 'some name' contains whitespace, which is not valid. Use underscores instead.",
+            "object": "Test",
+            "attribute": "some name",
+            "location": "Global",
+            "solution": "Resolve the issue by using 'some_name'.",
+            "error_type": "NameError",
+            "positions": [
+                {
+                    "line": 15,
+                    "column": {
+                        "start": 1,
+                        "end": 12
+                    },
+                    "offset": {
+                        "start": 200,
+                        "end": 229
+                    }
+                }
+            ]
+        },
+        {
+            "message": "Type 'Undefined' of property 'undefined_type' not found.",
+            "object": "Test",
+            "attribute": "undefined_type",
+            "location": "Global",
+            "solution": "Add the type 'Undefined' to the model or use a base type.",
+            "error_type": "TypeError",
+            "positions": [
+                {
+                    "line": 17,
+                    "column": {
+                        "start": 1,
+                        "end": 17
+                    },
+                    "offset": {
+                        "start": 229,
+                        "end": 267
+                    }
+                }
+            ]
+        },
+        {
+            "message": "Name '1Test' must start with a letter.",
+            "object": "1Test",
+            "attribute": null,
+            "location": "Global",
+            "solution": "Resolve the issue by using 'Test'.",
+            "error_type": "NameError",
+            "positions": [
+                {
+                    "line": 20,
+                    "column": {
+                        "start": 1,
+                        "end": 10
+                    },
+                    "offset": {
+                        "start": 267,
+                        "end": 277
+                    }
+                }
+            ]
+        },
+        {
+            "message": "Name '1number' must start with a letter.",
+            "object": "1Test",
+            "attribute": "1number",
+            "location": "Global",
+            "solution": "Resolve the issue by using 'number'.",
+            "error_type": "NameError",
+            "positions": [
+                {
+                    "line": 22,
+                    "column": {
+                        "start": 1,
+                        "end": 10
+                    },
+                    "offset": {
+                        "start": 278,
+                        "end": 306
+                    }
+                }
+            ]
+        },
+        {
+            "message": "Object 'Duplicate' is defined more than once.",
+            "object": "Duplicate",
+            "attribute": null,
+            "location": "Global",
+            "solution": "Rename the object(s) at lines 25, 30 to be unique.",
+            "error_type": "DuplicateError",
+            "positions": [
+                {
+                    "line": 25,
+                    "column": {
+                        "start": 1,
+                        "end": 14
+                    },
+                    "offset": {
+                        "start": 306,
+                        "end": 320
+                    }
+                },
+                {
+                    "line": 30,
+                    "column": {
+                        "start": 1,
+                        "end": 14
+                    },
+                    "offset": {
+                        "start": 347,
+                        "end": 361
+                    }
+                }
+            ]
+        },
+        {
+            "message": "Property 'some_name' is defined more than once.",
+            "object": "DuplicateAttributes",
+            "attribute": "some_name",
+            "location": "Global",
+            "solution": "Rename the property(ies) at lines 37, 39 to be unique.",
+            "error_type": "DuplicateError",
+            "positions": [
+                {
+                    "line": 37,
+                    "column": {
+                        "start": 1,
+                        "end": 12
+                    },
+                    "offset": {
+                        "start": 413,
+                        "end": 472
+                    }
+                },
+                {
+                    "line": 39,
+                    "column": {
+                        "start": 1,
+                        "end": 12
+                    },
+                    "offset": {
+                        "start": 442,
+                        "end": 472
+                    }
+                }
+            ]
+        },
+        {
+            "message": "Property 'some_name' has no type specified.",
+            "object": "NoType",
+            "attribute": "some_name",
+            "location": "Global",
+            "solution": "Add a type to the property 'some_name' using '- some_name: <TYPE>'.",
+            "error_type": "TypeError",
+            "positions": [
+                {
+                    "line": 44,
+                    "column": {
+                        "start": 1,
+                        "end": 12
+                    },
+                    "offset": {
+                        "start": 484,
+                        "end": 514
+                    }
+                }
+            ]
+        }
+    ]
+}

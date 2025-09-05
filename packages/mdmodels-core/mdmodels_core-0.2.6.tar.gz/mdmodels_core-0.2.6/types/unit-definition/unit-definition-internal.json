@@ -1,0 +1,305 @@
+{
+  "name": "SI Unit",
+  "objects": [
+    {
+      "name": "UnitDefinition",
+      "attributes": [
+        {
+          "name": "id",
+          "multiple": false,
+          "is_id": false,
+          "dtypes": [
+            "string"
+          ],
+          "docstring": "Unique identifier of the unit definition.",
+          "options": [],
+          "term": null,
+          "required": false,
+          "xml": {
+            "is_attr": true,
+            "name": "id",
+            "wrapped": null
+          },
+          "is_enum": false,
+          "position": {
+            "line": 15,
+            "column": {
+              "start": 1,
+              "end": 5
+            },
+            "offset": {
+              "start": 605,
+              "end": 876
+            }
+          }
+        },
+        {
+          "name": "name",
+          "multiple": false,
+          "is_id": false,
+          "dtypes": [
+            "string"
+          ],
+          "docstring": "Common name of the unit definition.",
+          "options": [],
+          "term": null,
+          "required": false,
+          "xml": {
+            "is_attr": true,
+            "name": "name",
+            "wrapped": null
+          },
+          "is_enum": false,
+          "position": {
+            "line": 19,
+            "column": {
+              "start": 1,
+              "end": 7
+            },
+            "offset": {
+              "start": 699,
+              "end": 791
+            }
+          }
+        },
+        {
+          "name": "base_units",
+          "multiple": true,
+          "is_id": false,
+          "dtypes": [
+            "BaseUnit"
+          ],
+          "docstring": "Base units that define the unit.",
+          "options": [],
+          "term": null,
+          "required": false,
+          "xml": {
+            "is_attr": false,
+            "name": "base_units",
+            "wrapped": null
+          },
+          "is_enum": false,
+          "position": {
+            "line": 23,
+            "column": {
+              "start": 1,
+              "end": 13
+            },
+            "offset": {
+              "start": 791,
+              "end": 876
+            }
+          }
+        }
+      ],
+      "docstring": "Represents a unit definition that is based on the SI unit system.",
+      "position": {
+        "line": 11,
+        "column": {
+          "start": 1,
+          "end": 19
+        },
+        "offset": {
+          "start": 518,
+          "end": 537
+        }
+      }
+    },
+    {
+      "name": "BaseUnit",
+      "attributes": [
+        {
+          "name": "kind",
+          "multiple": false,
+          "is_id": false,
+          "dtypes": [
+            "UnitType"
+          ],
+          "docstring": "Kind of the base unit (e.g., meter, kilogram, second).",
+          "options": [],
+          "term": null,
+          "required": true,
+          "xml": {
+            "is_attr": true,
+            "name": "kind",
+            "wrapped": null
+          },
+          "is_enum": true,
+          "position": {
+            "line": 31,
+            "column": {
+              "start": 1,
+              "end": 11
+            },
+            "offset": {
+              "start": 938,
+              "end": 1398
+            }
+          }
+        },
+        {
+          "name": "exponent",
+          "multiple": false,
+          "is_id": false,
+          "dtypes": [
+            "integer"
+          ],
+          "docstring": "Exponent of the base unit in the unit definition.",
+          "options": [],
+          "term": null,
+          "required": true,
+          "xml": {
+            "is_attr": true,
+            "name": "exponent",
+            "wrapped": null
+          },
+          "is_enum": false,
+          "position": {
+            "line": 35,
+            "column": {
+              "start": 1,
+              "end": 15
+            },
+            "offset": {
+              "start": 1055,
+              "end": 1174
+            }
+          }
+        },
+        {
+          "name": "multiplier",
+          "multiple": false,
+          "is_id": false,
+          "dtypes": [
+            "float"
+          ],
+          "docstring": "Multiplier of the base unit in the unit definition.",
+          "options": [],
+          "term": null,
+          "required": false,
+          "xml": {
+            "is_attr": true,
+            "name": "multiplier",
+            "wrapped": null
+          },
+          "is_enum": false,
+          "position": {
+            "line": 39,
+            "column": {
+              "start": 1,
+              "end": 13
+            },
+            "offset": {
+              "start": 1174,
+              "end": 1293
+            }
+          }
+        },
+        {
+          "name": "scale",
+          "multiple": false,
+          "is_id": false,
+          "dtypes": [
+            "float"
+          ],
+          "docstring": "Scale of the base unit in the unit definition.",
+          "options": [],
+          "term": null,
+          "required": false,
+          "xml": {
+            "is_attr": true,
+            "name": "scale",
+            "wrapped": null
+          },
+          "is_enum": false,
+          "position": {
+            "line": 43,
+            "column": {
+              "start": 1,
+              "end": 8
+            },
+            "offset": {
+              "start": 1293,
+              "end": 1398
+            }
+          }
+        }
+      ],
+      "docstring": "Represents a base unit in the unit definition.",
+      "position": {
+        "line": 27,
+        "column": {
+          "start": 1,
+          "end": 13
+        },
+        "offset": {
+          "start": 876,
+          "end": 889
+        }
+      }
+    }
+  ],
+  "enums": [
+    {
+      "name": "UnitType",
+      "mappings": {
+        "AMPERE": "ampere",
+        "AVOGADRO": "avogadro",
+        "BECQUEREL": "becquerel",
+        "CANDELA": "candela",
+        "CELSIUS": "celsius",
+        "COULOMB": "coulomb",
+        "DIMENSIONLESS": "dimensionless",
+        "FARAD": "farad",
+        "GRAM": "gram",
+        "GRAY": "gray",
+        "HENRY": "henry",
+        "HERTZ": "hertz",
+        "ITEM": "item",
+        "JOULE": "joule",
+        "KATAL": "katal",
+        "KELVIN": "kelvin",
+        "KILOGRAM": "kilogram",
+        "LITRE": "litre",
+        "LUMEN": "lumen",
+        "LUX": "lux",
+        "METRE": "metre",
+        "MOLE": "mole",
+        "NEWTON": "newton",
+        "OHM": "ohm",
+        "PASCAL": "pascal",
+        "RADIAN": "radian",
+        "SECOND": "second",
+        "SIEMENS": "siemens",
+        "SIEVERT": "sievert",
+        "STERADIAN": "steradian",
+        "TESLA": "tesla",
+        "VOLT": "volt",
+        "WATT": "watt",
+        "WEBER": "weber"
+      },
+      "docstring": "",
+      "position": {
+        "line": 50,
+        "column": {
+          "start": 1,
+          "end": 13
+        },
+        "offset": {
+          "start": 1415,
+          "end": 1428
+        }
+      }
+    }
+  ],
+  "config": {
+    "id": null,
+    "id-field": true,
+    "prefixes": null,
+    "nsmap": null,
+    "repo": "https://github.com/JR-1991/md-models",
+    "prefix": "md",
+    "imports": {},
+    "allow-empty": false
+  }
+}

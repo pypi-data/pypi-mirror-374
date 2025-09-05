@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JR-1991/md-models",
+  "title": "Equation",
+  "type": "object",
+  "description": "Represents an equation that can be used in a data model.",
+  "properties": {
+    "equation": {
+      "title": "equation",
+      "type": "string",
+      "description": "The equation that is used in the data model."
+    },
+    "parameters": {
+      "title": "parameters",
+      "type": "array",
+      "description": "List of parameters that are used in the equation.",
+      "items": {
+        "$ref": "#/$defs/EqParameter"
+      }
+    },
+    "variables": {
+      "title": "variables",
+      "type": "array",
+      "description": "List of variables that are used in the equation.",
+      "items": {
+        "$ref": "#/$defs/EqVariable"
+      }
+    }
+  },
+  "$defs": {
+    "EqParameter": {
+      "title": "EqParameter",
+      "type": "object",
+      "description": "Represents a parameter that is used in the equation.",
+      "properties": {
+        "id": {
+          "title": "id",
+          "type": "string",
+          "description": "Unique identifier for the parameter."
+        },
+        "name": {
+          "title": "name",
+          "type": "string",
+          "description": "Name of the parameter."
+        },
+        "symbol": {
+          "title": "symbol",
+          "type": "string",
+          "description": "Symbol of the parameter."
+        },
+        "value": {
+          "title": "value",
+          "type": "number",
+          "description": "Value of the parameter."
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "EqVariable": {
+      "title": "EqVariable",
+      "type": "object",
+      "description": "Represents a variable that is used in the equation.",
+      "properties": {
+        "id": {
+          "title": "id",
+          "type": "string",
+          "description": "Unique identifier for the variable."
+        },
+        "name": {
+          "title": "name",
+          "type": "string",
+          "description": "Name of the variable."
+        },
+        "symbol": {
+          "title": "symbol",
+          "type": "string",
+          "description": "Symbol of the variable."
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "equation"
+  ],
+  "additionalProperties": false
+}
