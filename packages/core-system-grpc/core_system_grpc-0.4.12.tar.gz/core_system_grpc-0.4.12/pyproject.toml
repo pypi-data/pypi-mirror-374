@@ -1,0 +1,52 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "core-system-grpc"
+dynamic = ["version"]
+description = "Core System gRPC Package - Python Proto Specifications and Client Libraries"
+authors = [
+    { name = "Core System Team", email = "info@alph.kr" }
+]
+license = { text = "Closed Source" }
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "grpcio>=1.50.0",
+    "protobuf>=4.21.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "grpcio-tools>=1.50.0",
+    "mypy-protobuf>=3.4.0",
+]
+
+[project.urls]
+Repository = "https://github.com/SaladLabInc/core-system-grpc"
+Issues = "https://github.com/SaladLabInc/core-system-grpc/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["core_system_grpc"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "core_system_grpc/**",
+  "proto/**",
+  "pyproject.toml",
+  "README.md"
+]
+
+[tool.hatch.build]
+only-packages = false
+
+[tool.hatch.version]
+source = "vcs"
+tag-pattern = "^v(?P<version>.+)$"
+
+[dependency-groups]
+dev = [
+    "grpcio-tools>=1.74.0",
+    "hatch>=1.14.1",
+]
