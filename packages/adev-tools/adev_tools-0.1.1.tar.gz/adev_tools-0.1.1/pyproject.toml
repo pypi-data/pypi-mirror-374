@@ -1,0 +1,120 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adev-tools"
+version = "0.1.1"
+description = "Advanced Development Tools for GitLab, Jira, and CI/CD automation"
+readme = "README.md"
+license = "MIT"
+authors = [
+    {name = "JLTech", email = "dev@jltech.com"}
+]
+keywords = ["gitlab", "jira", "ci-cd", "development-tools", "automation"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Version Control :: Git",
+    "Topic :: Software Development :: Bug Tracking",
+    "Topic :: System :: Systems Administration",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "requests>=2.31.0",
+    "GitPython>=3.1.0",
+    "jira>=3.4.0",
+    "python-gitlab>=3.15.0",
+    "argparse",
+    "pytz",
+    "tabulate",
+    "wcwidth",
+    "pandas",
+    "openai",
+    "ollama",
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "black>=22.0",
+    "flake8>=4.0",
+    "mypy>=0.991",
+]
+
+[project.urls]
+Homepage = "https://github.com/jltech/adev-tools"
+Documentation = "https://github.com/jltech/adev-tools/blob/main/README.md"
+Repository = "https://github.com/jltech/adev-tools.git"
+"Bug Tracker" = "https://github.com/jltech/adev-tools/issues"
+
+[project.scripts]
+# GitLab and Git related tools
+adev-fork = "adev_tools.py_fork:main"
+adev-branch = "adev_tools.adev_branch:main"
+adev-commit = "adev_tools.git_commit:main"
+adev-diff2commit = "adev_tools.diff2commit:main"
+adev-cloneupstream = "adev_tools.py_cloneupstream:main"
+
+# CI/CD tools
+adev-ci-copy = "adev_tools.ci_copy:main"
+adev-ci-stlink = "adev_tools.ci_stlink:main"
+adev-gitlab-runner-status = "adev_tools.gitlab_runner_status:main"
+
+# Jira tools
+adev-issues = "adev_tools.issues:main"
+
+# Google Drive tools
+adev-gdrive-config = "adev_tools.gdrive_scope_config:main"
+adev-gdrive-upload = "adev_tools.gdrive_service_account_upload:main"
+adev-gdrive-open-altium = "adev_tools.open_gdrive_altium:main"
+
+# Build tools
+adev-pre-build = "adev_tools.pre_build:main"
+adev-post-build = "adev_tools.post_build:main"
+
+# Testing tools
+adev-test-branch = "adev_tools.test_branch_functionality:main"
+adev-test-gdrive = "adev_tools.test_gdrive_connection:main"
+adev-test-upload-download = "adev_tools.test_upload_download:main"
+
+# Configuration
+adev-config-example = "adev_tools.config_example:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["adev_tools*"]
+
+[tool.setuptools.package-data]
+adev_tools = ["*.yml", "*.yaml", "*.md", "*.txt"]
+
+[tool.black]
+line-length = 88
+target-version = ["py38"]
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true

@@ -1,0 +1,21 @@
+environment:
+  root_folder: "{root_folder}"
+  user:
+    email: "{user_email}"
+    name: "{user_name}"
+    name_eng: "{user_name_eng}"
+
+  gitlab:
+    url: "https://gitlab.com"
+    token: "{gitlab_api_token}"  # Use CI/CD variables or secrets manager
+    group_id: "10854409"
+
+  jira:
+    url: "https://jltechrnd.atlassian.net"
+    user_id: "{user_id}"
+    api_token: "{jira_api_token}"
+  ollama:
+    commit_message_model_api_url : "http://jltechrnd.iptime.org:11434/api/generate"
+    commit_message_model : "tavernari/git-commit-message"  # Or another model better suited for Korean
+    default_model_api_url : "http://jltechrnd.iptime.org:11434/api/generate"
+    default_model : "mistral"

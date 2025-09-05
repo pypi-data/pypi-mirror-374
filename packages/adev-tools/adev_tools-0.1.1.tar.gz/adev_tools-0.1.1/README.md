@@ -1,0 +1,141 @@
+# ADEV Tools
+
+Advanced Development Tools for GitLab, Jira, and CI/CD automation.
+
+## 소개
+
+ADEV Tools는 GitLab, Jira, 그리고 CI/CD 자동화를 위한 종합적인 개발 도구 모음입니다. 개발자들이 일상적인 작업을 자동화하고 효율성을 향상시킬 수 있도록 설계되었습니다.
+
+## 주요 기능
+
+### GitLab 및 Git 관련 도구
+- **adev-fork**: GitLab 저장소 포크 관리
+- **adev-branch**: Jira 이슈와 연동된 브랜치 생성
+- **adev-commit**: AI 기반 커밋 메시지 생성
+- **adev-diff2commit**: 코드 변경사항 기반 커밋 메시지 자동 생성
+- **adev-cloneupstream**: 업스트림 저장소 클론
+
+### CI/CD 도구
+- **adev-ci-copy**: GitLab Runner를 통한 파일 복사
+- **adev-ci-stlink**: ST-Link 관련 CI/CD 작업
+- **adev-gitlab-runner-status**: GitLab Runner 상태 확인
+
+### Jira 통합
+- **adev-issues**: Jira 이슈 관리 및 처리
+
+### Google Drive 연동
+- **adev-gdrive-config**: Google Drive 설정 구성
+- **adev-gdrive-upload**: Google Drive 파일 업로드
+- **adev-gdrive-open-altium**: Altium 파일을 Google Drive에서 열기
+
+### 빌드 도구
+- **adev-pre-build**: 빌드 전 작업 실행
+- **adev-post-build**: 빌드 후 작업 실행
+
+### 테스트 도구
+- **adev-test-branch**: 브랜치 기능 테스트
+- **adev-test-gdrive**: Google Drive 연결 테스트
+- **adev-test-upload-download**: 업로드/다운로드 기능 테스트
+
+## 설치
+
+### PyPI에서 설치
+```bash
+pip install adev-tools
+```
+
+### 개발 버전 설치
+```bash
+git clone https://github.com/jltech/adev-tools.git
+cd adev-tools
+pip install -e .
+```
+
+## 사용법
+
+각 도구는 독립적인 CLI 명령어로 사용할 수 있습니다:
+
+```bash
+# GitLab 저장소 포크
+adev-fork <search-term>
+
+# Jira 이슈 기반 브랜치 생성
+adev-branch [branch-name]
+
+# AI 기반 커밋 메시지 생성
+adev-commit
+
+# 파일 복사 (CI/CD)
+adev-ci-copy <runner-name> --target <target-path>
+
+# Jira 이슈 관리
+adev-issues
+```
+
+## 설정
+
+대부분의 도구들은 설정 파일을 필요로 합니다. 설정 템플릿을 생성하려면:
+
+```bash
+adev-config-example
+```
+
+### 필수 설정 항목
+- GitLab 토큰
+- Jira 인증 정보
+- Google Drive API 키 (선택사항)
+- OpenAI API 키 (AI 기능 사용시)
+
+## 종속성
+
+- Python 3.8+
+- GitPython
+- python-gitlab
+- jira
+- requests
+- 기타 (requirements.txt 참조)
+
+## 개발
+
+### 개발 환경 설정
+```bash
+git clone https://github.com/jltech/adev-tools.git
+cd adev-tools
+pip install -e ".[dev]"
+```
+
+### 테스트 실행
+```bash
+pytest
+```
+
+### 코드 포맷팅
+```bash
+black .
+flake8 .
+```
+
+## 기여
+
+1. Fork 프로젝트
+2. 기능 브랜치 생성 (`git checkout -b feature/AmazingFeature`)
+3. 변경사항 커밋 (`git commit -m 'Add some AmazingFeature'`)
+4. 브랜치에 Push (`git push origin feature/AmazingFeature`)
+5. Pull Request 생성
+
+## 라이센스
+
+이 프로젝트는 MIT 라이센스를 따릅니다. 자세한 내용은 `LICENSE` 파일을 참조하세요.
+
+## 지원
+
+- 이슈 리포트: [GitHub Issues](https://github.com/jltech/adev-tools/issues)
+- 문서: [GitHub Wiki](https://github.com/jltech/adev-tools/wiki)
+
+## 업데이트 로그
+
+### v0.1.0
+- 초기 릴리스
+- GitLab, Jira, CI/CD 기본 기능 구현
+- Google Drive 연동 기능
+- AI 기반 커밋 메시지 생성

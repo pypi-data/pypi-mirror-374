@@ -1,0 +1,40 @@
+# Include the README
+include README.md
+
+# Include the license file
+include LICENSE
+
+# Include configuration files
+include *.yml
+include *.yaml
+include adev_config_template.yml
+
+# Include markdown documentation
+include *.md
+include crendentilas.md
+include README_gdrive.md
+
+# Include requirements
+include requirements.txt
+include requirements_gdrive.txt
+
+# Include PowerShell scripts
+include *.ps1
+
+# Include the package data
+recursive-include adev_tools *.py
+recursive-include adev_tools *.yml
+recursive-include adev_tools *.yaml
+recursive-include adev_tools *.md
+recursive-include adev_tools *.txt
+
+# Exclude build directories and cache files
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.pyd
+global-exclude __pycache__
+global-exclude *.so
+global-exclude .git*
+recursive-exclude build *
+recursive-exclude dist *
+recursive-exclude *.egg-info *
