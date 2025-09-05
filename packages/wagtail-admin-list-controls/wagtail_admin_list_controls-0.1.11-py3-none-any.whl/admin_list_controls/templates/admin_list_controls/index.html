@@ -1,0 +1,14 @@
+{% extends admin_list_controls.index_template %}
+
+{% block result_list %}
+    {% if admin_list_controls.selected_layout_template %}
+        {% include admin_list_controls.selected_layout_template %}
+    {% else %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+    {{ block.super }}
+    {% include 'admin_list_controls/init_index_js.html' %}
+{% endblock %}
