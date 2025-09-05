@@ -1,0 +1,53 @@
+Metadata-Version: 2.4
+Name: jraphx
+Version: 0.0.3
+Summary: Graph Neural Networks with JAX/NNX
+Author: JraphX Contributors
+Maintainer: JraphX Contributors
+License-Expression: Apache-2.0
+Project-URL: Homepage, https://dirt.design/jraphx/
+Project-URL: Repository, https://github.com/DBraun/jraphx
+Project-URL: Bug Tracker, https://github.com/DBraun/jraphx/issues
+Keywords: jax,graph-neural-networks,gnn,machine-learning,deep-learning,flax,nnx
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: jax>=0.7.0
+Requires-Dist: jaxlib>=0.7.0
+Requires-Dist: flax>=0.11.2
+Requires-Dist: numpy>=1.21.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: pytest-xdist; extra == "dev"
+Requires-Dist: black>=22.0; extra == "dev"
+Requires-Dist: isort>=5.10; extra == "dev"
+Requires-Dist: mypy>=0.990; extra == "dev"
+Requires-Dist: ruff>=0.1.0; extra == "dev"
+Provides-Extra: test
+Requires-Dist: pytest>=7.0; extra == "test"
+Requires-Dist: pytest-xdist; extra == "test"
+Requires-Dist: optax>=0.2.5; extra == "test"
+Provides-Extra: examples
+Requires-Dist: optax>=0.2.5; extra == "examples"
+Requires-Dist: torch-geometric>=2.0.0; extra == "examples"
+Requires-Dist: grain>=0.2.12; extra == "examples"
+Provides-Extra: docs
+Requires-Dist: sphinx==5.1.1; extra == "docs"
+Requires-Dist: sphinx-autodoc-typehints==1.19.2; extra == "docs"
+Requires-Dist: sphinx-copybutton>=0.5.2; extra == "docs"
+Provides-Extra: all
+Requires-Dist: jraphx[dev,docs,examples,test]; extra == "all"
+Dynamic: license-file
+
+# JraphX: Graph Neural Networks with NNX
+
+Visit the [docs](https://dirt.design/jraphx/)!
