@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+version = {attr = "riotgen.__version__"}
+
+[project]
+name = "riotgen"
+dynamic = ["version"]
+authors = [
+    { name="Alexandre Abadie", email="alexandre.abadie@inria.fr" },
+]
+dependencies = [
+    "rich-click  >= 1.8.6",
+    "jinja2 >= 3.0.2",
+    "pyyaml >= 6.0",
+]
+description = "riotgen: generator for RIOT source code."
+readme = "README.rst"
+license = "BSD-3-Clause"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/aabadie/riot-generator"
+"Bug Tracker" = "https://github.com/aaabadie/riot-generator/issues"
+
+[project.scripts]
+riotgen = "riotgen.main:riotgen"
+
+[tool.ruff]
+lint.select = ["E", "F"]
+line-length = 88
+lint.ignore = ["E501"]
+
+[tool.isort]
+multi_line_output = 3  # Use Vertical Hanging Indent
+profile = "black"
+
+[tool.black]
+line-length = 79
+skip-string-normalization = true
+
+[tool.pytest.ini_options]
+addopts = """
+    -vv -s \
+    --doctest-modules \
+    --cov=riotgen \
+    --cov-report=term \
+    --cov-report=term-missing \
+    --cov-report=xml \
+    --ignore-glob="*test_data" \
+"""
+testpaths = [
+    "riotgen",
+]

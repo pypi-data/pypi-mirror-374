@@ -1,0 +1,22 @@
+# Put the package dependencies here
+{% if pkg.modules|length > 0 %}
+
+# required modules
+{% for module in pkg.modules %}
+USEMODULE += {{ module }}
+{% endfor %}
+{% endif %}
+{% if pkg.features_required|length > 0 %}
+
+# required features
+{% for feature in pkg.features_required %}
+FEATURES_REQUIRED += {{ feature }}
+{% endfor %}
+{% endif %}
+{% if pkg.packages|length > 0 %}
+
+# required packages
+{% for package in pkg.packages %}
+USEPKG += {{ package }}
+{% endfor %}
+{% endif %}

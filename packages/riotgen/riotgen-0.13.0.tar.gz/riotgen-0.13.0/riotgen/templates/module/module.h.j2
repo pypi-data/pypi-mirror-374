@@ -1,0 +1,27 @@
+{% include "common/header-headerfile.j2" %}
+
+/**
+ * @defgroup    sys_{{ module.name }} {{ module.displayed_name }}
+ * @ingroup     sys
+ * @brief       {{ module.brief }}
+ *
+ * @{
+ *
+ * @file
+ *
+ * @author      {{ global.author_name }} <{{ global.author_email }}>
+ */
+
+/* Add header includes here */
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* Declare the API of the module */
+
+#ifdef __cplusplus
+}
+#endif
+
+/** @} */
