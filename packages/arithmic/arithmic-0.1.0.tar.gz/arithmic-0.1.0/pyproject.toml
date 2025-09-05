@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "arithmic"
+version = "0.1.0"
+description = "Arithmic — Groq-powered RAG agent that knows your files and code"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Arithmic AI" }]
+requires-python = ">=3.9"
+dependencies = [
+  "groq>=0.9.0",
+  "ollama>=0.3.0",
+  "typer>=0.12.0",
+  "qdrant-client>=1.9.0",
+  "sentence-transformers>=3.0.0",
+  "pypdf>=4.2.0",
+  "docx2txt>=0.8",
+  "tqdm>=4.66.0",
+]
+
+[project.scripts]
+arithmic = "arithmic.repl:main"
+arithmic-cli = "arithmic.cli:app"
