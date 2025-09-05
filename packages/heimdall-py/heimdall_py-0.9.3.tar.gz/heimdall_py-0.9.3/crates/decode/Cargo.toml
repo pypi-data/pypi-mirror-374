@@ -1,0 +1,35 @@
+[package]
+name = "heimdall-decoder"
+description = "Decodes raw/arbitrary calldata into readable types"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+homepage.workspace = true
+repository.workspace = true
+keywords.workspace = true
+exclude.workspace = true
+readme = "README.md"
+
+[lib]
+bench = false
+
+[lints]
+workspace = true
+
+[dependencies]
+heimdall-config = { workspace = true }
+heimdall-common = { workspace = true }
+heimdall-cache = { workspace = true }
+thiserror.workspace = true
+clap = { workspace = true, features = ["derive"] }
+derive_builder.workspace = true
+tracing.workspace = true
+eyre.workspace = true
+heimdall-vm.workspace = true
+alloy-dyn-abi.workspace = true
+alloy-json-abi.workspace = true
+alloy.workspace = true
+serde_json.workspace = true
+hashbrown.workspace = true
+serde = { workspace = true }

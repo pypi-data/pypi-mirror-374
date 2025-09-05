@@ -1,0 +1,32 @@
+[package]
+name = "heimdall-dump"
+description = "Dump the value of all storage slots accessed by a contract"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+homepage.workspace = true
+repository.workspace = true
+keywords.workspace = true
+exclude.workspace = true
+readme = "README.md"
+
+[lib]
+bench = false
+
+[lints]
+workspace = true
+
+[dependencies]
+heimdall-config = { workspace = true }
+heimdall-common = { workspace = true }
+heimdall-cache = { workspace = true }
+thiserror.workspace = true
+clap = { workspace = true, features = ["derive"] }
+derive_builder.workspace = true
+tracing.workspace = true
+eyre.workspace = true
+tokio.workspace = true
+futures.workspace = true
+alloy.workspace = true
+hashbrown.workspace = true

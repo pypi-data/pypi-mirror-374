@@ -1,0 +1,26 @@
+[package]
+name = "heimdall-cache"
+description = "Cache management for Heimdall."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+homepage.workspace = true
+repository.workspace = true
+keywords.workspace = true
+exclude.workspace = true
+readme = "README.md"
+
+[lints]
+workspace = true
+
+[lib]
+bench = false
+
+[dependencies]
+clap = { workspace = true, features = ["derive"] }
+serde.workspace = true
+bincode = { workspace = true }
+thiserror.workspace = true
+eyre.workspace = true
+tracing.workspace = true

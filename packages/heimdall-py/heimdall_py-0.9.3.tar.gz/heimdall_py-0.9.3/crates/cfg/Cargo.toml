@@ -1,0 +1,37 @@
+[package]
+name = "heimdall-cfg"
+description = "Generate a visual control flow graph for EVM bytecode"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+homepage.workspace = true
+repository.workspace = true
+keywords.workspace = true
+exclude.workspace = true
+readme = "README.md"
+
+[lints]
+workspace = true
+
+[lib]
+bench = false
+
+[dependencies]
+heimdall-config = { workspace = true }
+heimdall-common = { workspace = true }
+heimdall-cache = { workspace = true }
+thiserror.workspace = true
+clap = { workspace = true, features = ["derive"] }
+derive_builder.workspace = true
+tracing.workspace = true
+eyre.workspace = true
+futures.workspace = true
+lazy_static.workspace = true
+petgraph.workspace = true
+alloy.workspace = true
+heimdall-disassembler.workspace = true
+heimdall-vm.workspace = true
+
+[dev-dependencies]
+tokio.workspace = true
