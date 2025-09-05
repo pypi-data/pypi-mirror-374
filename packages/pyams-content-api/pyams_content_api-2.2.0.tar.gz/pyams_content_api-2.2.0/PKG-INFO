@@ -1,0 +1,94 @@
+Metadata-Version: 2.1
+Name: pyams_content_api
+Version: 2.2.0
+Summary: PyAMS content REST API components
+Home-page: https://pyams.readthedocs.io
+Author: Thierry Florac
+Author-email: tflorac@ulthar.net
+License: ZPL
+Keywords: Pyramid PyAMS
+Classifier: License :: OSI Approved :: Zope Public License
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Framework :: Pyramid
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Provides-Extra: test
+License-File: LICENSE
+
+=========================
+PyAMS content API package
+=========================
+
+.. contents::
+
+
+What is PyAMS?
+==============
+
+PyAMS (Pyramid Application Management Suite) is a small suite of packages written for applications
+and content management with the Pyramid framework.
+
+**PyAMS** is actually mainly used to manage web sites through content management applications (CMS,
+see PyAMS_content package), but many features are generic and can be used inside any kind of web
+application.
+
+All PyAMS documentation is available on `ReadTheDocs <https://pyams.readthedocs.io>`_; source code
+is available on `Gitlab <https://gitlab.com/pyams>`_ and pushed to `Github
+<https://github.com/py-ams>`_. Doctests are available in the *doctests* source folder.
+
+
+What is PyAMS content API?
+==========================
+
+PyAMS content API is an extension package to PyAMS content management package which provides
+components used to add many REST APIs for content management.
+
+
+Changelog
+=========
+
+2.2.0
+-----
+ - added paragraphs group JSON exporter
+ - added key-numbers paragraph JSON exporter
+
+2.1.4
+-----
+ - updated Gitlab-CI for Python 3.12
+
+2.1.3
+-----
+ - updated Gitlab CI
+
+2.1.2
+-----
+ - small update in JSON base exporter
+ - imports cleanup
+
+2.1.1
+-----
+ - updated configuration settings keys
+
+2.1.0
+-----
+ - updated PyAMS_content common API
+ - added pictograms converter
+ - added associations exporters
+ - added video exporter
+ - added data type exporter
+ - added thesaurus based targets exporters
+
+2.0.0
+-----
+ - first "production" release!
+ - added Sonarcloud support to Gitlab-CI
+ - use predefined route setting name in route declaration
+ - added support for Python 3.12
+
+1.99.1
+------
+ - use admin skin in shared content info getter
+
+1.99.0
+------
+ - first preliminary release
