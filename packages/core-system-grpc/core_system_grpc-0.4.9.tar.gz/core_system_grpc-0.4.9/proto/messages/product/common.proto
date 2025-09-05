@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package core_system.product.v1;
+
+// Product 정보 메시지
+message Product {
+    int32 id = 1;
+    int32 shop_id = 2;
+    string product_name = 3;
+}

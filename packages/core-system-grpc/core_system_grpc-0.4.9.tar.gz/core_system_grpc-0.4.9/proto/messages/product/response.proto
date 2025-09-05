@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package core_system.product.v1;
+
+import "messages/product/common.proto";
+import "messages/common/pagination.proto";
+
+// Product 조회 응답 메시지
+message GetProductsByShopResponse {
+    repeated Product products = 1;
+    core_system.common.v1.PaginationResponse pagination = 2;
+}

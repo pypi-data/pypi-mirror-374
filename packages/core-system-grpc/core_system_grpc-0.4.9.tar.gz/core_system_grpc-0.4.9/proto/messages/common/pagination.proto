@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package core_system.common.v1;
+
+// 페이지네이션 요청 메시지
+message PaginationRequest {
+    int32 offset = 1;
+    int32 limit = 2;
+}
+
+// 페이지네이션 응답 메시지
+message PaginationResponse {
+    int32 total_count = 1;
+    int32 offset = 2;
+    int32 limit = 3;
+}

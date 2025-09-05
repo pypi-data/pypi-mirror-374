@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package core_system.common.v1;
+
+// 검색 요청 메시지
+message SearchRequest {
+    optional string search_keyword = 1;  // 검색 키워드
+}
+
+// 정렬 방향
+enum SortDirection {
+    SORT_DIRECTION_UNSPECIFIED = 0;
+    SORT_DIRECTION_ASC = 1;
+    SORT_DIRECTION_DESC = 2;
+}
+
+// 정렬 요청 메시지
+message SortRequest {
+    optional string sort_field = 1;  // 정렬 필드
+    optional SortDirection sort_direction = 2;  // 정렬 방향
+}
