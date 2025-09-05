@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "session_log_scrapping"                 # must be unique on PyPI
+version = "1.0"
+description = "This is to get the summarized details of the IICS session log"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [{ name = "Sai Prakash Simhadri", email = "saiprakashsimhadri@gmail.com" }]
+license = { text = "MIT" }
+dependencies = []                   # add any external libs if needed
+
+[project.urls]
+Homepage = "https://github.com/saiprakashsimhadri/session_log_scrapping"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+py-modules = ["session_log_scrapping"]
