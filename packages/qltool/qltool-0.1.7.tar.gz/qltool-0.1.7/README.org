@@ -1,0 +1,147 @@
+* qltool
+/tool to print some useful stuff with ql700 brother printer/
+
+ - It is just a wrapper around the great ~ql570.c~ of    Asbjørn Sloth Tønnesen,  Marc Juul and  Luca Zimmermann
+
+
+
+** Installation
+
+#+begin_src sh
+ pip3 install qltool
+#+end_src
+
+** Usage - standard print
+
+
+#+begin_src sh
+#---------text
+ rm /tmp/tmp_qrcode.png ; uv run src/qltool/main.py "Ahoj
+aaa
+456 8jgqy 789 456 456 " --font-size 55 --font-size 45
+
+# ---- create QR
+
+uv run src/qltool/main.py "ahoj
+momo
+123 456 789 jjj" -p -q
+
+# -------- use any image/qrcode
+uv run src/qltool/main.py "Užaj jetů" --qr /tmp/baba.png
+
+uv run src/qltool/main.py "Už je tuná" --qr /tmp/baba.png -p
+#+end_src
+
+
+** Using mqtt client
+
+
+  #+begin_src sh
+# DO
+qltool_client # somewhere...
+### examples:
+export D=`date +"%H:%M:%S"`; mosquitto_pub -t qltool/print -m "hoho $D -q -p"
+
+# blocking...
+mosquitto_pub -t qltool/print -m "hoho secondline thirdline  -q "
+
+#  NEVER USE THIS:
+watch -n 10 'export D=`date +"%H:%M:%S"`; mosquitto_pub -t qltool/print -m "\"hoho asdas\" \"jeli $D\"  -q "'
+  #+end_src
+
+** Org-mode inventory - broken now
+
+If this function is somewhere in the ~.emacs~ configfiles ...
+
+It selects two fields fromthe TABLE and puts -q option.
+
+#+begin_src emacs-lisp :results replace output :session test :exports results
+
+;;-----------------------------------------------------------------
+;;      My Trick **    C-x  C-q    USES QL700 printer   ***
+;;-----------------------------------------------------------------
+(defun count-org-table-columns ()
+  "Return the number of columns in the current Org-mode table."
+  (when (org-at-table-p)
+    (let* ((table (org-table-to-lisp))
+           (first-row (car table)))
+      (length first-row))))
+
+(defun get-org-table-headers ()
+  "Return the headers of the current Org-mode table."
+  (interactive)
+  (if (org-at-table-p)
+      (let* ((table (org-table-to-lisp))
+             (headers (car table)))
+	     headers )
+	     nil))
+;;        (message "Headers: %s" headers))
+;;    (message "Not at a table")))
+
+(defun org-table-get-current-row-with-headers ()
+  "Current row ================"
+  (let ((row '())
+        (headers '())
+       (headers (get-org-table-headers))
+
+        (col 1))
+    (let ((num-cols (count-org-table-columns)))
+      ;; Get headers
+      (save-excursion
+        (goto-char (org-table-begin))
+        (forward-line -1) ;; Move to the header line
+        (while (<= col num-cols)
+          (push (org-table-get-field col) headers)
+          (setq col (1+ col))))
+      ;; Get current row
+      (setq col 1)
+      (while (<= col num-cols)
+        (push (org-table-get-field col) row)
+        (setq col (1+ col))))
+    (cons (nreverse headers) (nreverse row))))
+
+(defun create-qr-code-from-current-row ()
+  " CALLS a function to "
+  (interactive)
+  (let* ((fields (org-table-get-current-row-with-headers))
+         (headers (car fields))
+         (row (cdr fields))
+         (data (mapconcat (lambda (pair)
+                            (format "%s:%s" (car pair) (cdr pair)))
+                          (cl-mapcar 'cons headers row)
+                          "; "))
+;;         (command (format "echo '%s'" data)))
+         (command (format "qltool \"'%s'\" -q " data)))
+    (shell-command command)))
+
+
+
+(defun create-qr-code-from-current-row-print ()
+  (interactive)
+  (let* ((fields (org-table-get-current-row-with-headers))
+         (headers (car fields))
+         (row (cdr fields))
+         (data (mapconcat (lambda (pair)
+                            (format "%s:%s" (car pair) (cdr pair)))
+                          (cl-mapcar 'cons headers row)
+                          "; "))
+;;         (command (format "echo '%s'" data)))
+         (command (format "qltool \"'%s'\" -q -c p " data)))
+    (shell-command command)))
+
+
+
+(global-set-key (kbd "C-c q") 'create-qr-code-from-current-row)
+(global-set-key (kbd "C-c w") 'create-qr-code-from-current-row-print)
+
+#+end_src
+
+
+You point to a line of a table and =c-c q= or =c-c w= will view/print the code for inventory.
+
+ | whatever |          id | name                      | owner                   | location |
+ |----------+-------------+---------------------------+-------------------------+----------|
+ | 123      | D4-12345678 | najaka blbost z inventury | Pepa                    |  Home    |
+
+and this is run
+~./bin_qltool.py "id: D4-12345678; name: najaka blbost z inventury  owner:Pepa " -q~
