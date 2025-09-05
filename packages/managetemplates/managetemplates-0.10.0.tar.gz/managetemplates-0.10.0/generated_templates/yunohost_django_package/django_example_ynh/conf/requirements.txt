@@ -1,0 +1,245 @@
+asgiref==3.9.1 \
+    --hash=sha256:a5ab6582236218e5ef1648f242fd9f10626cfd4de8dc377db215d5d5098e3142 \
+    --hash=sha256:f3bba7092a48005b5f5bacd747d36ee4a5a61f4a269a6df590b43144355ebd2c
+    # via
+    #   django
+    #   django-axes
+async-timeout==5.0.1 ; python_full_version < '3.11.3' \
+    --hash=sha256:39e3809566ff85354557ec2398b55e096c8364bacac9405a7a1fa429e77fe76c \
+    --hash=sha256:d9321a7a3d5a6a5e187e824d2fa0793ce379a202935782d555d6e9d2735677d3
+    # via redis
+bleach==6.2.0 \
+    --hash=sha256:117d9c6097a7c3d22fd578fcd8d35ff1e125df6736f554da4e432fdd63f31e5e \
+    --hash=sha256:123e894118b8a599fd80d3ec1a6d4cc7ce4e5882b1317a7e1ba69b56e95f991f
+    # via django-tools
+bx-django-utils==90 \
+    --hash=sha256:8f92f38b15d0513c40aaa67468b7958fb8c6f474fa4ac6ab97d280fa5120dca6 \
+    --hash=sha256:df7fc4607fb203c1816a71f61f809c36cba2ad385b81a75f6739ac1dec36f047
+    # via
+    #   django-example
+    #   django-tools
+bx-py-utils==111 \
+    --hash=sha256:6d57b6599856d55b5c988a6fe26ffa02ef43bc96b64b89885f46876ef82bc9e8 \
+    --hash=sha256:ead3499e80d5bc38b72b0ad36a59e7590ed9de79cd1288eef8d193877e021dd3
+    # via
+    #   bx-django-utils
+    #   cli-base-utilities
+    #   django-tools
+cli-base-utilities==0.23.0 \
+    --hash=sha256:631838b4b1689b9bb9cfc3728addfb2b0645e578a347ff76db17e1e0cd54f9b0 \
+    --hash=sha256:b464f08374f598cd44b0ffc9e0a059585b155540960f26e0e1894e906d6b59f8
+    # via
+    #   django-example-ynh
+    #   django-yunohost-integration
+colorama==0.4.6 ; sys_platform == 'win32' \
+    --hash=sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44 \
+    --hash=sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6
+    # via
+    #   colorlog
+    #   tyro
+colorlog==6.9.0 \
+    --hash=sha256:5906e71acd67cb07a71e779c47c4bcb45fb8c2993eebe9e5adcd6a6f1b283eff \
+    --hash=sha256:bfba54a1b93b94f54e1f4fe48395725a3d92fd2a4af702f6bd70946bdc0c6ac2
+    # via
+    #   django-tools
+    #   django-yunohost-integration
+django==5.2.6 \
+    --hash=sha256:60549579b1174a304b77e24a93d8d9fafe6b6c03ac16311f3e25918ea5a20058 \
+    --hash=sha256:da5e00372763193d73cecbf71084a3848458cecf4cee36b9a1e8d318d114a87b
+    # via
+    #   bx-django-utils
+    #   django-axes
+    #   django-redis
+    #   django-tools
+    #   django-yunohost-integration
+django-axes==8.0.0 \
+    --hash=sha256:7ddc55f21b704b7e9b3e793a75deac01ff16cb67f561649b04336e1e96980035 \
+    --hash=sha256:f95b6ae67fd77d44cc688818cef174914c4ad98c48daf65020b6f03f37220e45
+    # via django-example-ynh
+django-example==0.2.0 \
+    --hash=sha256:2bcaeed97868e8be5c4d7d6a745b054f6983c931d5cefb763e6ff25807f15793 \
+    --hash=sha256:469beaa9e4f3e5d0ee98f043ee533f0f01fafef128391ac9f4ca9d9f35290da0
+    # via django-example-ynh
+django-redis==6.0.0 \
+    --hash=sha256:20bf0063a8abee567eb5f77f375143c32810c8700c0674ced34737f8de4e36c0 \
+    --hash=sha256:2d9cb12a20424a4c4dde082c6122f486628bae2d9c2bee4c0126a4de7fda00dd
+    # via django-example-ynh
+django-tools==0.56.2 \
+    --hash=sha256:29c25be814d74cd9f554d7d45bc205f5570e5feaa4232cbd09cc913c46b20c07 \
+    --hash=sha256:88a192f2873f0411b99ee1aba04f2779133284cd18a5c78976e8e4605ba5d7f7
+    # via django-yunohost-integration
+django-yunohost-integration==0.10.2 \
+    --hash=sha256:69722c1eff793fb9a7fa7c3afa1e15d410b22661dbdeaefb81734f873de3fd4e \
+    --hash=sha256:bc5442afc8b913a65385f72e8679c23c8ec57729a9b7a66196a1d93a911a716c
+    # via django-example-ynh
+docstring-parser==0.17.0 \
+    --hash=sha256:583de4a309722b3315439bb31d64ba3eebada841f2e2cee23b99df001434c912 \
+    --hash=sha256:cf2569abd23dce8099b300f9b4fa8191e9582dda731fd533daf54c4551658708
+    # via tyro
+gunicorn==23.0.0 \
+    --hash=sha256:ec400d38950de4dfd418cff8328b2c8faed0edb0d517d3394e457c317908ca4d \
+    --hash=sha256:f014447a0101dc57e294f6c18ca6b40227a4c90e9bdb586042628030cba004ec
+    # via
+    #   django-example-ynh
+    #   django-tools
+icdiff==2.0.7 \
+    --hash=sha256:f05d1b3623223dd1c70f7848da7d699de3d9a2550b902a8234d9026292fb5762 \
+    --hash=sha256:f79a318891adbf59a45e3a7694f5e1f18c5407065264637072ac8363b759866f
+    # via django-tools
+markdown-it-py==4.0.0 \
+    --hash=sha256:87327c59b172c5011896038353a81343b6754500a08cd7a4973bb48c6d578147 \
+    --hash=sha256:cb0a2b4aa34f932c007117b194e945bd74e0ec24133ceb5bac59009cda1cb9f3
+    # via rich
+mdurl==0.1.2 \
+    --hash=sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8 \
+    --hash=sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba
+    # via markdown-it-py
+packaging==25.0 \
+    --hash=sha256:29572ef2b1f17581046b3a2227d5c611fb25ec70ca1ba8554b24b0e69331a484 \
+    --hash=sha256:d443872c98d677bf60f6a1f2f8c1cb748e8fe762d2bf9d3148b5599295b0fc4f
+    # via
+    #   cli-base-utilities
+    #   django-yunohost-integration
+    #   gunicorn
+pprintpp==0.4.0 \
+    --hash=sha256:b6b4dcdd0c0c0d75e4d7b2f21a9e933e5b2ce62b26e1a54537f9651ae5a5c01d \
+    --hash=sha256:ea826108e2c7f49dc6d66c752973c3fc9749142a798d6b254e1e301cfdbc6403
+    # via django-tools
+psycopg==3.2.9 \
+    --hash=sha256:01a8dadccdaac2123c916208c96e06631641c0566b22005493f09663c7a8d3b6 \
+    --hash=sha256:2fbb46fcd17bc81f993f28c47f1ebea38d66ae97cc2dbc3cad73b37cefbff700
+    # via django-example-ynh
+psycopg-binary==3.2.9 ; implementation_name != 'pypy' \
+    --hash=sha256:08bf9d5eabba160dd4f6ad247cf12f229cc19d2458511cab2eb9647f42fa6795 \
+    --hash=sha256:093a0c079dd6228a7f3c3d82b906b41964eaa062a9a8c19f45ab4984bf4e872b \
+    --hash=sha256:0e8aeefebe752f46e3c4b769e53f1d4ad71208fe1150975ef7662c22cca80fab \
+    --hash=sha256:14f64d1ac6942ff089fc7e926440f7a5ced062e2ed0949d7d2d680dc5c00e2d4 \
+    --hash=sha256:1b2cf018168cad87580e67bdde38ff5e51511112f1ce6ce9a8336871f465c19a \
+    --hash=sha256:2290bc146a1b6a9730350f695e8b670e1d1feb8446597bed0bbe7c3c30e0abcb \
+    --hash=sha256:2504e9fd94eabe545d20cddcc2ff0da86ee55d76329e1ab92ecfcc6c0a8156c4 \
+    --hash=sha256:25ab464bfba8c401f5536d5aa95f0ca1dd8257b5202eede04019b4415f491351 \
+    --hash=sha256:387c87b51d72442708e7a853e7e7642717e704d59571da2f3b29e748be58c78a \
+    --hash=sha256:3db3ba3c470801e94836ad78bf11fd5fab22e71b0c77343a1ee95d693879937a \
+    --hash=sha256:52e239cd66c4158e412318fbe028cd94b0ef21b0707f56dcb4bdc250ee58fd40 \
+    --hash=sha256:5be8292d07a3ab828dc95b5ee6b69ca0a5b2e579a577b39671f4f5b47116dfd2 \
+    --hash=sha256:61d0a6ceed8f08c75a395bc28cb648a81cf8dee75ba4650093ad1a24a51c8724 \
+    --hash=sha256:6a76b4722a529390683c0304501f238b365a46b1e5fb6b7249dbc0ad6fea51a0 \
+    --hash=sha256:6afb3e62f2a3456f2180a4eef6b03177788df7ce938036ff7f09b696d418d186 \
+    --hash=sha256:72691a1615ebb42da8b636c5ca9f2b71f266be9e172f66209a361c175b7842c5 \
+    --hash=sha256:72fdbda5b4c2a6a72320857ef503a6589f56d46821592d4377c8c8604810342b \
+    --hash=sha256:76eddaf7fef1d0994e3d536ad48aa75034663d3a07f6f7e3e601105ae73aeff6 \
+    --hash=sha256:778588ca9897b6c6bab39b0d3034efff4c5438f5e3bd52fda3914175498202f9 \
+    --hash=sha256:7a838852e5afb6b4126f93eb409516a8c02a49b788f4df8b6469a40c2157fa21 \
+    --hash=sha256:7fc2915949e5c1ea27a851f7a472a7da7d0a40d679f0a31e42f1022f3c562e87 \
+    --hash=sha256:96a551e4683f1c307cfc3d9a05fec62c00a7264f320c9962a67a543e3ce0d8ff \
+    --hash=sha256:98bbe35b5ad24a782c7bf267596638d78aa0e87abc7837bdac5b2a2ab954179e \
+    --hash=sha256:a1fa38a4687b14f517f049477178093c39c2a10fdcced21116f47c017516498f \
+    --hash=sha256:a3e0f89fe35cb03ff1646ab663dabf496477bab2a072315192dbaa6928862891 \
+    --hash=sha256:ad280bbd409bf598683dda82232f5215cfc5f2b1bf0854e409b4d0c44a113b1d \
+    --hash=sha256:b7e4e4dd177a8665c9ce86bc9caae2ab3aa9360b7ce7ec01827ea1baea9ff748 \
+    --hash=sha256:bc75f63653ce4ec764c8f8c8b0ad9423e23021e1c34a84eb5f4ecac8538a4a4a \
+    --hash=sha256:be7d650a434921a6b1ebe3fff324dbc2364393eb29d7672e638ce3e21076974e \
+    --hash=sha256:cc19ed5c7afca3f6b298bfc35a6baa27adb2019670d15c32d0bb8f780f7d560d \
+    --hash=sha256:d9ac10a2ebe93a102a326415b330fff7512f01a9401406896e78a81d75d6eddc \
+    --hash=sha256:f0d5b3af045a187aedbd7ed5fc513bd933a97aaff78e61c3745b330792c4345b \
+    --hash=sha256:f34e88940833d46108f949fdc1fcfb74d6b5ae076550cd67ab59ef47555dba95
+    # via psycopg
+pygments==2.19.2 \
+    --hash=sha256:636cb2477cec7f8952536970bc533bc43743542f70392ae026374600add5b887 \
+    --hash=sha256:86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b
+    # via rich
+pyjwt==2.10.1 \
+    --hash=sha256:3cc5772eb20009233caf06e9d8a0577824723b44e6648ee0a2aedb6cf9381953 \
+    --hash=sha256:dcdd193e30abefd5debf142f9adfcdd2b58004e644f25406ffaebd50bd98dacb
+    # via django-yunohost-integration
+python-dateutil==2.9.0.post0 \
+    --hash=sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3 \
+    --hash=sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427
+    # via cli-base-utilities
+python-stdnum==2.1 \
+    --hash=sha256:25eabcf5f307dd4150fd8f1c03f4512a6caeb84c9f09be1448711f5803373c58 \
+    --hash=sha256:6b01645969eb3dfd55061a0114d593753cd9e653cea9083198b7eea12644397a
+    # via bx-django-utils
+pyyaml==6.0.2 \
+    --hash=sha256:0833f8694549e586547b576dcfaba4a6b55b9e96098b36cdc7ebefe667dfed48 \
+    --hash=sha256:0ffe8360bab4910ef1b9e87fb812d8bc0a308b0d0eef8c8f44e0254ab3b07133 \
+    --hash=sha256:11d8f3dd2b9c1207dcaf2ee0bbbfd5991f571186ec9cc78427ba5bd32afae4b5 \
+    --hash=sha256:17e311b6c678207928d649faa7cb0d7b4c26a0ba73d41e99c4fff6b6c3276484 \
+    --hash=sha256:1e2120ef853f59c7419231f3bf4e7021f1b936f6ebd222406c3b60212205d2ee \
+    --hash=sha256:1f71ea527786de97d1a0cc0eacd1defc0985dcf6b3f17bb77dcfc8c34bec4dc5 \
+    --hash=sha256:3ad2a3decf9aaba3d29c8f537ac4b243e36bef957511b4766cb0057d32b0be85 \
+    --hash=sha256:41e4e3953a79407c794916fa277a82531dd93aad34e29c2a514c2c0c5fe971cc \
+    --hash=sha256:50187695423ffe49e2deacb8cd10510bc361faac997de9efef88badc3bb9e2d1 \
+    --hash=sha256:5ac9328ec4831237bec75defaf839f7d4564be1e6b25ac710bd1a96321cc8317 \
+    --hash=sha256:5d225db5a45f21e78dd9358e58a98702a0302f2659a3c6cd320564b75b86f47c \
+    --hash=sha256:68ccc6023a3400877818152ad9a1033e3db8625d899c72eacb5a668902e4d652 \
+    --hash=sha256:70b189594dbe54f75ab3a1acec5f1e3faa7e8cf2f1e08d9b561cb41b845f69d5 \
+    --hash=sha256:797b4f722ffa07cc8d62053e4cff1486fa6dc094105d13fea7b1de7d8bf71c9e \
+    --hash=sha256:7e7401d0de89a9a855c839bc697c079a4af81cf878373abd7dc625847d25cbd8 \
+    --hash=sha256:80bab7bfc629882493af4aa31a4cfa43a4c57c83813253626916b8c7ada83476 \
+    --hash=sha256:8388ee1976c416731879ac16da0aff3f63b286ffdd57cdeb95f3f2e085687563 \
+    --hash=sha256:8b9c7197f7cb2738065c481a0461e50ad02f18c78cd75775628afb4d7137fb3b \
+    --hash=sha256:9b22676e8097e9e22e36d6b7bda33190d0d400f345f23d4065d48f4ca7ae0425 \
+    --hash=sha256:bc2fa7c6b47d6bc618dd7fb02ef6fdedb1090ec036abab80d4681424b84c1183 \
+    --hash=sha256:c70c95198c015b85feafc136515252a261a84561b7b1d51e3384e0655ddf25ab \
+    --hash=sha256:cc1c1159b3d456576af7a3e4d1ba7e6924cb39de8f67111c735f6fc832082774 \
+    --hash=sha256:ce826d6ef20b1bc864f0a68340c8b3287705cae2f8b4b1d932177dcc76721725 \
+    --hash=sha256:d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e \
+    --hash=sha256:e10ce637b18caea04431ce14fabcf5c64a1c61ec9c56b071a4b7ca131ca52d44 \
+    --hash=sha256:ef6107725bd54b262d6dedcc2af448a266975032bc85ef0172c5f059da6325b4 \
+    --hash=sha256:efdca5630322a10774e8e98e1af481aad470dd62c3170801852d752aa7a783ba \
+    --hash=sha256:ff3824dc5261f50c9b0dfb3be22b4567a6f938ccce4587b38952d85fd9e9afe4
+    # via django-yunohost-integration
+redis==6.4.0 \
+    --hash=sha256:b01bc7282b8444e28ec36b261df5375183bb47a07eb9c603f284e89cbc5ef010 \
+    --hash=sha256:f0544fa9604264e9464cdf4814e7d4830f74b165d52f2a330a760a88dd248b7f
+    # via django-redis
+rich==14.1.0 \
+    --hash=sha256:536f5f1785986d6dbdea3c75205c473f970777b4a0d6c6dd1b696aa05a3fa04f \
+    --hash=sha256:e497a48b844b0320d45007cdebfeaeed8db2a4f4bcf49f15e455cfc4af11eaa8
+    # via
+    #   cli-base-utilities
+    #   tyro
+shtab==1.7.2 \
+    --hash=sha256:858a5805f6c137bb0cda4f282d27d08fd44ca487ab4a6a36d2a400263cd0b5c1 \
+    --hash=sha256:8c16673ade76a2d42417f03e57acf239bfb5968e842204c17990cae357d07d6f
+    # via tyro
+six==1.17.0 \
+    --hash=sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274 \
+    --hash=sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81
+    # via python-dateutil
+sqlparse==0.5.3 \
+    --hash=sha256:09f67787f56a0b16ecdbde1bfc7f5d9c3371ca683cfeaa8e6ff60b4807ec9272 \
+    --hash=sha256:cf2196ed3418f3ba5de6af7e82c694a9fbdbfecccdfc72e281548517081f16ca
+    # via django
+tomlkit==0.13.3 \
+    --hash=sha256:430cf247ee57df2b94ee3fbe588e71d362a941ebb545dec29b53961d61add2a1 \
+    --hash=sha256:c89c649d79ee40629a9fda55f8ace8c6a1b42deb912b2a8fd8d942ddadb606b0
+    # via cli-base-utilities
+typeguard==4.4.4 \
+    --hash=sha256:3a7fd2dffb705d4d0efaed4306a704c89b9dee850b688f060a8b1615a79e5f74 \
+    --hash=sha256:b5f562281b6bfa1f5492470464730ef001646128b180769880468bd84b68b09e
+    # via tyro
+typing-extensions==4.15.0 \
+    --hash=sha256:0cea48d173cc12fa28ecabc3b837ea3cf6f38c6d1136f85cbaaf598984861466 \
+    --hash=sha256:f0fa19c6845758ab08074a0cfa8b7aecb71c999ca73d62883bc25cc018c4e548
+    # via
+    #   psycopg
+    #   typeguard
+    #   tyro
+tyro==0.9.31 \
+    --hash=sha256:565305246fbfe7c288b7c44d5af58782a582b885c662ff223e9933779c1c10a3 \
+    --hash=sha256:e858b21f4d179db9fb52b292d3a544aca0bb439399bd59f1943cf96382f15a68
+    # via
+    #   cli-base-utilities
+    #   django-yunohost-integration
+tzdata==2025.2 ; sys_platform == 'win32' \
+    --hash=sha256:1a403fada01ff9221ca8044d701868fa132215d84beb92242d9acd2147f667a8 \
+    --hash=sha256:b60a638fcc0daffadf82fe0f57e53d06bdec2f36c4df66280ae79bce6bd6f2b9
+    # via
+    #   django
+    #   psycopg
+webencodings==0.5.1 \
+    --hash=sha256:a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78 \
+    --hash=sha256:b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923
+    # via bleach

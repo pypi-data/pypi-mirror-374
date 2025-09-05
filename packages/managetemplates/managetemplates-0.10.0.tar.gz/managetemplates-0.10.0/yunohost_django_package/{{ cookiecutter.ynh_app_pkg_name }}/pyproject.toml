@@ -1,0 +1,144 @@
+[project]
+name = "{{ cookiecutter.ynh_app_pkg_name }}"
+dynamic = ["version"]
+description = "{{ cookiecutter.package_description }}"
+license = {text = "{{ cookiecutter.license }}"}
+readme = "README.md"
+authors = [
+    {name = '{{ cookiecutter.full_name }}', email = '{{ cookiecutter.author_email }}'}
+]
+requires-python = ">=3.11"
+dependencies = [
+    "{{ cookiecutter.project_id }}>={{ cookiecutter.upstream_version }}",  # {{ cookiecutter.upstream_url }}
+    "django_yunohost_integration",  # https://github.com/YunoHost-Apps/django_yunohost_integration
+    "gunicorn",
+    "psycopg[binary]", # https://github.com/psycopg/psycopg
+    "django-redis",
+    "django-axes", # https://github.com/jazzband/django-axes
+    "cli-base-utilities",  # https://github.com/jedie/cli-base-utilities
+]
+[dependency-groups]
+dev = [
+    "manageprojects",  # https://github.com/{{ cookiecutter.github_username }}/manageprojects
+    "bx_django_utils",  # https://github.com/boxine/bx_django_utils
+    "beautifulsoup4",  # https://pypi.org/project/beautifulsoup4/
+    "uv",  # https://github.com/astral-sh/uv
+    "tblib",   # https://github.com/ionelmc/python-tblib
+    "nox",  # https://github.com/wntrblm/nox
+    "coverage",  # https://github.com/nedbat/coveragepy
+    "ruff", # https://github.com/astral-sh/ruff
+    "codespell",  # https://github.com/codespell-project/codespell
+    "EditorConfig",  # https://github.com/editorconfig/editorconfig-core-py
+    "pip-audit",  # https://github.com/pypa/pip-audit
+    "mypy",  # https://github.com/python/mypy
+    "twine",  # https://github.com/pypa/twine
+    "typeguard",  # https://github.com/agronholm/typeguard/
+]
+
+[project.urls]
+Documentation = "{{ cookiecutter.ynh_app_url }}"
+Source = "{{ cookiecutter.ynh_app_url }}"
+
+[project.scripts]
+{{ cookiecutter.ynh_app_pkg_name }}_dev = "{{ cookiecutter.ynh_app_pkg_name }}.cli_dev:main"
+
+
+[ynh-integration]
+local_settings_source= "local_settings_source.py"
+
+
+[build-system]
+requires = ["setuptools>=61.0", "setuptools_scm>=7.1"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["{{ cookiecutter.ynh_app_pkg_name }}*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "{{ cookiecutter.ynh_app_pkg_name }}.__version__"}
+
+
+[tool.cli_base.pip_audit]
+# https://github.com/jedie/cli-base-utilities/blob/main/docs/pip_audit.md
+requirements=["requirements.dev.txt"]
+strict=true
+require_hashes=true
+ignore-vuln=[]
+
+
+[tool.ruff]
+# https://docs.astral.sh/ruff/configuration/
+line-length = 120
+exclude = [
+  ".*/","*/htmlcov/*","*/migrations/*","*/local_test/*"
+]
+
+[tool.ruff.lint]
+preview = true  # Needed for some of the rules
+extend-select = [
+    "E", # pycodestyle: https://docs.astral.sh/ruff/rules/#error-e
+    "I", # isort: https://docs.astral.sh/ruff/rules/#isort-i
+]
+ignore = [
+    "E402", # https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file/
+    "E731", # https://docs.astral.sh/ruff/rules/lambda-assignment/
+]
+
+[tool.ruff.lint.isort]
+# https://docs.astral.sh/ruff/settings/#lintisort
+lines-after-imports = 2
+
+[tool.ruff.format]
+quote-style = "single"
+
+
+[tool.coverage.run]
+branch = true
+parallel = true
+concurrency = ["multiprocessing"]
+source = ['.']
+command_line = './dev-cli.py test'
+disable_warnings = ["couldnt-parse"]
+
+[tool.coverage.report]
+omit = ['.*', '*/tests/*']
+skip_empty = true
+fail_under = 10
+show_missing = true
+exclude_lines = [
+    'if self.debug:',
+    'pragma: no cover',
+    'raise NotImplementedError',
+    'if __name__ == .__main__.:',
+]
+
+
+[tool.tox]  # https://tox.wiki/en/latest/config.html#pyproject-toml
+legacy_tox_ini = """
+[tox]
+isolated_build = True
+envlist = py{313,312,311}
+skip_missing_interpreters = True
+
+[testenv]
+passenv = *
+skip_install = true
+commands_pre =
+    pip install -U pip-tools
+    pip-sync requirements.dev.txt
+commands =
+    {envpython} -m coverage run --context='{envname}'
+    {envpython} -m coverage combine --append
+    {envpython} -m coverage xml
+    {envpython} -m coverage report
+"""
+
+
+[tool.mypy]
+warn_unused_configs = true
+ignore_missing_imports = true
+allow_redefinition = true  # https://github.com/python/mypy/issues/7165
+show_error_codes = true
+plugins = []
+exclude = ['.venv', 'tests']

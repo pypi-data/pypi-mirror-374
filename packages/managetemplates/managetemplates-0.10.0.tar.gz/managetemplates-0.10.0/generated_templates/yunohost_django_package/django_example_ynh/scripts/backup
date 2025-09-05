@@ -1,0 +1,48 @@
+#!/bin/bash
+
+source ../settings/scripts/_common.sh
+source /usr/share/yunohost/helpers
+
+ynh_print_info "Declaring files to be backed up..."
+
+#=================================================
+# BACKUP THE APP MAIN DIR
+#=================================================
+
+# /var/www/$app/
+ynh_backup "$install_dir"
+
+# /home/yunohost.app/$app/
+ynh_backup "$data_dir"
+
+#=================================================
+# BACKUP THE NGINX CONFIGURATION
+#=================================================
+
+ynh_backup "/etc/nginx/conf.d/$domain.d/$app.conf"
+
+#=================================================
+# BACKUP THE PostgreSQL DATABASE
+#=================================================
+
+ynh_psql_dump_db > db.sql
+
+#=================================================
+# SPECIFIC BACKUP
+#=================================================
+# BACKUP LOGROTATE
+#=================================================
+
+ynh_backup "/etc/logrotate.d/$app"
+
+#=================================================
+# BACKUP SYSTEMD
+#=================================================
+
+ynh_backup "/etc/systemd/system/$app.service"
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_print_info "Backup script completed for $app. (YunoHost will then actually copy those files to the archive)."
