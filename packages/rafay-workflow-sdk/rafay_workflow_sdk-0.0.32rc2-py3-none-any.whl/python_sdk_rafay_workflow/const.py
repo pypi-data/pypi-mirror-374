@@ -1,0 +1,11 @@
+
+ActivityIDHeader         = "X-Activity-ID"
+EnvironmentIDHeader      = "X-Environment-ID"
+EnvironmentNameHeader    = "X-Environment-Name"
+WorkflowTokenHeader      = "X-Workflow-Token"
+EngineAPIEndpointHeader  = "X-Engine-Endpoint"
+ActivityFileUploadHeader = "X-Activity-File-Upload"
+OrganizationIDHeader     = "X-Organization-ID"
+ProjectIDHeader          = "X-Project-ID"
+EaasStateEndpointHeader  = "X-Eaas-State-Endpoint"
+EaasStateAPITokenHeader  = "X-Eaas-State-Token"
