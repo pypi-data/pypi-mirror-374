@@ -1,0 +1,102 @@
+# simpleconverts
+
+![PyPI](https://img.shields.io/pypi/v/simpleconverts?color=blue)
+![Python Version](https://img.shields.io/pypi/pyversions/simpleconverts)
+![License](https://img.shields.io/badge/License-MIT-green)
+
+**SimpleConverts** est un package Python léger pour **convertir facilement les unités courantes** : distances, masses, températures, volumes, temps et énergie.
+Idéal pour les scripts rapides, la cuisine, le sport ou tout usage quotidien.
+
+Ce dépôt contient le code source officiel et la documentation de SimpleConverts : [GitHub Repository](https://github.com/Coder-Edge/Simpleconverts.git)
+
+---
+
+## Installation
+
+### Depuis PyPI
+
+```bash
+pip install simpleconverts
+```
+
+### Installation locale (développement)
+
+```bash
+git clone https://github.com/Coder-Edge/Simpleconverts.git
+cd Simpleconverts
+pip install -e .
+```
+
+---
+
+## Exemples d’utilisation
+
+```python
+from simpleconverts.convert import convert
+
+# Distances
+print(convert(10, "km", "mi"))   # 6.2137
+
+# Masse
+print(convert(100, "kg", "lb"))  # 220.46
+
+# Température
+print(convert(25, "C", "F"))     # 77.0
+
+# Volume
+print(convert(2, "L", "cup"))    # 8.33
+
+# Temps
+print(convert(1, "h", "min"))    # 60
+
+# Énergie
+print(convert(500, "cal", "kJ")) # 2.092
+```
+
+---
+
+## Unités supportées
+
+* **Distances :** m, km, cm, mm, mi, yd, ft, in
+* **Masse :** g, kg, t, lb, oz
+* **Températures :** C, F, K
+* **Volumes :** L, mL, cL, gal, qt, pt, cup, floz
+* **Temps :** s, min, h, d, week, month, year
+* **Énergie :** J, kJ, kWh, cal, kcal
+
+---
+
+## Contribution
+
+Les contributions sont les bienvenues !
+
+1. Fork le dépôt
+2. Crée une branche pour ta feature (`git checkout -b ma-feature`)
+3. Commit tes modifications (`git commit -m 'Ajout d'une nouvelle conversion'`)
+4. Push ta branche (`git push origin ma-feature`)
+5. Ouvre un Pull Request
+
+---
+
+## Tests
+
+Pour lancer les tests unitaires, utilisez `unittest` :
+
+```bash
+python -m unittest discover tests
+```
+
+---
+
+## Licence
+
+Ce projet est sous **MIT License**.
+Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+
+---
+
+## Auteur
+
+**Coder Edge**
+Email : [coderedgeorg@gmail.com](mailto:coderedgeorg@gmail.com)
+GitHub : [https://github.com/Coder-Edge](https://github.com/Coder-Edge)
