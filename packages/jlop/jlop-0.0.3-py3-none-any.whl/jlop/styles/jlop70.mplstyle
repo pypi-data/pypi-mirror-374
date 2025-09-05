@@ -1,0 +1,111 @@
+#
+#	Jlop theme for python
+#	Publishable figures
+#
+
+#
+# LINES 
+#
+
+lines.linestyle : -   
+lines.linewidth : 1
+lines.markersize : 6
+lines.markerfacecolor: white
+lines.markeredgecolor: k       
+
+#
+# FONT
+#
+
+font.family :  sans-serif       
+font.sans-serif  :  Futura
+font.size   :  8.5             
+
+#
+# LATEX
+#
+
+text.usetex	 : False
+mathtext.default : regular
+axes.formatter.use_mathtext : False
+
+#
+# AXES
+#
+
+axes.unicode_minus	:  False
+axes.axisbelow 		:  True   
+axes.labelsize 		:  8.5    
+axes.linewidth : 0.8
+
+
+#
+# TICKS
+#
+
+xtick.major.size: 5
+xtick.major.width: 0.8
+xtick.minor.size: 3
+xtick.minor.width: 1
+xtick.direction: in
+xtick.major.pad: 5
+xtick.labelsize: 8.5
+
+ytick.major.size: 5
+ytick.major.width: 0.8
+ytick.minor.size: 3
+ytick.minor.width: 1
+ytick.direction: in 
+ytick.labelsize: 8.5
+
+#
+# GRID
+#
+
+axes.grid       :   False    
+grid.color      :   b0b0b0    
+grid.linestyle  :   -.        
+grid.linewidth  :   0.3           
+grid.alpha      :   1.0       
+
+#
+# LEGEND
+#
+
+legend.framealpha   	:   1.0         
+legend.fancybox     	:   False       
+legend.fontsize		:   8.5
+
+
+axes.titleweight: normal
+axes.titlepad: 20
+
+#
+# FIGURE
+#
+
+figure.figsize	:     3.375 , 2.08586   
+figure.dpi      :     500           	
+
+#
+# ERROR BARS
+#
+
+errorbar.capsize : 5  
+
+#
+#   SCATTER PLOTS                                                       
+#
+
+scatter.marker		: o         
+scatter.edgecolors	: face  
+
+#
+#   SAVING FIGURES                                                        
+# 
+
+savefig.dpi		:  figure      
+savefig.format		:  png         
+savefig.pad_inches	:  0.01      
+savefig.transparent	:  False
+
