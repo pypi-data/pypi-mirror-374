@@ -1,0 +1,4 @@
+[console_scripts]
+core-evals-live-code-bench = core_evals.livecodebench.framework_entrypoint:main
+core_evals_live_code_bench = core_evals.livecodebench.framework_entrypoint:main
+livecodebench = livecodebench.runner.main:main
