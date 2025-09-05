@@ -1,0 +1,115 @@
+Metadata-Version: 2.4
+Name: sji
+Version: 0.1.1
+Summary: SJI - Eine einfache Python-Bibliothek für Job-Initialisierung
+Home-page: https://github.com/matzek92/simple-job-init
+Author: matzek92
+Author-email: matzek92 <your.email@example.com>
+License: MIT License
+        
+        Copyright (c) 2025 matzek92
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/matzek92/simple-job-init
+Project-URL: Repository, https://github.com/matzek92/simple-job-init.git
+Keywords: job,task,simple
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# SJI
+
+Eine einfache Python-Bibliothek für die Initialisierung von Jobs/Skripten (Logging, Konfiguration, Ordnerstruktur).
+
+## Installation
+
+```bash
+pip install sji
+```
+
+## Verwendung
+
+```python
+from sji import SimpleJobInit
+
+# __file__ an SimpleJobInit übergeben
+sji = SimpleJobInit(__file__)
+
+# Logger verwenden
+sji.logger.info("Starte Job...")
+
+# Konfiguration lesen (INI)
+cfg = sji.config
+value = cfg.get('section', 'key', fallback='default')
+
+# Persistente Datei-Pfade erhalten
+csv_path = sji.get_persistent_file_path('csv')
+```
+
+Dabei werden automatisch erzeugt/genutzt:
+- logs/<skriptname>.log (mit optionaler Rotation)
+- tmp/ Verzeichnis
+- <skriptname>.config.ini für Einstellungen
+
+## Minimalbeispiel für die INI-Datei
+
+Datei: `<skriptname>.config.ini` im selben Verzeichnis wie das Skript
+
+```ini
+[logging]
+level = INFO
+log_rotation_when = midnight
+log_rotation_backup_count = 7
+
+[section]
+key = some-value
+```
+
+## API
+
+### Klasse: SimpleJobInit
+
+- `SimpleJobInit(script_file_path: str)`
+  - Initialisiert Logging, lädt/prüft INI-Config, erzeugt Ordner (logs, tmp)
+- Eigenschaften
+  - `logger`: konfigurierter `logging.Logger`
+  - `config`: `configparser.ConfigParser`
+- Methoden
+  - `get_persistent_file_path(file_ending: str) -> str`: gibt Pfad `<skriptname>.<file_ending>` zurück
+
+## Lizenz
+
+MIT-Lizenz - siehe [LICENSE](LICENSE) für Details.
+
+- Project build with support of AI (Cursor IDE). 
