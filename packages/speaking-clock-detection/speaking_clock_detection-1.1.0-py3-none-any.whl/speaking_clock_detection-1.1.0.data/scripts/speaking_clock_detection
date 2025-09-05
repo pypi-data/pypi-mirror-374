@@ -1,0 +1,55 @@
+#!python
+# -*- coding: utf-8 -*-
+#
+""" Speaking Clock Detection - version 1.3 2024-07-17
+Author: David Doukhan <ddoukhan@ina.fr>
+
+The detection of Speaking clock is based on the detection of bips
+Bips are 1kHz impulses, of duration variying between 80 and 160 ms
+The pattern corresponding to bips is 0 10 20 30 40 57 58 59
+Which leads to diff bip pattern of 17, 3*1; 4*10
+"""
+
+import sys
+import argparse
+
+
+from inaudible.speaking_clock_detection import speaking_clock_detection
+
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description='''Speaking Clock detection.
+    Prints the number of the channel corresponding to the speaking clock
+    (0 ... N) preceded by SPEAKING_CLOCK_TRACK.
+    If no speaking clock has been found, prints SPEAKING_CLOCK_NONE.
+    If speaking clock has been found on several channels, this is likely to
+    be an error and the program will print SPEAKING_CLOCK_MULTIPLE.''')
+
+    parser.add_argument('-m', '--media', required=True,
+                        help='full path to media to analyze')
+
+
+    parser.add_argument('-o', '--output', default=sys.stdout, type=argparse.FileType('w'),
+                        help='output file for the result. Default value: /dev/stdout.')
+
+    parser.add_argument('-d', '--max_dur_sec', default=None, type=float,
+                        help='max duration to analyse in seconds, if not provided analyze the whole file')
+
+
+    parser.add_argument('-f', '--ffmpeg', default='ffmpeg',
+                        help='''Full path to ffmpeg binary. If not provided, this will used
+        default binary installed on the system. This program has been tested
+        with ffmpeg version 2.8.8-0ubuntu0.16.04.1''')
+
+    args = parser.parse_args()
+    ret = speaking_clock_detection(args.media, args.ffmpeg, end_sec=args.max_dur_sec)
+
+
+    if ret >= 0:
+        print('SPEAKING_CLOCK_TRACK', ret, file=args.output)
+    elif ret == -1:
+        print('SPEAKING_CLOCK_NONE', file=args.output)
+    else:
+        assert ret == -2
+        print('SPEAKING_CLOCK_MULTIPLE', file=args.output)
