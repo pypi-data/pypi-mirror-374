@@ -1,0 +1,98 @@
+.errorIn{
+    color:red;
+}
+#myImgPreview{
+    margin-top: 15px;
+    width: 100%;
+    max-height: 400px;
+    margin: auto;
+    display: none;
+}
+.croppie-container{
+    display: none;
+}
+#img_sample{
+    margin-top: 25px;
+    width: 150px;
+    max-height: 150px;
+    margin: auto;
+    display: none;
+}
+
+.tagMember{
+    padding:5px;
+    background-color: #f5f5f5 !important;
+    margin-right:5px;
+}
+.tagMemberClose{
+    cursor: pointer;
+}
+.tagMemberClose:hover{
+    font-weight: bold;
+}
+
+.groupContainer{
+    border: solid 1px #ececec;
+    padding:10px;
+    margin-top:10px;
+}
+
+.emailSenderLabel{
+    color:black;
+    margin-top:15px;
+}
+
+.codeExample {
+    padding: 10px;
+    border: solid 1px #ddd;
+    background-color: #f9f9f9;
+    font-family: monospace,Courier;
+    color: black;
+}
+
+.allBadges{
+    font-size:0.85em;
+    color: #3f51b5 !important;
+    border: solid 1px #3f51b5 !important;
+    cursor:pointer;
+}
+.allBadges:hover{
+    background-color: #3f51b5 !important;
+    color:white !important;
+}
+
+.allBadgesSelected{
+    font-size:0.85em;
+    cursor:pointer;
+    background-color: #3f51b5 !important;
+    color:white !important;
+}
+
+.unsubscribeP{
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+.hereLink{
+    cursor: pointer;
+}
+.hereLink:hover{
+    text-decoration: underline;
+}
+
+.apiKeyAIPlan{
+    padding:5px; 
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    border: solid 1px #dcdcdc;
+    max-width: 600px;
+    text-align: center;
+}
+
+.setApiKey{
+    cursor: pointer;
+    color: #3f51b5;
+}
+
+.setApiKey:hover{
+    text-decoration: underline;
+}

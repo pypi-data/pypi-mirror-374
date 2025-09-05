@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0058_dataframehistory_dataframemodel_dataframeshared_and_more')];operations=[migrations.AlterField(model_name='dataframehistory',name='dispo',field=models.CharField(max_length=100,null=True))]

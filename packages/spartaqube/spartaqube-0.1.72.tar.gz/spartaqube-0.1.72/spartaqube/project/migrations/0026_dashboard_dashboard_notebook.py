@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0025_plotdbchart_thumbnail_path')];operations=[migrations.AddField(model_name='dashboard',name='dashboard_notebook',field=models.TextField(null=True))]

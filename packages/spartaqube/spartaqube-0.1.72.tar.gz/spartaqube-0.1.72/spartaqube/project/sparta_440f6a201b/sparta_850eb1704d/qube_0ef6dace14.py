@@ -1,0 +1,54 @@
+_k='msgenny'
+_j='xquery'
+_i='webidl'
+_h='textile'
+_g='verilog'
+_f='sparql'
+_e='markdown'
+_d='jinja2'
+_c='htmlmixed'
+_b='groovy'
+_a='factor'
+_Z='dockerfile'
+_Y='Dockerfile'
+_X='python'
+_W='cypher'
+_V='coffee'
+_U='rst'
+_T='properties'
+_S='mbox'
+_R='jsx'
+_Q='jsonld'
+_P='mllike'
+_O='diff'
+_N='clojure'
+_M='javascript'
+_L='htmlembedded'
+_K='mscgen'
+_J='css'
+_I='clike'
+_H='file'
+_G='sql'
+_F='mimes'
+_E='alias'
+_D='ext'
+_C='mime'
+_B='name'
+_A='mode'
+import os,json
+from project.sparta_440f6a201b.sparta_850eb1704d import qube_59780db901 as qube_59780db901
+CODE_MIRROR_TYPE_ARR=[{_B:'APL',_C:'text/apl',_A:'apl',_D:['dyalog','apl']},{_B:'PGP',_F:['application/pgp','application/pgp-encrypted','application/pgp-keys','application/pgp-signature'],_A:'asciiarmor',_D:['asc','pgp','sig']},{_B:'ASN.1',_C:'text/x-ttcn-asn',_A:'asn.1',_D:['asn','asn1']},{_B:'Asterisk',_C:'text/x-asterisk',_A:'asterisk',_H:'/^extensions\\.conf$/i'},{_B:'Brainfuck',_C:'text/x-brainfuck',_A:'brainfuck',_D:['b','bf']},{_B:'C',_C:'text/x-csrc',_A:_I,_D:['c','h','ino']},{_B:'C++',_C:'text/x-c++src',_A:_I,_D:['cpp','c++','cc','cxx','hpp','h++','hh','hxx'],_E:['cpp']},{_B:'Cobol',_C:'text/x-cobol',_A:'cobol',_D:['cob','cpy']},{_B:'C#',_C:'text/x-csharp',_A:_I,_D:['cs'],_E:['csharp']},{_B:'Clojure',_C:'text/x-clojure',_A:_N,_D:['clj','cljc','cljx']},{_B:'ClojureScript',_C:'text/x-clojurescript',_A:_N,_D:['cljs']},{_B:'Closure Stylesheets (GSS)',_C:'text/x-gss',_A:_J,_D:['gss']},{_B:'CMake',_C:'text/x-cmake',_A:'cmake',_D:['cmake','cmake.in'],_H:'/^CMakeLists.txt$/'},{_B:'CoffeeScript',_F:['application/vnd.coffeescript','text/coffeescript','text/x-coffeescript'],_A:'coffeescript',_D:[_V],_E:[_V,'coffee-script']},{_B:'Common Lisp',_C:'text/x-common-lisp',_A:'commonlisp',_D:['cl','lisp','el'],_E:['lisp']},{_B:'Cypher',_C:'application/x-cypher-query',_A:_W,_D:['cyp',_W]},{_B:'Cython',_C:'text/x-cython',_A:_X,_D:['pyx','pxd','pxi']},{_B:'Crystal',_C:'text/x-crystal',_A:'crystal',_D:['cr']},{_B:'CSS',_C:'text/css',_A:_J,_D:[_J]},{_B:'CQL',_C:'text/x-cassandra',_A:_G,_D:['cql']},{_B:'D',_C:'text/x-d',_A:'d',_D:['d']},{_B:'Dart',_F:['application/dart','text/x-dart'],_A:'dart',_D:['dart']},{_B:_O,_C:'text/x-diff',_A:_O,_D:[_O,'patch']},{_B:'Django',_C:'text/x-django',_A:'django'},{_B:_Y,_C:'text/x-dockerfile',_A:_Z,_H:'/^Dockerfile$/'},{_B:'DTD',_C:'application/xml-dtd',_A:'dtd',_D:['dtd']},{_B:'Dylan',_C:'text/x-dylan',_A:'dylan',_D:['dylan','dyl','intr']},{_B:'EBNF',_C:'text/x-ebnf',_A:'ebnf'},{_B:'ECL',_C:'text/x-ecl',_A:'ecl',_D:['ecl']},{_B:'edn',_C:'application/edn',_A:_N,_D:['edn']},{_B:'Eiffel',_C:'text/x-eiffel',_A:'eiffel',_D:['e']},{_B:'Elm',_C:'text/x-elm',_A:'elm',_D:['elm']},{_B:'Embedded Javascript',_C:'application/x-ejs',_A:_L,_D:['ejs']},{_B:'Embedded Ruby',_C:'application/x-erb',_A:_L,_D:['erb']},{_B:'Erlang',_C:'text/x-erlang',_A:'erlang',_D:['erl']},{_B:'Esper',_C:'text/x-esper',_A:_G},{_B:'Factor',_C:'text/x-factor',_A:_a,_D:[_a]},{_B:'FCL',_C:'text/x-fcl',_A:'fcl'},{_B:'Forth',_C:'text/x-forth',_A:'forth',_D:['forth','fth','4th']},{_B:'Fortran',_C:'text/x-fortran',_A:'fortran',_D:['f','for','f77','f90']},{_B:'F#',_C:'text/x-fsharp',_A:_P,_D:['fs'],_E:['fsharp']},{_B:'Gas',_C:'text/x-gas',_A:'gas',_D:['s']},{_B:'Gherkin',_C:'text/x-feature',_A:'gherkin',_D:['feature']},{_B:'GitHub Flavored Markdown',_C:'text/x-gfm',_A:'gfm',_H:'/^(readme|contributing|history).md$/i'},{_B:'Go',_C:'text/x-go',_A:'go',_D:['go']},{_B:'Groovy',_C:'text/x-groovy',_A:_b,_D:[_b,'gradle'],_H:'/^Jenkinsfile$/'},{_B:'HAML',_C:'text/x-haml',_A:'haml',_D:['haml']},{_B:'Haskell',_C:'text/x-haskell',_A:'haskell',_D:['hs']},{_B:'Haskell (Literate)',_C:'text/x-literate-haskell',_A:'haskell-literate',_D:['lhs']},{_B:'Haxe',_C:'text/x-haxe',_A:'haxe',_D:['hx']},{_B:'HXML',_C:'text/x-hxml',_A:'haxe',_D:['hxml']},{_B:'ASP.NET',_C:'application/x-aspx',_A:_L,_D:['aspx'],_E:['asp','aspx']},{_B:'HTML',_C:'text/html',_A:_c,_D:['html','htm','handlebars','hbs'],_E:['xhtml']},{_B:'HTTP',_C:'message/http',_A:'http'},{_B:'IDL',_C:'text/x-idl',_A:'idl',_D:['pro']},{_B:'Pug',_C:'text/x-pug',_A:'pug',_D:['jade','pug'],_E:['jade']},{_B:'Java',_C:'text/x-java',_A:_I,_D:['java']},{_B:'Java Server Pages',_C:'application/x-jsp',_A:_L,_D:['jsp'],_E:['jsp']},{_B:'JavaScript',_F:['text/javascript','text/ecmascript','application/javascript','application/x-javascript','application/ecmascript'],_A:_M,_D:['js'],_E:['ecmascript','js','node']},{_B:'JSON',_F:['application/json','application/x-json'],_A:_M,_D:['json','map'],_E:['json5']},{_B:'JSON-LD',_C:'application/ld+json',_A:_M,_D:[_Q],_E:[_Q]},{_B:'JSX',_C:'text/jsx',_A:_R,_D:[_R]},{_B:'Jinja2',_C:'null',_A:_d,_D:['j2','jinja',_d]},{_B:'Julia',_C:'text/x-julia',_A:'julia',_D:['jl']},{_B:'Kotlin',_C:'text/x-kotlin',_A:_I,_D:['kt']},{_B:'LESS',_C:'text/x-less',_A:_J,_D:['less']},{_B:'LiveScript',_C:'text/x-livescript',_A:'livescript',_D:['ls'],_E:['ls']},{_B:'Lua',_C:'text/x-lua',_A:'lua',_D:['lua']},{_B:'Markdown',_C:'text/x-markdown',_A:_e,_D:[_e,'md','mkd']},{_B:'mIRC',_C:'text/mirc',_A:'mirc'},{_B:'MariaDB SQL',_C:'text/x-mariadb',_A:_G},{_B:'Mathematica',_C:'text/x-mathematica',_A:'mathematica',_D:['m','nb']},{_B:'Modelica',_C:'text/x-modelica',_A:'modelica',_D:['mo']},{_B:'MUMPS',_C:'text/x-mumps',_A:'mumps',_D:['mps']},{_B:'MS SQL',_C:'text/x-mssql',_A:_G},{_B:_S,_C:'application/mbox',_A:_S,_D:[_S]},{_B:'MySQL',_C:'text/x-mysql',_A:_G},{_B:'Nginx',_C:'text/x-nginx-conf',_A:'nginx',_H:'/nginx.*\\.conf$/i'},{_B:'NSIS',_C:'text/x-nsis',_A:'nsis',_D:['nsh','nsi']},{_B:'NTriples',_F:['application/n-triples','application/n-quads','text/n-triples'],_A:'ntriples',_D:['nt','nq']},{_B:'Objective-C',_C:'text/x-objectivec',_A:_I,_D:['m','mm'],_E:['objective-c','objc']},{_B:'OCaml',_C:'text/x-ocaml',_A:_P,_D:['ml','mli','mll','mly']},{_B:'Octave',_C:'text/x-octave',_A:'octave',_D:['m']},{_B:'Oz',_C:'text/x-oz',_A:'oz',_D:['oz']},{_B:'Pascal',_C:'text/x-pascal',_A:'pascal',_D:['p','pas']},{_B:'PEG.js',_C:'null',_A:'pegjs',_D:[_Q]},{_B:'Perl',_C:'text/x-perl',_A:'perl',_D:['pl','pm']},{_B:'PHP',_F:['text/x-php','application/x-httpd-php','application/x-httpd-php-open'],_A:'php',_D:['php','php3','php4','php5','php7','phtml']},{_B:'Pig',_C:'text/x-pig',_A:'pig',_D:['pig']},{_B:'Plain Text',_C:'text/plain',_A:_c,_D:['txt','text','conf','def','list','log']},{_B:'PLSQL',_C:'text/x-plsql',_A:_G,_D:['pls']},{_B:'PowerShell',_C:'application/x-powershell',_A:'powershell',_D:['ps1','psd1','psm1']},{_B:'Properties files',_C:'text/x-properties',_A:_T,_D:[_T,'ini','in'],_E:['ini',_T]},{_B:'ProtoBuf',_C:'text/x-protobuf',_A:'protobuf',_D:['proto']},{_B:'Python',_C:'text/x-python',_A:_X,_D:['BUILD','bzl','py','pyw'],_H:'/^(BUCK|BUILD)$/'},{_B:'Puppet',_C:'text/x-puppet',_A:'puppet',_D:['pp']},{_B:'Q',_C:'text/x-q',_A:'q',_D:['q']},{_B:'R',_C:'text/x-rsrc',_A:'r',_D:['r','R'],_E:['rscript']},{_B:'reStructuredText',_C:'text/x-rst',_A:_U,_D:[_U],_E:[_U]},{_B:'RPM Changes',_C:'text/x-rpm-changes',_A:'rpm'},{_B:'RPM Spec',_C:'text/x-rpm-spec',_A:'rpm',_D:['spec']},{_B:'Ruby',_C:'text/x-ruby',_A:'ruby',_D:['rb'],_E:['jruby','macruby','rake','rb','rbx']},{_B:'Rust',_C:'text/x-rustsrc',_A:'rust',_D:['rs']},{_B:'SAS',_C:'text/x-sas',_A:'sas',_D:['sas']},{_B:'Sass',_C:'text/x-sass',_A:'sass',_D:['sass']},{_B:'Scala',_C:'text/x-scala',_A:_I,_D:['scala']},{_B:'Scheme',_C:'text/x-scheme',_A:'scheme',_D:['scm','ss']},{_B:'SCSS',_C:'text/x-scss',_A:_J,_D:['scss']},{_B:'Shell',_F:['text/x-sh','application/x-sh'],_A:'shell',_D:['sh','ksh','bash','bat'],_E:['bash','sh','zsh','bat'],_H:'/^PKGBUILD$/'},{_B:'Sieve',_C:'application/sieve',_A:'sieve',_D:['siv','sieve']},{_B:'Slim',_F:['text/x-slim','application/x-slim'],_A:'slim',_D:['slim']},{_B:'Smalltalk',_C:'text/x-stsrc',_A:'smalltalk',_D:['st']},{_B:'Smarty',_C:'text/x-smarty',_A:'smarty',_D:['tpl']},{_B:'Solr',_C:'text/x-solr',_A:'solr'},{_B:'SML',_C:'text/x-sml',_A:_P,_D:['sml','sig','fun','smackspec']},{_B:'Soy',_C:'text/x-soy',_A:'soy',_D:['soy'],_E:['closure template']},{_B:'SPARQL',_C:'application/sparql-query',_A:_f,_D:['rq',_f],_E:['sparul']},{_B:'Spreadsheet',_C:'text/x-spreadsheet',_A:'spreadsheet',_E:['excel','formula']},{_B:'SQL',_C:'text/x-sql',_A:_G,_D:[_G]},{_B:'SQLite',_C:'text/x-sqlite',_A:_G},{_B:'Squirrel',_C:'text/x-squirrel',_A:_I,_D:['nut']},{_B:'Stylus',_C:'text/x-styl',_A:'stylus',_D:['styl']},{_B:'Swift',_C:'text/x-swift',_A:'swift',_D:['swift']},{_B:'sTeX',_C:'text/x-stex',_A:'stex'},{_B:'LaTeX',_C:'text/x-latex',_A:'stex',_D:['text','ltx','tex'],_E:['tex']},{_B:'SystemVerilog',_C:'text/x-systemverilog',_A:_g,_D:['v','sv','svh']},{_B:'Tcl',_C:'text/x-tcl',_A:'tcl',_D:['tcl']},{_B:'Textile',_C:'text/x-textile',_A:_h,_D:[_h]},{_B:'TiddlyWiki ',_C:'text/x-tiddlywiki',_A:'tiddlywiki'},{_B:'Tiki wiki',_C:'text/tiki',_A:'tiki'},{_B:'TOML',_C:'text/x-toml',_A:'toml',_D:['toml']},{_B:'Tornado',_C:'text/x-tornado',_A:'tornado'},{_B:'troff',_C:'text/troff',_A:'troff',_D:['1','2','3','4','5','6','7','8','9']},{_B:'TTCN',_C:'text/x-ttcn',_A:'ttcn',_D:['ttcn','ttcn3','ttcnpp']},{_B:'TTCN_CFG',_C:'text/x-ttcn-cfg',_A:'ttcn-cfg',_D:['cfg']},{_B:'Turtle',_C:'text/turtle',_A:'turtle',_D:['ttl']},{_B:'TypeScript',_C:'application/typescript',_A:_M,_D:['ts'],_E:['ts']},{_B:'TypeScript-JSX',_C:'text/typescript-jsx',_A:_R,_D:['tsx'],_E:['tsx']},{_B:'Twig',_C:'text/x-twig',_A:'twig'},{_B:'Web IDL',_C:'text/x-webidl',_A:_i,_D:[_i]},{_B:'VB.NET',_C:'text/x-vb',_A:'vb',_D:['vb']},{_B:'VBScript',_C:'text/vbscript',_A:'vbscript',_D:['vbs']},{_B:'Velocity',_C:'text/velocity',_A:'velocity',_D:['vtl']},{_B:'Verilog',_C:'text/x-verilog',_A:_g,_D:['v']},{_B:'VHDL',_C:'text/x-vhdl',_A:'vhdl',_D:['vhd','vhdl']},{_B:'Vue.js Component',_F:['script/x-vue','text/x-vue'],_A:'vue',_D:['vue']},{_B:'XML',_F:['application/xml','text/xml'],_A:'xml',_D:['xml','xsl','xsd','svg'],_E:['rss','wsdl','xsd']},{_B:'XQuery',_C:'application/xquery',_A:_j,_D:['xy',_j]},{_B:'Yacas',_C:'text/x-yacas',_A:'yacas',_D:['ys']},{_B:'YAML',_F:['text/x-yaml','text/yaml'],_A:'yaml',_D:['yaml','yml'],_E:['yml']},{_B:'Z80',_C:'text/x-z80',_A:'z80',_D:['z80']},{_B:_K,_C:'text/x-mscgen',_A:_K,_D:[_K,'mscin','msc']},{_B:'xu',_C:'text/x-xu',_A:_K,_D:['xu']},{_B:_k,_C:'text/x-msgenny',_A:_K,_D:[_k]}]
+def sparta_4536b162ea(json_data,userObj):
+	O='file_extension';N='file_content';M='cm_mode';L='is_previewable';K='is_handled';J='res';I=True;H=False;F=json_data;R=F['projectPath'];A=F['fileName'];G=F['filePath'];C=H;P=H;D='';E='';B=A.split('.')[-1].lower()
+	if R in G:
+		for Q in CODE_MIRROR_TYPE_ARR:
+			try:
+				if B in Q[_D]:C=I;D=Q[_A]
+			except:pass
+	if A==_Y:B='.dockerfile';C=I;D=_Z
+	if C:
+		try:
+			with open(os.path.join(G,A))as S:E=json.dumps(S.read())
+		except Exception as T:return{J:1,K:P,L:H,M:D,N:E,O:B,'errorMsg':str(T)}
+	elif qube_59780db901.sparta_a4194f2cf6(A):B=A.split('.')[-1];U=qube_59780db901.sparta_847936c455(G,A);return{J:1,K:I,L:C,M:D,N:E,O:B,'resource':U}
+	return{J:1,K:P,L:C,M:D,N:E,O:B}

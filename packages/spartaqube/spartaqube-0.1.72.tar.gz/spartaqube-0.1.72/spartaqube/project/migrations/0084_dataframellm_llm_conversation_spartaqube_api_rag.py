@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0083_rename_response_list_dataframellm_llm_conversation_list_backend_and_more')];operations=[migrations.AddField(model_name='dataframellm',name='llm_conversation_spartaqube_api_rag',field=models.TextField(null=True))]

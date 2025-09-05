@@ -1,0 +1,98 @@
+.btnDates{
+    font-weight:0.8em;
+    padding:4px;
+}
+
+@media (min-width:768px) {
+    .btnDates{
+        font-weight:0.8em;
+        padding:4px;
+    }
+}
+
+@media (min-width:992px) {
+    .btnDates{
+        font-weight:0.8em;
+        padding:4px;
+    }
+}
+
+@media (min-width:1200px) {
+    .btnDates{
+        font-weight:0.8em;
+        padding:4px;
+    }
+}
+
+.rightChartBtn{
+    cursor:pointer;
+    background:transparent !important;
+    color:#757575 !important;
+    text-align: center;
+}
+.rightChartBtn:hover{
+    background:#757575 !important;
+    color:white !important;
+}
+
+.chartTypeBlock{
+    border: solid 1px #ececec; 
+    padding:10px;
+    font-size:3em;
+    margin-bottom: 0px; 
+    text-align: center;
+    cursor:pointer;
+}
+
+.chartTypeBlock:hover{
+    border: solid 1px #3f51b5;
+}
+
+.chartTypeTitle{
+    font-size:17px;
+}
+
+.htmlReprContainer{
+    overflow:auto;
+    max-height:450px;
+}
+
+.htmlReprContainer table{
+    border:none !important;
+}
+
+.htmlReprContainer thead th{
+    font-weight:bold !important;
+    color:black !important;
+    text-align:left !important;
+    border:none !important;
+    padding: 10px !important;
+}
+
+.htmlReprContainer tbody th{
+    color:black !important;
+    text-align:left !important;
+    border:none !important;
+    padding-right: 30px;
+}
+
+.htmlReprContainer thead, tbody{
+    border:none !important;
+}
+
+.htmlReprContainer p{
+    font-weight:bold !important;
+    color:black !important;
+}
+
+.htmlReprContainer tbody tr{
+    border:none !important;
+}
+
+.htmlReprContainer tbody th{
+    border:none !important;
+}
+
+.htmlReprContainer tbody td{
+    border:none !important;
+}

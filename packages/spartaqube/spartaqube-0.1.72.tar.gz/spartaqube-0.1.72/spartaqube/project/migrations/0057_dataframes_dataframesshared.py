@@ -1,0 +1,9 @@
+_E='Date created'
+_D='date_created'
+_C='table_name'
+_B=False
+_A=True
+from django.conf import settings
+from django.db import migrations,models
+import django.db.models.deletion
+class Migration(migrations.Migration):dependencies=[migrations.swappable_dependency(settings.AUTH_USER_MODEL),('project','0056_kernelzmqport')];operations=[migrations.CreateModel(name='DataFrames',fields=[('id',models.BigAutoField(auto_created=_A,primary_key=_A,serialize=_B,verbose_name='ID')),(_C,models.CharField(db_index=_A,max_length=100,null=_A)),('df_blob',models.BinaryField(null=_A)),('dispo',models.DateTimeField(db_index=_A,null=_A,verbose_name='Dispo date')),(_D,models.DateTimeField(null=_A,verbose_name=_E)),('last_update',models.DateTimeField(null=_A,verbose_name='Last update'))],options={'unique_together':{(_C,'dispo')}}),migrations.CreateModel(name='DataFramesShared',fields=[('id',models.BigAutoField(auto_created=_A,primary_key=_A,serialize=_B,verbose_name='ID')),(_D,models.DateTimeField(null=_A,verbose_name=_E)),('is_delete',models.BooleanField(default=_B)),('is_owner',models.BooleanField(default=_B)),('dataframe',models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,to='project.dataframes')),('share_rights',models.ForeignKey(null=_A,on_delete=django.db.models.deletion.CASCADE,to='project.sharerights')),('user',models.ForeignKey(null=_A,on_delete=django.db.models.deletion.CASCADE,to=settings.AUTH_USER_MODEL,verbose_name='User to share the indicator with')),('user_group',models.ForeignKey(null=_A,on_delete=django.db.models.deletion.CASCADE,to='project.usergroup',verbose_name='Group to share the indicator with'))])]

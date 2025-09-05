@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0017_dbconnector_last_date_used')];operations=[migrations.AddField(model_name='plotdbchart',name='last_date_used',field=models.DateTimeField(null=True,verbose_name='Last date used'))]

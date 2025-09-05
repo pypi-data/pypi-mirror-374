@@ -1,0 +1,13 @@
+/* 3.36. Particles */
+.ld-particles-container { width: 100%; height: 450px; }
+.lqd-particles-bg-wrap .ld-particles-container { height: 100%; }
+
+.lqd-particles-bg-wrap, .ld-particles-inner { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+
+.lqd-particles-bg-wrap { top: 50%; -webkit-transform: translateY(-50%); transform: translateY(-50%); }
+
+
+.authSocialIcon{
+    font-size:2em; margin:10px;
+    cursor: pointer;
+}

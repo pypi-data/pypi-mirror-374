@@ -1,0 +1,3 @@
+from django.db import migrations
+import picklefield.fields
+class Migration(migrations.Migration):dependencies=[('project','0068_dataframemodel_connector_config_and_more')];operations=[migrations.AddField(model_name='plotdbchart',name='state_params',field=picklefield.fields.PickledObjectField(default=dict,editable=False,null=True,verbose_name='This is a dictionary containing the state of the component'))]

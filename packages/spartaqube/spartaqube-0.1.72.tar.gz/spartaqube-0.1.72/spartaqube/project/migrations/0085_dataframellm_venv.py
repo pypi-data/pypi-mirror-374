@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0084_dataframellm_llm_conversation_spartaqube_api_rag')];operations=[migrations.AddField(model_name='dataframellm',name='venv',field=models.TextField(null=True))]

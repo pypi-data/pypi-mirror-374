@@ -1,0 +1,27 @@
+.cm-s-ipython.CodeMirror { background: #f7f7f7; color: #3a3432; }
+.cm-s-ipython div.CodeMirror-selected { background: #d6d5d4; }
+
+.cm-s-ipython span.cm-meta { color: #AA22FF; }
+.cm-s-ipython span.cm-keyword { line-height: 1em; font-weight: bold; color: #008000; }
+.cm-s-ipython span.cm-atom { color: #88F; }
+.cm-s-ipython span.cm-number { color: #080; }
+.cm-s-ipython span.cm-def {color: #00f;}
+.cm-s-ipython span.cm-variable { color: #000; }
+.cm-s-ipython span.cm-variable-2 { color: rgba(0, 0, 0, 0.904); }
+.cm-s-ipython span.cm-variable-3, .cm-s-ipython span.cm-type { color: rgba(0, 0, 0, 0.796); }
+.cm-s-ipython span.cm-property { color: #4783bf; }
+.cm-s-ipython span.cm-operator { color: #AA22FF; font-weight: bold;}
+.cm-s-ipython span.cm-comment { color: #007979; font-style: italic;}
+.cm-s-ipython span.cm-string { color: #BA2121; }
+.cm-s-ipython span.cm-string-2 {color: #f50;}
+.cm-s-ipython span.cm-qualifier {color: #555;}
+.cm-s-ipython span.cm-builtin { color: #008000; }
+.cm-s-ipython span.cm-bracket {color: #997;}
+.cm-s-ipython span.cm-tag {color: #170;}
+.cm-s-ipython span.cm-attribute {color: #00c;}
+.cm-s-ipython span.cm-link {color: #00c;}
+.cm-s-ipython span.cm-error { color: #f00; }
+
+.cm-s-ipython .CodeMirror-activeline-background { background: #e8f2ff; }
+.cm-s-ipython .CodeMirror-matchingbracket { outline:1px solid grey; color:black !important; }
+.cm-s-ipython .CodeMirror-gutters { background:white }

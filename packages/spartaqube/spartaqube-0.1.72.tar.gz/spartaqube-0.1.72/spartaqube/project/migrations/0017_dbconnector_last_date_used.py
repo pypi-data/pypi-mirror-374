@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0016_dbconnector_trusted_connection')];operations=[migrations.AddField(model_name='dbconnector',name='last_date_used',field=models.DateTimeField(null=True,verbose_name='Last date used'))]

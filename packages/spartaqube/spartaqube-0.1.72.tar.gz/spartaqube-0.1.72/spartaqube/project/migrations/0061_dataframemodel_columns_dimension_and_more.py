@@ -1,0 +1,3 @@
+_A='dataframemodel'
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0060_dataframemodel_description')];operations=[migrations.AddField(model_name=_A,name='columns_dimension',field=models.IntegerField(default=0)),migrations.AddField(model_name=_A,name='disk_size',field=models.FloatField(default=0)),migrations.AddField(model_name=_A,name='rows_dimension',field=models.IntegerField(default=0))]

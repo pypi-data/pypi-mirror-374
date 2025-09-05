@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0015_dbconnector_driver')];operations=[migrations.AddField(model_name='dbconnector',name='trusted_connection',field=models.BooleanField(default=True))]

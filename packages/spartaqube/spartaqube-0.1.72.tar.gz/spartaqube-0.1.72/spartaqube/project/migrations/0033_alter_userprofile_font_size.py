@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0032_userprofile_font_size')];operations=[migrations.AlterField(model_name='userprofile',name='font_size',field=models.FloatField(default=13.4))]

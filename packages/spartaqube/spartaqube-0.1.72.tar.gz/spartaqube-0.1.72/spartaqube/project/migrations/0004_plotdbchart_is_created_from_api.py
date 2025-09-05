@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0003_newplotapivariables_user')];operations=[migrations.AddField(model_name='plotdbchart',name='is_created_from_api',field=models.BooleanField(default=False))]

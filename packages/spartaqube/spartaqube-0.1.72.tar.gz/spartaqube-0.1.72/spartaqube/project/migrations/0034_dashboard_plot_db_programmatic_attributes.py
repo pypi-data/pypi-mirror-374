@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0033_alter_userprofile_font_size')];operations=[migrations.AddField(model_name='dashboard',name='plot_db_programmatic_attributes',field=models.TextField(null=True))]

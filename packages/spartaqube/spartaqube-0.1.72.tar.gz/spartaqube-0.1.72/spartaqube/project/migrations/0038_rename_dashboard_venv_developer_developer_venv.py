@@ -1,0 +1,2 @@
+from django.db import migrations
+class Migration(migrations.Migration):dependencies=[('project','0037_remove_developer_is_expose_view_and_more')];operations=[migrations.RenameField(model_name='developer',old_name='dashboard_venv',new_name='developer_venv')]

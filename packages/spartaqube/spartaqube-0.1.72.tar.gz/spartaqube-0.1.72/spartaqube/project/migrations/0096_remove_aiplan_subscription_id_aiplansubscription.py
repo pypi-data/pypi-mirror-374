@@ -1,0 +1,5 @@
+_B='subscription_id'
+_A=True
+from django.db import migrations,models
+import django.db.models.deletion
+class Migration(migrations.Migration):dependencies=[('project','0095_remove_aiplan_session_id_remove_cloudplan_session_id_and_more')];operations=[migrations.RemoveField(model_name='aiplan',name=_B),migrations.CreateModel(name='AIPlanSubscription',fields=[('id',models.BigAutoField(auto_created=_A,primary_key=_A,serialize=False,verbose_name='ID')),('tmp_key',models.CharField(max_length=100,null=_A)),(_B,models.CharField(max_length=100,null=_A)),('billed_frequency',models.CharField(default='monthly',max_length=20)),('status',models.CharField(default='pending',max_length=10)),('last_update',models.DateTimeField(null=_A,verbose_name='Last update')),('date_created',models.DateTimeField(null=_A,verbose_name='Date created')),('ai_plan',models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,to='project.aiplan'))])]

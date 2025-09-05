@@ -1,0 +1,803 @@
+.modal-open .select2-container{
+    /* z-index: 1701 !important; */
+    /* z-index: 1701 !important; */
+}
+
+.page-aside{
+    overflow-y: auto !important;
+}
+
+.page-aside .list-group-item-menu {
+    padding: 13px 30px;
+    margin-bottom: 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border: 0;
+}
+
+.vc-sketch{
+    z-index: 1000 !important;
+}
+
+.list-group-item-menu:hover{
+    color: #3f51b5;
+    background-color: #eee;
+    border: 0;
+}
+
+a.list-group-item-menu{
+    color: #757575;
+}
+
+a.list-group-item-menu:hover{
+    background-color: #eee;
+}
+
+.page-aside-selected{
+    color: #3f51b5;
+    background-color: #eee;
+    border: 0; 
+}
+
+.page-aside-selected > .icon {
+    color: #3f51b5;
+}
+
+.list-group-item-menu.asideSection.page-aside-selected{
+    color: #3f51b5;
+}
+
+.headerContainerConnector{
+    border-bottom: solid 1px #ececec; margin-bottom:0px !important;
+}
+
+.connectorEngineElem{
+    border:solid 1px #dcdcdc; 
+    padding:15px; 
+    margin:10px; 
+    height:120px;
+    cursor: pointer;
+}
+
+.connectorEngineElem:hover{
+    background-color: white;
+}
+
+.connectorPreviewOutputJson{
+    max-height:300px; overflow:auto; margin-top:10px; background:white; padding:10px; border: solid 1px #dcdcdc;
+}
+
+.previewPrintedVariables{
+    border:solid 0px black !important; max-height: 300px; overflow:auto;
+}
+
+.kernelConnectionOverlay{
+    height:100%; 
+    width:calc(100% - 0px);
+    top:40px; 
+    left:0; 
+    position:absolute; 
+    background: white; 
+    z-index:100; 
+    opacity:0.90; 
+    border:solid 1px #dcdcdc;
+}
+
+#plotGUI{
+    height:calc(100vh); overflow-y:hidden; overflow-x:hidden; border: solid 1px #dcdcdc;
+}
+
+.step-icon {
+    float: left;
+    margin-right: .5em;
+    margin-top: -5px !important;
+    font-size: 25px !important; 
+}
+
+.stepSubTitle{
+    font-size:0.7em; text-transform:uppercase;
+    margin-top: -5px;
+    font-family: Azonix;
+}
+
+.plotConfiguratorHeaderSelectedType{
+    text-overflow: ellipsis;
+    width: 135px !important;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* DEV APPS */
+.connectorContainer{
+    border-radius: 0.286rem;
+    background-color: #fff;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    text-align: center;
+
+    border: 1px solid #BFBFBF;
+    height:250px !important;
+    color:#757575 !important;
+    cursor: default;
+}
+.connectorContainer:hover{
+    border: solid 1px #3f51b5;
+}
+
+.connectorContentIcon{
+    font-size: 65px;
+}
+
+.connectorNameContent{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.connectorDescription{
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    display: -webkit-box; 
+    -webkit-line-clamp: 2; 
+    -webkit-box-orient: vertical;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.connectorControlBtn{
+    text-align:right;
+    max-height: 50px;
+    border-bottom: solid 1px #dcdcdc;
+    padding:5px;
+}
+
+.connectorContainerList{
+    border-radius: 0.286rem;
+    background-color: #fff;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    border: 1px solid #BFBFBF;
+    color:#757575 !important;
+    cursor: default;
+    padding:5px;
+    margin-left: 0px;
+}
+
+.connectorContainerList:hover{
+    border: solid 1px #3f51b5;
+}
+
+.borderLeft{
+    border-left: solid 1px #dcdcdc;
+}
+
+.btnConnectorMargin{
+    margin-top: 5px;
+}
+
+.dragNDropFilePicker{
+    cursor: pointer;
+    border: 2px dashed #dcdcdc; 
+    padding: 20px;
+    min-height: 150px;
+    vertical-align: center;
+    font-size: 1.7em;
+    text-align: center;
+    margin: auto;
+}
+
+.dragNDropFilePicker:hover{
+    background-color: #dcdcdc;
+}
+
+#connectorNewPlotStickyBar, #addConnectorStickyBar, #addConnectorEngineStickyBar{
+    height:50px;
+    position:sticky; top:0px;
+    padding-top:5px;
+    padding-bottom:5px;
+    padding-left:30px;
+    padding-right:30px;
+    z-index:10;
+    background:white;
+    border-bottom: solid 1px #e0e0e0;
+}
+
+.dataSourcePanelCreateContainer{
+    border-left: solid 1px #dcdcdc; background:white; 
+    z-index: 10;
+}
+
+.gettingStartedTitle{
+    color: rgb(117, 117, 117) !important;
+}
+
+.emptyDroppableInput{
+    text-align: left;
+    color: red;
+    font-size:0.85em;
+    font-style:italic;
+    display: inline-block; /* Ensure it's treated as an inline element for text-overflow to work */
+    max-width: 100%; /* Adjust as necessary for the parent container */
+    width: 100%;
+    overflow: hidden; /* Hide overflow content */
+    white-space: nowrap; /* Prevent text from wrapping */
+    text-overflow: ellipsis; /* Add ellipsis (...) when text overflows */
+}
+
+.noConnectorSourceContainer{
+    padding-left:40px;
+    margin-top: 20px;
+    border-top: solid 1px #dcdcdc;
+    clear: left;
+    text-align: center;
+}
+
+.droppableField{
+    padding: 10px;
+    min-height: 45px;
+    white-space: nowrap;
+}
+
+.droppableX{
+    background: #eeeeee;
+}
+
+.droppableOptional{
+    background: #eeeeee;
+}
+
+.droppableFieldHover{
+    background-color: #dcdcdc;
+}
+
+.droppableY{
+    background: #eeeeee;
+}
+
+.plotPreviewTitle{
+    background-color: white;
+    padding: 10px;
+}
+
+.matrixHeatbarSegmentHorz{
+    /* flex-grow: 1; */
+    /* height: 100%; */
+    display: inline-block;
+}
+.matrixHeatbarSegmentVert{
+    /* flex-grow: 1; */
+    /* height: 100%; */
+    display: block;
+}²
+
+.openErrorMsg{
+    cursor: pointer;
+}
+
+.openErrorMsg:hover{
+    text-decoration: underline;
+}
+
+.dataSourceField:hover{
+    background-color: #3f51b5;
+    color: white;
+}
+
+.dataSourceFieldIndex:hover{
+    background-color: #616161 !important;
+    color: white;
+}
+
+.codeExample{
+    padding:10px;
+    border: solid 1px #ddd;
+    background-color: #f9f9f9;
+    font-family: monospace,Courier;
+    color:black;
+}
+
+.dropdown-item{
+    cursor: pointer;
+}
+
+.contextMenuChartJS{
+    position: absolute;
+    background-color: white;
+    border: solid 1px #dcdcdc;
+    min-width: 150px;
+    font-size: 11px;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,.1);
+    z-index: 100;
+}
+
+.menu-item-context{
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: pointer;
+    /* border-bottom: solid 1px #dcdcdc; */
+}
+
+.menu-item-context:hover{
+    background-color: #dcdcdc;
+}
+
+.stickyMetricsHeader{
+    position: sticky;
+    top: 0px;
+    background-color: white;
+}
+
+.plotTypeSelectContainer{
+    border-color: solid 1px #dcdcdc;
+}
+
+.clusterizeRawData{
+    border: solid 1px #dcdcdc;
+}
+
+/* DATAFRAME DATA STORE EXPLORER */
+.dataFrameTableContainer{
+    height: calc(100% - 30px);
+    border: solid 1px #dcdcdc;
+}
+
+.dataStoreExplorerContainer{
+    padding:0px; border-left: solid 1px #dcdcdc; padding-left:30px; padding-right:30px;
+}
+
+/*
+    ATTRIBUTES
+*/
+.attributeHeaderBtnSticky{
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+    background-color: white;
+    border-bottom: solid 1px #dcdcdc;
+    z-index: 1000;
+}
+
+.tokenCmd{
+    padding: 5px; 
+    background-color: #ececec;
+    border: solid 1px #dcdcdc;
+    font-weight:bold;
+    font-size:0.80em;
+    overflow: auto;;
+}
+
+.centered-div {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%; /* Adjust as needed */
+    height: 200px; /* Adjust as needed */
+    text-align: center;
+    line-height: 200px; /* Should match the height for vertical centering */
+}
+
+.chartTypeTitle{
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.chartTypeLibraryType{
+    /* width: 100%; */
+    font-style: italic;
+    font-size: 8.5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    border: solid 1px #e0e0e0;
+    padding:1px;
+    padding-left:5px;
+    padding-right:5px;
+    border-radius: .215rem;
+    margin: auto;
+    display: table;
+}
+
+.emptyPreviewContainer{
+    text-align: center;
+    margin: 0;
+    position: absolute;
+    top: 30%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    left: 50%;
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.stepContainerSm{
+    height:75px; border-bottom: solid 1px #dcdcdc;
+}
+
+.stepContainerOther{
+    height:75px; border-bottom: solid 1px #dcdcdc;
+}
+
+#codeEditorWorkspaceContainer{
+    border-left: solid 1px #dcdcdc; 
+    background:white; 
+    height:calc(100vh - 185px); 
+    padding:0px !important; 
+    margin:0px !important;
+}
+
+.workspaceSearchBar{
+    border: solid 0px #dcdcdc; border-bottom: solid 1px #dcdcdc;
+}
+
+.workspaceVariableContainer{
+    height: calc(100% - 75px);
+    border-left: solid 0px #dcdcdc;
+}
+
+.chartConfiguratorContainer{
+    border-left: solid 1px #dcdcdc; background:white; padding:0px;
+}
+
+.chartSourceAttributeContainer{
+    border-left: solid 1px #dcdcdc; background:white;
+    overflow-y: hidden;
+    /* padding-right: 0px; */
+}
+
+.chartPaletteContainer{
+    border-left: solid 1px #dcdcdc; background:white;
+}
+
+.chartProgrammaticModeContainer{
+    border-left: solid 1px #dcdcdc; background:white;
+}
+
+.headerLibrary{
+    background-color: white;
+    padding-left:5px;
+    padding-right:5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: solid 1px #dcdcdc;
+}
+
+.theadLibrary{
+    position: sticky; background: white; top: 0px; z-index: 1000;
+}
+
+.tableLibraryNameColumns{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 150px;
+}
+
+.chartLibraryPreviewContainer{
+    padding:0px; border-left: solid 1px #dcdcdc; padding-left:30px; padding-right:30px;
+}
+
+.rowLibraryClSelected{
+    color: #3f51b5 !important;
+    background-color: white;
+}
+
+.programmaticCodeContainer{
+    overflow-y: auto; border: solid 1px #dcdcdc;
+}
+
+.hashtagCategory{
+    cursor: pointer;
+}
+
+.hashtagCategory:hover{
+    background-color: #616161 !important;
+    color: white;
+}
+
+.hashtagCategorySelected{
+    background-color: #616161 !important;
+    color: white !important;
+}
+
+.formConstructorItemContainer{
+    padding-right:10px;
+}
+
+.btnNotebookPickerVar{
+    padding:2px;
+    margin-bottom: 5px;
+}
+
+.descriptionAttribute{
+    font-size: 0.85em;
+    font-style: italic;
+}
+
+.wssStartStream{
+    float:right; margin-top:10px;
+}
+
+.wssStartStreamWidget{
+    float:right; margin-top:5px; margin-right:10px;
+}
+
+.vega-bind-name{
+    margin-right: 15px !important;
+}
+
+.chartContainerComponent{
+    /* height: 100%; 
+    width: 100%; */
+    height: 100%; 
+}
+
+.chartContainerComponentLightweight{
+    height: 100%; 
+    width: 100%;
+}
+
+.vegaChartMainContainer{
+    height:100%; 
+    width:100%;
+    overflow: hidden;
+}
+
+.asideSectionForceSm{
+    display: block !important;
+    width: 75px !important;
+    z-index: 1101;
+}
+
+.mainContainerForceSm{
+    margin-left: 74px !important;
+}
+
+/* PLOT DEVELOPER MODE */
+.plotDBDeveloperLibraryElemContainer{
+    border-radius: 0.286rem;
+    background-color: #fff;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    border: 1px solid #BFBFBF;
+    height:270px !important;
+    color:#757575 !important;
+    cursor: default;
+}
+.plotDBDeveloperLibraryElemControlBtn{
+    text-align:right;
+    max-height: 50px;
+    border-bottom: solid 1px #dcdcdc;
+    padding:5px;
+}
+.plotDBDeveloperLibraryElemIcon{
+    font-size: 65px;
+}
+.plotDBDeveloperLibraryElemNameContent{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.plotDBDeveloperLibraryElemDescription{
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    display: -webkit-box; 
+    -webkit-box-orient: vertical;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-style:italic; 
+    font-size: 15px; 
+}
+
+/*screen-sm*/
+@media (max-width: 768px) {                            
+    .asideSectionSm{
+        display: block !important;
+        width: 75px !important;
+    }
+
+    .filterConnectorsBtnSection{
+        display: none !important;
+    }
+
+    .asideSectionOther{
+        display: none !important;
+    }
+
+    .createNewConnectorBtnText{
+        display: none !important;
+    }
+
+    .createNewConnectorBtnIcon{
+        display: block !important;
+    }
+
+    .mainContainer{
+        margin-left: 74px !important;
+    }
+
+    .stepContainerSm{
+        display: block !important;
+    }
+
+    .stepContainerOther{
+        display: none !important;
+    }
+
+    .stepTitleContainer{
+        display: none !important;
+    }
+
+    .sectionTitleHeaderSm{
+        display: block !important;
+        font-size: 0.95em;
+    }
+
+    .sectionTitleHeaderOther{
+        display: none !important;
+    }
+
+    .chartTypeTitleHeader{
+        display: inline-block;
+        white-space:nowrap;
+        text-overflow: ellipsis;
+        width: 110px;
+        overflow: hidden;
+    }
+
+    .changeTypeText{
+        display: none !important;
+    }
+
+    .modalLabelSm{
+        display: block !important;
+    }
+
+    .modalLabelOther{
+        display: none !important;
+    }
+}
+
+/*other*/
+@media (min-width: 769px) and (max-width: 1199.98px) {
+    .asideSectionSm{
+        width: 73px !important;
+        border-left: solid 1px #dcdcdc;
+        display: block !important;
+    }
+
+    .filterConnectorsBtnSection{
+        display: none !important;
+    }
+
+    .asideSectionOther{
+        display: none !important;
+    }
+
+    .createNewConnectorBtnText{
+        display: block !important;
+    }
+
+    .createNewConnectorBtnIcon{
+        display: none !important;
+    }
+
+    .mainContainer{
+        margin-left: 74px !important;
+    }
+
+    .stepContainerSm{
+        display: block !important;
+    }
+
+    .stepContainerOther{
+        display: none !important;
+    }
+
+    .stepTitleContainer{
+        display: block !important;
+    }
+
+    .sectionTitleHeaderSm{
+        display: block !important;
+        font-size: 0.95em;
+    }
+
+    .sectionTitleHeaderOther{
+        display: none !important;
+    }
+
+    .changeTypeText{
+        display: none !important;
+    }
+
+    .chartTypeTitleHeader{
+        display: inline-block;
+        white-space:nowrap;
+        text-overflow: ellipsis;
+        width: 110px;
+        overflow: hidden;
+    }
+
+    .modalLabelSm{
+        display: block !important;
+    }
+
+    .modalLabelOther{
+        display: none !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    .asideSectionSm{
+        display: none !important;
+    }
+
+    .filterConnectorsBtnSection{
+        display: block !important;
+    }
+
+    .asideSectionOther{
+        width: 260px !important;
+        display: block !important;
+    }
+
+    .createNewConnectorBtnText{
+        display: block !important;
+    }
+
+    .createNewConnectorBtnIcon{
+        display: none !important;
+    }
+
+    .mainContainer{
+        margin-left: 260px !important;
+    }
+
+    .stepContainerSm{
+        display: none !important;
+    }
+
+    .stepContainerOther{
+        display: block !important;
+    }
+
+    .stepTitleContainer{
+        display: block !important;
+    }
+
+    .sectionTitleHeaderSm{
+        display: none !important;
+    }
+
+    .sectionTitleHeaderOther{
+        display: block !important;
+    }
+
+    .changeTypeText{
+        display: inline-block !important;
+    }
+
+    .chartTypeTitleHeader{
+        display: inline-block;
+        margin-right:10px;
+        white-space:nowrap;
+        text-overflow: ellipsis;
+        width: 210px;
+        overflow: hidden;
+    }
+
+    .modalLabelSm{
+        display: none !important;
+    }
+
+    .modalLabelOther{
+        display: block !important;
+    }
+}

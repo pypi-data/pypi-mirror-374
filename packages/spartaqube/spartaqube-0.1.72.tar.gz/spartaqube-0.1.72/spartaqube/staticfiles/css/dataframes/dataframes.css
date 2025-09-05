@@ -1,0 +1,236 @@
+.dataFrameComponentsHeader{
+    border-bottom: solid 1px #ececec; margin-bottom:0px !important;
+}
+
+.headerContainerDataFrameConfigurePlotDB{
+    padding-top: 0px;
+    padding-bottom: 12px !important;
+    margin-bottom: 0px !important;
+    border-bottom: solid 1px #ececec; margin-bottom:0px !important;
+}
+
+.articleStickyDataFrame{
+    border: solid 1px #dcdcdc;
+    max-height: calc(100vh - 189px) !important;
+    overflow: auto;
+}
+
+.dataFrameFilterDispoRadio{
+    border-bottom: solid 1px #dcdcdc;
+    padding-bottom: 10px;
+    margin-bottom: 0px !important;
+}
+
+.sticky-selectors {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    /* background-color: #1e1e2f; */
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dcdcdc;
+    z-index: 1099;
+    background-color: white;
+}
+
+.sticky-selectors-plot-db, .sticky-selectors-chart-library{
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    /* background-color: #1e1e2f; */
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    border-bottom: 1px solid #dcdcdc;
+    z-index: 1099;
+    background-color: #f1f4f5;
+}
+
+.sticky-selectors-widget {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    /* background-color: #1e1e2f; */
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    border-bottom: 1px solid #dcdcdc;
+    z-index: 1099;
+    background-color: white;
+}
+
+.sticky-selectors-dashboard{
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    /* background-color: #1e1e2f; */
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    border-bottom: 1px solid #dcdcdc;
+    z-index: 1099;
+    background-color: white;
+}
+
+.sticky-selectors-gui-plot{
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    /* background-color: #1e1e2f; */
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    border-bottom: 1px solid #dcdcdc;
+    z-index: 1099;
+    background-color: white;
+}
+
+.btn-sticky-selector{
+    width:100%; margin-top:37px;
+}
+
+.btn-sticky-selector-plot-db, .btn-sticky-selector-widget, .btn-sticky-selector-chart-library{
+    width:100%; margin-top:0px;
+}
+
+.sticky-left-panel {
+    position: sticky;
+    top: 110px;
+    margin-left: 20px;
+    width: 200px;
+    height: calc(100vh - 110px);
+    height: fit-content;
+    /* background-color: #1e1e2f; */
+    padding: 10px;
+    z-index: 101;
+    flex-shrink: 0;
+    overflow-y: auto;
+}
+
+.btnHeaderContainer{
+    padding-right:12px; padding-top:12px;
+}
+
+.with-sticky-left {
+    margin-left: 0px;
+    padding-right: 10px;
+    width: calc(100% - 300px);
+}
+
+.page-aside-selected-dataframe{
+    color: #757575;
+    background-color: #EEEEEE;
+    border: 0; 
+}
+
+.page-aside-selected-dataframe:hover{
+    color: #757575;
+    background-color: #EEEEEE;
+    border: 0; 
+}
+
+.page-aside-selected-dataframe > .icon {
+    color: #3f51b5 !important;
+}
+
+/* FEATURES ENGINEERING */
+.gridOptionContainer{
+    padding: 5px;
+    border: solid 1px #dcdcdc;
+    border-radius: 5px;
+}
+
+.fieldDataProcessingContainer{
+    border: solid 1px #dcdcdc;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+/* STATS MODELS */
+.regression-summary {
+    font-family: 'Courier New', monospace;
+    color: #757575;
+    max-width: 800px;
+    /* margin: 0 auto; */
+    line-height: 1.5;
+}
+.regression-summary table.simpletable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+.regression-summary caption {
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 8px;
+    margin-top: 25px;
+}
+.regression-summary th, 
+.regression-summary td {
+    padding: 6px 10px;
+    border-bottom: 1px solid #dcdcdc;
+    text-align: left;
+    vertical-align: top;
+}
+.regression-summary th {
+    font-weight: 600;
+    color: #757575;
+}
+.regression-summary td {
+    color: #757575;
+}
+.regression-summary .note {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #757575;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.dropdown-menu{
+    z-index: 2000 !important;
+}
+
+.dropdown-menu.show{
+    z-index: 2000 !important;
+}
+
+.dropdown-menu.open{
+    z-index: 2000 !important;
+}
+
+.dropdown-item{
+    z-index: 2000 !important;
+}
+
+
+/*screen-sm*/
+@media (max-width: 768px) {                            
+    .openDataFrameTitle{
+        display: none;
+    }
+    .addSourceTitle{
+        display: none;
+    }
+}
+
+/*other*/
+@media (min-width: 769px) and (max-width: 1199.98px) {
+    .openDataFrameTitle{
+        display: none;
+    }
+    .addSourceTitle{
+        display: none;
+    }
+}
+
+@media (min-width: 1200px) {
+    .openDataFrameTitle{
+        display: inline-block;
+    }
+    .addSourceTitle{
+        display: inline-block;
+    }
+}

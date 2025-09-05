@@ -1,0 +1,8 @@
+{% extends "../baseOffline.html" %} {% load static %} {% load project_extras %} {% block otherCSS %}<link rel="stylesheet" href="{% static 'assets/examples/css/pages/login-v3.css' %}">{% endblock %} {% block title %} Error {% endblock %} {% block content %}<style>.page-copyright-inverse{
+        color: #424242 !important;
+    }
+    .page-copyright-inverse .social .icon{
+        color: #424242 !important;
+    }</style><body class="animsition page-error page-error-400 layout-full"><!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]--><div class="page vertical-align text-center" data-animsition-in="fade-in" data-animsition-out="fade-out"><div class="page-content vertical-align-middle"><header><h1 class="animation-slide-top">400</h1><p>BAD REQUEST !</p></header><p class="error-advise">YOU HAVE ISSUED A MALFORMED OR ILLEGAL REQUEST. TRY TO REFRESH THE PAGE (press F5)</p><a class="btn btn-large btn-primary" href="/home">GO TO HOME PAGE</a><div style="color:black !important">{% include "../auth/authFooter.html" %}</div></div></div>{% endblock %} {% block otherJS %}<script src="{% static 'globalqube/vendor/formvalidation/formValidation.js' %}"></script><script src="{% static 'globalqube/vendor/formvalidation/framework/bootstrap.js' %}"></script><script src="{{ manifest|get_item:'auth_login.js' }}"></script>{% endblock %}</body>

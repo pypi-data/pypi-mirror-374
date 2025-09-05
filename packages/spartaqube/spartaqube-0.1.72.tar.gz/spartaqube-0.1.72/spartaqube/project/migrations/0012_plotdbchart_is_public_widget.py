@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0011_dbconnector_py_code_processing')];operations=[migrations.AddField(model_name='plotdbchart',name='is_public_widget',field=models.BooleanField(default=False))]

@@ -1,0 +1,93 @@
+<!doctype html><html lang="en"><head><script async src="https://www.googletagmanager.com/gtag/js?id=G-CXHTH0VZPN"></script><script>window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-CXHTH0VZPN');</script>{% block meta %}<meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,minimal-ui"><meta name="description" content=""><meta name="author" content="">{% endblock %} {% load static %} {% load project_extras %}<link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}"><link rel="stylesheet" href="{% static 'fonts/material-design/material-design.min.css' %}"><link rel="stylesheet" href="{% static 'fonts/brand-icons/brand-icons.min.css' %}"><link rel="stylesheet" href="{% static 'global/fonts/font-awesome/font-awesome.css' %}"><link rel="stylesheet" href="{% static 'css/font-awesome/css/font-awesome.min.css' %}"><link rel="stylesheet" href="{% static 'css/vendor/style.css' %}"/><link rel="stylesheet" href="{% static 'css/base.css' %}"/>{% block otherCSS %} {% endblock %} {% include "dist/project/import/importCSS.html" %}<script src="{% static 'globalqube/vendor/breakpoints/breakpoints.js' %}"></script><script>Breakpoints();</script>{% comment %}<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>{% endcomment %}<script src="{% static 'js/util/htmx.min.js' %}"></script><script src="{% static 'js/util/vue.min.js' %}"></script><script src="{% static 'js/util/axios.min.js' %}"></script><script src="{% static 'js/util/bootstrap-vue.common.min.js' %}"></script><title>{% block title %}{{ PROJECT_NAME }}{% endblock %}</title><style>@font-face {
+            font-family: Azonix;
+            src: url("{% static 'fonts/Azonix/Azonix.otf' %}") format("opentype");
+        }
+        #ajaxNavigationLoader {
+          /*display: none;
+          position: fixed;
+          top: 0; left: 0;
+          width: 100vw;
+          height: 100vh;
+          background: rgba(255, 255, 255, 0.7);
+          z-index: 9999;
+          justify-content: center;
+          align-items: center;*/
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          z-index: 9999;
+          background: rgba(255, 255, 255, 0.2);
+          backdrop-filter: blur(10px);
+          align-items: center;
+          justify-content: center;
+          transition: opacity 0.3s ease;
+        }</style></head>{% block body %}<body class="animsition site-menubar-fold site-menubar-keep">{% endblock %} {% block navBar %} {% if bFullRender|default_if_none:True %} {% include "dist/project/navBar.html" %} {% endif %} {% endblock %} {% block menuBar %} {% if bFullRender|default_if_none:True %} {% include "dist/project/menuBarV1.html" %} {% endif %} {% endblock %} {% include "dist/project/variablesInjection.html" %} {% if bFullRender|default_if_none:True %}<div id="ajaxNavigationLoader" class="loading-overlay"><div class="spinner"></div><div class="spinnerDark"></div><div class="pageNavTitle" style="position: absolute; top: calc(50% + 60px); left: 50%; transform: translate(-50%, -50%); width: 100%; height: 30px;text-align: center; line-height: 30px;">Loading view, please wait</div></div>{% endif %} {% block content %}<div class="page"></div>{% endblock %} {% if bFullRender|default_if_none:True %}<footer id="sqFooter" style="overflow:hidden"><div class="row" style="overflow:hidden"><div class="col-3 text-left" style="left:105px"><sq-kernel-manager-panel ref="sq-kernel-manager-panel"></sq-kernel-manager-panel></div><div class="col-6 text-center">&copy; <span class="pageNavTitle">{{ PROJECT_NAME }}</span> {% now 'Y' %}</div><div class="col-3 text-right" style="right:10px;">version {{ CURRENT_VERSION }}</div></div></footer>{% endif %} {% if bFullRender|default_if_none:True %}<script>var B_DARK_THEME = {{ B_DARK_THEME | js }};
+    var WEBSOCKET_PREFIX = {{ WEBSOCKET_PREFIX | js }};
+    var HOST_WS_PREFIX_SQ = {{ HOST_WS_PREFIX | js }};
+    var CHECK_VERSIONING = {{ CHECK_VERSIONING | js }};
+    var IS_KERNEL_COMPUTATION = {{ IS_KERNEL_COMPUTATION | js }}
+    var URL_PREFIX = {{ URL_PREFIX | js }};
+    var URL_WS_PREFIX = {{ URL_WS_PREFIX | js }};
+    var ASGI_PORT = {{ ASGI_PORT | js }};
+    var IS_DEV = {{ IS_DEV | js }};
+    var IS_LLM = {{ IS_LLM | js }};
+    var IS_VITE = {{ IS_VITE | js }};
+    var IS_DOCKER = {{ IS_DOCKER | js }};
+    var CYPRESS_TEST_APP = {{ CYPRESS_TEST_APP | js }};
+    var IS_DEV_VIEW_ENABLED = {{ IS_DEV_VIEW_ENABLED | js }};</script>{% endif %} {% include "dist/project/import/importJS.html" %} {% block otherJS %} {% endblock %} {% if bFullRender|default_if_none:True %}<script>(function(document, window, $){
+      'use strict';
+
+      var Site = window.Site;
+      $(document).ready(function(){
+        Site.run();
+      });
+    })(document, window, jQuery);
+
+    function js_print(msg){
+
+    }</script>{% endif %} {% if bFullRender|default_if_none:True %}<script type="module" src="{{ manifest|get_item:'footer.js' }}"></script>{% endif %} {% comment %}<script>function mountDynamicPageApp() {
+    const app = document.querySelector("#app");
+    const pageName = app?.getAttribute("data-page");
+
+    if (!pageName || !window._pageMounters) return;
+
+    const mountFn = window._pageMounters[pageName];
+    if (typeof mountFn === "function") {
+      mountFn();
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", mountDynamicPageApp);
+  document.addEventListener("htmx:afterSwap", mountDynamicPageApp);</script>{% endcomment %} {% comment %}<script>document.addEventListener("htmx:afterSwap", function(evt) {
+    if (document.querySelector('#app')?.getAttribute('data-page') === 'api') {
+      if (typeof window.mountApiApp === 'function') {
+        window.mountApiApp();
+      }
+    }
+  });</script>{% endcomment %} {% if bFullRender|default_if_none:True %}<script>function someHandler(e) {
+      console.log('Touch start', e);
+    }
+    // OLD (triggers warning):
+    window.addEventListener('touchstart', someHandler);
+    // NEW (no warning):
+    window.addEventListener('touchstart', someHandler, { passive: true });</script><script>try{
+      const spinnerAjax = document.getElementById("ajaxNavigationLoader");
+      document.addEventListener("htmx:beforeRequest", () => {
+        spinnerAjax.style.display = "flex";
+      });
+      /*document.addEventListener("htmx:afterSwap", () => {
+        spinnerAjax.style.display = "none";
+      });
+      document.addEventListener("htmx:responseError", () => {
+        spinnerAjax.style.display = "none";
+      });*/
+    }catch(e){
+      console.log("Error spinner ajax")
+      console.log(e)
+    }</script>{% endif %} {% comment %}<script src="https://unpkg.com/default-passive-events"></script>{% endcomment %}</body></html>

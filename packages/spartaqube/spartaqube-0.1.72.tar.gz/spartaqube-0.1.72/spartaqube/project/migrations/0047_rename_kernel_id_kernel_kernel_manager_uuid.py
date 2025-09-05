@@ -1,0 +1,2 @@
+from django.db import migrations
+class Migration(migrations.Migration):dependencies=[('project','0046_kernel_kernelshared')];operations=[migrations.RenameField(model_name='kernel',old_name='kernel_id',new_name='kernel_manager_uuid')]

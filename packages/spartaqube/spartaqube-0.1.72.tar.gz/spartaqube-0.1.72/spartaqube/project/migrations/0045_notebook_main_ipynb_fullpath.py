@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0044_plotdbpermission')];operations=[migrations.AddField(model_name='notebook',name='main_ipynb_fullpath',field=models.TextField(null=True))]

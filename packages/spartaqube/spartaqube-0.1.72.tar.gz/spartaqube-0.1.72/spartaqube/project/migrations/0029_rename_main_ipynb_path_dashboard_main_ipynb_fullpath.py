@@ -1,0 +1,2 @@
+from django.db import migrations
+class Migration(migrations.Migration):dependencies=[('project','0028_dashboard_main_ipynb_path')];operations=[migrations.RenameField(model_name='dashboard',old_name='main_ipynb_path',new_name='main_ipynb_fullpath')]

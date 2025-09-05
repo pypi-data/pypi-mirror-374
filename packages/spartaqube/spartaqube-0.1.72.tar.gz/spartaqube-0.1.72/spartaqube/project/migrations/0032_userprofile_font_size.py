@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0031_dashboard_dashboard_venv')];operations=[migrations.AddField(model_name='userprofile',name='font_size',field=models.IntegerField(default=14))]

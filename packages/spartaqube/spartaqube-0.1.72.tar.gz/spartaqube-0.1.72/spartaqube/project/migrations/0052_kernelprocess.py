@@ -1,0 +1,3 @@
+_A=True
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0051_alter_kernel_kernel_variables')];operations=[migrations.CreateModel(name='KernelProcess',fields=[('id',models.BigAutoField(auto_created=_A,primary_key=_A,serialize=False,verbose_name='ID')),('kernel_manager_uuid',models.CharField(max_length=100,null=_A)),('port',models.IntegerField(default=0)),('pid',models.CharField(max_length=10,null=_A)),('date_created',models.DateTimeField(null=_A,verbose_name='Date created')),('last_update',models.DateTimeField(null=_A,verbose_name='Last update'))])]

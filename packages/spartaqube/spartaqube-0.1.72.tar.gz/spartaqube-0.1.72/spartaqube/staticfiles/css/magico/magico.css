@@ -1,0 +1,37 @@
+.categoryTitle{
+    font-family: "Azonix";
+    margin-bottom:10px;
+    color:black;
+    font-size:30px;
+}
+
+.itemContainer, .itemContainerDataQuant{
+    border: solid 1px #dcdcdc;
+    padding:10px;
+    margin-bottom:10px;
+    cursor:pointer;
+    display: block;
+    color:#757575
+}
+
+.itemContainer:hover{
+    border: solid 1px #3f51b5;
+}
+
+.itemContainerDataQuant:hover{
+    border: solid 1px #3f51b5;
+    color:#3f51b5;
+}
+
+.itemTitle{
+    font-family: "Azonix";
+    word-break: break-all;
+}
+
+.itemDes{
+
+}
+
+.seeMore:hover{
+    text-decoration: underline;
+}

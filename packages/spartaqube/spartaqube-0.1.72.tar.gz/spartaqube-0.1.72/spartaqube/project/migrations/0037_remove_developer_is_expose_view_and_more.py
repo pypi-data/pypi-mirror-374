@@ -1,0 +1,3 @@
+_A='developer'
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0036_developer_developershared')];operations=[migrations.RemoveField(model_name=_A,name='is_expose_view'),migrations.RemoveField(model_name=_A,name='is_public_view'),migrations.AddField(model_name=_A,name='is_expose_developer',field=models.BooleanField(default=False)),migrations.AddField(model_name=_A,name='is_public_developer',field=models.BooleanField(default=False))]

@@ -1,0 +1,6 @@
+_B=True
+_A='kernelprocess'
+from django.conf import settings
+from django.db import migrations,models
+import django.db.models.deletion
+class Migration(migrations.Migration):dependencies=[migrations.swappable_dependency(settings.AUTH_USER_MODEL),('project','0053_kernelprocess_is_live')];operations=[migrations.AddField(model_name=_A,name='dashboard_exec_id',field=models.CharField(max_length=100,null=_B)),migrations.AddField(model_name=_A,name='name',field=models.CharField(max_length=100,null=_B)),migrations.AddField(model_name=_A,name='notebook_exec_id',field=models.CharField(max_length=100,null=_B)),migrations.AddField(model_name=_A,name='project_folder',field=models.CharField(max_length=100,null=_B)),migrations.AddField(model_name=_A,name='type',field=models.IntegerField(default=1)),migrations.AddField(model_name=_A,name='user',field=models.ForeignKey(null=_B,on_delete=django.db.models.deletion.CASCADE,to=settings.AUTH_USER_MODEL,verbose_name='User that spawned the kernel process')),migrations.AddField(model_name=_A,name='venv_name',field=models.CharField(max_length=100,null=_B))]

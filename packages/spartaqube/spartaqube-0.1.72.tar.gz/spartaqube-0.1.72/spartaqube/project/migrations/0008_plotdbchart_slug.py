@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0007_spartaqubecode')];operations=[migrations.AddField(model_name='plotdbchart',name='slug',field=models.SlugField(max_length=150,null=True,unique=True))]

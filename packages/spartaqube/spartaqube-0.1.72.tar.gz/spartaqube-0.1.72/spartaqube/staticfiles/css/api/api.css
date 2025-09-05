@@ -1,0 +1,287 @@
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+
+.functionSection{
+    cursor:pointer;
+}
+.functionSection:hover{
+    background-color: #b64afa !important;
+    color:white !important;
+}
+.functionSectionSelected{
+    background-color: #b64afa !important;
+    color:white !important;
+}
+
+.page-aside .list-group-item-menu {
+    padding: 13px 30px;
+    margin-bottom: 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border: 0;
+}
+
+.list-group-item-menu:hover{
+    color: #3f51b5;
+    background-color: #eee;
+    border: 0;
+}
+
+a.list-group-item-menu{
+    color: #757575;
+}
+
+a.list-group-item-menu:hover{
+    background-color: #eee;
+}
+
+.page-aside-selected{
+    color: #3f51b5;
+    background-color: #eee;
+    border: 0; 
+}
+
+.page-aside-selected > .icon {
+    color: #3f51b5;
+}
+
+.list-group-item-menu.asideSection.page-aside-selected{
+    color: #3f51b5;
+}
+
+.importantText{
+    font-weight:bold;
+    color: #3F51B5;
+}
+
+.tokenCmd{
+    padding: 5px; 
+    background-color: #ececec;
+    border: solid 1px #dcdcdc;
+    font-weight:bold;
+    font-size:0.80em;
+    overflow: auto;;
+}
+
+.page-aside{
+    overflow-y: auto !important;
+}
+
+.page-aside-selected{
+    color: #3f51b5;
+    background-color: #eee;
+    border: 0; 
+}
+
+.page-aside-selected > .icon {
+    color: #3f51b5;
+}
+
+.page-aside-section:after{
+    margin: 0px !important;
+}
+
+.page-aside-title{
+    margin: 0px !important;
+}
+
+.list-group-item {
+    width: 100% !important;
+}
+
+.page-aside .list-group {
+    margin-bottom: 15px !important;
+}
+
+.app-documents .sticky{
+    top: 25px;
+}
+
+.codeExample {
+    padding: 10px;
+    border: solid 1px #ddd;
+    background-color: #f9f9f9;
+    font-family: monospace,Courier;
+    color: black;
+}
+
+.keyValueExplorerContainer{
+    background-color: white;
+    border: solid 1px #dcdcdc;
+    padding:15px;
+}
+
+.cmd{
+    padding: 5px;
+    background-color: #f3f3f3;
+    color: 797979;
+    padding-left: 10px;
+    font-family:monospace;
+    overflow: auto;
+}
+
+.codeOutput{
+    padding:10px; border: dashed 1px #dcdcdc;
+}
+
+.apiOptionsContainer{
+    padding-left: 15px;
+    border-left: solid 1px #3f51b5;;
+}
+
+.apiOptionsTitle{
+    background-color: #EEEEEE;
+    padding: 5px;
+    color: black;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+.inputPlotType{
+    color:black; font-size:0.8em; margin-left:20px;
+}
+
+#optionsApiSticky{
+    padding-left: 10px;
+    padding-right: 10px;
+    position:sticky; background:white; top:0px; border-bottom: solid 1px #dcdcdc; padding-top:20px; padding-bottom:10px; z-index: 100;
+}
+
+.highLightSelectedOptions{
+    background-color: #ff7600 !important;
+    color: white !important
+}
+
+.redirectExample{
+    cursor: pointer;
+    color: #3f51b5 !important;
+}
+
+.redirectExample:hover{
+    text-decoration: underline;
+}
+
+#searchPlotTypeSticky{
+    position: sticky; 
+    top: 0px; 
+    z-index:10; 
+    padding-top:20px; 
+    padding-bottom:10px; 
+    border-bottom: solid 1px #dcdcdc; 
+    background-color: white;
+}
+
+.mainContainerPlotType{
+    color: #757575 !important;
+}
+
+/* COMPONENTS EXAMPLES */
+.titleLibraryNameExamples{
+    margin-top: 40px;
+    text-align: center;
+    font-size: 1.35em;
+}
+
+.chartTypeBlock{
+    height: 160px;
+    border: solid 1px #ececec; 
+    padding:10px;
+    font-size:3em;
+    margin-bottom: 0px; 
+    text-align: center;
+    cursor:pointer;
+}
+
+.chartTypeBlock:hover{
+    border: solid 1px #3f51b5;
+}
+
+.centered-div {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%; /* Adjust as needed */
+    height: 200px; /* Adjust as needed */
+    text-align: center;
+    line-height: 200px; /* Should match the height for vertical centering */
+}
+
+.chartTypeTitle{
+    width: 100%;
+    height: 35px;;
+    font-size: 20px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.chartTypeLibraryType{
+    /* width: 100%; */
+    font-style: italic;
+    font-size: 8.5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    border: solid 1px #e0e0e0;
+    padding:1px;
+    padding-left:5px;
+    padding-right:5px;
+    border-radius: .215rem;
+    margin: auto;
+    display: table;
+}
+
+.asideSectionForceSm{
+    display: block !important;
+    width: 75px !important;
+    z-index: 1101;
+}
+
+.mainContainerForceSm{
+    margin-left: 74px !important;
+}
+
+.h4NoMarginTop{
+    margin-top: 0px !important;
+    border: none !important;
+}
+
+/*screen-sm*/
+@media (max-width: 768px) {                            
+    .asideSectionSm{
+        display: block !important;
+        width: 75px !important;
+    }
+
+    .asideSectionOther{
+        display: none !important;
+    }
+
+    .mainContainer{
+        margin-left: 80px !important;
+    }
+
+}
+
+/*other*/
+@media (min-width: 769px) {        
+    .asideSectionSm{
+        display: none !important;
+    }
+
+    .asideSectionOther{
+        display: block !important;
+    }
+
+    .mainContainer{
+        margin-left: 260px !important;
+    }
+}

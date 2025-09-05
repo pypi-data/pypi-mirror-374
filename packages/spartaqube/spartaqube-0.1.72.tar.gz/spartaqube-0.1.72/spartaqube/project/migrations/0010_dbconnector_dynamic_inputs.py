@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0009_appversioning')];operations=[migrations.AddField(model_name='dbconnector',name='dynamic_inputs',field=models.TextField(null=True))]

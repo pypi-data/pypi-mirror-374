@@ -1,0 +1,337 @@
+/* SQ EDITOR */
+
+/* MODAL */
+.notebookModalItemName{
+    background-color: #111111 !important;
+    color: #757575 !important;
+    border-color: #343434 !important;
+}
+
+.notebookModalItem{
+    border-color: #343434 !important;
+}
+
+.notebookModalListContainer{
+    border-color: #343434 !important;
+}
+
+.selectNotebookSort{
+    border-color: #343434 !important;
+}
+
+.fileBlockNew{
+    background-color: #111111 !important;
+    border-color: #343434 !important;
+}
+
+.addCommentOptional{
+    color: #757575 !important;
+}
+
+#notebookComment{
+    border-color: #343434 !important;
+}
+
+#appJupyterSpartBtn{
+    background-color: #1e1f1c !important;
+}
+
+#workflow-panel, #main .content, .mainHeaderContainer, .p-TabBar-content, .lm-TabBar-content{
+    border-color: #343434 !important;
+}
+
+.lm-TabBar-tab{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+}
+
+.p-mod-current{
+    background-color: #111111 !important;
+}
+
+.sqEditorContainerMiddle{
+    border-color: #343434 !important;
+}
+
+.inputFilterFiles{
+    border-color: #343434 !important;
+}
+
+.mainHeaderContainer, .mainHeaderResourceContainer{
+    background-color: #111111 !important;
+    border-color: #343434 !important;
+}
+
+.cellEditorItemContainer{
+    background-color: #111111 !important;
+    box-shadow: 0px 0px 0px #343434 !important;
+    border-color: #343434;
+}
+
+.cellEditor{
+    border-color: #343434 !important;
+}
+
+.cellNotComputing{
+    border-color: #343434 !important;
+}
+
+.guiComponentTitle{
+    color: #757575 !important;
+}
+
+.guiCreateStepBlock{
+    border-color: #343434 !important;
+}
+
+.guiCreateStepBlock:hover{
+    border-color: #3F51B5 !important;
+}
+
+/* GUIVAR STEP */
+.guiVarStepLabel, .guiModalExplain{
+    color: #757575 !important;
+}
+
+.workspaceVariableContainer{
+    /* background-color: #111111 !important; */
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+    box-shadow: 0px 0px 0px #343434 !important;
+    color: #757575 !important;
+}
+
+.workspaceHeaderTitleText{
+    color: #757575 !important;
+}
+
+.workspaceEmptyVarTitle, .workspaceNoVariable, .guiNoVarTitle, .guiNoVarContent{
+    color: #757575 !important;
+}
+
+.workspaceHeaderTitleTextOptionalLg, .workspaceHeaderTitleTextOptionalSm{
+    color: #757575 !important;
+}
+
+.workspaceHeaderCol{
+    background-color: #1e1f1c !important;
+}
+
+.workspacePreviewContainer{
+    background-color: #1e1f1c !important;
+    color: #757575 !important;
+    border-color: #343434 !important;
+    box-shadow: 0px 0px 0px #343434 !important;
+}
+
+#resizablePreviewEditor{
+    background-color: #111111 !important;
+}
+
+.workspaceHeaderPreview{
+    background-color: #111111 !important;
+    border: solid 0px #343434 !important;
+    color: #757575 !important;
+}
+
+.guiVarCellId, .mappedVarCellId{
+    border-color: #343434 !important;
+}
+
+.environmentVarTitle{
+    color:white !important;
+}
+
+#sqEditorFolderContainer{
+    box-shadow: rgb(0 0 0) 0px 0px 100px 1px inset !important;
+}
+
+.mainFilesFoldersContainer{
+    color: #757575 !important;
+}
+
+.fileElemTitle, .folderElemTitle{
+    color: #757575 !important;
+}
+
+.fileElemContainer:hover{
+    background:#272822 !important;
+}
+
+.fileElemContainerSelected{
+    background:#272822 !important;
+}
+
+.folderElemContainer:hover{
+    background:#272822 !important;
+}
+
+.folderElemContainerSelected{
+    background:#272822 !important;
+}
+
+.uploader-inline{
+    border-color: #343434 !important;
+}
+
+.defineInputsVarContainer{
+    border-color: #343434 !important;
+    background:#272822 !important;
+    box-shadow:0px 0px 0px #dcdcdc !important;
+}
+
+.defineInputsVarTitle{
+    border-color: #343434 !important;
+}
+
+.sqInputVarContainer{
+    border-color: #343434 !important;
+    background:#272822 !important;
+    box-shadow:0px 0px 0px #dcdcdc !important;
+}
+
+.defineInputsVarRow{
+    border-color: #343434 !important;
+}
+
+/* GIT */
+.gitMainContainer{
+    border-color: #343434 !important;
+}
+
+.commitUntrackedElem{
+    border-color: #343434 !important;
+}
+
+.gitHeaderTitle{
+    background:#111111 !important;
+    border-color: #343434 !important;
+    color: #757575 !important;
+}
+
+#mainTabAccordion{
+    border-color: #343434 !important;
+}
+
+/* DASHBOARD */
+.mainHeaderContainer{
+    background:#111111 !important;
+}
+
+.dashboardGridPositionTitle{
+    background:#111111 !important;
+    border-color: #343434 !important;
+    box-shadow:0px 0px 0px #dcdcdc !important;
+}
+
+.gridStackContainer, .grid-stack{
+    background:#343434 !important;
+}
+
+.gridStackWidget{
+    border-color: #343434 !important;
+    box-shadow:0px 0px 0px #dcdcdc !important;
+}
+
+.dashboardCellTitle{
+    color: #757575 !important;
+    background: transparent !important;
+}
+
+.dashboardCheckContainer{
+    background:#111111 !important;
+    border-color: #343434 !important;
+    box-shadow:0px 0px 0px #dcdcdc !important;
+}
+
+
+.autocompleteNoteLabel{
+    color: #757575 !important;
+}
+
+/* API MODAL */
+.apiModalRedirectLabel{
+    color: #757575 !important;
+}
+
+.codeExampleExplain, .codeExampleExplain2{
+    color: #757575 !important;
+}
+
+.codeExample{
+    background-color: #112435 !important;
+    border-color: #343434 !important;
+}
+
+.funcLabel{
+    color: white !important;
+}
+
+/* PYTHON LIB MODAL */
+.availableLibRow{
+    color: #757575 !important;
+    border-color: #343434 !important;
+}
+
+.availableLibsContainer{
+    border-color: #343434 !important;
+}
+
+.libLabel{
+    color: #757575 !important;
+}
+
+/* BUILD FUNCTION */
+.navTitleOverride{
+    border: solid 1px #444444 !important;
+    box-shadow: 0px 0px 0px 0px #343434 !important;
+    background: #111111 !important;
+    color: #757575 !important;
+}
+
+.buildFunctionHeaderLabel, .buildFunctionConsoleHeaderLabel, .consoleOutputHeader{
+    color: #757575 !important;
+}
+
+.buildFunctionCodeContainer{
+    border-color: #343434 !important;
+}
+
+.consoleContainer{
+    background: #111111 !important;
+}
+
+.consoleOutputContainer{
+    background:#343434 !important;
+    border-color: #343434 !important;
+}
+
+.buildFunctionCodeConsoleContainer{
+    border-color: #343434 !important;
+}
+
+.nothingComputedConsoleOutput{
+    color: #757575 !important;
+}
+
+.buildFunctionDefineInputsNumber{
+    background:#111111 !important;
+}
+
+.outputHeaderLabel{
+    background:#111111 !important;
+}
+
+.outputHeaderContainer{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+.createFunctionHeaderLabel{
+    background:#111111 !important;
+}
+
+.createFunctionInputsContainer, .createFunctionMarketplaceContainer{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}

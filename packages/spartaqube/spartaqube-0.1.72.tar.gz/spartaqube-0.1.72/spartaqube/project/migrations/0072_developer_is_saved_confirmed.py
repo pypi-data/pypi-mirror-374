@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0071_remove_plotdbdevelopershared_plot_db_developer_and_more')];operations=[migrations.AddField(model_name='developer',name='is_saved_confirmed',field=models.BooleanField(default=False))]

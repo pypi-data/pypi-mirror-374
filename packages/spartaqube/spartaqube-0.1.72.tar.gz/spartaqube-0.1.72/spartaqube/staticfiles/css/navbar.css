@@ -1,0 +1,48 @@
+.navbar-container{
+    padding-left: 0px;
+}
+
+.pageNavTitle{
+    font-family: "Azonix";
+}
+
+.site-menu-title{
+    font-family: "Azonix";
+    font-size:12px;
+}
+.provider2UpdateBtn{
+    margin-right:7px;
+    padding:5px;
+    border:solid 1px #3f51b5;
+    border-radius:5px;
+    color:#3f51b5;
+    cursor: pointer;
+    float:left;
+    margin-bottom:5px;
+}
+
+.provider2UpdateBtn:hover{
+    background-color:#3f51b5;
+    color:white;
+}
+
+.provider2UpdateSelected{
+    background-color:#3f51b5;
+    color:white;
+    margin-right:7px;
+    padding:5px;
+    border:solid 1px #3f51b5;
+    border-radius:5px;
+    cursor: pointer;
+    float:left;
+    margin-bottom:5px;
+}
+
+.uncheckBtn{
+    text-align:right;
+    cursor:pointer;
+}
+
+.uncheckBtn:hover{
+    text-decoration:underline;
+}

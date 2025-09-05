@@ -1,0 +1,2130 @@
+#ajaxNavigationLoader {
+    background: rgba(39, 40, 34, 0.7) !important;
+}
+
+#appNavBar{
+    border-color: #343434 !important;
+}
+
+.select2-selection__choice{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+    color: #757575 !important;
+}
+
+.irs-min{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+    color: #757575 !important;
+}
+
+.irs-max{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+    color: #757575 !important;
+}
+
+.irs-line-left{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+    color: #757575 !important;
+}
+
+.irs-line-middle{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+    color: #757575 !important;
+}
+
+.irs-line-right{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+    color: #757575 !important;
+}
+
+.arrow:after{
+    border-color: #343434 !important;
+}
+
+pre {
+    border-color: #343434 !important;
+}
+
+.article-content .cm-s-spartaquant.CodeMirror{
+    border: solid 1px #343434 !important;
+}
+
+.CodeMirror-simplescroll-horizontal, .CodeMirror-simplescroll-vertical{
+    background-color: #272822 !important;
+}
+
+.CodeMirror-simplescroll-horizontal div, .CodeMirror-simplescroll-vertical div{
+    background-color: #343434 !important;
+    border-color: #343434 !important;
+}
+
+.jp-RenderedHTMLCommon{
+    color: #bcbcbc !important;
+}
+
+.spinner{
+    display: none;
+}
+
+.spinnerDark{
+    display: block;
+}
+
+.spinnerOverlay .spinner{
+    display: block;
+}
+
+h3.popover-header{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+/* ****************************************************************************************************************** */
+/* HOME */
+/* ****************************************************************************************************************** */
+#appHomepage{
+    background-color: #1e1f1c !important;
+}
+
+.category{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+    color: #757575 !important;
+}
+
+.category:hover{
+    border-color: #3f51b5 !important;
+}
+
+.checkbox-custom label:before{
+    background-color: #111111 !important;
+    border-color: #343434 !important;
+}
+
+.radio-custom label:after, .radio-custom label:before{
+    background-color: #111111 !important;
+    border-color: #343434 !important;
+}
+
+#magicoSearchInput{
+    background-color: #111111 !important;
+    color: #757575 !important;
+    border-color: #343434 !important;
+}
+
+.close {
+    color: #757575 !important;
+}
+
+.panel-group .panel-title{
+    color: white !important;
+}
+
+/* ****************************************************************************************************************** */
+/* KERNEL MANAGER PANEL */
+/* ****************************************************************************************************************** */
+.activeKernelRow{
+    border-color: #343434 !important;
+}
+
+#containerSearchKernelVar{
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+    background-color: #272822 !important;
+    padding: 5px;
+    padding-bottom: 10px;
+}
+
+/* ****************************************************************************************************************** */
+/* SQ EDITOR */
+/* ****************************************************************************************************************** */
+
+/* MODAL */
+/* .cellFocused {
+    border-color: #3f51b5 !important;
+} */
+
+.badge-danger-save {
+    background-color: red !important;
+    color: white !important;
+}
+
+.notebookModalItemName{
+    background-color: #111111 !important;
+    color: #757575 !important;
+    border-color: #343434 !important;
+}
+
+.notebookModalItem{
+    border-color: #343434 !important;
+}
+
+.notebookModalItem:hover{
+    border-color: #3f51b5 !important;
+}
+
+.notebookModalListContainer{
+    border-color: #343434 !important;
+}
+
+.selectNotebookSort{
+    border-color: #343434 !important;
+}
+
+.fileBlockNew, .dbBlockNew{
+    background-color: #111111 !important;
+    border-color: #343434 !important;
+}
+
+.addCommentOptional{
+    color: #757575 !important;
+}
+
+#notebookComment{
+    border-color: #343434 !important;
+}
+
+#appJupyterSpartBtn{
+    background-color: #1e1f1c !important;
+}
+
+.sqNotebookMainViewSelectionContainer{
+    border-color: #343434 !important;
+}
+
+#workflow-panel, #main .content, .mainHeaderContainer, .p-TabBar-content, .lm-TabBar-content{
+    border-color: #343434 !important;
+}
+
+.lm-TabBar-tab{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+    color: white !important;
+}
+
+.p-mod-current{
+    background-color: #111111 !important;
+}
+
+.sqEditorContainerMiddle{
+    border-color: #343434 !important;
+}
+
+.inputFilterFiles{
+    border-color: #343434 !important;
+}
+
+.mainHeaderContainer, .mainHeaderResourceContainer{
+    background-color: #111111 !important;
+    border-color: #343434 !important;
+}
+
+.cellEditorItemContainer{
+    background-color: #1e1f1c !important;
+    box-shadow: 0px 0px 0px #1e1f1c !important;
+    border-color: #1e1f1c !important;
+}
+
+.cellEditorItemContainer.cellFocused{
+    border-color: #3f51b5 !important;
+}
+
+.cellEditorItemContainer.cellComputing{
+    border-color: #ff8d00 !important;
+}
+
+.searchbarWorkspaceContainer{
+    border-color: #343434 !important;
+}
+
+#codeEditorWorkspaceContainer{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+}
+
+.fullscreenContainer{
+    background-color: #1e1f1c !important;
+    border-color: #343434 !important;
+}
+
+.workspaceSearchBar{
+    border-bottom: solid 1px #343434 !important;
+}
+
+.jp-RenderedHTMLCommon{
+    border-color: #343434 !important;
+}
+
+.workspaceVariableContainer{
+    border-left: solid 1px #343434 !important;
+}
+
+.cellEditor{
+    border-color: #343434 !important;
+}
+
+.cellNotComputing{
+    border-color: #1e1f1c !important;
+}
+
+.guiComponentTitle{
+    color: #757575 !important;
+}
+
+.guiCreateStepBlock{
+    border-color: #343434 !important;
+}
+
+.guiCreateStepBlock:hover{
+    border-color: #3F51B5 !important;
+}
+
+.logContainer{
+    border-color: #343434 !important;
+}
+
+.logHeader{
+    border-color: #343434 !important;
+    color: #757575 !important;
+    background-color: #111111 !important;
+}
+
+.emptyNotebookContainer{
+    border-color: #343434 !important;
+    color: #757575 !important;
+    background-color: #111111 !important;
+    box-shadow: 0px 0px 0px #343434 !important;
+}
+
+/* GUIVAR STEP */
+.guiVarStepLabel, .guiModalExplain{
+    color: #757575 !important;
+}
+
+.workspaceVariableContainer{
+    /* background-color: #111111 !important; */
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+    box-shadow: 0px 0px 0px #343434 !important;
+    color: #757575 !important;
+}
+
+.workspaceHeaderTitleText{
+    color: #757575 !important;
+}
+
+.workspaceEmptyVarTitle, .workspaceNoVariable, .guiNoVarTitle, .guiNoVarContent{
+    color: #757575 !important;
+}
+
+.workspaceHeaderTitleTextOptionalLg, .workspaceHeaderTitleTextOptionalSm{
+    color: #757575 !important;
+}
+
+.workspaceHeaderCol{
+    background-color: #111111 !important;
+}
+
+.workspacePreviewContainer{
+    background-color: #1e1f1c !important;
+    color: #757575 !important;
+    border-color: #343434 !important;
+    box-shadow: 0px 0px 0px #343434 !important;
+}
+
+#resizablePreviewEditor{
+    background-color: #111111 !important;
+}
+
+.workspaceHeaderPreview{
+    background-color: #111111 !important;
+    border: solid 0px #343434 !important;
+    color: #757575 !important;
+}
+
+.guiVarCellId, .mappedVarCellId{
+    border-color: #343434 !important;
+}
+
+.environmentVarTitle{
+    color:white !important;
+}
+
+#sqEditorFolderContainer{
+    box-shadow: rgb(0 0 0) 0px 0px 100px 1px inset !important;
+}
+
+.mainFilesFoldersContainer{
+    color: #757575 !important;
+}
+
+.fileElemTitle, .folderElemTitle{
+    color: white !important;
+}
+
+.fileElemContainer:hover{
+    background:#272822 !important;
+}
+
+.fileElemContainerSelected{
+    background:#272822 !important;
+}
+
+.folderElemContainer:hover{
+    background:#272822 !important;
+}
+
+.folderElemContainerSelected{
+    background:#272822 !important;
+}
+
+.uploader-inline{
+    border-color: #343434 !important;
+}
+
+.defineInputsVarContainer{
+    border-color: #343434 !important;
+    background:#272822 !important;
+    box-shadow:0px 0px 0px #dcdcdc !important;
+}
+
+.defineInputsVarTitle{
+    border-color: #343434 !important;
+}
+
+.sqInputVarContainer{
+    border-color: #343434 !important;
+    background:#272822 !important;
+    box-shadow:0px 0px 0px #dcdcdc !important;
+}
+
+.defineInputsVarRow{
+    border-color: #343434 !important;
+}
+
+/* GIT */
+.gitMainContainer{
+    border-color: #343434 !important;
+}
+
+.commitUntrackedElem{
+    border-color: #343434 !important;
+}
+
+.gitHeaderTitle{
+    background:#111111 !important;
+    border-color: #343434 !important;
+    color: #757575 !important;
+}
+
+.gitAccordionTitle{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+#mainTabAccordion{
+    border-color: #343434 !important;
+}
+
+.interactiveClickable:hover{
+    background-color: #3f51b5 !important;
+    color:white !important;
+}
+
+/* DASHBOARD */
+.mainHeaderContainer{
+    background:#111111 !important;
+}
+
+.dashboardGridPositionTitle{
+    background:#111111 !important;
+    border-color: #343434 !important;
+    box-shadow:0px 0px 0px #dcdcdc !important;
+}
+
+.gridStackContainer, .grid-stack{
+    background:#343434 !important;
+}
+
+.gridStackWidget{
+    border-color: #343434 !important;
+    box-shadow:0px 0px 0px #dcdcdc !important;
+}
+
+.dashboardCellTitle{
+    color: #757575 !important;
+    background: transparent !important;
+}
+
+.dashboardCheckContainer{
+    background:#111111 !important;
+    border-color: #343434 !important;
+    box-shadow:0px 0px 0px #dcdcdc !important;
+}
+
+.autocompleteNoteLabel{
+    color: #757575 !important;
+}
+
+.createResourceType{
+    border-color: #343434 !important;
+}
+
+.createResourceType:hover{
+    /* background-color: #3f51b5 !important; */
+    /* color:white !important; */
+    border-color: #3f51b5 !important;
+    background:transparent !important;
+}
+
+.clipboardEmailExamples, .codeExampleSlidePanel{
+    color: #757575 !important;
+}
+
+/* .createResourceType:hover h4{
+    background-color: #3f51b5 !important;
+    color:white !important;
+} */
+
+/* DRAG AND DROP RESOURCES */
+.folderDroppable{
+    background-color: #112435 !important;
+    border-color: #343434 !important;
+}
+
+.ui-droppable-active{
+    background:#112435 !important;
+    border-color: #343434 !important;
+}
+
+.ui-draggable-dragging{
+    background:#112435 !important;
+    border-color: #343434 !important;
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+/* API MODAL */
+.apiModalRedirectLabel{
+    color: #757575 !important;
+}
+
+.codeExampleExplain, .codeExampleExplain2{
+    color: #757575 !important;
+}
+
+.codeExample{
+    background-color: #112435 !important;
+    border-color: #343434 !important;
+    color: #757575 !important;
+}
+
+.funcLabel{
+    color: white !important;
+}
+
+/* PYTHON LIB MODAL */
+.availableLibRow{
+    color: #757575 !important;
+    border-color: #343434 !important;
+}
+
+.availableLibsContainer{
+    border-color: #343434 !important;
+}
+
+.libLabel{
+    color: #757575 !important;
+}
+
+.apiOptionsContainer{
+    border-color: #343434 !important;
+}
+
+.apiOptionsTitle{
+    /* background-color: #1e1f1c !important; */
+    background-color: #343434 !important;
+    /* color: #757575 !important; */
+}
+
+#optionsApiSticky{
+    background: #272822 !important;
+    border-color: #343434 !important;
+}
+
+.inputPlotType{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+/* BUILD FUNCTION */
+.navTitleOverride{
+    border: solid 1px #444444 !important;
+    box-shadow: 0px 0px 0px 0px #343434 !important;
+    background: #111111 !important;
+    color: #757575 !important;
+}
+
+.buildFunctionHeaderLabel, .buildFunctionConsoleHeaderLabel, .consoleOutputHeader{
+    color: #757575 !important;
+}
+
+.buildFunctionCodeContainer{
+    border-color: #343434 !important;
+}
+
+.consoleContainer{
+    background: #111111 !important;
+}
+
+.consoleOutputContainer{
+    background:#343434 !important;
+    border-color: #343434 !important;
+}
+
+.buildFunctionCodeConsoleContainer{
+    border-color: #343434 !important;
+}
+
+.nothingComputedConsoleOutput{
+    color: #757575 !important;
+}
+
+.buildFunctionDefineInputsNumber{
+    background:#111111 !important;
+}
+
+.outputHeaderLabel{
+    background:#111111 !important;
+}
+
+.outputHeaderContainer{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+.createFunctionHeaderLabel{
+    background:#111111 !important;
+}
+
+.createFunctionInputsContainer, .createFunctionMarketplaceContainer{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+.spartBtnLibraryModal{
+    border-color: #343434 !important;
+}
+
+.spartBtnLibraryModal:hover{
+    background-color: #3f51b5 !important;
+    color:white !important;
+}
+
+/* ****************************************************************************************************************** */
+/* API */
+/* ****************************************************************************************************************** */
+.tokenCmd{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+.cmd{
+    background-color: #111111 !important;
+    border: solid 1px #343434 !important;
+}
+
+.codeOutput{
+    padding:10px; border: dashed 1px #343434 !important;
+}
+
+.apiPreCode{
+    border-color: #343434 !important;
+    background-color: #111111 !important;
+}
+
+/* ****************************************************************************************************************** */
+/* PLOT DB */
+/* ****************************************************************************************************************** */
+#bodyPlotGUI{
+    border-color: #343434 !important;
+}
+
+#plotGUI{
+    border-color: #343434 !important;
+}
+
+.headerContainerConnector{
+    border-color: #343434 !important;
+}
+
+.dataSourcePanelCreateContainer{
+    background-color: #111111 !important;
+    border-color: #343434 !important;
+}
+
+.noConnectorSourceContainer{
+    border-color: #343434 !important;
+}
+
+.step{
+    border-color: #343434 !important;
+}
+
+.stepContainerSm{
+    border-color: #343434 !important;
+}
+
+.stepContainerOther{
+    border-color: #343434 !important;
+}
+
+.connectorContainer{
+    background:#272822  !important;
+    border: solid 1px #343434 !important;
+}
+
+.connectorContainer:hover {
+    border: solid 1px #3f51b5 !important;
+}
+
+.connectorControlBtn{
+    border-color: #343434 !important;
+}
+
+.connectorContainerList{
+    background:#272822  !important;
+    border: solid 1px #343434 !important;
+}
+
+.connectorContainerList:hover {
+    border: solid 1px #3f51b5 !important;
+}
+
+#connectorNewPlotStickyBar, #addConnectorStickyBar, #addConnectorEngineStickyBar{
+    background:#111111 !important;
+    border-color: #343434 !important;
+}
+
+.connectorSearchInput{
+    background-color: #272822 !important;
+}
+
+.borderLeft{
+    border-color: #343434 !important;
+}
+
+.dragNDropFilePicker{
+    border-color: rgba(255, 255, 255, 0.835) !important;
+}
+
+.dragNDropFilePicker:hover{
+    background-color: #111111 !important;
+}
+
+.plotTypeSelectContainer{
+    border-color: #343434 !important;
+}
+
+.chartConfiguratorContainer{
+    background:#272822  !important;
+    border-color: #343434 !important;
+}
+
+.chartSourceAttributeContainer{
+    background:#272822  !important;
+    border-color: #343434 !important;
+}
+
+.chartPaletteContainer{
+    background:#272822  !important;
+    border-color: #343434 !important;
+}
+
+.chartProgrammaticModeContainer{
+    background:#272822  !important;
+    border-color: #343434 !important;
+}
+
+.droppableField{
+    background-color: #111111 !important;
+    border-color: #343434 !important;
+}
+
+.droppableFieldHover{
+    background-color: #757575 !important;
+}
+
+.attributeHeaderBtnSticky{
+    background:#272822  !important;
+    border-color: #343434 !important;
+}
+
+.formConstructorTitle{
+    border-color: #343434 !important;
+}
+
+.modalLabelOther{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+.modalLabelSm{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+.headerLibrary{
+    background:#111111 !important;
+    border-color: #343434 !important;
+}
+
+.connectorSearchInputLibrary{
+    background-color: #111111 !important;
+}
+
+.theadLibrary{
+    background:#272822  !important;
+    border-color: #343434 !important;
+}
+
+.chartLibraryPreviewContainer{
+    border-color: #343434 !important;
+}
+
+.rowLibraryClSelected{
+    color: #3f51b5 !important;
+    background-color: #111111 !important;
+}
+
+.table-responsive{
+    background-color: #1e1f1c !important;
+}
+
+.programmaticCodeContainer{
+    border-color: #343434 !important;
+}
+
+.chartTypeLibraryType{
+    border-color: #343434 !important;
+}
+
+.connectorPreviewOutputJson{
+    background:#111111  !important;
+    border-color: #343434 !important;
+}
+
+.autocompleteForm{
+    border-color: #343434 !important;
+}
+
+.stickyMetricsHeader{
+    background:#272822  !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd){
+    background:#111111  !important;
+}
+
+.clusterizeRawData{
+    border-color: #343434 !important;
+}
+
+#searchPlotTypeSticky{
+    border-color: #343434 !important;
+    background-color: #111111 !important;
+}
+
+.workspaceVariableNamePlotDB{
+    color: white !important;
+}
+
+.dataStoreExplorerContainer{
+    border-color: #343434 !important;
+}
+
+/* ****************************************************************************************************************** */
+/* DATAFRAME (DATASTORE AND COMPONENT) */
+/* ****************************************************************************************************************** */
+.dataFrameTableContainer{
+    border: solid 1px #343434 !important;
+}
+
+.dataFrameComponentMainContainer{
+    color: #757575 !important;
+}
+
+.dataFrameFilterDispoRadio{
+    color: #757575 !important;
+    border-color: #343434 !important;
+}
+
+.dataFrameComponentsHeader{
+    border-color: #343434 !important;
+}
+
+.headerContainerDataFrameConfigurePlotDB{
+    border-color: #343434 !important;
+}
+
+.articleStickyDataFrame{
+    border: solid 1px #343434;
+}
+
+.sticky-selectors{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+.sticky-selectors-plot-db, .sticky-selectors-chart-library{
+    background-color: #1e1f1c !important;
+    border-color: #343434 !important;
+    border-bottom: solid 1px #1e1f1c;
+}
+
+.sticky-selectors-widget, .sticky-selectors-dashboard{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+.sticky-selectors-gui-plot{
+    background-color: #1e1f1c !important;
+    border-color: #343434 !important;
+}
+
+.page-aside-selected-dataframe{
+    color: #a0a0a0 !important;
+    background-color: #343434 !important;
+    border: 0 !important; 
+}
+
+.page-aside-selected-dataframe:hover{
+    color: #a0a0a0 !important;
+    background-color: #343434 !important;
+    border: 0 !important; 
+}
+
+.navLinkDataFrame:hover{
+    color: #a0a0a0 !important;
+    background-color: #343434 !important;
+    border: 0 !important; 
+}
+
+/* FEATURES ENGINEERING */
+.gridOptionContainer{
+    border-color: #343434 !important;
+}
+
+.fieldDataProcessingContainer{
+    border-color: #343434 !important;
+}
+
+/* STATS MODEL */
+.regression-summary {
+    color: #a0a0a0 !important;
+}
+.regression-summary td{
+    color: #a0a0a0 !important;
+}
+
+.regression-summary caption {
+    color:rgba(255, 255, 255, 0.835) !important
+}
+
+.regression-summary th, .regression-summary td{
+    border-color: #343434 !important;
+}
+
+.regression-summary th{
+    color:rgba(255, 255, 255, 0.835) !important
+}
+
+/* ****************************************************************************************************************** */
+/* DATAFRAME LLM */
+/* ****************************************************************************************************************** */
+.llmHistory{
+    background-color: #1e1f1c !important;
+}
+
+.llmHistory{
+    border-right: solid 1px #343434 !important;
+}
+
+.llmHistoryRightSectionTitle:hover{
+    background-color: #343434 !important;
+    color: #DFDFDF !important;
+}
+
+.llmHistoryRightSectionTitleChatContainer:hover{
+    background-color: #343434 !important;
+    color: #DFDFDF !important;
+}
+
+.chatHistoryContainer{
+    border-color: #343434 !important;
+}
+
+.fullscreenContainerLLM{
+    background-color: #343434 !important;
+}
+
+.closeFullScreen{
+    background-color: #1e1f1c !important;
+    border-color: #343434 !important;
+}
+
+.apiKeyAIPlan{
+    border-color: #343434 !important;
+}
+
+/* ****************************************************************************************************************** */
+/* RUN NOTEBOOK */
+/* ****************************************************************************************************************** */
+#appRunNotebook{
+    background-color: #1e1f1c !important;
+}
+
+.runNotebookMainHeader{
+    border-color: #343434 !important;
+}
+
+#workflow-panel #main_run {
+    border-color: #343434 !important;
+}
+
+.p-DockPanel-widget{
+    border-color: #343434 !important;
+}
+
+.quantStatsPlotsContainer{
+    border-color: #343434 !important;
+}
+
+/* ****************************************************************************************************************** */
+/* WIDGET */
+/* ****************************************************************************************************************** */
+#bodyWidget{
+    /* background-color:#1e1f1c !important; */
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+/* ****************************************************************************************************************** */
+/* PLOT DB GUI SAVED */
+/* ****************************************************************************************************************** */
+.plotInfoRightContainer{
+    border-color: #343434 !important;
+}
+
+/* ****************************************************************************************************************** */
+/* MY NOTEBOOKS */
+/* ****************************************************************************************************************** */
+#appMyNotebooks{
+    background-color: #1e1f1c !important;
+}
+
+.notebookTitle{
+    background-color: #111111 !important;
+    color: #757575 !important;
+}
+
+.panel{
+    border-color: #343434 !important;
+    border: solid 1px #343434 !important;
+}
+
+.panel-heading{
+    border-color: #343434 !important;
+}
+
+.panel-body{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+.panel-bordered{
+    border-color: #343434 !important;
+}
+
+.selectNotebookSortDark{
+    border-color: #343434 !important;
+    border: solid 1px #343434 !important;
+}
+
+.iconBtn:hover{
+    color:white !important;
+}
+
+.dropdown-toggle{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+}
+
+.dropdown-item.active, .dropdown-item:active, .dropdown-item:focus, .dropdown-item:hover{
+    background-color: #272822 !important;
+    color: #FFFFFF !important;
+}
+
+.workspaceSearchBar{
+    border-color: #343434 !important;
+}
+
+.connectorEngineElem{
+    border-color: #343434 !important;
+}
+
+.connectorEngineElem:hover{
+    background-color: transparent !important;
+    border-color: #3f51b5 !important;
+}
+
+/* ****************************************************************************************************************** */
+/* NOTEBOOK MODAL */
+/* ****************************************************************************************************************** */
+.containerPlotDbStep{
+    border-color: #343434 !important;
+}
+
+.containerHeaderPlotDBNotebookModal{
+    background: black;
+}
+
+/* ****************************************************************************************************************** */
+/* DASHBOARD */
+/* ****************************************************************************************************************** */
+.navbar-dashboard-exec{
+    background-color: #272822 !important;
+}
+
+.headerContainerDashboard{
+    border-color: #343434 !important;
+}
+
+.dashboardLibraryElemContainer{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+    color: #757575 !important;
+}
+
+.dashboardLibraryElemContainer:hover{
+    border-color: #3f51b5 !important;
+}
+
+.dashboardLibraryElemNameContent{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+.dashboardLibraryElemControlBtn{
+    border-color: #343434 !important;
+}
+
+.grid-stack{
+    background-color: #111111 !important;
+    border-color: #343434 !important;
+}
+
+.grid-stack-item .grid-stack-item-content {
+    border: 2px solid #111111 !important; /* Customize the border color and style as needed */
+    /* background-color: #f8f8f8 !important; */
+}
+
+.grid-stack-item-content {
+    background-color:#272822 !important;
+    border-color: #343434 !important;
+}
+
+.grid-stack-item-content-reload{
+    background-color:#272822 !important;
+    border-color: #343434 !important;
+}
+
+.gridElemContainer{
+    border-color: #343434 !important;
+}
+
+.titleCellPlotDB{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+.titleCellPlotDBRun{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+.titleCellGuiComponent{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+.titleCellGuiComponentRun{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+.titleWidgetDashboardCell{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+.titleWidgetDashboardCellRun{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+#sliderPanel{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+}
+
+#sliderPanelRightCollapsed{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+}
+
+.plotLibraryListContainer{
+    border-color: #343434 !important;
+}
+
+.previewContainer{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+    color: #757575 !important;
+}
+
+.plotComponentSliderTitle{
+    background-color: #111111 !important;
+    border-color: #343434 !important;
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+.filterSearchDashboard{
+    background-color: #111111 !important;
+    border-color: #343434 !important;
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+.removeGridItem{
+    background-color: #111111 !important;
+}
+
+.removeGridItem:hover{
+    background-color: rgb(249, 164, 164) !important;
+}
+
+.gridItemInitialDragging{
+    /* border-color: #343434 !important; */
+    border-color: #343434 !important;
+}
+
+.grid-stack-placeholder{
+    border-color: rgba(255, 255, 255, 0.735) !important;
+}
+
+.placeholder-content{
+    border-color: #343434 !important;
+}
+
+.workspaceVariablesContainer{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+}
+
+.dashboardNotebookHeaderContainer{
+    background-color: #111111 !important;
+    border-color: #343434 !important;
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+.searchWorkspaceVariableInput{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+    color: #757575 !important;
+    border-bottom: solid 1px #343434 !important;
+}
+
+#workflow-panel #main .content{
+    border-color: #343434 !important;
+}
+
+.requiredSaveDashboard:hover{
+    background-color: red !important;
+    color: white !important;
+    border-color: red !important;
+}
+
+.nav-link.requiredSaveDashboard.active.show {
+    background-color: red !important;
+    color: white !important;
+    border-color: red !important;
+}
+
+.titleTypeResource{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+.ideSettingsAccordionTitle{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+#mainTabAccordionIdeSettings{
+    border-color: #343434 !important;
+}
+
+.panel.panelContainerDashboardProjectSettings {
+    border: none !important;
+}
+
+#modalGuiComponentContainer{
+    border-color: #343434 !important;
+}
+
+.pythonVariableNameStyle{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+.filterDataSourceDashboardContainer{
+    border-color: #343434 !important;
+}
+
+.lastActionPreContainer{
+    background-color: #111111 !important;
+}
+
+.kernelWorkspaceVariableName{
+    color: #FFFFFF !important;
+}
+
+/* ****************************************************************************************************************** */
+/* DATAFRAMES COMPONENTS */
+/* ****************************************************************************************************************** */
+.headerContainerDataFrame{
+    border-color: #343434 !important;
+}
+
+/* ****************************************************************************************************************** */
+/* LLM */
+/* ****************************************************************************************************************** */
+.llmHeader{
+    background-color: #111111 !important;
+    border-color: #343434 !important;
+}
+
+.chat-input-container{
+    background-color: #111111 !important;
+    border-color: #343434 !important;
+}
+
+.chat-textarea{
+    color: #FFFFFF !important;
+}
+
+.chat-bubble{
+    background-color: #111111 !important;
+    color: #ededed !important;
+}
+
+code{
+    background-color: #111111 !important;
+    border-color: #343434 !important;
+    color: #FFFFFF !important;
+}
+
+/* ****************************************************************************************************************** */
+/* DEVELOPER MODE */
+/* ****************************************************************************************************************** */
+.developerSlidePanelContainer{
+    background-color: #272822 !important;
+}
+
+.developerSlidePanelAccordionTitle{
+    border-color: #343434 !important;
+    background-color: #2e2f28 !important;
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+/* PROGRAMMATIC CONFIG */
+.programmaticConfigHeader{
+    border-color: #343434 !important;
+}
+
+/* ****************************************************************************************************************** */
+/* PLANS */
+/* ****************************************************************************************************************** */
+.planContainer{
+    border-color: #343434 !important;
+}
+
+/* ****************************************************************************************************************** */
+/* MARKETPLACE */
+/* ****************************************************************************************************************** */
+#appMarketplace{
+    background-color: #1e1f1c !important;
+}
+
+.page-link{
+    border-color: #343434 !important;
+}
+
+.marketplaceFilterContainer, .marketplaceFilterPassword, .marketplaceFilterGithub{
+    border-color: #343434 !important;
+}
+
+.requiredModuleTags{
+    border-color: #343434 !important;
+    background-color: #1e1f1c !important;
+}
+
+/* ****************************************************************************************************************** */
+/* SCHEDULER */
+/* ****************************************************************************************************************** */
+#appScheduler{
+    background-color: #1e1f1c !important;
+}
+
+#tourScheduleTable{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+.schedulerAutocompleteResContainer{
+    border-color: #343434 !important;
+}
+
+/* ****************************************************************************************************************** */
+/* ALERTS */
+/* ****************************************************************************************************************** */
+#appAlerts{
+    background-color: #1e1f1c !important;
+}
+
+#tableAlertTour{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+.spartBtnCodeSourceComponentContainer{
+    border-color: #343434 !important;
+}
+
+.drawCondition{
+    color: #757575 !important;
+}
+
+.alertSummaryHeaderContainer{
+    border-color: #343434 !important;
+    background-color: #111111 !important;
+    color: #757575 !important;
+}
+
+.createAlertStepContainer, .createAlertStep1Container{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+}
+
+.steps row{
+    border-color: #343434 !important;
+}
+
+.alertDefineConditionContainer{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+}
+
+.alertRuleObjectContainer, .alertRuleDefineFieldContainer{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+.alertConditionLabel{
+    color: #757575 !important;
+}
+
+.chooseFieldLabel{
+    color: #757575 !important;
+}
+
+.alertRuleContainer{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+.ruleContainer{
+    color: #757575 !important;
+}
+
+.conditionContainer{
+    color: #757575 !important;
+}
+
+.alertCreatePreviewObject{
+    padding-top: 0px !important;
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+.btn-light{
+    border-color: #343434 !important;
+}
+
+.filter-option{
+    border-color: #343434 !important;
+}
+
+#scroll-area-preview-modalPreview{
+    background-color: #272822 !important;
+}
+
+.clusterize-scroll{
+    background-color: #272822 !important;
+    border: solid 1px #343434 !important;
+}
+
+.saveField{
+    color: #757575 !important;
+}
+
+.step{
+    border-bottom: solid 1px #343434 !important;
+}
+
+.btn.btn-sm.btn-danger {
+    background-color: #f44336 !important;
+    border-color: #f44336 !important;
+    color: white !important;
+}
+
+.btn.btn-sm.btn-default-hover {
+    background-color: #343434 !important;
+    border-color: #343434 !important;
+    color: white !important;
+}
+
+/* ****************************************************************************************************************** */
+/* CHART TYPE MODAL  */
+/* ****************************************************************************************************************** */
+.chartTypeBlock{
+    border-color: #343434 !important;
+}
+
+.chartTypeBlock:hover{
+    border-color: #3f51b5 !important;
+}
+
+/* ****************************************************************************************************************** */
+/* DATABASE  */
+/* ****************************************************************************************************************** */
+#appDatabase{
+    background-color: #1e1f1c !important;
+}
+
+.quantDatabaseHeaderObjects{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+.bootstrap-table{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+.mainThHeadQuantDB{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+.fixed-table-container{
+    border-color: #343434 !important;
+}
+
+.fixed-table-header{
+    border-color: #343434 !important;
+}
+
+.quantDbTableRow{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+.quantDbTableRow:hover{
+    background-color: #3f51b5 !important;
+    color:white !important;
+}
+
+.activeClick{
+    background-color: #3f51b5 !important;
+    color:white !important;
+}
+
+.table-hover > tbody > tr.select-row:hover > td,
+.select-row > td {
+    background-color: #3f51b5 !important;
+    color:white !important;
+}
+
+.extDbWorkspaceContainer{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+    color: #757575 !important;
+}
+
+#masterOrDataQuantContainer{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+    color: #757575 !important;
+    border: solid 0px #272822 !important;
+}
+
+#showTableBtn, #showModelObjBtn{
+    border: solid 1px #272822 !important;
+}
+
+.quantDBLoadDataAtTimeLabel{
+    color: #757575 !important;
+}
+
+.statisticsTableHeader{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+.tableStatisticsContainer{
+    background-color: #272822 !important;
+    color: #757575 !important;
+}
+
+.tableStatisticsRow{
+    background-color: #272822 !important;
+    color: #757575 !important;
+    border-color: #343434 !important;
+}
+
+.trStatisticsTable{
+    background-color: #272822 !important;
+    color: #757575 !important;
+    border-color: #343434 !important;
+}
+
+.externalDBTableListContainerSub{
+    background-color: #272822 !important;
+    color: #757575 !important;
+    border-color: #343434 !important;
+}
+
+#dbViewLoadExcelInfosContainer{
+    background-color: #272822 !important;
+    color: #757575 !important;
+    border-color: #343434 !important;
+}
+
+.xlsIdExportLabel{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+.formulaXptContainerRow{
+    border-color: #343434 !important;
+}
+
+.footerExtDbTables{
+    background-color: #1e1f1c !important;
+}
+
+#tableExternalDB{
+    background-color: #272822 !important;
+    color: #757575 !important;
+    border-color: #343434 !important;
+}
+
+.extDBRowCl:hover{
+    color: #3f51b5 !important;
+}
+
+.extDBRowClActive{
+    background-color: #3f51b5 !important;
+    color:white !important;
+}
+
+.xptObjectExternalDbRow{
+    border-color: #343434 !important;
+}
+
+.btnExcelWorkspace{
+    border: solid 0px #343434 !important;
+}
+
+/* ****************************************************************************************************************** */
+/* EXCEL WORKSPACE */
+/* ****************************************************************************************************************** */
+.excelWorkspaceContainer{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+    color: #757575 !important;
+}
+
+.fileBlock{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+.fileBlockXls:hover{
+    border-color: rgb(29, 111, 66) !important;
+}
+
+.importXlsFileResContainer{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+.folderRow{
+    background-color: #272822 !important;
+}
+
+.folderRow:hover{
+    background-color: #3f51b5 !important;
+    color: white !important;
+}
+
+.fileRow{
+    background-color: #272822 !important;
+}
+
+.fileRow:hover{
+    background-color: #3f51b5 !important;
+    color: white !important;
+}
+
+.iconXls{
+    color: #272822 !important;
+}
+
+.openXlsVersionRow{
+    border-color: #343434 !important;
+}
+
+.openXlsVersionRowBorder{
+    border-color: #343434 !important;
+}
+
+.dbBlock{
+    border-color: #343434 !important;
+}
+
+.dbBlock:hover{
+    border-color: #3f51b5 !important;
+}
+
+.dbTypeBlockNew{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+    color: #757575 !important;
+}
+
+.dbTypeBlockNew:hover{
+    border-color: #3f51b5 !important;
+}
+
+.labelForm{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+/* ****************************************************************************************************************** */
+/* QUANT CALCULATOR */
+/* ****************************************************************************************************************** */
+#app{
+    background-color: #1e1f1c !important;
+}
+
+.qcBlock, .previewFormulaContainer{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+    color: #757575 !important;
+}
+
+#tourAddNewData{
+    background-color: #272822 !important;
+}
+
+.workspaceQcContainer{
+    background-color: #272822 !important;
+}
+
+#previewBlock{
+    border-color: #343434 !important;
+    background-color: #1e1f1c !important;
+}
+
+.previewBlockSub{
+    border-color: #343434 !important;
+    background-color: #1e1f1c !important;
+}
+
+.floatPrecisionInput{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+    color: #757575 !important;
+}
+
+#modalAllTablesContainer{
+    border-color: #343434 !important;
+}
+
+#missingInstrumentBlock{
+    background-color: #272822 !important;
+}
+
+.calcNumber{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+    color: #757575 !important;
+}
+
+.calcMethod{
+    color: #fff !important;
+    background-color: #3F51B5 !important;
+    border-color: #3F51B5 !important;
+}
+
+.calcBtnAdvanced{
+    color: #fff !important;
+    background-color: #3F51B5 !important;
+    border-color: #3F51B5 !important;
+}
+
+.calcOperation, .calcParenthesis, .calcDecimal{ 
+    color: #757575 !important;
+    background-color: #bbbbbb !important;
+}
+
+.calcCompute{
+    color: #111111 !important;
+    background-color: #F0F0F0 !important;
+    font-family: 'Azonix';
+}
+
+.advancedFormulaContainer{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+    color: #757575 !important;
+}
+
+.formulaBarAdvanced{
+    background-color: #111111 !important;
+    color: #757575 !important;
+    border-color: #343434 !important;
+}
+
+#addNewInstrumentBtn{
+    border: solid 0px #343434 !important;
+}
+
+.btnShowAllObjectsQC{
+    border: solid 0px #343434 !important;
+}
+
+.workspaceQCRow{
+    border-color: #343434 !important;
+}
+
+.saveIndicatorTypeBlock{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+    color: #757575 !important;
+}
+
+.saveIndicatorTypeBlock:hover{
+    border-color: rgb(102, 187, 106) !important;
+}
+
+.qcSaveLabel{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+.modalQuantCalculator{
+    background-color: #1e1f1c !important;
+}
+
+.defineFormulaCustomFuncModal{
+    color: #757575 !important;
+    border-color: #343434 !important;
+}
+
+.inputFunction{
+    background-color: transparent !important;
+    color: #3F51B5 !important;
+}
+
+.xlsExportSaveBlockContainer{
+    padding: 10px !important;
+}
+
+.xptTitle{
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
+
+.spartBtnMarketplaceFunction{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+    color: #757575 !important;
+}
+
+.spartBtnMarketplaceFunction:hover{
+    border-color: #3F51B5 !important;
+}
+
+.downloadSpartBtnFilterContainer{
+    border-color: #343434 !important;
+}
+
+.descriptionContainer{
+    border-color: #343434 !important;
+}
+
+.spartBtnDownloadModalLabel{
+    color: #757575 !important;
+}
+
+.noCodeContainerQC{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+    color: #757575 !important;
+}
+
+.noCodeQCTableContainer{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+    color: #757575 !important;
+}
+
+.noCodeHeader{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+    color: #757575 !important;
+}
+
+.ui-resizable{
+    border-color: #343434 !important;
+    /* background-color: #272822 !important; */
+    color: #757575 !important;
+}
+
+.excelPanelSelect, .tableContainerNormal, .headExcel, .colExcel, .tableCellOverflow, .headDB{
+    border-color: #343434 !important;
+    background-color: #272822 !important;
+    color: #757575 !important;
+}
+
+.headExcel:hover{
+    background:#3f51b5 !important;
+    color:white !important;
+}
+
+.rightFormulaExcel{
+    background-color: #111111 !important;
+    color: #757575 !important;
+    border-color: #343434 !important;
+}
+
+#btnExcelSpreadsheet{
+    background: rgb(29, 111, 66) !important;
+    color: white !important;
+}
+
+#btnDBSpreadsheet{
+    background:#3f51b5 !important;
+    color:white !important;
+}
+
+.autocompleteListResContainer, .autocompleteResModal{
+    border-color: #343434 !important;
+}
+
+.autocompleteResModal:hover{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+/* ****************************************************************************************************************** */
+/* UNIT TESTS */
+/* ****************************************************************************************************************** */
+#appUnitTests{
+    background-color: #1e1f1c !important;
+}
+
+.unitTestContainer{
+    border-color: #343434 !important;
+}
+
+.unitTestType{
+    color: #757575 !important;
+}
+
+.runningUnitTestStatus{
+    color: #757575 !important;
+}
+
+/* ****************************************************************************************************************** */
+/* API */
+/* ****************************************************************************************************************** */
+.bodyAPI{
+    background-color:#1e1f1c !important;
+    border-color: #343434 !important;
+}
+
+#app{
+    background-color: #1e1f1c !important;
+    border-color: #343434 !important;
+}
+
+.codeExampleExplain{
+    background-color: #1e1f1c !important;
+    border-color: #343434 !important;
+} 
+
+.functionSection{
+    background-color: #1e1f1c !important;
+}
+
+.apiDesContainer{
+    background-color: #1e1f1c !important;
+    border-color: #343434 !important;
+}
+
+.faq-list{
+    border: solid 1px #343434 !important;
+}
+
+.apiVarLabel{
+    color: #757575 !important;
+}
+
+/* ****************************************************************************************************************** */
+/* FUNCTION LIBRARY */
+/* ****************************************************************************************************************** */
+#appQuantLibrary{
+    background-color: #1e1f1c !important;
+}
+
+#blockFamily{
+    background-color: #272822 !important;
+    border-color: #343434 !important;
+}
+
+/* ****************************************************************************************************************** */
+/* FUNCTION TUTO */
+/* ****************************************************************************************************************** */
+#appTutorial{
+    background-color: #1e1f1c !important;
+}
+
+.requiredModuleNumberLabel, .inputNumberLabel{
+    color: #757575 !important;
+}
+
+.archiveFunctionLabel{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+.switchVersionCodeIcon{
+    color: #757575 !important;
+}
+
+.tutoInputDesLabel{
+    color: #757575 !important;
+}
+
+.envVarNumberLabel{
+    color: #757575 !important;
+}
+
+.envVarNameLabel{
+    color: #757575 !important;
+}   
+
+/* ****************************************************************************************************************** */
+/* SETTINGS */
+/* ****************************************************************************************************************** */
+#appSettings{
+    background-color: #1e1f1c !important;
+}
+
+.list-group{
+    background-color: #111111 !important;
+    border-color: #343434 !important;
+}
+
+.list-group-item{
+    background-color: #111111 !important;
+}
+
+.list-group-item.active{
+    background-color: #343434 !important;
+    color: white !important;
+}
+
+.list-group-item:hover{
+    background-color: #343434 !important;
+    color: white !important;
+}
+
+.settingsLabel {
+    padding-left: 10px !important;
+    padding-right:10px !important;
+}
+
+.panel-title.whiteLabel{
+    color: white !important;
+    opacity: 0.75 !important;
+}
+
+.panel-body.panelSettings{
+    padding: 10px !important;
+    border: solid 1px #1e1f1c !important;
+    background-color: #1e1f1c !important;
+}
+
+.panelMenuContainer{
+    padding: 10px !important;
+    border: solid 1px #1e1f1c !important;
+}
+
+.panelSettingsContainer{
+    border: solid 1px #1e1f1c !important;
+}
+
+.list-group.faq-list{
+    border: solid 1px #1e1f1c !important;
+}
+
+.emailLabelSettings, .emailSenderLabel, .envVarLabelSettings{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+.badgesEmail{
+    border-color: #343434 !important;
+}
+
+/* ****************************************************************************************************************** */
+/* HELP CENTER */
+/* ****************************************************************************************************************** */
+#appHelpCenter{
+    background-color: #1e1f1c !important;
+}
+
+.articleSticky{
+    background-color: #111111 !important;
+    border-color: #343434 !important;
+}
+
+.article-content{
+    background-color: #111111 !important;
+    border-color: #343434 !important;
+}
+
+.caseTypeBtn, .caseTypeBtnOpened{
+    border-color: #343434 !important;
+}
+
+.caseLabelInfos{
+    color: rgba(255, 255, 255, 0.735) !important;
+}
+
+#mainChatContainer{
+    border-color: #343434 !important;
+}

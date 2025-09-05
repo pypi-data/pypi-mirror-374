@@ -1,0 +1,3 @@
+_A='dataframemodel'
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0062_remove_dataframemodel_columns_dimension_and_more')];operations=[migrations.AddField(model_name=_A,name='has_widget_password',field=models.BooleanField(default=False)),migrations.AddField(model_name=_A,name='is_expose_widget',field=models.BooleanField(default=True)),migrations.AddField(model_name=_A,name='is_public_widget',field=models.BooleanField(default=False)),migrations.AddField(model_name=_A,name='widget_password_e',field=models.CharField(max_length=100,null=True))]

@@ -1,0 +1,3 @@
+_A='spartaqube_version'
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0034_dashboard_plot_db_programmatic_attributes')];operations=[migrations.AddField(model_name='dashboard',name=_A,field=models.CharField(default='0.0.1',max_length=10,null=True)),migrations.AddField(model_name='plotdbchart',name=_A,field=models.CharField(default='0.0.1',max_length=10,null=True))]

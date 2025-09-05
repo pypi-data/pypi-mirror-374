@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0097_rename_subscription_id_aiplansubscription_subscription_key_and_more')];operations=[migrations.AddField(model_name='cloudplan',name='ipv4',field=models.CharField(max_length=40,null=True))]

@@ -1,0 +1,52 @@
+.noFocus {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+.formConstructorTitle{
+    cursor: pointer;
+    width: 100%;
+    border-bottom: solid 1px #dcdcdc;
+    font-size:0.9em;
+}
+
+.formConstructorTitle:hover{
+    opacity: 0.85;
+}
+
+/* we will explain what these classes do next! */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+.autocompleteForm{
+  border: 1px solid #e0e0e0;
+}
+
+.formColorPicker{
+  border:solid 1px #dcdcdc !important;
+}
+
+.colorPickerSquare{
+  height: 40px; 
+  width: 40px;
+  cursor: pointer;
+  border: solid 1px #757575;
+}

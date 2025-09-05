@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0064_dataframemodel_is_delete_dataframepermission')];operations=[migrations.AddField(model_name='dataframemodel',name='dataframe_config',field=models.TextField(null=True))]

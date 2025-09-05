@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0052_kernelprocess')];operations=[migrations.AddField(model_name='kernelprocess',name='is_live',field=models.BooleanField(default=True))]

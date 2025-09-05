@@ -1,0 +1,3 @@
+_A='plotdbdevelopershared'
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0070_plotdbdeveloper_plotdbdevelopershared')];operations=[migrations.RemoveField(model_name=_A,name='plot_db_developer'),migrations.RemoveField(model_name=_A,name='share_rights'),migrations.RemoveField(model_name=_A,name='user'),migrations.RemoveField(model_name=_A,name='user_group'),migrations.AddField(model_name='developer',name='is_plot_db',field=models.BooleanField(default=True)),migrations.DeleteModel(name='PlotDBDeveloper'),migrations.DeleteModel(name='PlotDBDeveloperShared')]

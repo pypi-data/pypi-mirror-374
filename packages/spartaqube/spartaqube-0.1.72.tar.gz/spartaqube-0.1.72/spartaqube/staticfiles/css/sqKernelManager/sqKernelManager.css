@@ -1,0 +1,15 @@
+.footerKernelManager{
+    max-width: 350px;
+    cursor: pointer;
+}
+
+.footerKernelManager:hover{
+    text-decoration: underline;
+}
+
+.slidePanelKernel{
+    top: 0px;
+    height: 100%;
+    z-index: 1600 !important;
+    max-width: 450px;
+}

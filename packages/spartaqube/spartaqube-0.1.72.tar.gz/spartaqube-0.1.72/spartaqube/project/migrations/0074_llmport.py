@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0073_alter_plotdbchart_type_chart')];operations=[migrations.CreateModel(name='LLMPort',fields=[('id',models.BigAutoField(auto_created=True,primary_key=True,serialize=False,verbose_name='ID')),('port',models.IntegerField(default=47832)),('last_update',models.DateTimeField(null=True,verbose_name='Date created'))])]

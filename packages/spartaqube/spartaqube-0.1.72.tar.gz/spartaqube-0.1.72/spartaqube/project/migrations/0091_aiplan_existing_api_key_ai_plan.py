@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0090_alter_aiplan_b_use_personal_key_and_more')];operations=[migrations.AddField(model_name='aiplan',name='existing_api_key_ai_plan',field=models.CharField(max_length=100,null=True))]

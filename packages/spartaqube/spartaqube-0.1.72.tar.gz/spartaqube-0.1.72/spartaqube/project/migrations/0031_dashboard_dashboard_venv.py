@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0030_dashboard_lumino_layout')];operations=[migrations.AddField(model_name='dashboard',name='dashboard_venv',field=models.TextField(null=True))]

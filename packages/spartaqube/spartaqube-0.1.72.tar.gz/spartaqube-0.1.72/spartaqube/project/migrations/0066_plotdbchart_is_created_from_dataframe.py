@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0065_dataframemodel_dataframe_config')];operations=[migrations.AddField(model_name='plotdbchart',name='is_created_from_dataframe',field=models.BooleanField(default=False))]

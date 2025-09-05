@@ -1,0 +1,2 @@
+from django.db import migrations
+class Migration(migrations.Migration):dependencies=[('project','0042_notebook_is_exec_code_display_and_more')];operations=[migrations.RemoveField(model_name='notebook',name='is_exec_readonly')]

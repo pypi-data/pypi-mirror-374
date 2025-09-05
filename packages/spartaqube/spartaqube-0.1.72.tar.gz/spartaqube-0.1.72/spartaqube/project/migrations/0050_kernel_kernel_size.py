@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0049_kernel_is_static_variables_kernel_kernel_variables')];operations=[migrations.AddField(model_name='kernel',name='kernel_size',field=models.FloatField(default=0))]

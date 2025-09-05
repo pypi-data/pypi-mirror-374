@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0026_dashboard_dashboard_notebook')];operations=[migrations.AddField(model_name='dashboard',name='project_path',field=models.TextField(null=True))]

@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0072_developer_is_saved_confirmed')];operations=[migrations.AlterField(model_name='plotdbchart',name='type_chart',field=models.CharField(max_length=100,null=True))]

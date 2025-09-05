@@ -1,0 +1,67 @@
+body {
+    overflow: hidden !important; /* Disable main scroll */
+}
+
+#appHomepage{
+    padding-bottom:0px; overflow-y:scroll !important; overflow-x:hidden;
+}
+
+.categoryHome{
+    border: 1px solid #BFBFBF;
+    background-color: white;
+    box-shadow: 10px 10px 5px #aaaaaa;
+    height:250px !important;
+    color:#757575 !important;
+}
+.categoryHome:hover{
+    border: solid 1px #3f51b5;
+}
+.moduleContainer{
+    cursor:pointer;
+    float:left !important;
+    margin-bottom:15px;
+}
+.letsStart{
+    color: #3f51b5 !important;
+}
+.moduleLink{
+    color:black !important;
+}
+.iconColor{
+    color: #757575 !important;
+}
+.subTitle{
+    color: #757575 !important;
+    max-height: 60px;
+    overflow: auto;
+}
+
+/*screen-sm*/
+@media (max-width: 768px) {                             /*ORANGE*/
+    .mainTitle{
+        font-size:21px !important;
+    }
+}
+/*screen-sm*/
+@media (min-width: 768px) and (max-width: 992px) {      /*RED*/
+
+}
+/*screen-md*/
+@media (min-width: 992px) and (max-width: 1200px) {     /*BLUE*/
+
+}
+
+/*screen-md2*/ 
+/* MACBOOK AIR 13 */
+@media (min-width: 1200px) and (max-width: 1500px) {     /*BLUE*/
+
+}
+
+/*screen-lg corresponds with col-lg*/
+@media (min-width: 1500px) and (max-width: 1800px){     /*GREEN*/
+
+}
+/*screen-xl corresponds with col-xl*/
+@media (min-width: 1800px){                             /*YELLOW*/
+
+}

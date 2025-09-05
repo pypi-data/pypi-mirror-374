@@ -1,0 +1,945 @@
+/* @keyframes backgroundTransition {
+    0% {
+        background-color: red;
+        color: white;
+      }
+    100% {
+        background-color: transparent;
+        color: #757575;
+      }
+}
+  
+.warningTransition {
+    animation: backgroundTransition 5s infinite alternate;
+} */
+
+html{
+    overflow: hidden;
+}
+
+.ui-draggable-dragging {
+    z-index: 10000 !important; /* Adjust to match or exceed the parent’s z-index */
+}
+
+.modal-open .select2-container{
+    /* z-index: 1701 !important; */
+    /* z-index: 1701 !important; */
+}
+
+.mainContainer{
+    margin-left: 0px !important;
+}
+
+.asideSectionSm{
+    max-width:80px;
+}
+
+.page-aside{
+    overflow-y: auto !important;
+}
+
+.page-aside .list-group-item-menu {
+    padding: 13px 30px;
+    margin-bottom: 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border: 0;
+}
+
+.vc-sketch{
+    z-index: 1000 !important;
+}
+
+.list-group-item-menu:hover{
+    color: #3f51b5;
+    background-color: #eee;
+    border: 0;
+}
+
+a.list-group-item-menu{
+    color: #757575;
+}
+
+a.list-group-item-menu:hover{
+    background-color: #eee;
+}
+
+.page-aside-selected{
+    color: #3f51b5 !important;
+    background-color: #eee;
+    border: 0; 
+}
+
+.page-aside-selected > .icon {
+    color: #3f51b5 !important;
+}
+
+.list-group-item-menu.asideSection.{
+    color: #3f51b5 !important;
+}
+
+/* DASHBOARD LIBRARY */
+.emptyPreviewContainer{
+    text-align: center;
+    margin: 0;
+    position: absolute;
+    top: 25%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    left: 50%;
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.headerContainerDashboard{
+    border-bottom: solid 1px #ececec; margin-bottom:0px !important;
+}
+
+.dashboardLibraryElemContainer{
+    border-radius: 0.286rem;
+    background-color: #fff;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    border: 1px solid #BFBFBF;
+    height:270px !important;
+    color:#757575 !important;
+    cursor: default;
+}
+.connectorContainer:hover{
+    border: solid 1px #3f51b5;
+}
+
+.dashboardLibraryElemIcon{
+    font-size: 65px;
+}
+
+.dashboardLibraryElemNameContent{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.dashboardLibraryElemDescription{
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    display: -webkit-box; 
+    -webkit-box-orient: vertical;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-style:italic; 
+    font-size: 15px; 
+}
+
+.dashboardLibraryElemControlBtn{
+    text-align:right;
+    max-height: 50px;
+    border-bottom: solid 1px #dcdcdc;
+    padding:5px;
+}
+
+.moreInfosElem{
+    color: #3f51b5;
+    font-weight: bold;
+    cursor: pointer;
+    font-size:12px;
+    display:block;
+}
+
+.moreInfosElem:hover{
+    text-decoration: underline;   
+}
+
+#connectorNewPlotStickyBar, #addConnectorStickyBar, #addConnectorEngineStickyBar{
+    height:50px;
+    position:sticky; top:0px;
+    padding-top:5px;
+    padding-bottom:5px;
+    padding-left:30px;
+    padding-right:30px;
+    z-index:10;
+    background:white;
+    border-bottom: solid 1px #e0e0e0;
+}
+
+.dataSourcePanelCreateContainer{
+    border-left: solid 1px #dcdcdc; background:white; 
+}
+
+.gettingStartedTitle{
+    color: rgb(117, 117, 117) !important;
+}
+
+
+
+.dashboardTabsContainer{
+    width: calc(100% - 300px);
+    z-index: 999;
+    position: relative;
+}
+
+.dashboardTabsContainerRun{
+    width: calc(100% - 0px);
+    z-index: 999;
+    position: relative;
+}
+
+.tabsContainer{
+    height: 100%;
+}
+
+.programmaticConfigContainer{
+    width: calc(100% - 300px);
+    z-index: 999;
+    position: relative;
+}
+
+/* PROGRAMMATIC CONFIG */
+.programmaticConfigHeader{
+    height:40px;
+    border-bottom: solid 1px #dcdcdc;
+}
+
+/* GRID  */
+
+.grid-stack > .grid-stack-item > .ui-resizable-w {
+    background-color: red;
+    display: none !important;
+}
+
+.grid-stack > .grid-stack-item > .ui-resizable-s {
+    background-color: red;
+    display: none !important;
+}
+
+.grid-stack > .grid-stack-item > .ui-resizable-e {
+    background-color: red;
+    display: none !important;
+}
+
+.iframeCellContainer{
+    height:calc(100% - 0px); 
+    width:100%;
+    /* background-color: #FFFFFF; */
+}
+
+.guiCellContainer{
+    height:calc(100% - 0px); 
+    width:100%;
+    padding: 10px;
+    border: solid 1px transparent;
+    /* background-color: #FFFFFF; */
+}
+
+.dataFrameCellContainer{
+    height:calc(100% - 0px); 
+    width:100%;
+    padding: 10px;
+    border: solid 1px transparent;
+    cursor: auto !important;
+}
+
+.plotDBCellContainer{
+    height:calc(100% - 0px); 
+    width:100%;
+    padding: 10px;
+    cursor: auto !important;
+    border: solid 1px transparent;
+    /* background-color: #FFFFFF; */
+}
+
+.previewPanelContainer{
+    height: 100%;
+    width: 100%;
+}
+
+.grid-stack{
+    background-size: 80px 80px; /* Matches the cell size */
+    background-image: linear-gradient(to right, #f11f1f 1px, transparent 1px), /* Vertical lines */
+                        linear-gradient(to bottom, #f20e0e 1px, transparent 1px); /* Horizontal lines */
+    background: #f1f4f5; 
+    border: solid 1px #dcdcdc;
+    height:calc(100vh - 183px) !important;
+}
+
+.gridElemContainer{
+    height:200px; 
+    width:100%; 
+    margin-top:10px; 
+    border:solid 1px #dcdcdc;
+}
+
+.gridElemGuiContainer{
+    height:100px !important; 
+}
+
+.gridElemContainer:hover{
+    border: solid 1px #3f51b5 !important;
+}
+
+.grid-stack-item-content {
+    color: #2c3e50;
+    text-align: center;
+    background-color:white !important;
+    border: solid 1px #EEEEEE;
+    cursor:grab;
+    margin-bottom:0px !important;
+}
+
+.grid-stack-item .grid-stack-item-content {
+    border: 2px dashed #ccc; /* Customize the border color and style as needed */
+    /* background-color: #f8f8f8 !important; */
+}
+
+.grid-stack-item-content-reload {
+    inset: 0px !important;
+    border: solid 1px #EEEEEE !important;
+    overflow-y: hidden !important;
+}
+
+/* Optional: customize the placeholder when dragging */
+.grid-stack-placeholder {
+    border: 2px dashed #999; /* Dashed border for the placeholder */
+    background-color: rgba(153, 153, 153, 0.2); /* Light background color */
+}
+
+.drag-handle{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    cursor: grab;
+    display: none; /* Initially hidden */
+}
+  
+.grid-stack-item-content:hover .drag-handle {
+    display: block; /* Show on hover */
+    visibility: visible;
+}
+
+.grid-stack-item-content:hover .titleCellPlotDB {
+    display: none; /* Show on hover */
+}
+
+.grid-stack-item-content:hover .titleCellDataFrame {
+    visibility: hidden; /* Show on hover */
+}
+
+.titleWidgetDashboardCell{
+    color: #2c3e50;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    font-family: "Azonix";
+    max-width: 60%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.titleWidgetDashboardCellRun{
+    color: #2c3e50;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    font-family: "Azonix";
+    max-width: 60%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.grid-stack-item-content:hover .titleWidgetDashboardCell {
+    display: none; /* Show on hover */
+}
+
+.gridItemInitialDragging{
+    /* border: solid 1px #dcdcdc;; */
+    border: solid 1px transparent;
+}
+
+.removeGridItem{
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    background-color: #FFFFFF;
+    height: calc(100% - 0px);
+    opacity: 0.9;
+    z-index: 1;
+    text-align: center;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    text-align: center;
+}
+
+.removeGridItem:hover{
+    background-color: rgb(249, 164, 164);
+}
+
+.opaque-div {
+    opacity: 1; /* Fully opaque */
+    padding: 20px;
+    color:rgb(185, 28, 28);
+    height: 250px;
+    vertical-align: center;
+}
+
+
+.isDraggingGridItem{
+    /* z-index: 10000; */
+}
+
+/* SLIDE PANEL */
+
+#sliderPanel{
+    position: fixed;
+    padding: 0px;
+    right: 0px;
+    top: 68px; 
+    height: calc(100% - 111px);
+    background-color: white;
+    border: solid 1px #dcdcdc;
+    width: 300px !important;
+    z-index: 1000 !important;
+    transition: transform 0.7s ease; /* Animation for sliding effect */
+    box-shadow: -5px 0 20px 0 rgba(66,66,66,.2)
+}
+
+#sliderPanelHeader{
+    height: 45px;
+    width: 100%;
+}
+
+#sliderPanelRightCollapsed{
+    position: fixed;
+    padding: 0px;
+    right: 0px;
+    top: 68px; 
+    height: calc(100% - 111px);
+    background-color: white;
+    border: solid 1px #dcdcdc;
+    width: 50px !important;
+    z-index: 1000 !important;
+    transition: transform 0.7s ease; /* Animation for sliding effect */
+    box-shadow: -5px 0 20px 0 rgba(66,66,66,.2)
+}
+
+.externalWebAppParent{
+    margin-top:0px; height:100%; width:calc(100% - 300px);
+}
+
+.slidePanelHeaderBtn{
+    width: 49px !important;
+    height: 45px !important;
+    text-align:center;
+}
+
+.plotComponentSliderContainer{
+    height: 200px;
+    width: 100%;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    cursor: pointer;
+    background-color: white;
+}
+
+.plotLibraryListContainer{
+    margin-top:10px;
+    height: calc(100vh - 214px);
+    overflow-y: auto;
+    overflow-x:hidden;
+    padding: 15px;
+    border-top: solid 1px #dcdcdc;;
+}
+
+.requiredSaveDashboard{
+    background-color: red !important;
+    color:white !important;
+    border-color: red !important;
+}
+
+.previewContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+}
+
+/* .previewContainer:hover {
+    border: solid 1px #3f51b5;
+} */
+
+.imagePlotDBThumbnail{
+    height: 100% !important;
+    max-width: 100%;
+    object-fit: cover; /* This will crop the image to fill the container while preserving its aspect ratio */
+}
+
+.previewItemIcon{
+    position: absolute;
+    text-align: center;
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+    top: 65px;
+    left: 0px;
+    width: 100%;
+    font-size:4em;
+    color: #757575;
+}
+
+.previewItemImg{
+    max-width: 70px !important;
+    /* max-height: 100%; */
+    object-fit: cover; /* This will crop the image to fill the container while preserving its aspect ratio */
+    position: absolute;
+    text-align: center;
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+    top: 75px;
+    left: calc(50% - 35px);
+}
+
+.plotComponentSliderTitle{
+    position: absolute;
+    /* bottom: 50px; */
+    padding: 5px;
+    padding-top: 8px;
+    font-size: 1.3em;
+    top: 0px;
+    height: 40px;
+    width: 100%;
+    /* background-color: rgba(0, 0, 0, 0.6); */
+    /* color: white; */
+    border-bottom: solid 1px #dcdcdc;
+    background-color: white;
+    color: black;
+    font-family: "Azonix";
+    text-align: center;
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.plotComponentSliderExampleComponent{
+    position: absolute;
+    /* bottom: 50px; */
+    padding: 5px;
+    padding-top: 8px;
+    font-size: 1.3em;
+    top: 40px;
+    height: 40px;
+    width: 100%;
+}
+
+/* MODAL GUI COMPONENT */
+#modalGuiComponent > .modal-lg{
+    width: 90% !important; /* Sets the width to 90% of the viewport width */
+    max-width: 1200px !important; /* Sets the width to 90% of the viewport width */
+}
+
+#modalGuiComponentContainer{
+    padding: 15px;
+    border: solid 1px #dcdcdc;
+    margin-top: -1px;
+}
+
+.pythonVariableNameStyle{
+    font-weight: bold;
+    color:black;
+    font-family: monospace !important;
+}
+
+/* DASHBOARD NOTEBOOK */
+.kernelConnectionNotebookOverlay{
+    height:100%; 
+    width:calc(100% - 0px); 
+    top:0px; 
+    left:0; 
+    position:absolute; 
+    background: white; 
+    z-index:1000; 
+    opacity:0.90; 
+    border:solid 1px #dcdcdc;
+}
+
+.dashboardNotebookHeaderContainer{
+    width: 100%;
+    background-color: white;
+    border-bottom: solid 1px #dcdcdc;
+    height: 30px;
+    position: absolute !important;
+    top: 0px !important;
+}
+
+.dashboardNotebookMainContainer{
+    width: calc(100% - 300px);
+    height: calc(100vh - 110px);
+    z-index: 999;
+    position: relative;
+    margin-top: 0px;
+    margin-left: 0px;
+    overflow: hidden;
+    position: absolute !important;
+    top: 0px !important;
+}
+
+.dashboardNotebookMainNotebookContainer{
+    width: 100%;
+    z-index: 999;
+    position: relative;
+    margin-top: 0px;
+    height: calc(100% - 31px);
+    overflow: auto;
+    padding: 0px !important;
+    padding-top: 5px;
+    overflow-x: hidden;
+    position: absolute !important;
+    top: 30px !important;
+    height: calc(100% - 31px) !important;
+}
+
+.mainNotebookDashboardContainer{
+    width: calc(100% - 210px);
+    height: 100%;
+    position: absolute;
+    left: 210px;
+    top: 0px;
+}
+
+.resizableExplorer {
+    width: 210px;
+    height: 100%;
+    position: relative;
+    user-select: none
+}
+
+/* Resizer on the right side */
+.resizableExplorer:after {
+    content: '';
+    width: 5px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: ew-resize; /* Horizontal resize cursor */
+}
+
+.ideSettingContainer{
+    height:100%;
+    padding: 0px;
+}
+
+.ideSettingsPanelSection{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.ideSettingContainer > .panel-group .panel-title:after, .panel-group .panel-title:before{
+    right: 10px !important;
+    top: 5px !important;
+}
+
+.ideSettingContainer > .panel-group .panel-title:after, .panel-group .panel-title:after{
+    right: 10px !important;
+    top: 5px !important;
+}
+
+.ideSettingsAccordionTitle{
+    font-size:0.9em !important;
+    padding:5px !important;
+    /* padding-left:50px !important; */
+    font-family: Azonix !important;
+    background-color: #ececec;
+}
+
+.envLabelTitle{
+    font-weight: bold;
+}
+
+.ideSettingsVenvListContainer{
+    overflow: auto;
+    overflow-x:hidden;
+    max-height:350px;
+    margin-top: 10px;
+}
+
+.venvListRow{
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top:5px;
+}
+
+.venvBtnRow{
+    padding: 2px;
+    padding-right: 8px;
+    display: inline-block;
+}
+
+.venvListSpan{
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-top: 3px;
+    display: inline-flex;
+}
+
+.venvListName{
+    margin-left:5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pipInstallTerm{
+    background-color: black;
+    color:white;
+    padding:5px;
+    max-height:500px;
+    overflow-y: auto;
+    text-align:left;
+    overflow-x: hidden;
+}
+
+
+/* FILE EXPLORE */
+.uploaderContainerOverride{
+    max-height: 100% !important;
+    height: calc(100vh - 161px) !important;
+    overflow: auto;
+}
+
+/* WORKSPACE */
+.workspaceVariablesContainer{
+    height: calc(100vh - 158px);
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.searchWorkspaceVariableInput{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    position: sticky;
+    top:0px;
+    z-index: 10;
+    background-color: white;
+    border-bottom: solid 1px #dcdcdc;
+}
+
+.tableWorkspaceDashboard{
+    font-size: 0.85em;
+    border-top: solid 1px #dcdcdc;
+}
+
+.workspaceVarRowsTr{
+    height: 55px !important;
+}
+
+.kernelWorkspaceVariableName{
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.kernelWorkspaceVariableName:hover{
+    text-decoration: underline;
+}
+
+.kernelWorkspaceVarTd{
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.emptyKernelVar{
+    text-align: center;
+    font-size: 0.85em;
+    margin-top: 10px;
+}
+
+/* GUI COMPONENT OUTPUT */
+.guiComponentPythonOutput{
+    text-align: center;
+    margin: auto;
+    width: 100%;
+    height: calc(100% - 50px);
+    width: calc(100% - 20px);
+    overflow: auto;
+    position: absolute;
+    margin-top: 5px;;
+}
+
+.guiComponentAutocompleteResults{
+    position: absolute !important;
+    width: calc(100% - 20px) !important;
+}
+
+.titleAutocompleteResults{
+    color: #000000;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.subTitleAutocompleteResults{
+    font-style: italic;
+    font-size: 0.9em;
+    columns: #757575;
+}
+
+.autocompleteSpinner{
+    border:solid 1px #dcdcdc;
+}
+
+/* SLIDE PANEL DASHBOARD */
+.slidePanelDashboard{
+    z-index: 160001 !important;
+    top: 0px;
+    height: 100%;
+}
+
+.select2-dropdown.select2Picker {
+    z-index:99999 !important;
+}
+
+/* DASHBOARD CELL */
+.animated-border {
+    position: absolute; 
+    z-index: 0;
+}
+
+.animated-border::before,
+    .animated-border::after {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        right: -1px;
+        bottom: -1px;
+        border: 1.7px solid orange !important;
+        transition: all .5s;
+        animation: clippath 2s infinite linear;
+        border-radius: 2px;
+    }
+    
+    &::after {
+        animation: clippath 2s infinite -1s linear;
+    }
+
+/* PLOT DB DATA SOURCE */
+.filterDataSourceDashboardContainer{
+    margin-top: 10px; 
+    padding-bottom:10px; border-bottom:solid 1px #dcdcdc;
+}
+
+@keyframes clippath {
+    0%,
+    100% {
+        clip-path: inset(0 0 98% 0);
+    }
+    
+    25% {
+        clip-path: inset(0 98% 0 0);
+    }
+    50% {
+        clip-path: inset(98% 0 0 0);
+    }
+    75% {
+        clip-path: inset(0 0 0 98%);
+    }
+}
+
+/* GUI CELL DASHBOARD ELEMENT */
+.guiCellHeader{
+    width: 100%;
+    height: 30px;
+    margin-bottom: 5px;
+}
+
+.guiComponentContainer{
+    margin-top: 10px;
+}
+
+.titleCellGuiComponent{
+    float: left;
+    font-family: "Azonix";
+}
+
+.titleCellGuiComponentRun{
+    float: left;
+    font-family: "Azonix";
+}
+
+.titleCellPlotDB{
+    float: left;
+    font-family: "Azonix";
+}
+
+.titleCellPlotDBRun{
+    float: left;
+    font-family: "Azonix";
+}
+
+.openModalEditBtn{
+    padding-top: 3px;
+    padding-bottom: 3px;
+    float: right;
+}
+
+/* LUMINO */
+@keyframes colorTransition {
+    0% {
+      background-color: red;
+      color: white;
+    }
+    50% {
+      background-color: white;
+      color: #757575;
+    }
+    100% {
+      background-color: red;
+      color: white;
+    }
+  }
+  
+  .badge-danger-save {
+    animation: colorTransition 1s infinite;
+  }
+  .badge-danger-save:hover {
+    background-color: red !important;
+    color: white !important;
+  }
+
+@media (max-width: 576px) {
+    .nav-link {
+        padding: .4rem .6rem; /* Further adjust for very small screens */
+    }
+}
+
+/*screen-sm*/
+@media (max-width: 768px) {                            
+    .nav-link {
+        padding: .5rem .8rem; /* Adjust padding for smaller screens */
+    }
+}
+
+/*other*/
+@media (min-width: 769px) and (max-width: 1199.98px) {
+    .nav-link {
+        display: block;
+        padding: .715rem 1.072rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .nav-link {
+        display: block;
+        padding: .715rem 1.072rem;
+    }
+}

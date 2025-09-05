@@ -1,0 +1,2 @@
+from django.db import migrations
+class Migration(migrations.Migration):dependencies=[('project','0080_dataframellm_title_override')];operations=[migrations.RenameField(model_name='dataframellm',old_name='initial_query',new_name='initial_prompt')]

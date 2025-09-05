@@ -1,0 +1,32 @@
+<!doctype html><html lang="en"><head><script async src="https://www.googletagmanager.com/gtag/js?id=G-CXHTH0VZPN"></script><script>window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-CXHTH0VZPN');</script>{% block meta %}<meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,minimal-ui"><meta name="description" content=""><meta name="author" content="">{% endblock %} {% load static %} {% load project_extras %}<link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}"><link rel="stylesheet" href="{% static 'fonts/material-design/material-design.min.css' %}"><link rel="stylesheet" href="{% static 'fonts/brand-icons/brand-icons.min.css' %}"><link rel="stylesheet" href="{% static 'global/fonts/font-awesome/font-awesome.css' %}"><link rel="stylesheet" href="{% static 'css/font-awesome/css/font-awesome.min.css' %}"><link rel="stylesheet" href="{% static 'css/vendor/style.css' %}"/><link rel="stylesheet" href="{% static 'css/base.css' %}"/>{% block otherCSS %} {% endblock %} {% include "dist/project/import/importCSS.html" %}<script src="{% static 'globalqube/vendor/breakpoints/breakpoints.js' %}"></script><script>Breakpoints();</script>{% comment %}<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>{% endcomment %}<script src="{% static 'js/util/vue.min.js' %}"></script><script src="{% static 'js/util/axios.min.js' %}"></script><script src="{% static 'js/util/bootstrap-vue.common.min.js' %}"></script><title>{% block title %}{{ PROJECT_NAME }}{% endblock %}</title><style>@font-face {
+            font-family: Azonix;
+            src: url("{% static 'fonts/Azonix/Azonix.otf' %}") format("opentype");
+        }</style></head>{% block body %}<body class="animsition site-menubar-fold site-menubar-keep">{% endblock %} {% block navBar %} {% include "dist/project/navBarPublic.html" %} {% endblock %} {% if not bPublicUser %} {% block menuBar %} {% include "dist/project/menuBarV1.html" %} {% endblock %} {% endif %} {% include "dist/project/variablesInjection.html" %} {% block content %}<div class="page"></div>{% endblock %}<script>var B_DARK_THEME = {{ B_DARK_THEME | js }};
+  var WEBSOCKET_PREFIX = {{ WEBSOCKET_PREFIX | js }};
+  var HOST_WS_PREFIX_SQ = {{ HOST_WS_PREFIX | js }};
+  var CHECK_VERSIONING = {{ CHECK_VERSIONING | js }};
+  var IS_KERNEL_COMPUTATION = {{ IS_KERNEL_COMPUTATION | js }}
+  var URL_PREFIX = {{ URL_PREFIX | js }};
+  var URL_WS_PREFIX = {{ URL_WS_PREFIX | js }};
+  var ASGI_PORT = {{ ASGI_PORT | js }};
+  var IS_DEV = {{ IS_DEV | js }};
+  var IS_LLM = {{ IS_LLM | js }};
+  var IS_VITE = {{ IS_VITE | js }};
+  var IS_DOCKER = {{ IS_DOCKER | js }};
+  var CYPRESS_TEST_APP = {{ CYPRESS_TEST_APP | js }};
+  var IS_DEV_VIEW_ENABLED = {{ IS_DEV_VIEW_ENABLED | js }};</script><footer style="text-align:center; margin-top:7px;">&copy; <span class="pageNavTitle">{{ PROJECT_NAME }}</span> {% now 'Y' %}</footer>{% include "dist/project/import/importJS.html" %} {% block otherJS %} {% endblock %}<script>(function(document, window, $){
+    'use strict';
+
+    var Site = window.Site;
+    $(document).ready(function(){
+      Site.run();
+    });
+  })(document, window, jQuery);
+
+  function js_print(msg){
+
+  }</script>{% comment %}<script src="https://unpkg.com/default-passive-events"></script>{% endcomment %}</body></html>

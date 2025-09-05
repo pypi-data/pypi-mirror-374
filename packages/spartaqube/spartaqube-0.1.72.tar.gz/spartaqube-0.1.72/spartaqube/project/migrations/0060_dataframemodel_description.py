@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0059_alter_dataframehistory_dispo')];operations=[migrations.AddField(model_name='dataframemodel',name='description',field=models.TextField(null=True))]

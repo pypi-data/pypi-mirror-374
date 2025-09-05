@@ -1,0 +1,412 @@
+TASKS DONE
+OK 2. GUI to create DBConnector models in database (Dimanche)
+OK > 3. Connect to the connector from GUI, show database, tables etc... (Lundi)
+OK > 4. Plot DB (BH vite style) (Lundi)
+OK > Labels, Colors, All Options Attributes
+OK > 6. Develop Chart Type (Lundi, Mardi, Mercredi)
+OK > 7. Store Chart Type (Mercredi)
+OK > 8. Iframe (Jeudi, Vendredi)
+OK > Options Attribute: Fold/Unfold
+OK > Option Refresh dynamically the chart (update ?)
+OK > 1. Scatter, Bubble
+    OK > 1. Label (both scatter and bubble, callback)
+OK > 2. CONFIGURE FROM CODE DIRECTLY + CREATE CODE TEMPLATE
+    OK > 1. Debounce debug
+    OK > 2. BUG REFSH CM, BUG BACKGROUND LOSE DATA
+    OK > 2. STACK
+    OK > 2. Show error if errors
+OK > 3. Tooltip (attribute to add)
+OK > 4. COMBO MIXED
+OK > 4. POLAR
+OK > 5. BUGS TO SOLVE: Animation (remove)
+OK > 1. Reload components from chart.options, chart.data.datasets... etc...
+OK > 2. Save plot to library
+OK > 3. Open plot from library
+OK > 4. ReLoad chart from library to update it (UPDATE MODE)
+OK > 1. Palette couleur entreprise
+OK > 2. Error like type > bara
+OK > 1. BUGS TO SOLVE: Fill
+OK > 2. BackgroundColor Array to specify (or enter manually, for pie chart for instance)
+OK > 3. Time X Axis 
+SAMEDI-DIMANCHE 14.01.2024
+OK > 1. Trading View Component + Configuration (Like, BTC, ETH instruments etc...)
+    OK > 1. Save component and Reload them from the library
+    OK > 2. Configure each component
+    OK > 3. Add technical indicator real time component
+OK > 2. Sample CSV example with data (with CSV connector)
+    OK > 1. XLSX to develop as well
+    OK > 2. Add delimiters
+OK > 1. Bug color palette override when user changed a color... + OPACITY
+OK > 2. Pie chart, edit datasets individually
+
+LUNDI 15.01.2024
+OK > 1. Edit plot from Library (reload in the plot module)
+    OK > 1.1 Save (update current, or create new)
+OK > 2. Button Reset Chart Style (reset from scratch)
+OK > 2. Connectors: Add new connectors, edit bug issues
+OK > 3. symbol (OK), symbols, symbolsGroups, feedMode (OK)
+
+OK > 4. Attributes buttons: common, axes etc...
+    OK > RADAR CHART, hide display axes by default
+    OK > Pie Chart, default color not working, same x axis, y axis hide by default
+    OK > Radial Axis To Implement
+OK > 5. Time axis
+    OK > 5.1 Button Recreate chart (in case error)
+
+// *********************************************************************************************************************
+PLOTDB Program
+1. Develop all connectors (Samedi)
+1.1. Query Builder, execute etc...
+
+MARDI
+5. Add transformation, using Python + Ikernel (Mardi)
+
+SAMEDI
+1. Add field description
+3. CSV/EXCEL Connector to implement
+
+TREEMAP (D3.js)
+5. OPEN ATTRIBUTE PANEL BY CLICKING ON THE CHART DIRECTLY
+
+TODO:
+3. Multi Axis (start with line chart)
+4. Candles, Map, Table, Text
+    4. Tables : add conditional formatting (use spartaquant)
+5. Click on label, axis, or bar for instance to open the attribute panel
+6. Preview plot: Add chart/data buttons switch (MTD, YTD etc... for time series)
+7. If switch from line to pie for instance, can we reuse the data source to automatically present the pie ?
+
+
+LUNDI
+1. Table With Conditional formatting
+    OK > 1.1 Value based to implement
+    OK > 1.2 Drop on plus button
+    1.3 Clipboard table
+OK > 2. STEPS:
+    OK > Data Source, Data Transformation, Data Plot
+3. Table: 
+    1. Filter table
+    2. Search bar
+
+    OK > 1. Save sort and filter to DataChart Component in order to reload it as it is
+    OK > 2. Reload attribute panel (with dataFrame attributes)
+    OK > 3. Background style disabled when conditional formatting apply for column (general and column)
+    OK > 4. Save in library and reload it
+    OK > 5. Display columns (true, false)
+
+
+Vendredi 19.01.2024
+OK > 1. Multi selection (remove element cross should trigger a refresh)
+OK > 2. Multi selection default parameters list
+OK > 2. Programmatic mode 
+OK > 3. Widget full mode
+OK > 4. Inputs To main view (TV)
+OK > 8. Scroll overflow hidden to set
+OK > 9. Recreate TV component Button, Same reset (reset hide)
+OK > 10. PIE chart, no grid available
+OK > 1. WIDGETS View
+OK > 2. Same for font-color in the case of valueBased
+1. Nivo Vue JS (Samedi, Dimanche)
+    1. OK > heatmap
+    2. OK > line
+    3. marimekko
+    4. OK > funnel
+    5. OK > scatterplot
+    6. OK > waffle
+    7. OK > Time range
+    8. Swarmplot
+    9. OK > Parrallel Coordinates
+    10. OK > Chord
+    11. OK > Stream
+1.1 Nivo Children
+    1. Sundburst
+    2. Treemap
+    3. Circle Packing
+1.2 Node, Link
+    1. Sankei
+    2. Network
+1.3 BoxPlot
+1.4 Bug Line Chart (see CSV import, date: open fields, x axis format)
+
+1. iloc on data source column
+1.1 Programmatic Nivo
+2. Text1 , Text2
+
+Samedi-Dimanche 03/02/2024: CODE EDITOR
+OK > 2. play all
+OK > 3. stop all
+OK > 6. kernel connection lost
+OK > 7. variable inspectors of the kernel
+OK > 2. set variables to the VARIABLES DATA SOURCES
+OK > 13. Font style to jupyter lab (font style and size)
+OK > 18. Remove django from workspace variables
+OK > 20. If socket lost, we reconnect and we must resend to the kernel all the datasource variables
+OK > 15. matplotlib
+OK > 0. Selected variable workspace
+OK > 1. reset
+OK > 2. suggestion
+OK > 3. comment
+OK > 4. Autoclompletion with all workspace variables
+OK > 5. Code Editor Error Case (Traceback ?)
+OK > 1. USE THEM TO THE PLOT
+Mercredi
+OK > 1. Save (with models)
+Jeudi
+OK > 2.1 Library, load plotDB that uses code editor variables
+OK > 2.2 Reload code editor cells for edit Plot
+OK > 2.3. Axis title: when typing, we should automatically set the display mode to true
+OK > 2.4. Toggle ON/Off not working first time
+OK > 3. Each plot should be associated to a notebook from now one
+# VENDREDI
+OK > 1. Need to refresh the kernelVariable in the plotManagerDataSource (plot section) when the kernelVariable is updated...
+OK > 1.1 rafraichissement dans le code Editor devrait mettre a jour automatiquement les graphiques
+OK > 5. Load Library plot that uses transformation
+
+Bugs SARAH:
+OK > Ajouter l'index par défault
+OK > Ajouter l'index du dataframe a la liste de champs disponibles
+OK > Bug doublons des variables dans la partie plot
+OK > 1. Click on axis of the chart to edit it
+OK > 2. Should be able to edit multiple lines at the same time chartJS (open, high, low, close etc...)
+OK > 3. XAxis inférence time axis
+OK > 4. Detect click on the line chart
+OK > 4.1 Activate only right click context menu if we are in the Edit mode (not widget for instance)
+OK > 5. Line chart ChartJS dégueulasse par défaut, a reprendre
+
+Code Editor Finaliser (Lundi)
+OK > 1. Default magic command
+OK > 2. Favicon
+OK > 3. Export to standard ipynb notebook file
+OK > 4. Import from a standard ipynb notebook file
+OK > 5. Save theme default user settings
+OK > 6. SpartaQube, create project + repo, migrate code to this project (Rename models ?)
+OK > 7. Reset error: socketKernelObj is not defined
+OK > 8. Code Editor Add FullScreen (transformation)
+OK > 9. Bug filter workspace variable
+
+// *********************************************************************************************************************
+OK > 0.1 Axis Type Format (Add a dedicated button for ChartJS)
+OK > 0.2 Bug: display none axis Y, cannot right click open context anymore for the second axis X
+OK > 0.3. Bug right click context long string like dates
+OK > 1 DataLabel ajouter en tant qu'attribut avec header btn etc...
+OK > 2. Sticky header for attributes buttons
+OK > 3. Remove plot preview in Full screen from plot library
+OK > 4. Bug Axis Property for pie chart 
+OK > 6. Remove color options when editing multiple lines at the same time...
+OK > 7. Delete radius Bubble (x cross)
+
+// *********************************************************************************************************************
+# OTHER BUGS TO SOLVE
+// *********************************************************************************************************************
+1. Bug click add datasource, nothing (no table) selected
+2. DataLabels for Pie chart
+3. Datalabels Plots Library for backgroundContext to debug
+
+// *********************************************************************************************************************
+ WEEKEND
+// *********************************************************************************************************************
+OK > 1. 2 modes:
+    OK > 1. Offline, no account: we can start spartaqube and use it with anonymous user and plot temporary chart.
+       But we are not able to store any chart or log to the GUI
+    OK > 2. Account, we must create an account (that will be tracked in another system)
+
+SAMEDI Nivo, finaliser les graphiques
+    OK > 1. Bar: Stacked; Unstacked
+    OK > 2. Legend
+    OK > 3. Width/Height by default
+    OK > 4. Axis not visible
+    OK > 5.0 hide/Show Axis
+    6. Colors, show the colors palette
+    OK > 5.2 Reload colors scheme:
+    OK > 1.1 Background patter stream > fill
+    OK > 1.1 yScales: min max AXIS
+    OK > 1.0 Finaliser Nivo Time Series
+Dimanche
+    OK > 1.0 Add Stacked button option for line chart NIVO
+    OK > 1.1 Right click context on axis + chart like chartJS
+    OK > 1.1.1 NIVO: x scale min and x scale max not working for time axis (Axes)
+    OK > 1.2.1 Remove Legends (heatmap)
+    OK > 1.2.1 Grid remove for heatmap
+    OK > 1.2.1 ContextMenu remove grid for heatmap
+    OK > 1.1 Title Nivo (Chart Title main option)
+    OK > 1.2 Save Nivo
+    OK > 1.3 Load Nivo Library
+        OK > 1.1 Debug resetChartOptionsModel
+        OK > 1.2 Display Title
+        OK > 1.3 Format Time (reload date format as well)   
+    OK > TradingView, switch to edit inputs, general options, color theme not restored
+
+    1.3.1 Time Axis For Bar chart not working
+    OK > 1.3.2 Context Right click not working after chart loaded in the chartLibrary section
+    1.4. yIdx Nivo
+    1.5 Background pattern (line, dots etc...) (we need the yIdx options)
+    1.6 Legend symbol: circle etc...
+
+    1.7 Design Transformation Plot Loader
+    OK > 1.8 API IMPLEMENTATION
+    1.9 PIP DEPLOYMENT + INSTALLATION
+    1.10 Template plotDB (very important)
+    1.7 Heatmap yAxis format type is Time ?
+    1.8 Bug: Context Nivo, Then Context ChartJS not working
+
+    NEW COMPONENTS
+    1. Quantstats Component (Genre tu récupères un ticker depuis trading view et tu sort le grpahique complet quantstats)
+    2. Statistics components with dates filters (le meme que SpartaQuant)
+    3. Clusterize components ??
+    4. Charts Components
+    5. ChatGPT integration ????? Plus tard
+
+    Vendredi
+        1. Bug chart Nivo stream, add two series, then remove second series, chart not updating
+        4. Calendar: 
+            1. Base: Min Value, Max Value, From, To 
+        5. Time Range not working
+        6. Radial Bar
+
+
+1. Nivo wdidget not working
+
+
+
+// *********************************************************************************************************************
+DEPLOIEMENT: V1 STABLE
+// *********************************************************************************************************************
+1.1 Penser aux mise a jour: Intégration de nouveaux composants: Peux t-on faire des mise a jour sans avoir a ce que l'utilisateur fassent un pip upgrade ? 
+1.2 Marketplace public
+1.3 Stripe payment
+1.4 Help Center Premium feature
+
+10. Search bar for attributes finder
+
+OK > 2. Obfsucation function + class
+OK > 5. Docker hub deploiement (avant, monter le telechargement a 10k)
+OK > 6. Screenshot chart button, download as png
+OK > 11. Responsive design core + dark Theme
+OK > Dark Theme Default button
+OK > Mercredi 18. Find by id (only first three letters)
+OK > Mercredi 19. Accéder aux widgets avec des noms plus parlant plutot que des id
+OK > Mercredi > Bug info modal if fullscreen in Transformation
+OK > Mercredi > Screenshot not working for TV need to remove
+OK > Mercredi 13. Edit chart from cog setting dropdown in widget
+OK > Mercredi > stopLoadingSpinner (when opening from plots library: need to run the spinner as well)
+OK > Mercredi 17. Nivo Chart not working as widget
+
+Jeudi 15. Nivo chart debug simple line with yahoo price for xAxis time (ROTATION ISSUE ?)
+Jeudi 23. Code Editor Dark Theme For DataFrame RenderedHTMLCommon
+
+OK > Jeudi 23. Nivo DarkTheme Grid bug
+OK > Jeudi 14. Screeenshot need to change the id of the widget chart to html2canvas to capture the full frame
+OK > BUG UPDATE EXISTING MODAL (OPENED FROM LIBRARY...)
+OK > Jeudi 16. Get raw data from chart component (within a jupyter for instance)
+OK > Jeudi 21. Search bar type of chart
+OK > Jeudi 22. Hashtag/Category for type of chart
+
+OK > Vendredi 1. Switch chart type 
+OK > Vendredi 8. Enlever les chartes non implémentés
+Vendredi 7. Excel examples pour différent types de graphiques
+Vendredi 9. Pip deploiement, pip installation (windows, mac, linux a tester) + dépendances librairies python
+Exclure API de l'obfuscation
+
+Use Template as Component (Plot Type)
+
+Weekend 3. Minify api/cli folders
+Weekend 9. test unitaire déploiement pip/dockerhub (main Obfsucation)
+Weekend 12. Notification is new version available
+Weekend 13. Implement missing connectors
+Weekend 14. Jupyter Connector
+Weekend > Componsant Trading View + Python Trading View
+Weekend > matplotlib
+Weekend > Yahoo Statistics Composant
+Weekend > ChartJS attributes description > finaliser
+
+Semain prochaine chartJS animation line chart 
+Spinner dark theme
+
+// *********************************************************************************************************************
+INTEGRATION OTHER LANGUAGES
+// *********************************************************************************************************************
+1. R and MATLAB integration
+2. Html IFrame integration ?
+
+// *********************************************************************************************************************
+DIFFCULT BUGS TO SOLVE:
+// *********************************************************************************************************************
+Datalabel for pie chart in ChartJS
+ContextMenu in the line chart for Nivo Chart
+
+// *********************************************************************************************************************
+TRANSFORMATION (HIGH PRIORITY AS IT WILL BE SIMILAR IMPLEMENTATION FOR JUPYTER NOTEBOOK)
+// *********************************************************************************************************************
+Within the transformation view, behind each cell's output, we should be able to propose an appropriate chart,
+configure it directly in the cell's output (nocode)
+When it's done, we can validate and go to the plot section with the graph ready to be displayed and saved
+
+
+OK > 2. DIMANCHE: API for jupyter notebook
+OK > 2.1 Jupyter Notebook As Connector
+3. Pip Installation (PYC files + bundles files only)
+    1. To Pip
+    2. To docker hub
+4. LOGIN/COOKIE IFRAME
+6. Add Trendline chartJS line chart for scatter/bubble data point
+7. Sample DEMO EXCEL TO INTEGRATE
+8. Bug click add source, no table selected in the select bar
+9. GENERATE WIDGET_ID
+10. Screenshot as png (see the plotly btn and replicates)
+
+// *********************************************************************************************************************
+19/02-25-02
+// *********************************************************************************************************************
+1. Connectors
+2. bApplyFilter in datasource
+3. Responsive Design
+4. Switch from type to type (and keep using data)
+5. ChartJS, color based on values range (>0 green, <0 red) (like the btc based on returns etc...)
+6. Simple image generated from the python transformer section (Chart lightweight for instance)
+
+
+// *********************************************************************************************************************
+19/02 - 25/02
+// *********************************************************************************************************************
+0. Echart:
+    1. Funding rate heatmap > https://www.coinglass.com/funding/BTC
+1. Candles to implement with CHARTJS
+2. Map Chart
+3. Vega library
+7. Search bar for attributes to implement if possible
+8. plotLy
+11. Code Editor: Elligible for chart ...
+12. Save As template
+13. Load and Use templates
+14. Upload raw CSV files
+
+
+Dynamic table
+Screenshot of charts (and show it to plotLibrary) (for quick preview)
+Chart (Bar chart), color conditional to values
+
+# NEXT FEATURES V2
+# Recommanded Chat Automatic
+# D3 JS, HighChart etc... (later)
+OK > # NITRO
+# BI features (groupby, filters, sum, count etc..., check with SARAH)
+# Source > Transformation > Tests > Scheduler > Plot ???
+# Add widget password > use cookies
+# Composant de type chat
+# Composant de type tableau dynamique ? Par exemple, une table dynamique sur laquelle on peut appliquer des filtres et faire des calculs par colonnes (sum, average etc...)
+# Libraries payantes d'analyse techniques: MA, Parabolic SAR etc... (affichage multi indicateurs sur un seul graphique par exemple)
+# Public Library store (like tableau?)
+# Add chat for each component (in order to comment it)
+# Add button to display raw data of the chart component
+# Jupyter Notebook Extension
+# Paid: Add bloomberg connector etc...
+OK > # PLOT LIBRARY PIP NOTEBOOK (IFRAME)
+# Example button for each chart (we can see the data format, etc...)
+# Statistics computations (for TRADING VIEW FOR INSTNANCE, + 1m, YTD ... buttons)
+4. Has output (saved output as well)
+
+PITCH: USE GRAFANA
+Difference with Grafana: other functionalities
+    widgets
+    data transformation (check DBT)
+    code Editor for data manipulation and transformation

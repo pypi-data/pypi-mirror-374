@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0074_llmport')];operations=[migrations.AddField(model_name='llmport',name='host',field=models.CharField(max_length=100,null=True))]

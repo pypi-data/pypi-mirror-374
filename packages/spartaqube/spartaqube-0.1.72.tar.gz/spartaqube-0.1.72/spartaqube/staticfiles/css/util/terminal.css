@@ -1,0 +1,21 @@
+.terminalXterm{
+    height:100% !important;
+    background: black;
+}
+
+.terminal{
+    height: 100%;
+}
+
+.xterm-screen{
+    height:100% !important;
+    /* width: 100% !important; */
+    width: calc(100% - 20px) !important; /* THIS LINE RESOLVE THE SCROLLBAR OVERLAY ISSUE*/
+}
+
+.xterm-rows{
+    height:100% !important;
+    width: 100% !important;
+    /* padding-left: 10px; */
+    /* padding-right: 10px; */
+}

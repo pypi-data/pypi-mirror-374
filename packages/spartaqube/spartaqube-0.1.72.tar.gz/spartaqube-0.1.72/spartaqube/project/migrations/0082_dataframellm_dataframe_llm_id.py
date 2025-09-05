@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0081_rename_initial_query_dataframellm_initial_prompt')];operations=[migrations.AddField(model_name='dataframellm',name='dataframe_llm_id',field=models.CharField(max_length=100,null=True))]

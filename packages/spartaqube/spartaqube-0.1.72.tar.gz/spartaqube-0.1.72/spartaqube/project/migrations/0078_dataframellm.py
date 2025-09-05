@@ -1,0 +1,4 @@
+_A=True
+from django.db import migrations,models
+import django.db.models.deletion
+class Migration(migrations.Migration):dependencies=[('project','0077_llmcredentials')];operations=[migrations.CreateModel(name='DataFrameLLM',fields=[('id',models.BigAutoField(auto_created=_A,primary_key=_A,serialize=False,verbose_name='ID')),('initial_query',models.TextField(null=_A)),('llm_one_liner',models.TextField(null=_A)),('response_list',models.TextField(null=_A)),('kernel_variables',models.BinaryField(null=_A)),('date_created',models.DateTimeField(null=_A,verbose_name='Date created')),('last_update',models.DateTimeField(null=_A,verbose_name='Last update')),('is_delete',models.BooleanField(default=False)),('dataframe_model',models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,to='project.dataframemodel'))])]

@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0079_dataframellm_has_password_dataframellm_is_expose_and_more')];operations=[migrations.AddField(model_name='dataframellm',name='title_override',field=models.TextField(null=True))]

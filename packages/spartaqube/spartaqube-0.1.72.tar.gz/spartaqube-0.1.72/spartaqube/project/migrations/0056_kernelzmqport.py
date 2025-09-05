@@ -1,0 +1,3 @@
+_A=True
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0055_remove_kernelprocess_is_live_kernelprocess_is_delete')];operations=[migrations.CreateModel(name='KernelZmqPort',fields=[('id',models.BigAutoField(auto_created=_A,primary_key=_A,serialize=False,verbose_name='ID')),('port',models.IntegerField(default=0)),('date_created',models.DateTimeField(null=_A,verbose_name='Date created')),('last_update',models.DateTimeField(null=_A,verbose_name='Last update')),('is_delete',models.BooleanField(default=False))])]

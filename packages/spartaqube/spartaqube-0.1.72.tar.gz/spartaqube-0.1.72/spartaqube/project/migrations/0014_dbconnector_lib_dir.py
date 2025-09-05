@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0013_dbconnector_organization_dbconnector_token')];operations=[migrations.AddField(model_name='dbconnector',name='lib_dir',field=models.CharField(max_length=100,null=True))]

@@ -1,0 +1,127 @@
+.noFocus {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+.dropdown-menu.show{
+    z-index: 1702;
+}
+
+.select2-container {
+    z-index: 1600 !important;
+}
+.select2-container .select2-dropdown {
+    z-index: 1600 !important;
+}
+
+.tt-menu.tt-open {
+    z-index: 1800 !important;
+}
+
+#sqFooter{
+    text-align:center; 
+    padding-top:10px; 
+    border-top:solid 1px #dcdcdc;
+}
+
+.appNavBar{
+    border-top: solid 1px #dcdcdc;
+}
+.excelBtn{
+    background:rgb(29, 111, 66);
+    color:white;
+}
+
+.site-menubar-unfold img#clusterImgSide {
+    /* Your CSS styles for the <img> element when the <div> has class "open" */
+    height: 15px !important;
+}
+
+.spinner{
+    display: block;
+}
+
+.spinnerDark{
+    display: none;
+}
+
+.activeKernelRow{
+    margin: 0px;
+    border-top: solid 1px #dcdcdc;
+    padding-top: 10px;
+}
+
+.badgeOutlineDefault{
+    cursor: pointer;
+}
+
+.badgeOutlineDefault:hover{
+    background-color: #616161 !important;
+    color: white;
+}
+
+.badgeOutlineDefaultSelected{
+    background-color: #616161 !important;
+    color: white !important;
+}
+
+.badgeOutlinePrimary{
+    cursor: pointer;
+}
+
+.badgeOutlinePrimary:hover{
+    background-color: #3949ab !important;
+    color: white;
+}
+
+.badgeOutlinePrimarySelected{
+    background-color: #3949ab !important;
+    color: white !important;
+}
+
+.badgeKernel:hover{
+    background-color: #3949ab !important;
+    color: white !important;
+}
+
+#containerSearchKernelVar{
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+    background-color: white;
+    padding: 5px;
+    padding-bottom: 10px;
+}
+
+.slidePanel{
+    box-shadow: 5px 5px 4px -6px;
+    z-index: 1800 !important;
+}
+
+.modal-fullscreen {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.modal-fullscreen .modal-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-fullscreen .modal-body {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.customTh{
+    color:#757575 !important;
+}
+
+.customTd{
+    color:#757575 !important;
+}

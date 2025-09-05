@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0047_rename_kernel_id_kernel_kernel_manager_uuid')];operations=[migrations.AddField(model_name='kernel',name='lumino_layout',field=models.TextField(null=True))]

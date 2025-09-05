@@ -1,0 +1,104 @@
+.headerBtnContainer{
+    padding:5px;
+}
+
+.searchBar{
+    border: none;
+    border-bottom: solid 1px #e0e0e0;
+    border-top: solid 1px #e0e0e0;
+    border-radius: 0px;
+    
+    display: inline-flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    /* display: flex; */
+    /* flex-direction: row-reverse; */
+    /* flex-wrap: nowrap; */
+    /* overflow-x: auto; */
+    /* justify-content: flex-start; */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.searchBar::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
+.searchBarPartFolder{
+    cursor: pointer;
+    padding: 3px;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.searchBarPartFolder:hover{
+    background-color: #ececec;
+    border-radius: 3px;
+}
+
+#folderContainer{
+    max-height:calc(100vh - 261px); 
+    height:calc(100vh - 263px); 
+    overflow:auto; 
+    box-shadow:inset 0px 0px 100px 1px #f9f9f9; 
+    cursor:auto !important;
+}
+
+.folderRow:hover {
+    background: #ececec;
+}
+.fileRow:hover {
+    background: #ececec;
+}
+
+.folderRow, .fileRow{
+    padding-left:10px;
+    font-size:0.85em;
+    cursor:pointer;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    user-select: none;
+}
+
+.folderTxt, .fileTxt{
+    padding-left:5px;
+    max-width: 300px; /* Set your desired maximum width here */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block; /* Display as an inline-block element */
+}
+
+.imgIconFile{
+    margin-top:0px;
+}
+
+.tabHeaderContainer{
+    width: 100%; /* Adjust the width as needed */
+    height: 42px; /* Fixed height for the container */
+    overflow: hidden; /* Hide any overflowing content */
+}
+
+.resourcesViewerTabs{
+    list-style-type: none; /* Remove default list bullet points */
+    margin: 0;
+    padding: 0;
+    white-space: nowrap; /* Prevent line breaks */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    display: ruby; /* Use flexbox to horizontally align the <li> elements */
+}
+
+.resourcesViewerTabs {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+.resourcesViewerTabs::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+    width: 0;
+    height: 0;
+}
+
+.tabDrag{
+    display: inline-block; /* Display <li> elements inline */
+}

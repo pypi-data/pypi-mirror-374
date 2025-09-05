@@ -1,0 +1,3 @@
+_A=True
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0001_initial')];operations=[migrations.CreateModel(name='NewPlotApiVariables',fields=[('id',models.BigAutoField(auto_created=_A,primary_key=_A,serialize=False,verbose_name='ID')),('pickled_variables',models.TextField(null=_A)),('session_id',models.CharField(max_length=100,null=_A)),('is_delete',models.BooleanField(default=False)),('date_created',models.DateTimeField(null=_A,verbose_name='Date created')),('last_update',models.DateTimeField(null=_A,verbose_name='Last update'))])]

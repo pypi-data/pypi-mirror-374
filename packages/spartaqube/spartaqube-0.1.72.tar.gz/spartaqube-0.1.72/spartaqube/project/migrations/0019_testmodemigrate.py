@@ -1,0 +1,4 @@
+_B=False
+_A=True
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0018_plotdbchart_last_date_used')];operations=[migrations.CreateModel(name='TestModeMigrate',fields=[('id',models.BigAutoField(auto_created=_A,primary_key=_A,serialize=_B,verbose_name='ID')),('nameMigrate',models.CharField(max_length=100,null=_A)),('is_default',models.BooleanField(default=_B)),('is_delete',models.BooleanField(default=_B)),('date_created',models.DateTimeField(null=_A,verbose_name='Date created')),('last_update',models.DateTimeField(null=_A,verbose_name='Last update'))])]

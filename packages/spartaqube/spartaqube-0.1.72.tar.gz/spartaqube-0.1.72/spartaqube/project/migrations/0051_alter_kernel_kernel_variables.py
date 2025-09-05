@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0050_kernel_kernel_size')];operations=[migrations.AlterField(model_name='kernel',name='kernel_variables',field=models.BinaryField(null=True))]

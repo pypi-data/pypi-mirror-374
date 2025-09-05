@@ -1,0 +1,3 @@
+_A=True
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0006_localapp')];operations=[migrations.CreateModel(name='SpartaQubeCode',fields=[('id',models.BigAutoField(auto_created=_A,primary_key=_A,serialize=False,verbose_name='ID')),('spartaqube_code',models.CharField(default='admin',max_length=100)),('date_created',models.DateTimeField(null=_A,verbose_name='Date created')),('last_update',models.DateTimeField(null=_A,verbose_name='Last update'))])]

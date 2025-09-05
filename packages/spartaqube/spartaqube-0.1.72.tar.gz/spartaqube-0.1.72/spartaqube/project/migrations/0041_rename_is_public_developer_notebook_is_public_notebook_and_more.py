@@ -1,0 +1,3 @@
+_A='notebook'
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0040_notebook_notebookshared')];operations=[migrations.RenameField(model_name=_A,old_name='is_public_developer',new_name='is_public_notebook'),migrations.RenameField(model_name=_A,old_name='developer_venv',new_name='notebook_venv'),migrations.RemoveField(model_name=_A,name='is_expose_developer'),migrations.AddField(model_name=_A,name='is_expose_notebook',field=models.BooleanField(default=False))]

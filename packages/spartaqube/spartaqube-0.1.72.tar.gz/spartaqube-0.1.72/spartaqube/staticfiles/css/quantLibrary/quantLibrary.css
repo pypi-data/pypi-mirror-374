@@ -1,0 +1,45 @@
+.allBadges{
+    font-size:0.85em;
+    color: #3f51b5 !important;
+    border: solid 1px #3f51b5 !important;
+    cursor:pointer;
+}
+.allBadges:hover{
+    background-color: #3f51b5 !important;
+    color:white !important;
+}
+
+.allBadgesFound{
+    font-size:0.85em;
+    color: #ff9800 !important;
+    border: solid 1px  #ff9800 !important;
+    cursor:pointer;
+}
+.allBadgesFound:hover{
+    background-color:  #ff9800 !important;
+    color:white !important;
+}
+
+.smallNumbers{
+    font-size:0.6em !important;
+    color:#757575
+}
+
+.familyTitle:hover{
+    text-decoration: underline;
+}
+
+#blockFamily{
+    border: solid 1px #e0e0e0;
+    margin-top:5px !important;
+}
+
+.badgeNotebookTypes{
+    font-size:1.1em;
+    cursor:pointer;
+}
+
+.badgeNotebookTypes:hover{
+    color:#3f51b5;
+    border-color:#3f51b5;
+}

@@ -1,0 +1,3 @@
+_A='notebook'
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0041_rename_is_public_developer_notebook_is_public_notebook_and_more')];operations=[migrations.AddField(model_name=_A,name='is_exec_code_display',field=models.BooleanField(default=True)),migrations.AddField(model_name=_A,name='is_exec_readonly',field=models.BooleanField(default=False))]

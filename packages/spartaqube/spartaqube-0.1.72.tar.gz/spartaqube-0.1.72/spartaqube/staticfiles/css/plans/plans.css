@@ -1,0 +1,42 @@
+.planContainer{
+    padding: 20px;
+    text-align: center;
+    border: solid 1px #dcdccd;
+    background-color: transparent;
+}
+
+.planTitle{
+ font-size: 2.7em;
+}
+
+.pricing{
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 2em;
+}
+
+.userTarget{
+    font-style: italic;
+}
+
+.featureRow{
+    text-transform: uppercase;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.fairUsePolicy{
+    cursor: pointer;
+}
+
+
+.fairUsePolicy:hover{
+    text-decoration: underline;
+}
+
+.apiKeyAIPlan{
+    padding:5px; 
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    border: solid 1px #dcdcdc;
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+}

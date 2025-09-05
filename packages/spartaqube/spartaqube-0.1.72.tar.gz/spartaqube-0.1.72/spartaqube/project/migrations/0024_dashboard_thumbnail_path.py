@@ -1,0 +1,2 @@
+from django.db import migrations,models
+class Migration(migrations.Migration):dependencies=[('project','0023_dashboard_grid_config_dashboard_plot_db_dependencies')];operations=[migrations.AddField(model_name='dashboard',name='thumbnail_path',field=models.CharField(max_length=100,null=True))]
