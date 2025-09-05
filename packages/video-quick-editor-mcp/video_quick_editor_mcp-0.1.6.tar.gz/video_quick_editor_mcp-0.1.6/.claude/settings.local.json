@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/fengjinchao/Desktop/mcp/skills/python/**)",
+      "Bash(uvx --directory /Users/fengjinchao/Desktop/mcp/skills/python/视频快速剪辑 run video-quick-editor-mcp)",
+      "Bash(echo $FFMPEG_BINARY)",
+      "Bash(echo $FFPROBE_BINARY)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
