@@ -1,0 +1,140 @@
+name: Test
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        django-version: ["4.2", "5.1", "5.2"]
+        exclude:
+          # Python 3.13 doesn't support Django 4.2
+          - python-version: "3.13"
+            django-version: "4.2"
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+
+    - name: Install tox
+      run: uv tool install tox --with tox-gh-actions
+
+    - name: Run tests with tox
+      run: tox
+      env:
+        DJANGO_VERSION: ${{ matrix.django-version }}
+
+  test-postgres:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: isekai_test
+          POSTGRES_USER: isekai
+          POSTGRES_PASSWORD: isekai
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.13"
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+
+    - name: Install tox
+      run: uv tool install tox --with tox-gh-actions
+
+    - name: Run PostgreSQL tests
+      run: tox -e py313-django52-postgres-loaders
+
+  test-mysql:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: isekai_test
+          MYSQL_USER: isekai
+          MYSQL_PASSWORD: isekai
+          MYSQL_ROOT_PASSWORD: isekai_root
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.13"
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+
+    - name: Install MySQL client libraries
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libmysqlclient-dev pkg-config
+
+    - name: Install tox
+      run: uv tool install tox --with tox-gh-actions
+
+    - name: Run MySQL tests
+      run: tox -e py313-django52-mysql-loaders
+
+  quality:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        check: [lint, type]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+
+    - name: Install tox
+      run: uv tool install tox
+
+    - name: Run ${{ matrix.check }}
+      run: tox -e ${{ matrix.check }}
