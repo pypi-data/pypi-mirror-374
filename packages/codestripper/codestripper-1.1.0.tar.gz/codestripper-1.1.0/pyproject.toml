@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "codestripper"
+version = "1.1.0"
+description = "CodeStripper used to strip code from assignments"
+authors = ["Bonajo <m.bonajo@fontys.nl>"]
+maintainers = ["Bonajo <m.bonajo@fontys.nl>"]
+homepage = "https://github.com/FontysVenlo/codestripper"
+repository = "https://github.com/FontysVenlo/codestripper"
+readme = "README.md"
+packages = [{include = "codestripper"}]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.0.0"
+pytest-cov = "^4.0.0"
+mypy = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+codestripper = 'codestripper.cli:main'
