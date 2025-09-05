@@ -1,0 +1,122 @@
+site_name: MSL KCDB
+site_description: Search the BIPM key comparison database (KCDB)
+copyright: Copyright &copy; 2025 Measurement Standards Laboratory of New Zealand
+repo_url: https://github.com/MSLNZ/msl-kcdb/
+site_url: https://github.com/MSLNZ/msl-kcdb/
+
+theme:
+  name: material
+  language: en
+  favicon: assets/images/favicon.ico
+  features:
+    - content.code.copy
+    - navigation.footer
+    - navigation.indexes
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - search.highlight
+    - search.suggest
+  palette:
+    # Palette toggle for automatic mode
+    - media: '(prefers-color-scheme)'
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: deep orange
+      toggle:
+        icon: material/weather-night
+        name: Switch to system preference
+
+watch: [src, includes, examples, CHANGELOG.md]
+
+nav:
+  - Overview:
+    - index.md
+    - release-notes.md
+    - license.md
+  - Examples:
+    - examples/index.md
+    - examples/chemistry_biology.md
+    - examples/ionizing_radiation.md
+    - examples/physics.md
+  - API:
+    - Chemistry and Biology: api/chemistry_biology.md
+    - Ionizing Radiation: api/ionizing_radiation.md
+    - Physics: api/general_physics.md
+    - KCDB: api/kcdb.md
+    - Reference Data and Results: api/types.md
+
+markdown_extensions:
+  - admonition
+  - abbr
+  - attr_list  # enables: [link](url){:target="_blank"}
+  - pymdownx.snippets:  # enables: --8<--
+      check_paths: true
+      auto_append:
+        - includes/abbreviations.md
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true  # tabs look better on narrower screen sizes (like mobile)
+  - toc:
+      permalink: "¤"
+
+plugins:
+  - search
+  - autorefs
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          inventories:
+            - url: https://docs.python.org/3/objects.inv
+              domains: [std, py]
+          options:
+            # General
+            show_source: false
+
+            # Headings
+            show_root_toc_entry: false
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+
+            # Members
+            filters: ["!^_"]
+            inherited_members: true
+
+            # Docstrings
+            docstring_options:
+              ignore_init_summary: true
+            merge_init_into_class: true
+
+            # Signatures
+            separate_signature: true
+
+            extensions:
+            - docs/inherit_attributes.py:InheritAttributes
+
+extra:
+  version:
+    provider: mike
+  social:
+  - icon: fontawesome/brands/github
+    link: https://github.com/MSLNZ/msl-kcdb
+  - icon: fontawesome/brands/python
+    link: https://pypi.org/project/msl-kcdb/

@@ -1,0 +1,19 @@
+# Global directories
+__pycache__/
+
+# Global files
+*.py[codz]
+
+# Root directories
+/.cache/
+/.idea/
+/.vscode/
+/.venv/
+/site/
+/venv/
+
+# Root files
+/uv.lock
+
+# Auto-generated during builds
+/src/msl/kcdb/_version.py
