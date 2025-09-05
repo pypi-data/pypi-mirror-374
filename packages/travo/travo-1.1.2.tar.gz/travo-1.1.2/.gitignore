@@ -1,0 +1,30 @@
+# editors configurations
+travo.code-workspace
+.idea
+.vscode/settings.json
+*~
+
+# local test and CI session
+.tox
+.travo
+report.xml
+coverage.xml
+.coverage
+forkedRepositories/*
+.gitlab-ci-local*
+code/artifacts.zip
+
+# local rendered documentation
+docs/build
+.spyproject
+docs/sources/examples/*.ipynb
+
+# local builds
+dist
+travo/_version.py
+travo.egg-info
+__pycache__
+.ipynb_checkpoints
+
+# gradebooks
+*gradebook.db*
