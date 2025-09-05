@@ -1,0 +1,65 @@
+[project]
+name = "matrix-zion"
+version = "0.1.0"
+description = "Framework para microserviços Python com arquitetura de plugins"
+authors = [
+    {name = "Tuyoshi Vinicius", email = "tuyoshi.vinicius@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+keywords = ["microservices", "framework", "python", "plugins", "architecture"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers", 
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+]
+
+dependencies = [
+    "python-dotenv>=1.0.0",
+    "importlib-metadata>=5.0.0; python_version<'3.10'",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.0.0", 
+    "ruff>=0.8.0",
+    "mypy>=1.17.0",
+]
+
+aws = [
+    "matrix-zion-aws>=0.1.0",
+]
+
+fastapi = [
+    "matrix-zion-fastapi>=0.1.0", 
+]
+
+all = [
+    "matrix-zion-aws>=0.1.0",
+    "matrix-zion-fastapi>=0.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/tuyoshivinicius/python-microservice-v2"
+Repository = "https://github.com/tuyoshivinicius/python-microservice-v2" 
+"Bug Reports" = "https://github.com/tuyoshivinicius/python-microservice-v2/issues"
+Documentation = "https://github.com/tuyoshivinicius/python-microservice-v2/blob/main/README.md"
+
+# Entry points para descoberta de plugins
+[project.entry-points."matrix.plugins"]
+# Plugins podem ser registrados aqui por outros pacotes
+
+[tool.poetry]
+packages = [{include = "matrix", from = "src"}]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
