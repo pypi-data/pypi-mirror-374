@@ -1,0 +1,18 @@
+[project]
+name = "jlop"
+version = "0.0.3"
+description = "Just LOvely Plots"
+authors = [
+    {name = "curritod"}
+]
+license = {text = "MIT license"}
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "matplotlib (>=3.10.1,<4.0.0)",
+    "numpy (>=2.2.5,<3.0.0)"
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

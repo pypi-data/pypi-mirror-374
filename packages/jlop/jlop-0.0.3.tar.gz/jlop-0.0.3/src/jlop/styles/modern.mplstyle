@@ -1,0 +1,90 @@
+#
+#	Jlop theme for python
+#	Publishable figures
+#
+
+#
+# LINES 
+#
+
+lines.linewidth : 1.3        
+lines.linestyle : -          
+
+#
+# FONT
+#
+
+font.family :  serif       
+font.serif  :  TeX Gyre Heros
+font.size   :  7.5             
+
+#
+# LATEX
+#
+
+text.usetex	 : False
+mathtext.default : regular
+axes.formatter.use_mathtext : False
+
+#
+# AXES
+#
+
+axes.unicode_minus	:  False
+axes.axisbelow 		:  True   
+axes.labelsize 		:  7.5      
+
+#
+# TICKS
+#
+
+xtick.labelsize     :   7.7     
+ytick.labelsize     :   7.5     
+
+#
+# GRID
+#
+
+axes.grid       :   False    
+grid.color      :   b0b0b0    
+grid.linestyle  :   -.        
+grid.linewidth  :   0.3           
+grid.alpha      :   1.0       
+
+#
+# LEGEND
+#
+
+legend.framealpha   	:   1.0         
+legend.fancybox     	:   False       
+legend.fontsize		:   9
+
+#
+# FIGURE
+#
+
+figure.figsize	:     3.375 , 2.08586   
+figure.dpi      :     500           	
+
+#
+# ERROR BARS
+#
+
+errorbar.capsize : 5  
+
+#
+#   SCATTER PLOTS                                                       
+#
+
+scatter.marker		: o         
+scatter.edgecolors	: face  
+
+#
+#   SAVING FIGURES                                                        
+# 
+
+savefig.dpi		:  figure      
+savefig.format		:  png         
+savefig.pad_inches	:  0.2      
+savefig.transparent	:  False
+
