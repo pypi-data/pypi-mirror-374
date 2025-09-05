@@ -1,0 +1,1372 @@
+[
+    {
+        "url": "netsblox://assets/img/blocks/motion/forward.png",
+        "category": "motion",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.forward(10)",
+        "docs": "Moves the sprite forward by the given distance (in pixels)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/motion/turn-right.png",
+        "category": "motion",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.turn_right(15)",
+        "docs": "Turns the sprite to the right by a given angle (in degrees).\n\nThis is equivalent to directly changing the sprite's heading:\n\nself.heading += 15"
+    },
+    {
+        "url": "netsblox://assets/img/blocks/motion/turn-left.png",
+        "category": "motion",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.turn_left(15)",
+        "docs": "Turns the sprite to the left by a given angle (in degrees).\n\nThis is equivalent to directly changing the sprite's heading:\n\nself.heading -= 15"
+    },
+    {
+        "url": "netsblox://assets/img/blocks/motion/set-heading.png",
+        "category": "motion",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.heading = 90",
+        "docs": "Sets the sprite's heading to the given angle (in degrees).\n\nHeadings are measured clockwise from North (up)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/motion/turn-to-mouse.png",
+        "category": "motion",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.turn_to(stage.mouse_pos)",
+        "docs": "Turns the sprite to face towards the mouse pointer.\n\nYou could replace this position with any other (x, y) pair."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/motion/turn-to-center.png",
+        "category": "motion",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.turn_to([0, 0])",
+        "docs": "Turns the sprite to face towards the center of the stage.\n\nYou could replace this position with any other (x, y) pair."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/motion/set-pos.png",
+        "category": "motion",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.pos = (0, 0)",
+        "docs": "Sets the sprite's position to the given x and y values (in pixels).\n\nPosition (0, 0) represents the center of the stage."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/motion/change-pos-x.png",
+        "category": "motion",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.x_pos += 10",
+        "docs": "Moves the sprite in the x direction by the given distance (in pixels).\n\nPositive values move to the right, while negative values move to the left."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/motion/set-pos-x.png",
+        "category": "motion",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.x_pos = 0",
+        "docs": "Sets the sprite's x position to the given value (in pixels).\n\nX position 0 represents the left/right center of the stage."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/motion/change-pos-y.png",
+        "category": "motion",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.y_pos += 10",
+        "docs": "Moves the sprite in the y direction by the given distance (in pixels).\n\nPositive values move up, while negative values move down."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/motion/set-pos-y.png",
+        "category": "motion",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.y_pos = 0",
+        "docs": "Sets the sprite's y position to the given value (in pixels).\n\nY position 0 represents the up/down center of the stage."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/motion/edge-bounce.png",
+        "category": "motion",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.keep_on_stage(bounce = True)",
+        "docs": "Moves the sprite back on-stage if it has gone off-stage. You need to call this after each move for it to be effective.\n\nThe bounce input controls whether or not the sprite should be rotated to simulate bouncing off the stage walls."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/motion/get-pos-x.png",
+        "category": "motion",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.x_pos",
+        "docs": "Gets the current x position of this sprite (in pixels).\n\nX position 0 represents the left/right center of the stage.\n\nIf you need both the x and y position, you may use self.pos, which returns an (x, y) pair."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/motion/get-pos-y.png",
+        "category": "motion",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.y_pos",
+        "docs": "Gets the current y position of this sprite (in pixels).\n\nY position 0 represents the up/down center of the stage.\n\nIf you need both the x and y position, you may use self.pos, which returns an (x, y) pair."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/motion/get-heading.png",
+        "category": "motion",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.heading",
+        "docs": "Gets the current heading of this sprite (in degrees).\n\nHeadings are measured clockwise from North (up)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/onstart.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "hat",
+        "globals": "@onstart()\ndef my_onstart():\n    pass # replace with your code",
+        "stage": "@onstart()\ndef my_onstart(self):\n    pass # replace with your code",
+        "sprite": "@onstart()\ndef my_onstart(self):\n    pass # replace with your code",
+        "docs": "Any function with an @onstart() decorator will run once when the project starts."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/onkey.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "hat",
+        "globals": "@onkey(keys.space)\ndef my_onkey():\n    pass # replace with your code",
+        "stage": "@onkey(keys.space)\ndef my_onkey(self):\n    pass # replace with your code",
+        "sprite": "@onkey(keys.space)\ndef my_onkey(self):\n    pass # replace with your code",
+        "docs": "Any function with an @onkey(keys.space) decorator will run once each time the space key is pressed.\n\nYou can change the key name after the dot to select a different key. For instance, @onkey(keys.w) would run once each time the W key is pressed."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/onmouse-up.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "hat",
+        "globals": "@onmouse('up')\ndef my_onmouse(x, y):\n    pass # replace with your code",
+        "stage": "@onmouse('up')\ndef my_onmouse(self, x, y):\n    pass # replace with your code",
+        "sprite": "@onmouse('up')\ndef my_onmouse(self, x, y):\n    pass # replace with your code",
+        "docs": "Any function with an @onmouse('up') decorator will run once each time you release the left mouse button on top of the sprite/stage (depending on usage)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/onmouse-scroll-up.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "hat",
+        "globals": "@onmouse('scroll-up')\ndef my_onmouse(x, y):\n    pass # replace with your code",
+        "stage": "@onmouse('scroll-up')\ndef my_onmouse(self, x, y):\n    pass # replace with your code",
+        "sprite": "@onmouse('scroll-up')\ndef my_onmouse(self, x, y):\n    pass # replace with your code",
+        "docs": "Any function with an @onmouse('scroll-up') decorator will run once each time you hold the mouse over sprite/stage (depending on usage) and scroll up."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/receive.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "hat",
+        "globals": "@nb.on_message('message')\ndef my_on_message():\n    pass # replace with your code",
+        "stage": "@nb.on_message('message')\ndef my_on_message(self):\n    pass # replace with your code",
+        "sprite": "@nb.on_message('message')\ndef my_on_message(self):\n    pass # replace with your code",
+        "docs": "Any function with an @nb.on_message('message') will run once each time the message type 'message' is broadcast.\n\nYou can change the value in quotes to receive a different message type."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/broadcast.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "command",
+        "globals": "nb.send_message('message')",
+        "stage": "nb.send_message('message')",
+        "sprite": "nb.send_message('message')",
+        "docs": "Broadcasts a message of type 'message' to any receivers in the project.\n\nYou can change the value in quotes to send a different message type."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/no-yield.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "command",
+        "globals": "with NoYield():\n    pass # replace with your code",
+        "stage": "with NoYield():\n    pass # replace with your code",
+        "sprite": "with NoYield():\n    pass # replace with your code",
+        "docs": "Any code you put in a NoYield block will run a bit faster by not \"yielding\" (pausing) at many of the normally designated points."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/sleep.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "command",
+        "globals": "time.sleep(1)",
+        "stage": "time.sleep(1)",
+        "sprite": "time.sleep(1)",
+        "docs": "Pauses the current script for 1 second.\n\nYou can replace this number with any value to sleep for a different amount of time."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/loop-forever.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "command",
+        "globals": "while True:\n    pass # replace with your code",
+        "stage": "while True:\n    pass # replace with your code",
+        "sprite": "while True:\n    pass # replace with your code",
+        "docs": "Repeatedly runs the inside code over and over again forever.\n\nIn Python, the while loop repeats over and over while the condition is True. Thus, by making the condition explicitly always True, we have an infinite loop."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/loop-repeat.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "command",
+        "globals": "for _ in range(10):\n    pass # replace with your code",
+        "stage": "for _ in range(10):\n    pass # replace with your code",
+        "sprite": "for _ in range(10):\n    pass # replace with your code",
+        "docs": "Repeatedly runs the inside code a certain number of times."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/loop-until.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "command",
+        "globals": "while not (condition): # replace with your condition\n    pass # replace with your code",
+        "stage": "while not (condition): # replace with your condition\n    pass # replace with your code",
+        "sprite": "while not (condition): # replace with your condition\n    pass # replace with your code",
+        "docs": "Repeatedly runs the inside code over and over until the condition becomes True.\n\nIf you want to repeat code until the condition becomes False, you can remove the \"not\"."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/loop-for.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "command",
+        "globals": "for i in range(1, 11):\n    pass # replace with your code",
+        "stage": "for i in range(1, 11):\n    pass # replace with your code",
+        "sprite": "for i in range(1, 11):\n    pass # replace with your code",
+        "docs": "Repeatedly runs the inside code once for each value between 1 and 10.\n\nIn Python, the range function starts at the first number and goes up to but not including the second number. This is why 11 is used here instead of 10."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/if.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "command",
+        "globals": "if condition: # replace with your condition\n    pass # replace with your code",
+        "stage": "if condition: # replace with your condition\n    pass # replace with your code",
+        "sprite": "if condition: # replace with your condition\n    pass # replace with your code",
+        "docs": "Runs the inside code if the condition is True."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/if-else.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "command",
+        "globals": "if condition: # replace with your condition\n    pass # replace with your code\nelse:\n    pass # replace with your code",
+        "stage": "if condition: # replace with your condition\n    pass # replace with your code\nelse:\n    pass # replace with your code",
+        "sprite": "if condition: # replace with your condition\n    pass # replace with your code\nelse:\n    pass # replace with your code",
+        "docs": "Runs the top inside code if the condition is True. Otherwise, runs the bottom inside code."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/if-else-expr.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "'abc' if condition else 'xyz'",
+        "stage": "'abc' if condition else 'xyz'",
+        "sprite": "'abc' if condition else 'xyz'",
+        "docs": "This expression evaluates to the first value ('abc') if the condition is True. Otherwise, it evaluates to the second value ('xyz')\n\nOften, it is easier to read and write code that uses normal if-else statements than using this single-line solution."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/return.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "command",
+        "globals": "return 10",
+        "stage": "return 10",
+        "sprite": "return 10",
+        "docs": "Inside a custom block (function), report (return) the value 10.\n\nYou can change this number to return a different value, which does not need to be a number (i.e., you could return a string, list, dictionary, etc.)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/try.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "command",
+        "globals": "try:\n    pass # replace with your code\nexcept Exception as err:\n    pass # replace with your code",
+        "stage": "try:\n    pass # replace with your code\nexcept Exception as err:\n    pass # replace with your code",
+        "sprite": "try:\n    pass # replace with your code\nexcept Exception as err:\n    pass # replace with your code",
+        "docs": "Attempts to run the top inside code, but if there are any errors, the bottom inside code is executed instead of crashing (as would ordinarily happen without try/except)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/throw.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "command",
+        "globals": "raise RuntimeError('uhoh!')",
+        "stage": "raise RuntimeError('uhoh!')",
+        "sprite": "raise RuntimeError('uhoh!')",
+        "docs": "Explicitly generates an error with the provided error message. This is intended to be \"caught\" by a try/catch block."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/onstart-clone.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "hat",
+        "globals": "",
+        "stage": "",
+        "sprite": "@onstart('clone')\ndef my_onstart_clone(self):\n    pass # replace with your code",
+        "docs": "Any function with an @onstart('clone') decorator will run once on each fresh clone of this sprite.\n\nNotably, this will not run for the original sprite, for which you need a plain @onstart() decorator."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/clone-stmt.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.clone()",
+        "docs": "Creates a new, fresh clone of the current sprite."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/control/clone-expr.png",
+        "category": "control",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.clone()",
+        "docs": "Creates a new, fresh clone of the current sprite and returns a reference to the created clone."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/looks/set-costume.png",
+        "category": "looks",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "self.costume = costume",
+        "sprite": "self.costume = costume",
+        "docs": "Sets the current sprite/stage costume to the given value.\n\nThis value can either be an image or the name/index of an image previously added to self.costumes."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/looks/get-costume-num.png",
+        "category": "looks",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "self.costumes.index(self.costume, -1)",
+        "sprite": "self.costumes.index(self.costume, -1)",
+        "docs": "Gets the current active costume number (starting at zero like Python lists), or -1 if the sprite is currently not wearing one of its pre-defined costumes.\n\nIf needed, you can change the -1 default value by changing the second input."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/looks/say-duration.png",
+        "category": "looks",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.say('Hello!', duration = 2)",
+        "docs": "Shows a dialog bubble with the given text and waits 2 seconds before disappearing and resuming your code.\n\nYou can change the value in quotes to say a different message or change the duration value to wait for a different amount of time."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/looks/say.png",
+        "category": "looks",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.say('Hello!')",
+        "docs": "Shows a dialog bubble with the given text.\n\nTo hide this bubble later, you can simply say an empty message:\n\nself.say()"
+    },
+    {
+        "url": "netsblox://assets/img/blocks/looks/change-scale.png",
+        "category": "looks",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.scale += 0.1 # base scale is 1",
+        "docs": "Increases the scale (size) of the sprite by 10%, expressed as a ratio (10% = 0.1)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/looks/set-scale.png",
+        "category": "looks",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.scale = 1 # base scale is 1",
+        "docs": "Sets the scale (size) of the sprite to the default value of 100%, expressed as a ratio (100% = 1.0)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/looks/get-scale.png",
+        "category": "looks",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.scale",
+        "docs": "Gets the current scale (size) of the sprite, expressed as a ratio (100% = 1.0)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/looks/set-visible-true.png",
+        "category": "looks",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.visible = True",
+        "docs": "Makes the current sprite visible."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/looks/set-visible-false.png",
+        "category": "looks",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.visible = False",
+        "docs": "Makes the current sprite invisible."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/looks/get-visible.png",
+        "category": "looks",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.visible",
+        "docs": "Checks if the current sprite is visible (True) or invisible (False)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sensing/get-touching.png",
+        "category": "sensing",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.is_touching(other_sprite) # replace with your other sprite",
+        "docs": "Checks if the current sprite is touching another sprite, returning either True or False."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sensing/ask.png",
+        "category": "sensing",
+        "scale": 1,
+        "kind": "command",
+        "globals": "answer = input(\"what's your name?\")",
+        "stage": "answer = input(\"what's your name?\")",
+        "sprite": "answer = input(\"what's your name?\")",
+        "docs": "Asks the user a question, waits for their response, and saves the response in a variable called answer."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sensing/answer.png",
+        "category": "sensing",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "answer",
+        "stage": "answer",
+        "sprite": "answer",
+        "docs": "Gets the answer to the last question asked to the user.\n\nNote that this requires a previous ask block (input) in your script in order to work."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sensing/get-mouse-x.png",
+        "category": "sensing",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "stage.mouse_pos[0]",
+        "sprite": "stage.mouse_pos[0]",
+        "docs": "Gets the current x coordinate of the mouse pointer.\n\nThe mouse position is retrieved as a pair [x, y], so we grab index 0 to have only the x coordinate."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sensing/get-mouse-y.png",
+        "category": "sensing",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "stage.mouse_pos[1]",
+        "sprite": "stage.mouse_pos[1]",
+        "docs": "Gets the current y coordinate of the mouse pointer.\n\nThe mouse position is retrieved as a pair [x, y], so we grab index 1 to have only the y coordinate."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sensing/get-key-down.png",
+        "category": "sensing",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "stage.is_key_down('space')",
+        "sprite": "stage.is_key_down('space')",
+        "docs": "Checks if the space key is currently held down, returning either True or False.\n\nYou can change the value in quotes to check a different key. For instance, stage.is_key_down('w') would check if the W key is currently held down."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sensing/distance-to-mouse.png",
+        "category": "sensing",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.distance_to(stage.mouse_pos)",
+        "docs": "Measures the distance from the sprite's current position to the mouse pointer's position.\n\nYou could replace this position with any other (x, y) pair."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sensing/distance-to-center.png",
+        "category": "sensing",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.distance_to([0, 0])",
+        "docs": "Measures the distance from the sprite's current position to the center of the stage.\n\nYou could replace this position with any other (x, y) pair."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sensing/timer-reset.png",
+        "category": "sensing",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "stage.timer = 0",
+        "sprite": "stage.timer = 0",
+        "docs": "Resets the timer to zero.\n\nIf needed, the timer can be reset to any starting value."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sensing/timer-get.png",
+        "category": "sensing",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "stage.timer",
+        "sprite": "stage.timer",
+        "docs": "Gets the current value of the timer, which measures time in seconds."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sensing/get-latitude.png",
+        "category": "sensing",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "stage.gps_location[0]",
+        "sprite": "stage.gps_location[0]",
+        "docs": "Gets the current approximated latitude of the current computer.\n\nThe gps location is retrieved as a pair [latitude, longitude], so we grab index 0 to have only the latitude."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sensing/get-longitude.png",
+        "category": "sensing",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "stage.gps_location[1]",
+        "sprite": "stage.gps_location[1]",
+        "docs": "Gets the current approximated longitude of the current computer.\n\nThe gps location is retrieved as a pair [latitude, longitude], so we grab index 0 to have only the longitude."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sensing/get-stage-width.png",
+        "category": "sensing",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "stage.width",
+        "sprite": "stage.width",
+        "docs": "Gets the width of the stage in pixels.\n\nNote that making the window bigger does not change the value that is reported."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sensing/get-stage-height.png",
+        "category": "sensing",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "stage.height",
+        "sprite": "stage.height",
+        "docs": "Gets the height of the stage in pixels.\n\nNote that making the window bigger does not change the value that is reported."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sensing/get-image-stage.png",
+        "category": "sensing",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "stage.get_image()",
+        "sprite": "stage.get_image()",
+        "docs": "Takes a screenshot of the current stage and all sprites, which is returned as an image/costume."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sensing/get-image-self.png",
+        "category": "sensing",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "self.get_image()",
+        "sprite": "self.get_image()",
+        "docs": "Takes a screenshot of the current sprite, which is returned as an image/costume."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sound/play-sound.png",
+        "category": "sound",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "self.play_sound(my_sound)",
+        "sprite": "self.play_sound(my_sound)",
+        "docs": "Makes this sprite play a sound.\n\nThe sound can either be a sound object or the name/index of a sound previously added to self.sounds."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sound/play-sound-wait.png",
+        "category": "sound",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "self.play_sound(my_sound, wait = True)",
+        "sprite": "self.play_sound(my_sound, wait = True)",
+        "docs": "Makes this sprite play a sound and wait for its completion.\n\nThe sound can either be a sound object or the name/index of a sound previously added to self.sounds."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sound/stop-sounds.png",
+        "category": "sound",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "stage.stop_sounds()",
+        "sprite": "stage.stop_sounds()",
+        "docs": "Stops all currently-playing sounds."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/sound/sound-duration.png",
+        "category": "sound",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "self.sounds.lookup(my_sound).duration",
+        "sprite": "self.sounds.lookup(my_sound).duration",
+        "docs": "Gets the duration of a sound in seconds.\n\nThe sound can either be a sound object or the name/index of a sound previously added to self.sounds.\n\nIf my_sound is a sound object, you can simply use: my_sound.duration"
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/add.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "7 + 3",
+        "stage": "7 + 3",
+        "sprite": "7 + 3",
+        "docs": "Addition."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/sub.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "7 - 3",
+        "stage": "7 - 3",
+        "sprite": "7 - 3",
+        "docs": "Subtraction."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/mul.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "7 * 3",
+        "stage": "7 * 3",
+        "sprite": "7 * 3",
+        "docs": "Multiplication."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/div.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "7 / 3",
+        "stage": "7 / 3",
+        "sprite": "7 / 3",
+        "docs": "Division."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/pow.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "7 ** 3",
+        "stage": "7 ** 3",
+        "sprite": "7 ** 3",
+        "docs": "Exponentiation."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/mod.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "7 % 3",
+        "stage": "7 % 3",
+        "sprite": "7 % 3",
+        "docs": "Modulus (aka Remainder)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/round.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "round(3.14)",
+        "stage": "round(3.14)",
+        "sprite": "round(3.14)",
+        "docs": "Round to the nearest integer (whole number)"
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/sqrt.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "math.sqrt(10)",
+        "stage": "math.sqrt(10)",
+        "sprite": "math.sqrt(10)",
+        "docs": "Square root."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/randrange.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "random.randrange(1, 11)",
+        "stage": "random.randrange(1, 11)",
+        "sprite": "random.randrange(1, 11)",
+        "docs": "Selects a random number starting at the first integer (whole number) and going up to but not including the second integer.\n\nFor example, to get a number between 1 and 10 you would use:\n\nrandom.randrange(1, 11)"
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/less.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "7 < 3",
+        "stage": "7 < 3",
+        "sprite": "7 < 3",
+        "docs": "Less-Than comparison.\n\nReturns either True or False."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/less-eq.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "7 <= 3",
+        "stage": "7 <= 3",
+        "sprite": "7 <= 3",
+        "docs": "Less-Than-Or-Equal comparison.\n\nReturns either True or False."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/eq.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "7 == 3",
+        "stage": "7 == 3",
+        "sprite": "7 == 3",
+        "docs": "Equals comparison.\n\nReturns either True or False."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/neq.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "7 != 3",
+        "stage": "7 != 3",
+        "sprite": "7 != 3",
+        "docs": "Not-Equals comparison.\n\nReturns either True or False."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/great-eq.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "7 >= 3",
+        "stage": "7 >= 3",
+        "sprite": "7 >= 3",
+        "docs": "Greater-Than-Or-Equal comparison.\n\nReturns either True or False."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/great.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "7 > 3",
+        "stage": "7 > 3",
+        "sprite": "7 > 3",
+        "docs": "Greater-Than comparison.\n\nReturns either True or False."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/and.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "a and b",
+        "stage": "a and b",
+        "sprite": "a and b",
+        "docs": "The logical AND of two True/False values is True when both sides are True."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/or.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "a or b",
+        "stage": "a or b",
+        "sprite": "a or b",
+        "docs": "The logical OR of two True/False values is True when either or both sides are True."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/not.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "not x",
+        "stage": "not x",
+        "sprite": "not x",
+        "docs": "The logical NOT of a True/False value flips the value (True -> False, False -> True)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/true.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "True",
+        "stage": "True",
+        "sprite": "True",
+        "docs": "The constant True value.\n\nNote that Python uses a capital letter for True and False."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/false.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "False",
+        "stage": "False",
+        "sprite": "False",
+        "docs": "The constant False value.\n\nNote that Python uses a capital letter for True and False."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/join.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "''.join(['hello ', 'world'])",
+        "stage": "''.join(['hello ', 'world'])",
+        "sprite": "''.join(['hello ', 'world'])",
+        "docs": "Combines multiple string/text values into a single piece of text separated by the string before the dot.\n\n''.join(['a', 'b', 'c']) # 'abc'\n' '.join(['a', 'b', 'c']) # 'a b c'\n','.join(['a', 'b', 'c']) # 'a,b,c'"
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/split-space.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "'hello world'.split(' ')",
+        "stage": "'hello world'.split(' ')",
+        "sprite": "'hello world'.split(' ')",
+        "docs": "Splits a single string/text into a list of several smaller pieces separated by the value you provide.\n\nYou can change the separator by changing the string inside the parenthesis."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/str-index-first.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "'world'[0]",
+        "stage": "'world'[0]",
+        "sprite": "'world'[0]",
+        "docs": "Gets the first letter of a string/text.\n\nPython starts indices at zero. Thus, index zero gets the first letter."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/str-index-last.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "'world'[-1]",
+        "stage": "'world'[-1]",
+        "sprite": "'world'[-1]",
+        "docs": "Gets the last letter of a string/text.\n\nIn Python, negative indices count backwards from the end. Thus, index -1 gets the last letter."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/str-index-rand.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "random.choice('world')",
+        "stage": "random.choice('world')",
+        "sprite": "random.choice('world')",
+        "docs": "Gets a random letter from a string/text."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/str-len.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "len('world')",
+        "stage": "len('world')",
+        "sprite": "len('world')",
+        "docs": "Gets the length of a string/text (in characters/letters)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/str-ord.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "ord('a')",
+        "stage": "ord('a')",
+        "sprite": "ord('a')",
+        "docs": "Gets the numeric representation of a character/letter."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/str-chr.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "chr(97)",
+        "stage": "chr(97)",
+        "sprite": "chr(97)",
+        "docs": "Gets the string/text value from the numeric representation of a character/letter."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/isinstance-list.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "isinstance(5, list)",
+        "stage": "isinstance(5, list)",
+        "sprite": "isinstance(5, list)",
+        "docs": "Checks if a value is a list."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/operators/isinstance-str.png",
+        "category": "operators",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "isinstance(5, str)",
+        "stage": "isinstance(5, str)",
+        "sprite": "isinstance(5, str)",
+        "docs": "Checks if a value is a string (text)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/pen/clear.png",
+        "category": "pen",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "stage.clear_drawings()",
+        "sprite": "stage.clear_drawings()",
+        "docs": "Erases all drawings that have been made on the stage."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/pen/set-drawing-true.png",
+        "category": "pen",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.drawing = True",
+        "docs": "Enable drawing mode so that movement causes this sprite to trace its path."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/pen/set-drawing-false.png",
+        "category": "pen",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.drawing = False",
+        "docs": "Disable drawing mode."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/pen/get-drawing.png",
+        "category": "pen",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.drawing",
+        "docs": "Checks if this sprite is currently in drawing mode, returning either True or False."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/pen/set-pen-color.png",
+        "category": "pen",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.pen_color = 'red'",
+        "docs": "Sets the pen color of this sprite.\n\nThis can be expressed as:\n- a string denoting the name of a color (like \"red\", \"green\", or \"blue\")\n- a string representing a hex color code (like \"#4467ad\")\n- a list of three numbers for the amounts of red, green, and blue, each between 0 and 255 (like [68, 103, 173])"
+    },
+    {
+        "url": "netsblox://assets/img/blocks/pen/get-pen-color.png",
+        "category": "pen",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.pen_color",
+        "docs": "Gets the current pen color of this sprite, expressed as a list of three numbers [r, g, b] representing the amount of red, green, and blue."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/pen/get-pen-size.png",
+        "category": "pen",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.pen_size",
+        "docs": "Gets the current pen size for this sprite (in pixels)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/pen/change-pen-size.png",
+        "category": "pen",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.pen_size += 1",
+        "docs": "Increases this sprite's current pen size by some amount (in pixels)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/pen/set-pen-size.png",
+        "category": "pen",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.pen_size = 1",
+        "docs": "Decreases this sprite's current pen size by some amount (in pixels)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/pen/stamp.png",
+        "category": "pen",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.stamp()",
+        "docs": "Stamps an imprint of this sprite onto the stage as a drawing."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/pen/write.png",
+        "category": "pen",
+        "scale": 1,
+        "kind": "command",
+        "globals": "",
+        "stage": "",
+        "sprite": "self.write('Hello!', size = 12)",
+        "docs": "Writes a piece of text onto the stage as a drawing.\n\nClick on the \"write\" function in your code for more details."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/pen/get-drawings.png",
+        "category": "pen",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "",
+        "stage": "stage.get_drawings()",
+        "sprite": "stage.get_drawings()",
+        "docs": "Gets a screenshot of all current drawings on the stage and returns it as an image/costume."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/var-local.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "command",
+        "globals": "a = 0",
+        "stage": "a = 0",
+        "sprite": "a = 0",
+        "docs": "Sets the value of a variable, or creates one if it does not yet exist.\n\nThe simple notation a = 0 is used to create a \"local\" (script) variable.\n\na = 0         # local variable\nself.a = 0    # sprite variable\nglobals.a = 0 # global variable"
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "['hello', 'world']",
+        "stage": "['hello', 'world']",
+        "sprite": "['hello', 'world']",
+        "docs": "Creates a new list with the specified values separated by commas.\n\nYou can use [] to create an empty list."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-range.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "list(range(1, 11))",
+        "stage": "list(range(1, 11))",
+        "sprite": "list(range(1, 11))",
+        "docs": "Creates a new list holding the numbers starting at the first value and going up to but not including the second value.\n\nThus, to get the numbers from 1 to 10, you can use list(range(1, 11))."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-cons.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "[123] + my_list",
+        "stage": "[123] + my_list",
+        "sprite": "[123] + my_list",
+        "docs": "Creates a new list that starts with a value and is followed by the contents of another list.\n\nThis works by turning the value into a 1-item list and using + to append the two lists together."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-index-first.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "my_list[0]",
+        "stage": "my_list[0]",
+        "sprite": "my_list[0]",
+        "docs": "Gets the first item of a list.\n\nPython starts indices at zero. Thus, index zero gets the first item."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-index-last.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "my_list[-1]",
+        "stage": "my_list[-1]",
+        "sprite": "my_list[-1]",
+        "docs": "Gets the last item of a list.\n\nIn Python, negative indices count backwards from the end. Thus, index -1 gets the last item."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-index-rand.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "random.choice(my_list)",
+        "stage": "random.choice(my_list)",
+        "sprite": "random.choice(my_list)",
+        "docs": "Gets a random item from a list."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-cdr.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "my_list[1:]",
+        "stage": "my_list[1:]",
+        "sprite": "my_list[1:]",
+        "docs": "Gets a new list containing all the values of the list except the first one.\n\nTo omit the first 2 items you can use my_list[2:], and so on."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-len.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "len(my_list)",
+        "stage": "len(my_list)",
+        "sprite": "len(my_list)",
+        "docs": "Gets the length of a list, which is the number of items it contains."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-rev.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "my_list[::-1]",
+        "stage": "my_list[::-1]",
+        "sprite": "my_list[::-1]",
+        "docs": "Gets a new list that contains all the same values but in reverse order.\n\nFor those who are interested: the Python \"slicing\" syntax my_list[a:b:c] means to get all the values at indices starting at a, up to but not including b, and stepping the index by c each time. Thus, my_list[::-1] means to take the whole list (by omitting a and b), but step the index by -1 each time instead of the usual 1, which gives us reverse ordering. Similarly, my_list[::-2] would get every other item in reverse order."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-in.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "'thing' in my_list",
+        "stage": "'thing' in my_list",
+        "sprite": "'thing' in my_list",
+        "docs": "Checks if a value is contained in a list, returning either True or False."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-empty.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "len(my_list) == 0",
+        "stage": "len(my_list) == 0",
+        "sprite": "len(my_list) == 0",
+        "docs": "Checks if a list is empty, returning either True or False."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-map.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "[2 * x for x in my_list]",
+        "stage": "[2 * x for x in my_list]",
+        "sprite": "[2 * x for x in my_list]",
+        "docs": "The map block in NetsBlox is most similar to \"list comprehension\" in Python, which allows you to create a new list by transforming the items of an existing list.\n\nThe above example creates a new list by doubling the values of an existing list, hence the \"2 * x\" part. You can replace this expression with anything you like."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-filter.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "[x for x in my_list if x > 0]",
+        "stage": "[x for x in my_list if x > 0]",
+        "sprite": "[x for x in my_list if x > 0]",
+        "docs": "Creates a new list containing each item (x) from my_list which satisfies x > 0. Thus, if my_list = [4, -2, 0, 1, -1, 7], then this would result in [4, 1, 7].\n\nYou can replace the filtering condition with any expression you want.\n\nSee the map block above for details about list comprehensions."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/loop-foreach.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "command",
+        "globals": "for item in my_list: # replace with your list\n    pass # replace with your code",
+        "stage": "for item in my_list: # replace with your list\n    pass # replace with your code",
+        "sprite": "for item in my_list: # replace with your list\n    pass # replace with your code",
+        "docs": "Repeats a piece of code for each item in a list.\n\nYou can use the item variable in said code; for instance, you could print out each value by doing:\n\nfor item in my_list:\n    self.say(item, duration = 1)"
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-push.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "command",
+        "globals": "my_list.append('thing')",
+        "stage": "my_list.append('thing')",
+        "sprite": "my_list.append('thing')",
+        "docs": "Adds/appends a new value to the end of a list."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-remove-first.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "command",
+        "globals": "del my_list[0]",
+        "stage": "del my_list[0]",
+        "sprite": "del my_list[0]",
+        "docs": "Deletes the first item of a list.\n\nPython starts indices at zero. Thus, index zero deletes the first item."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-remove-last.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "command",
+        "globals": "del my_list[-1]",
+        "stage": "del my_list[-1]",
+        "sprite": "del my_list[-1]",
+        "docs": "Deletes the last item of a list.\n\nIn Python, negative indices count backwards from the end. Thus, index -1 deletes the last item."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-remove-all.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "command",
+        "globals": "del my_list[:]",
+        "stage": "del my_list[:]",
+        "sprite": "del my_list[:]",
+        "docs": "Deletes all items from a list."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-insert-first.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "command",
+        "globals": "my_list.insert(0, 'thing')",
+        "stage": "my_list.insert(0, 'thing')",
+        "sprite": "my_list.insert(0, 'thing')",
+        "docs": "Inserts a new value at the beginning of a list.\n\nYou can insert the value at a different index by changing the first input.\n\nPython list positions start at zero, so my_list.insert(0, 'thing') would insert 'thing' at the front of the list (position zero)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-insert-last.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "command",
+        "globals": "my_list.append('thing')",
+        "stage": "my_list.append('thing')",
+        "sprite": "my_list.append('thing')",
+        "docs": "Inserts/appends a new value at the end of a list."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-replace-first.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "command",
+        "globals": "my_list[0] = 'thing'",
+        "stage": "my_list[0] = 'thing'",
+        "sprite": "my_list[0] = 'thing'",
+        "docs": "Replaces the first item of a list with a new value.\n\nPython starts indices at zero. Thus, index zero replaces the first item."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-replace-last.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "command",
+        "globals": "my_list[-1] = 'thing'",
+        "stage": "my_list[-1] = 'thing'",
+        "sprite": "my_list[-1] = 'thing'",
+        "docs": "Replaces the last item of a list with a new value.\n\nIn Python, negative indices count backwards from the end. Thus, index -1 replaces the last item."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-cat.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "list_1 + list_2",
+        "stage": "list_1 + list_2",
+        "sprite": "list_1 + list_2",
+        "docs": "Creates a new list with all the values of list_1 followed by all the values of list_2."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/variables/list-sort.png",
+        "category": "variables",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "sorted(my_list)",
+        "stage": "sorted(my_list)",
+        "sprite": "sorted(my_list)",
+        "docs": "Creates a new list with all the same values, but in sorted order."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/network/receive.png",
+        "category": "network",
+        "scale": 1,
+        "kind": "hat",
+        "globals": "@nb.on_message('message') # replace with your message type\ndef my_on_message(msg): # replace with your message fields\n    pass # replace with your code",
+        "stage": "@nb.on_message('message') # replace with your message type\ndef my_on_message(self, msg): # replace with your message fields\n    pass # replace with your code",
+        "sprite": "@nb.on_message('message') # replace with your message type\ndef my_on_message(self, msg): # replace with your message fields\n    pass # replace with your code",
+        "docs": "Any function with an @nb.on_message('message') decorator will run every time a NetsBlox message of type 'message' is received over the network.\n\nYou can replace the message type with anything you like and adjust the message fields accordingly (order does not matter)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/network/send.png",
+        "category": "network",
+        "scale": 1,
+        "kind": "command",
+        "globals": "nb.send_message('message', target, msg = 'Hello!') # replace with your message type, target, and message fields",
+        "stage": "nb.send_message('message', target, msg = 'Hello!') # replace with your message type, target, and message fields",
+        "sprite": "nb.send_message('message', target, msg = 'Hello!') # replace with your message type, target, and message fields",
+        "docs": "Sends a NetsBlox message of type 'message' to the target, including any following message fields (like msg = 'Hello!' above).\n\nYou can replace the message type with anything you like and adjust the message fields accordingly (order does not matter)."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/network/rpc-call.png",
+        "category": "network",
+        "scale": 1,
+        "kind": "reporter",
+        "globals": "nb.air_quality.quality_index(34, -87)",
+        "stage": "nb.air_quality.quality_index(34, -87)",
+        "sprite": "nb.air_quality.quality_index(34, -87)",
+        "docs": "Calls a NetsBlox RPC and returns the result.\n\nnb holds any and all NetsBlox RPCs. The first item after the dot (in this case air_quality) represents the service to use, and the second item after the dot (in this case quality_index) represents the specific RPC to invoke.\n\nClick on the service/rpc name to see more detailed info."
+    },
+    {
+        "url": "netsblox://assets/img/blocks/network/rpc-run.png",
+        "category": "network",
+        "scale": 1,
+        "kind": "command",
+        "globals": "nb.air_quality.quality_index(34, -87)",
+        "stage": "nb.air_quality.quality_index(34, -87)",
+        "sprite": "nb.air_quality.quality_index(34, -87)",
+        "docs": "Calls a NetsBlox RPC and discards the result.\n\nnb holds any and all NetsBlox RPCs. The first item after the dot (in this case air_quality) represents the service to use, and the second item after the dot (in this case quality_index) represents the specific RPC to invoke.\n\nClick on the service/rpc name to see more detailed info."
+    }
+]
