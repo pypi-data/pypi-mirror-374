@@ -1,0 +1,42 @@
+[build-system]
+requires=["poetry-core>=1.0.0"]
+build-backend="poetry.core.masonry.api"
+
+#[build-system]
+#requires = ["poetry-core"]
+#build-backend = "poetry.core.masonry.api"
+
+[project]
+name = "xlpkg"
+version = "1.0.0.137"
+description = "include xq.p y.py y.py pub.py"
+authors = [{name="xiaolong", email="longx888@126.com"}]
+readme = "README.md"
+#仓库地址
+repository = "https://gitee.com/dellcell/xlpkg"
+requires-python=">=3.12"
+license={text="MIT"}
+dependencies=[]
+
+[project.urls]
+Repository="https://gitee.com/dellcell/xlpkg"
+
+[tool.poetry.dependencies]
+xlwt      = "^1.3.0"
+flask     = "^3.0.3"
+pymysql   = "^1.1.1"
+#python    = "^3.9"
+requests  = "^2.31.0"
+click     ="^8.0.0"
+
+[[tool.poetry.source]]
+name = "qh"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+priority = "primary"
+
+[[tool.poetry.source]]
+name = "ali"
+url = "https://mirrors.aliyun.com/pypi/simple/"
+priority = "primary"
+
+
