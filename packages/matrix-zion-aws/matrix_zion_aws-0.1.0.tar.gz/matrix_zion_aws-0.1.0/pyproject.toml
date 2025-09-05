@@ -1,0 +1,53 @@
+[project]
+name = "matrix-zion-aws"
+version = "0.1.0"
+description = "Extensão AWS para o framework Matrix - Plugin para serviços AWS"
+authors = [
+    {name = "Tuyoshi Vinicius", email = "tuyoshi.vinicius@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+keywords = ["microservices", "aws", "matrix", "plugin", "boto3", "dynamodb"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License", 
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Distributed Computing",
+]
+
+dependencies = [
+    "matrix-zion>=0.1.0",
+    "boto3>=1.34.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "moto[sqs,sns]>=5.0.0",
+    "pytest>=8.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/tuyoshivinicius/python-microservice-v2"
+Repository = "https://github.com/tuyoshivinicius/python-microservice-v2"
+"Bug Reports" = "https://github.com/tuyoshivinicius/python-microservice-v2/issues"
+Documentation = "https://github.com/tuyoshivinicius/python-microservice-v2/blob/main/README.md"
+
+# Entry points para descoberta de plugins
+[project.entry-points."matrix.plugins"]
+aws_dynamodb = "matrix.aws.dynamodb:DynamoDBPlugin"
+aws_s3 = "matrix.aws.s3:S3Plugin"
+aws_sqs = "matrix.aws.sqs:SQSPlugin"
+aws_sns = "matrix.aws.sns:SNSPlugin"
+
+[tool.poetry]
+packages = [{include = "matrix", from = "src"}]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
