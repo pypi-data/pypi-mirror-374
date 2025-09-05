@@ -1,0 +1,78 @@
+Metadata-Version: 2.1
+Name: zeblok-ai
+Version: 1.0.0
+Summary: Zeblok AI SDK for accessing pretrained models
+Home-page: https://github.com/zeblok/zeblok-ai-sdk
+Author: Avinash
+Author-email: avinash.sampath@zeblok.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: requests >=2.25.1
+Requires-Dist: zeblok-sdk
+Provides-Extra: async
+Requires-Dist: aiohttp >=3.7.4 ; extra == 'async'
+Provides-Extra: dev
+Requires-Dist: pytest >=6.0 ; extra == 'dev'
+Requires-Dist: wheel >=0.36.2 ; extra == 'dev'
+Requires-Dist: twine >=3.4.1 ; extra == 'dev'
+
+# Zeblok GenAI SDK 
+
+The Zeblok SDK allows users to integrate their external MLOps workflows with the AI-MicroCloud platform. Specifically, this new release will add functionality and support for interactions with AI models.
+
+## Components
+
+### Auth
+
+- API Authentication
+
+### Resources
+
+- AI-API
+- Client
+- Embedding Model
+- GPT Model
+- Inference Chat
+
+# Interface
+
+<h3> Authentication </h3>
+
+- API Authentication: `APIKeyAuth()`
+
+<h3> Client </h3>
+
+- Create a new client: `Client(api_key)`
+- Authenticate API key: `_authenticate_api_key()`
+- Add a new model to the client: `_register_model(model_name, model_class)`
+- List all models associated with the client: `list_models()`
+- Make a request to Zeblok AI MicroCloud: `_request(method, endpoint, params)`
+
+<h3> Models </h3>
+
+- GPT Model: `GPTModel(model_name, client, api_key)`
+- Embedding Model: `EmbeddingModel(model_name, client, api_key)`
+- Get completions (only for GPTModel): `completions(prompt, max_tokens=50, temperature=0.7, **kwargs)`
+- Get chat history (only for GPTModel): `get_chat_history()`
+
+<h3> Inference Chat </h3>
+
+- Create a new inference chat: `InferenceChat(api_key, model_name)`
+- Retrieve a response from the AI model: `chat(prompt, max_tokens, temperature)`
+- Get history of interactions with the model: `get_chat_history()`
+
+Note that inference chats are not detailed in the usage of the SDK, since their functionality is covered by other modules.
+
+# Usage
+
+Checkout the detailed usage of the SDK at [USAGE.md](USAGE.md).
+
+# Contact Zeblok
+
+| **Team**           | **Email**          |
+|--------------------|--------------------|
+| **Technical Team** | support@zeblok.com |
+| **Sales Team**     | sales@zeblok.com   |
