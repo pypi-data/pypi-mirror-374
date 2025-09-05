@@ -1,0 +1,6 @@
+[console_scripts]
+auto-labeler = scriptcraft.tools.automated_labeler:main
+data-comparer = scriptcraft.tools.data_content_comparer:main
+function-auditor = scriptcraft.tools.function_auditor:main
+rhq-autofiller = scriptcraft.tools.rhq_form_autofiller:main
+scriptcraft = scriptcraft.common.cli:main
