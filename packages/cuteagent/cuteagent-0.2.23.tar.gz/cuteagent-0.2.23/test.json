@@ -1,0 +1,88 @@
+{
+    "clientId": "137",
+    "docId": "935",
+    "url": "https://windowsec2-docrepo-137.s3.amazonaws.com/935.pdf?AWSAccessKeyId=ASIA4BXM25C7ODEF65FK&Signature=mkVIPmBT6QOVlNvVkEGmxKplQfQ%3D&x-amz-security-token=IQoJb3JpZ2luX2VjEAEaCXVzLXdlc3QtMSJIMEYCIQD18JQyTPJdeJy2ulhJBIFDCwbfpkPIsrqTt4xZqA4ZmQIhANpHMXafGBqMei%2BssQbota4q7WmCJ4VmJAZC7Tg4wAwuKv4CCGoQARoMODI4MzUxNjM3Njk0IgzYwtfXD8xd6cxB%2FK8q2wIi1UMq530cEZuFzFiDZ3VaxKCZwNigQGd2EDHpzfvjLxJNetLWAmQVu7mAxGRlluZQSkNZSWyfyOqQ3N%2FTCS4LUIx5WqKKWdC8TPtdFtrCYlakeT0vTtKTwTAmNAKCk56nxHWuvJ3Jg%2Bwq1tLl6vXPJ48OmOHjAnKrsR%2B5rPm15QU4ZyWrUHOBVMgdjW2vASWaY2P%2BGbMfmkI%2BRYJdg1X035H3HxSkDouzGGHjlL74GGgN4L%2FDg3U9ngh4sPriyr6yYTfxy66umUtPqAoAucc3JTq6RtE2DGIO65LGmhPvwu6NbLgksGNF5llJ0v1O7kxurHRbIy%2BRrLnm6d89QaW6Zntb0iVdi3EivNT49xOcSET4F4Rms8Wj8jnsmRip8fvjIEovWjcEgVVed2M%2Fiki90Gsc30SjI%2BRQ%2BZkHJumRbe8KfCXgiIBawotIFEsidFGXxMZRoYcsF3F93DD%2F5OjFBjqdAbIM77Ffwim%2FnenW0uABL0GRGRhCRXxvYw%2FPdvNwducElv1CJDkQeRq9IrWqUK%2BHWxpkY3SiKtkeY9P1TqbwsR3JWhLSJxJCN6k8Cdct2z7say1IiT9dSEfUnLvk2bxfB69fiIIDUzZTbk2CYxRgTjOXFVoru2EY2xbXMYTGBwj1OLayIF9MDLVuM2PrYfsuwipHZHoI2uOH4NBQdpc%3D&Expires=1757033389",
+    "expiresInSeconds": 300,
+    "loanId": "24",
+    "hasLoanId": true,
+    "taskId": "347358",
+    "hasTaskId": true,
+    "dataObject": {
+      "extraction_method": "safebox_encoded_data",
+      "source": "safebox_encoded_data",
+      "document_id": "935",
+      "fields": {
+        "hireDate": "2500-01-01",
+        "payStubPeriodFrom": "2025-05-11",
+        "address": {
+          "fullAddress": "16 Mountainside Dr, Colts Neck, New Jersey 07722",
+          "zipCode": "07722",
+          "state": "New Jersey",
+          "city": "Colts Neck",
+          "address2": "",
+          "address1": "16 Mountainside Dr"
+        },
+        "hoursPerWeek": 0,
+        "employerAddress": {
+          "fullAddress": "151 Oak Glen Road, Howell, New Jersey 07731",
+          "zipCode": "07731",
+          "state": "New Jersey",
+          "city": "Howell",
+          "address2": "",
+          "address1": "151 Oak Glen Road"
+        },
+        "confidence": "1.0",
+        "addToRegular": [],
+        "YTD": 142800,
+        "employee": {
+          "lastName": "churerros",
+          "firstName": "los",
+          "middleName": "",
+          "suffix": "",
+          "last4SSN": "0000"
+        },
+        "exceptions": {
+          "corrupted": false,
+          "truncated": false,
+          "is_missing_pages": false,
+          "not_for_encoding": false,
+          "copy_is_not_clear": false,
+          "unsupported_language": false,
+          "refer_to_qc": false,
+          "clarify_information_with_client": false,
+          "expired": false,
+          "possible_wrong_upload": false,
+          "for_bullzip": false,
+          "insufficient_information": false,
+          "other_exception_text": "",
+          "incomplete_unitization": false,
+          "blank_page": false,
+          "other_exception": false,
+          "split_document": false
+        },
+        "variableIncomes": [
+          {
+            "incomeYTD": 12600,
+            "remarks": "nontaxable per diem",
+            "variableIncomeType": "Other"
+          }
+        ],
+        "current": 6800,
+        "tier": "1",
+        "object_name": "final_splitting_output/929_11.pdf",
+        "payStubPeriodTo": "2025-05-17",
+        "employer": {
+          "name": "Barr-None Coating Applicators, Inc.",
+          "positionOrTitle": "",
+          "EIN": "000000000"
+        },
+        "category": "16_Paystub",
+        "hourlyRate": 0,
+        "hoursWorked": 0,
+        "vision_check": "passed",
+        "compare_result": false
+      },
+      "extracted_at": null
+    },
+    "hasDataObject": true
+  }
