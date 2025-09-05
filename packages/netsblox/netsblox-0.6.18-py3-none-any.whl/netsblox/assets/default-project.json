@@ -1,0 +1,35 @@
+{
+    "roles": [
+        {
+            "name": "untitled",
+            "stage_size": [
+                1080,
+                720
+            ],
+            "block_sources": [
+                "netsblox://assets/default-blocks.json"
+            ],
+            "blocks": [],
+            "imports": ["time", "math", "random"],
+            "editors": [
+                {
+                    "type": "globals",
+                    "name": "globals",
+                    "value": ""
+                },
+                {
+                    "type": "stage",
+                    "name": "stage",
+                    "value": ""
+                },
+                {
+                    "type": "sprite",
+                    "name": "sprite",
+                    "value": "@onstart()\ndef my_onstart(self):\n    for i in range(120): # repeat code 120 times\n        self.forward(4)\n        self.turn_right(3)\n"
+                }
+            ],
+            "images": {},
+            "sounds": {}
+        }
+    ]
+}
