@@ -1,0 +1,51 @@
+Metadata-Version: 2.4
+Name: dio-simple-package-project
+Version: 0.0.1
+Summary: Example project for creating a simple package - DIO Course
+Home-page: https://github.com/fricardo-it/dio-simple-package-project.git
+Author: Francisco Ricardo
+Author-email: fricardo@outlook.com
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-python
+Dynamic: summary
+
+# dio-simple-package-project
+
+Description. 
+O pacote **dio-simple-package-project** foi desenvolvido como parte do curso da [DIO](https://www.dio.me/).  
+Ele serve de exemplo para criar, estruturar e publicar pacotes Python de forma simples.
+
+
+## Installation
+
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install dio-simple-package-project
+
+```bash
+pip install dio-simple-package-project
+```
+
+## Usage
+
+- **file1_name**
+```python
+from dio_simple_package_project import file1_name
+file1_name.my_function()
+```
+
+- **file2_name**
+```python
+from dio_simple_package_project import file2_name
+file2_name.my_function()
+```
+
+## Author
+[Francisco Ricardo](https://github.com/fricardo-it)
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
