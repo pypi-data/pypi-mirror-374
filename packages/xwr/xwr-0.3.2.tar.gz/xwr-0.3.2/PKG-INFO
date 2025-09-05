@@ -1,0 +1,88 @@
+Metadata-Version: 2.4
+Name: xwr
+Version: 0.3.2
+Summary: Linux-Compatible Real-Time Raw Data Capture for TI mmWave Radars.
+Project-URL: Homepage, https://github.com/RadarML/xwr
+Project-URL: Documentation, https://radarml.github.io/xwr
+Project-URL: Issues, https://github.com/RadarML/xwr/issues
+Author-email: Tianshu Huang <tianshu2@andrew.cmu.edu>
+License-Expression: MIT
+License-File: LICENSE
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Typing :: Typed
+Requires-Python: >=3.10
+Requires-Dist: beartype>=0.20
+Requires-Dist: jaxtyping>=0.3.2
+Requires-Dist: numpy>=1.19
+Requires-Dist: pyfftw>=0.15.0
+Requires-Dist: pyserial>=3.5
+Requires-Dist: types-pyserial>=3.5
+Provides-Extra: demo
+Requires-Dist: matplotlib>=3.0; extra == 'demo'
+Requires-Dist: pyqt6>=6.0.0; extra == 'demo'
+Requires-Dist: pyyaml>=6.0; extra == 'demo'
+Requires-Dist: rich>=13.0.0; extra == 'demo'
+Requires-Dist: tyro>=0.8.0; extra == 'demo'
+Provides-Extra: dev
+Requires-Dist: coverage; extra == 'dev'
+Requires-Dist: pre-commit>=4.0.0; extra == 'dev'
+Requires-Dist: pyright>=1.0.0; extra == 'dev'
+Requires-Dist: pytest-cov; extra == 'dev'
+Requires-Dist: pytest>=8.0.0; extra == 'dev'
+Requires-Dist: ruff>=0.11.0; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: abstract-dataloader>=0.3.5; extra == 'docs'
+Requires-Dist: mkdocs-material==9.6.*; extra == 'docs'
+Requires-Dist: mkdocs==1.6.*; extra == 'docs'
+Requires-Dist: mkdocstrings-python-xref==1.16.3; extra == 'docs'
+Requires-Dist: mkdocstrings-python==1.16.6; extra == 'docs'
+Requires-Dist: ruff>=0.11.0; extra == 'docs'
+Provides-Extra: jax
+Requires-Dist: jax>=0.4.0; extra == 'jax'
+Provides-Extra: nn
+Requires-Dist: torchvision>=0.15.0; extra == 'nn'
+Provides-Extra: torch
+Requires-Dist: torch>=2.0; extra == 'torch'
+Description-Content-Type: text/markdown
+
+# `xwr`: Linux-Compatible Real-Time Raw Data Capture for TI mmWave Radars
+
+[![pypi version](https://img.shields.io/pypi/v/xwr.svg)](https://pypi.org/project/xwr/)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/xwr)
+![PyPI - Types](https://img.shields.io/pypi/types/xwr)
+![License - MIT](https://img.shields.io/badge/license-MIT-green)
+![Typed](https://img.shields.io/badge/types-typed-brightgreen)
+[![bear-ified](https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg)](https://beartype.readthedocs.io)
+
+`xwr` is a pure-python, linux-based real time raw data capture system for TI mmWave radars, and includes four key components:
+
+- [`xwr`](https://radarml.github.io/xwr/system/): a high-level data capture interface
+- [`xwr.rsp`](https://radarml.github.io/xwr/rsp/rsp/): a radar signal processing library with Numpy, Pytorch, and Jax support
+- [`xwr.radar`](https://radarml.github.io/xwr/radar/api/): a parameterized python interface for the default radar firmware
+- [`xwr.capture`](https://radarml.github.io/xwr/dca/api/): a pure-python, real-time interface for the DCA1000EVM
+
+See our [documentation site](https://radarml.github.io/xwr/) for more details, setup guides, the included demo, and more!
+
+## Requirements
+
+`xwr` assumes a linux-based system and radar hardware which consists of the DCA1000EVM and a supported TI mmWave Radar (XWR) development board.
+
+> [!IMPORTANT] 
+> Supported Devices:
+>    - AWR1843 Family: AWR1843Boost, AWR1843AOPEVM
+>    - AWR1642
+>
+> WIP:
+>    - AWR2544LOPEVM
+
+## Install
+
+The `xwr` library is currently only distributed via github:
+
+```sh
+# Install directly from github
+pip install git+ssh://github.com/RadarML/xwr.git
+```
