@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WindTurbineGenerator FormatVersion="1.01" Description="SWT-2.3-93" ManufacturerName="Siemens Wind Power A/S" RotorDiameter="93">
+	<Comments>Data comes from WASP with suggested height changed according to Lillgrund hub heights</Comments>
+	<SuggestedHeights>
+		<Height>65.0</Height>
+	</SuggestedHeights>
+	<PerformanceTable AirDensity="1.225" StationaryThrustCoEfficient="0.05">
+		<StartStopStrategy LowSpeedCutOut="3.0" LowSpeedCutIn="3.0" HighSpeedCutIn="25.0" HighSpeedCutOut="25.0"/>
+		<Comments/>
+		<DataTable>
+			<DataPoint WindSpeed="3.0" PowerOutput="0.0" ThrustCoEfficient="0.0"/>
+			<DataPoint WindSpeed="4.0" PowerOutput="65000.0" ThrustCoEfficient="0.81"/>
+			<DataPoint WindSpeed="5.0" PowerOutput="180000.0" ThrustCoEfficient="0.84"/>
+			<DataPoint WindSpeed="6.0" PowerOutput="352000.0" ThrustCoEfficient="0.83"/>
+			<DataPoint WindSpeed="7.0" PowerOutput="590000.0" ThrustCoEfficient="0.85"/>
+			<DataPoint WindSpeed="8.0" PowerOutput="906000.0" ThrustCoEfficient="0.86"/>
+			<DataPoint WindSpeed="9.0" PowerOutput="1308000.0" ThrustCoEfficient="0.87"/>
+			<DataPoint WindSpeed="10.0" PowerOutput="1767000.0" ThrustCoEfficient="0.79"/>
+			<DataPoint WindSpeed="11.0" PowerOutput="2085000.0" ThrustCoEfficient="0.67"/>
+			<DataPoint WindSpeed="12.0" PowerOutput="2234000.0" ThrustCoEfficient="0.45"/>
+			<DataPoint WindSpeed="13.0" PowerOutput="2283000.0" ThrustCoEfficient="0.34"/>
+			<DataPoint WindSpeed="14.0" PowerOutput="2296000.0" ThrustCoEfficient="0.26"/>
+			<DataPoint WindSpeed="15.0" PowerOutput="2299000.0" ThrustCoEfficient="0.21"/>
+			<DataPoint WindSpeed="16.0" PowerOutput="2300000.0" ThrustCoEfficient="0.17"/>
+			<DataPoint WindSpeed="17.0" PowerOutput="2300000.0" ThrustCoEfficient="0.14"/>
+			<DataPoint WindSpeed="18.0" PowerOutput="2300000.0" ThrustCoEfficient="0.12"/>
+			<DataPoint WindSpeed="19.0" PowerOutput="2300000.0" ThrustCoEfficient="0.1"/>
+			<DataPoint WindSpeed="20.0" PowerOutput="2300000.0" ThrustCoEfficient="0.09"/>
+			<DataPoint WindSpeed="21.0" PowerOutput="2300000.0" ThrustCoEfficient="0.07"/>
+			<DataPoint WindSpeed="22.0" PowerOutput="2300000.0" ThrustCoEfficient="0.07"/>
+			<DataPoint WindSpeed="23.0" PowerOutput="2300000.0" ThrustCoEfficient="0.06"/>
+			<DataPoint WindSpeed="24.0" PowerOutput="2300000.0" ThrustCoEfficient="0.05"/>
+			<DataPoint WindSpeed="25.0" PowerOutput="2300000.0" ThrustCoEfficient="0.05"/>
+		</DataTable>
+	</PerformanceTable>
+	<ContextInformation>
+		<CertificateChecksum></CertificateChecksum>
+	</ContextInformation>
+</WindTurbineGenerator>

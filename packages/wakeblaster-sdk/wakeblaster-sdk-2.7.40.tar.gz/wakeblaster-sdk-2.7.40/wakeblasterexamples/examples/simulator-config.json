@@ -1,0 +1,21 @@
+{
+	"measurements" : {
+		"wind_conditions_inference": "ReferenceBased"
+	},
+	"wake_model": {
+        "type": "3D",
+		"initial_profile": "BluntBell",
+		"eddy_viscosity": {
+			"type": "CombinedProfile",
+			"lag": {
+				"type": "Variable"
+			}
+		}
+    },
+	"power_capture" : {
+		"turbulence_adjustment": true,
+		"hysteresis": "Statistical",
+		"power_curve_interpolation_method": "Cubic",
+		"rotor_wake_speed_method": "Linear"
+	}
+}
