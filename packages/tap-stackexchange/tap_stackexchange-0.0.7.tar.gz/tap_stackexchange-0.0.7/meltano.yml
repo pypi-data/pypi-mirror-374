@@ -1,0 +1,58 @@
+version: 1
+send_anonymous_usage_stats: false
+project_id: 7000e515-08c0-48bd-bdb9-cc06d193b4e5
+plugins:
+  extractors:
+  - name: tap-stackexchange
+    namespace: stackexchange
+    pip_url: -e .
+    capabilities:
+    - state
+    - catalog
+    - discover
+    settings:
+    - name: key
+      kind: password
+      label: API Key
+      documentation: https://api.stackexchange.com/docs/authentication
+      description: StackExchange API Key
+      sensitive: true
+    - name: filter
+      kind: string
+      label: Filter
+      documentation: https://api.stackexchange.com/docs/filters
+      description: Custom API filter to apply to all requests
+    - name: site
+      kind: string
+      label: Site
+      documentation: https://stackexchange.com/sites
+      description: StackExchange site to extract data from
+    - name: tags
+      kind: array
+      label: Tags
+      documentation: https://stackoverflow.com/tags
+      description: Tags to extract data from
+    - name: start_date
+      kind: integer
+      label: Start Date
+      documentation: https://api.stackexchange.com/docs/dates
+      description: Start date to extract data from
+    - name: metrics_log_level
+      value: debug
+    config:
+      tags:
+      - meltano
+      - singer-io
+      site: stackoverflow.com
+      start_date: 1651381200
+    select_filter:
+    - questions
+  loaders:
+  - name: target-sqlite
+    variant: meltanolabs
+    pip_url: git+https://github.com/MeltanoLabs/target-sqlite.git
+    config:
+      database: ${MELTANO_PROJECT_ROOT}/output/${MELTANO_EXTRACT__LOAD_SCHEMA}
+  - name: target-jsonl
+    variant: andyh1203
+    pip_url: target-jsonl
