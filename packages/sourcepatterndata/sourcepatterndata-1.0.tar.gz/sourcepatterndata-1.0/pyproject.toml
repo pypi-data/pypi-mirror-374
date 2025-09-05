@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sourcepatterndata"                 # must be unique on PyPI
+version = "1.0"
+description = "This is to find the errors in IICS session logs. I have took some patterns to identify the errors"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [{ name = "Sai Prakash Simhadri", email = "saiprakashsimhadri@gmail.com" }]
+license = { text = "MIT" }
+dependencies = []                   # add any external libs if needed
+
+[project.urls]
+Homepage = "https://github.com/saiprakashsimhadri/sourcepatterndata"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+py-modules = ["sourcepatterndata"]
