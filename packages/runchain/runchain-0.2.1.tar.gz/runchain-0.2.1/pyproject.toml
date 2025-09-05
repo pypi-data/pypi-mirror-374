@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "runchain"
+description = "A tool for running command chains"
+dynamic = ["version"]
+authors = [
+    { name="Richard Terry", email="code@radiac.net" },
+]
+license = "BSD-3-Clause"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.9"
+dependencies = ["click", "crondir"]
+
+[project.scripts]
+runchain = "runchain.commands:invoke"
+
+[project.urls]
+Homepage = "https://radiac.net/projects/runchain/"
+Documentation = "https://github.com/radiac/runchain"
+Changelog = "https://runchain.readthedocs.io/en/latest/changelog.html"
+Repository = "https://github.com/radiac/runchain"
+Issues = "https://github.com/radiac/runchain/issues"
+
+[tool.setuptools]
+packages = ["runchain"]
+
+[tool.setuptools.dynamic]
+version = {attr = "runchain.__version__"}
+
+[tool.pytest.ini_options]
+addopts = "--cov=runchain --cov-report=term --cov-report=html"
+testpaths = [
+    "runchain",
+    "tests",
+]
+pythonpath = ["."]
+
+[tool.coverage.run]
+source = ["runchain"]
+
+[tool.ruff]
+line-length = 88
+lint.select = ["E", "F"]
+lint.ignore = [
+    "E501",  # line length
+]
+exclude = [
+    ".git",
+    "dist",
+]
