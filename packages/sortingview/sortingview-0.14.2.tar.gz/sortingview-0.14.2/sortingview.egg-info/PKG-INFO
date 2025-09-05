@@ -1,0 +1,21 @@
+Metadata-Version: 2.1
+Name: sortingview
+Version: 0.14.2
+Summary: Web app for viewing results of ephys spike sorting
+Home-page: https://github.com/magland/sortingview
+Author: Jeff Soules
+Author-email: Jeremy Magland <jmagland@flatironinstitute.org>
+Project-URL: Homepage, https://github.com/magland/sortingview
+Project-URL: Issues, https://github.com/magland/sortingview/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+License-File: LICENSE
+Requires-Dist: spikeinterface>=0.97.0
+Requires-Dist: kachery<3,>=2.0.2
+Requires-Dist: figurl>=0.3.1
+Requires-Dist: matplotlib
+Requires-Dist: click
+Requires-Dist: pynwb
+Requires-Dist: pyyaml
+Requires-Dist: h5py
