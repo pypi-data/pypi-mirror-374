@@ -1,0 +1,31 @@
+[project]
+name = "unienv"
+version = "0.0.1b1"
+requires-python = ">= 3.10"
+dependencies = [
+    "numpy",
+    "xbarray>=0.0.1a8",
+    "pillow",
+    "h5py",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+gymnasium = [
+    "gymnasium>=0.29.0",
+]
+video = [
+    "moviepy>=2.1"
+]
+mjx = [
+    "playground",
+]
+maniskill = [
+    "mani_skill>=3.0.0b12"
+]
+
+[tool.setuptools.packages.find]
+include = ["*"]
+exclude = ["training*", "tests*"]
