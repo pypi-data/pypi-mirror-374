@@ -1,0 +1,98 @@
+# Automata Linq SDK
+
+LINQ SDK. This README is for installation and development of the SDK.
+
+## Getting started
+
+For local development, these are the steps for getting up and running:
+
+* Install python3.11
+* Install poetry: `curl -sSL https://install.python-poetry.org | python3 -`
+* Start a virtual environment using python3.11 `poetry env use python3.11`
+* Install dependencies: `poetry install`
+* Install pre-commit git hook: `poetry run pre-commit install`
+* (Optional) For Jupyter Notebook functionality, install  `ipykernel`
+
+Alternatively, you can also open this directory with a [VSCode Dev Container](https://code.visualstudio.com/docs/devcontainers/containers).
+
+### Activating poetry virtual env
+```bash
+$(poetry env activate)
+```
+
+### Running the SDK from your local repo
+To install your local repo as a package, run the following from the top level of the repo directory:
+
+```bash
+pip install -e .
+```
+
+This will allow you to run the `linq` cli tool and have it execute your modified python files in the repo.
+
+
+## Overwriting settings
+
+For local development, settings can be overwritten by adding a .env file.
+Check `workflow_builder/settings.py` for a list of settings that can be overwritten.
+
+## Running the tests
+
+To run the tests, run
+
+```bash
+poetry run pytest
+```
+
+Or, activate the poetry shell first and then execute commands as usual:
+
+```bash
+$(poetry env activate)
+pytest
+```
+
+To configure Pact tests run locally please see the docs:
+[Consumer Pact test](https://www.notion.so/automatatech/Consumer-integration-with-Pact-199aa75be16d806eb629c18cae7e62e8)
+
+By default, Pytest will ignore the directory with pact tests, so as not to make other tests dependent on the pact configuration.
+
+To run pact tests, use command:
+```bash
+poetry run pytest tests/pact
+```
+
+## Linting and formatting
+
+The project uses `ruff` for formatting and linting - you can run each task directly either via poetry or manually:
+
+```bash
+# Linting
+poetry run task lint
+# or
+ruff check .
+
+# Formatting
+poetry run task format
+# or
+ruff format .
+```
+
+## Documentation
+
+The SDK's documentation is built with sphinx, all docs files can be found in `docs/`.
+
+All documentation pages except the index should be written in markdown, the docs use myst-parser to allow
+writing markdown with sphinx. HookRequests are defined in the maestro repo and must be imported to correctly generate
+all docs. Therefore, you must ensure you have a `GIT_TOKEN` setup in your local `.env` before running either of the
+build-docs commands. To learn how to add a new `GIT_TOKEN` to your account visit [official GitHub documentation.](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
+
+* To build the docs, run `poetry run task build-docs`
+* To build the docs continuously and serve them on a local server on port 3001, run `poetry run task serve-docs`.
+
+## Updating the schema
+
+If the API schema changes, we need to keep the schema up to date in the SDK.
+
+To do this, ensure you have the latest version of `linq-workflow-builder-api` running locally, then run `poetry run task update-api-schema` in this repository.
+
+Run the test suite after updating the schema; some test fixtures may need to be updated along with the schema changes.
+Commit the updated schema(s) and any tests.
