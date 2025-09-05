@@ -1,0 +1,35 @@
+Metadata-Version: 2.4
+Name: Brimview_widgets
+Version: 0.1.1
+Summary: Widget to display Brimfile data in a Panel application
+Project-URL: Homepage, https://github.com/prevedel-lab/BrimView
+Project-URL: Repository, https://github.com/prevedel-lab/BrimView/tree/main/BrimView-widgets
+Project-URL: Issues, https://github.com/prevedel-lab/BrimView/issues
+Author-email: Carlo Bevilacqua <carlo.bevilacqua@embl.de>, Sebastian Hambura <sebastian.hambura@embl.de>
+License-Expression: LGPL-3.0-or-later
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: File Formats
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.9
+Requires-Dist: brimfile[export-tiff]
+Requires-Dist: holoviews
+Requires-Dist: panel
+Requires-Dist: xarray
+Provides-Extra: localfile
+Requires-Dist: tkinterdnd2; extra == 'localfile'
+Provides-Extra: processing
+Requires-Dist: hdf5-bls-treat; extra == 'processing'
+Requires-Dist: scipy; extra == 'processing'
+Provides-Extra: remote-store
+Requires-Dist: brimfile[remote-store]; extra == 'remote-store'
+Description-Content-Type: text/markdown
+
+# BrimView-widgets
+This python package create some [Panel](https://panel.holoviz.org/index.html) widgets which are used by [BrimView](https://github.com/prevedel-lab/BrimView).
+
+The widgets can also be used independently by any Panel app wishinng to work with [brim files](https://github.com/prevedel-lab/brimfile). 
