@@ -1,0 +1,41 @@
+version: "3"
+
+tasks:
+  install:
+    desc: Install dependencies with uv
+    sources:
+      - pyproject.toml
+      - uv.lock
+    cmds:
+      - uv sync
+
+  format:
+    desc: Format codebase
+    deps:
+      - install
+    cmds:
+      - uv run ruff format .
+
+  lint:
+    desc: Lint codebase for issues
+    deps:
+      - install
+    cmds:
+      - uv run ruff check .
+      - uv run mypy --strict -p semmy
+
+  test:
+    desc: Run all the tests
+    deps:
+      - lint
+    cmds:
+      - task: "test:unit"
+
+  test:unit:
+    internal: true
+    cmds:
+      - uv run pytest
+
+  build:
+    cmds:
+      - uv build
