@@ -1,0 +1,20 @@
+root_dir:  # Always start with a standalone entry for the root directory.
+           # All file paths below will start after this root.
+---
+band:  # Band number (1-7) for the IT Sweep. If the sweep is band-agnostic
+       # (i.e. one long IT Sweep), put "all".
+
+bf_file:  # File path to the appropriate bias frame.
+ffref_pointer:  # File path to the appropriate flat field reference.
+itsweep_directory:  # File path to the directory containing ONLY IT Sweep data.
+
+camera:  # Either VIC or EDU
+temp:  # Temperature of the detector during the sweep.
+
+num_bf_images:  # Number of stacked images in the bias frame.
+num_it_images:  # Number of stacked images in each of the IT Sweep frames.
+num_ff_images:  # Number of stacked images in the flatfield referenace image.
+---
+
+#  All file paths should point to .dat files that come directly off of the
+#  testing platform.
