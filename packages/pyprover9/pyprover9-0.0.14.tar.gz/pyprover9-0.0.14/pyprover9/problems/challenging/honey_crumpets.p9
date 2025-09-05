@@ -1,0 +1,127 @@
+
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+% Last line is a lie. It is there to stop the Prover9-Mace4
+% GUI giving a warning when the file is loaded.
+% This file was actually reated by BB Prover9 Autograder
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  clear(auto).
+  clear(auto_setup).
+  clear(auto_limits).
+  clear(auto_denials).
+  clear(auto_inference).
+  clear(auto_process).
+  assign(eq_defs, pass).
+  assign(max_seconds, 10).
+  assign(max_weight, 2147483647).
+  assign(sos_limit, -1).
+  clear(predicate_elim).
+  set(binary_resolution).
+  set(paramodulation).
+  set(factor).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%% Honey Crumpets
+%% A logic problem by Brandon Bennett
+%%
+%% Prover9 file: honey_crumpets.p9
+
+%% To solve this first-order logic proof problem, you must replace
+%% each of the assumption place-holders __An__ and the goal place-holder
+%% __G__, with an approapriate first-order formula that captures the
+%% meaning of the given English sentence.
+%% 
+%% Then run Prover9. 
+%% If your representations are correct, it should find a Proof.
+%% You can also check your representations using the Gradescope Autograder.
+
+%% In writing the formulae, you should only use the following vocabulary:
+%%
+%% Logical symbols:           &  |  -  ->   <->  =  all  exists
+%% Brackets and separators:   ( )  [  ]  ,  .
+%% Variables:                 Whatever you like, but must be quantified.
+%%
+%% Predicates: Honey, Butter, NextTo, Diagonal, Ate
+%%
+%% Use only the specified vocabulary, otherwise the autograder will not work.
+
+
+
+%% A1: "All crumpets have butter or honey on them."
+
+        __A1__.
+
+%% A2: "No crumpet has both honey and butter."
+
+        __A2__.
+
+%% A3: "There are exactly two honey crumpets."
+
+        __A3__.
+
+%% A4: "There are exactly two buttered crumpets."
+
+        __A4__.
+
+%% A5: "Any two different crumpets are either next to each other or diagonally opposite."
+
+        __A5__.
+
+%% A6: "No two crumpets are next to each other and diagonally opposite."
+
+        __A6__.
+
+%% A7: "No crumpet is next to itself."
+
+        __A7__.
+
+%% A8: "No crumpet is diagonally opposite itself"
+
+        __A8__.
+
+%% A9: "If any crumpet A is next to any crumpet B then B is also next to A."
+
+        __A9__.
+
+%% A10: "If any crumpet A is diagonally opposite any crumpet B then B is also diagonally opposite A."
+
+        __A10__.
+
+%% A11: "Every crumpet is diagonally opposite another crumpet."
+
+        __A11__.
+
+%% A12: "Every crumpet is next to two different crumpets."
+
+        __A12__.
+
+%% A13: "There are two honey crumpets which are next to each other."
+
+        __A13__.
+
+%% A14: "If a crumpet A is diagonally opposite another crumpet B, and B is diagonally opposite another crumpet C, then A is C."
+
+        __A14__.
+
+%% A15: "I ate two diagonally opposite crumpets."
+
+        __A15__.
+
+
+end_of_list.
+
+formulas(goals).
+
+%% GOAL: "I ate a honey crumpet."
+
+          __G__.
+
+end_of_list.
