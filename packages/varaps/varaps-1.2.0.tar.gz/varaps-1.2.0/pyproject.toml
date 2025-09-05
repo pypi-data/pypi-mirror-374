@@ -1,0 +1,26 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "varaps"
+authors = [{name = "DJAOUT El Hacene", email = "djaout@lpsm.paris"}]
+license = {file = "LICENSE"}
+readme = "README.md"
+classifiers = ["License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"]
+dynamic = ["version", "description"]
+dependencies = [
+    "numpy",
+    "scipy",
+    "pandas",
+    "pysam",
+    "cigar",
+    "tqdm",
+    
+]
+
+[tool.flit.module]
+name = "varaps"
+
+[project.scripts]
+varaps = "varaps.main:main"
