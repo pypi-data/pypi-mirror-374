@@ -1,0 +1,61 @@
+Metadata-Version: 2.4
+Name: gd_sm
+Version: 1.0.6
+Summary: python实现的国密SM2/SM3/SM4算法库
+Author-email: liudi <di.liu@quantum-info.com>
+Description-Content-Type: text/markdown
+Requires-Dist: cryptography >=35.0.2
+Project-URL: Home, https://www.quantumtest.top
+
+# gd_sm
+
+## 软件说明
+
+这是一个python实现的国密算法库，按照国密规范实现了sm2/sm3/sm4算法，其中sm2的功能主要是参考[gmssl](https://github.com/py-gmssl/py-gmssl) 库，在其基础上进行了一定的完善。
+sm3和sm4是利用了[cryptography](https://github.com/pyca/cryptography)库，采用这个库进行了sm3和sm4运算，这里只是对其进行了简单封装。  
+
+每个模块实现了以下功能，在使用这些函数或方法时，传入的数据需要是16进制字符串或者bytes格式(传入bytes格式也会被转成16进制字符串处理)，
+返回的数据均为16进制字符串，建议调用的时候统一使用16进制字符串，为了方便，最好统一成16进制字符串大写格式。
+
+- sm2:
+  - sign: 使用sm2私钥进行签名
+  - verify: 使用sm2公钥进行验签
+  - encrypt: 使用sm2公钥进行加密
+  - decrypt: 使用sm2私钥进行加密
+  - private_key_export_pubkey: 通过私钥导出公钥
+  - nor_compressed_pubkey: 输出公钥的非压缩形式
+  - compressed_pubkey: 输出公钥的压缩形式
+- sm3:
+  - sm3_hash: 计算sm3 hash值
+  - check_sm3: 校验sm3 hash值是否正确
+  - sm3_hmac: 使用sm3算法计算hmac值，返回类型可以为hex或base64urlsafe编码的字符串
+- sm4:
+  - encrypt: sm4加密，支持ecb/cbc模式，不填充或者采用pkcs7 padding填充
+  - decrypt: sm4解密，支持ecb/cbc模式，不填充或者采用pkcs7 padding填充
+
+## 使用说明
+
+使用pip安装本项目`pip install gd_sm`,在代码中使用`from gd_sm import *`语句引用
+
+也可以clone本项目到本地，在项目根目录下执行`pip install .`安装
+
+## 示例
+
+参考本项目的test下的示例代码example.py
+
+## 打包上传pypi
+
+- 首先安装flit、twine
+
+```pip
+pip install flit twine
+```
+
+- 修改pyproject.toml文件中的版本号、依赖等相关信息,打包前要先使用pytest运行test目录下的test_*.py文件确认代码没有问题
+- 并将代码提交，保存目录下没有未提交的文件
+
+- 在项目根目录下执行`flit build`命令打包，生成dist文件夹，里面包含打包后的文件，执行`twine upload dist/*`命令上传到pypi
+
+## 注意事项
+
+- 目前只支持sm2/sm3/sm4的部分功能，后续会逐步支持更多的功能
