@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cloud-dataplug"
+version = "1.0.2"
+authors = [
+    { name = "Aitor Arjona", email = "aitor.a98@gmail.com" },
+]
+description = "Pluggable data partitioning for cloud-native scientific workloads"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3 :: Only",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Development Status :: 2 - Pre-Alpha"
+]
+dependencies = [
+    "boto3",
+    "botocore",
+    "numpy",
+    "pandas",
+    "pyarrow",
+    "smart_open",
+    "tqdm",
+    "joblib",
+]
+
+[project.optional-dependencies]
+metabolomics = [
+    "pyimzml"
+]
+geospatial = [
+    "laspy",
+    "PDAL",
+    "rasterio",
+]
+astronomics = [
+    "casacore"
+]
+
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+include = ["dataplug*"]
+
+[tool.black]
+line-length = 119
+
+[project.urls]
+"Homepage" = "https://github.com/CLOUDLAB-URV/dataplug"
