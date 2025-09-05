@@ -1,0 +1,20 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="kitconcept.solr"
+    >
+
+  <i18n:registerTranslations directory="locales" />
+
+  <!-- dependencies -->
+  <include file="dependencies.zcml" />
+
+  <!-- GenericSetup profiles -->
+  <include file="profiles.zcml" />
+
+  <!-- Codebase -->
+  <include package=".indexers" />
+  <include package=".behaviors" />
+  <include package=".services" />
+
+</configure>
