@@ -1,0 +1,206 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+Rule: Architectural principles and practices for clean, modular, and business-aligned design
+Consolidated Cursor IDE Rules for Code Generation
+General Guidelines
+
+Small, Behavior-Preserving Steps: Generate code in small, incremental changes that preserve existing functionality, validated via end-to-end Behave tests.
+Clear Naming: Use descriptive, intention-revealing names for variables, functions, and classes, following Pydantic naming conventions (e.g., CAMEL_CASE for BaseConfig fields) and domain terms (e.g., ParsianShaparakConfig).
+No Duplication: Eliminate duplicated code by extracting shared logic into reusable functions, methods, or Pydantic models in archipy.helpers.utils.
+Single Responsibility: Ensure functions, classes, and Pydantic models have a single, clear purpose. Split large components into smaller units.
+Minimize Mutable Data: Prefer immutable data structures (e.g., frozen=True in BaseDTO) and encapsulate mutable data to limit scope.
+Avoid Over-Engineering: Do not add speculative generality or unnecessary abstractions unless required.
+Consistent Formatting: Follow PEP 8, Black (line length < 88 characters), and project-specific style (e.g., Pydantic Field descriptions). Use double quotes for strings.
+Modular Design: Organize code into modules (e.g., archipy.configs, archipy.helpers.utils) to minimize coupling and avoid divergent changes.
+Documentation: Use Pydantic field description attributes and docstrings for complex methods (e.g., in BaseUtils). Avoid redundant comments.
+
+Python 3.13 Type Hints
+
+Use modern Python 3.13 type hints to ensure type safety and IDE support.
+Rules:
+Use | for union types instead of Union (e.g., BaseEntity | None).
+Use lowercase built-in types (e.g., str instead of String).
+Use @override decorator for interface implementations.
+Use type instead of Type for class types.
+Use Any only for truly dynamic types.
+Avoid Optional; use | None instead.
+Use X | Y in isinstance calls instead of (X, Y).
+Keep type hints simple and readable.
+
+
+Example:from typing import Any, override
+from uuid import UUID
+
+def get_by_uuid(self, entity_type: type, entity_uuid: UUID) -> BaseEntity | None:
+    ...
+
+@override
+async def create(self, entity: BaseEntity) -> BaseEntity | None:
+    ...
+
+
+
+Exception Handling
+
+Exception Chaining: Always use raise ... from exception to preserve original error context for proper debugging.
+Try-Except-Else: Ensure every try-except block is followed by an else block that returns the result when no exception occurs.
+Rules:
+Preserve original exception context with from e.
+Avoid adding query or operation messages to exceptions.
+Use specific exception types (e.g., InvalidEntityTypeError) for different error cases.
+For type validation, include clear error messages with expected and actual types.
+Ensure else block returns the result in try-except constructs.
+
+
+Example:try:
+    result = session.get(entity_type, entity_uuid)
+except Exception as e:
+    raise DatabaseQueryError() from e
+else:
+    return result
+
+if not isinstance(entity, BaseEntity):
+    raise InvalidEntityTypeError(
+        message=f"Expected BaseEntity subclass, got {type(entity).__name__}",
+        expected_type="BaseEntity",
+        actual_type=type(entity).__name__,
+    )
+
+
+
+Pydantic and Pydantic Settings Integration
+
+Model Consistency: Generate Pydantic models inheriting from BaseModel or BaseSettings, aligning with BaseDTO (e.g., frozen=True) and BaseConfig (e.g., env_nested_delimiter="__").
+Settings Source Priority: Respect configuration source priority (pyproject.toml, configs.toml, .env, OS env vars, class defaults).
+Validation Logic: Use @model_validator for complex validation (e.g., in ElasticsearchConfig, KafkaConfig).
+Secret Handling: Use SecretStr for sensitive fields (e.g., SECRET_KEY, HTTP_PASSWORD) and avoid exposing them in logs.
+Type Safety: Use strict typing (e.g., Generic, Literal, TypeVar) as in base_config.py and base_dtos.py.
+Example:from pydantic import BaseModel, SecretStr, model_validator
+
+class AuthConfig(BaseModel):
+    SECRET_KEY: SecretStr
+    HOST: str
+
+    @model_validator(mode='after')
+    def validate_security_settings(self) -> 'AuthConfig':
+        if not self.SECRET_KEY.get_secret_value():
+            raise ValueError("SECRET_KEY cannot be empty")
+        return self
+
+
+
+Architectural Design Patterns
+
+Modularity: Group related functionality (e.g., archipy.configs for configuration, archipy.helpers.utils for utilities) and use bounded contexts to manage domain complexity.
+Business Alignment: Reflect business domain requirements (e.g., AuthConfig, ParsianShaparakConfig) and avoid unneeded features.
+Maximize Decisions Not Made: Defer implementation details (e.g., database drivers in SQLAlchemyConfig) using abstractions.
+Ubiquitous Language: Use domain terms consistent with BaseUtils (e.g., validate_iranian_national_code_pattern).
+Patterns:
+Dependency Inversion Principle (DIP): High-level modules depend on abstractions (e.g., repository interfaces for SQLAlchemyConfig).
+Repository Pattern: Abstract data access (e.g., PostgresSQLAlchemyAdapter).
+Service Layer: Orchestrate business logic, decoupling from presentation and data access.
+Unit of Work Pattern: Group atomic database operations (e.g., postgres_sqlalchemy_atomic_decorator).
+Commands and Events: Use imperative verbs for commands (e.g., “CreateUser”) and past-tense for events (e.g., “UserCreated”).
+Sagas/Process Managers: Coordinate complex workflows (e.g., payment processing in ParsianShaparakConfig).
+Bounded Contexts: Define clear boundaries for domain models (e.g., separate AuthConfig, KafkaConfig).
+Integration Patterns: Use Anticorruption Layer or Open-Host Service for integrations (e.g., ParsianShaparakConfig).
+
+
+Avoid Anti-Patterns:
+Prevent accidental complexity (e.g., no Domain Model for simple CRUD).
+Avoid premature decisions (e.g., specific database in SQLAlchemyConfig).
+Keep business logic separate from frameworks (e.g., FastAPIConfig).
+Prevent cyclic or excessive dependencies.
+Avoid monolithic logic in controllers or configuration classes.
+Minimize mocks in Behave tests for realistic behavior.
+
+
+
+BDD and Testing with Behave
+
+Gherkin Scenarios: Generate .feature files for new functionality, covering happy paths, edge cases, and failures, mapping to step definitions in steps/.
+End-to-End Focus: Prioritize end-to-end Behave scenarios over unit tests, testing architectural boundaries (e.g., service layer, BaseConfig loading).
+Test Failure Feedback: Suggest fixes or revert to last working state for failing scenarios, including failing step details.
+Testability Design: Ensure code is testable by Behave (e.g., expose service layer methods, avoid tight coupling in BaseUtils).
+Example:Feature: User Creation
+  Scenario: Create a valid user
+    Given a valid user configuration
+    When the user is created
+    Then the user is stored successfully
+
+
+
+MyPy Compliance
+
+Type Annotations: Include explicit type annotations for all function parameters, return types, and variables. Avoid untyped functions.
+Pydantic Compatibility: Ensure Pydantic models inherit from BaseModel or use pydantic.dataclasses with compatible types (e.g., str, int, list[str]).
+Avoid Any: Use specific types (e.g., list[str] over list[Any]) unless explicitly required.
+Decorators: Ensure decorators are typed and compatible with typed functions (e.g., use @wraps).
+Return Statements: Include explicit return type annotations (e.g., -> None) and avoid missing returns in non-None functions.
+Strict Optional Checking: Use str | None for optional types and handle None explicitly.
+Example:from pydantic import BaseModel
+
+class User(BaseModel):
+    name: str
+    age: int
+
+def add(a: int, b: int) -> int:
+    return a + b
+
+
+
+Ruff Compliance
+
+Automatic Fixes: Apply fixes for supported Ruff rules per pyproject.toml.
+Linting Rules:
+Flake8-Builtins: Avoid shadowing builtins (e.g., don’t use list as a variable name).
+Flake8-Annotations: Include type annotations, except for *args, **kwargs, self, cls.
+Flake8-Async: Avoid blocking calls in async functions.
+Flake8-Bugbear: Avoid common pitfalls (e.g., mutable default arguments).
+Flake8-Blind-Except: Avoid catching blind Exception.
+Pydocstyle: Follow pydocstyle, except for ignored rules (D100, D104, D107).
+Pycodestyle: Adhere to PEP 8, except line length (E501).
+Eradicate: Remove commented-out code.
+Pyflakes: Avoid unused imports, variables, or unreachable code (except F811).
+Flake8-Logging-Format: Use proper logging, allow f-strings (G004).
+Isort: Organize imports per isort rules.
+Flake8-Import-Conventions: Follow import conventions (e.g., import pandas as pd).
+Ruff-Specific Rules: Follow best practices, ignore ambiguous character rules (RUF001, RUF003).
+Flake8-Bandit: Avoid security issues, allow asserts (S101) and pickle (S301, S403).
+Flake8-Debugger: Remove debugger statements.
+Flake8-Print: Avoid print statements in production code.
+Tryceratops: Follow exception handling best practices, ignore long messages outside classes (TRY003) and abstracting raises (TRY301).
+Pyupgrade: Use modern Python syntax (e.g., f-strings).
+
+
+
+Performance and Optimization
+
+Defer Optimization: Focus on clarity and maintainability unless profiling (e.g., cProfile) indicates a bottleneck.
+Measure Before Optimizing: Use profilers to target specific bottlenecks.
+
+Workflow Integration
+
+Version Control: Prompt to commit changes with Conventional Commits messages (e.g., feat: add MongoDBConfig, refactor: modularize BaseUtils).
+Context Awareness: Align generated code with patterns in base_config.py, config_template.py, base_dtos.py, and base_utils.py.
+Review Changes: Present changes as a diff (red for deletions, green for additions) and require manual review before applying.
+Architecture Decision Records (ADRs): Generate ADRs for significant architectural changes, storing in docs/adr/ with decision, justification, context, alternatives, and consequences.
+
+AI Behavior
+
+Proactive Suggestions: Identify and suggest fixes for code smells (e.g., mysterious names, tight coupling) or architectural issues (e.g., complex BaseUtils methods).
+Explain Decisions: Reference specific rules or conventions (e.g., “Used SecretStr for sensitive fields”).
+Avoid Hallucinations: Base code on provided files (base_config.py, config_template.py, etc.) and avoid inventing APIs or configurations.
+Handle Large Refactorings: Break multi-file changes into smaller steps, ensuring consistency with BaseConfig and BaseDTO.
+
+Example Prompt Response Template
+
+Analyze provided files (base_config.py, config_template.py, base_dtos.py, base_utils.py, adapters.py) for patterns and conventions.
+Generate code adhering to Python 3.13 type hints, Pydantic, Behave, and architectural principles.
+Present changes as a diff with explanations referencing specific rules (e.g., “Added service layer for modularity”).
+Generate or update Gherkin .feature files and suggest running Behave tests to validate changes.
+Prompt to commit changes with a Conventional Commits message and create an ADR for significant architectural changes.
+If uncertain, ask for clarification or additional context (e.g., domain requirements, Behave scenarios).
