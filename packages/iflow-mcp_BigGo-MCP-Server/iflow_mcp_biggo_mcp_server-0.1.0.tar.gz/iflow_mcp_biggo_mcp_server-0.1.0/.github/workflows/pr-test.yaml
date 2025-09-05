@@ -1,0 +1,67 @@
+name: pull-request-test
+
+on:
+  pull_request_target:
+    branches:
+      - master
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
+
+    steps:
+      - name: Get IP Addresses
+        id: ip
+        uses: candidob/get-runner-ip@v1.0.0
+
+      - name: See IP Addresses
+        run: |
+            echo ${{ steps.ip.outputs.ipv4 }}
+            echo ${{ steps.ip.outputs.ipv6 }}
+
+      - uses: actions/checkout@v4
+
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run tests
+        env:
+          BIGGO_MCP_SERVER_CLIENT_ID: ${{ secrets.BIGGO_CLIENT_ID }}
+          BIGGO_MCP_SERVER_CLIENT_SECRET: ${{ secrets.BIGGO_CLIENT_SECRET }}
+        run: uv run --group test pytest
+
+  test-build:
+    name: test-build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - "3.13"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Test Build
+        run: uv build
