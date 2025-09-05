@@ -1,0 +1,73 @@
+Metadata-Version: 2.4
+Name: praasper
+Version: 0.1.0.dev1
+Summary: VAD-Enhanced ASR with Word- and Phoneme-Level Timestamps
+Home-page: https://github.com/ParadeLuxe/Praasper
+Author: Tony Liu
+Author-email: paradeluxe3726@gmail.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: openai-whisper
+Requires-Dist: textgrid
+Requires-Dist: pypinyin
+Requires-Dist: librosa
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Praasper
+![Python](https://img.shields.io/badge/python-3.10-blue.svg)
+![GitHub License](https://img.shields.io/github/license/Paradeluxe/Praasper)
+
+
+**Praasper** is an Automatic Speech Recognition (ASR) application designed help researchers transribe audio files to both **word-** and **phoneme-level** text.
+
+![mechanism](promote/mechanism.png)
+
+
+
+# Mechanism
+In **Praasper**, we adopt a rather simple and straightforward pipeline to extract phoneme-level information from audio files.
+
+**Whisper** ([repo](https://github.com/openai/whisper)) is used to transcribe the audio file to **word-level text**. At this point, speech onsets and offsets exhibit time deviations in seconds.
+
+```Python
+model = whisper.load_model("large-v3-turbo", device="cuda")
+result = model.transcribe(wav, word_timestamps=True)
+```
+
+[**Praditor**](https://github.com/Paradeluxe/Praditor) is applied to perform **Voice Activity Detection (VAD)** algorithm to trim the currently existing word/character-level timestamps (at millisecond level). It is a Speech Onset Detection (SOT) algorithm we developed for langauge researchers.
+
+To extract phoneme boundaries, we designed an **edge detection algorithm**. 
+- The audio file is first resampled to **16 kHz** as to remove noise in the high-frequency domain. 
+- A kernel,`[-1, 0, 1]`, is then applied to the frequency domain to enhance the edge(s) between phonetic segments.
+- The most prominent **n** peaks are then selected so as to match the wanted number of phonemes.
+
+# Support
+
+| Precision | Completed  | Developing  |
+| :---: | :---: | :---: |
+| Word  | Mandarin  |  Cantonese, English |
+|  Phoneme |  Mandarin |  Cantonese, English |
+
+# Setup
+
+## pip installation
+
+```bash
+pip install praasper
+```
+
+`uv` is also highly recommended
