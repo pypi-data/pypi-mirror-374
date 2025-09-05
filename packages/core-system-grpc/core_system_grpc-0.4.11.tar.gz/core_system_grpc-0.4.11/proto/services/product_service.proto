@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package core_system.product.v1;
+
+import "messages/product/request.proto";
+import "messages/product/response.proto";
+
+option py_generic_services = true;
+
+// ProductService 정의
+service ProductService {
+    rpc GetProductsByShop(GetProductsByShopRequest) returns (GetProductsByShopResponse);
+}
