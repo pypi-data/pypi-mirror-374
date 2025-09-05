@@ -1,0 +1,86 @@
+Metadata-Version: 2.4
+Name: cgohlke
+Version: 2025.9.1
+Summary: Install all packages by cgohlke
+Home-page: https://www.cgohlke.com
+Author: Christoph Gohlke
+Author-email: cgohlke@cgohlke.com
+License: BSD-3-Clause
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Requires-Python: >=3.11
+Description-Content-Type: text/x-rst
+Requires-Dist: akima
+Requires-Dist: chebyfit
+Requires-Dist: cmapfile
+Requires-Dist: czifile
+Requires-Dist: dnacurve
+Requires-Dist: fcsfiles
+Requires-Dist: fmkr
+Requires-Dist: icsdll; platform_system == "Windows"
+Requires-Dist: imagecodecs
+Requires-Dist: imreg
+Requires-Dist: lfdfiles
+Requires-Dist: liffile
+Requires-Dist: lucam
+Requires-Dist: molmass
+Requires-Dist: netpbmfile
+Requires-Dist: oiffile
+Requires-Dist: psdtags
+Requires-Dist: psf
+Requires-Dist: ptufile
+Requires-Dist: qdafile
+Requires-Dist: roifile
+Requires-Dist: sdtfile
+Requires-Dist: tifffile
+Requires-Dist: transformations
+Requires-Dist: uciwebauth
+Requires-Dist: vidsrc; platform_system == "Windows"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: platform
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+
+This package installs the following Python libraries and scripts by
+`cgohlke <https://pypi.org/user/cgohlke/>`_:
+
+- `akima <https://pypi.org/project/akima/>`_
+- `chebyfit <https://pypi.org/project/chebyfit/>`_
+- `cmapfile <https://pypi.org/project/cmapfile/>`_
+- `czifile <https://pypi.org/project/czifile/>`_
+- `dnacurve <https://pypi.org/project/dnacurve/>`_
+- `fcsfiles <https://pypi.org/project/fcsfiles/>`_
+- `fmkr <https://pypi.org/project/fmkr/>`_
+- `icsdll <https://pypi.org/project/icsdll/>`_
+- `imagecodecs <https://pypi.org/project/imagecodecs/>`_
+- `imreg <https://pypi.org/project/imreg/>`_
+- `lfdfiles <https://pypi.org/project/lfdfiles/>`_
+- `liffile <https://pypi.org/project/liffile/>`_
+- `lucam <https://pypi.org/project/lucam/>`_
+- `molmass <https://pypi.org/project/molmass/>`_
+- `netpbmfile <https://pypi.org/project/netpbmfile/>`_
+- `oiffile <https://pypi.org/project/oiffile/>`_
+- `psdtags <https://pypi.org/project/psdtags/>`_
+- `psf <https://pypi.org/project/psf/>`_
+- `ptufile <https://pypi.org/project/ptufile/>`_
+- `qdafile <https://pypi.org/project/qdafile/>`_
+- `roifile <https://pypi.org/project/roifile/>`_
+- `sdtfile <https://pypi.org/project/sdtfile/>`_
+- `tifffile <https://pypi.org/project/tifffile/>`_
+- `transformations <https://pypi.org/project/transformations/>`_
+- `uciwebauth <https://pypi.org/project/uciwebauth/>`_
+- `vidsrc <https://pypi.org/project/vidsrc/>`_
