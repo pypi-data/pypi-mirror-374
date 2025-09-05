@@ -1,0 +1,31 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [ "setuptools>=61" ]
+
+[project]
+name = "mountainsort4"
+version = "1.0.7"
+description = "Spike sorting using Mountainsort4 algorithm"
+authors = [
+  { name = "Jeremy Magland", email = "jmagland@flatironinstitute.org" },
+]
+classifiers = [
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+]
+
+dependencies = [
+  "dask",
+  "h5py",
+  "isosplit5>=0.2.3",
+  "numpy",
+  "pybind11",
+  "scikit-learn",
+  "spikeextractors>=0.9.5",
+]
+urls.Homepage = "https://github.com/maglandlab/mountainsort4"
+urls.Issues = "https://github.com/maglandlab/mountainsort4/issues"
+
+[tool.setuptools.packages.find]
+where = [ "." ]
