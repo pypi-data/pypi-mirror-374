@@ -1,0 +1,20 @@
+[project]
+name = "ime-utils"
+version = "0.1.0"
+description = "Chinese IME ciku(aka cell wordlist file) parsing tool"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/hantang/ime-utils"
+Documentation = "https://github.com/hantang/ime-utils"
+Repository = "https://github.com/hantang/ime-utils.git"
+Issues = "https://github.com/hantang/ime-utils/issues"
+Changelog = "https://github.com/hantang/ime-utils/blob/mai/CHANGELOG.md"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.12.11",
+    "twine>=6.1.0",
+]
