@@ -1,0 +1,83 @@
+Metadata-Version: 2.4
+Name: csciutils
+Version: 1.1.3
+Summary: 中信建投国际自动化工作
+Author: ZhuBowen
+Author-email: zhubowen@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: requests>=2.28.1
+Requires-Dist: selenium>=4.24.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+本包仅限于中信建投证券股份有限公司及其下属子公司使用，为中信建投国际自动化业务民间快捷包。
+
+
+# Release Updates
+
+## 1.1.3
+- 修复了WorldCheck模块的bug
+
+## 1.1.2
+- 修复了WorldCheck模块的bug
+
+## 1.1.1
+- 新增了天眼查爬虫模块，目前支持：
+    - 搜索关键字
+    - 企业基本工商信息表爬取（不清洗）
+- 新增了代理模块
+
+## 0.4.4
+- bug fix
+
+## 0.4.3
+- 修复了FetchInfo中无法使用代理的问题
+
+## 0.4.2
+- 修复了必须指定exe path的问题
+
+## 0.4.1
+- 加入了企业预警通模块
+    - 支持登录
+    - 支持抓取股东信息（直接+间接）
+
+## 0.3.2
+- 加入了PreKYCCC模块
+    - 支持了对checklist的proxy对应处理
+
+## 0.2.12
+- 部分低版本Python不支持安装python-docx，此版本先删除相关依赖，需手动添加
+
+## 0.2.10
+- 加入了DOCX模块
+    - 支持正文、表格、脚注的保留格式替换
+- 加入了Inputs模块
+    - 支持多字段和带换行字段的可视化输入
+- 加入了iFinD模块
+    - 支持了access_token的获取
+    - 支持了工商信息的获取
+        - 统一社会信用代码
+        - 经营范围
+        - 成立日期
+        - 注册地址
+        - 联系方式
+        - 法定代表人
+        - 注册资本
+        - 注册资本单位
+        - 省份
+        - 授信金额（亿）
+        - 未使用授信金额（亿）
+        - 已使用授信金额（亿）
+        - 最新授信日期
