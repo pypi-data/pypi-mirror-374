@@ -1,0 +1,16 @@
+Metadata-Version: 2.4
+Name: orpheus-r
+Version: 0.1.4
+Summary: Add your description here
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: datasets>=4.0.0
+Requires-Dist: editdistance>=0.8.1
+Requires-Dist: ipykernel>=6.30.1
+Requires-Dist: mistral-common[audio]>=1.8.4
+Requires-Dist: openai>=1.105.0
+Requires-Dist: snac>=1.2.1
+Requires-Dist: verifiers[dev]>=0.1.3
+
+# orpheus-r
+Training Orpheus (LLM backbone TTS model) with Reinforcement Learning
