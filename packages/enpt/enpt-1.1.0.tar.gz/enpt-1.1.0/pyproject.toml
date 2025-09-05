@@ -1,0 +1,150 @@
+# -*- coding: utf-8 -*-
+
+# EnPT, EnMAP Processing Tool - A Python package for pre-processing of EnMAP Level-1B data
+#
+# Copyright (C) 2018–2025 Karl Segl (GFZ Potsdam, segl@gfz.de), Daniel Scheffler
+# (GFZ Potsdam, danschef@gfz.de), Niklas Bohn (GFZ Potsdam, nbohn@gfz.de),
+# Stéphane Guillaso (GFZ Potsdam, stephane.guillaso@gfz.de)
+#
+# This software was developed within the context of the EnMAP project supported
+# by the DLR Space Administration with funds of the German Federal Ministry of
+# Economic Affairs and Energy (on the basis of a decision by the German Bundestag:
+# 50 EE 1529) and contributions from DLR, GFZ and OHB System AG.
+#
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version. Please note the following exception: `EnPT` depends on tqdm, which
+# is distributed under the Mozilla Public Licence (MPL) v2.0 except for the files
+# "tqdm/_tqdm.py", "setup.py", "README.rst", "MANIFEST.in" and ".gitignore".
+# Details can be found here: https://github.com/tqdm/tqdm/blob/master/LICENCE.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+# details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with this program. If not, see <https://www.gnu.org/licenses/>.
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "enpt"
+description = "EnMAP Processing Tool"
+authors = [
+    {name = "Daniel Scheffler", email = "daniel.scheffler@gfz.de"},
+    {name = "Niklas Bohn", email = "nbohn@gfz.de"},
+    {name = "Stéphane Guillaso", email = "stephane.guillaso@gfz.de"},
+    {name = "Brenner Silva", email = "brenner.silva@awi.de"},
+    {name = "Leonardo Alvarado", email = "leonardo.alvarado@awi.de"},
+    {name = "Karl Segl", email = "segl@gfz.de"},
+]
+maintainers = [
+    {name = "Daniel Scheffler", email = "daniel.scheffler@gfz.de"},
+]
+license = "GPL-3.0-or-later"
+license-files = ["LICEN[CS]E*", "AUTHORS.rst"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+keywords = [
+    "EnPT",
+    "EnMAP",
+    "EnMAP-Box",
+    "hyperspectral",
+    "remote sensing",
+    "satellite",
+    "processing chain"
+]
+requires-python = ">=3.9"
+dependencies = [
+    "acwater>=0.3.0",
+    "arosics>=1.0.0",
+    "cerberus",
+    "gdal",
+    "geoarray>=0.15.8",
+    "isofit>=3.4.3",
+    "jsmin",
+    "lxml",
+    "matplotlib",
+    "mvgavg",
+    "natsort",
+    "numpy",
+    "numpy-indexed",
+    "packaging",
+    "pandas",
+    "py_tools_ds>=0.14.25",
+    "pyproj>=3.4.0",
+    "scikit-image",
+    "scipy",
+    "sensormapgeo>=1.0.0",
+    "sicor>=0.19.1",
+    "tqdm",
+    "utm",
+]
+dynamic = ["version"]
+
+[project.readme]
+file = "README.rst"
+content-type = "text/x-rst"
+
+[project.urls]
+"Source code" = "https://git.gfz-potsdam.de/EnMAP/GFZ_Tools_EnMAP_BOX/EnPT"
+"Issue Tracker" = "https://git.gfz-potsdam.de/EnMAP/GFZ_Tools_EnMAP_BOX/EnPT/-/issues"
+"Documentation" = "https://enmap.git-pages.gfz-potsdam.de/GFZ_Tools_EnMAP_BOX/EnPT/doc"
+"Change log" = "https://git.gfz-potsdam.de/EnMAP/GFZ_Tools_EnMAP_BOX/EnPT/-/blob/main/HISTORY.rst"
+"Zenodo" = "https://zenodo.org/records/8229436"
+
+[project.optional-dependencies]
+doc = [
+    "sphinx-argparse",
+    "sphinx_rtd_theme",
+]
+test = [
+    "pytest",
+    "pytest-cov",
+    "pytest-reporter-html1",
+    "urlchecker",
+]
+lint = [
+    "flake8",
+    "pycodestyle",
+    "pydocstyle",
+]
+dev = [
+    "enpt[test]",
+    "enpt[doc]",
+    "enpt[lint]",
+]
+
+[project.scripts]
+enpt = "enpt.cli:main"
+
+[tool.hatch.version]
+path = "enpt/version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["enpt"]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    ".coveragerc",
+    ".editorconfig",
+    ".gitattributes",
+    ".gitlab-ci.yml",
+    ".github/**",
+    "docs/**",
+    "examples/**",
+    "tests/**",
+    "enpt/resources/isofit/*.zip",
+    "__pycache__/**",
+    "*.py[co]",
+]

@@ -1,0 +1,121 @@
+{
+    "general_opts": {
+        "CPUs": "None",  /*number of CPU cores to be used for processing (default: "None" -> use all available)*/
+        "log_level": "INFO",  /*the logging level to be used (choices: 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL')*/
+        "create_logfile": true,  /*whether to write all log messages to a file (within output the directory)*/
+        "path_l1b_enmap_image": "",  /*input path of the EnMAP L1B image to be processed (zip-archive or root directory)*/
+        "path_l1b_enmap_image_gapfill": "",  /*input path of an adjacent EnMAP L1B image to be used for gap-filling
+                                               (zip-archive or root directory)*/
+        "path_dem": "", /*input path of digital elevation model in map or sensor geometry; GDAL compatible file format
+                          (must cover the EnMAP L1B data completely if given in map geometry or must have the same
+                           pixel dimensions like the EnMAP L1B data if given in sensor geometry)*/
+        "is_dummy_dataformat": false, /*Set to true in case of the preliminary, GFZ-internal dataformat as used for the
+                                        Alpine test dataset. (default: False. Note: This will be removed in future.)*/
+        "average_elevation": 0,  /*average elevation in meters above sea level; may be provided if no DEM is available;
+                                   ignored if DEM is given*/
+        "path_l1b_snr_model": "./resources/EnMAP_Sensor/EnMAP_Level_1B_SNR.zip",  /*input path of the EnMAP SNR model*/
+        "working_dir": "",  /*directory to be used for temporary files*/
+        "n_lines_to_append": "None",  /*Number of lines to be added to the main image [if None, use the whole path_l1b_enmap_image_gapfill].
+                                        Requires path_l1b_enmap_image_gapfill to be set.*/
+        "drop_bad_bands": true, /*if set to True (default), the water absorption bands between 1358 and 1453 nm
+                                  as well as between 1814 and 1961 nm are excluded from processing and will not be
+                                  contained in the L2A product*/
+        "disable_progress_bars": false  /*whether to disable all progress bars during processing*/
+    },
+
+    "output": {
+        "output_dir": "",  /*output directory where processed data and log files are saved*/
+        "output_format": "GTiff",  /*file format of all raster output files
+                                     'GTiff': GeoTIFF
+                                     'ENVI':  ENVI BSQ*/
+        "output_interleave": "pixel",  /*raster data interleaving type (default: 'pixel')
+                                         - 'band': band-sequential (BSQ),
+                                         - 'line': data interleaved-by-line (BIL; only usable for ENVI output format),
+                                         - 'pixel' data interleaved-by-pixel (BIP)*/
+        "output_nodata_value": -32768  /*output no-data/background value
+                                         (should be within the integer 16-bit range, default: -32768)*/
+    },
+
+    "processors": {
+        "toa_ref": {
+            "path_earthSunDist": "./resources/earth_sun_distance/Earth_Sun_distances_per_day_edited__1980_2030.csv",  /*input path of the earth sun distance model*/
+            "path_solar_irr": "./resources/solar_irradiance/SUNp1fontenla__350-2500nm_@0.1nm_converted.txt",  /*input path of the solar irradiance model*/
+            "scale_factor_toa_ref": 10000  /*scale factor to be applied to TOA reflectance result*/
+        },
+
+        "geometry": {
+            "enable_keystone_correction": false,
+            "enable_vnir_swir_coreg": false,
+            "enable_absolute_coreg": false,  /*enable the co-registration of the EnMAP image to the reference image given with 'path_reference_image'*/
+            "path_reference_image": ""  /*image to be used as spatial reference for co-registration
+                                          - provide in a GDAL-readable data format
+                                          - acquisition date should be close to the one of the EnMAP scene
+                                          - cloud coverage should be low*/
+        },
+
+        "atmospheric_correction": {
+            "polymer_root": "",  /*Polymer root directory (that contains the subdirectory for ancillary data)*/
+            "enable_ac": true,  /*enable atmospheric correction (default: True). If False, the L2A
+                                  output contains top-of-atmosphere reflectance.*/
+            "mode_ac": "land",  /*3 modes to determine which atmospheric correction is applied at which surfaces (default: 'land'):
+                                  'land': SICOR (developed for land surfaces) is applied to land AND water surfaces
+                                  'water': POLYMER (developed for water surfaces) is applied to water only
+                                           (land surfaces are not included in the L2A product)
+                                  'combined': SICOR is applied to land and POLYMER is applied to water surfaces;
+                                              NOTE that this may result in edge effects, e.g., at coastlines*/
+            "land_ac_alg": "SICOR",  /*Algorithm to use for atmospheric correction over land (default: SICOR):
+                                       'SICOR': developed at GFZ; fast but misses image-based AOT/water vapour retrieval
+                                       'ISOFIT': developed at NASA/JPL; accurate but computationally expensive*/
+            "enable_segmentation": true,  /*Enable SLIC segmentation during atmospheric correction (supported by SICOR
+                                            and ISOFIT) (default: True). With segmentation disabled, the AC runs on a
+                                            pixel-level, which is slightly more accurate but takes much longer.*/
+            "isofit_surface_category": "multicomponent_surface",  /*Select surface category preset for which ISOFIT should optimize (default: 'multicomponent_surface').
+                                                                   'multicomponent_surface': default set of surface coverage optimations
+                                                                   'ree': preset optimized to rare earth elements (REE)
+                                                                   'custom': user-defined surface optimization file (to be passed to isofit_surface_json)*/
+            "path_isofit_surface_config": "",  /*path to custom surface optimization file for ISOFIT (only used if isofit_surface_category=='custom')*/
+            "path_isofit_surface_priors": "",  /*path to custom spectra to be used as surface priors in ISOFIT (must point to a Zip-file)*/
+            "polymer_additional_results": true,  /*enable the generation of additional results when running ACwater/POLYMER (default: True)*/
+            "auto_download_ecmwf": true,  /*automatically download ECMWF AUX data when running Polymer AC for water surfaces*/
+            "scale_factor_boa_ref": 10000,  /*scale factor to be applied to BOA reflectance result*/
+            "threads": -1, /*number of threads for multiprocessing:
+                                    'threads = 0': for single thread
+                                    'threads < 0': for as many threads as there are CPUs
+                                    'threads > 0': gives the number of threads*/
+            "blocksize":100 /*block size for multiprocessing*/
+        },
+
+        "smile": {
+            /*FIXME currently not implemented*/
+            "run_processor": false  /*Smile detection and correction (provider smile coefficients are ignored)*/
+        },
+
+        "dead_pixel": {
+            "run_processor": false,
+            "algorithm": "spatial",  /*algorithm how to correct dead pixels
+                                        'spectral': interpolate in the spectral domain
+                                        'spatial':  interpolate in the spatial domain*/
+            "interp_method_spectral": "linear",  /*spectral interpolation algorithm
+                                                   ('linear', 'quadratic', 'cubic')*/
+            "interp_method_spatial": "linear"  /*spatial interpolation algorithm
+                                                 ('linear', 'nearest', 'zero', 'slinear', 'quadratic', 'cubic', ...)*/
+        },
+
+        "orthorectification": {
+            "resamp_alg": "bilinear",  /*Ortho-rectification resampling algorithm ('nearest', 'bilinear', 'gauss',
+                                         'cubic', 'cubic_spline', 'lanczos', 'average', 'mode', 'max', 'min', 'med',
+                                         'q1', 'q3')*/
+            "vswir_overlap_algorithm": "swir_only", /*Algorithm how to output the spectral bands in the VNIR/SWIR spectral overlap region
+                                                      'order_by_wvl': keep spectral bands unchanged, order bands by wavelength
+                                                      'average': average the spectral information within the overlap
+                                                      'vnir_only': only use the VNIR bands (cut overlapping SWIR bands)
+                                                      'swir_only': only use the SWIR bands (cut overlapping VNIR bands)
+                                                      */
+            "target_projection_type": "UTM",  /*projection type of the raster output files (default: 'UTM')
+                                                ('UTM': Universal Transverse Mercator, 'Geographic': Longitude/Latitude)*/
+            "target_epsg": "None",  /*custom EPSG code of the target projection (overrides target_projection_type)*/
+            "target_coord_grid": "None"  /*custom target coordinate grid to which the output is resampled
+                                           ([x0, x1, y0, y1], e.g., [0, 30, 0, 30])*/
+        }
+    }
+}

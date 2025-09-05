@@ -1,0 +1,102 @@
+{
+    "title": "EnPT - EnMAP Processing Tool",
+    "description": "The EnPT Python package is an automated pre-processing pipeline for the new EnMAP hyperspectral satellite data. It provides free and open-source features to transform EnMAP Level-1B data to Level-2A. The package has been developed at the GFZ Helmholtz Centre for Geosciences, Germany, as an alternative to the processing chain of the EnMAP Ground Segment.",
+    "notes": "This software was developed within the context of the EnMAP project supported by the DLR Space Administration with funds of the German Federal Ministry of Economic Affairs and Energy (on the basis of a decision by the German Bundestag: 50 EE 1529) and contributions from DLR, GFZ and OHB System AG.",
+    "access_right": "open",
+    "license": "GPL-3.0+",
+    "upload_type": "software",
+    "keywords": [
+        "EnPT",
+        "EnMAP",
+        "EnMAP-Box",
+        "hyperspectral",
+        "remote sensing",
+        "satellite",
+        "processing chain"
+    ],
+    "creators": [
+        {
+            "name": "Scheffler, Daniel",
+            "affiliation": "GFZ Helmholtz Centre for Geosciences, Section 1.4 - Remote Sensing and Geoinformatics",
+            "orcid": "0000-0003-4106-8928",
+            "type": "Researcher"
+        },
+        {
+            "name": "Bohn, Niklas",
+            "affiliation": "GFZ Helmholtz Centre for Geosciences, Section 1.4 - Remote Sensing and Geoinformatics",
+            "orcid": "0000-0003-4078-886X",
+            "type": "Researcher"
+        },
+        {
+            "name": "Guillaso, Stéphane",
+            "affiliation": "GFZ Helmholtz Centre for Geosciences, Section 1.4 - Remote Sensing and Geoinformatics",
+            "orcid": "0000-0001-9805-9390",
+            "type": "Researcher"
+        },
+        {
+            "name": "Segl, Karl",
+            "affiliation": "GFZ Helmholtz Centre for Geosciences, Section 1.4 - Remote Sensing and Geoinformatics",
+            "orcid": "0000-0001-8909-1006",
+            "type": "WorkPackageLeader"
+        }
+    ],
+    "contributors": [
+        {
+            "name": "Scheffler, Daniel",
+            "affiliation": "GFZ Helmholtz Centre for Geosciences, Section 1.4 - Remote Sensing and Geoinformatics",
+            "orcid": "0000-0003-4106-8928",
+            "type": "Researcher"
+        },
+        {
+            "name": "Bohn, Niklas",
+            "affiliation": "GFZ Helmholtz Centre for Geosciences, Section 1.4 - Remote Sensing and Geoinformatics",
+            "orcid": "0000-0003-4078-886X",
+            "type": "Researcher"
+        },
+        {
+            "name": "Guillaso, Stéphane",
+            "affiliation": "GFZ Helmholtz Centre for Geosciences, Section 1.4 - Remote Sensing and Geoinformatics",
+            "orcid": "0000-0001-9805-9390",
+            "type": "Researcher"
+        },
+        {
+            "name": "Segl, Karl",
+            "affiliation": "GFZ Helmholtz Centre for Geosciences, Section 1.4 - Remote Sensing and Geoinformatics",
+            "orcid": "0000-0001-8909-1006",
+            "type": "WorkPackageLeader"
+        },
+        {
+            "name": "Guanter, Luis",
+            "affiliation": "Universitat Politècnica de València",
+            "orcid": "0000-0002-8389-5764",
+            "type": "Researcher"
+        }
+    ],
+    "references": [
+        "Scheffler, D., Brell, M., Bohn, N., Alvarado, L., Soppa, M., Segl, K., Bracher, A., Chabrillat, S. (2023): EnPT - an Alternative Pre-Processing Chain for Hyperspectral EnMAP Data. Proceedings of IGARSS 2023 - International Geoscience and Remote Sensing Symposium (Pasadena, CA 2023). https://doi.org/10.1109/IGARSS52108.2023.10281805"
+    ],
+    "related_identifiers": [
+        {
+            "identifier": "https://git.gfz-potsdam.de/EnMAP/GFZ_Tools_EnMAP_BOX/EnPT",
+            "relation": "isSupplementTo",
+            "resource_type": "software"
+        },
+        {
+            "identifier": "https://enmap.git-pages.gfz-potsdam.de/GFZ_Tools_EnMAP_BOX/EnPT/doc",
+            "relation": "isDocumentedBy",
+            "resource_type": "publication-softwaredocumentation"
+        },
+        {
+            "identifier": "https://www.enmap.org/data_tools/enmapbox/",
+            "relation": "isPartOf",
+            "resource_type": "software"
+        }
+    ],
+    "custom": {
+        "code:programmingLanguage": [
+            {"id": "python"}
+        ],
+        "code:codeRepository": "https://git.gfz-potsdam.de/EnMAP/GFZ_Tools_EnMAP_BOX/EnPT",
+        "code:developmentStatus":  {"id": "active"}
+    }
+}

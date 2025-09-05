@@ -1,0 +1,585 @@
+# -*- coding: utf-8 -*-
+
+# EnPT, EnMAP Processing Tool - A Python package for pre-processing of EnMAP Level-1B data
+#
+# Copyright (C) 2018–2025 Karl Segl (GFZ Potsdam, segl@gfz.de), Daniel Scheffler
+# (GFZ Potsdam, danschef@gfz.de), Niklas Bohn (GFZ Potsdam, nbohn@gfz.de),
+# Stéphane Guillaso (GFZ Potsdam, stephane.guillaso@gfz.de)
+#
+# This software was developed within the context of the EnMAP project supported
+# by the DLR Space Administration with funds of the German Federal Ministry of
+# Economic Affairs and Energy (on the basis of a decision by the German Bundestag:
+# 50 EE 1529) and contributions from DLR, GFZ and OHB System AG.
+#
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version. Please note the following exception: `EnPT` depends on tqdm, which
+# is distributed under the Mozilla Public Licence (MPL) v2.0 except for the files
+# "tqdm/_tqdm.py", "setup.py", "README.rst", "MANIFEST.in" and ".gitignore".
+# Details can be found here: https://github.com/tqdm/tqdm/blob/master/LICENCE.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+# details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with this program. If not, see <https://www.gnu.org/licenses/>.
+
+"""EnPT EnMAP object base classes."""
+
+from types import SimpleNamespace
+from typing import List, Optional  # noqa: F401
+import numpy as np
+
+# noinspection PyPackageRequirements
+from skimage import exposure  # contained in package requirements as scikit-image
+
+from geoarray import GeoArray
+
+from ...model.metadata import EnMAP_Metadata_L2A_MapGeo  # noqa: F401  # only used for type hint
+
+__author__ = ['Daniel Scheffler', 'Stéphane Guillaso', 'André Hollstein']
+
+
+class _EnMAP_Image(object):
+    """EnPT base class for all kinds of EnMAP images.
+
+    NOTE:
+        - Basic functionality that all EnMAP image objects have in common is to be implemented here.
+        - All EnMAP image classes should (directly or indirectly) inherit from _EnMAP_image.
+
+    Attributes:
+        - to be listed here. Check help(_EnMAP_image) in the meanwhile!
+
+    """
+
+    def __init__(self):
+        """Load and hold data needed for processing EnMAP Level-1B data to Level-2A.
+
+        Intended usage:
+            - only to be used as a base class to be inherited from!
+            - Example:
+                class EnMAP_Image_Subclass(_EnMAP_Image):
+                    def __init__(self):
+                        super(EnMAP_Image_Subclass, self).__init__()
+
+        """
+        # add EnMAP specific attributes
+        self.paths = SimpleNamespace()
+
+        # private attributes
+        self._data = None
+        self._mask_landwater = None
+        self._mask_clouds = None
+        self._mask_cloudshadow = None
+        self._mask_haze = None
+        self._mask_snow = None
+        self._mask_cirrus = None
+        self._dem = None
+        self._deadpixelmap = None
+        self._sicor_cwv = None
+        self._sicor_liq = None
+        self._sicor_ice = None
+        self._isofit_atm_state = None
+        self._isofit_uncertainty = None
+        self._polymer_logchl = None
+        self._polymer_logfb = None
+        self._polymer_rgli = None
+        self._polymer_rnir = None
+        self._polymer_bitmask = None
+        self._subset = None  # FIXME how is _subset to be set?
+
+        # defaults
+        self.entity_ID = ''
+        self.basename = ''
+
+    @property
+    def data(self) -> GeoArray:
+        """Return the actual EnMAP image data.
+
+        Bundled with all the corresponding metadata.
+
+        Attributes and functions (most important; for a full list check help(self.data)!):
+
+            - ALL attributes of numpy.ndarray!
+            - is_inmem(bool):
+              True if the image data are completely loaded into memory; False if GeoArray only holds a link to a file
+              on disk.
+            - arr: np.ndarray holding the pixel values (if is_mem is True)
+            - rows(int)
+            - cols(int)
+            - bands(int)
+            - shape(tuple)
+            - gt(list):  GDAL geotransform: contains the geocoding
+            - prj(str): WKT projection string
+            - show():  plot the image
+            - show_map():  plot a map of the image (based on cartopy library)
+            - reproject_to_new_grid()
+
+        Usage (there will soon be detailed instructions on usage at https://git.gfz-potsdam.de/danschef/geoarray):
+
+            - Use self.data like a normal numpy.ndarray!
+                - NOTE: Operators like *, /, + , - will soon be implemented. In the meanwhile use:
+                        result = self.data[:] *10
+
+            - How to set self.data?
+                - Link an image file to self.data -> all raster data is read into memory ON DEMAND:
+                  self.data = '/path/to/image.tif'  # sets self.data to GeoArray('/path/to/image.tif')
+
+                - Link a numpy.ndarray instance with self.data (remaining attributes like geocoding, projection, etc.
+                    are copied from the previous self.data attribute).
+                    self.data = numpy.array([[1,2,3],[4,5,6]])
+
+                - Set self.data to an existing instance of GeoArray
+                    (allows to set specific attributes of GeoArray by yourself)
+                    self.data = GeoArray('/path/to/image.tif', geotransform=[...], projection='WKTString')
+
+            - Delete self.data:
+                del self.data or 'self.data = None'
+
+        :return:    instance of geoarray.GeoArray
+        """
+        if self._subset is None:
+            return self._data
+
+        return GeoArray(self._data[self._subset[0]:self._subset[1], self._subset[2]:self._subset[3], :],
+                        geotransform=self._data.gt, projection=self._data.prj)
+
+    @data.setter
+    def data(self, *geoArr_initArgs):
+        if geoArr_initArgs[0] is not None:
+            # TODO this must be able to handle subset inputs in tiled processing
+            if isinstance(geoArr_initArgs[0], np.ndarray):
+                self._data = GeoArray(geoArr_initArgs[0], geotransform=self._data.gt, projection=self._data.prj)
+            else:
+                self._data = GeoArray(*geoArr_initArgs)
+        else:
+            del self.data
+
+    @data.deleter
+    def data(self):
+        self._data = None
+
+    @property
+    def mask_landwater(self) -> GeoArray:
+        """Return the land/water mask.
+
+        pixel values:
+        - 0: background within scene dimensions, e.g. due to missing values/errors
+        - 1: no water
+        - 2: water
+        - 3: background outside the scene dimensions (artifact from resampling between map and sensor geometry)
+
+        :return: geoarray.GeoArray
+        """
+        return self._mask_landwater
+
+    @mask_landwater.setter
+    def mask_landwater(self, *geoArr_initArgs):
+        self._mask_landwater = self._get_geoarray_with_datalike_geometry(geoArr_initArgs, 'mask_landwater', nodataVal=3)
+
+    @mask_landwater.deleter
+    def mask_landwater(self):
+        self._mask_landwater = None
+
+    @property
+    def mask_clouds(self) -> GeoArray:
+        """Return the cloud mask.
+
+        :return: geoarray.GeoArray
+        """
+        return self._mask_clouds
+
+    @mask_clouds.setter
+    def mask_clouds(self, *geoArr_initArgs):
+        self._mask_clouds = self._get_geoarray_with_datalike_geometry(geoArr_initArgs, 'mask_clouds', nodataVal=0)
+
+    @mask_clouds.deleter
+    def mask_clouds(self):
+        self._mask_clouds = None
+
+    @property
+    def mask_cloudshadow(self) -> GeoArray:
+        """Return the cloud shadow mask (0=no cloud shadow, 1=cloud shadow).
+
+        :return: geoarray.GeoArray
+        """
+        return self._mask_cloudshadow
+
+    @mask_cloudshadow.setter
+    def mask_cloudshadow(self, *geoArr_initArgs):
+        self._mask_cloudshadow = \
+            self._get_geoarray_with_datalike_geometry(geoArr_initArgs, 'mask_cloudshadow', nodataVal=0)
+
+    @mask_cloudshadow.deleter
+    def mask_cloudshadow(self):
+        self._mask_cloudshadow = None
+
+    @property
+    def mask_haze(self) -> GeoArray:
+        """Return the haze mask (0=no haze, 1=haze)..
+
+        :return: geoarray.GeoArray
+        """
+        return self._mask_haze
+
+    @mask_haze.setter
+    def mask_haze(self, *geoArr_initArgs):
+        self._mask_haze = self._get_geoarray_with_datalike_geometry(geoArr_initArgs, 'mask_haze', nodataVal=0)
+
+    @mask_haze.deleter
+    def mask_haze(self):
+        self._mask_haze = None
+
+    @property
+    def mask_snow(self) -> GeoArray:
+        """Return the snow mask (0=no snow, 1=snow).
+
+        :return: geoarray.GeoArray
+        """
+        return self._mask_snow
+
+    @mask_snow.setter
+    def mask_snow(self, *geoArr_initArgs):
+        self._mask_snow = self._get_geoarray_with_datalike_geometry(geoArr_initArgs, 'mask_snow', nodataVal=0)
+
+    @mask_snow.deleter
+    def mask_snow(self):
+        self._mask_snow = None
+
+    @property
+    def mask_cirrus(self) -> GeoArray:
+        """Return the cirrus mask (0=none, 1=thin, 2=medium, 3=thick).
+
+        :return: geoarray.GeoArray
+        """
+        return self._mask_cirrus
+
+    @mask_cirrus.setter
+    def mask_cirrus(self, *geoArr_initArgs):
+        self._mask_cirrus = self._get_geoarray_with_datalike_geometry(geoArr_initArgs, 'mask_cirrus', nodataVal=0)
+
+    @mask_cirrus.deleter
+    def mask_cirrus(self):
+        self._mask_cirrus = None
+
+    @property
+    def dem(self) -> GeoArray:
+        """Return a DEM in the exact dimension and pixel grid of self.data.
+
+        :return: geoarray.GeoArray
+        """
+        if self._dem is None:
+            raise NotImplementedError('DEM is missing. An automatic DEM getter is currently not implemented.')
+        return self._dem
+
+    @dem.setter
+    def dem(self, *geoArr_initArgs):
+        self._dem = self._get_geoarray_with_datalike_geometry(geoArr_initArgs, 'dem', nodataVal=0)  # FIXME 0?
+
+    @dem.deleter
+    def dem(self):
+        self._dem = None
+
+    @property
+    def deadpixelmap(self) -> GeoArray:
+        """Return the dead pixel map.
+
+        :return: geoarray.GeoArray
+        """
+        if self._deadpixelmap is not None:
+            self._deadpixelmap.arr = self._deadpixelmap[:].astype(bool)  # ensure boolean map
+
+        return self._deadpixelmap
+
+    @deadpixelmap.setter
+    def deadpixelmap(self, *geoArr_initArgs):
+        if geoArr_initArgs[0] is not None:
+            dpm = GeoArray(*geoArr_initArgs)
+
+            if dpm.ndim == 3 and dpm.shape != self.data.shape:
+                raise ValueError("The 'deadpixelmap' GeoArray can only be instanced with a 3D array with the same size "
+                                 "like %s.data, i.e.: %s Received %s."
+                                 % (self.__class__.__name__, str(self.data.shape), str(dpm.shape)))
+            elif dpm.ndim == 2 and dpm.shape != (self.data.bands, self.data.cols):
+                raise ValueError("The 'deadpixelmap' GeoArray can only be instanced with an array with the size "
+                                 "'bands x columns' of the GeoArray %s.data. Received %s. Expected %s"
+                                 % (self.__class__.__name__, str(dpm.shape), str((self.data.bands, self.data.cols))))
+
+            self._deadpixelmap = dpm
+        else:
+            del self.deadpixelmap
+
+    @deadpixelmap.deleter
+    def deadpixelmap(self):
+        self._deadpixelmap = None
+
+    @property
+    def sicor_cwv(self) -> GeoArray:
+        """Return SICOR's column water vapor output.
+
+        :return: geoarray.GeoArray
+        """
+        return self._sicor_cwv
+
+    @sicor_cwv.setter
+    def sicor_cwv(self, *geoArr_initArgs):
+        self._sicor_cwv = (
+            self._get_geoarray_with_datalike_geometry(
+                geoArr_initArgs,
+                'sicor_cwv',
+                nodataVal=-9999)
+        )
+        self._sicor_cwv.bandnames = ['column water vapor']
+
+    @property
+    def sicor_liq(self) -> GeoArray:
+        """Return SICOR's liquid water content output.
+
+        :return: geoarray.GeoArray
+        """
+        return self._sicor_liq
+
+    @sicor_liq.setter
+    def sicor_liq(self, *geoArr_initArgs):
+        self._sicor_liq = (
+            self._get_geoarray_with_datalike_geometry(
+                geoArr_initArgs,
+                'sicor_liq',
+                nodataVal=-9999)
+        )
+        self._sicor_liq.bandnames = ['path length of liquid water / canopy water content']
+
+    @property
+    def sicor_ice(self) -> GeoArray:
+        """Return SICOR's ice content output.
+
+        :return: geoarray.GeoArray
+        """
+        return self._sicor_ice
+
+    @sicor_ice.setter
+    def sicor_ice(self, *geoArr_initArgs):
+        self._sicor_ice = (
+            self._get_geoarray_with_datalike_geometry(
+                geoArr_initArgs,
+                'sicor_ice',
+                nodataVal=-9999)
+        )
+        self._sicor_ice.bandnames = ['path length of ice']
+
+    @property
+    def isofit_atm_state(self) -> GeoArray:
+        """Return ISOFIT's atmospheric state output which contains the estimated aerosol optical depth and water vapour.
+
+        :return: geoarray.GeoArray
+        """
+        return self._isofit_atm_state
+
+    @isofit_atm_state.setter
+    def isofit_atm_state(self, *geoArr_initArgs):
+        self._isofit_atm_state = (
+            self._get_geoarray_with_datalike_geometry(
+                geoArr_initArgs,
+                'isofit_atm_state',
+                nodataVal=-9999)
+        )
+        self._isofit_atm_state.bandnames = ['aerosol optical thickness (AOT)', 'water vapour']
+
+    @isofit_atm_state.deleter
+    def isofit_atm_state(self):
+        self._isofit_atm_state = None
+
+    @property
+    def isofit_uncertainty(self) -> GeoArray:
+        """Return ISOFIT's uncertainty layer.
+
+        :return: geoarray.GeoArray
+        """
+        return self._isofit_uncertainty
+
+    @isofit_uncertainty.setter
+    def isofit_uncertainty(self, *geoArr_initArgs):
+        self._isofit_uncertainty = (
+            self._get_geoarray_with_datalike_geometry(
+                geoArr_initArgs,
+                'isofit_uncertainty',
+                nodataVal=-9999)
+        )
+
+    @isofit_uncertainty.deleter
+    def isofit_uncertainty(self):
+        self._isofit_uncertainty = None
+
+    @property
+    def polymer_logchl(self) -> GeoArray:
+        """Chlorophyll concentration, in mg/m3, in 10-based logarithm (generated by Polymer AC for water areas).
+
+        Data range: -3 to 2.3
+
+        :return: geoarray.GeoArray
+        """
+        return self._polymer_logchl
+
+    @polymer_logchl.setter
+    def polymer_logchl(self, *geoArr_initArgs):
+        self._polymer_logchl = self._get_geoarray_with_datalike_geometry(geoArr_initArgs, 'polymer_logchl',
+                                                                         nodataVal=-9999)
+
+    @polymer_logchl.deleter
+    def polymer_logchl(self):
+        self._polymer_logchl = None
+
+    @property
+    def polymer_logfb(self) -> GeoArray:
+        """Particle scattering factor fb in Park & Ruddick (2005) (in 10-based logarithm; generated by Polymer AC).
+
+        Data range: positive and negative values, maximum range not defined
+
+        :return: geoarray.GeoArray
+        """
+        return self._polymer_logfb
+
+    @polymer_logfb.setter
+    def polymer_logfb(self, *geoArr_initArgs):
+        self._polymer_logfb = self._get_geoarray_with_datalike_geometry(geoArr_initArgs, 'polymer_logfb',
+                                                                        nodataVal=-9999)
+
+    @polymer_logfb.deleter
+    def polymer_logfb(self):
+        self._polymer_logfb = None
+
+    @property
+    def polymer_rgli(self) -> GeoArray:
+        """Reflectance of the sun glint predicted from ECMWF wind speed (generated by Polymer AC for water areas).
+
+        Typical data range: 0-0.2
+
+        :return: geoarray.GeoArray
+        """
+        return self._polymer_rgli
+
+    @polymer_rgli.setter
+    def polymer_rgli(self, *geoArr_initArgs):
+        self._polymer_rgli = self._get_geoarray_with_datalike_geometry(geoArr_initArgs, 'polymer_rgli',
+                                                                       nodataVal=-9999)
+
+    @polymer_rgli.deleter
+    def polymer_rgli(self):
+        self._polymer_rgli = None
+
+    @property
+    def polymer_rnir(self) -> GeoArray:
+        """TOA reflectance at 865 nm corrected for Rayleigh scattering (generated by Polymer AC for water areas).
+
+        Typical data range: 0-0.2
+
+        :return: geoarray.GeoArray
+        """
+        return self._polymer_rnir
+
+    @polymer_rnir.setter
+    def polymer_rnir(self, *geoArr_initArgs):
+        self._polymer_rnir = self._get_geoarray_with_datalike_geometry(geoArr_initArgs, 'polymer_rnir',
+                                                                       nodataVal=-9999)
+
+    @polymer_rnir.deleter
+    def polymer_rnir(self):
+        self._polymer_rnir = None
+
+    @property
+    def polymer_bitmask(self) -> GeoArray:
+        """Quality flags as generated by Polymer AC (bit-encoded mask).
+
+        Value 0 represents water, all fine, no flags. Other pixel values are explained below:
+
+        +--------------------+-------------+--------------------------------------------+
+        | Flag name          | Flag value  | Description                                |
+        +====================+=============+============================================+
+        | LAND               | 1           | Land mask                                  |
+        +--------------------+-------------+--------------------------------------------+
+        | CLOUD_BASE         | 2           | Polymer's basic cloud mask                 |
+        +--------------------+-------------+--------------------------------------------+
+        | L1_INVALID         | 4           | Invalid level1 pixel                       |
+        +--------------------+-------------+--------------------------------------------+
+        | NEGATIVE_BB        | 8           | (deprecated flag)                          |
+        +--------------------+-------------+--------------------------------------------+
+        | OUT_OF_BOUNDS      | 16          | Retrieved marine parameters are outside    |
+        |                    |             | valid bounds                               |
+        +--------------------+-------------+--------------------------------------------+
+        | EXCEPTION          | 32          | A processing error was encountered         |
+        +--------------------+-------------+--------------------------------------------+
+        | THICK_AEROSOL      | 64          | Thick aerosol flag                         |
+        +--------------------+-------------+--------------------------------------------+
+        | HIGH_AIR_MASS      | 128         | Air mass exceeds 5                         |
+        +--------------------+-------------+--------------------------------------------+
+        | EXTERNAL_MASK      | 512         | Pixel was masked using external mask       |
+        +--------------------+-------------+--------------------------------------------+
+        | CASE2              | 1024        | Pixel was processed in "case2" mode        |
+        +--------------------+-------------+--------------------------------------------+
+        | INCONSISTENCY      | 2048        | Inconsistent result was detected           |
+        |                    |             | (atmospheric reflectance out of bounds)    |
+        +--------------------+-------------+--------------------------------------------+
+        | ANOMALY_RWMOD_BLUE | 4096        | Excessive difference was found at 412nm    |
+        |                    |             | between Rw and Rwmod                       |
+        +--------------------+-------------+--------------------------------------------+
+
+        :return: geoarray.GeoArray
+        """
+        return self._polymer_bitmask
+
+    @polymer_bitmask.setter
+    def polymer_bitmask(self, *geoArr_initArgs):
+        self._polymer_bitmask = self._get_geoarray_with_datalike_geometry(geoArr_initArgs, 'polymer_bitmask',
+                                                                          nodataVal=-9999)
+
+    @polymer_bitmask.deleter
+    def polymer_bitmask(self):
+        self._polymer_bitmask = None
+
+    def _get_geoarray_with_datalike_geometry(self,
+                                             geoArr_initArgs: tuple,
+                                             attrName: str,
+                                             nodataVal: int = None,
+                                             specialclass=None) -> Optional[GeoArray]:
+        if geoArr_initArgs[0] is None:
+            return None
+        else:
+            GeoArrayOrSubclass = GeoArray if not specialclass else specialclass
+            gA = GeoArrayOrSubclass(*geoArr_initArgs)
+
+            if gA.shape[:2] != self.data.shape[:2]:
+                raise ValueError("The '%s' GeoArray can only be instanced with an array with "
+                                 "the same X/Y dimensions like %s.data %s. Got %s." %
+                                 (attrName, self.__class__.__name__, str(self.data.shape[:2]), str(gA.shape[:2])))
+
+            # noinspection PyProtectedMember
+            if gA._nodata is None and nodataVal is not None:
+                gA.nodata = nodataVal
+            gA.gt = self.data.gt
+            gA.prj = self.data.prj
+
+            return gA
+
+    def generate_quicklook(self, bands2use: List[int]) -> GeoArray:
+        """
+        Generate image quicklook and save into a file.
+
+        :param bands2use:   band indices of self.data to be used as (red, green, blue) for quicklook image,
+                            e.g., [3, 2, 1]
+        :return: GeoArray
+        """
+        red, green, blue = [self.data[:, :, bandidx] for bandidx in bands2use]
+
+        def rescale(bandarray):
+            pixvals = np.ma.masked_equal(bandarray, self.data.nodata).compressed() \
+                if self.data.nodata is not None else bandarray
+            p2, p98 = np.nanpercentile(pixvals, 2), np.nanpercentile(pixvals, 98)
+
+            return exposure.rescale_intensity(bandarray, in_range=(p2, p98), out_range=(0, 255))
+
+        pix = np.dstack((rescale(red), rescale(green), rescale(blue))).astype(np.uint8)
+
+        return GeoArray(pix)
