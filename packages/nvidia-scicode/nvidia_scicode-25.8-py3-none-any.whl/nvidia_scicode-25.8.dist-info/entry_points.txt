@@ -1,0 +1,5 @@
+[console_scripts]
+core-evals-scicode = core_evals.scicode.framework_entrypoint:main
+core_evals_scicode = core_evals.scicode.framework_entrypoint:main
+scicode-eval = scicode.__main__:cli_evaluate
+scicode_eval = scicode.__main__:cli_evaluate
