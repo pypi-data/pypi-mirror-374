@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sdk-fontes-betha"
+version = "0.1.0"
+description = "SDK para consumo de fontes de dados da betha"
+readme = "README.md"    
+authors = [
+    { name = "Fernando Favaro Bonetti", email = "FernandoEuBonetti@gmail.com" }
+]
+maintainers = [
+    { name = "Fernando Favaro Bonetti", email = "FernandoEuBonetti@gmail.com" }
+]
+requires-python = ">=3.7"
+license = "MIT"
+dependencies = [
+    "requests>=2.0.0"
+]
