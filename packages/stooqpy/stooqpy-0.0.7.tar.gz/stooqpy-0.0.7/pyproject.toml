@@ -1,0 +1,98 @@
+# from PEP 621.
+
+[build-system]
+requires = ["setuptools>=61", "wheel", "setuptools-scm[toml]>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stooqpy"
+# version = "0.0.6" - automatyczny update wersji pakietu cz. 1/2
+dynamic = ["version"]
+description = "Automatyzuje pobieranie wysokiej jakości darmowych danych z serwisu stooq.pl."
+readme = "README.md"
+
+authors = [
+  {name = "Szymon Jan Marek", email = "szymon.jan.marek@gmail.com"}
+]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+
+    # Dla kogo jest ten projekt
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Education",
+
+    # Licencja (musi pasować do tej zadeklarowanej wcześniej)
+    "License :: OSI Approved :: MIT License",
+
+    # Wspierane wersje Pythona
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+
+    # System operacyjny
+    "Operating System :: OS Independent",
+
+    # Tematyka projektu
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Office/Business :: Financial :: Investment",
+]
+
+license = {text = "MIT"}
+
+requires-python = ">= 3.8"
+
+dependencies = [
+  "typer",
+  "platformdirs",
+  "ruamel.yaml",
+]
+
+[project.optional-dependencies]
+test = [
+    "coverage",  # testing
+    "pytest",  # testing
+    "ruff",  # linting
+    "ty", # checking types
+    "ipdb", # debugging
+]
+
+[project.urls]
+bugs = "https://github.com/neon-symeon/stooqpy/issues"
+changelog = "https://github.com/neon-symeon/stooqpy/blob/master/changelog.md"
+homepage = "https://github.com/neon-symeon/stooqpy"
+
+[project.scripts]
+stooqpy = "stooqpy.cli:main"
+
+[tool.ruff]
+line-length = 80
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # Pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+]
+
+[tool.uv]
+package = true
+
+
+# Wyszukiwanie template'ów plików systemowych.
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"stooqpy" = ["templates/*.yaml", "templates/*.py"]
+
+# automatyczny update wersji pakietu cz.2/2
+[tool.setuptools_scm]
+version_scheme = "guess-next-dev"
+local_scheme = "no-local-version"

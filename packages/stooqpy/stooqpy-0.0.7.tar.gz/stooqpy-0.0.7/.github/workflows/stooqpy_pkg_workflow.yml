@@ -1,0 +1,110 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+    tags:
+      - "v*.*.*"  # publikacja na PyPI po tagu vX.Y.Z
+  pull_request:
+
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Install project (with test extras)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[test]
+
+      - name: Lint with Ruff
+        run: |
+          ruff --version
+          ruff check .
+
+      # Szybkie testy na wszystkich wersjach poza 3.12
+      - name: Pytest (fast)
+        if: matrix.python-version != '3.12'
+        run: pytest -q
+
+      # Testy z pokryciem na 3.12
+      - name: Pytest with coverage (3.12)
+        if: matrix.python-version == '3.12'
+        run: |
+          pip install coverage coveralls
+          coverage run -m pytest
+          coverage xml -o coverage.xml
+
+      - name: Upload coverage to Coveralls
+        if: matrix.python-version == '3.12'
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          file: coverage.xml
+          format: cobertura
+
+  build:
+    needs: lint-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: |
+            pyproject.toml
+
+      - name: Install build tooling
+        run: |
+          python -m pip install --upgrade pip build twine
+          pip install -e .[test]
+
+      - name: Build sdist & wheel
+        run: python -m build
+
+      - name: Twine check
+        run: twine check dist/*
+
+  publish:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write    # OIDC dla Trusted Publisher (PyPI)
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build sdist & wheel
+        run: |
+          python -m pip install --upgrade pip build twine
+          python -m build
+          twine check dist/*
+
+      - name: Publish to PyPI (OIDC)
+        uses: pypa/gh-action-pypi-publish@v1.12.4
