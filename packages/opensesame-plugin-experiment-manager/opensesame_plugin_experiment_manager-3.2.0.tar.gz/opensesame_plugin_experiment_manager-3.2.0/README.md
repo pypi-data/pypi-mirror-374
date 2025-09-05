@@ -1,0 +1,34 @@
+OpenSesame Plug-in: Experiment Manager
+==========
+
+*An OpenSesame plug-in for managing/executing multiple OpenSesame experiments.*  
+
+Copyright, 2022, Bob Rosbag  
+
+
+## About
+
+This plug-in can insert standalone OpenSesame Experiments within a main experiment. 
+It can run within a loop or sequence as an item. This makes it possible to run a number 
+of experiments in sequence (random or fixed order) and also it gives the possibility to 
+give each experiment its own (different) backend. 
+
+This plug-in has three options:
+
+- *Dummy mode* for testing experiments.
+- *Verbose mode* for testing experiments.
+- *Experiment file name* for Windows: hexadecimal or decimal value, for Linux: full path or port number.
+
+
+## License
+
+This software is distributed under the terms of the GNU General Public License 3. The full license should be included in the file `COPYING`, or can be obtained from:
+
+- <http://www.gnu.org/licenses/gpl.txt>
+  
+  
+## Documentation
+
+Installation instructions and documentation on OpenSesame are available on the documentation website:
+
+- <http://osdoc.cogsci.nl/>
