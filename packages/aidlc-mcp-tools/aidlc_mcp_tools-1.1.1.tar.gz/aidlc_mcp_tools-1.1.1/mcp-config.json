@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "aidlc-dashboard": {
+      "command": "uvx",
+      "args": ["--from", "aidlc-mcp-tools==1.0.5", "aidlc-mcp-server"],
+      "env": {
+        "AIDLC_BASE_URL": "http://44.253.157.102:8000/api",
+        "AIDLC_TIMEOUT": "10"
+      }
+    }
+  }
+}
