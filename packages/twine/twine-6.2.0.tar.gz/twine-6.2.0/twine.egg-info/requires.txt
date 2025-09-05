@@ -1,0 +1,17 @@
+readme-renderer>=35.0
+requests>=2.20
+requests-toolbelt!=0.9.0,>=0.8.0
+urllib3>=1.26.0
+rfc3986>=1.4.0
+rich>=12.0.0
+packaging>=24.0
+id
+
+[:platform_machine != "ppc64le" and platform_machine != "s390x"]
+keyring>=21.2.0
+
+[:python_version < "3.10"]
+importlib-metadata>=3.6
+
+[keyring]
+keyring>=21.2.0
