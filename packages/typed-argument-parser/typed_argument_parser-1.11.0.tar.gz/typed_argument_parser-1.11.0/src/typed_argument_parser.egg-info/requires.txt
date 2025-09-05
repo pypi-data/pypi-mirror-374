@@ -1,0 +1,12 @@
+docstring-parser>=0.15
+typing-inspect>=0.7.1
+
+[dev]
+typed-argument-parser[dev-no-pydantic]
+pydantic>=2.5.0
+
+[dev-no-pydantic]
+black
+pytest
+pytest-cov
+flake8
