@@ -1,0 +1,41 @@
+# MANIFEST.in para nseekfs v1.0.1 - Configuração limpa e otimizada
+
+# ✅ INCLUIR ARQUIVOS PYTHON ESSENCIAIS
+recursive-include nseekfs *.py
+include nseekfs/__init__.py
+
+# ✅ INCLUIR DOCUMENTAÇÃO E LICENÇA
+include README.md
+include CHANGELOG.md
+include LICENSE
+
+# ✅ INCLUIR APENAS CONFIGURAÇÃO PYTHON (não Cargo.toml!)
+include pyproject.toml
+
+# ❌ EXCLUIR ARQUIVOS RUST/BUILD DESNECESSÁRIOS NO WHEEL
+exclude Cargo.toml
+exclude Cargo.lock
+exclude .gitignore
+exclude deploy.yml
+exclude .git*
+exclude *.yml
+exclude *.yaml
+exclude build.rs
+
+# ❌ EXCLUIR DIRETÓRIOS E ARQUIVOS TEMPORÁRIOS
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * *.orig
+recursive-exclude * *.rej
+recursive-exclude * .DS_Store
+recursive-exclude target *
+recursive-exclude .github *
+recursive-exclude .vscode *
+recursive-exclude .idea *
+recursive-exclude src *
+recursive-exclude tests *
+
+# ❌ EXCLUIR OUTRAS EXTENSÕES
+exclude *.so
+exclude *.dll
+exclude *.dylib
