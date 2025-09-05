@@ -1,0 +1,149 @@
+Metadata-Version: 2.4
+Name: arithmic
+Version: 0.1.0
+Summary: Arithmic — Groq-powered RAG agent that knows your files and code
+Author: Arithmic AI
+License: Apache-2.0
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: groq>=0.9.0
+Requires-Dist: ollama>=0.3.0
+Requires-Dist: typer>=0.12.0
+Requires-Dist: qdrant-client>=1.9.0
+Requires-Dist: sentence-transformers>=3.0.0
+Requires-Dist: pypdf>=4.2.0
+Requires-Dist: docx2txt>=0.8
+Requires-Dist: tqdm>=4.66.0
+
+# Arithmic
+
+Arithmic is a multi-provider RAG (Retrieval Augmented Generation) agent that knows your files and code. Choose between Groq API or local Ollama models. Ask natural language questions about your codebase and get intelligent answers backed by your own documentation.
+
+## Features
+
+- 🤖 **Natural Language Interface**: Type plain English questions about your code
+- 📚 **Code-Aware**: Answers based on your actual files and documentation
+- 🔍 **RAG-Powered**: Uses retrieval to find relevant context from your codebase
+- 🚀 **Multi-Provider Support**: Choose between Groq API or local Ollama models
+- 📁 **Multi-Format Support**: Indexes PDFs, DOCX, code files, and text documents
+- 🔄 **Provider Switching**: Switch between providers without restarting
+
+## Installation
+
+```bash
+pip install arithmic
+```
+
+## Quick Start
+
+1. **Choose your provider:**
+
+   **Option A: Use Groq (API-based)**
+   ```bash
+   export GROQ_API_KEY="your-groq-api-key"
+   export ARITHMIC_PROVIDER="groq"
+   ```
+
+   **Option B: Use Ollama (local)**
+   ```bash
+   # Install Ollama first: https://ollama.ai
+   ollama pull llama3  # or any other model
+   export ARITHMIC_PROVIDER="ollama"
+   ```
+
+2. **Set up vector database:**
+   ```bash
+   export QDRANT_URL="http://localhost:6333"  # or your Qdrant Cloud URL
+   ```
+
+3. **Index your codebase:**
+   ```bash
+   arithmic-cli repo . --tag myproject
+   ```
+
+4. **Start asking questions:**
+   ```bash
+   arithmic
+   # You> How does the API server start?
+   # You> Where is the database configuration?
+   ```
+
+## Usage
+
+### Natural Language REPL
+```bash
+arithmic
+```
+Type plain English questions. Use `:q` to quit.
+
+### CLI Commands
+```bash
+# Index a repository
+arithmic-cli repo . --tag myproject
+
+# Index specific files
+arithmic-cli index ./docs --tag docs
+
+# Ask a question
+arithmic-cli ask "How does authentication work?"
+
+# List available models for current provider
+arithmic-cli models
+
+# List available providers
+arithmic-cli providers
+
+# Chat without RAG (simple inference)
+arithmic-cli chat "What is the capital of France?"
+```
+
+### Provider Management
+
+```bash
+# Switch to Groq
+export ARITHMIC_PROVIDER="groq"
+export GROQ_API_KEY="your-key"
+
+# Switch to Ollama
+export ARITHMIC_PROVIDER="ollama"
+
+# Use specific provider for one command
+ARITHMIC_PROVIDER=ollama arithmic-cli chat "Hello" --model llama3
+```
+
+## Environment Variables
+
+- `ARITHMIC_PROVIDER`: Inference provider (`groq` or `ollama`, default: `groq`)
+- `GROQ_API_KEY`: Your Groq API key (required for Groq provider)
+- `OLLAMA_HOST`: Ollama server URL (default: `http://localhost:11434`)
+- `QDRANT_URL`: Qdrant database URL (default: `http://localhost:6333`)
+- `QDRANT_COLLECTION`: Collection name (default: `arithmic_docs`)
+- `EMBED_MODEL`: Sentence transformer model (default: `sentence-transformers/all-MiniLM-L6-v2`)
+- `ARITHMIC_DEFAULT_TAG`: Default tag for queries
+- `ARITHMIC_DEFAULT_K`: Default number of chunks to retrieve (default: 8)
+
+## Requirements
+
+- Python 3.9+
+- **For Groq**: Groq API key
+- **For Ollama**: Ollama installed and running locally
+- Qdrant database (local or cloud)
+
+## Supported Models
+
+### Groq Provider
+- kimi-2 (default)
+- llama3-8b-8192
+- llama3-70b-8192
+- mixtral-8x7b-32768
+
+### Ollama Provider
+All Ollama models, including:
+- llama3, llama3.1, llama3.2, llama3.3
+- mistral, codellama
+- gemma, phi, deepseek-r1
+- And many more...
+
+## License
+
+Apache-2.0
