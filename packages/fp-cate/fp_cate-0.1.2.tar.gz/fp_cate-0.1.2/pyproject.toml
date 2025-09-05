@@ -1,0 +1,17 @@
+[project]
+name = "fp-cate"
+version = "0.1.2"
+description = "Functional programming tools for Python"
+readme = "README.md"
+authors = [
+    { name = "BrandenXia", email = "xxtbranden@outlook.com" }
+]
+requires-python = ">=3.10"
+dependencies = []
+
+[build-system]
+requires = ["uv_build>=0.8.14,<0.9.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ""
