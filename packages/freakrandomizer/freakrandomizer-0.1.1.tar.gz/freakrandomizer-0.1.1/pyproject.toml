@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "freakrandomizer"
+version = "0.1.1"
+description = "FreakRandomizer: This lib is uses a new algorithm and works better than random lib"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name="Kutay", email="senin@email.com"}]
+requires-python = ">=3.8"
+dependencies = []
+
+[project.urls]
+"Homepage" = "https://github.com/Kutay1062/FreakRandomizer"
+"Repository" = "https://github.com/Kutay1062/FreakRandomizer"
