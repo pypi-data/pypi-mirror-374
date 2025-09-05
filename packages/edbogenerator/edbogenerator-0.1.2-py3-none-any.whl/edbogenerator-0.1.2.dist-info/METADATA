@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: edbogenerator
+Version: 0.1.2
+Summary: A host of useful tools to augment the EDBO+ optimization workflow.
+License: Apache 2.0
+Author: helloimfrei
+Author-email: christianjtapp@gmail.com
+Requires-Python: >=3.8,<3.10
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: numpy (>=1.20,<2)
+Requires-Dist: pandas (>=1.3,<2)
+Requires-Dist: plotly (>=5,<6)
