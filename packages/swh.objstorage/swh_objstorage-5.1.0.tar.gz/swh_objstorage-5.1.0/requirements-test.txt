@@ -1,0 +1,10 @@
+moto[server, s3]
+pytest >= 8.1
+pytest-mock
+requests_mock[fixture] >= 1.9
+requests_toolbelt
+swh.core[testing] >= 3.0.0
+types-pyyaml
+types-requests
+pytest-postgresql > 5
+msgpack-types

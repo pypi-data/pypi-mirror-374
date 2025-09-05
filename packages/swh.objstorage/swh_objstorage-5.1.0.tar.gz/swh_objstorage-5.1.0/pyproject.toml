@@ -1,0 +1,122 @@
+[project]
+name = "swh.objstorage"
+authors = [
+    {name="Software Heritage developers", email="swh-devel@inria.fr"},
+]
+
+description = "Software Heritage object storage"
+readme = {file = "README.rst", content-type = "text/x-rst"}
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+dynamic = ["version", "dependencies", "optional-dependencies"]
+
+[tool.setuptools.packages.find]
+include = ["swh.*"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt", "requirements-swh.txt"]}
+
+[tool.setuptools.dynamic.optional-dependencies]
+azure = {file = "requirements-azure.txt"}
+libcloud = {file = "requirements-libcloud.txt"}
+winery = {file = "requirements-winery.txt"}
+testing = {file = [
+    "requirements-test.txt",
+    "requirements-azure.txt",
+    "requirements-libcloud.txt",
+    "requirements-winery.txt",
+    ]}
+
+[project.entry-points."swh.cli.subcommands"]
+"swh.objstorage" = "swh.objstorage.cli"
+
+[project.entry-points."swh.objstorage.classes"]
+"pathslicing" = "swh.objstorage.backends.pathslicing:PathSlicingObjStorage"
+"remote" = "swh.objstorage.api.client:RemoteObjStorage"
+"memory" = "swh.objstorage.backends.in_memory:InMemoryObjStorage"
+"seaweedfs" = "swh.objstorage.backends.seaweedfs.objstorage:SeaweedFilerObjStorage"
+"http" = "swh.objstorage.backends.http:HTTPReadOnlyObjStorage"
+"noop" = "swh.objstorage.backends.noop:NoopObjStorage"
+"azure" = "swh.objstorage.backends.azure:AzureCloudObjStorage"
+"azure-prefixed" = "swh.objstorage.backends.azure:PrefixedAzureCloudObjStorage"
+"s3" = "swh.objstorage.backends.libcloud:AwsCloudObjStorage"
+"swift" = "swh.objstorage.backends.libcloud:OpenStackCloudObjStorage"
+"winery" = "swh.objstorage.backends.winery:WineryObjStorage"
+# filters and proxies
+"multiplexer" = "swh.objstorage.multiplexer:MultiplexerObjStorage"
+"read-only" = "swh.objstorage.proxies.readonly:ReadOnlyProxyObjStorage"
+
+[project.urls]
+"Homepage" = "https://gitlab.softwareheritage.org/swh/devel/swh-objstorage"
+"Bug Reports" = "https://gitlab.softwareheritage.org/swh/devel/swh-objstorage/-/issues"
+"Funding" = "https://www.softwareheritage.org/donate"
+"Documentation" = "https://docs.softwareheritage.org/devel/swh-objstorage/"
+"Source" = "https://gitlab.softwareheritage.org/swh/devel/swh-objstorage.git"
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+fallback_version = "0.0.1"
+
+[tool.black]
+target-version = ['py39', 'py310', 'py311', 'py312']
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 88
+force_sort_within_sections = true
+known_first_party = ['swh']
+
+[tool.mypy]
+namespace_packages = true
+warn_unused_ignores = true
+explicit_package_bases = true
+# ^ Needed for mypy to detect py.typed from swh packages installed
+# in editable mode
+
+plugins = []
+
+# 3rd party libraries without stubs (yet)
+[[tool.mypy.overrides]]
+module = [
+    "requests_toolbelt.*",
+    "systemd.daemon.*",
+]
+ignore_missing_imports = true
+
+
+[tool.flake8]
+select = ["C", "E", "F", "W", "B950"]
+ignore = [
+    "E203", # whitespaces before ':' <https://github.com/psf/black/issues/315>
+    "E231", # missing whitespace after ','
+    "E501", # line too long, use B950 warning from flake8-bugbear instead
+    "E701", # ellipsis gets collapsed to a single line by black
+    "E704", # ellipsis gets collapsed to a single line by black
+    "W503"  # line break before binary operator <https://github.com/psf/black/issues/52>
+]
+max-line-length = 88
+extend-exclude = [
+    "build",
+]
+
+[tool.pytest.ini_options]
+norecursedirs = "build docs .*"
+consider_namespace_packages = true
+
+[tool.codespell]
+ignore-words-list = ["inflight", "brin"]

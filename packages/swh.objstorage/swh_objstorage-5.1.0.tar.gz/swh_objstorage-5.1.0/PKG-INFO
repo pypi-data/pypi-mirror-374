@@ -1,0 +1,128 @@
+Metadata-Version: 2.4
+Name: swh.objstorage
+Version: 5.1.0
+Summary: Software Heritage object storage
+Author-email: Software Heritage developers <swh-devel@inria.fr>
+Project-URL: Homepage, https://gitlab.softwareheritage.org/swh/devel/swh-objstorage
+Project-URL: Bug Reports, https://gitlab.softwareheritage.org/swh/devel/swh-objstorage/-/issues
+Project-URL: Funding, https://www.softwareheritage.org/donate
+Project-URL: Documentation, https://docs.softwareheritage.org/devel/swh-objstorage/
+Project-URL: Source, https://gitlab.softwareheritage.org/swh/devel/swh-objstorage.git
+Classifier: Programming Language :: Python :: 3
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.11
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+License-File: AUTHORS
+Requires-Dist: click
+Requires-Dist: deprecated
+Requires-Dist: msgpack
+Requires-Dist: requests
+Requires-Dist: swh.core[http]>=3.0.0
+Requires-Dist: swh.model>=8.4.0
+Requires-Dist: swh.shard>=1.0.0
+Provides-Extra: azure
+Requires-Dist: azure-storage-blob!=12.9.0,>=12.0; extra == "azure"
+Provides-Extra: libcloud
+Requires-Dist: apache-libcloud; extra == "libcloud"
+Provides-Extra: winery
+Requires-Dist: psycopg[c,pool]; extra == "winery"
+Requires-Dist: systemd-python; extra == "winery"
+Provides-Extra: testing
+Requires-Dist: moto[s3,server]; extra == "testing"
+Requires-Dist: pytest>=8.1; extra == "testing"
+Requires-Dist: pytest-mock; extra == "testing"
+Requires-Dist: requests_mock[fixture]>=1.9; extra == "testing"
+Requires-Dist: requests_toolbelt; extra == "testing"
+Requires-Dist: swh.core[testing]>=3.0.0; extra == "testing"
+Requires-Dist: types-pyyaml; extra == "testing"
+Requires-Dist: types-requests; extra == "testing"
+Requires-Dist: pytest-postgresql>5; extra == "testing"
+Requires-Dist: msgpack-types; extra == "testing"
+Requires-Dist: azure-storage-blob!=12.9.0,>=12.0; extra == "testing"
+Requires-Dist: apache-libcloud; extra == "testing"
+Requires-Dist: psycopg[c,pool]; extra == "testing"
+Requires-Dist: systemd-python; extra == "testing"
+Dynamic: license-file
+
+Software Heritage - Object storage
+==================================
+
+Content-addressable object storage for the Software Heritage project.
+
+
+Quick start
+-----------
+
+The easiest way to try the swh-objstorage object storage is to install it in a
+virtualenv. Here, we will be using
+`virtualenvwrapper <https://virtualenvwrapper.readthedocs.io>`_ but any virtual
+env tool should work the same.
+
+In the example below we will create a new objstorage using the
+`pathslicer <https://docs.softwareheritage.org/devel/apidoc/swh.objstorage.html#module-swh.objstorage.objstorage_pathslicing>`_
+backend.
+
+
+.. code-block:: console
+
+   ~/swh$ mkvirtualenv -p /usr/bin/python3 swh-objstorage
+   [...]
+   (swh-objstorage) ~/swh$ pip install swh.objstorage
+   [...]
+   (swh-objstorage) ~/swh$ cat >local.yml <<EOF
+   objstorage:
+     cls: pathslicing
+     root: /tmp/objstorage
+     slicing: 0:2/2:4/4:6
+   EOF
+   (swh-objstorage) ~/swh$ mkdir /tmp/objstorage
+   (swh-objstorage) ~/swh$ swh objstorage -C local.yml rpc-serve -p 15003
+   INFO:swh.core.config:Loading config file local.yml
+   ======== Running on http://0.0.0.0:15003 ========
+   (Press CTRL+C to quit)
+
+Now we have an API listening on http://0.0.0.0:15003 we can use to store and
+retrieve objects from. In an other terminal, you can import all the files from
+a local directory in this objstorage:
+
+.. code-block:: console
+
+   ~/swh$ workon swh-objstorage
+   (swh-objstorage) ~/swh$ cat >remote.yml <<EOF
+   objstorage:
+     cls: remote
+     url: http://127.0.0.1:15003
+   EOF
+   (swh-objstorage) ~/swh$ swh objstorage -C remote.yml import .
+   INFO:swh.core.config:Loading config file remote.yml
+   Imported 1369 files for a volume of 722837 bytes in 2 seconds
+
+
+Test dependencies
+-----------------
+
+Some tests do require non-python dependencies to be installed on the machine:
+
+- Ceph: the ``ceph`` executable can be used to run winery tests. When the ``ceph``
+  binary is available, the winery tests will try to create a real ceph Rados
+  Block Device (rbd) pool to run.
+
+- Azurite: the ``azurite`` tool is needed for Azure backend tests. Since it's a
+  npm package, you can install it using:
+
+  .. code-block:: console
+
+     ~/swh$ npm install -g azurite
+
+  Note: you may want to configure your npm setup so it uses ``~/.local`` as
+  prefix for global installations:
+
+  .. code-block:: console
+
+     ~/swh$ npm config set prefix '~/.local/'

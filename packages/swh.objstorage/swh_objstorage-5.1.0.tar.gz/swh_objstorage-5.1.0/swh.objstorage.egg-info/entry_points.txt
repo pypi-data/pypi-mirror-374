@@ -1,0 +1,17 @@
+[swh.cli.subcommands]
+swh.objstorage = swh.objstorage.cli
+
+[swh.objstorage.classes]
+azure = swh.objstorage.backends.azure:AzureCloudObjStorage
+azure-prefixed = swh.objstorage.backends.azure:PrefixedAzureCloudObjStorage
+http = swh.objstorage.backends.http:HTTPReadOnlyObjStorage
+memory = swh.objstorage.backends.in_memory:InMemoryObjStorage
+multiplexer = swh.objstorage.multiplexer:MultiplexerObjStorage
+noop = swh.objstorage.backends.noop:NoopObjStorage
+pathslicing = swh.objstorage.backends.pathslicing:PathSlicingObjStorage
+read-only = swh.objstorage.proxies.readonly:ReadOnlyProxyObjStorage
+remote = swh.objstorage.api.client:RemoteObjStorage
+s3 = swh.objstorage.backends.libcloud:AwsCloudObjStorage
+seaweedfs = swh.objstorage.backends.seaweedfs.objstorage:SeaweedFilerObjStorage
+swift = swh.objstorage.backends.libcloud:OpenStackCloudObjStorage
+winery = swh.objstorage.backends.winery:WineryObjStorage
