@@ -1,0 +1,58 @@
+Metadata-Version: 2.4
+Name: dexscreener
+Version: 1.3
+Summary: Python wrapper for the 'dexscreener.com' API
+Home-page: https://github.com/nixonjoshua98/dexscreener
+Download-URL: https://github.com/nixonjoshua98/dexscreener/releases
+Author: Joshua Nixon
+Author-email: nixonjoshua98@gmail.com
+License: MIT
+Keywords: dexscreener,crypto,cryptocurrency,bitcoin
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Requires-Dist: pydantic
+Requires-Dist: certifi
+Requires-Dist: aiohttp
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: download-url
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# API Wrapper for [Dexscreener.com](https://docs.dexscreener.com/)
+
+###### Pull requests GREATLY encouraged!
+
+[![Downloads](https://static.pepy.tech/badge/dexscreener/week)](https://pepy.tech/project/dexscreener)
+[![Downloads](https://static.pepy.tech/badge/dexscreener/month)](https://pepy.tech/project/dexscreener)
+[![Downloads](https://pepy.tech/badge/dexscreener)](https://pepy.tech/project/dexscreener)
+
+# Quick Start
+
+```python
+from dexscreener import DexscreenerClient
+
+client = DexscreenerClient()
+
+pair = client.get_token_pair("harmony", "0xcd818813f038a4d1a27c84d24d74bbc21551fa83")
+
+pairs = client.get_token_pairs("0x2170Ed0880ac9A755fd29B2688956BD959F933F8")
+
+search = client.search_pairs("WBTC")
+```
