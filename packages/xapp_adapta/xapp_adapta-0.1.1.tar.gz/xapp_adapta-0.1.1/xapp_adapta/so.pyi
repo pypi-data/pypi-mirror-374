@@ -1,0 +1,3 @@
+# interface
+
+def hello() -> str: ...
