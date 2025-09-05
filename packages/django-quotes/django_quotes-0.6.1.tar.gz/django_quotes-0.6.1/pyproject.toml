@@ -1,0 +1,312 @@
+[project]
+name = "django-quotes"
+version = "0.6.1"
+description = """A reusable Django app to collect quotes for use in random retrieval or generation of sentences using \
+    Markov Chains."""
+authors = [{ name = "Daniel Andrlik", email = "daniel@andrlik.org" }]
+requires-python = ">=3.12"
+dependencies = [
+    "django-markov>=0.4.1",
+    "rules>=3.1",
+    "Markdown>=3.3.6",
+    "python-slugify>=6.1.1",
+    "djangorestframework>=3.13.1",
+    "django-cors-headers>=3.11.0",
+    "drf-spectacular>=0.24.2",
+    "django-crispy-forms>=1.14.0",
+    "django-easy-logging>=0.70",
+    "loguru>=0.6.0",
+    "docutils",
+    "coreapi>=2.3.3",
+    "coreschema>=0.0.4",
+    "itypes>=1.2.0",
+    "crispy-bootstrap4>=2024.1",
+    # The following are needed for some package managers to grab correct versions.
+    "spacy>=3.8.7",
+    "marisa-trie>=1.2.1",
+    "preshed>=3.0.10",
+    "numpy>=2.3.0",
+]
+license = "BSD-3-Clause"
+readme = "README.md"
+classifiers = [
+    "Framework :: Django :: 5.1",
+    "Framework :: Django :: 5.2",
+    "License :: OSI Approved :: BSD License",
+    "Framework :: Django",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Development Status :: 4 - Beta",
+]
+
+[project.urls]
+Repository = "https://codeberg.org/andrlik/django-quotes"
+Homepage = "https://codeberg.org/andrlik/django-quotes"
+Documentation = "https://django-quotes-app.readthedocs.io/en/latest/"
+
+[project.optional-dependencies]
+test = [
+    "pytest-django",
+    "pytest-cov",
+    "pytest-sugar",
+    "pytest-asyncio",
+    "django-coverage",
+    "django-coverage-plugin",
+    "argon2-cffi",
+    "django-environ",
+    "pytest-mock",
+    "faker",
+    "django-extensions",
+    "django-types",
+    "factory-boy>=3.3.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/django_quotes"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/django_quotes", "tests"]
+
+[tool.uv]
+managed = true
+dev-dependencies = [
+    "werkzeug[watchdog]>=3.0.2",
+    "watchgod>=0.8.2",
+    "ipdb>=0.13.13",
+    "pytest-sugar>=1.0.0",
+    "pytest-cov>=5.0.0",
+    "pytest-django>=4.11.1",
+    "black>=24.3.0",
+    "factory-boy>=3.3.0",
+    "django-debug-toolbar>=4.3.0",
+    "django-extensions>=3.2.3",
+    "types-python-slugify>=8.0.2.20240310",
+    "types-markdown>=3.6.0.20240316",
+    "bandit[toml]>=1.7.8",
+    "mkdocs-material>=9.5.17",
+    "mkdocstrings[python]>=0.24.2",
+    "mkdocs-include-markdown-plugin>=6.0.5",
+    "en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl",
+    "psycopg[binary]>=3.1.18",
+    "bump-my-version>=0.20.0",
+    "pyright>=1.1.357",
+    "django-types>=0.19.1",
+    "django-stubs-ext>=4.2.7",
+    "markdown-extensions>=0.0.1",
+    "mkdocs-gen-files>=0.5.0",
+    "mkdocs-literate-nav>=0.6.1",
+    "pytest-asyncio>=0.23.6",
+    "ruff>=0.6.9",
+]
+
+[tool.coverage.run]
+source = ["src/django_quotes"]
+omit = ["*migrations*", "*tests*", "*staticfiles*"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[tool.black]
+# https://github.com/psf/black
+target-version = ["py312"]
+line-length = 120
+color = true
+
+exclude = '''
+/(
+    \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | migrations
+    | buck-out
+    | build
+    | dist
+    | env
+    | venv
+)/
+'''
+
+[tool.pytest.ini_options]
+# https://docs.pytest.org/en/6.2.x/customize.html#pyproject-toml
+# Directories that are not visited by pytest collector:
+DJANGO_SETTINGS_MODULE = "tests.django_settings"
+pythonpath = [".", "src"]
+testpaths = ["tests", "src/django_quotes"]
+django_find_project = false
+asyncio_default_fixture_loop_scope = "function"
+norecursedirs = ["hooks", "*.egg", ".eggs", "dist", "build", "docs", ".tox", ".git", "__pycache__", ".venv"]
+doctest_optionflags = ["NUMBER", "NORMALIZE_WHITESPACE", "IGNORE_EXCEPTION_DETAIL"]
+filterwarnings = [
+  "ignore::DeprecationWarning",
+  "ignore::PendingDeprecationWarning"
+]
+
+# Extra options:
+addopts = [
+  "--strict-markers",
+  "--tb=short",
+  "--doctest-modules",
+  "--doctest-continue-on-failure",
+  "--cov=src/django_quotes",
+  "--cov-report=term-missing", "--ds=tests.django_settings",
+    "--reuse-db",
+]
+
+[tool.tox]
+env_list = ["3.13", "3.12", "lint", "types"]
+
+[tool.tox.env_run_base]
+description = "Run tests under {base_python}"
+allowlist_externals = ["{change_dir}/.tox/{base_python}/bin/python"]
+runner = "uv-venv-lock-runner"
+with_dev = true
+commands = [["pytest"]]
+
+[tool.tox.env.lint]
+description = "Run linting via ruff"
+skip_install = true
+allowlist_externals = ["{change_dir}/.tox/{base_python}/bin/python"]
+with_dev = true
+runner = "uv-venv-lock-runner"
+commands = [["ruff", "check", "src/django_quotes"]]
+
+[tool.tox.env.types]
+description = "Run type checks via pyright"
+allowlist_externals = ["{change_dir}/.tox/{base_python}/bin/python"]
+runner = "uv-venv-lock-runner"
+with_dev = true
+commands = [["pyright"]]
+
+[tool.check-wheel-contents]
+ignore = ["W004"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+extend-exclude = ["migrations", ".tox"]
+
+[tool.ruff.lint]
+select = [
+  "A",
+  "ARG",
+  "B",
+  "C",
+  "DJ",
+  "DTZ",
+  "E",
+  "EM",
+  "F",
+  "FBT",
+  "I",
+  "ICN",
+  "ISC",
+  "N",
+  "PLC",
+  "PLE",
+  "PLR",
+  "PLW",
+  "Q",
+  "RUF",
+  "S",
+  "T",
+  "TID",
+  "UP",
+  "W",
+  "YTT",
+]
+ignore = [
+  # Allow non-abstract empty methods in abstract base classes
+  "B027",
+  # Allow boolean positional values in function calls, like `dict.get(... True)`
+  "FBT003",
+  # Ignore checks for possible passwords
+  "S105",
+  "S106",
+  "S107",
+  # Ignore complexity
+  "C901",
+  "PLR0911",
+  "PLR0912",
+  "PLR0913",
+  "PLR0915",
+  "DJ001",
+  "RUF012",
+  "ISC001",
+]
+unfixable = [
+  # Don't touch unused imports
+  "F401",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = ["S101", "FBT001", "ARG001", "ARG002", "E501", "PLR2004", "T201"]
+"tests/urls.py" = ["RUF005"]
+"src/django_quotes/receivers.py" = ["ARG001"]
+"src/django_quotes/rules.py" = ["ARG001"]
+"src/django_quotes/views.py" = ["A001"]
+"src/django_quotes/api/views.py" = ["ARG002"]
+"src/django_quotes/management/commands/*.py" = ["ARG002"]
+"conftest.py" = ["ARG001"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["django_markov"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.pyright]
+pythonVersion = "3.12"
+exclude = ["**/migrations/",
+    "**/__pycache__",
+    ".tox",
+    ".venv",
+    "tests",
+]
+reportIncompatibleVariableOverride = false
+reportIncompatibleMethodOverride = false
+
+[tool.django-stubs]
+django_settings_module = "tests.django_settings"
+
+
+[tool.bumpversion]
+current_version = "0.6.1"
+parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
+serialize = ["{major}.{minor}.{patch}"]
+search = "{current_version}"
+replace = "{new_version}"
+regex = false
+ignore_missing_version = false
+tag = true
+sign_tags = false
+tag_name = "v{new_version}"
+tag_message = "Bump version: {current_version} → {new_version}"
+allow_dirty = false
+commit = true
+message = "Bump version: {current_version} → {new_version}"
+pre_commit_hooks = ["uv sync", "git add uv.lock"]
+commit_args = ""
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = "version = \"{current_version}\""
+replace = "version = \"{new_version}\""
+
+[[tool.bumpversion.files]]
+filename = "CHANGELOG.md"
+search = "## Unreleased"
+replace = "## {new_version}"
