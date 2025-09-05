@@ -1,0 +1,639 @@
+Metadata-Version: 2.1
+Name: input4mips-validation
+Version: 0.20.0
+Summary: Validation of input4MIPs data (checking file formats, metadata etc.).
+Author-Email: Zebedee Nicholls <zebedee.nicholls@climate-resource.com>
+License: BSD-3-Clause
+Requires-Python: >=3.9
+Requires-Dist: scitools-iris>=3.0
+Requires-Dist: netcdf4>=1.0
+Requires-Dist: numpy<2.0
+Requires-Dist: cfchecker>=4.1.0
+Requires-Dist: cftime
+Requires-Dist: attrs
+Requires-Dist: cattrs
+Requires-Dist: cf-xarray
+Requires-Dist: loguru
+Requires-Dist: ncdata
+Requires-Dist: pandas
+Requires-Dist: pint
+Requires-Dist: pint-xarray
+Requires-Dist: pooch
+Requires-Dist: tqdm
+Requires-Dist: typer
+Requires-Dist: typing-extensions
+Requires-Dist: validators
+Requires-Dist: xarray
+Provides-Extra: loguru-config
+Requires-Dist: loguru-config; extra == "loguru-config"
+Provides-Extra: dev
+Requires-Dist: pre-commit>=3.7.1; extra == "dev"
+Requires-Dist: mypy>=1.10.1; extra == "dev"
+Requires-Dist: towncrier<24,>=23.11.0; extra == "dev"
+Requires-Dist: packaging>=24.1.0; extra == "dev"
+Requires-Dist: pandas-stubs>=2.2.2.240603; extra == "dev"
+Requires-Dist: tomli>=2.0.1; extra == "dev"
+Requires-Dist: types-tqdm>=4.66.0.20240417; extra == "dev"
+Requires-Dist: liccheck<0.10,>=0.9.2; extra == "dev"
+Requires-Dist: setuptools>=70.0.0; extra == "dev"
+Requires-Dist: pip>=24.2; extra == "dev"
+Requires-Dist: loguru>=0.7.3; extra == "dev"
+Requires-Dist: netcdf4>=1.7.2; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: mkdocs>=1.6.0; extra == "docs"
+Requires-Dist: mkdocstrings[python]>=0.25.0; extra == "docs"
+Requires-Dist: mkdocs-material>=9.5.0; extra == "docs"
+Requires-Dist: mkdocs-gen-files>=0.5.0; extra == "docs"
+Requires-Dist: mkdocs-literate-nav>=0.6.1; extra == "docs"
+Requires-Dist: mkdocs-section-index>=0.3.9; extra == "docs"
+Requires-Dist: mkdocs-autorefs>=1.0.1; extra == "docs"
+Requires-Dist: mkdocs-jupyter>=0.25.1; extra == "docs"
+Requires-Dist: myst-nb>=1.1.1; extra == "docs"
+Requires-Dist: jupyterlab>=4.2.0; extra == "docs"
+Requires-Dist: jupytext>=1.16.3; extra == "docs"
+Provides-Extra: notebooks
+Requires-Dist: jupyterlab>=4.2.0; extra == "notebooks"
+Requires-Dist: jupytext>=1.16.3; extra == "notebooks"
+Provides-Extra: tests
+Requires-Dist: pytest>=8.2.2; extra == "tests"
+Requires-Dist: coverage>=7.6.0; extra == "tests"
+Requires-Dist: pytest-cov>=5.0.0; extra == "tests"
+Requires-Dist: pytest-regressions>=2.5; extra == "tests"
+Provides-Extra: locked
+Requires-Dist: antlr4-python3-runtime==4.7.2; extra == "locked"
+Requires-Dist: attrs==24.3.0; extra == "locked"
+Requires-Dist: cartopy==0.23.0; extra == "locked"
+Requires-Dist: cattrs==24.1.2; extra == "locked"
+Requires-Dist: certifi==2024.12.14; extra == "locked"
+Requires-Dist: cf-units==3.2.0; extra == "locked"
+Requires-Dist: cf-xarray==0.9.4; extra == "locked"
+Requires-Dist: cfchecker==4.1.0; extra == "locked"
+Requires-Dist: cftime==1.6.4.post1; extra == "locked"
+Requires-Dist: cfunits==3.3.7; extra == "locked"
+Requires-Dist: charset-normalizer==3.4.1; extra == "locked"
+Requires-Dist: click==8.1.8; extra == "locked"
+Requires-Dist: cloudpickle==3.1.0; extra == "locked"
+Requires-Dist: colorama==0.4.6; extra == "locked"
+Requires-Dist: contourpy==1.3.0; extra == "locked"
+Requires-Dist: cycler==0.12.1; extra == "locked"
+Requires-Dist: dask==2024.8.0; extra == "locked"
+Requires-Dist: dask[array]==2024.8.0; extra == "locked"
+Requires-Dist: exceptiongroup==1.2.2; python_version < "3.11" and extra == "locked"
+Requires-Dist: flexcache==0.3; extra == "locked"
+Requires-Dist: flexparser==0.4; extra == "locked"
+Requires-Dist: fonttools==4.55.3; extra == "locked"
+Requires-Dist: fsspec==2024.12.0; extra == "locked"
+Requires-Dist: future==1.0.0; extra == "locked"
+Requires-Dist: idna==3.10; extra == "locked"
+Requires-Dist: importlib-metadata==8.5.0; extra == "locked"
+Requires-Dist: importlib-resources==6.4.5; python_version < "3.10" and extra == "locked"
+Requires-Dist: jinja2==3.1.5; extra == "locked"
+Requires-Dist: kiwisolver==1.4.7; extra == "locked"
+Requires-Dist: locket==1.0.0; extra == "locked"
+Requires-Dist: loguru==0.7.3; extra == "locked"
+Requires-Dist: markdown-it-py==3.0.0; extra == "locked"
+Requires-Dist: markupsafe==3.0.2; extra == "locked"
+Requires-Dist: matplotlib==3.9.4; extra == "locked"
+Requires-Dist: mdurl==0.1.2; extra == "locked"
+Requires-Dist: ncdata==0.1.1; extra == "locked"
+Requires-Dist: netcdf4==1.7.2; extra == "locked"
+Requires-Dist: numpy==1.26.4; extra == "locked"
+Requires-Dist: packaging==24.2; extra == "locked"
+Requires-Dist: pandas==2.2.3; extra == "locked"
+Requires-Dist: partd==1.4.2; extra == "locked"
+Requires-Dist: pillow==11.0.0; extra == "locked"
+Requires-Dist: pint==0.24.4; extra == "locked"
+Requires-Dist: pint-xarray==0.4; extra == "locked"
+Requires-Dist: platformdirs==4.3.6; extra == "locked"
+Requires-Dist: pooch==1.8.2; extra == "locked"
+Requires-Dist: pygments==2.18.0; extra == "locked"
+Requires-Dist: pyparsing==3.2.0; extra == "locked"
+Requires-Dist: pyproj==3.6.1; extra == "locked"
+Requires-Dist: pyshp==2.3.1; extra == "locked"
+Requires-Dist: python-dateutil==2.9.0.post0; extra == "locked"
+Requires-Dist: pytz==2024.2; extra == "locked"
+Requires-Dist: pyyaml==6.0.2; extra == "locked"
+Requires-Dist: requests==2.32.3; extra == "locked"
+Requires-Dist: rich==13.9.4; extra == "locked"
+Requires-Dist: scipy==1.13.1; extra == "locked"
+Requires-Dist: scitools-iris==3.8.1; extra == "locked"
+Requires-Dist: shapely==2.0.6; extra == "locked"
+Requires-Dist: shellingham==1.5.4; extra == "locked"
+Requires-Dist: six==1.17.0; extra == "locked"
+Requires-Dist: toolz==1.0.0; extra == "locked"
+Requires-Dist: tqdm==4.67.1; extra == "locked"
+Requires-Dist: typer==0.15.1; extra == "locked"
+Requires-Dist: typing-extensions==4.12.2; extra == "locked"
+Requires-Dist: tzdata==2024.2; extra == "locked"
+Requires-Dist: urllib3==2.3.0; extra == "locked"
+Requires-Dist: validators==0.34.0; extra == "locked"
+Requires-Dist: win32-setctime==1.2.0; sys_platform == "win32" and extra == "locked"
+Requires-Dist: xarray==2024.7.0; extra == "locked"
+Requires-Dist: xxhash==3.5.0; extra == "locked"
+Requires-Dist: zipp==3.21.0; extra == "locked"
+Provides-Extra: loguru-config-locked
+Requires-Dist: colorama==0.4.6; extra == "loguru-config-locked"
+Requires-Dist: loguru==0.7.3; extra == "loguru-config-locked"
+Requires-Dist: loguru-config==0.1.0; extra == "loguru-config-locked"
+Requires-Dist: win32-setctime==1.2.0; sys_platform == "win32" and extra == "loguru-config-locked"
+Provides-Extra: dev-locked
+Requires-Dist: certifi==2024.12.14; extra == "dev-locked"
+Requires-Dist: cfgv==3.4.0; extra == "dev-locked"
+Requires-Dist: cftime==1.6.4.post1; extra == "dev-locked"
+Requires-Dist: click==8.1.8; extra == "dev-locked"
+Requires-Dist: colorama==0.4.6; extra == "dev-locked"
+Requires-Dist: distlib==0.3.9; extra == "dev-locked"
+Requires-Dist: filelock==3.16.1; extra == "dev-locked"
+Requires-Dist: identify==2.6.3; extra == "dev-locked"
+Requires-Dist: importlib-resources==6.4.5; python_version < "3.10" and extra == "dev-locked"
+Requires-Dist: incremental==24.7.2; extra == "dev-locked"
+Requires-Dist: jinja2==3.1.5; extra == "dev-locked"
+Requires-Dist: liccheck==0.9.2; extra == "dev-locked"
+Requires-Dist: loguru==0.7.3; extra == "dev-locked"
+Requires-Dist: markupsafe==3.0.2; extra == "dev-locked"
+Requires-Dist: mypy==1.14.0; extra == "dev-locked"
+Requires-Dist: mypy-extensions==1.0.0; extra == "dev-locked"
+Requires-Dist: netcdf4==1.7.2; extra == "dev-locked"
+Requires-Dist: nodeenv==1.9.1; extra == "dev-locked"
+Requires-Dist: numpy==1.26.4; extra == "dev-locked"
+Requires-Dist: packaging==24.2; extra == "dev-locked"
+Requires-Dist: pandas-stubs==2.2.2.240807; extra == "dev-locked"
+Requires-Dist: pip==24.3.1; extra == "dev-locked"
+Requires-Dist: platformdirs==4.3.6; extra == "dev-locked"
+Requires-Dist: pre-commit==4.0.1; extra == "dev-locked"
+Requires-Dist: pyyaml==6.0.2; extra == "dev-locked"
+Requires-Dist: semantic-version==2.10.0; extra == "dev-locked"
+Requires-Dist: setuptools==75.6.0; extra == "dev-locked"
+Requires-Dist: toml==0.10.2; extra == "dev-locked"
+Requires-Dist: tomli==2.2.1; extra == "dev-locked"
+Requires-Dist: towncrier==23.11.0; extra == "dev-locked"
+Requires-Dist: types-pytz==2024.2.0.20241221; extra == "dev-locked"
+Requires-Dist: types-requests==2.32.0.20241016; extra == "dev-locked"
+Requires-Dist: types-tqdm==4.67.0.20241221; extra == "dev-locked"
+Requires-Dist: typing-extensions==4.12.2; extra == "dev-locked"
+Requires-Dist: urllib3==2.3.0; extra == "dev-locked"
+Requires-Dist: virtualenv==20.28.0; extra == "dev-locked"
+Requires-Dist: win32-setctime==1.2.0; sys_platform == "win32" and extra == "dev-locked"
+Requires-Dist: zipp==3.21.0; extra == "dev-locked"
+Provides-Extra: docs-locked
+Requires-Dist: alabaster==0.7.16; extra == "docs-locked"
+Requires-Dist: anyio==4.7.0; extra == "docs-locked"
+Requires-Dist: appnope==0.1.4; platform_system == "Darwin" and extra == "docs-locked"
+Requires-Dist: argon2-cffi==23.1.0; extra == "docs-locked"
+Requires-Dist: argon2-cffi-bindings==21.2.0; extra == "docs-locked"
+Requires-Dist: arrow==1.3.0; extra == "docs-locked"
+Requires-Dist: asttokens==3.0.0; extra == "docs-locked"
+Requires-Dist: async-lru==2.0.4; extra == "docs-locked"
+Requires-Dist: attrs==24.3.0; extra == "docs-locked"
+Requires-Dist: babel==2.16.0; extra == "docs-locked"
+Requires-Dist: beautifulsoup4==4.12.3; extra == "docs-locked"
+Requires-Dist: bleach==6.2.0; extra == "docs-locked"
+Requires-Dist: certifi==2024.12.14; extra == "docs-locked"
+Requires-Dist: cffi==1.17.1; extra == "docs-locked"
+Requires-Dist: charset-normalizer==3.4.1; extra == "docs-locked"
+Requires-Dist: click==8.1.8; extra == "docs-locked"
+Requires-Dist: colorama==0.4.6; extra == "docs-locked"
+Requires-Dist: comm==0.2.2; extra == "docs-locked"
+Requires-Dist: debugpy==1.8.11; extra == "docs-locked"
+Requires-Dist: decorator==5.1.1; extra == "docs-locked"
+Requires-Dist: defusedxml==0.7.1; extra == "docs-locked"
+Requires-Dist: docutils==0.21.2; extra == "docs-locked"
+Requires-Dist: exceptiongroup==1.2.2; python_version < "3.11" and extra == "docs-locked"
+Requires-Dist: executing==2.1.0; extra == "docs-locked"
+Requires-Dist: fastjsonschema==2.21.1; extra == "docs-locked"
+Requires-Dist: fqdn==1.5.1; extra == "docs-locked"
+Requires-Dist: ghp-import==2.1.0; extra == "docs-locked"
+Requires-Dist: greenlet==3.1.1; (platform_machine == "win32" or platform_machine == "WIN32" or platform_machine == "AMD64" or platform_machine == "amd64" or platform_machine == "x86_64" or platform_machine == "ppc64le" or platform_machine == "aarch64") and python_version < "3.13" and extra == "docs-locked"
+Requires-Dist: griffe==1.5.1; extra == "docs-locked"
+Requires-Dist: h11==0.14.0; extra == "docs-locked"
+Requires-Dist: httpcore==1.0.7; extra == "docs-locked"
+Requires-Dist: httpx==0.28.1; extra == "docs-locked"
+Requires-Dist: idna==3.10; extra == "docs-locked"
+Requires-Dist: imagesize==1.4.1; extra == "docs-locked"
+Requires-Dist: importlib-metadata==8.5.0; extra == "docs-locked"
+Requires-Dist: ipykernel==6.29.5; extra == "docs-locked"
+Requires-Dist: ipython==8.18.1; extra == "docs-locked"
+Requires-Dist: isoduration==20.11.0; extra == "docs-locked"
+Requires-Dist: jedi==0.19.2; extra == "docs-locked"
+Requires-Dist: jinja2==3.1.5; extra == "docs-locked"
+Requires-Dist: json5==0.10.0; extra == "docs-locked"
+Requires-Dist: jsonpointer==3.0.0; extra == "docs-locked"
+Requires-Dist: jsonschema==4.23.0; extra == "docs-locked"
+Requires-Dist: jsonschema-specifications==2024.10.1; extra == "docs-locked"
+Requires-Dist: jsonschema[format-nongpl]==4.23.0; extra == "docs-locked"
+Requires-Dist: jupyter-cache==1.0.1; extra == "docs-locked"
+Requires-Dist: jupyter-client==8.6.3; extra == "docs-locked"
+Requires-Dist: jupyter-core==5.7.2; extra == "docs-locked"
+Requires-Dist: jupyter-events==0.11.0; extra == "docs-locked"
+Requires-Dist: jupyter-lsp==2.2.5; extra == "docs-locked"
+Requires-Dist: jupyter-server==2.15.0; extra == "docs-locked"
+Requires-Dist: jupyter-server-terminals==0.5.3; extra == "docs-locked"
+Requires-Dist: jupyterlab==4.3.4; extra == "docs-locked"
+Requires-Dist: jupyterlab-pygments==0.3.0; extra == "docs-locked"
+Requires-Dist: jupyterlab-server==2.27.3; extra == "docs-locked"
+Requires-Dist: jupytext==1.16.6; extra == "docs-locked"
+Requires-Dist: markdown==3.7; extra == "docs-locked"
+Requires-Dist: markdown-it-py==3.0.0; extra == "docs-locked"
+Requires-Dist: markupsafe==3.0.2; extra == "docs-locked"
+Requires-Dist: matplotlib-inline==0.1.7; extra == "docs-locked"
+Requires-Dist: mdit-py-plugins==0.4.2; extra == "docs-locked"
+Requires-Dist: mdurl==0.1.2; extra == "docs-locked"
+Requires-Dist: mergedeep==1.3.4; extra == "docs-locked"
+Requires-Dist: mistune==3.0.2; extra == "docs-locked"
+Requires-Dist: mkdocs==1.6.1; extra == "docs-locked"
+Requires-Dist: mkdocs-autorefs==1.2.0; extra == "docs-locked"
+Requires-Dist: mkdocs-gen-files==0.5.0; extra == "docs-locked"
+Requires-Dist: mkdocs-get-deps==0.2.0; extra == "docs-locked"
+Requires-Dist: mkdocs-jupyter==0.25.1; extra == "docs-locked"
+Requires-Dist: mkdocs-literate-nav==0.6.1; extra == "docs-locked"
+Requires-Dist: mkdocs-material==9.5.49; extra == "docs-locked"
+Requires-Dist: mkdocs-material-extensions==1.3.1; extra == "docs-locked"
+Requires-Dist: mkdocs-section-index==0.3.9; extra == "docs-locked"
+Requires-Dist: mkdocstrings==0.27.0; extra == "docs-locked"
+Requires-Dist: mkdocstrings-python==1.12.2; extra == "docs-locked"
+Requires-Dist: mkdocstrings[python]==0.27.0; extra == "docs-locked"
+Requires-Dist: myst-nb==1.1.2; extra == "docs-locked"
+Requires-Dist: myst-parser==3.0.1; extra == "docs-locked"
+Requires-Dist: nbclient==0.10.2; extra == "docs-locked"
+Requires-Dist: nbconvert==7.16.4; extra == "docs-locked"
+Requires-Dist: nbformat==5.10.4; extra == "docs-locked"
+Requires-Dist: nest-asyncio==1.6.0; extra == "docs-locked"
+Requires-Dist: notebook-shim==0.2.4; extra == "docs-locked"
+Requires-Dist: overrides==7.7.0; extra == "docs-locked"
+Requires-Dist: packaging==24.2; extra == "docs-locked"
+Requires-Dist: paginate==0.5.7; extra == "docs-locked"
+Requires-Dist: pandocfilters==1.5.1; extra == "docs-locked"
+Requires-Dist: parso==0.8.4; extra == "docs-locked"
+Requires-Dist: pathspec==0.12.1; extra == "docs-locked"
+Requires-Dist: pexpect==4.9.0; sys_platform != "win32" and extra == "docs-locked"
+Requires-Dist: platformdirs==4.3.6; extra == "docs-locked"
+Requires-Dist: prometheus-client==0.21.1; extra == "docs-locked"
+Requires-Dist: prompt-toolkit==3.0.48; extra == "docs-locked"
+Requires-Dist: psutil==6.1.1; extra == "docs-locked"
+Requires-Dist: ptyprocess==0.7.0; (os_name != "nt" or sys_platform != "win32") and extra == "docs-locked"
+Requires-Dist: pure-eval==0.2.3; extra == "docs-locked"
+Requires-Dist: pycparser==2.22; extra == "docs-locked"
+Requires-Dist: pygments==2.18.0; extra == "docs-locked"
+Requires-Dist: pymdown-extensions==10.13; extra == "docs-locked"
+Requires-Dist: python-dateutil==2.9.0.post0; extra == "docs-locked"
+Requires-Dist: python-json-logger==3.2.1; extra == "docs-locked"
+Requires-Dist: pywin32==308; sys_platform == "win32" and platform_python_implementation != "PyPy" and extra == "docs-locked"
+Requires-Dist: pywinpty==2.0.14; os_name == "nt" and extra == "docs-locked"
+Requires-Dist: pyyaml==6.0.2; extra == "docs-locked"
+Requires-Dist: pyyaml-env-tag==0.1; extra == "docs-locked"
+Requires-Dist: pyzmq==26.2.0; extra == "docs-locked"
+Requires-Dist: referencing==0.35.1; extra == "docs-locked"
+Requires-Dist: regex==2024.11.6; extra == "docs-locked"
+Requires-Dist: requests==2.32.3; extra == "docs-locked"
+Requires-Dist: rfc3339-validator==0.1.4; extra == "docs-locked"
+Requires-Dist: rfc3986-validator==0.1.1; extra == "docs-locked"
+Requires-Dist: rpds-py==0.22.3; extra == "docs-locked"
+Requires-Dist: send2trash==1.8.3; extra == "docs-locked"
+Requires-Dist: setuptools==75.6.0; extra == "docs-locked"
+Requires-Dist: six==1.17.0; extra == "docs-locked"
+Requires-Dist: sniffio==1.3.1; extra == "docs-locked"
+Requires-Dist: snowballstemmer==2.2.0; extra == "docs-locked"
+Requires-Dist: soupsieve==2.6; extra == "docs-locked"
+Requires-Dist: sphinx==7.4.7; extra == "docs-locked"
+Requires-Dist: sphinxcontrib-applehelp==2.0.0; extra == "docs-locked"
+Requires-Dist: sphinxcontrib-devhelp==2.0.0; extra == "docs-locked"
+Requires-Dist: sphinxcontrib-htmlhelp==2.1.0; extra == "docs-locked"
+Requires-Dist: sphinxcontrib-jsmath==1.0.1; extra == "docs-locked"
+Requires-Dist: sphinxcontrib-qthelp==2.0.0; extra == "docs-locked"
+Requires-Dist: sphinxcontrib-serializinghtml==2.0.0; extra == "docs-locked"
+Requires-Dist: sqlalchemy==2.0.36; extra == "docs-locked"
+Requires-Dist: stack-data==0.6.3; extra == "docs-locked"
+Requires-Dist: tabulate==0.9.0; extra == "docs-locked"
+Requires-Dist: terminado==0.18.1; extra == "docs-locked"
+Requires-Dist: tinycss2==1.4.0; extra == "docs-locked"
+Requires-Dist: tomli==2.2.1; extra == "docs-locked"
+Requires-Dist: tornado==6.4.2; extra == "docs-locked"
+Requires-Dist: traitlets==5.14.3; extra == "docs-locked"
+Requires-Dist: types-python-dateutil==2.9.0.20241206; extra == "docs-locked"
+Requires-Dist: typing-extensions==4.12.2; extra == "docs-locked"
+Requires-Dist: uri-template==1.3.0; extra == "docs-locked"
+Requires-Dist: urllib3==2.3.0; extra == "docs-locked"
+Requires-Dist: watchdog==6.0.0; extra == "docs-locked"
+Requires-Dist: wcwidth==0.2.13; extra == "docs-locked"
+Requires-Dist: webcolors==24.11.1; extra == "docs-locked"
+Requires-Dist: webencodings==0.5.1; extra == "docs-locked"
+Requires-Dist: websocket-client==1.8.0; extra == "docs-locked"
+Requires-Dist: zipp==3.21.0; extra == "docs-locked"
+Provides-Extra: notebooks-locked
+Requires-Dist: anyio==4.7.0; extra == "notebooks-locked"
+Requires-Dist: appnope==0.1.4; platform_system == "Darwin" and extra == "notebooks-locked"
+Requires-Dist: argon2-cffi==23.1.0; extra == "notebooks-locked"
+Requires-Dist: argon2-cffi-bindings==21.2.0; extra == "notebooks-locked"
+Requires-Dist: arrow==1.3.0; extra == "notebooks-locked"
+Requires-Dist: asttokens==3.0.0; extra == "notebooks-locked"
+Requires-Dist: async-lru==2.0.4; extra == "notebooks-locked"
+Requires-Dist: attrs==24.3.0; extra == "notebooks-locked"
+Requires-Dist: babel==2.16.0; extra == "notebooks-locked"
+Requires-Dist: beautifulsoup4==4.12.3; extra == "notebooks-locked"
+Requires-Dist: bleach==6.2.0; extra == "notebooks-locked"
+Requires-Dist: certifi==2024.12.14; extra == "notebooks-locked"
+Requires-Dist: cffi==1.17.1; extra == "notebooks-locked"
+Requires-Dist: charset-normalizer==3.4.1; extra == "notebooks-locked"
+Requires-Dist: colorama==0.4.6; extra == "notebooks-locked"
+Requires-Dist: comm==0.2.2; extra == "notebooks-locked"
+Requires-Dist: debugpy==1.8.11; extra == "notebooks-locked"
+Requires-Dist: decorator==5.1.1; extra == "notebooks-locked"
+Requires-Dist: defusedxml==0.7.1; extra == "notebooks-locked"
+Requires-Dist: exceptiongroup==1.2.2; python_version < "3.11" and extra == "notebooks-locked"
+Requires-Dist: executing==2.1.0; extra == "notebooks-locked"
+Requires-Dist: fastjsonschema==2.21.1; extra == "notebooks-locked"
+Requires-Dist: fqdn==1.5.1; extra == "notebooks-locked"
+Requires-Dist: h11==0.14.0; extra == "notebooks-locked"
+Requires-Dist: httpcore==1.0.7; extra == "notebooks-locked"
+Requires-Dist: httpx==0.28.1; extra == "notebooks-locked"
+Requires-Dist: idna==3.10; extra == "notebooks-locked"
+Requires-Dist: importlib-metadata==8.5.0; extra == "notebooks-locked"
+Requires-Dist: ipykernel==6.29.5; extra == "notebooks-locked"
+Requires-Dist: ipython==8.18.1; extra == "notebooks-locked"
+Requires-Dist: isoduration==20.11.0; extra == "notebooks-locked"
+Requires-Dist: jedi==0.19.2; extra == "notebooks-locked"
+Requires-Dist: jinja2==3.1.5; extra == "notebooks-locked"
+Requires-Dist: json5==0.10.0; extra == "notebooks-locked"
+Requires-Dist: jsonpointer==3.0.0; extra == "notebooks-locked"
+Requires-Dist: jsonschema==4.23.0; extra == "notebooks-locked"
+Requires-Dist: jsonschema-specifications==2024.10.1; extra == "notebooks-locked"
+Requires-Dist: jsonschema[format-nongpl]==4.23.0; extra == "notebooks-locked"
+Requires-Dist: jupyter-client==8.6.3; extra == "notebooks-locked"
+Requires-Dist: jupyter-core==5.7.2; extra == "notebooks-locked"
+Requires-Dist: jupyter-events==0.11.0; extra == "notebooks-locked"
+Requires-Dist: jupyter-lsp==2.2.5; extra == "notebooks-locked"
+Requires-Dist: jupyter-server==2.15.0; extra == "notebooks-locked"
+Requires-Dist: jupyter-server-terminals==0.5.3; extra == "notebooks-locked"
+Requires-Dist: jupyterlab==4.3.4; extra == "notebooks-locked"
+Requires-Dist: jupyterlab-pygments==0.3.0; extra == "notebooks-locked"
+Requires-Dist: jupyterlab-server==2.27.3; extra == "notebooks-locked"
+Requires-Dist: jupytext==1.16.6; extra == "notebooks-locked"
+Requires-Dist: markdown-it-py==3.0.0; extra == "notebooks-locked"
+Requires-Dist: markupsafe==3.0.2; extra == "notebooks-locked"
+Requires-Dist: matplotlib-inline==0.1.7; extra == "notebooks-locked"
+Requires-Dist: mdit-py-plugins==0.4.2; extra == "notebooks-locked"
+Requires-Dist: mdurl==0.1.2; extra == "notebooks-locked"
+Requires-Dist: mistune==3.0.2; extra == "notebooks-locked"
+Requires-Dist: nbclient==0.10.2; extra == "notebooks-locked"
+Requires-Dist: nbconvert==7.16.4; extra == "notebooks-locked"
+Requires-Dist: nbformat==5.10.4; extra == "notebooks-locked"
+Requires-Dist: nest-asyncio==1.6.0; extra == "notebooks-locked"
+Requires-Dist: notebook-shim==0.2.4; extra == "notebooks-locked"
+Requires-Dist: overrides==7.7.0; extra == "notebooks-locked"
+Requires-Dist: packaging==24.2; extra == "notebooks-locked"
+Requires-Dist: pandocfilters==1.5.1; extra == "notebooks-locked"
+Requires-Dist: parso==0.8.4; extra == "notebooks-locked"
+Requires-Dist: pexpect==4.9.0; sys_platform != "win32" and extra == "notebooks-locked"
+Requires-Dist: platformdirs==4.3.6; extra == "notebooks-locked"
+Requires-Dist: prometheus-client==0.21.1; extra == "notebooks-locked"
+Requires-Dist: prompt-toolkit==3.0.48; extra == "notebooks-locked"
+Requires-Dist: psutil==6.1.1; extra == "notebooks-locked"
+Requires-Dist: ptyprocess==0.7.0; (os_name != "nt" or sys_platform != "win32") and extra == "notebooks-locked"
+Requires-Dist: pure-eval==0.2.3; extra == "notebooks-locked"
+Requires-Dist: pycparser==2.22; extra == "notebooks-locked"
+Requires-Dist: pygments==2.18.0; extra == "notebooks-locked"
+Requires-Dist: python-dateutil==2.9.0.post0; extra == "notebooks-locked"
+Requires-Dist: python-json-logger==3.2.1; extra == "notebooks-locked"
+Requires-Dist: pywin32==308; sys_platform == "win32" and platform_python_implementation != "PyPy" and extra == "notebooks-locked"
+Requires-Dist: pywinpty==2.0.14; os_name == "nt" and extra == "notebooks-locked"
+Requires-Dist: pyyaml==6.0.2; extra == "notebooks-locked"
+Requires-Dist: pyzmq==26.2.0; extra == "notebooks-locked"
+Requires-Dist: referencing==0.35.1; extra == "notebooks-locked"
+Requires-Dist: requests==2.32.3; extra == "notebooks-locked"
+Requires-Dist: rfc3339-validator==0.1.4; extra == "notebooks-locked"
+Requires-Dist: rfc3986-validator==0.1.1; extra == "notebooks-locked"
+Requires-Dist: rpds-py==0.22.3; extra == "notebooks-locked"
+Requires-Dist: send2trash==1.8.3; extra == "notebooks-locked"
+Requires-Dist: setuptools==75.6.0; extra == "notebooks-locked"
+Requires-Dist: six==1.17.0; extra == "notebooks-locked"
+Requires-Dist: sniffio==1.3.1; extra == "notebooks-locked"
+Requires-Dist: soupsieve==2.6; extra == "notebooks-locked"
+Requires-Dist: stack-data==0.6.3; extra == "notebooks-locked"
+Requires-Dist: terminado==0.18.1; extra == "notebooks-locked"
+Requires-Dist: tinycss2==1.4.0; extra == "notebooks-locked"
+Requires-Dist: tomli==2.2.1; extra == "notebooks-locked"
+Requires-Dist: tornado==6.4.2; extra == "notebooks-locked"
+Requires-Dist: traitlets==5.14.3; extra == "notebooks-locked"
+Requires-Dist: types-python-dateutil==2.9.0.20241206; extra == "notebooks-locked"
+Requires-Dist: typing-extensions==4.12.2; extra == "notebooks-locked"
+Requires-Dist: uri-template==1.3.0; extra == "notebooks-locked"
+Requires-Dist: urllib3==2.3.0; extra == "notebooks-locked"
+Requires-Dist: wcwidth==0.2.13; extra == "notebooks-locked"
+Requires-Dist: webcolors==24.11.1; extra == "notebooks-locked"
+Requires-Dist: webencodings==0.5.1; extra == "notebooks-locked"
+Requires-Dist: websocket-client==1.8.0; extra == "notebooks-locked"
+Requires-Dist: zipp==3.21.0; extra == "notebooks-locked"
+Provides-Extra: tests-locked
+Requires-Dist: colorama==0.4.6; extra == "tests-locked"
+Requires-Dist: coverage==7.6.9; extra == "tests-locked"
+Requires-Dist: coverage[toml]==7.6.9; extra == "tests-locked"
+Requires-Dist: exceptiongroup==1.2.2; python_version < "3.11" and extra == "tests-locked"
+Requires-Dist: iniconfig==2.0.0; extra == "tests-locked"
+Requires-Dist: packaging==24.2; extra == "tests-locked"
+Requires-Dist: pluggy==1.5.0; extra == "tests-locked"
+Requires-Dist: pytest==8.3.4; extra == "tests-locked"
+Requires-Dist: pytest-cov==6.0.0; extra == "tests-locked"
+Requires-Dist: pytest-datadir==1.5.0; extra == "tests-locked"
+Requires-Dist: pytest-regressions==2.6.0; extra == "tests-locked"
+Requires-Dist: pyyaml==6.0.2; extra == "tests-locked"
+Requires-Dist: tomli==2.2.1; extra == "tests-locked"
+Description-Content-Type: text/markdown
+
+<!--- --8<-- [start:description] -->
+# Input4MIPs-validation
+
+Validation of input4MIPs data (checking file formats, metadata etc.).
+
+**Key info :**
+[![Docs](https://readthedocs.org/projects/input4mips-validation/badge/?version=latest)](https://input4mips-validation.readthedocs.io)
+[![Main branch: supported Python versions](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fclimate-resource%2Finput4mips_validation%2Fmain%2Fpyproject.toml)](https://github.com/climate-resource/input4mips_validation/blob/main/pyproject.toml)
+[![Licence](https://img.shields.io/pypi/l/input4mips-validation?label=licence)](https://github.com/climate-resource/input4mips_validation/blob/main/LICENCE)
+
+**PyPI :**
+[![PyPI](https://img.shields.io/pypi/v/input4mips-validation.svg)](https://pypi.org/project/input4mips-validation/)
+[![PyPI install](https://github.com/climate-resource/input4mips_validation/actions/workflows/install-pypi.yaml/badge.svg?branch=main)](https://github.com/climate-resource/input4mips_validation/actions/workflows/install-pypi.yaml)
+
+**Conda :**
+[![Conda](https://img.shields.io/conda/vn/conda-forge/input4mips-validation.svg)](https://anaconda.org/conda-forge/input4mips-validation)
+[![Conda platforms](https://img.shields.io/conda/pn/conda-forge/input4mips-validation.svg)](https://anaconda.org/conda-forge/input4mips-validation)
+[![Conda install](https://github.com/climate-resource/input4mips_validation/actions/workflows/install-conda.yaml/badge.svg?branch=main)](https://github.com/climate-resource/input4mips_validation/actions/workflows/install-conda.yaml)
+
+**Tests :**
+[![CI](https://github.com/climate-resource/input4mips_validation/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/climate-resource/input4mips_validation/actions/workflows/ci.yaml)
+[![Coverage](https://codecov.io/gh/climate-resource/input4mips_validation/branch/main/graph/badge.svg)](https://codecov.io/gh/climate-resource/input4mips_validation)
+
+**Other info :**
+[![Last Commit](https://img.shields.io/github/last-commit/climate-resource/input4mips_validation.svg)](https://github.com/climate-resource/input4mips_validation/commits/main)
+[![Contributors](https://img.shields.io/github/contributors/climate-resource/input4mips_validation.svg)](https://github.com/climate-resource/input4mips_validation/graphs/contributors)
+
+## Status
+
+- development: the project is actively being worked on
+
+As a user, please note that input4MIPs validation is undergoing heavy development.
+This means that files which pass validation today may not pass in future.
+While this will initially be frustrating, it will pay off in the long run
+by helping us to create the cleanest, clearest set of data possible.
+We hope that you can appreciate the importance of this too
+(and we hope to get the effort it takes to do this
+recognised at some point in the future too,
+watch this space).
+So, please enjoy the tool, please make use of it,
+please [raise an issue](https://github.com/climate-resource/input4mips_validation/issues/new/choose)
+whenever there is a problem,
+but please also be ready to update your file writing scripts
+when submitting the next round of files in three to six months' time.
+
+<!--- --8<-- [end:description] -->
+
+If you want to prepare your input4MIPs files for publication on ESGF,
+please see
+["How can I prepare my input4MIPs files for publication on ESGF?"](https://input4mips-validation.readthedocs.io/en/latest/how-to-guides/#how-can-i-prepare-my-input4mips-files-for-publication-on-esgf).
+
+Full documentation can be found at:
+[input4mips-validation.readthedocs.io](https://input4mips-validation.readthedocs.io/en/latest/).
+We recommend reading the docs there because the internal documentation links
+don't render correctly on GitHub's viewer.
+
+<!--- TODO: add link to preparing data for input4MIPs here -->
+
+## Installation
+
+<!--- --8<-- [start:installation] -->
+### As an application
+
+If you want to use input4MIPs-validation as an application,
+for example you just want to use its command-line interface,
+then we recommend using the 'locked' version of the package.
+This version pins the version of all dependencies too,
+which reduces the chance of installation issues
+because of breaking updates to dependencies.
+
+The locked version of input4mips-validation can be installed with
+
+=== "mamba"
+    ```sh
+    mamba install -c conda-forge input4mips-validation-locked
+    ```
+
+    [mamba](https://mamba.readthedocs.io/en/latest/)
+    is our recommend way to install the package
+    because it has better handling of the compiled dependencies
+    (like cfunits).
+
+=== "conda"
+    ```sh
+    conda install -c conda-forge input4mips-validation-locked
+    ```
+
+    [conda](https://docs.conda.io/projects/conda/en/stable/)
+    is a good way to install the package
+    because it has better handling of the compiled dependencies
+    (like cfunits).
+
+=== "pip"
+    ```sh
+    pip install input4mips-validation[locked]
+    ```
+
+    [pip](https://pip.pypa.io/en/stable/)
+    is a standard way to install Python packages.
+    We make no guarantees that this will actually work
+    because pip's handling of the compiled dependencies
+    is not guaranteed.
+
+### As a library
+
+If you want to use input4MIPs-validation as a library,
+for example you want to use it
+as a dependency in another package/application that you're building,
+then we recommend installing the package with the commands below.
+This method provides the loosest pins possible of all dependencies.
+This gives you, the package/application developer,
+as much freedom as possible to set the versions of different packages.
+However, the tradeoff with this freedom is that you may install
+incompatible versions of input4mips-validation's dependencies
+(we cannot test all combinations of dependencies,
+particularly ones which haven't been released yet!).
+Hence, you may run into installation issues.
+If you believe these are because of a problem in input4mips-validation,
+please [raise an issue](https://github.com/climate-resource/input4mips_validation/issues/new/choose).
+
+The (non-locked) version of input4mips-validation can be installed with
+
+=== "mamba"
+    ```sh
+    mamba install -c conda-forge input4mips-validation
+    ```
+
+    [mamba](https://mamba.readthedocs.io/en/latest/)
+    is our recommend way to install the package
+    because it has better handling of the compiled dependencies
+    (like cfunits).
+
+=== "conda"
+    ```sh
+    conda install -c conda-forge input4mips-validation
+    ```
+
+    [conda](https://docs.conda.io/projects/conda/en/stable/)
+    is a good way to install the package
+    because it has better handling of the compiled dependencies
+    (like cfunits).
+
+=== "pip"
+    ```sh
+    pip install input4mips-validation
+    ```
+
+    [pip](https://pip.pypa.io/en/stable/)
+    is a standard way to install Python packages.
+    We make no guarantees that this will actually work
+    because pip's handling of the compiled dependencies
+    is not guaranteed.
+
+Additional dependencies can be installed using
+
+=== "mamba"
+    If you are installing with mamba, we recommend
+    installing the extras by hand because there is no stable
+    solution yet (see [conda issue #7502](https://github.com/conda/conda/issues/7502))
+
+=== "conda"
+    If you are installing with conda, we recommend
+    installing the extras by hand because there is no stable
+    solution yet (see [conda issue #7502](https://github.com/conda/conda/issues/7502))
+
+=== "pip"
+    ```sh
+    # To add plotting dependencies
+    pip install input4mips-validation[plots]
+    # To add notebook dependencies
+    pip install input4mips-validation[notebooks]
+    ```
+
+### For developers
+
+For development, we rely on [pixi](https://pixi.sh/latest/)
+for all our dependency management.
+To get started, you will need to make sure that pixi is installed
+([instructions here](https://pixi.sh/latest/#installation)).
+
+We rely on [pdm](https://pdm-project.org/en/latest/) for managing our PyPI builds.
+Hence, you will also need to make sure that pdm is installed on your system
+([instructions here](https://pdm-project.org/en/latest/#installation),
+although we found that installing with [pipx](https://pipx.pypa.io/stable/installation/)
+worked perfectly for us).
+
+For all of our work, we use our `Makefile`.
+You can read the instructions out and run the commands by hand if you wish,
+but we generally discourage this because it can be error prone.
+In order to create your environment, run `make virtual-environment`.
+
+If there are any issues, the messages from the `Makefile` should guide you
+through. If not, please raise an issue in the
+[issue tracker](https://github.com/climate-resource/input4mips_validation/issues).
+
+For the rest of our developer docs, please see [development][development-reference].
+
+<!--- --8<-- [end:installation] -->
