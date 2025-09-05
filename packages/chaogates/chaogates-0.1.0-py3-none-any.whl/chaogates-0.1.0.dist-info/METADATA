@@ -1,0 +1,141 @@
+Metadata-Version: 2.4
+Name: chaogates
+Version: 0.1.0
+Summary: Chaotic logic gate & circuit simulation toolkit
+Author-email: Abhinav Basu <your_email@example.com>
+License: MIT
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: scipy
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Dynamic: license-file
+
+Chaotic Logic Gates
+
+Experimental framework for mapping chaotic dynamical systems (Logistic map, Lorenz attractor) to Boolean gates (AND/OR/XOR/NAND/NOR) and compound circuits (Half Adder, Full Adder, SR Latch) — with a randomized parameter search utility to find operating points that match real truth tables.
+
+⚠️ Research/learning project — stochastic, sensitive to parameters, and intended for experimentation, not digital-replacement hardware.
+
+Features
+
+Chaotic systems as clean Python classes:
+
+LogisticMap (discrete map)
+
+LorenzSystem (3D ODE with solve_ivp)
+
+Logic gates from time–series features:
+
+logistic_and/or/xor/nand/nor (operate on trajectories)
+
+evaluate_gate() to build truth tables over multiple inputs
+
+Compound circuits: half_adder, full_adder, sr_latch
+
+Parameter search (Monte Carlo):
+
+Randomize chaos parameters + thresholds/bands
+
+Keep only configurations whose outputs match the ideal truth table
+
+Save CSVs and histograms in results/
+
+(Optional) CircuitBuilder to assemble your own mini-circuits
+
+
+Examples
+1) Logistic XOR (works best)
+params, (avg_r, avg_low, avg_high) = utils.logistic_search(
+    logistic, x0_map, gates.logistic_xor, trials=500
+)
+print(f"Successes: {len(params)} | r≈{avg_r:.3f}, low≈{avg_low:.3f}, high≈{avg_high:.3f}")
+
+# Use tuned band to evaluate XOR truth table
+xor_truth = gates.evaluate_gate(x0_map, gates.logistic_xor, low=avg_low, high=avg_high)
+print("XOR:", xor_truth)
+
+2) Lorenz AND (robust)
+x0_lorenz = {(0,0):[1,1,1], (0,1):[2,2,2], (1,0):[3,3,3], (1,1):[4,4,4]}
+params, (sigma, rho, beta, window) = utils.lorenz_search(
+    lorenz, x0_lorenz, gates.logistic_and, trials=500
+)
+print(f"Successes: {len(params)} | σ≈{sigma:.2f}, ρ≈{rho:.2f}, β≈{beta:.2f}, window≈{window:.0f}")
+
+3) Compound circuits
+# Half Adder (Sum = XOR, Carry = AND)
+half_adder = gates.half_adder(x0_map, low=0.35, high=0.58, threshold=0.62)
+print("Half Adder:", half_adder)
+
+# Full Adder (demo inputs)
+x0_full = {
+    (0,0,0):0.1,(0,0,1):0.3,(0,1,0):0.5,(0,1,1):0.7,
+    (1,0,0):0.9,(1,0,1):0.2,(1,1,0):0.4,(1,1,1):0.6
+}
+full_adder = gates.full_adder(x0_full, low=0.35, high=0.58, threshold=0.62)
+print("Full Adder:", full_adder)
+
+# SR Latch (illustrative)
+print("SR Latch:", gates.sr_latch(0.1, 0.9, threshold=0.5))
+
+4) Search results & plots (auto-saved)
+
+CSVs → results/tables/
+
+Histograms → results/figures/
+
+# After a search:
+utils.save_results(params, headers=["r","low","high"], filename="logistic_xor_search")
+utils.plot_histogram(params, 0, "Logistic XOR: r", "logistic_xor_r", headers=["r","low","high"])
+
+How it works (short)
+
+Encode bits as initial conditions (e.g., (0,1) → x0=0.3 for Logistic).
+
+Simulate the chaotic system → get a trajectory (or x-component for Lorenz).
+
+Extract a feature (e.g., mean of the last window).
+
+Threshold/band map that feature to a bit (0/1).
+
+Compare the produced truth table with the ideal truth table.
+
+Search: Randomize parameters (e.g., r, σ,ρ,β, thresholds) and keep only matches.
+
+In practice: Logistic tends to yield good XOR with a band; Lorenz often yields strong AND with a single threshold on x-statistics.
+
+Tips & knobs
+
+Burn-in & window: Try discarding initial transients and using a longer tail window.
+
+Alternative features: time-above-τ fraction, variance, crossing rate — can improve AND/OR/NOR/XOR robustness.
+
+Trials: Increase for more successes (but it’s stochastic).
+
+Saving: Plots and CSVs are auto-saved under results/ when you call the utils’ save/plot helpers.
+
+Known limitations
+
+Sensitive to initial conditions and parameters (by design — it’s chaos).
+
+Gate behavior is not deterministic across all settings.
+
+Features are simple; more sophisticated features often improve separability.
+
+Not intended for hardware logic replacement; it’s a computing-with-chaos demo.
+
+Roadmap
+
+Add Duffing oscillator and more chaotic systems
+
+Feature library (crossing rate, time-above-τ, spectral features)
+
+Better circuit routing + CircuitBuilder graph diagrams
+
+Benchmark notebooks and a short paper scaffold
