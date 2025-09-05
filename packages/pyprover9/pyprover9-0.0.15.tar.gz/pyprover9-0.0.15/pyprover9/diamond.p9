@@ -1,0 +1,59 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  set(binary_resolution).
+  set(paramodulation).
+  set(factor).
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%% To solve this first-order logic proof problem, you must replace
+%% each of the premiss place-holders __Pn__ and the goal place-holder
+%% __G__, with an approapriate first-order formula, that captures the
+%% meaning of the given English sentence.
+
+%% In writing the formulae, you should only use the following vocabulary:
+%% Logical symbols:             &  |  -  ->   <->   all   exists
+%% Brackets and separators:    ( )  [  ]  ,  .
+%%
+%% Propositional Constants: 
+%%       DiamondStolen
+%%       ThiefInHouse
+%%       DoorOpen 
+%%       WindowSmashed
+
+%% "The diamond has been stolen!"
+DiamondStolen.
+
+%% If the diamond has been stolen, a thief got in the house."
+DiamondStolen & ThiefInHouse.
+
+%% If a thief got in, either the door was open or the window was smashed."
+ThiefInHouse -> (DoorOpen | WindowSmashed).
+
+%% The window is not smashed.
+- WindowSmashed. 
+
+%all x all y (F(x,y) -> R(f(x),g(y))).
+
+%R(a,b).
+
+%all x all y (-R(x,y)).
+
+end_of_list.
+
+formulas(goals).
+
+%% The door was open.
+DoorOpen.
+
+end_of_list.
+

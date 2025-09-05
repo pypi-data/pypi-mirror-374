@@ -1,0 +1,41 @@
+
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+% Last line is a lie. It is there to stop the Prover9-Mace4
+% GUI giving a warning when the file is loaded.
+% This file was actually reated by BB Prover9 Autograder
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  clear(auto).
+  clear(auto_setup).
+  clear(auto_limits).
+  clear(auto_denials).
+  clear(auto_inference).
+  clear(auto_process).
+  assign(eq_defs, pass).
+  assign(max_seconds, 10).
+  assign(max_weight, 2147483647).
+  assign(sos_limit, -1).
+  clear(predicate_elim).
+  set(binary_resolution).
+  set(paramodulation).
+  set(factor).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+%%__PREAMBLE__
+
+P->Q. P.
+
+end_of_list.
+
+formulas(goals).
+
+Q.
+
+end_of_list.
