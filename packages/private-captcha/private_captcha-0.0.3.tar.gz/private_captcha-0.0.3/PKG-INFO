@@ -1,0 +1,175 @@
+Metadata-Version: 2.4
+Name: private-captcha
+Version: 0.0.3
+Summary: Python client library for Private Captcha API
+Author-email: Taras Kushnir <hello@privatecaptcha.com>
+License: MIT License
+        
+        Copyright (c) 2025 PrivateCaptcha
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://docs.privatecaptcha.com/docs/integrations/python/
+Project-URL: Repository, https://github.com/PrivateCaptcha/private-captcha-py
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: coverage; extra == "dev"
+Requires-Dist: pylint; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Dynamic: license-file
+
+# private-captcha-py
+
+Python client for server-side verification of Private Captcha solutions.
+
+## Installation
+
+```bash
+pip install private-captcha
+```
+
+## Quick Start
+
+```python
+from private_captcha import Client
+
+# Initialize the client with your API key
+client = Client(api_key="your-api-key-here")
+
+# Verify a captcha solution
+try:
+    result = client.verify(solution="user-solution-from-frontend")
+    if result.success:
+        print("Captcha verified successfully!")
+    else:
+        print(f"Verification failed: {result}")
+except Exception as e:
+    print(f"Error: {e}")
+```
+
+## Usage
+
+### Web Framework Integration
+
+#### Flask Example
+
+```python
+from flask import Flask, request
+from private_captcha import Client, SolutionError
+
+app = Flask(__name__)
+client = Client(api_key="your-api-key")
+
+@app.route('/submit', methods=['POST'])
+def submit_form():
+    try:
+        # Verify captcha from form data
+        client.verify_request(request.form)
+
+        # Process your form data here
+        return "Form submitted successfully!"
+
+    except SolutionError:
+        return "Captcha verification failed", 400
+```
+
+#### Django Example
+
+```python
+from django.http import HttpResponse
+from private_captcha import Client, SolutionError
+
+client = Client(api_key="your-api-key")
+
+def submit_view(request):
+    if request.method == 'POST':
+        try:
+            client.verify_request(request.POST)
+            # Process form data
+            return HttpResponse("Success!")
+        except SolutionError:
+            return HttpResponse("Captcha failed", status=400)
+```
+
+## Configuration
+
+### Client Options
+
+```python
+from private_captcha import Client, EU_DOMAIN
+
+client = Client(
+    api_key="your-api-key",
+    domain=EU_DOMAIN,                       # replace domain for self-hosting or EU isolation
+    form_field="private-captcha-solution",  # custom form field name
+    timeout=10.0,                           # request timeout in seconds
+)
+```
+
+### Non-standard backend domains
+
+```python
+from private_captcha import Client, EU_DOMAIN
+
+# Use EU domain
+eu_client = Client(
+    api_key="your-api-key",
+    domain=EU_DOMAIN  # api.eu.privatecaptcha.com
+)
+
+# Or specify custom domain in case of self-hosting
+custom_client = Client(
+    api_key="your-api-key", 
+    domain="your-custom-domain.com"
+)
+```
+
+### Retry Configuration
+
+```python
+result = client.verify(
+    max_backoff_seconds=15,  # maximum wait between retries
+    attempts=3               # number of retry attempts
+)
+```
+
+## Requirements
+
+- Python 3.9+
+- No external dependencies (uses only standard library)
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Support
+
+For issues with this Python client, please open an issue on GitHub.
+For Private Captcha service questions, visit [privatecaptcha.com](https://privatecaptcha.com).
