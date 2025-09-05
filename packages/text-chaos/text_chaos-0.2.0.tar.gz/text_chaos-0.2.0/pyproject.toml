@@ -1,0 +1,73 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "text-chaos"
+version = "0.2.0"
+description = "A fun library for playful string manipulations like leetify, uwuify, zalgo, and more!"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Guroosh", email = "guroosh.07@gmail.com" }
+]
+maintainers = [
+    { name = "Guroosh", email = "guroosh.07@gmail.com" }
+]
+keywords = ["text", "string", "manipulation", "leet", "uwu", "fun", "transformation"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing",
+]
+requires-python = ">=3.8"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=22.0.0",
+    "isort>=5.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/guroosh/text-chaos"
+Documentation = "https://github.com/guroosh/text-chaos#readme"
+Repository = "https://github.com/guroosh/text-chaos.git"
+Issues = "https://github.com/guroosh/text-chaos/issues"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/tests",
+    "/README.md",
+    "/LICENSE",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/text_chaos"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "--cov=text_chaos --cov-report=term-missing"
