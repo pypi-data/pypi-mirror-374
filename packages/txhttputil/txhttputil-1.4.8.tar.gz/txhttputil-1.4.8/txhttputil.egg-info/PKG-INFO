@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: txhttputil
+Version: 1.4.8
+Summary: Synerty utility classes for serving a static site with twisted.web with user permissions.
+Author-email: Synerty <contact@synerty.com>
+Project-URL: Homepage, https://gitlab.synerty.com/peek/util/txhttputil
+Keywords: twisted,resource,file,download,synerty
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pytz
+Requires-Dist: txwebsocket>=1.0.1
+Requires-Dist: filetype
+Requires-Dist: pem
+Requires-Dist: pytmpdir
+Requires-Dist: treelib>=1.6.4
+Requires-Dist: cryptography
+Requires-Dist: pyOpenSSL
+
+# TxHttpUtil
+Synerty utility classes for serving a static site with twisted.web with user permissions.
+
+Whats of interest?
+
+* Protected resource with simple form login - Not suitable for public networks at this
+stage
+* A resource that underlays a multi level file system search under a standard twisted
+Resource.putChild type resource tree.
+* Twisted HTTP File Downloader
+* Consistent request data, providing a Bytes IO like oboject and switching to a
+NamedTemporaryFile if fileno, or name is called, or the data exceeds 5mb.
+* Support for single page applications
+
+# TODO
+
+Unit tests for :
+* Creating resource trees
+* Getting resources from the resource tree
+* Getting files from an underlay resource with two underlays
+* Downloading files with the 
+* Logging into the test site (Using Seleneium/Chrome WebDriver)
+* Test uploading data under 5mb and over 5mb to and auto switching to NamedTemporaryFile
+from BytesIO

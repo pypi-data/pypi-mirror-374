@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools<70.0.0", "wheel"]
+build-backend = "setuptools.build_meta:__legacy__"
+
+[project]
+name = "txhttputil"
+version = "1.4.8"
+description = "Synerty utility classes for serving a static site with twisted.web with user permissions."
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = ["twisted", "resource", "file", "download", "synerty"]
+classifiers = [
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12"
+]
+dependencies = [
+    "pytz",
+    "txwebsocket>=1.0.1",
+    "filetype",
+    "pem",
+    "pytmpdir",
+    "treelib>=1.6.4",
+    "cryptography",
+    "pyOpenSSL",
+]
+authors = [
+    {name = "Synerty", email = "contact@synerty.com"}
+]
+
+[project.urls]
+Homepage = "https://gitlab.synerty.com/peek/util/txhttputil"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["txhttputil*"]
+
+[tool.setuptools.package-data]
+"txhttputil.login_page" = ["*.xml"]
