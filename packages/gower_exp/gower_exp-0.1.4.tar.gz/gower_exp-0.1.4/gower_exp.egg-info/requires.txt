@@ -1,0 +1,20 @@
+numpy
+scipy
+pandas
+numba>=0.56.0
+joblib>=1.2.0
+
+[dev]
+pytest
+pytest-cov
+ruff
+pre-commit
+bandit[toml]
+
+[gpu]
+
+[gpu:platform_system != "Darwin"]
+cupy-cuda11x>=13.6.0
+
+[sklearn]
+scikit-learn>=0.24.0

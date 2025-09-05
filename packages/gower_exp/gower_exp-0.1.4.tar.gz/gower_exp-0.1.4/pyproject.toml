@@ -1,0 +1,102 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["gower_exp*"]
+exclude = ["gower"]
+
+[project]
+name = "gower_exp"
+version = "0.1.4"
+authors = [
+    { name="Charles Frenzel" }
+]
+description = "Production-ready Gower distance with modern Python tooling"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+keywords = ["gower", "gower_exp", "distance", "matrix", "similarity", "clustering"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy",
+    "scipy",
+    "pandas",
+    "numba>=0.56.0",
+    "joblib>=1.2.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "ruff",
+    "pre-commit",
+    "bandit[toml]"
+]
+gpu = [
+    "cupy-cuda11x>=13.6.0; platform_system!='Darwin'",
+]
+sklearn = [
+    "scikit-learn>=0.24.0"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/momonga-ml/gower-express"
+"Bug Reports" = "https://github.com/momonga-ml/gower-express/issues"
+"Source" = "https://github.com/momonga-ml/gower-express"
+"Original" = "https://github.com/wwwjk366/gower"
+
+[tool.ruff]
+line-length = 88
+target-version = "py37"
+extend-exclude = [
+    "benchmark_*.py",
+    "debug_*.py",
+    "clean_benchmark.py",
+    "ultimate_benchmark.py",
+    "large_scale_benchmark.py",
+    "final_test.py",
+]
+exclude = ["examples/**"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+]
+ignore = [
+    "E501",  # line too long (handled by formatter)
+    "W293",  # whitespace getting flagged for docstrings
+    "B008",  # do not perform function calls in argument defaults
+    "N803",  # argument name should be lowercase (scientific computing uses different conventions)
+    "N806",  # variable name should be lowercase (scientific computing uses different conventions)
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["gower_exp"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+
+[tool.bandit]
+skips = ["B101", "B110"]  # Skip assert_used test and try_except_pass
+exclude_dirs = ["tests", "benchmark", "examples"]
+[tool.bandit.assert_used]
+skips = ["*_test.py", "test_*.py"]
