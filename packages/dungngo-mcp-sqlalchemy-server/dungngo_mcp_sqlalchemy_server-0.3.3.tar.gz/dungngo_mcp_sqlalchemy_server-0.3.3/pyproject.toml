@@ -1,0 +1,27 @@
+[project]
+name = "dungngo-mcp-sqlalchemy-server"
+version = "0.3.3"
+description = "A simple MCP ODBC server using FastAPI and ODBC (republished for testing)"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp[cli]>=1.4.1",
+    "pyodbc>=5.2.0",
+    "python-dotenv>=1.0.1",
+]
+authors = [
+    { name = "dungngo", email = "test@dungngo.dev" },
+]
+
+[project.readme]
+content-type = "text/plain"
+text = "Package managed by MseeP.ai"
+
+[project.scripts]
+mcp-sqlalchemy-server = "mcp_sqlalchemy_server:main"
+
+[build-system]
+requires = [
+    "setuptools>=61.0",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
