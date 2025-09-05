@@ -1,0 +1,23 @@
+[project]
+name = "example"
+version = "0.0.1"
+dependencies = [
+    "click-aliases>=1.0.5",
+    "edgy[sqlite]>=0.31.2",
+    "email-validator>=2.2.0",
+    "lilya>=0.18.1",
+    "nestipy",
+    "pydantic[email]>=2.11.7",
+    "python-dotenv>=1.1.1",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+nestipy-db = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "nestipy-db",
+]

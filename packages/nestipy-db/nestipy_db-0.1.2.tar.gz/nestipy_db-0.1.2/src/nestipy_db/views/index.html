@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{{title}}</title>
+    <link rel="icon" type="image/png" href="{{basename}}/static/favicon.ico"/>
+    <base href="{{basename}}"/>
+    <script type="module" defer crossorigin src="{{basename}}/static/assets/index-BY5ffRRz.js"></script>
+    <link rel="stylesheet" crossorigin href="{{basename}}/static/assets/index-yLpKmjW5.css">
+</head>
+<body>
+<div id="root"></div>
+<script>
+    (function () {
+        try {
+            var baseEl = document.querySelector('base');
+            var baseName = '';
+            if (baseEl && baseEl.getAttribute('href')) {
+                var href = baseEl.getAttribute('href') || '';
+                baseName = href.replace(/^https?:\/\/[^/]+/, '');
+            } else {
+                var match = (location.pathname.match(/^\/[^^/]+/) || [''])[0];
+                baseName = match === '/' ? '' : match;
+            }
+            window.__BASENAME__ = baseName;
+        } catch (e) {
+            window.__BASENAME__ = '';
+        }
+    })();
+</script>
+</body>
+</html>
