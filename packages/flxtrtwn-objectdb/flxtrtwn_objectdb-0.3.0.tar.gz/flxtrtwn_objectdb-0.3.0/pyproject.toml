@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "flxtrtwn-objectdb"
+version = "0.3.0"
+description = ""
+authors = ["Felix Trautwein <mail@felixtrautwein.de>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pymongo = ">=4.12.1"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
