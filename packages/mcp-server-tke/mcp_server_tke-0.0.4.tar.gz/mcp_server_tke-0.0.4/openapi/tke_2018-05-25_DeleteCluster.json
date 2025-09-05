@@ -1,0 +1,222 @@
+{
+    "components": {
+        "schemas": {
+            "ResourceDeleteOption": {
+                "type": "object",
+                "description": "资源删除选项",
+                "x-tcapi-is-used-for": 0,
+                "properties": {
+                    "ResourceType": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "资源类型，例如CBS、CLB、CVM",
+                        "x-tcapi-visibility": 1,
+                        "x-tcapi-is-base64": false,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "DeleteMode": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "集群删除时CBS资源的删除模式：terminate（销毁），retain （保留）。其他资源默认为销毁。",
+                        "x-tcapi-visibility": 1,
+                        "x-tcapi-is-base64": false,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "SkipDeletionProtection": {
+                        "type": "boolean",
+                        "format": "bool",
+                        "nullable": false,
+                        "description": "是否跳过开启删除保护的资源，默认false，设置为true时不清理开启了删除保护的资源，clb有终端节点的情况也属于开了删除保护。",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    }
+                },
+                "example": {
+                    "ResourceType": "CBS",
+                    "DeleteMode": "terminate",
+                    "SkipDeletionProtection": "true"
+                },
+                "required": [
+                    "ResourceType",
+                    "DeleteMode"
+                ]
+            }
+        }
+    },
+    "paths": {
+        "/DeleteCluster": {
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ClusterId": {
+                                        "type": "string",
+                                        "x-tcapi-visibility": 1,
+                                        "description": "集群ID",
+                                        "disabled": false,
+                                        "x-tcapi-reference": [],
+                                        "x-tcapi-is-base64": false
+                                    },
+                                    "InstanceDeleteMode": {
+                                        "type": "string",
+                                        "x-tcapi-visibility": 1,
+                                        "description": "集群实例删除时的策略：terminate（销毁实例，仅支持按量计费云主机实例） retain （仅移除，保留实例）",
+                                        "disabled": false,
+                                        "x-tcapi-reference": [],
+                                        "x-tcapi-is-base64": false
+                                    },
+                                    "ResourceDeleteOptions": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/ResourceDeleteOption"
+                                        },
+                                        "x-tcapi-visibility": 1,
+                                        "description": "集群删除时资源的删除策略，目前支持CBS（默认保留CBS）",
+                                        "disabled": false,
+                                        "x-tcapi-reference": []
+                                    }
+                                },
+                                "example": {
+                                    "ClusterId": "cls-etu4tjip",
+                                    "InstanceDeleteMode": "terminate",
+                                    "ResourceDeleteOptions": "无"
+                                },
+                                "required": [
+                                    "ClusterId",
+                                    "InstanceDeleteMode"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {},
+                                    "example": {},
+                                    "x-tcapi-output-required": []
+                                }
+                            }
+                        },
+                        "description": "yunapi response"
+                    }
+                },
+                "tags": [
+                    "tke"
+                ],
+                "x-tcapi-system-param": [
+                    "Action",
+                    "RequestId",
+                    "SubAccountUin",
+                    "Version",
+                    "Uin",
+                    "AppId",
+                    "CamContext",
+                    "RequestClient",
+                    "RequestSource",
+                    "Timestamp",
+                    "Language",
+                    "ApiModule",
+                    "Region",
+                    "Token",
+                    "ClientIp"
+                ],
+                "x-tcapi-system-param-detail": {
+                    "Action": "body",
+                    "RequestId": "body",
+                    "SubAccountUin": "body",
+                    "Version": "body",
+                    "Uin": "body",
+                    "AppId": "body",
+                    "CamContext": "body",
+                    "RequestClient": "body",
+                    "RequestSource": "body",
+                    "Timestamp": "body",
+                    "Language": "body",
+                    "ApiModule": "body",
+                    "Region": "body",
+                    "Token": "body",
+                    "ClientIp": "body"
+                },
+                "operationId": "DeleteCluster",
+                "x-tcapi-action-name": "删除集群",
+                "x-tcapi-cam-resource": "qcs::tke:${Region}:uin/:cluster/${ClusterId}",
+                "x-tcapi-action-label": [
+                    "集群"
+                ],
+                "x-tcapi-cli-visibility": 1,
+                "x-tcapi-cam-condition": "",
+                "x-tcapi-sec-rate": 10000,
+                "x-tcapi-rate-lev": null,
+                "x-tcapi-is-auth": 1,
+                "x-tcapi-whole-process-token": 0,
+                "x-tcapi-doc-weight": 8827,
+                "x-tcapi-is-internal-service": 0,
+                "x-tcapi-timeout": 15000,
+                "x-tcapi-request-size": 10240,
+                "x-tcapi-is-support-idempotence": false,
+                "x-tcapi-url-name": null,
+                "x-tcapi-is-sensitive-action": false,
+                "x-tcapi-errorcodes": [
+                    "InvalidParameter",
+                    "InternalError.UnexceptedInternal",
+                    "InternalError.Param",
+                    "InternalError.PublicClusterOpNotSupport",
+                    "InternalError.PublicClusterOpNotSupport",
+                    "ResourceNotFound",
+                    "ResourceUnavailable",
+                    "FailedOperation",
+                    "InternalError",
+                    "InternalError.ClusterNotFound",
+                    "InternalError.CamNoAuth",
+                    "OperationDenied.ClusterInDeletionProtection",
+                    "InternalError.ClusterState",
+                    "InternalError.ComponentClinetHttp",
+                    "FailedOperation.ComponentClientHttp",
+                    "FailedOperation.Param",
+                    "FailedOperation.CvmCommon",
+                    "FailedOperation.ClusterNotFound",
+                    "FailedOperation.ClusterState",
+                    "FailedOperation.CamNoAuth",
+                    "FailedOperation.VpcCommon",
+                    "FailedOperation.ComponentClientCommon",
+                    "FailedOperation.ClusterForbiddenToDelete",
+                    "FailedOperation.TagCommon"
+                ],
+                "description": "删除集群(YUNAPI V3版本)",
+                "x-tcapi-category": "集群相关接口",
+                "x-tcapi-examples": [
+                    {
+                        "title": "删除集群",
+                        "input": "POST / HTTP/1.1\nHost: tke.tencentcloudapi.com\nContent-Type: application/json\nX-TC-Action: DeleteCluster\n<公共请求参数>\n\n{\n    \"InstanceDeleteMode\": \"terminate\",\n    \"ClusterId\": \"cls-etu4tjip\"\n}",
+                        "output": "{\r\n  \"Response\": {\r\n    \"RequestId\": \"eac6b301-a322-493a-8e36-83b295459397\"\r\n  }\r\n}",
+                        "description": "删除集群"
+                    }
+                ]
+            }
+        }
+    },
+    "openapi": "3.0.0",
+    "tags": [
+        {
+            "name": "tke"
+        }
+    ],
+    "info": {
+        "version": "2018-05-25",
+        "title": "tcapi export file.",
+        "x-user": "tcapi"
+    }
+}

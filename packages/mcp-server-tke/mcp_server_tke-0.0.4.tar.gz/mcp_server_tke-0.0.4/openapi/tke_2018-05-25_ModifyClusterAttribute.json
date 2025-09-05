@@ -1,0 +1,331 @@
+{
+    "components": {
+        "schemas": {
+            "AutoUpgradeClusterLevel": {
+                "type": "object",
+                "description": "自动变配集群等级",
+                "x-tcapi-is-used-for": 2,
+                "properties": {
+                    "IsAutoUpgrade": {
+                        "type": "boolean",
+                        "format": "bool",
+                        "nullable": false,
+                        "description": "是否开启自动变配集群等级",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    }
+                },
+                "example": {
+                    "IsAutoUpgrade": "true"
+                },
+                "required": [
+                    "IsAutoUpgrade"
+                ],
+                "x-tcapi-output-required": [
+                    "IsAutoUpgrade"
+                ]
+            },
+            "ClusterProperty": {
+                "type": "object",
+                "description": "集群属性",
+                "x-tcapi-is-used-for": 2,
+                "properties": {
+                    "NodeNameType": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "节点hostname命名模式",
+                        "x-tcapi-visibility": 1,
+                        "x-tcapi-is-base64": false,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    }
+                },
+                "example": {
+                    "NodeNameType": "hostname"
+                },
+                "required": [],
+                "x-tcapi-output-required": [
+                    "NodeNameType"
+                ]
+            }
+        }
+    },
+    "paths": {
+        "/ModifyClusterAttribute": {
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ClusterId": {
+                                        "type": "string",
+                                        "x-tcapi-visibility": 1,
+                                        "description": "集群ID",
+                                        "disabled": false,
+                                        "x-tcapi-reference": [],
+                                        "x-tcapi-is-base64": false
+                                    },
+                                    "ProjectId": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "x-tcapi-visibility": 1,
+                                        "description": "集群所属项目",
+                                        "disabled": false,
+                                        "x-tcapi-reference": []
+                                    },
+                                    "ClusterName": {
+                                        "type": "string",
+                                        "x-tcapi-visibility": 1,
+                                        "description": "集群名称",
+                                        "disabled": false,
+                                        "x-tcapi-reference": [],
+                                        "x-tcapi-is-base64": false
+                                    },
+                                    "ClusterDesc": {
+                                        "type": "string",
+                                        "x-tcapi-visibility": 1,
+                                        "description": "集群描述",
+                                        "disabled": false,
+                                        "x-tcapi-reference": [],
+                                        "x-tcapi-is-base64": false
+                                    },
+                                    "ClusterLevel": {
+                                        "type": "string",
+                                        "x-tcapi-visibility": 1,
+                                        "description": "集群等级",
+                                        "disabled": false,
+                                        "x-tcapi-reference": [],
+                                        "x-tcapi-is-base64": false
+                                    },
+                                    "AutoUpgradeClusterLevel": {
+                                        "$ref": "#/components/schemas/AutoUpgradeClusterLevel",
+                                        "x-tcapi-visibility": 1,
+                                        "description": "自动变配集群等级",
+                                        "disabled": false,
+                                        "x-tcapi-reference": []
+                                    },
+                                    "QGPUShareEnable": {
+                                        "type": "boolean",
+                                        "format": "bool",
+                                        "x-tcapi-visibility": 1,
+                                        "description": "是否开启QGPU共享",
+                                        "disabled": false,
+                                        "x-tcapi-reference": []
+                                    },
+                                    "ClusterProperty": {
+                                        "$ref": "#/components/schemas/ClusterProperty",
+                                        "x-tcapi-visibility": 1,
+                                        "description": "集群属性",
+                                        "disabled": false,
+                                        "x-tcapi-reference": []
+                                    }
+                                },
+                                "example": {
+                                    "ClusterId": "cls-2wds9k9p",
+                                    "ProjectId": "0",
+                                    "ClusterName": "cls-2wds9k9p",
+                                    "ClusterDesc": "测试集群",
+                                    "ClusterLevel": "L5",
+                                    "AutoUpgradeClusterLevel": "无",
+                                    "QGPUShareEnable": "false",
+                                    "ClusterProperty": "无"
+                                },
+                                "required": [
+                                    "ClusterId"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ProjectId": {
+                                            "type": "integer",
+                                            "format": "int64",
+                                            "x-tcapi-visibility": 1,
+                                            "disabled": false,
+                                            "x-tcapi-reference": [],
+                                            "nullable": false,
+                                            "description": "集群所属项目"
+                                        },
+                                        "ClusterName": {
+                                            "type": "string",
+                                            "x-tcapi-visibility": 1,
+                                            "disabled": false,
+                                            "x-tcapi-reference": [],
+                                            "nullable": false,
+                                            "description": "集群名称"
+                                        },
+                                        "ClusterDesc": {
+                                            "type": "string",
+                                            "x-tcapi-visibility": 1,
+                                            "disabled": false,
+                                            "x-tcapi-reference": [],
+                                            "nullable": false,
+                                            "description": "集群描述"
+                                        },
+                                        "ClusterLevel": {
+                                            "type": "string",
+                                            "x-tcapi-visibility": 1,
+                                            "disabled": false,
+                                            "x-tcapi-reference": [],
+                                            "nullable": false,
+                                            "description": "集群等级"
+                                        },
+                                        "AutoUpgradeClusterLevel": {
+                                            "$ref": "#/components/schemas/AutoUpgradeClusterLevel",
+                                            "x-tcapi-visibility": 1,
+                                            "disabled": false,
+                                            "x-tcapi-reference": [],
+                                            "nullable": false,
+                                            "description": "自动变配集群等级"
+                                        },
+                                        "QGPUShareEnable": {
+                                            "type": "boolean",
+                                            "format": "bool",
+                                            "x-tcapi-visibility": 1,
+                                            "disabled": false,
+                                            "x-tcapi-reference": [],
+                                            "nullable": false,
+                                            "description": "是否开启QGPU共享"
+                                        },
+                                        "ClusterProperty": {
+                                            "$ref": "#/components/schemas/ClusterProperty",
+                                            "x-tcapi-visibility": 1,
+                                            "disabled": false,
+                                            "x-tcapi-reference": [],
+                                            "nullable": false,
+                                            "description": "集群属性"
+                                        }
+                                    },
+                                    "example": {
+                                        "ProjectId": "0",
+                                        "ClusterName": "tke",
+                                        "ClusterDesc": "tke cluster",
+                                        "ClusterLevel": "L5",
+                                        "AutoUpgradeClusterLevel": "无",
+                                        "QGPUShareEnable": "false",
+                                        "ClusterProperty": "无"
+                                    },
+                                    "x-tcapi-output-required": [
+                                        "ProjectId",
+                                        "ClusterName",
+                                        "ClusterDesc",
+                                        "ClusterLevel",
+                                        "AutoUpgradeClusterLevel",
+                                        "QGPUShareEnable",
+                                        "ClusterProperty"
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "yunapi response"
+                    }
+                },
+                "tags": [
+                    "tke"
+                ],
+                "x-tcapi-system-param": [
+                    "Language",
+                    "RequestId",
+                    "AppId",
+                    "Action",
+                    "RequestSource",
+                    "Version",
+                    "Uin",
+                    "SubAccountUin",
+                    "ApiModule",
+                    "ClientIp",
+                    "Timestamp",
+                    "Region",
+                    "Token"
+                ],
+                "x-tcapi-system-param-detail": {
+                    "Language": "body",
+                    "RequestId": "all",
+                    "AppId": "body",
+                    "Action": "all",
+                    "RequestSource": "body",
+                    "Version": "body",
+                    "Uin": "body",
+                    "SubAccountUin": "body",
+                    "ApiModule": "body",
+                    "ClientIp": "body",
+                    "Timestamp": "body",
+                    "Region": "body",
+                    "Token": "body"
+                },
+                "operationId": "ModifyClusterAttribute",
+                "x-tcapi-action-name": "修改集群属性",
+                "x-tcapi-cam-resource": "qcs::tke:${Region}:uin/:cluster/${ClusterId}",
+                "x-tcapi-action-label": [
+                    "集群"
+                ],
+                "x-tcapi-cli-visibility": 1,
+                "x-tcapi-cam-condition": "",
+                "x-tcapi-sec-rate": 10000,
+                "x-tcapi-rate-lev": null,
+                "x-tcapi-is-auth": 1,
+                "x-tcapi-whole-process-token": 0,
+                "x-tcapi-doc-weight": 8751,
+                "x-tcapi-is-internal-service": 0,
+                "x-tcapi-timeout": 30000,
+                "x-tcapi-request-size": 10240,
+                "x-tcapi-is-support-idempotence": false,
+                "x-tcapi-url-name": "dev_dashboard",
+                "x-tcapi-is-sensitive-action": false,
+                "x-tcapi-errorcodes": [
+                    "InternalError.Param",
+                    "InternalError.Db",
+                    "InternalError.DbAffectivedRows",
+                    "ResourceNotFound",
+                    "ResourceUnavailable",
+                    "MissingParameter",
+                    "InternalError",
+                    "ResourceInUse",
+                    "InternalError.DbRecordNotFound",
+                    "InvalidParameter.Param",
+                    "InternalError.CamNoAuth",
+                    "InternalError.TradeCommon",
+                    "ResourceUnavailable.ClusterState",
+                    "InternalError.UnexpectedInternal",
+                    "InternalError.TradeInsufficientBalance",
+                    "FailedOperation.ComponentClientHttp",
+                    "FailedOperation.TradeCommon",
+                    "FailedOperation.UnexpectedError"
+                ],
+                "description": "修改集群属性",
+                "x-tcapi-category": "集群相关接口",
+                "x-tcapi-examples": [
+                    {
+                        "title": "修改集群属性",
+                        "input": "POST / HTTP/1.1\nHost: tke.tencentcloudapi.com\nContent-Type: application/json\nX-TC-Action: ModifyClusterAttribute\n<公共请求参数>\n\n{\n    \"AutoUpgradeClusterLevel\": {\n        \"IsAutoUpgrade\": true\n    }, \n    \"ClusterName\": \"tke\", \n    \"ProjectId\": 0, \n    \"ClusterDesc\": \"tke\", \n    \"ClusterId\": \"cls-7ph3twqe\", \n    \"ClusterLevel\": \"L5\",\n    \"ClusterProperty\": {\n      \"NodeNameType\": \"lan-ip\"\n    }\n}",
+                        "output": "{\n  \"Response\": {\n    \"AutoUpgradeClusterLevel\": {\n      \"IsAutoUpgrade\": true\n    },\n    \"ClusterName\": \"tke\",\n    \"ProjectId\": 0,\n    \"ClusterDesc\": \"tke\",\n    \"QGPUShareEnable\": true,\n    \"RequestId\": \"24564577-a642-4164-8752-4668d4ca8886\",\n    \"ClusterLevel\": \"L5\",\n    \"ClusterProperty\": {\n      \"NodeNameType\": \"lan-ip\"\n    }\n  }\n}",
+                        "description": "修改集群属性"
+                    }
+                ]
+            }
+        }
+    },
+    "mcpapi": "3.0.0",
+    "tags": [
+        {
+            "name": "tke"
+        }
+    ],
+    "info": {
+        "version": "2018-05-25",
+        "title": "tcapi export file.",
+        "x-user": "tcapi"
+    }
+}

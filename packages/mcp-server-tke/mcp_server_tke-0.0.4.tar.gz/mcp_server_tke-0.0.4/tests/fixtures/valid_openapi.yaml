@@ -1,0 +1,57 @@
+name: TestValidTool
+description: 测试有效的McpAPI工具
+tools:
+  - name: TestSimpleAPI
+    description: 简单测试API
+    args:
+      - name: TestParam
+        type: string
+        description: 测试参数
+        required: true
+      - name: OptionalParam
+        type: integer
+        description: 可选参数
+        required: false
+        default: 100
+    requestTemplate:
+      url: "/test/simple"
+      method: POST
+      body:
+        Action: TestSimpleAPI
+        TestParam: "{{TestParam}}"
+        OptionalParam: "{{OptionalParam}}"
+
+  - name: TestComplexAPI
+    description: 复杂测试API
+    args:
+      - name: BasicParam
+        type: string
+        description: 基础参数
+        required: true
+      - name: ComplexObject
+        type: object
+        description: 复杂对象参数
+        required: true
+        properties:
+          NestedString:
+            type: string
+            description: 嵌套字符串
+            required: true
+          NestedNumber:
+            type: integer
+            description: 嵌套数字
+            required: false
+            default: 42
+          NestedArray:
+            type: array
+            description: 嵌套数组
+            required: false
+            items:
+              type: string
+    requestTemplate:
+      url: "/test/complex"
+      method: POST
+      body:
+        Action: TestComplexAPI
+        BasicParam: "{{BasicParam}}"
+        ComplexObject: "{{ComplexObject}}"

@@ -1,0 +1,107 @@
+server:
+  name: mcpapi-server
+tools:
+  - name: ModifyClusterAttribute
+    description: 修改集群属性
+    args:
+      - name: AutoUpgradeClusterLevel
+        description: 自动变配集群等级
+        type: object
+        properties:
+          IsAutoUpgrade:
+            default: ""
+            description: 是否开启自动变配集群等级
+            type: boolean
+        position: body
+      - name: ClusterDesc
+        description: 集群描述
+        type: string
+        position: body
+      - name: ClusterId
+        description: 集群ID
+        type: string
+        required: true
+        position: body
+      - name: ClusterLevel
+        description: 集群等级
+        type: string
+        position: body
+      - name: ClusterName
+        description: 集群名称
+        type: string
+        position: body
+      - name: ProjectId
+        description: 集群所属项目
+        type: integer
+        position: body
+      - name: QGPUShareEnable
+        description: 是否开启QGPU共享
+        type: boolean
+        position: body
+    requestTemplate:
+      url: /ModifyClusterAttribute
+      method: POST
+      headers:
+        - key: Content-Type
+          value: application/json
+    responseTemplate:
+      prependBody: |+
+        # API Response Information
+
+        Below is the response from an API call. To help you understand the data, I've provided:
+
+        1. A detailed description of all fields in the response structure
+        2. The complete API response
+
+        ## Response Structure
+
+        > Content-Type: application/json
+
+        - **AutoUpgradeClusterLevel**: 自动变配集群等级 (Type: object)
+          - **AutoUpgradeClusterLevel.IsAutoUpgrade**: 是否开启自动变配集群等级 (Type: boolean)
+        - **ClusterDesc**: 集群描述 (Type: string)
+        - **ClusterLevel**: 集群等级 (Type: string)
+        - **ClusterName**: 集群名称 (Type: string)
+        - **ClusterProperty**: 集群属性 (Type: object)
+          - **ClusterProperty.NodeNameType**: 节点hostname命名模式 (Type: string)
+        - **ProjectId**: 集群所属项目 (Type: integer)
+        - **QGPUShareEnable**: 是否开启QGPU共享 (Type: boolean)
+
+        ## Original Response
+
+    outputSchema:
+      contentType: application/json
+      description: yunapi response
+      properties:
+        AutoUpgradeClusterLevel:
+          description: 自动变配集群等级
+          properties:
+            IsAutoUpgrade:
+              description: 是否开启自动变配集群等级
+              type: boolean
+          required:
+            - IsAutoUpgrade
+          type: object
+        ClusterDesc:
+          description: 集群描述
+          type: string
+        ClusterLevel:
+          description: 集群等级
+          type: string
+        ClusterName:
+          description: 集群名称
+          type: string
+        ClusterProperty:
+          description: 集群属性
+          properties:
+            NodeNameType:
+              description: 节点hostname命名模式
+              type: string
+          type: object
+        ProjectId:
+          description: 集群所属项目
+          type: integer
+        QGPUShareEnable:
+          description: 是否开启QGPU共享
+          type: boolean
+      type: object

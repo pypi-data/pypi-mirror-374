@@ -1,0 +1,75 @@
+server:
+  name: openapi-server
+tools:
+  - name: DeleteCluster
+    description: 删除集群
+    args:
+      - name: ClusterId
+        description: 集群ID
+        type: string
+        required: true
+        position: body
+      - name: InstanceDeleteMode
+        description: 集群实例删除时的策略：terminate（销毁实例，仅支持按量计费云主机实例） retain （仅移除，保留实例）
+        type: string
+        required: true
+        position: body
+        enum:
+        - terminate
+        - retain
+      - name: ResourceDeleteOptions
+        description: 集群删除时资源的删除策略，目前支持CBS（默认保留CBS）
+        type: array
+        items:
+          description: 资源删除选项
+          properties:
+            DeleteMode:
+              default: ""
+              description: 集群删除时CBS资源的删除模式：terminate（销毁），retain （保留）。其他资源默认为销毁。
+              type: string
+              enum:
+              - terminate
+              - retain
+            ResourceType:
+              default: ""
+              description: 资源类型，例如CBS、CLB、CVM
+              type: string
+              enum:
+              - CBS
+              - CLB
+              - CVM
+            SkipDeletionProtection:
+              default: ""
+              description: 是否跳过开启删除保护的资源，默认false，设置为true时不清理开启了删除保护的资源，clb有终端节点的情况也属于开了删除保护。
+              type: boolean
+          required:
+            - ResourceType
+            - DeleteMode
+          type: object
+        position: body
+    requestTemplate:
+      url: /DeleteCluster
+      method: POST
+      headers:
+        - key: Content-Type
+          value: application/json
+    responseTemplate:
+      prependBody: |+
+        # API Response Information
+
+        Below is the response from an API call. To help you understand the data, I've provided:
+
+        1. A detailed description of all fields in the response structure
+        2. The complete API response
+
+        ## Response Structure
+
+        > Content-Type: application/json
+
+
+        ## Original Response
+
+    outputSchema:
+      contentType: application/json
+      description: yunapi response
+      type: object

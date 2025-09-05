@@ -1,0 +1,826 @@
+{
+    "components": {
+        "schemas": {
+            "Filter": {
+                "type": "object",
+                "description": "过滤器",
+                "x-tcapi-is-used-for": 0,
+                "properties": {
+                    "Name": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "属性名称, 若存在多个Filter时，Filter间的关系为逻辑与（AND）关系。",
+                        "x-tcapi-visibility": 1,
+                        "x-tcapi-is-base64": false,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "Values": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": false,
+                        "description": "属性值, 若同一个Filter存在多个Values，同一Filter下Values间的关系为逻辑或（OR）关系。",
+                        "x-tcapi-visibility": 1,
+                        "x-tcapi-is-base64": false,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    }
+                },
+                "example": {
+                    "Name": "cluster",
+                    "Values": "cls-qbc3zefo"
+                },
+                "required": [
+                    "Name",
+                    "Values"
+                ]
+            },
+            "Cluster": {
+                "type": "object",
+                "description": "集群信息结构体",
+                "x-tcapi-is-used-for": 1,
+                "properties": {
+                    "ClusterId": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "集群ID",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "ClusterName": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "集群名称",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "ClusterDescription": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "集群描述",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "ClusterVersion": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "集群版本（默认值为1.10.5）",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "ClusterOs": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "集群系统。centos7.2x86_64 或者 ubuntu16.04.1 LTSx86_64，默认取值为ubuntu16.04.1 LTSx86_64",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "ClusterType": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "集群类型，托管集群：MANAGED_CLUSTER，独立集群：INDEPENDENT_CLUSTER。",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "ClusterNetworkSettings": {
+                        "$ref": "#/components/schemas/ClusterNetworkSettings",
+                        "nullable": false,
+                        "description": "集群网络相关参数",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "ClusterNodeNum": {
+                        "type": "integer",
+                        "format": "uint64",
+                        "nullable": false,
+                        "description": "集群当前node数量",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "ProjectId": {
+                        "type": "integer",
+                        "format": "uint64",
+                        "nullable": false,
+                        "description": "集群所属的项目ID",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "TagSpecification": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TagSpecification"
+                        },
+                        "nullable": true,
+                        "description": "标签描述列表。",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "ClusterStatus": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "集群状态 (Trading 集群开通中,Creating 创建中,Running 运行中,Deleting 删除中,Idling 闲置中,Recovering 唤醒中,Scaling 规模调整中,Upgrading 升级中,WaittingForConnect 等待注册,Trading 集群开通中,Isolated 欠费隔离中,Pause 集群升级暂停,NodeUpgrading 节点升级中,RuntimeUpgrading 节点运行时升级中,MasterScaling Master扩缩容中,ClusterLevelUpgrading 调整规格中,ResourceIsolate 隔离中,ResourceIsolated 已隔离,ResourceReverse 冲正中,Abnormal 异常)",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "Property": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "集群属性(包括集群不同属性的MAP，属性字段包括NodeNameType (lan-ip模式和hostname 模式，默认无lan-ip模式))",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "ClusterMaterNodeNum": {
+                        "type": "integer",
+                        "format": "uint64",
+                        "nullable": false,
+                        "description": "集群当前master数量",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "ImageId": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "集群使用镜像id",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "OsCustomizeType": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "OsCustomizeType 系统定制类型",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "ContainerRuntime": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "集群运行环境docker或container",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "CreatedTime": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "创建时间",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "DeletionProtection": {
+                        "type": "boolean",
+                        "format": "bool",
+                        "nullable": false,
+                        "description": "删除保护开关",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "EnableExternalNode": {
+                        "type": "boolean",
+                        "format": "bool",
+                        "nullable": false,
+                        "description": "集群是否开启第三方节点支持",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "ClusterLevel": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "集群等级，针对托管集群生效",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "AutoUpgradeClusterLevel": {
+                        "type": "boolean",
+                        "format": "bool",
+                        "nullable": false,
+                        "description": "自动变配集群等级，针对托管集群生效",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "QGPUShareEnable": {
+                        "type": "boolean",
+                        "format": "bool",
+                        "nullable": false,
+                        "description": "是否开启QGPU共享",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "RuntimeVersion": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "运行时版本",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "ClusterNodeNumWithoutAbnormal": {
+                        "type": "integer",
+                        "format": "uint64",
+                        "nullable": false,
+                        "description": "集群当前node数量(不包含abnormal状态)",
+                        "x-tcapi-visibility": 0,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "ClusterEtcdNodeNum": {
+                        "type": "integer",
+                        "format": "uint64",
+                        "nullable": false,
+                        "description": "集群当前etcd数量",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "CdcId": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "本地专用集群Id",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    }
+                },
+                "example": {
+                    "ClusterId": "cls-e55paxnt",
+                    "ClusterName": "集群",
+                    "ClusterDescription": "示例集群",
+                    "ClusterVersion": "1.20.6",
+                    "ClusterOs": "ubuntu16.04.1 LTSx86_64",
+                    "ClusterType": "INDEPENDENT_CLUSTER",
+                    "ClusterNetworkSettings": "无",
+                    "ClusterNodeNum": "3",
+                    "ProjectId": "0",
+                    "TagSpecification": "无",
+                    "ClusterStatus": "Running",
+                    "Property": "{\\\"NodeNameType\\\":\\\"lan-ip\\\",\\\"NetworkType\\\":\\\"GR\\\"}",
+                    "ClusterMaterNodeNum": "1",
+                    "ImageId": "img-9qabwvbn",
+                    "OsCustomizeType": "GENERAL",
+                    "ContainerRuntime": "docker",
+                    "CreatedTime": "2021-06-16T07:42:57Z",
+                    "DeletionProtection": "false",
+                    "EnableExternalNode": "false",
+                    "ClusterLevel": "L5",
+                    "AutoUpgradeClusterLevel": "true",
+                    "QGPUShareEnable": "false",
+                    "RuntimeVersion": "1.4.3",
+                    "ClusterNodeNumWithoutAbnormal": "3",
+                    "ClusterEtcdNodeNum": "1",
+                    "CdcId": "cluster-0jend45y"
+                },
+                "x-tcapi-output-required": [
+                    "ClusterId",
+                    "ClusterName",
+                    "ClusterDescription",
+                    "ClusterVersion",
+                    "ClusterOs",
+                    "ClusterType",
+                    "ClusterNetworkSettings",
+                    "ClusterNodeNum",
+                    "ProjectId",
+                    "TagSpecification",
+                    "ClusterStatus",
+                    "Property",
+                    "ClusterMaterNodeNum",
+                    "ImageId",
+                    "OsCustomizeType",
+                    "ContainerRuntime",
+                    "CreatedTime",
+                    "DeletionProtection",
+                    "EnableExternalNode",
+                    "ClusterLevel",
+                    "AutoUpgradeClusterLevel",
+                    "QGPUShareEnable",
+                    "RuntimeVersion",
+                    "ClusterNodeNumWithoutAbnormal",
+                    "ClusterEtcdNodeNum"
+                ]
+            },
+            "ClusterNetworkSettings": {
+                "type": "object",
+                "description": "集群网络相关的参数",
+                "x-tcapi-is-used-for": 1,
+                "properties": {
+                    "ClusterCIDR": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "用于分配集群容器和服务 IP 的 CIDR，不得与 VPC CIDR 冲突，也不得与同 VPC 内其他集群 CIDR 冲突",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "IgnoreClusterCIDRConflict": {
+                        "type": "boolean",
+                        "format": "bool",
+                        "nullable": false,
+                        "description": "是否忽略 ClusterCIDR 冲突错误, 默认不忽略",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "MaxNodePodNum": {
+                        "type": "integer",
+                        "format": "uint64",
+                        "nullable": false,
+                        "description": "集群中每个Node上最大的Pod数量(默认为256)",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "MaxClusterServiceNum": {
+                        "type": "integer",
+                        "format": "uint64",
+                        "nullable": false,
+                        "description": "集群最大的service数量(默认为256)",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "Ipvs": {
+                        "type": "boolean",
+                        "format": "bool",
+                        "nullable": false,
+                        "description": "是否启用IPVS(默认不开启)",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "VpcId": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "集群的VPCID（如果创建空集群，为必传值，否则自动设置为和集群的节点保持一致）",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "Cni": {
+                        "type": "boolean",
+                        "format": "bool",
+                        "nullable": false,
+                        "description": "网络插件是否启用CNI(默认开启)",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "KubeProxyMode": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "service的网络模式，当前参数只适用于ipvs+bpf模式",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "ServiceCIDR": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "用于分配service的IP range，不得与 VPC CIDR 冲突，也不得与同 VPC 内其他集群 CIDR 冲突",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "Subnets": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true,
+                        "description": "集群关联的容器子网",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "IgnoreServiceCIDRConflict": {
+                        "type": "boolean",
+                        "format": "bool",
+                        "nullable": false,
+                        "description": "是否忽略 ServiceCIDR 冲突错误, 仅在 VPC-CNI 模式生效，默认不忽略",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "IsDualStack": {
+                        "type": "boolean",
+                        "format": "bool",
+                        "nullable": false,
+                        "description": "集群VPC-CNI模式是否为非双栈集群，默认false，非双栈。",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "Ipv6ServiceCIDR": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "用于分配service的IP range，由系统自动分配",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "CiliumMode": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "集群Cilium Mode配置\r\n- clusterIP",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "SubnetId": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "控制面子网信息，仅在以下场景返回。\n- 容器网络插件为CiliumOverlay。\n- 支持CDC的托管集群，且网络插件为VPC-CNI。",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "DataPlaneV2": {
+                        "type": "boolean",
+                        "format": "bool",
+                        "nullable": false,
+                        "description": "是否启用了 DataPlaneV2（cilium替代kube-proxy）",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    }
+                },
+                "example": {
+                    "ClusterCIDR": "10.0.0.0/24",
+                    "IgnoreClusterCIDRConflict": "false",
+                    "MaxNodePodNum": "256",
+                    "MaxClusterServiceNum": "256",
+                    "Ipvs": "false",
+                    "VpcId": "vpc-aaa",
+                    "Cni": "false",
+                    "KubeProxyMode": "ipvs-bpf",
+                    "ServiceCIDR": "10.0.0.0/25",
+                    "Subnets": "[\"subnet-aa\",\"subnet-bb\"]",
+                    "IgnoreServiceCIDRConflict": "false",
+                    "IsDualStack": "false",
+                    "Ipv6ServiceCIDR": "10.0.0.0/24",
+                    "CiliumMode": "\"clusterIP\"",
+                    "SubnetId": "subnet-0bn5jksy",
+                    "DataPlaneV2": "false"
+                },
+                "x-tcapi-output-required": [
+                    "ClusterCIDR",
+                    "IgnoreClusterCIDRConflict",
+                    "MaxNodePodNum",
+                    "MaxClusterServiceNum",
+                    "Ipvs",
+                    "VpcId",
+                    "Cni",
+                    "KubeProxyMode",
+                    "ServiceCIDR",
+                    "Subnets",
+                    "IgnoreServiceCIDRConflict",
+                    "IsDualStack",
+                    "Ipv6ServiceCIDR",
+                    "CiliumMode"
+                ]
+            },
+            "TagSpecification": {
+                "type": "object",
+                "description": "标签描述列表。通过指定该参数可以同时绑定标签到相应的资源实例，当前仅支持绑定标签到云主机实例。",
+                "x-tcapi-is-used-for": 2,
+                "properties": {
+                    "ResourceType": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "标签绑定的资源类型，当前支持类型：\"cluster\"",
+                        "x-tcapi-visibility": 1,
+                        "x-tcapi-is-base64": false,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "Tags": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Tag"
+                        },
+                        "nullable": true,
+                        "description": "标签对列表",
+                        "x-tcapi-visibility": 1,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    }
+                },
+                "example": {
+                    "ResourceType": "cluster",
+                    "Tags": "无"
+                },
+                "required": [],
+                "x-tcapi-output-required": [
+                    "ResourceType",
+                    "Tags"
+                ]
+            },
+            "Tag": {
+                "type": "object",
+                "description": "标签绑定的资源类型，当前支持类型：\"cluster\"",
+                "x-tcapi-is-used-for": 2,
+                "properties": {
+                    "Key": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "标签键",
+                        "x-tcapi-visibility": 1,
+                        "x-tcapi-is-base64": false,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    },
+                    "Value": {
+                        "type": "string",
+                        "nullable": false,
+                        "description": "标签值",
+                        "x-tcapi-visibility": 1,
+                        "x-tcapi-is-base64": false,
+                        "disabled": false,
+                        "x-tcapi-reference": [],
+                        "default": ""
+                    }
+                },
+                "example": {
+                    "Key": "product",
+                    "Value": "tke"
+                },
+                "required": [],
+                "x-tcapi-output-required": [
+                    "Key",
+                    "Value"
+                ]
+            }
+        }
+    },
+    "paths": {
+        "/DescribeClusters": {
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ClusterIds": {
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "type": "array",
+                                        "x-tcapi-visibility": 1,
+                                        "description": "集群ID列表(为空时，\r\n表示获取账号下所有集群)",
+                                        "disabled": false,
+                                        "x-tcapi-reference": [],
+                                        "x-tcapi-is-base64": false
+                                    },
+                                    "Offset": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "x-tcapi-visibility": 1,
+                                        "description": "偏移量,默认0",
+                                        "disabled": false,
+                                        "x-tcapi-reference": []
+                                    },
+                                    "Limit": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "x-tcapi-visibility": 1,
+                                        "description": "最大输出条数，默认20，最大为100",
+                                        "disabled": false,
+                                        "x-tcapi-reference": []
+                                    },
+                                    "Filters": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/Filter"
+                                        },
+                                        "x-tcapi-visibility": 1,
+                                        "description": "· \"Name\":\"ClusterName\",\"Values\": [\"test\"] 按照【集群名】进行过滤。 类型：String 必选：否 · \"Name\":\"ClusterType\",\"Values\": [\"MANAGED_CLUSTER\"] 按照【集群类型】进行过滤。 类型：String 必选：否 · \"Name\":\"ClusterStatus\",\"Values\": [\"Running\"] 按照【集群状态】进行过滤。 类型：String 必选：否 · \"Name\":\"vpc-id\",\"Values\": [\"vpc-2wds9k9p\"] 按照【VPC】进行过滤。 类型：String 必选：否 · \"Name\":\"tag-key\",\"Values\": [\"testKey\"] 按照【标签键】进行过滤。 类型：String 必选：否 · \"Name\":\"tag-value\",\"Values\": [\"testValue\"] 按照【标签值】进行过滤。 类型：String 必选：否 · \"Name\":\"Tags\",\"Values\": [\"product:tke\"] 按照【标签键值对】进行过滤。 类型：String 必选：否",
+                                        "disabled": false,
+                                        "x-tcapi-reference": []
+                                    },
+                                    "ClusterType": {
+                                        "type": "string",
+                                        "x-tcapi-visibility": 1,
+                                        "description": "集群类型，例如：MANAGED_CLUSTER",
+                                        "disabled": false,
+                                        "x-tcapi-reference": [],
+                                        "x-tcapi-is-base64": false
+                                    }
+                                },
+                                "example": {
+                                    "ClusterIds": "[\"cls-2wds9k9p\"]",
+                                    "Offset": "0",
+                                    "Limit": "20",
+                                    "Filters": "无",
+                                    "ClusterType": "MANAGED_CLUSTER"
+                                },
+                                "required": []
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "TotalCount": {
+                                            "type": "integer",
+                                            "format": "int64",
+                                            "x-tcapi-visibility": 1,
+                                            "disabled": false,
+                                            "x-tcapi-reference": [],
+                                            "nullable": false,
+                                            "description": "集群总个数"
+                                        },
+                                        "Clusters": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Cluster"
+                                            },
+                                            "x-tcapi-visibility": 1,
+                                            "disabled": false,
+                                            "x-tcapi-reference": [],
+                                            "nullable": false,
+                                            "description": "集群信息列表"
+                                        }
+                                    },
+                                    "example": {
+                                        "TotalCount": "10",
+                                        "Clusters": "无"
+                                    },
+                                    "x-tcapi-output-required": [
+                                        "TotalCount",
+                                        "Clusters"
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "yunapi response"
+                    }
+                },
+                "tags": [
+                    "tke"
+                ],
+                "x-tcapi-system-param": [
+                    "ApiModule",
+                    "RequestId",
+                    "AppId",
+                    "Language",
+                    "SubAccountUin",
+                    "Action",
+                    "ClientIp",
+                    "Uin",
+                    "Token",
+                    "Version",
+                    "Timestamp",
+                    "Region",
+                    "RequestSource"
+                ],
+                "x-tcapi-system-param-detail": {
+                    "ApiModule": "body",
+                    "RequestId": "all",
+                    "AppId": "body",
+                    "Language": "body",
+                    "SubAccountUin": "body",
+                    "Action": "all",
+                    "ClientIp": "body",
+                    "Uin": "body",
+                    "Token": "body",
+                    "Version": "body",
+                    "Timestamp": "body",
+                    "Region": "body",
+                    "RequestSource": "body"
+                },
+                "operationId": "DescribeClusters",
+                "x-tcapi-action-name": "查询TKE集群列表",
+                "x-tcapi-cam-resource": "",
+                "x-tcapi-action-label": [
+                    "集群"
+                ],
+                "x-tcapi-cli-visibility": 1,
+                "x-tcapi-cam-condition": "",
+                "x-tcapi-sec-rate": 10000,
+                "x-tcapi-rate-lev": null,
+                "x-tcapi-is-auth": 0,
+                "x-tcapi-whole-process-token": 0,
+                "x-tcapi-doc-weight": 8790,
+                "x-tcapi-is-internal-service": 0,
+                "x-tcapi-timeout": 30000,
+                "x-tcapi-request-size": 10240,
+                "x-tcapi-is-support-idempotence": false,
+                "x-tcapi-url-name": "dev_lutzowtest",
+                "x-tcapi-is-sensitive-action": false,
+                "x-tcapi-errorcodes": [
+                    "InvalidParameter",
+                    "InternalError.Param",
+                    "InternalError.PublicClusterOpNotSupport",
+                    "InternalError.PublicClusterOpNotSupport",
+                    "InternalError.Db",
+                    "InternalError.DbAffectivedRows",
+                    "ResourceNotFound",
+                    "UnsupportedOperation",
+                    "LimitExceeded",
+                    "InternalError",
+                    "InternalError.QuotaMaxNodLimit",
+                    "InternalError.QuotaMaxClsLimit",
+                    "InvalidParameter.Param",
+                    "InternalError.CamNoAuth",
+                    "UnauthorizedOperation.CamNoAuth",
+                    "InternalError.UnexpectedInternal",
+                    "FailedOperation.UnexpectedError"
+                ],
+                "description": "查询集群列表",
+                "x-tcapi-category": "集群相关接口",
+                "x-tcapi-examples": [
+                    {
+                        "title": "查询集群列表",
+                        "input": "POST / HTTP/1.1\nHost: tke.tencentcloudapi.com\nContent-Type: application/json\nX-TC-Action: DescribeClusters\n<公共请求参数>\n\n{}",
+                        "output": "{\r\n    \"Response\": {\r\n        \"Clusters\": [\r\n            {\r\n                \"AutoUpgradeClusterLevel\": true,\r\n                \"ClusterDescription\": \"tke\",\r\n                \"ClusterEtcdNodeNum\": 0,\r\n                \"ClusterId\": \"cls-ayzfpv5c\",\r\n                \"ClusterLevel\": \"L5\",\r\n                \"ClusterMaterNodeNum\": 1,\r\n                \"ClusterName\": \"yctest\",\r\n                \"ClusterNetworkSettings\": {\r\n                    \"CiliumMode\": \"tunnel\",\r\n                    \"ClusterCIDR\": \"10.12.0.0/14\",\r\n                    \"Cni\": true,\r\n                    \"IgnoreClusterCIDRConflict\": false,\r\n                    \"IgnoreServiceCIDRConflict\": false,\r\n                    \"Ipv6ServiceCIDR\": \"fd00:100::/112\",\r\n                    \"Ipvs\": false,\r\n                    \"IsDualStack\": false,\r\n                    \"KubeProxyMode\": \"ipvs\",\r\n                    \"MaxClusterServiceNum\": 1024,\r\n                    \"MaxNodePodNum\": 64,\r\n                    \"ServiceCIDR\": \"10.15.252.0/22\",\r\n                    \"Subnets\": null,\r\n                    \"VpcId\": \"vpc-7modfjc3\"\r\n                },\r\n                \"ClusterNodeNum\": 2,\r\n                \"ClusterOs\": \"tlinux3.1x86_64\",\r\n                \"ClusterStatus\": \"Running\",\r\n                \"ClusterType\": \"MANAGED_CLUSTER\",\r\n                \"ClusterVersion\": \"1.24.4\",\r\n                \"ContainerRuntime\": \"containerd\",\r\n                \"CreatedTime\": \"2022-12-27T07:46:13Z\",\r\n                \"DeletionProtection\": true,\r\n                \"EnableExternalNode\": false,\r\n                \"ImageId\": \"img-2wds9k9p\",\r\n                \"OsCustomizeType\": \"GENERAL\",\r\n                \"ProjectId\": 0,\r\n                \"Property\": \"{\\\"NodeNameType\\\":\\\"lan-ip\\\",\\\"NetworkType\\\":\\\"GR\\\"}\",\r\n                \"QGPUShareEnable\": false,\r\n                \"RuntimeVersion\": \"1.4.3\",\r\n                \"TagSpecification\": null\r\n            }\r\n        ],\r\n        \"RequestId\": \"583e6c4b-ff24-42f8-87f1-37e4c00d81b7\",\r\n        \"TotalCount\": 1\r\n    }\r\n}",
+                        "description": ""
+                    }
+                ]
+            }
+        }
+    },
+    "openapi": "3.0.0",
+    "tags": [
+        {
+            "name": "tke"
+        }
+    ],
+    "info": {
+        "version": "2018-05-25",
+        "title": "tcapi export file.",
+        "x-user": "tcapi"
+    }
+}
