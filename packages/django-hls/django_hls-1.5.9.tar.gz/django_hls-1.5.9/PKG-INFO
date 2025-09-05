@@ -1,0 +1,65 @@
+Metadata-Version: 2.4
+Name: django_hls
+Version: 1.5.9
+Summary: django-hls is a reusable Django application for streaming video and audio using the HLS
+Home-page: https://github.com/YasinKar/django_hls
+Author: Yasin Karbasi
+Author-email: yasinkardev@gmail.com
+License: MIT
+Keywords: stream django hls
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: bson>=0.5.10
+Requires-Dist: Django<6.0,>=5.2.2
+Requires-Dist: celery<6.0,>=5.5.3
+Requires-Dist: ffmpeg-progress-yield<1.0,>=0.12.0
+Requires-Dist: ffmpeg-python<0.3,>=0.2.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: twine>=4.0.2; extra == "dev"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+Django HLS
+=============
+
+django-hls is a reusable Django application for streaming video and audio using the HLS
+
+Installation
+------------
+
+Install using pip:
+
+    pip install django-hls
+
+Then add ``'django_hls'`` to your ``INSTALLED_APPS``.
+
+    INSTALLED_APPS = [
+        ...
+        'django_hls',
+    ]
+
+If you are using Celery, you can set USE_CELERY to true.
+
+    HLS_USE_CELERY = True
+- If django hls cannot connect to celery, the application will stop.
+- Not using Celery is not suitable for a production environment.
+
+You can specify a specific queue that you want to use for django hls.
+
+    HLS_CELERY_QUEUE = 'celery' # default queue
