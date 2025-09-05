@@ -1,0 +1,137 @@
+site_name: About Robutler
+site_description: API client and tools for the Robutler ecosystem - Build AI agents with OpenAI-compatible endpoints
+site_url: https://robutler.ai/docs/
+repo_url: https://github.com/robutlerai/robutler
+repo_name: robutlerai/robutler
+copyright: Copyright &copy; 2025 Robutler
+
+theme:
+  name: material
+  features:
+    # Allows copying code blocks
+    - content.code.copy
+    # Allows selecting code blocks
+    - content.code.select
+    # Shows the current path in the sidebar
+    - navigation.path
+    - navigation.tabs
+    # Shows sections in the sidebar
+    - navigation.sections
+    # Expand all collapsible subsections by default
+    # - navigation.expand
+    # Enable navigation indexes for better mobile navigation
+    - navigation.indexes
+    # Integrate table of contents
+    # - toc.integrate
+    # Enables annotations in code blocks
+    - content.code.annotate
+  palette:
+    primary: black
+  logo: assets/robutler-logo.svg
+  favicon: assets/robutler-logo.svg
+
+plugins:
+  - search
+  - blog:
+      authors: true
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: ["robutler"]
+          options:
+            # Shows links to other members in signatures
+            signature_crossrefs: true
+            # Orders members by source order, rather than alphabetical
+            members_order: source
+            # Puts the signature on a separate line from the member name
+            separate_signature: true
+            # Shows type annotations in signatures
+            show_signature_annotations: true
+            # Makes the font sizes nicer
+            heading_level: 3
+            # Show inherited members
+            inherited_members: true
+            # Use Google-style docstrings
+            docstring_style: google
+
+markdown_extensions:
+  - footnotes
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra:
+  # Remove material generation message in footer
+  generator: false
+  # Configure logo to link to main site
+  homepage: https://robutler.ai
+  analytics:
+    provider: google
+    property: G-9GC3N2VYME
+    feedback:
+      title: Was this page helpful?
+      ratings:
+        - icon: material/emoticon-happy-outline
+          name: This page was helpful
+          data: 1
+          note: >-
+            Thanks for your feedback!
+        - icon: material/emoticon-sad-outline
+          name: This page could be improved
+          data: 0
+          note: >- 
+            Thanks for your feedback! Help us improve this page by
+            using our <a href="..." target="_blank" rel="noopener">feedback form</a>.
+
+extra_css:
+  - stylesheets/extra.css
+
+nav:
+  - Home: index.md
+  # - User Guides:
+  #   # - Introduction: user/index.md
+  #   - Your Robutler Agent: user/agent.md
+  #   - Your first AI workflow: user/workflow.md
+  #   - Real-time discovery: user/discovery.md
+  #   - Payments: user/payments.md
+  #   - Monetize your agent: user/monetize.md
+  #   - Connect your external AI: user/external.md
+
+    # - Your Agent: connect/agent.md
+  - Developer:
+    - Robutler Platform:
+      - Python SDK: api/client_core.md
+    - WebAgents: 
+      - Opensource framework for the Web of Agents: https://robutler.ai/webagents/
+    - Get your API key: https://robutler.ai/developer/
+      # - REST API: api/server.md
+        # - Data Types: api/client_data.md
+        # - Exceptions: api/client_exceptions.md
+  - News: 
+    - blog/index.md
+  - About:
+    - Contacts: contact.md
+    - Open Positions: open-positions.md
+    - Press Kit: press-kit.md
+  # - Glossary: glossary.md
+
+watch:
+  - "robutler/" 
