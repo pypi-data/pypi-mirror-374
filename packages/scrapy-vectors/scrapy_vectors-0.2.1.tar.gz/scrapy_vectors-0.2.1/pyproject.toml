@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scrapy-vectors"
+version = "0.2.1"
+description = "Vector embeddings generation and storage for Scrapy"
+readme = "README.md"
+license = "ISC"
+authors = [
+    {name = "Kyle Kai Hang Tan"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Framework :: Scrapy",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "scrapy>=2.0",
+    "litellm[proxy]>=1.0.0",
+    "boto3>=1.40.23",
+    "botocore>=1.40.23",
+]
+keywords = ["scrapy", "vectors", "embeddings", "s3", "llm"]
+
+[project.urls]
+Homepage = "https://github.com/kyleissuper/scrapy-vectors"
+Repository = "https://github.com/kyleissuper/scrapy-vectors"
+Issues = "https://github.com/kyleissuper/scrapy-vectors/issues"
+
+
+[tool.setuptools]
+packages = ["scrapy_vectors"]
+
+[tool.uv]
+override-dependencies = [
+    "boto3==1.40.23",
+    "botocore==1.40.23",
+    "s3transfer==0.13.1",
+]
+
+[tool.bandit]
+exclude_dirs = ["tests"]
