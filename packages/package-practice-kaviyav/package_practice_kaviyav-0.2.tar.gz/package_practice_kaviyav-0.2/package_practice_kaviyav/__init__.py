@@ -1,0 +1,2 @@
+from package_practice_kaviyav.check1 import call1
+from package_practice_kaviyav.check2 import call2
