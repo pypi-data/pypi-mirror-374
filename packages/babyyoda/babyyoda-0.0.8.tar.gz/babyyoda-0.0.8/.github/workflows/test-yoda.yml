@@ -1,0 +1,59 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+  # Run daily at 0:01 UTC
+  schedule:
+  - cron:  '1 0 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+    container: apnpucky/gentoo-yoda:${{ matrix.yoda-version }}-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        yoda-version: [
+          '1.9.10',
+          # '2.0.1',  # This version is faulty!!!
+          '2.0.2',
+          '2.1.0',
+          '9999'
+        ]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - uses: astral-sh/setup-uv@v5
+
+    - name: Install dependencies
+      run: |
+        uv pip install --system '.[test]' --break-system-packages
+        uv pip list
+
+    - name: Test with pytest
+      run: |
+        pytest  --cov --cov-report=xml -r sx tests/
+
+    - name: Report core project coverage with Codecov
+      if: >-
+        github.event_name != 'schedule'
+      uses: codecov/codecov-action@v5
+      with:
+        fail_ci_if_error: true
+        files: ./coverage.xml
+        flags: unittests-yoda-${{ matrix.yoda-version }}
+        name: babyyoda
+        token: ${{ secrets.CODECOV_TOKEN }}
