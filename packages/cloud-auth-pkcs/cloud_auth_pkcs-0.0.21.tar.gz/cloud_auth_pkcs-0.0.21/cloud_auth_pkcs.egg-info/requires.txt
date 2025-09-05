@@ -1,0 +1,14 @@
+python-pkcs11>=0.9.0
+cryptography
+requests
+
+[aws]
+boto3
+botocore
+
+[azure]
+azure-identity
+azure-core
+
+[gcp]
+google-auth>=2.34.0
