@@ -1,0 +1,60 @@
+[project]
+name = "bumplot"
+description = "Easily create and customize bump charts in Python"
+version = "0.1.1"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["bump", "bump plot", "bump charts", "matplotlib", "data", "visualization", "bezier", "curve"]
+authors = [
+  { name="Joseph Barbier", email="joseph.barbierdarnal@gmail.com" },
+]
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta"
+]
+dependencies = [
+    "matplotlib>=3.9.4",
+    "narwhals>=2.0.0",
+]
+
+[build-system]
+requires = [
+    "setuptools",
+    "setuptools-scm",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["bumplot"]
+
+[tool.uv.sources]
+bumplot = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.2.0",
+    "pytest>=8.3.5",
+    "ruff>=0.11.13",
+    "mkdocs-material>=9.6.9",
+    "mkdocstrings-python>=1.16.5",
+    "coverage>=7.9.1",
+    "genbadge>=1.1.2",
+    "pandas>=2.3.2",
+    "polars>=1.32.3",
+    "mkdocs-matplotlib>=0.10.1",
+]
+quarto = [
+    "jupyter>=1.1.1",
+    "nbclient>=0.10.2",
+    "nbformat>=5.10.4",
+    "pyyaml>=6.0.2",
+]
+
+[project.urls]
+Homepage = "https://y-sunflower.github.io/bumplot/"
+Issues = "https://github.com/y-sunflower/bumplot/issues"
+Documentation = "https://y-sunflower.github.io/bumplot/"
+Repository = "https://github.com/y-sunflower/bumplot"
