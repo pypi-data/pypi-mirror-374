@@ -1,0 +1,14 @@
+[Unit]
+Description=ClamAV on access scanning daemon
+Requires=clamav-daemon.service
+After=clamav-daemon.service syslog.target network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/sbin/clamonacc --foreground=true
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
