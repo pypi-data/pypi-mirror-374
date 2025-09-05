@@ -1,0 +1,13 @@
+[console_scripts]
+core-evals-helm = core_evals.helm.framework_entrypoint:main
+core-evals-helm-run = core_evals.helm.framework_entrypoint:main
+core_evals_helm = core_evals.helm.framework_entrypoint:main
+core_evals_helm_run = core_evals.helm.framework_entrypoint:main
+crfm-proxy-cli = helm.proxy.cli:main
+crfm-proxy-server = helm.proxy.server:main
+helm-create-plots = helm.benchmark.presentation.create_plots:main
+helm-generate-dynamic-model-configs = helm.scripts.generate_dynamic_model_configs:main
+helm-run = helm.benchmark.run:main
+helm-server = helm.benchmark.server:main
+helm-summarize = helm.benchmark.presentation.summarize:main
+helm_run = helm.benchmark.run:main

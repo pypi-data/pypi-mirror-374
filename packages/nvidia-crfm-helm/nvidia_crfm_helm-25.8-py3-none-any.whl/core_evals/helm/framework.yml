@@ -1,0 +1,229 @@
+framework:
+  name: helm
+  pkg_name: helm
+  full_name: Holistic Evaluation of Language Models for Medical Applications
+  description: A framework for evaluating large language models in medical applications across various healthcare tasks
+  url: https://github.com/stanford-crfm/helm
+  source: https://gitlab-master.nvidia.com/dl/JoC/competitive_evaluation/core_evals_frameworks/helm
+
+defaults:
+  command: >-
+    {% if target.api_endpoint.api_key is not none %}export OPENAI_API_KEY=${{target.api_endpoint.api_key}} && {% endif %}
+    {% if config.params.extra.gpt_judge_api_key is not none %}export GPT_JUDGE_API_KEY=${{config.params.extra.gpt_judge_api_key}} && {% endif %}
+    {% if config.params.extra.llama_judge_api_key is not none %}export LLAMA_JUDGE_API_KEY=${{config.params.extra.llama_judge_api_key}} && {% endif %}
+    {% if config.params.extra.claude_judge_api_key is not none %}export CLAUDE_JUDGE_API_KEY=${{config.params.extra.claude_judge_api_key}} && {% endif %}
+    helm-generate-dynamic-model-configs 
+    --model-name {{target.api_endpoint.model_id}} 
+    --base-url {{target.api_endpoint.url}} 
+    --openai-model-name {{target.api_endpoint.model_id}} 
+    --output-dir {{config.output_dir}} &&
+    helm-run 
+    --run-entries {{config.params.task}}:{% if config.params.extra.subset is not none %}subset={{config.params.extra.subset}},{% endif %}model={{target.api_endpoint.model_id}} 
+    {% if config.params.limit_samples is not none %}
+    --max-eval-instances {{config.params.limit_samples}} 
+    {% endif %}
+    {% if config.params.parallelism is not none %}
+    -n {{config.params.parallelism}} 
+    {% endif %}
+    --suite {{config.params.task}}
+    {% if config.params.extra.num_train_trials is not none %} 
+    --num-train-trials {{config.params.extra.num_train_trials}}
+    {% endif %}
+    {% if config.params.extra.data_path is not none %} 
+    --data-path {{config.params.extra.data_path}}
+    {% endif %}
+    {% if config.params.extra.num_output_tokens is not none %} 
+    --num-output-tokens {{config.params.extra.num_output_tokens}}
+    {% endif %}
+    {% if config.params.extra.subject is not none %} 
+    --subject {{config.params.extra.subject}}
+    {% endif %}
+    {% if config.params.extra.condition is not none %} 
+    --condition {{config.params.extra.condition}}
+    {% endif %}
+    {% if config.params.extra.max_length is not none %} 
+    --max-length {{config.params.extra.max_length}}
+    {% endif %} 
+    -o {{config.output_dir}} 
+    --local-path {{config.output_dir}}
+  config:
+    params:
+      limit_samples: null
+      parallelism: 1
+      extra:
+        # Custom data path for scenarios that support it (e.g., ehrshot, clear, medalign)
+        # Overrides the default data location for the scenario
+        data_path: null
+        # Maximum number of tokens the model is allowed to generate in its response
+        # Controls only the output length, not the total sequence length
+        # Example: 1000 limits model responses to 1000 tokens
+        num_output_tokens: null
+        # Specific task or subset to evaluate within a scenario
+        # Examples:
+        # - ehrshot: "guo_readmission", "new_hypertension", "lab_anemia"
+        # - n2c2_ct_matching: "ABDOMINAL", "ADVANCED-CAD", "CREATININE"
+        # - clear: "major_depression", "bipolar_disorder", "substance_use_disorder"
+        subject: null
+        # Specific condition or scenario variant to evaluate
+        # Used by scenarios like 'clear' to specify medical conditions
+        # Examples: "alcohol_dependence", "chronic_pain", "homelessness"
+        condition: null
+        # Maximum total length for the entire input-output sequence (input + output combined)
+        # Controls the combined length of both prompt and response
+        # Example: 2048 limits total conversation to 2048 tokens
+        max_length: null
+        # Number of training trials for few-shot evaluation
+        # Each trial samples a different set of in-context examples
+        # Example: 3 runs the evaluation 3 times with different examples
+        num_train_trials: null
+        # Subset parameter for scenarios that support it (e.g., med_dialog)
+        # Examples:
+        # - med_dialog: "healthcaremagic", "icliniq"
+        subset: null
+        # Judge API keys for multi-judge setup
+        gpt_judge_api_key: GPT_JUDGE_API_KEY
+        llama_judge_api_key: LLAMA_JUDGE_API_KEY
+        claude_judge_api_key: CLAUDE_JUDGE_API_KEY
+  target:
+    api_endpoint: {}
+
+evaluations:
+  - name: medcalc_bench
+    description: A dataset which consists of a patient note, a question requesting to compute a specific medical value, and a ground truth answer (Khandekar et al., 2024).
+    defaults:
+      config:
+        type: medcalc_bench
+        supported_endpoint_types:
+        - chat
+        params:
+          task: medcalc_bench
+  - name: medec
+    description: A dataset containing medical narratives with error detection and correction pairs (Abacha et al., 2025).
+    defaults:
+      config:
+        type: medec
+        supported_endpoint_types:
+        - chat
+        params:
+          task: medec
+  - name: head_qa
+    description: A collection of biomedical multiple-choice questions for testing medical knowledge (Vilares et al., 2019).
+    defaults:
+      config:
+        type: head_qa
+        supported_endpoint_types:
+        - chat
+        params:
+          task: head_qa
+  - name: medbullets
+    description: A USMLE-style medical question dataset with multiple-choice answers and explanations (MedBullets, 2025).
+    defaults:
+      config:
+        type: medbullets
+        supported_endpoint_types:
+        - chat
+        params:
+          task: medbullets
+  - name: pubmed_qa
+    description: A dataset that provides pubmed abstracts and asks associated questions yes/no/maybe questions.
+    defaults:
+      config:
+        type: pubmed_qa
+        supported_endpoint_types:
+        - chat
+        params:
+          task: pubmed_qa
+  - name: ehr_sql
+    description: Given a natural language instruction, generate an SQL query that would be used in clinical research.
+    defaults:
+      config:
+        type: ehr_sql
+        supported_endpoint_types:
+        - chat
+        params:
+          task: ehr_sql
+  - name: race_based_med
+    description: A collection of LLM outputs in response to medical questions with race-based biases, with the objective being to classify whether the output contains racially biased content.
+    defaults:
+      config:
+        type: race_based_med
+        supported_endpoint_types:
+        - chat
+        params:
+          task: race_based_med
+  - name: medhallu
+    description: A dataset of PubMed articles and associated questions, with the objective being to classify whether the answer is factual or hallucinated.
+    defaults:
+      config:
+        type: medhallu
+        supported_endpoint_types:
+        - chat
+        params:
+          task: medhallu
+  - name: mtsamples_replicate
+    description: Generate treatment plans based on clinical notes
+    defaults:
+      config:
+        type: mtsamples_replicate
+        supported_endpoint_types:
+        - chat
+        params:
+          task: mtsamples_replicate
+  - name: aci_bench
+    description: Extract and structure information from patient-doctor conversations
+    defaults:
+      config:
+        type: aci_bench
+        supported_endpoint_types:
+        - chat
+        params:
+          task: aci_bench
+  - name: mtsamples_procedures
+    description: Document and extract information about medical procedures
+    defaults:
+      config:
+        type: mtsamples_procedures
+        supported_endpoint_types:
+        - chat
+        params:
+          task: mtsamples_procedures
+  - name: medication_qa
+    description: Answer consumer medication-related questions
+    defaults:
+      config:
+        type: medication_qa
+        supported_endpoint_types:
+        - chat
+        params:
+          task: medication_qa
+  - name: med_dialog_healthcaremagic
+    description: Generate summaries of doctor-patient conversations, healthcaremagic version
+    defaults:
+      config:
+        type: med_dialog_healthcaremagic
+        supported_endpoint_types:
+        - chat
+        params:
+          task: med_dialog
+          extra:
+            subset: healthcaremagic
+  - name: med_dialog_icliniq
+    description: Generate summaries of doctor-patient conversations, icliniq version
+    defaults:
+      config:
+        type: med_dialog_icliniq
+        supported_endpoint_types:
+        - chat
+        params:
+          task: med_dialog
+          extra:
+            subset: icliniq
+  - name: medi_qa
+    description: Retrieve and rank answers based on medical question understanding
+    defaults:
+      config:
+        type: medi_qa
+        supported_endpoint_types:
+        - chat
+        params:
+          task: medi_qa
