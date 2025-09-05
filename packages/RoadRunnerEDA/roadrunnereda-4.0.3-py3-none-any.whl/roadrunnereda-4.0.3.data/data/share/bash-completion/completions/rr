@@ -1,0 +1,8 @@
+#roadrunner bash completion
+
+_rrcomplete() 
+{
+    COMPREPLY=($(roadrunner -s log.logFileEnabled=False -l _console=warn tab ${COMP_WORDS[@]}))
+}
+
+complete -F _rrcomplete rr

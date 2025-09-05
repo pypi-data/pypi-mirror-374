@@ -1,0 +1,33 @@
+#{{ HEADER_AUTOGEN }}
+sources:
+  inc:
+{% for group in srcs %}{#
+  SOURCE FILES
+#}{% if group.file_type == 'verilog' %}{#
+#}    - sv:
+{% elif group.file_type == 'vhdl' %}{#
+#}    - vhdl:
+{% endif %}{#
+#}{% for file in group.files %}{#
+#}        - {{ file | replace(from=root ~ '/', to='') }}
+{% endfor %}{#
+  DEFINES
+#}{% if group.defines | length > 0 %}{#
+#}      define:
+{% for deflst in group.defines %}{% for def in deflst %}{% if def %}{#
+#}        - {{ def }}
+{% endif %}{% endfor %}{% endfor %}{% endif %}{#
+  INCDIRS
+#}{% if group.incdirs | length > 0 %}{#
+#}      path:
+{% for incdir in group.incdirs %}{#
+#}        - {{ incdir | replace(from=root ~ '/', to='') }}
+{% endfor %}{% endif %}{#
+  GROUP CLOSING
+#}{% endfor %}
+
+includes:
+  path:
+{% for incdir in all_incdirs %}{#
+#}    - {{ incdir | replace(from=root ~ '/', to='') }}
+{% endfor %}
