@@ -1,0 +1,27 @@
+- "*":
+    disabled: false    
+    max_base_backups_local: 1
+    max_incremental_backups_local: 3
+    max_base_backups_remote: 3
+    max_incremental_backups_remote: 40
+    max_stage: SYNCED_INCREMENTAL
+    base_schedule: "0 2 1 * *"
+    incremental_schedule: "0 2 * * *"
+    remote:
+      #type: filesystem
+      #base_path: /tmp/remote_backups
+      type: s3
+      base_path: s3://invitro-backup
+      s3cfg_path: ./.s3cfg
+
+- "clickhouse/*/*/*/{*_raw__*,__dbt,_tmp_,_airbyte_tmp,_airbyte_raw,{normalize,join,combine,link,graph,hash,attr,union}_}*":
+    disabled: true
+
+- "clickhouse/*/*/{system,information_schema,INFORMATION_SCHEMA}/*":
+    disabled: true 
+    
+- "zfs/dataset/*/*/data-{clickhouse,postgres}-*":
+    disabled: true           
+
+- "zfs/dataset/*/{deleted,images}/*":
+    disabled: true
