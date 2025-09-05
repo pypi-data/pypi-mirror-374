@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vibeq"
+version = "1.0.0"
+description = "Universal AI-native test automation that works on ANY website - no hardcoded selectors, self-healing, production-ready"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
+authors = [ { name = "VibeQ Team", email = "hello@vibeq.io" } ]
+classifiers = [
+	"Development Status :: 5 - Production/Stable",
+	"Programming Language :: Python :: 3",
+	"Programming Language :: Python :: 3.8",
+	"Programming Language :: Python :: 3.9", 
+	"Programming Language :: Python :: 3.10",
+	"Programming Language :: Python :: 3.11",
+	"Programming Language :: Python :: 3.12",
+	"Programming Language :: Python :: 3.13",
+	"Operating System :: OS Independent",
+	"Topic :: Software Development :: Testing",
+	"Topic :: Software Development :: Quality Assurance",
+	"Intended Audience :: Developers",
+]
+dependencies = [
+	"requests>=2.28",
+	"playwright>=1.40.0",
+	"openai>=1.0.0",
+	"anthropic>=0.25.0",
+]
+keywords = ["testing", "automation", "selenium", "playwright", "webdriver", "bidi", "ai", "self-healing"]
+
+[project.scripts]
+vibeq = "vibeq.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/Ronaldozero7/vibeq"
+Repository = "https://github.com/Ronaldozero7/vibeq"
+Documentation = "https://github.com/Ronaldozero7/vibeq#readme"
+Issues = "https://github.com/Ronaldozero7/vibeq/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[project.optional-dependencies]
+dev = ["pytest", "playwright", "requests", "mypy", "ruff", "flake8", "coverage"]
+all = ["playwright", "anthropic", "openai"]
