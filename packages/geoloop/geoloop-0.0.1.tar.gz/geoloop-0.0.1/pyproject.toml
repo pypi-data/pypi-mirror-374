@@ -1,0 +1,16 @@
+[project]
+name = "geoloop"
+version = "0.0.1"
+description = "Reserved package name"
+authors = [{ name = "Jan-Diederik van Wees", email = "Jan_Diederik.vanWees@tno.nl" }, { name = "Zanne Korevaar", email = "zanne.korevaar@tno.nl" }]
+license = {text = "Apache 2.0"}
+readme = "README.md"
+requires-python = ">=3.8"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+packages = ["geoloop"]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
