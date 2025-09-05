@@ -1,0 +1,33 @@
+colors = {}
+WHITE = (255,255,255)
+BLACK = (0,0,0)
+DARK_BROWN = (97, 63, 1)
+LIGHT_BROWN = (153, 100, 3)
+DARK_GREY =(92, 92, 92)
+GREY = (145, 145, 145)
+LIGHT_GREY = (200, 200, 200)
+BEIGE = (255, 248, 220)
+INDIGO = (107, 27, 245)
+DARK_BLUE = (0, 0, 194)
+DARKEST_BLUE = (0, 0, 150)
+RED = (255,0,0)
+GREEN = (0,255,0)
+DARK_GREEN = (5, 181, 5)
+DARKER_GREEN = (8, 133, 8)
+DARKEST_GREEN = (3, 94, 3)
+BLUE = (0,0,255)
+ORANGE = (252, 148, 3)
+YELLOW = (252, 235, 3)
+TURQUOISE = (3, 252, 211)
+LIGHT_BLUE = (3, 202, 252)
+VIOLET = (186, 99, 247)
+PURPLE = (116, 4, 194)
+PINK = (245, 0, 228)
+YELLOW_GREEN = (190, 247, 2)
+BLOOD_RED = (158, 2, 2)
+LAVENDER = (189, 165, 250)
+
+items = list(globals().items())
+for name, value in items:
+    if not name == "colors" and not name.startswith("__"):
+        colors[name] = value
