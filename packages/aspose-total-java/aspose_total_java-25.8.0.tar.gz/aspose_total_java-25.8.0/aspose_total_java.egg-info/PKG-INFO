@@ -1,0 +1,78 @@
+Metadata-Version: 2.4
+Name: aspose-total-java
+Version: 25.8.0
+Summary: Aspose.Total for Python via Java: unified meta-package for core Aspose Python-via-Java components.
+Home-page: https://products.aspose.com/total/python-java
+Author: Aspose
+Author-email: total@aspose.com
+License: LicenseRef-Proprietary
+Project-URL: Homepage, https://products.aspose.com/total/python-java/
+Project-URL: Releases, https://releases.aspose.com/total/python-java/
+Project-URL: Docs, https://docs.aspose.com/total/python-java/
+Project-URL: Samples, https://aspose.github.io/
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.7,<3.13
+Description-Content-Type: text/markdown
+License-File: license.txt
+Requires-Dist: aspose-cells==25.8.0
+Requires-Dist: aspose-diagram==25.8.0
+Requires-Dist: aspose-ocr-python-java==25.2.0
+Requires-Dist: aspose-pdf-for-python-via-java==24.9
+Provides-Extra: barcode
+Requires-Dist: aspose-barcode-for-python-via-java==25.8.1; extra == "barcode"
+Requires-Dist: JPype1==1.4.1; extra == "barcode"
+Provides-Extra: slides
+Requires-Dist: aspose-slides-java==24.6.0; extra == "slides"
+Requires-Dist: JPype1<2.0.0,>=1.5.0; extra == "slides"
+Provides-Extra: full-jpype141
+Requires-Dist: aspose-barcode-for-python-via-java==25.8.1; extra == "full-jpype141"
+Requires-Dist: JPype1==1.4.1; extra == "full-jpype141"
+Provides-Extra: full-jpype15x
+Requires-Dist: aspose-slides-java==24.6.0; extra == "full-jpype15x"
+Requires-Dist: JPype1<2.0.0,>=1.5.0; extra == "full-jpype15x"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+### JPype tracks — pick **one** per environment
+
+Please note that the `aspose-total-java` exposes two optional extras that **require different JPype1 versions**. Don’t install both in the same env.
+
+* **`barcode`** → installs `aspose-barcode-for-python-via-java==25.8.1`
+  **Requires:** `JPype1==1.4.1`
+* **`slides`** → installs `aspose-slides-java==24.6.0`
+  **Requires:** `JPype1>=1.5,<2.0`
+
+**Install from PyPI (recommended):**
+
+```bash
+pip install "aspose-total-java[barcode]==25.8.0"   # or: [slides]
+pip check  # verify no dependency conflicts
+```
+
+---
+
+[Home](https://www.aspose.com/) | [Product Page](https://products.aspose.com/total/python-java) | [Docs](https://docs.aspose.com/total/pythonjava/) | [Demos](https://products.aspose.app/total/family) | [Examples](https://aspose.github.io/) | [Download](https://downloads.aspose.com/total/pythonjava) | [Blog](https://blog.aspose.com/category/total/) | [Releases](https://releases.aspose.com/) | [Free Support](https://forum.aspose.com/c/total/7) | [Temporary License](https://purchase.aspose.com/temporary-license)
+
+# Aspose.Total for Python via Java Features
+
+- Read Microsoft Excel&reg; & OpenOffice&reg; Spreadsheets via Python
+- Convert Excel&reg; & ODS formats to PDF, XPS, images, & EMF
+- Work with tables, rows, columns, cells, charts, conditional formatting
+- Create Microsoft Visio&reg; diagrams & flowcharts
+- Export Visio&reg; diagrams to PDF, XPS, Images, & XAML formats
+- Generate & recognize various types of 1D, 2D, & postal barcodes
+- Set code text for barcode labels
+- Support for popular barcode symbologies
+- many many more.

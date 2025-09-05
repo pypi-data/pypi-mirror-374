@@ -1,0 +1,10 @@
+include README.md
+include license.txt
+
+# don't ship local clutter
+prune build
+prune dist
+prune .venv
+prune venv
+prune .venv-*
+prune __pycache__
