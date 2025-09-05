@@ -1,0 +1,95 @@
+# ==========================
+# Main project configuration 
+# ==========================
+
+[project]
+name = "environsettings"
+version = "0.0.1"
+description = "Typed, validated settings management from environment variables and .env files."
+readme = { file = "README.md", content-type = "text/markdown" }
+license = { file = "LICENSE" }
+authors = [
+    { name = "shaileshpandit141", email = "shaileshpandit141@gmail.com" },
+]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["settings", "configuration", "environment", "dotenv"]
+requires-python = ">=3.13"
+dependencies = ["python-dotenv>=1.1.1"]
+
+# CLI scripts entry point configuration
+# -------------------------------------
+[project.scripts]
+environsettings = "environsettings:entry_point" # CLI entry point
+
+# ==========================
+# Build system configuration
+# ==========================
+[build-system]
+requires = ["hatchling"]          # Build tool requirement
+build-backend = "hatchling.build" # Build backend
+
+# =================
+# Dependency groups
+# =================
+[dependency-groups]
+dev = ["environsettings", "pytest>=8.4.1"] # Development dependency group
+
+# ===============
+# UV tool sources
+# ===============
+[tool.uv.sources]
+environsettings = { workspace = true }
+
+# =====================
+# Optional dependencies
+# =====================
+[project.optional-dependencies]
+dev = ["pytest", "mypy", "ruff"] # Optional dev dependencies
+
+# ============
+# Package data
+# ============
+[tool.setuptools.package-data]
+"environsettings" = ["py.typed"] # Include type information
+
+# ============
+# Project URLs
+# ============
+[project.urls]
+Homepage = "https://github.com/shaileshpandit141/environsettings"
+Repository = "https://github.com/shaileshpandit141/environsettings"
+Issues = "https://github.com/shaileshpandit141/environsettings/issues"
+
+# ===================
+# Tool Configurations
+# ===================
+
+# Disable ruff S101 rule for test casecases
+# -----------------------------------------
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = ["S101"]
+
+# ====================
+# Pytest configuration
+# ====================
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-v -s"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
