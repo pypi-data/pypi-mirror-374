@@ -1,0 +1,40 @@
+diff '--color=auto' -ru xarray.orig/core/dataarray.pyi xarray/core/dataarray.pyi
+--- xarray.orig/core/dataarray.pyi	2024-04-17 16:39:22.871662707 +0200
++++ xarray/core/dataarray.pyi	2024-04-17 16:38:30.763522838 +0200
+@@ -1,6 +1,7 @@
+ import datetime
+ import numpy as np
+ import pandas as pd
++import primap2
+ from _typeshed import Incomplete
+ from collections.abc import Hashable, Iterable, Mapping, MutableMapping, Sequence
+ from dask.dataframe import DataFrame as DaskDataFrame
+@@ -56,6 +57,8 @@
+     @name.setter
+     def name(self, value: Hashable | None) -> None: ...
++    @property
++    def pr(self) -> primap2.accessors.PRIMAP2DataArrayAccessor: ...
+     @property
+     def variable(self) -> Variable: ...
+     @property
+     def dtype(self) -> np.dtype: ...
+diff '--color=auto' -ru xarray.orig/core/dataset.pyi xarray/core/dataset.pyi
+--- xarray.orig/core/dataset.pyi	2024-04-17 16:39:22.871662707 +0200
++++ xarray/core/dataset.pyi	2024-04-17 16:39:00.667603556 +0200
+@@ -1,6 +1,7 @@
+ import datetime
+ import numpy as np
+ import pandas as pd
++import primap2
+ from _typeshed import Incomplete
+ from collections.abc import Collection, Hashable, Iterable, Iterator, Mapping, MutableMapping, Sequence
+ from dask.dataframe import DataFrame as DaskDataFrame
+@@ -69,6 +70,8 @@
+     @attrs.setter
+     def attrs(self, value: Mapping[Any, Any]) -> None: ...
++    @property
++    def pr(self) -> primap2.accessors.PRIMAP2DatasetAccessor: ...
+     @property
+     def encoding(self) -> dict[Any, Any]: ...
+     @encoding.setter
+     def encoding(self, value: Mapping[Any, Any]) -> None: ...

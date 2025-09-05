@@ -1,0 +1,16 @@
+attrs:
+  area: area (ISO3)
+  cat: category (IPCC2006)
+  scen: scenario (general)
+data_file: test_csv_data_sec_cat_if.csv
+dimensions:
+  '*':
+  - Class (class)
+  - Type (type)
+  - area (ISO3)
+  - category (IPCC2006)
+  - entity
+  - scenario (general)
+  - source
+  - unit
+time_format: '%Y'
