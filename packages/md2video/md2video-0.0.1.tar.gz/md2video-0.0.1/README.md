@@ -1,0 +1,82 @@
+# markdown2video
+
+markdown2video，让你用markdown生成视频和PPT！
+
+以视频为核心，目标是同时生成博客文章。
+
+## 安装
+
+下载ffmpeg然后放到PATH中。
+
+通过pip安装：
+
+```
+pip install md2video
+```
+
+## 使用
+
+### markdown（视频脚本）
+
+基础语法如下：
+
+- 使用`<!-- mode: slide -->`后，后续内容作为PPT的页面渲染。
+- 使用`<!-- mode comment -->`后，后续内容作为TTS的输入生成语音，解释前一页面。
+
+```
+<!-- mode: slide -->
+
+# PPT的标题
+
+PPT的内容
+
+<!-- mode comment -->
+
+这里是解释本页PPT的内容。会被转为语音配上上面的画面。
+
+```
+
+- 对复杂的内容展示需求，可以使用下面的方式直接编写reveal.js代码。(基于[pandoc的html的拓展](https://pandoc.org/demo/example33/8.14-raw-html.html#extension-raw_attribute))
+
+    ```
+    \```{=html}
+
+    \```
+    ```
+
+### md2video
+
+命令行工具，通过`python -m md2video`调用。将markdown视频脚本转换为视频
+
+指定输入的markdown文件后，会创建后缀为`.md2video`的缓存文件夹。
+
+```
+markdown视频脚本 --(md2slidemd)--> pandoc支持的markdown编写PPT的格式（reveal.js） --(md2image)--> html格式的PPT，每页PPT的图像，以及打印得到pdf格式的PPT。
+```
+
+```
+python -m md2video.md2slidemd
+```
+
+## 架构
+
+- md2slidemd：基于[pandoc filters](https://pandoc.org/filters.html)实现markdown解析，并利用pandoc转换为reveal.js格式的markdown幻灯片。
+- md2image：基于playwright的headless浏览器打开页面，截屏转换为图片序列。
+- TTS：基于[kokoro_onnx](https://github.com/thewh1teagle/kokoro-onnx)项目生成每个幻灯片的语音
+- slidemd2video：基于python-ffmpeg，从图片和语音生成视频。
+
+## 拓展的Markdown语义特性
+
+需求分解：
+- 标记为slide的块，在生成文章的时候也正常渲染？即，即使不加修改，作为markdown也可以看。
+- 原始的markdown是以文章优先还是slides优先？能否做到原始markdown直接是文章？似乎不太能做到文章和slides兼顾。
+- 标识的方式：如果只用起始标识，而不是标识开始和结束，那么整个文章默认会被划分为slides，文字部分必须主动处理为非slides？还是把用于生成图片的部分单独拿出来吧。然后单独去生成文章。
+- 其他方便浏览的格式：slides的pdf格式。
+
+## TODO
+
+- 模型文件放到appdata，然后缺文件的时候问用户是否立刻下载。
+- 通过分句生成语音的方式生成字幕。
+- 生成竖屏内容。
+- 同时支持中文和英语。
+- 集成更多的TTS API，包括edge TTS。

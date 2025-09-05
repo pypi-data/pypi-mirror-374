@@ -1,0 +1,23 @@
+[project]
+name = "md2video"
+version = "0.0.1"
+authors = [
+  { name="am009", email="634960348@qq.com" },
+]
+description = "Convert markdown presentations files to video"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://github.com/am009/md2video"
+Issues = "https://github.com/am009/md2video/issues"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
