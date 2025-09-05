@@ -1,0 +1,61 @@
+[build-system]
+requires = [
+  "maturin>=1.8,<2.0"
+]
+build-backend = "maturin"
+
+[project]
+name = "comrak-ext"
+description = "Extended Python bindings for the Comrak Rust library, a fast CommonMark/GFM parser"
+classifiers = [
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Rust",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.9"
+]
+authors = [
+  {email = "chrastek12@gmail.com", name = "Martin Chrástek"}
+]
+keywords = [
+  "markdown",
+  "html",
+  "rust",
+  "commonmark",
+  "gfm",
+  "parser"
+]
+readme = "README.md"
+requires-python = ">=3.9"
+version = "0.1.0"
+
+[project.license]
+file = "LICENSE"
+
+[project.optional-dependencies]
+dev = [
+  "maturin[patchelf]>=1.8.2",
+  "pdm>=2.22.3",
+  "pdm-bump>=0.9.10",
+  "pre-commit>=4.1.0"
+]
+bench = [
+  "markdown>=3.7",
+  "markdown2>=2.5.3"
+]
+
+[project.urls]
+Homepage = "https://github.com/Martin005/comrak-ext"
+Repository = "https://github.com/Martin005/comrak-ext.git"
+
+[tool.maturin]
+features = [
+  "pyo3/extension-module"
+]
