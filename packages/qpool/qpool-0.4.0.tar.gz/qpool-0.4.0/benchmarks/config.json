@@ -1,0 +1,41 @@
+[
+  {
+    "name": "High startup cost, short task (Wombat should excel)",
+    "benchmark": "prop-throughput",
+    "tasks": 400,
+    "workers": 4,
+    "startup_time": 0.5,
+    "task_time": 0.001
+  },
+  {
+    "name": "Low startup cost, short task (minimal difference expected)",
+    "benchmark": "prop-throughput",
+    "tasks": 2000,
+    "workers": 4,
+    "startup_time": 0.01,
+    "task_time": 0.001
+  },
+  {
+    "name": "High startup cost, long task (startup cost less dominant)",
+    "benchmark": "prop-throughput",
+    "tasks": 100,
+    "workers": 4,
+    "startup_time": 0.5,
+    "task_time": 0.1
+  },
+  {
+    "name": "CPU-bound baseline (no props, raw throughput)",
+    "benchmark": "baseline-throughput",
+    "tasks": 2000,
+    "workers": 4,
+    "complexity": 100000
+  },
+  {
+    "name": "High volume of tiny prop-based tasks (stresses overhead)",
+    "benchmark": "prop-throughput",
+    "tasks": 1000,
+    "workers": 4,
+    "startup_time": 0.1,
+    "task_time": 0.0
+  }
+]
