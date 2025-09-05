@@ -1,0 +1,38 @@
+server {
+    listen 443 ssl;
+    server_name xxx.com;
+
+    # SSL configuration
+    ssl_certificate /etc/nginx/ssl/xxx.com.crt;
+    ssl_certificate_key /etc/nginx/ssl/xxx.com.key;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers on;
+
+    location /twin_baker/ {
+        proxy_pass http://localhost:7777/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # WebSocket support (if needed for future extensions)
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+
+        # Timeout settings
+        proxy_read_timeout 300;
+        proxy_connect_timeout 300;
+        proxy_send_timeout 300;
+    }
+
+    # Redirect HTTP to HTTPS
+    error_page 497 https://$host$request_uri;
+}
+
+server {
+    listen 80;
+    server_name xxx.com;
+    return 301 https://$host$request_uri;
+}

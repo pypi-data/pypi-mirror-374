@@ -1,0 +1,61 @@
+[project]
+name = "remote-twin-baker"
+version = "0.1.0"
+description = "A Python package for managing remote environment requirements"
+readme = "README.md"
+authors = [{name = "Your Name", email = "your.email@example.com"}]
+license = {file = "LICENSE"}
+requires-python = ">=3.8"
+dependencies = [
+    "requests>=2.28.0",
+    "pyyaml>=6.0",
+    "flask>=2.0",  # Add other dependencies from requirements.txt
+]
+
+[project.urls]
+Homepage = "https://github.com/YankeeMarco/remote-twin-baker"
+Repository = "https://github.com/YankeeMarco/remote-twin-baker.git"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["remote_twin_baker"]
+exclude = [
+    "/tests",
+    "/nginx",
+    "/requirements.txt",
+    "/custom_requirements.txt",
+    "/config.local.yaml",
+]
+
+[tool.isort]
+profile = "black"
+line_length = 128
+known_third_party = ["flask", "requests", "numpy", "pandas", "pyyaml"]
+known_first_party = ["remote_twin_baker"]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+default_section = "THIRDPARTY"
+skip = []
+combine_as_imports = true
+force_grid_wrap = 0
+include_trailing_comma = true
+import_heading_stdlibrary = "Standard Library"
+import_heading_thirdparty = "Third Party Libraries"
+import_heading_firstparty = "Local Libraries"
+multi_line_output = 3
+
+[tool.flake8]
+max-line-length = 128
+ignore = ["E501", "W503"]  # Remove F401 to allow unused import detection
+exclude = ["*.egg", "*.egg-info", "__pycache__", "venv"]
+
+[tool.black]
+line-length = 128
+
+[tool.autoflake]
+remove_all_unused_imports = true
+in_place = true
+recursive = true
+exclude = ["tests/*", "nginx/*", "__init__.py"]
