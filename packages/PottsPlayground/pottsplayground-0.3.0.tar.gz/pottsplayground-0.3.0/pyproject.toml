@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools", "setuptools_cuda_cpp", "numpy"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PottsPlayground"
+readme = "README.rst"
+description = "For creating and solving Potts-model representations of combinatorial optimization problems"
+dynamic = ["version"]
+requires-python = ">= 3.6"
+dependencies = [
+	"matplotlib>=0.0.0",
+	"networkx>=2.0",
+	"numpy>=1.17.0",
+	#"blifparser>=0.0.0",
+	#"minorminer>=0.0.0",
+	#"dimod>=0.0.0",
+	#"dwave-system>=0.0.0"
+]
+authors = [
+  { name = "William Whitehead", email="williamwhitehead@ucsb.edu" },
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "PottsPlayground.__version__"}
+
+
+[project.urls]
+documentation = "https://williamow.github.io/PottsPlayground/index.html"
+source = "https://github.com/williamow/PottsPlayground/"
