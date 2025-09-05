@@ -1,0 +1,27 @@
+Metadata-Version: 2.3
+Name: osbot_docker
+Version: 0.4.1
+Summary: OWASP Security Bot - Docker
+License: MIT
+Author: Dinis Cruz
+Author-email: dinis.cruz@owasp.org
+Requires-Python: >=3.7,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: docker
+Requires-Dist: osbot-utils
+Requires-Dist: pyyaml
+Project-URL: Homepage, https://github.com/owasp-sbot/OSBot-Docker
+Project-URL: Repository, https://github.com/owasp-sbot/OSBot-Docker
+Description-Content-Type: text/markdown
+
+# OSBot_Docker
+
+[![Coverage Status](https://coveralls.io/repos/github/owasp-sbot/OSBot-Docker/badge.svg)](https://coveralls.io/github/owasp-sbot/OSBot-Docker)
