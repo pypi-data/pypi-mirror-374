@@ -1,0 +1,256 @@
+Metadata-Version: 2.2
+Name: zope.vocabularyregistry
+Version: 2.0
+Summary: Utility-based Vocabulary Registry
+Home-page: http://github.com/zopefoundation/zope.vocabularyregistry
+Author: Zope Foundation and Contributors
+Author-email: zope-dev@zope.dev
+License: ZPL-2.1
+Keywords: zope3 schema vocabulary registry
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Zope Public License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Framework :: Zope :: 3
+Requires-Python: >=3.9
+License-File: LICENSE.txt
+Requires-Dist: setuptools
+Requires-Dist: zope.component
+Requires-Dist: zope.interface
+Requires-Dist: zope.schema
+Provides-Extra: test
+Requires-Dist: zope.configuration; extra == "test"
+Requires-Dist: zope.testing; extra == "test"
+Requires-Dist: zope.testrunner; extra == "test"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+=========================
+ zope.vocabularyregistry
+=========================
+
+.. image:: https://img.shields.io/pypi/v/zope.vocabularyregistry.svg
+        :target: https://pypi.python.org/pypi/zope.vocabularyregistry/
+        :alt: Latest release
+
+.. image:: https://img.shields.io/pypi/pyversions/zope.vocabularyregistry.svg
+        :target: https://pypi.org/project/zope.vocabularyregistry/
+        :alt: Supported Python versions
+
+.. image:: https://github.com/zopefoundation/zope.vocabularyregistry/actions/workflows/tests.yml/badge.svg
+        :target: https://github.com/zopefoundation/zope.vocabularyregistry/actions/workflows/tests.yml
+
+.. image:: https://coveralls.io/repos/github/zopefoundation/zope.vocabularyregistry/badge.svg?branch=master
+        :target: https://coveralls.io/github/zopefoundation/zope.vocabularyregistry?branch=master
+
+
+This Zope 3 package provides a ``zope.schema`` vocabulary registry that uses
+utilities to look up vocabularies.
+
+
+=====================================
+ Component-based Vocabulary Registry
+=====================================
+
+This package provides a vocabulary registry for zope.schema,
+based on the component architecture.
+
+It replaces the zope.schema's simple vocabulary registry
+when ``zope.vocabularyregistry`` package is imported, so it's done
+automatically. All we need is provide vocabulary factory
+utilities:
+
+  >>> import zope.vocabularyregistry
+  >>> from zope.component import provideUtility
+  >>> from zope.schema.interfaces import IVocabularyFactory
+  >>> from zope.schema.vocabulary import SimpleTerm
+  >>> from zope.schema.vocabulary import SimpleVocabulary
+
+  >>> def makeVocabularyFactory(*values):
+  ...     def vocabularyFactory(context=None):
+  ...         terms = [SimpleTerm(v) for v in values]
+  ...         return SimpleVocabulary(terms)
+  ...     return vocabularyFactory
+
+  >>> zope.component.provideUtility(
+  ...     makeVocabularyFactory(1, 2), IVocabularyFactory,
+  ...     name='SomeVocabulary')
+
+Now we can get the vocabulary using standard zope.schema
+way:
+
+  >>> from zope.schema.vocabulary import getVocabularyRegistry
+  >>> vr = getVocabularyRegistry()
+  >>> voc = vr.get(None, 'SomeVocabulary')
+  >>> [term.value for term in voc]
+  [1, 2]
+
+
+If vocabulary is not found, VocabularyRegistryError is raised.
+
+  >>> try:
+  ...     vr.get(None, 'NotAvailable')
+  ... except LookupError as error:
+  ...     print("%s.%s: %s" % (error.__module__, error.__class__.__name__, error))
+  zope.schema.vocabulary.VocabularyRegistryError: unknown vocabulary: 'NotAvailable'
+
+
+We can also use vocabularies defined in local component registries.
+Let's define some local sites with a vocabulary.
+
+  >>> import zope.component.hooks
+  >>> from zope.component import globalregistry
+  >>> from zope.component.globalregistry import getGlobalSiteManager
+
+  >>> from zope.interface.registry import Components
+  >>> class LocalSite(object):
+  ...   def __init__(self, name):
+  ...      self.sm = Components(
+  ...          name=name, bases=(globalregistry.getGlobalSiteManager(), ))
+  ...
+  ...   def getSiteManager(self):
+  ...       return self.sm
+
+  >>> local_site_even = LocalSite('local_site_even')
+  >>> local_site_even.sm.registerUtility(
+  ...     makeVocabularyFactory(4, 6, 8), IVocabularyFactory,
+  ...     name='SomeVocabulary', event=False)
+
+  >>> local_site_odd = LocalSite('local_site_odd')
+  >>> local_site_odd.sm.registerUtility(
+  ...     makeVocabularyFactory(3, 5, 7), IVocabularyFactory,
+  ...     name='SomeVocabulary', event=False)
+
+
+Vocabularies defined in local component registries can be accessed
+in two ways.
+
+1. Using the registry from within a site.
+
+  >>> with zope.component.hooks.site(local_site_even):
+  ...     voc = getVocabularyRegistry().get(None, 'SomeVocabulary')
+  ...     [term.value for term in voc]
+  [4, 6, 8]
+
+2. Binding to a context that can be used to look up a local site manager.
+
+  >>> from zope.interface.interfaces import IComponentLookup
+  >>> zope.component.provideAdapter(
+  ...    lambda number: ((local_site_even, local_site_odd)[number % 2]).sm,
+  ...    adapts=(int, ), provides=IComponentLookup)
+
+  >>> context = 4
+  >>> voc = getVocabularyRegistry().get(context, 'SomeVocabulary')
+  >>> [term.value for term in voc]
+  [4, 6, 8]
+
+Binding to a context takes precedence over active site, so we can look
+up vocabularies from other sites.
+
+  >>> context = 7
+  >>> with zope.component.hooks.site(local_site_even):
+  ...     voc = getVocabularyRegistry().get(context, 'SomeVocabulary')
+  ...     [term.value for term in voc]
+  [3, 5, 7]
+
+
+If we cannot find a local site for given context, currently active
+site is used.
+
+  >>> from zope.interface.interfaces import ComponentLookupError
+  >>> def raisingGetSiteManager(context=None):
+  ...    if context == 42:
+  ...        raise ComponentLookupError(context)
+  ...    return zope.component.hooks.getSiteManager(context)
+  >>> hook = zope.component.getSiteManager.sethook(raisingGetSiteManager)
+
+  >>> context = 42
+  >>> with zope.component.hooks.site(local_site_odd):
+  ...     voc = getVocabularyRegistry().get(context, 'SomeVocabulary')
+  ...     [term.value for term in voc]
+  [3, 5, 7]
+
+
+Configuration
+=============
+
+This package provides configuration that ensures the vocabulary
+registry is established:
+
+
+  >>> from zope.configuration import xmlconfig
+  >>> _ = xmlconfig.string(r"""
+  ... <configure xmlns="http://namespaces.zope.org/zope" i18n_domain="zope">
+  ...   <include package="zope.vocabularyregistry" />
+  ... </configure>
+  ... """)
+
+
+=========
+ CHANGES
+=========
+
+2.0 (2025-09-04)
+================
+
+- Add support for Python 3.11, 3.12, 3.13.
+
+- Drop support for Python 2.7, 3.5, 3.6, 3.7, 3.8.
+
+
+1.2.0 (2021-11-26)
+==================
+
+- Add support for Python 3.8, 3.9, and 3.10.
+
+
+1.1.1 (2018-12-03)
+==================
+
+- Important bugfix for the new feature introduced in 1.1.0: Fall back to
+  active site manager if no local site manager can be looked up for provided
+  context.
+
+
+1.1.0 (2018-11-30)
+==================
+
+- Ensure that a context is provided when looking up the vocabulary factory.
+
+- Drop support for Python 2.6 and 3.3.
+
+- Add support for Python 3.5, 3.6, 3.7, PyPy and PyPy3.
+
+
+1.0.0 (2013-03-01)
+==================
+
+- Added support for Python 3.3.
+
+- Replaced deprecated ``zope.interface.implements`` usage with equivalent
+  ``zope.interface.implementer`` decorator.
+
+- Dropped support for Python 2.4 and 2.5.
+
+- Initial release independent of ``zope.app.schema``.
