@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: pivotalpath
+Version: 1.0.2
+Summary: The industry standard for hedge fund index analytics
+Author-email: Your Name <your.email@example.com>
+License: MIT
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
+﻿# PivotalPath
+
+**The Industry Standard for Hedge Fund Index Analytics**
+
+PivotalPath is a comprehensive Python package for hedge fund index performance analysis, designed with AI/LLM integration in mind.
+
+## Installation
+
+    pip install pivotalpath
+
+## Quick Start
+
+    import pivotalpath as pp
+    
+    # Get essential metrics for Hedge Fund Composite Index
+    stats = pp.quick_index_stats('PP-HFC', period='3Y')
+    print(f'3Y Sharpe Ratio: {stats[''sharpe'']:.2f}')
+    
+    # Comprehensive analysis
+    analysis = pp.analyze_hedge_fund_index('PP-HFC')
+    
+    # Compare multiple hedge fund strategies
+    indices = ['PP-HFC', 'PP-L-EH', 'PP-L-MA']
+    comparison = pp.compare_hedge_fund_indices(indices)
+
+## Key Features
+
+- Hedge Fund Index Analysis: Performance metrics for 11+ hedge fund indices
+- Institutional-Quality Metrics: Sharpe ratios, drawdowns, alpha/beta, risk metrics  
+- AI/LLM Optimized: Function names designed for AI assistant integration
+- Real-Time Data: Live API connection to institutional hedge fund index data
+
+## Available Indices
+
+- PP-HFC: Hedge Fund Composite Index
+- PP-L-EH: Equity Hedge Index
+- PP-L-MA: Merger Arbitrage Index
+- And 8 additional strategy-specific indices
+
+## License
+
+MIT License
