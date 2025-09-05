@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flowscribe"
+version = "0.1.1"
+description = "Flow-first runtime tracing for Python apps."
+authors = [
+    { name = "Your Name", email = "your@email.com" }
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "pyyaml>=6.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/flowscribe"
+Documentation = "https://github.com/yourusername/flowscribe#readme"
+Repository = "https://github.com/yourusername/flowscribe"
+
+[tool.setuptools.packages.find]
+where = ["."]
