@@ -1,0 +1,7 @@
+[console_scripts]
+lint=dsp_toolkit.cli:lint_and_format
+postinstall=dsp_toolkit.cli:postinstall
+release=dsp_toolkit.cli:release
+start=dsp_toolkit.cli:main
+test=dsp_toolkit.cli:test
+
