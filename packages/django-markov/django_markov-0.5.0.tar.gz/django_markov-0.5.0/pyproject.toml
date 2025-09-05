@@ -1,0 +1,295 @@
+[project]
+name = "django-markov"
+version = "0.5.0"
+description = "django-markov is a reusable Django app that enables you to create Markov text models, and store them in the database. Those models can then be used to generate Markov chain sentences."
+authors = [
+    { name = "Daniel Andrlik", email = "daniel@andrlik.org" }
+]
+dependencies = [
+    "django>=5.1",
+    "markovify>=0.9.4",
+    "spacy>=3.8.7",
+]
+readme = "README.md"
+license = "BSD-3-Clause"
+requires-python = ">= 3.12"
+classifiers = [
+    "Framework :: Django :: 5.1",
+    "Framework :: Django :: 5.2",
+    "License :: OSI Approved :: BSD License",
+    "Framework :: Django",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Development Status :: 4 - Beta",
+]
+
+[project.urls]
+Repository = "https://codeberg.org/andrlik/django-markov"
+Documentation = "https://django-markov.readthedocs.io/en/latest/"
+Homepage = "https://django-markov.readthedocs.io/en/latest/"
+
+[project.optional-dependencies]
+test = [
+    "pytest-django",
+    "pytest-cov",
+    "pytest-sugar",
+    "pytest-asyncio",
+    "django-coverage",
+    "django-coverage-plugin",
+    "argon2-cffi",
+    "django-environ",
+    "pytest-mock",
+    "faker",
+    "django-extensions",
+]
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+managed = true
+dev-dependencies = [
+    "pytest-django>=4.11.1",
+    "pytest-cov>=4.1.0",
+    "pytest-sugar>=1.0.0",
+    "pyright>=1.1.355",
+    "ruff>=0.3.3",
+    "pytest-asyncio>=0.23.6",
+    "bump-my-version>=0.19.0",
+    "mkdocstrings[python]>=0.24.1",
+    "mkdocs>=1.5.3",
+    "mkdocs-literate-nav>=0.6.1",
+    "mkdocs-gen-files>=0.5.0",
+    "mkdocs-include-markdown-plugin>=6.0.4",
+    "mkdocs-material>=9.5.14",
+    "django-types>=0.19.1",
+    "black>=24.3.0",
+    "django-coverage>=1.2.4",
+    "django-coverage-plugin>=3.1.0",
+    "en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl",
+    "argon2-cffi>=23.1.0",
+    "django-environ>=0.11.2",
+    "django-extensions>=3.2.3",
+    "pytest-mock>=3.14.0",
+    "faker>=24.4.0",
+    "bandit[toml]>=1.7.8",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/django_markov"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/django_markov", "tests"]
+
+[tool.coverage.run]
+branch = true
+parallel = true
+source = ["src/django_markov"]
+plugins = ["django_coverage_plugin"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[tool.black]
+# https://github.com/psf/black
+target-version = ["py312"]
+line-length = 88
+color = true
+
+exclude = '''
+/(
+    \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | migrations
+    | buck-out
+    | build
+    | dist
+    | env
+    | venv
+    | venvs
+)/
+'''
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+extend-exclude = ["migrations"]
+
+[tool.ruff.lint]
+select = [
+  "A",
+  "ARG",
+  "B",
+  "C",
+  "DJ",
+  "DTZ",
+  "E",
+  "EM",
+  "F",
+  "FBT",
+  "I",
+  "ICN",
+  "ISC",
+  "N",
+  "PLC",
+  "PLE",
+  "PLR",
+  "PLW",
+  "Q",
+  "RUF",
+  "S",
+  "T",
+  "TID",
+  "UP",
+  "W",
+  "YTT",
+]
+ignore = [
+  # Allow non-abstract empty methods in abstract base classes
+  "B027",
+  # Allow boolean positional values in function calls, like `dict.get(... True)`
+  "FBT003",
+  # Ignore checks for possible passwords
+  "S105",
+  "S106",
+  "S107",
+  # Ignore complexity
+  "C901",
+  "PLR0911",
+  "PLR0912",
+  "PLR0913",
+  "PLR0915",
+  "DJ001",
+  "ISC001",
+]
+unfixable = [
+  # Don't touch unused imports
+  "F401",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = ["S101", "FBT001", "ARG001"]
+"tests/urls.py" = ["RUF005"]
+"tests/model_load_timings.py" = ["T201"]
+"conftest.py" = ["ARG001"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["django_markov"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.pyright]
+pythonVersion = "3.12"
+exclude = ["**/migrations/",
+    "**/__pycache__",
+    ".venv",
+    ".tox",
+    "tests",
+]
+reportIncompatibleVariableOverride = false
+
+[tool.pytest.ini_options]
+# https://docs.pytest.org/en/6.2.x/customize.html#pyproject-toml
+# Directories that are not visited by pytest collector:
+testpaths = ["src/django_markov", "tests"]
+DJANGO_SETTINGS_MODULE = "tests.settings"
+asyncio_default_fixture_loop_scope = "function"
+pythonpath = [".", "src"]
+django_find_project = false
+norecursedirs = ["hooks", "*.egg", ".eggs", "dist", "build", "docs", ".tox", ".git", "__pycache__", ".venv"]
+doctest_optionflags = ["NUMBER", "NORMALIZE_WHITESPACE", "IGNORE_EXCEPTION_DETAIL"]
+filterwarnings = [
+  "ignore::DeprecationWarning",
+  "ignore::PendingDeprecationWarning"
+]
+
+# Extra options:
+addopts = [
+  "--strict-markers",
+  "--tb=short",
+  "--doctest-modules",
+  "--cov-report=term-missing",
+  "--cov=django_markov",
+  "--reuse-db"
+]
+
+[tool.check-wheel-contents]
+ignore = ["W004"]
+
+[tool.tox]
+env_list = ["3.13", "3.12", "3.11", "lint", "types"]
+
+[tool.tox.env_run_base]
+description = "Run tests under {base_python}"
+allowlist_externals = ["{change_dir}/.tox/{base_python}/bin/python"]
+runner = "uv-venv-lock-runner"
+with_dev = true
+commands = [["pytest"]]
+
+[tool.tox.env.lint]
+description = "Run linting via ruff"
+skip_install = true
+allowlist_externals = ["{change_dir}/.tox/{base_python}/bin/python"]
+with_dev = true
+runner = "uv-venv-lock-runner"
+commands = [["ruff", "check"]]
+
+[tool.tox.env.types]
+description = "Run type checks via pyright"
+allowlist_externals = ["{change_dir}/.tox/{base_python}/bin/python"]
+runner = "uv-venv-lock-runner"
+with_dev = true
+commands = [["pyright"]]
+
+[tool.bumpversion]
+current_version = "0.5.0"
+parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
+serialize = ["{major}.{minor}.{patch}"]
+search = "{current_version}"
+replace = "{new_version}"
+regex = false
+ignore_missing_version = false
+tag = true
+sign_tags = false
+tag_name = "{new_version}"
+tag_message = "Bump version: {current_version} → {new_version}"
+allow_dirty = false
+commit = true
+message = "Bump version: {current_version} → {new_version}"
+pre_commit_hooks = ["uv sync", "git add uv.lock"]
+commit_args = ""
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = "version = \"{current_version}\""
+replace = "version = \"{new_version}\""
+
+[[tool.bumpversion.files]]
+filename = "CHANGELOG.md"
+search = "## Unreleased"
+replace = "## {new_version}"
+
+[[tool.bumpversion.files]]
+filename = "CHANGELOG.md"
+search = "{current_version}...HEAD"
+replace = "{current_version}...{new_version}"
+
+[tool.django-stubs]
+django-settings-module = "tests.settings"
+
+[tool.bandit]
+exclude_dirs = ["tests", "conftest.py", "src/django_markov/migrations"]
