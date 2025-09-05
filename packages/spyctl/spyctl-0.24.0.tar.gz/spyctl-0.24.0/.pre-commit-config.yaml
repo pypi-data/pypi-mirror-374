@@ -1,0 +1,16 @@
+repos:
+  - repo: https://github.com/spyderbat/spyder-scan
+    rev: v1.1.1
+    hooks:
+      - id: spyder-scan
+  - repo: https://github.com/trufflesecurity/trufflehog
+    rev: v3.88.29
+    hooks:
+      - id: trufflehog
+        entry: trufflehog git file://. --since-commit HEAD --no-verification --fail
+  - repo: local
+    hooks:
+      - id: ruff-format-check
+        name: Check Ruff Format
+        entry: ./ruff-format.sh --check
+        language: script

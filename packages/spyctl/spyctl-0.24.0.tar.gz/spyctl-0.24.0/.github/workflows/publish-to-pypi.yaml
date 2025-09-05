@@ -1,0 +1,35 @@
+name: Publish Spyctl to PyPI
+
+on: 
+  release:
+    types: [published]
+
+jobs:
+  build:
+    if: startsWith(github.event.release.tag_name, 'v') && !contains(github.event.release.tag_name, 'beta') && github.event.release.target_commitish == 'main'
+    name: Build Spyctl distribution
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/spyctl
+    permissions:
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
+    steps:
+    - uses: actions/checkout@v4
+    - uses: astral-sh/setup-uv@v3
+    - run: uv build
+    - run: uv publish --trusted-publishing always
+    - name: Notify Slack
+      run: |
+        curl -request POST \
+          --header 'Content-type: application/json' \
+          --url ${{ secrets.RELEASE_CHANNEL_WEBHOOK }} \
+          --data '{"text": "*Spyctl CLI ${{github.event.release.tag_name}}* released to *Pypi*. *Author*: ${{ github.actor }} "}'
+    - name: Failure
+      if: failure()
+      run: |
+        echo "Notify Slack of failure"
+        curl -request POST \
+          --header 'Content-type: application/json' \
+          --url ${{ secrets.RELEASE_CHANNEL_WEBHOOK }} \
+          --data '{"text": "*Spyctl CLI ${{github.event.release.tag_name}}* released to *Pypi* failed."}'
