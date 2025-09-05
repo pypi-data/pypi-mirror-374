@@ -1,0 +1,32 @@
+[project]
+name = "imageterminal"
+version = "2.0.1"
+description = "A  terminal tool for advanced image manipulation including a filetype converter, background remover, and blazing fast image upscaling!"
+authors = [
+    {name = "Ian Tawileh"}
+]
+license = {text = "Apache-2.0"}
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "textual (>=5.2.0,<6.0.0)",
+    "pillow (>=11.3.0,<12.0.0)",
+    "pillow-avif-plugin (>=1.5.2,<2.0.0)",
+    "opencv-contrib-python (>=4.12.0.88,<5.0.0.0)",
+    "rembg (>=2.0.67,<3.0.0)",
+    "numpy (>=2,<3.0.0)",
+    "onnxruntime (>=1.16.0,<2.0.0)"
+]
+
+[project.scripts]
+imageterminal = "imageterminal.__main__:main"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+imageterminal = ["*.tcss"]
