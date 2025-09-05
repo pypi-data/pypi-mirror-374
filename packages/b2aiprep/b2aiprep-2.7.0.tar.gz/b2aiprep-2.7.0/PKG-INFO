@@ -1,0 +1,251 @@
+Metadata-Version: 2.4
+Name: b2aiprep
+Version: 2.7.0
+Summary: A small package to generate features from acoustic
+Author-email: Rahul Brito <rfbrito@mit.edu>, SenseIn Group <sensein-social@mit.edu>
+License: Apache License
+        Version 2.0, January 2004
+        http://www.apache.org/licenses/
+        
+        TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+        
+        1. Definitions.
+        
+        "License" shall mean the terms and conditions for use, reproduction, and distribution as defined by Sections 1 through 9 of this document.
+        
+        "Licensor" shall mean the copyright owner or entity authorized by the copyright owner that is granting the License.
+        
+        "Legal Entity" shall mean the union of the acting entity and all other entities that control, are controlled by, or are under common control with that entity. For the purposes of this definition, "control" means (i) the power, direct or indirect, to cause the direction or management of such entity, whether by contract or otherwise, or (ii) ownership of fifty percent (50%) or more of the outstanding shares, or (iii) beneficial ownership of such entity.
+        
+        "You" (or "Your") shall mean an individual or Legal Entity exercising permissions granted by this License.
+        
+        "Source" form shall mean the preferred form for making modifications, including but not limited to software source code, documentation source, and configuration files.
+        
+        "Object" form shall mean any form resulting from mechanical transformation or translation of a Source form, including but not limited to compiled object code, generated documentation, and conversions to other media types.
+        
+        "Work" shall mean the work of authorship, whether in Source or Object form, made available under the License, as indicated by a copyright notice that is included in or attached to the work (an example is provided in the Appendix below).
+        
+        "Derivative Works" shall mean any work, whether in Source or Object form, that is based on (or derived from) the Work and for which the editorial revisions, annotations, elaborations, or other modifications represent, as a whole, an original work of authorship. For the purposes of this License, Derivative Works shall not include works that remain separable from, or merely link (or bind by name) to the interfaces of, the Work and Derivative Works thereof.
+        
+        "Contribution" shall mean any work of authorship, including the original version of the Work and any modifications or additions to that Work or Derivative Works thereof, that is intentionally submitted to Licensor for inclusion in the Work by the copyright owner or by an individual or Legal Entity authorized to submit on behalf of the copyright owner. For the purposes of this definition, "submitted" means any form of electronic, verbal, or written communication sent to the Licensor or its representatives, including but not limited to communication on electronic mailing lists, source code control systems, and issue tracking systems that are managed by, or on behalf of, the Licensor for the purpose of discussing and improving the Work, but excluding communication that is conspicuously marked or otherwise designated in writing by the copyright owner as "Not a Contribution."
+        
+        "Contributor" shall mean Licensor and any individual or Legal Entity on behalf of whom a Contribution has been received by Licensor and subsequently incorporated within the Work.
+        
+        2. Grant of Copyright License.
+        
+        Subject to the terms and conditions of this License, each Contributor hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright license to reproduce, prepare Derivative Works of, publicly display, publicly perform, sublicense, and distribute the Work and such Derivative Works in Source or Object form.
+        
+        3. Grant of Patent License.
+        
+        Subject to the terms and conditions of this License, each Contributor hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable (except as stated in this section) patent license to make, have made, use, offer to sell, sell, import, and otherwise transfer the Work, where such license applies only to those patent claims licensable by such Contributor that are necessarily infringed by their Contribution(s) alone or by combination of their Contribution(s) with the Work to which such Contribution(s) was submitted. If You institute patent litigation against any entity (including a cross-claim or counterclaim in a lawsuit) alleging that the Work or a Contribution incorporated within the Work constitutes direct or contributory patent infringement, then any patent licenses granted to You under this License for that Work shall terminate as of the date such litigation is filed.
+        
+        4. Redistribution.
+        
+        You may reproduce and distribute copies of the Work or Derivative Works thereof in any medium, with or without modifications, and in Source or Object form, provided that You meet the following conditions:
+        
+            You must give any other recipients of the Work or Derivative Works a copy of this License; and
+            You must cause any modified files to carry prominent notices stating that You changed the files; and
+            You must retain, in the Source form of any Derivative Works that You distribute, all copyright, patent, trademark, and attribution notices from the Source form of the Work, excluding those notices that do not pertain to any part of the Derivative Works; and
+            If the Work includes a "NOTICE" text file as part of its distribution, then any Derivative Works that You distribute must include a readable copy of the attribution notices contained within such NOTICE file, excluding those notices that do not pertain to any part of the Derivative Works, in at least one of the following places: within a NOTICE text file distributed as part of the Derivative Works; within the Source form or documentation, if provided along with the Derivative Works; or, within a display generated by the Derivative Works, if and wherever such third-party notices normally appear. The contents of the NOTICE file are for informational purposes only and do not modify the License. You may add Your own attribution notices within Derivative Works that You distribute, alongside or as an addendum to the NOTICE text from the Work, provided that such additional attribution notices cannot be construed as modifying the License.
+        
+        You may add Your own copyright statement to Your modifications and may provide additional or different license terms and conditions for use, reproduction, or distribution of Your modifications, or for any such Derivative Works as a whole, provided Your use, reproduction, and distribution of the Work otherwise complies with the conditions stated in this License.
+        
+        5. Submission of Contributions.
+        
+        Unless You explicitly state otherwise, any Contribution intentionally submitted for inclusion in the Work by You to the Licensor shall be under the terms and conditions of this License, without any additional terms or conditions. Notwithstanding the above, nothing herein shall supersede or modify the terms of any separate license agreement you may have executed with Licensor regarding such Contributions.
+        
+        6. Trademarks.
+        
+        This License does not grant permission to use the trade names, trademarks, service marks, or product names of the Licensor, except as required for reasonable and customary use in describing the origin of the Work and reproducing the content of the NOTICE file.
+        
+        7. Disclaimer of Warranty.
+        
+        Unless required by applicable law or agreed to in writing, Licensor provides the Work (and each Contributor provides its Contributions) on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including, without limitation, any warranties or conditions of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. You are solely responsible for determining the appropriateness of using or redistributing the Work and assume any risks associated with Your exercise of permissions under this License.
+        
+        8. Limitation of Liability.
+        
+        In no event and under no legal theory, whether in tort (including negligence), contract, or otherwise, unless required by applicable law (such as deliberate and grossly negligent acts) or agreed to in writing, shall any Contributor be liable to You for damages, including any direct, indirect, special, incidental, or consequential damages of any character arising as a result of this License or out of the use or inability to use the Work (including but not limited to damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other commercial damages or losses), even if such Contributor has been advised of the possibility of such damages.
+        
+        9. Accepting Warranty or Additional Liability.
+        
+        While redistributing the Work or Derivative Works thereof, You may choose to offer, and charge a fee for, acceptance of support, warranty, indemnity, or other liability obligations and/or rights consistent with this License. However, in accepting such obligations, You may act only on Your own behalf and on Your sole responsibility, not on behalf of any other Contributor, and only if You agree to indemnify, defend, and hold each Contributor harmless for any liability incurred by, or claims asserted against, such Contributor by reason of your accepting any such warranty or additional liability.
+        
+        END OF TERMS AND CONDITIONS
+        
+Project-URL: Homepage, https://github.com/sensein/b2aiprep
+Project-URL: Issues, https://github.com/sensein/b2aiprep/issues
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Requires-Python: <3.13,>=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: senselab~=0.36.2
+Requires-Dist: matplotlib>=3.8.3
+Requires-Dist: fhir.resources==7.1.0
+Requires-Dist: streamlit>=1.42.2
+Requires-Dist: av~=14.1.0
+Requires-Dist: soundfile
+Provides-Extra: doc
+Requires-Dist: jupyterlab; extra == "doc"
+Requires-Dist: jupytext; extra == "doc"
+Requires-Dist: ipympl; extra == "doc"
+Provides-Extra: dev
+Requires-Dist: b2aiprep[doc]; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-benchmark; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: responses; extra == "dev"
+Requires-Dist: senselab[audio]; extra == "dev"
+Provides-Extra: dashboard
+Requires-Dist: b2aiprep[doc]; extra == "dashboard"
+Requires-Dist: streamlit>=1.42.2; extra == "dashboard"
+Requires-Dist: senselab[audio]; extra == "dashboard"
+Dynamic: license-file
+
+# B2AI Prep
+
+A simple Python package to prepare acoustic data for the Bridge2AI voice project.
+
+**Caution:** this package is under active development and interfaces may change rapidly.
+
+## Installation
+
+MacOS with Mx (ARM) chip only: Make sure that you have the ARM version of python installed.
+Run this to check:
+```
+[path/to/your/python] -c "import platform; print(platform.machine())
+```
+
+Requires a Python >= 3.10, <3.12 environment
+
+```
+pip install b2aiprep
+```
+
+## Usage
+See commands available through the CLI:
+
+```bash
+b2aiprep-cli --help
+```
+
+1. Convert an audio file to features:
+
+    The simplest form takes an audio file, a subject id, and a task name.
+
+    ```bash
+    b2aiprep-cli convert test_audio.wav s1 mpt
+    ```
+
+    It will save a pytorch `.pt` file with a dictionary of features. This can be
+    loaded by `torch.load()`. The file is named following a simple convention:
+    `sub-<subject_id>_task-<task_name>_md5-<checksum>_features.pt`
+
+    To enable speech to text transcription, specify the `--speech2text` flag.
+
+2. Batch process audio files
+
+    This requires a CSV file, where there is a column header called `filename` and then each subsequent line is of the form:
+    path/to/audio.wav
+
+    This also supports a CSV file where each line is of the form:
+    path/to/audio.wav,subject_id,task_name
+
+    To generate this csv file from the Production directory pulled from wasabi, use command 3.
+
+    ```bash
+    b2aiprep-cli batchconvert filelist.csv --plugin cf n_procs=2 --outdir out --save_figures
+    ```
+
+    The above command uses pydra under the hood to parallel process the audio files.
+    All outputs are currently stored in a single directory specified by the `--outdir`
+    flag.
+
+    One can also generate a hugging face dataset in the output directory by specifying the
+     `--dataset` flag.
+
+    To enable speech to text transcription, specify the `--speech2text` flag.
+
+3. Generate csv file to feed to batchconvert
+
+    ```bash
+    b2aiprep-cli createbatchcsv input_dir outfile
+    ```
+
+    The input directory should point to the location of the `Production` directory pulled from Wasabi e.g. `/Users/b2ai/production`.
+
+    This directory can have subfolders for each institution, (e.g. `production/MIT`),
+    and each subdirectory is expected to have all the `.wav` files from each institution.
+
+    Outfile is the path to and name of the csv file to be generated, e.g. `audiofiles.csv`
+
+   The csv file will have a header named `filename` with all the filenames listed under.
+
+5. Verify if two audio files are from the same speaker
+
+    ```bash
+    b2aiprep-cli test_audio1.wav test_audio2.wav --model 'speechbrain/spkrec-ecapa-voxceleb'
+    ```
+
+    This will use the speechbrain speaker recognition model to verify that the two
+    audio files are from the same speaker.
+
+    There is a notebook in the docs directory that can be used to interact with the library
+    programmatically.
+
+6. Convert the speaker in the source audio file (1st argument) into the speaker of the target audio file (2nd argument)
+     and save the result in the output file (3rd argument)
+
+    ```bash
+    b2aiprep-cli convert-voice data/vc_source.wav data/vc_target.wav data/vc_output.wav
+    ```
+
+7. Transcribe the audio
+
+    ```bash
+    b2aiprep-cli transcribe data/vc_source.wav
+    ```
+
+    Or use a different model. Note that the large model may take some time to download.
+
+    ```bash
+    b2aiprep-cli transcribe data/vc_source.wav --model_id 'openai/whisper-large-v3' --return_timestamps true
+    ```
+
+## BIDS-like data
+
+This package provides conversion from a RedCap/file-based custom structure into a [BIDS-like](https://bids-standard.github.io/bids-starter-kit/folders_and_files/folders.html) structure for downstream analysis. In addition, utilities are provided for working with the BIDS-like structured data and to support data analysis of voice and questionnaire data.
+
+Convert a RedCap CSV and a folder of audio files into the BIDS format:
+
+```sh
+b2aiprep-cli redcap2bids bridge2ai_voice_data.csv --outdir output --audiodir audio
+```
+
+The `audiodir` option above can be omitted, in which case no audio data is reorganized.
+
+See the [tutorial.ipynb](docs/tutorial.ipynb) for a few use examples of data in the BIDS-like format.
+
+## Summer School Data Preparation
+This command organizes the data with the BIDS-like conversion tool, extracts audio features, and saves the whole thing
+as a .tar file for easy distribution for the Bridge2AI Summer School:
+
+```sh
+b2aiprep-cli prepsummerdata \
+   [path to RedCap CSV] \
+   [path to Wasabi export directory] \
+   [desired path to BIDS output] \
+   [desired output path for .tar file]
+```
+
+## Streamlit dashboard
+
+A dashboard is provided to help navigate the data in the BIDS format. Launch the dashboard from the repository folder with:
+
+```sh
+streamlit run src/b2aiprep/app/Dashboard.py [path to BIDS directory]
+```
+After the Streamlit dashboard opens, please wait for the BIDS data to be loaded while on the Dashboard page, as an error regarding a non-initialized `bids_dir` directory may pop up if the BIDS data has not been fully loaded.
