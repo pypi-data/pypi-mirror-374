@@ -1,0 +1,32 @@
+from datetime import datetime
+from typing import Any
+
+from sqlalchemy import BigInteger, DateTime, TextClause
+from sqlalchemy.orm import Mapped, mapped_column
+
+from ..prefix import PrefixBase
+
+
+class {{ class_name }}(PrefixBase):
+    __incomplete_tablename__ = "{{ model_name }}"
+
+    id: Mapped[int] = mapped_column(
+        BigInteger,
+        primary_key=True,
+        index=True,
+        nullable=False,
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=TextClause("CURRENT_TIMESTAMP"),
+        nullable=False,
+    )
+
+    def __repr__(self) -> str:
+      return f"<{{ class_name }}(id={self.id})>"
+
+    def keys(self) -> list[str]:
+      return [column.key for column in self.__table__.columns]
+
+    def __getitem__(self, key) -> Any:
+      return getattr(self, key)
