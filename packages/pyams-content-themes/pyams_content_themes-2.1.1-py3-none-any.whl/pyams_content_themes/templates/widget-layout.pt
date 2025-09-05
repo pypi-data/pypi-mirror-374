@@ -1,0 +1,25 @@
+<div tal:define="required 'required-field' if view.required and view.label and (view.mode != 'display') else ''"
+	 class="${view.group_css_class | group.group_css_class | view.group_css_class | 'form-group'} col ${required}">
+	<label tal:define="label view.label"
+		   class="${view.label_css_class | view.form.label_css_class | ''} ${'empty' if not label else None} mb-1 font-weight-bold">
+		${label}
+	</label>
+	<div class="${view.input_css_class | view.form.input_css_class | ''}">
+		<div class="${getattr(view, 'view_css_class', 'input')}"
+		     data-ams-data="${tales:object_data(view)}">
+			<i tal:omit-tag="">${structure:view.prefix.render() | ''}</i>
+			${structure:view.render()}
+			<label tal:condition="view.error"
+				   class="error d-block"
+				   for="${view.id}">
+				${view.error.message}
+			</label>
+			<i tal:omit-tag="">${structure:view.suffix.render() | ''}</i>
+		</div>
+		<small class="form-text text-muted"
+			   tal:define="description getattr(view, 'description', None) or view.field.description"
+			   tal:condition="description">
+			${description}
+		</small>
+	</div>
+</div>

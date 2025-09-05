@@ -1,0 +1,16 @@
+<div tal:define="required 'required-field' if view.required and view.label and (view.mode != 'display') else ''"
+     class="${view.group_css_class | group.group_css_class | view.group_css_class | 'form-group'} col ${required}">
+    <div class="${view.input_css_class | view.form.input_css_class | ''}">
+        <div class="${getattr(view, 'view_css_class', 'input')}"
+             data-ams-data="${tales:object_data(view)}">
+            <i tal:omit-tag="">${structure:view.prefix.render() | ''}</i>
+            ${structure:view.render()}
+            <i tal:omit-tag="">${structure:view.suffix.render() | ''}</i>
+        </div>
+        <small class="form-text text-muted"
+               tal:define="description getattr(view, 'description', None) or view.field.description"
+               tal:condition="description">
+            ${description}
+        </small>
+    </div>
+</div>
