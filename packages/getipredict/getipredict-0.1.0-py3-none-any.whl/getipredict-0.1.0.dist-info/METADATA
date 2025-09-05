@@ -1,0 +1,42 @@
+Metadata-Version: 2.4
+Name: getipredict
+Version: 0.1.0
+Summary: Inference Engine with Geti
+Author-email: Intel Open Edge Platform <open-edge-platform@intel.com>
+License-Expression: Apache-2.0
+License-File: LICENSE
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Image Recognition
+Requires-Python: >=3.8
+Requires-Dist: numpy>=1.24.0
+Requires-Dist: opencv-python>=4.8.0
+Requires-Dist: pandas>=2.0.0
+Requires-Dist: pillow>=10.0.0
+Requires-Dist: torch>=2.0.0
+Requires-Dist: torchvision>=0.15.0
+Provides-Extra: dev
+Requires-Dist: black>=23.0.0; extra == 'dev'
+Requires-Dist: isort>=5.12.0; extra == 'dev'
+Requires-Dist: mypy>=1.0.0; extra == 'dev'
+Requires-Dist: pylint>=2.17.0; extra == 'dev'
+Requires-Dist: pytest>=7.0.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# getipredict
+
+Inference Engine with Geti
+
+## Installation
+
+```bash
+pip install getipredict
+```
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
