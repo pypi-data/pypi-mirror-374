@@ -1,0 +1,117 @@
+Metadata-Version: 2.4
+Name: somelang
+Version: 0.0.3
+Summary: Language Detection Library
+Home-page: https://github.com/SomeAB/somelang
+Author: SomeAB
+Author-email: SomeAB <ssabs@protonmail.com>
+License: MIT License
+        
+        Copyright (c) 2025 SomeAB
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/SomeAB/somelang
+Project-URL: Bug Reports, https://github.com/SomeAB/somelang/issues
+Project-URL: Source, https://github.com/SomeAB/somelang
+Keywords: language detection,nlp,text analysis,linguistics
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Text Processing :: Linguistic
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# SomeLang
+
+## Natural Language Detection Library
+
+SomeLang is a lightweight and decently accurate natural language detection library. It is designed to be fast, python native, with no external dependencies for the main script, and highly customizable with support for whitelists and blacklists.
+
+## Installation
+
+```bash
+pip install somelang
+```
+
+## Features
+
+- **Fast Natural Language Detection** - Trigrams-based approach for accurate results
+- **Default 158+ language whitelist** - The default whitelist provides better accuracy on short texts (3-100 characters)
+- **Supports 194+ languages** - Can detect a wide range of languages in full mode
+- **Modern Training Data** - Trained on OpenLID-v2 & many other modern datasets
+- **Python-native** - No external dependencies for main script
+- **Customizable** - Configurable whitelist/blacklist support
+
+## Usage
+
+### Basic Detection
+```python
+from somelang import somelang
+
+# Basic language detection
+lang = somelang("Bonjour tout le monde")  # Returns: 'fra'
+
+# Get language name instead of code
+lang = somelang("Hello world", verbose=True)  # Returns: 'English'
+```
+
+### Command Line
+```python
+python -m somelang 'text to analyze'
+```
+
+### Advanced Usage
+```python
+
+from somelang import somelang_all, somelang_no_whitelist
+
+# Get all probable languages with confidence scores
+results = somelang_all("Hello world")  # Returns: [['eng', 1.0], ...]
+
+# Use all 194 languages (no whitelist)
+lang = somelang_no_whitelist("Text in rare language")
+```
+
+### Note
+```
+Currently, the library expects a minimum text length of 10 characters, but due to the current trigram-based approach, it may give a false positive on less than 100 character texts. This will be remedied in future updates.
+```
+
+## Citations 
+Trained mainly on the [OpenLID-v2 dataset](https://huggingface.co/datasets/laurievb/OpenLID-v2) and a few other datasets (for refinement). 
+
+Inspired by [franc](https://github.com/wooorm/franc) by [Titus Wormer](https://github.com/wooorm).
+
+See [CITATIONS](./CITATIONS.md) file for more details.
+
+## License
+This project is licensed under the [MIT](./LICENSE) license. Authored by [SomeAB](https://github.com/SomeAB).
+
