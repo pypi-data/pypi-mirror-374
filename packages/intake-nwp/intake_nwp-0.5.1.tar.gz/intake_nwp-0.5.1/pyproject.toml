@@ -1,0 +1,81 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "intake-nwp"
+description = "Intake drivers for numerical weather prediction data"
+readme = "README.rst"
+keywords = ["nwp", "intake", "model", "download"]
+authors = [
+  { name = "Oceanum Developers", email="developers@oceanum.science" },
+]
+maintainers = [
+  { name = "Oceanum Developers", email = "developers@oceanum.science" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+license = { file = "LICENSE" }
+dependencies = [
+  "click",
+  "cartopy",
+  "cfgrib",
+  "herbie-data",
+  "intake",
+  "jinja2",
+  "psutil",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = [
+    "coverage",
+    "mypy",
+    "pytest",
+    "ruff",
+    "sphinx",
+    "tox",
+    "twine",
+]
+
+[project.urls]
+bugs = "https://github.com/oceanum/intake_nwp/issues"
+changelog = "https://github.com/oceanum/intake_nwp/blob/master/changelog.md"
+homepage = "https://github.com/oceanum/intake_nwp"
+
+[project.scripts]
+intake_nwp = "intake_nwp.cli:main"
+
+[project.entry-points."intake.drivers"]
+"nwp_forecast" = "intake_nwp.source.nwp:ForecastSource"
+"nwp_nowcast" = "intake_nwp.source.nwp:NowcastSource"
+"herbie_forecast" = "intake_nwp.source.nwp:ForecastSource"
+"herbie_nowcast" = "intake_nwp.source.nwp:NowcastSource"
+
+[tool.setuptools.dynamic]
+version = {attr = "intake_nwp.__version__"}
+
+[tool.setuptools.packages.find]
+exclude = ["tests", "docs", "notebooks"]
+
+[tool.distutils.bdist_wheel]
+universal = true
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"

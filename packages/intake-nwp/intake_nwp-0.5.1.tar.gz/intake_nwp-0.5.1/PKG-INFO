@@ -1,0 +1,78 @@
+Metadata-Version: 2.4
+Name: intake-nwp
+Version: 0.5.1
+Summary: Intake drivers for numerical weather prediction data
+Author-email: Oceanum Developers <developers@oceanum.science>
+Maintainer-email: Oceanum Developers <developers@oceanum.science>
+License: MIT License
+        
+        Copyright (c) 2022, Oceanum Developers
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: bugs, https://github.com/oceanum/intake_nwp/issues
+Project-URL: changelog, https://github.com/oceanum/intake_nwp/blob/master/changelog.md
+Project-URL: homepage, https://github.com/oceanum/intake_nwp
+Keywords: nwp,intake,model,download
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+License-File: AUTHORS.rst
+Requires-Dist: click
+Requires-Dist: cartopy
+Requires-Dist: cfgrib
+Requires-Dist: herbie-data
+Requires-Dist: intake
+Requires-Dist: jinja2
+Requires-Dist: psutil
+Provides-Extra: dev
+Requires-Dist: coverage; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: sphinx; extra == "dev"
+Requires-Dist: tox; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Dynamic: license-file
+
+==========
+intake-nwp
+==========
+
+
+Intake drivers for numerical weather prediction data
+----------------------------------------------------
+
+This package provides drivers for loading data from numerical weather using the
+`herbie`_ library.
+
+
+.. _herbie: https://github.com/blaylockbk/Herbie
