@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pcapana"
+version = "0.1.3"
+authors = [{ name = "Harsh M Shah" }]
+description = "A command-line tool to analyze PCAP file for Protocol Statistics, Visited Domains, OSI Layer Analysis, Bandwidth Analysis & Port Analysis with the option to export it as a HTML report"
+dependencies = ["pyshark"]
+readme = "README.md"
+requires-python = ">=3.7"
+
+[project.scripts]
+pcapana = "pcapanalyzer.cli:main"
+
+[tool.setuptools]
+packages = ["pcapanalyzer"]
+
+[project.urls]
+"Homepage" = "https://github.com/12hms12/pcapana"
+"Repository" = "https://github.com/12hms12/pcapana"
+"PyPI" = "https://pypi.org/project/pcapana/"
