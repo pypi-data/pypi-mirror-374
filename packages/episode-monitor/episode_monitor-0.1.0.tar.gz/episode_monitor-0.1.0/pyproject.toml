@@ -1,0 +1,19 @@
+[project]
+name = "episode-monitor"
+version = "0.1.0"
+description = "Monitor wikipedia pages of tv shows and send a notification when new episodes are detected"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "dbus-python>=1.4.0",
+    "notify2>=0.3.1",
+    "pyyaml>=6.0.2",
+    "requests>=2.32.5",
+]
+
+[project.scripts]
+episode-monitor = "episode_monitor:main"
+
+[build-system]
+requires = ["uv_build>=0.8.14,<0.9.0"]
+build-backend = "uv_build"
