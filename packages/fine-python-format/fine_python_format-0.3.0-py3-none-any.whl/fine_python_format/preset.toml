@@ -1,0 +1,10 @@
+[tool.finecode.action.format]
+source = "finecode_extension_api.actions.format.FormatAction"
+handlers = [
+    { name = "ruff", source = "fine_python_ruff.RuffFormatHandler", env = "dev_no_runtime", dependencies = [
+        "fine_python_ruff==0.1.*",
+    ] },
+    { name = "save", source = "finecode_extension_api.actions.format.SaveFormatHandler", env = "dev_no_runtime", dependencies = [
+        "finecode_extension_api==0.3.*",
+    ] },
+]
