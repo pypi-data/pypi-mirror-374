@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "select-notifier"
+description = "Lightweight email notification module for Select services"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{ name = "Select Team" }]
+license = { text = "Proprietary" }
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://repo.afe.ir/afeai/select-notifier"
+
+[project.optional-dependencies]
+test = ["pytest>=8", "pytest-cov>=5"]
+dev = ["black>=24.0", "ruff>=0.6.0", "mypy>=1.10", "pre-commit>=3.7"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+version = { attr = "email_notifier.__version__.__version__" }
+
+# ---------------------------
+# Code style & tooling
+# ---------------------------
+
+[tool.black]
+line-length = 100
+target-version = ["py39","py310","py311","py312","py313"]
+
+[tool.ruff]
+line-length = 100
+exclude = [".venv/", "*.ipynb"]
+
+[tool.ruff.lint]
+extend-select = ["I"]
+
+[tool.mypy]
+python_version = "3.12"
+warn_unused_configs = true
+ignore_missing_imports = true
+strict_optional = true
+pretty = true
+
+[tool.pytest.ini_options]
+addopts = "-q --disable-warnings --cov=src --cov-report=term-missing"
+testpaths = ["tests"]
+pythonpath = ["src"]
