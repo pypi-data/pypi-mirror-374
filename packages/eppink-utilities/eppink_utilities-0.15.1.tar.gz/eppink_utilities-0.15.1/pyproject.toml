@@ -1,0 +1,22 @@
+[project]
+name = "eppink-utilities"
+version = "0.15.1"
+description = "Useful utilities for data processing, plotting, and file handling"
+readme = "README.md"
+requires-python = ">=3.7"
+license = { text = "MIT" }
+authors = [{ name = "Wouter Rens Eppink" }]
+dependencies = [
+    "numpy",
+    "matplotlib",
+    "coolprop"
+]
+
+[project.urls]
+Homepage = "https://github.com/someMechanicalEngineer/eppink_utilities"
+Source = "https://github.com/someMechanicalEngineer/eppink_utilities"
+Tracker = "https://github.com/someMechanicalEngineer/eppink_utilities/issues"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"

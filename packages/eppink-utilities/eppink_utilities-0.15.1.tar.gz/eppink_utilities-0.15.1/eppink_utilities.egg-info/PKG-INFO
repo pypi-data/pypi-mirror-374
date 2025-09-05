@@ -1,0 +1,32 @@
+Metadata-Version: 2.4
+Name: eppink-utilities
+Version: 0.15.1
+Summary: Useful utilities for data processing, plotting, and file handling
+Author: Wouter Rens Eppink
+License: MIT
+Project-URL: Homepage, https://github.com/someMechanicalEngineer/eppink_utilities
+Project-URL: Source, https://github.com/someMechanicalEngineer/eppink_utilities
+Project-URL: Tracker, https://github.com/someMechanicalEngineer/eppink_utilities/issues
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Requires-Dist: coolprop
+Dynamic: license-file
+
+# eppink-utilities
+
+**eppink-utilities** is a Python package providing a collection of useful utility functions for engineering and scientific data processing, plotting, and file handling.  
+It aims to simplify common tasks in analysis workflows with modular, well-documented code.
+
+For a function list, refer to FUNCTIONS.md
+
+## Installation
+
+You can install the package via PyPI or directly from GitHub:
+
+```bash
+pip install eppink_utilities
+
+pip install git+https://github.com/someMechanicalEngineer/eppink-utilities.git
