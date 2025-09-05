@@ -1,0 +1,53 @@
+Metadata-Version: 2.4
+Name: mcp_dingding
+Version: 0.1.0
+Summary: Add your description here
+Requires-Python: >=3.11.13
+Requires-Dist: build>=1.3.0
+Requires-Dist: mcp[cli]>=1.12.4
+Requires-Dist: requests>=2.32.4
+Requires-Dist: twine>=6.1.0
+Description-Content-Type: text/markdown
+
+## DINGDING MCP
+基于 Model Context Protocol (MCP) 的钉钉推送。
+
+
+## 工具列表
+| name | description |
+| ----------- | ----------- |
+| auth  | key验证 |
+| push | 推送消息 |
+
+## MCP 服务器配置
+```
+{
+  "mcpServers": {
+    "dingding": {
+      "isActive": true,
+      "name": "calculator",
+      "type": "stdio",
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/Users/xiezi/explore/mcp-dingding/src",  # 替换为自己的路径
+        "run",
+        "-m",
+        "mcp_dingding"
+      ]
+      }
+  }
+}
+
+{
+  "mcpServers": {
+    "mcp_dingding": {
+        "command": "uvx",
+        "args": [
+          "mcp_dingding@latest"
+        ]
+      }
+  }
+}
+```
+
