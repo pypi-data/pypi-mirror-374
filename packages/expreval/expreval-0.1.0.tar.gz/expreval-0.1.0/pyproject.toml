@@ -1,0 +1,66 @@
+[project]
+name = "expreval"
+version = "0.1.0"
+description = "Minimal, robust Python library for any math expressions"
+readme = "README.md"
+authors = [{ name = "Jayanth MKV", email = "mkvjayanth1@gmail.com" }]
+requires-python = ">=3.13"
+dependencies = []
+
+[project.scripts]
+expreval = "expreval:main"
+
+[build-system]
+requires = ["uv_build>=0.8.13,<0.9.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.3.0",
+    "pytest>=8.4.1",
+    "ruff>=0.12.11",
+    "mypy>=1.17.1",
+    "coverage[toml]>=7.10.6",
+]
+
+[tool.mypy]
+python_version = "3.13"
+warn_unused_ignores = true
+warn_redundant_casts = true
+disallow_untyped_defs = true
+no_implicit_optional = true
+strict_equality = true
+pretty = true
+show_error_codes = true
+exclude = ["build/"]
+files = ["src", "tests"]
+
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.lint]
+extend-select = [
+    "I",   # isort (import sorting)
+    "B",   # bugbear (Python gotchas) 
+    "UP",  # pyupgrade (Python version upgrades)
+    "C4",  # flake8-comprehensions
+    "SIM", # flake8-simplify
+]
+fixable = ["ALL"]
+
+[tool.ruff.format]
+quote-style = "double"
+docstring-code-format = true
+
+
+[tool.coverage.run]
+branch = true
+source = ["src/expreval"]
+parallel = true
+
+[tool.coverage.report]
+fail_under = 98
+show_missing = true
+skip_empty = true
