@@ -1,0 +1,256 @@
+<!--
+	Overriding Alabaster Theme to replace link to static page source
+	with a link to GitHub. Using instructions from official guide.
+
+	https://www.sphinx-doc.org/en/master/templating.html#jinja-sphinx-templating-primer
+-->
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Anitya &#8212; Anitya 1.9.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=9f6847e8" />
+    <script src="_static/documentation_options.js?v=c4cb232b"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="User Guide" href="user-guide.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="anitya">
+<h1>Anitya<a class="headerlink" href="#anitya" title="Link to this heading">¶</a></h1>
+<p>Anitya is a release monitoring project.</p>
+<p>Its goal is to regularly check if a project has made a new release.
+When Anitya discovers a new release for a project, it publishes a RabbitMQ message via
+<a class="reference external" href="https://fedora-messaging.readthedocs.io/en/stable/">fedora messaging</a>.
+This makes it easy to integrate with Anitya and perform
+actions when a new release is created for a project. For example, the Fedora project
+runs a service called <a class="reference external" href="https://github.com/fedora-infra/the-new-hotness/">the-new-hotness</a>
+which files a Bugzilla bug against a package when the upstream project makes a new release.</p>
+<p>Anitya provides a user-friendly interface to add, edit, or browse projects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Github page<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://github.com/fedora-infra/anitya">https://github.com/fedora-infra/anitya</a></p>
+</dd>
+</dl>
+<section id="user-guide">
+<h2>User Guide<a class="headerlink" href="#user-guide" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user-guide.html">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guide.html#logging-in">Logging in</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide.html#logging-out">Logging out</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide.html#listing-projects">Listing Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide.html#finding-project-by-name">Finding Project by Name</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide.html#creating-new-project">Creating New Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide.html#editing-project">Editing Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide.html#creating-new-distribution-mapping">Creating New Distribution Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide.html#editing-distribution-mapping">Editing Distribution Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide.html#flagging-a-project">Flagging a Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide.html#listing-distributions">Listing Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide.html#creating-a-new-distribution">Creating a New Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide.html#obtaining-an-api-token">Obtaining an API Token</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide.html#removing-an-api-token">Removing an API Token</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide.html#reporting-issues">Reporting Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="admin-user-guide.html">Admin User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="admin-user-guide.html#delete-project">Delete Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin-user-guide.html#test-check-on-project">Test Check on Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin-user-guide.html#full-check-on-project">Full Check on Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin-user-guide.html#archive-project">Archive Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin-user-guide.html#unarchive-project">Unarchive Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin-user-guide.html#delete-a-version-on-project">Delete a Version on Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin-user-guide.html#delete-all-versions-on-project">Delete All Versions on Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin-user-guide.html#delete-mapping-on-project">Delete Mapping on Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin-user-guide.html#delete-distribution">Delete Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin-user-guide.html#edit-an-existing-distribution">Edit an Existing Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin-user-guide.html#user-management">User management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin-user-guide.html#solving-flags">Solving Flags</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id1">1.9.0 (2024-01-30)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id4">1.8.1 (2023-05-26)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id13">1.8.0 (2023-04-27)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id17">1.7.0 (2023-01-26)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id28">1.6.0 (2022-10-05)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id39">1.5.1 (2022-09-02)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id42">1.5.0 (2022-08-30)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id53">1.4.1 (2022-07-04)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id56">1.4.0 (2022-06-21)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id73">1.3.0 (2021-03-19)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id79">1.2.0 (2021-03-15)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id85">1.1.3 (2021-03-08)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id88">1.1.2 (2021-03-05)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id93">1.1.1 (2021-02-21)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id96">1.1.0 (2021-02-19)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id101">1.0.1 (2021-02-12)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id104">1.0.0 (2021-01-20)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id128">0.18 (2020-01-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id148">0.17.2 (2019-09-26)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id153">0.17.1 (2019-09-09)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id158">0.17.0 (2019-09-03)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id176">0.16.1 (2019-07-16)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id182">0.16.0 (2019-06-24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id193">0.15.1 (2019-03-06)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id199">0.15.0 (2019-02-20)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id209">0.14.1 (2019-01-17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id215">0.14.0 (2019-01-08)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#id235">0.13.2 (2018-10-12)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#v0-13-1">v0.13.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#v0-13-0">v0.13.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#v0-12-1">v0.12.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#v0-12-0">v0.12.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#v0-11-0">v0.11.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-notes.html#v0-10-1">v0.10.1</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+</div>
+</section>
+<section id="admin-guide">
+<h2>Admin Guide<a class="headerlink" href="#admin-guide" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin-guide.html">Administration Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="admin-guide.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin-guide.html#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin-guide.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="integrating-with-anitya.html">Integrating with Anitya</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="integrating-with-anitya.html#fedora-messaging">Fedora messaging</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="developer-guide">
+<h2>Developer Guide<a class="headerlink" href="#developer-guide" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#http-api-v2">HTTP API v2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#http-api-v1">HTTP API v1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#python-apis">Python APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Development Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#contribution-guidelines">Contribution Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#development-environment">Development Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#release-guide">Release Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Database models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="docblocks/anitya.db.models.html">anitya.db.models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.html#database-schema">Database Schema</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Anitya</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=fedora-infra&repo=anitya&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user-guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin-user-guide.html">Admin User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin-guide.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integrating-with-anitya.html">Integrating with Anitya</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Database models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="user-guide.html" title="next chapter">User Guide</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" style="text-align: center">
+      &copy;2022, Red Hat, Inc. and others.|
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.16</a>
+      (<a href="https://github.com/fedora-infra/anitya/tree/master/docs/_templates">customized</a>)
+      |
+      <a href="https://github.com/fedora-infra/anitya/tree/master/docs/index.rst"
+          rel="nofollow">View source</a>
+    </div>
+  </body>
+</html>

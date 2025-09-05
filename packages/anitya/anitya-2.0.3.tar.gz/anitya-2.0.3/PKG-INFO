@@ -1,0 +1,86 @@
+Metadata-Version: 2.1
+Name: anitya
+Version: 2.0.3
+Summary: A cross-distribution upstream release monitoring project
+Home-page: https://release-monitoring.org
+License: GPL-2.0-or-later
+Author: Pierre-Yves Chibon
+Author-email: pingou@pingoured.fr
+Maintainer: Michal Konecny
+Maintainer-email: mkonecny@redhat.com
+Requires-Python: >=3.10.0,<4.0.0
+Classifier: License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: Flask (>=3.0.0,<4.0.0)
+Requires-Dist: Flask-Login (>=0.6.3,<0.7.0)
+Requires-Dist: Flask-WTF (>=1.2.1,<2.0.0)
+Requires-Dist: Jinja2 (<3.1.7)
+Requires-Dist: SQLAlchemy (>=2.0.0,<3.0.0)
+Requires-Dist: WTForms (>=3.0.1,<4.0.0)
+Requires-Dist: Werkzeug (==3.1.3)
+Requires-Dist: alembic (>=1.8.1,<2.0.0)
+Requires-Dist: anitya-schema (>=2.0.1,<3.0.0)
+Requires-Dist: arrow (>=1.2.3,<2.0.0)
+Requires-Dist: authlib (>=1.3.2,<2.0.0)
+Requires-Dist: beautifulsoup4 (>=4.11.1,<5.0.0)
+Requires-Dist: defusedxml (>=0.7.1,<0.8.0)
+Requires-Dist: fedora-messaging (>=3.1.0,<4.0.0)
+Requires-Dist: ordered-set (>=4.1.0,<5.0.0)
+Requires-Dist: packaging (>=25.0,<26.0)
+Requires-Dist: python-dateutil (>=2.8.2,<3.0.0)
+Requires-Dist: semver (>=3.0.0,<4.0.0)
+Requires-Dist: sseclient (>=0.0.27,<0.0.28)
+Requires-Dist: toml (>=0.10.2,<0.11.0)
+Requires-Dist: webargs (>=8.7.0,<9.0.0)
+Project-URL: Documentation, https://anitya.readthedocs.io
+Project-URL: Repository, https://github.com/fedora-infra/anitya
+Description-Content-Type: text/x-rst
+
+
+.. image:: https://img.shields.io/pypi/v/anitya.svg
+  :target: https://pypi.org/project/anitya/
+
+.. image:: https://img.shields.io/pypi/pyversions/anitya.svg
+  :target: https://pypi.org/project/anitya/
+
+.. image:: https://readthedocs.org/projects/anitya/badge/?version=latest
+  :alt: Documentation Status
+  :target: https://anitya.readthedocs.io/en/latest/?badge=latest
+  
+.. image:: https://img.shields.io/badge/renovate-enabled-brightgreen.svg
+  :target: https://renovatebot.com/
+
+.. image::  https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit
+  :target:  https://pre-commit.com/
+  
+
+======
+Anitya
+======
+
+Anitya is a release monitoring project. It provides a user-friendly interface
+to add, edit, or browse projects. A cron job can be configured to regularly
+scan for new releases of projects. When Anitya discovers a new release for a
+project, it publishes a RabbitMQ messages via `fedora messaging`_.
+This makes it easy to integrate with Anitya and perform actions when a new
+release is created for a project. For example, the Fedora project runs a service
+called `the-new-hotness <https://github.com/fedora-infra/the-new-hotness/>`_
+which files a Bugzilla bug against a package when the upstream project makes a
+new release.
+
+For more information, check out the `documentation`_!
+
+
+Development
+===========
+
+For details on how to contribute, check out the `contribution guide`_.
+
+
+.. _documentation: https://anitya.readthedocs.io/
+.. _contribution guide: https://anitya.readthedocs.io/en/latest/contributing.html
+.. _fedora messaging: https://fedora-messaging.readthedocs.io/en/latest
+

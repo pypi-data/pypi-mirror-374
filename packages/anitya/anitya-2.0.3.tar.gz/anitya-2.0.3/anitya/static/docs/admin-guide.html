@@ -1,0 +1,354 @@
+<!--
+	Overriding Alabaster Theme to replace link to static page source
+	with a link to GitHub. Using instructions from official guide.
+
+	https://www.sphinx-doc.org/en/master/templating.html#jinja-sphinx-templating-primer
+-->
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Administration Guide &#8212; Anitya 1.9.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=9f6847e8" />
+    <script src="_static/documentation_options.js?v=c4cb232b"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Integrating with Anitya" href="integrating-with-anitya.html" />
+    <link rel="prev" title="Glossary" href="glossary.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="administration-guide">
+<h1>Administration Guide<a class="headerlink" href="#administration-guide" title="Link to this heading">¶</a></h1>
+<p>This guide is intended for administrators that are trying to deploy Anitya in their
+environment. For reference you can check <a class="reference external" href="https://release-monitoring.org/">release-monitoring.org</a> ansible
+<a class="reference external" href="https://pagure.io/fedora-infra/ansible/blob/master/f/roles/openshift-apps/release-monitoring">deployment role</a> in Fedora infrastructure.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
+<p>Anitya is not currently available in any distribution’s default repository.
+To install it from PyPI:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install anitya
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Javascript dependencies are not part of Anitya PyPI package. To install
+them you need to have <a class="reference external" href="https://www.npmjs.com/">npm</a> installed and
+run <cite>npm install</cite> inside <code class="docutils literal notranslate"><span class="pre">anitya/static</span></code> folder.</p>
+</div>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h2>
+<p>If the <code class="docutils literal notranslate"><span class="pre">ANITYA_WEB_CONFIG</span></code> environment variable is set to a file system path
+Anitya can read, the configuration is loaded from that location. Otherwise, the
+configuration is read from <code class="docutils literal notranslate"><span class="pre">/etc/anitya/anitya.toml</span></code>. If neither can be read,
+Anitya will log a warning and use its configuration defaults.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The default configuration for Anitya includes a secret key for
+web sessions. It is <em>not</em> safe to use the default configuration in a
+production environment.</p>
+</div>
+<p>Anitya uses TOML as its configuration format. A complete configuration file
+with inline documentation is below.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># This is a TOML-format file. For the spec, see https://github.com/toml-lang/toml#spec
+
+# Secret key used to generate the CSRF token in the forms.
+secret_key = &quot;changeme please&quot;
+
+# The lifetime of the session, in seconds.
+permanent_session_lifetime = 3600
+
+# URL to the database
+db_url = &quot;sqlite:////var/tmp/anitya-dev.sqlite&quot;
+
+# List of web administrators. The values should be the value of the &quot;id&quot; column
+# for the user in the &quot;users&quot; table of the database. They need to log in before
+# this record is created. An example value would be
+# &quot;65536ed7-bdd3-4a1e-8252-10d874fd706b&quot;
+# You can also find this infromation in the settings page when logged in to Anitya
+anitya_web_admins = []
+
+# The email to use in the &#39;From&#39; header when sending emails.
+admin_email = &quot;admin@fedoraproject.org&quot;
+
+# The SMTP server to send mail through
+smtp_server = &quot;smtp.example.com&quot;
+
+# Whether or not to send emails to MAIL_ADMIN via SMTP_SERVER when HTTP 500
+# errors occur.
+email_errors = false
+
+# List of users that are not allowed to sign in, by &quot;id&quot; from the &quot;users&quot; table.
+blacklisted_users = []
+
+# The type of session protection used by social-auth.
+session_protection = &quot;strong&quot;
+
+# The authentication backends to use. For valid values, see social-auth&#39;s
+# documentation.
+social_auth_authentication_backends = [
+    &quot;social_core.backends.fedora.FedoraOpenId&quot;,
+    &quot;social_core.backends.gitlab.GitLabOAuth2&quot;,
+    &quot;social_core.backends.github.GithubOAuth2&quot;,
+    &quot;social_core.backends.google.GoogleOAuth2&quot;,
+    &quot;social_core.backends.yahoo.YahooOAuth2&quot;,
+    &quot;social_core.backends.open_id.OpenIdAuth&quot;
+]
+
+# Force the application to require HTTPS on authentication redirects.
+social_auth_redirect_is_https = true
+
+# Default regular expression used for custom backend
+default_regex = &quot;&quot;&quot;\
+                (?i)%(name)s(?:[-_]?(?:minsrc|src|source))?[-_](+[^-/_\\s]+?(?:[-_]\
+                (?:rc|devel|dev|alpha|beta)\\d+)?)(?:[-_](?:minsrc|src|source|asc|release))?\
+                \.(?:tar|t[bglx]z|tbz2|zip)\
+                &quot;&quot;&quot;
+
+# Github access token
+# This is used by GitHub API for github backend
+# Permission needed by Anitya:
+# * repo:status
+# * public_repo
+github_access_token = &quot;foobar&quot;
+
+# Check service configuration
+# Number of workers
+cron_pool = 10
+# Worker timeout in seconds
+check_timeout = 600
+# When this number of failed checks is reached,
+# project will be automatically removed, if no version was retrieved yet
+check_error_threshold=100
+
+# Configurable links to package repositories for package mappings in distributions
+# If you want to add any new distribution just add a new entry to this section
+# %s will be filled in HTML template by the name of package mapping
+[distro_mapping_links]
+AlmaLinux = &quot;https://git.almalinux.org/rpms/%s&quot;
+Fedora = &quot;https://src.fedoraproject.org/rpms/%s&quot;
+PLD-Linux = &quot;https://github.com/pld-linux/%s&quot;
+Ubuntu = &quot;https://launchpad.net/ubuntu/+source/%s&quot;
+
+# The logging configuration, in Python dictConfig format.
+[anitya_log_config]
+    version = 1
+    disable_existing_loggers = true
+
+    [anitya_log_config.formatters]
+        [anitya_log_config.formatters.simple]
+            format = &quot;[%(name)s %(levelname)s] %(message)s&quot;
+
+    [anitya_log_config.handlers]
+        [anitya_log_config.handlers.console]
+            class = &quot;logging.StreamHandler&quot;
+            formatter = &quot;simple&quot;
+            stream = &quot;ext://sys.stdout&quot;
+
+    [anitya_log_config.loggers]
+        [anitya_log_config.loggers.anitya]
+            level = &quot;WARNING&quot;
+            propagate = false
+            handlers = [&quot;console&quot;]
+
+    [anitya_log_config.root]
+        level = &quot;ERROR&quot;
+        handlers = [&quot;console&quot;]
+</pre></div>
+</div>
+<p>Anitya uses second configuration file for Fedora messaging. A sample
+configuration file is bellow. To know more about the configuration of
+fedora messaging please refer to
+<a class="reference external" href="https://fedora-messaging.readthedocs.io/en/latest/configuration.html">fedora messaging configuration documentation</a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># A sample configuration for fedora-messaging. This file is in the TOML format.</span>
+<span class="c1"># For complete details on all configuration options, see the documentation.</span>
+<span class="c1"># https://fedora-messaging.readthedocs.io/en/latest/configuration.html</span>
+
+<span class="n">amqp_url</span> <span class="o">=</span> <span class="s2">&quot;amqp://&quot;</span>
+
+<span class="p">[</span><span class="n">tls</span><span class="p">]</span>
+<span class="n">ca_cert</span> <span class="o">=</span> <span class="s2">&quot;/etc/pki/tls/certs/ca-bundle.crt&quot;</span>
+<span class="n">keyfile</span> <span class="o">=</span> <span class="s2">&quot;/my/client/key.pem&quot;</span>
+<span class="n">certfile</span> <span class="o">=</span> <span class="s2">&quot;/my/client/cert.pem&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="services">
+<h2>Services<a class="headerlink" href="#services" title="Link to this heading">¶</a></h2>
+<p>Anitya is made up of a <a class="reference internal" href="#wsgi-app"><span class="std std-ref">WSGI Application</span></a>, an <a class="reference internal" href="#update-service"><span class="std std-ref">Update Service</span></a> that could be run
+separately, an optional <a class="reference internal" href="#sar-script"><span class="std std-ref">SAR Script</span></a>, and requires a <a class="reference internal" href="#database"><span class="std std-ref">Database</span></a>.</p>
+<section id="wsgi-application">
+<span id="wsgi-app"></span><h3>WSGI Application<a class="headerlink" href="#wsgi-application" title="Link to this heading">¶</a></h3>
+<p>The WSGI application is located at <code class="docutils literal notranslate"><span class="pre">anitya/wsgi.py</span></code>. This application handles the
+web interface for creating, updating, and viewing projects. It also offers a
+REST API.</p>
+<p>There is also a <code class="docutils literal notranslate"><span class="pre">anitya.wsgi</span></code> file that could be used directly.
+You can find example <a class="reference external" href="https://github.com/fedora-infra/anitya/blob/master/anitya.wsgi">anitya.wsgi</a>
+in Anitya repository.
+You can use this file with Apache server or deploy it by flask. Fedora uses Apache
+so you can look at their
+<a class="reference external" href="https://pagure.io/fedora-infra/ansible/blob/main/f/roles/openshift-apps/release-monitoring/templates/httpd.conf">configuration</a>.</p>
+</section>
+<section id="update-service">
+<span id="id2"></span><h3>Update Service<a class="headerlink" href="#update-service" title="Link to this heading">¶</a></h3>
+<p>The service that checks for project updates is located at
+<code class="docutils literal notranslate"><span class="pre">anitya/check_service.py</span></code> in the git repository and Python package.
+To enable it, just start this service.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This script should be also available system wide, installed by <code class="docutils literal notranslate"><span class="pre">`scripts</span></code>
+argument in python setup. See <a class="reference external" href="https://docs.python.org/3/distutils/setupscript.html#installing-scripts">python setup documentation</a>
+for more info.</p>
+</div>
+</section>
+<section id="sar-script">
+<span id="id3"></span><h3>SAR Script<a class="headerlink" href="#sar-script" title="Link to this heading">¶</a></h3>
+<p>Subject Access Requests script is intended for handling GDPR users requests for
+obtaining their data from Anitya. This script could be found in <code class="docutils literal notranslate"><span class="pre">anitya/sar.py</span></code>.
+It just connects to the database using Anitya configuration and takes out user
+relevant data.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This script should be also available system wide, installed by <code class="docutils literal notranslate"><span class="pre">`scripts</span></code>
+argument in python setup. See <a class="reference external" href="https://docs.python.org/3/distutils/setupscript.html#installing-scripts">python setup documentation</a>
+for more info.</p>
+</div>
+</section>
+<section id="database">
+<span id="id4"></span><h3>Database<a class="headerlink" href="#database" title="Link to this heading">¶</a></h3>
+<p>Anitya should work with any SQL database, but it is only tested with SQLite
+and PostgreSQL. It is recommended to use PostgreSQL in a production deployment.
+The SQLite database can’t work with update service, because it doesn’t allow
+database changes in parallel threads.</p>
+<p>For creating a database schema you can use
+<a class="reference external" href="https://github.com/fedora-infra/anitya/blob/master/createdb.py">createdb.py script</a>
+from Anitya repository.</p>
+<p>After this you need to apply any migrations done above the basic database
+schema. You can run the migrations by using the
+<a class="reference external" href="https://pypi.org/project/alembic/">alembic tool</a>. You can use the configuration
+file <a class="reference external" href="https://github.com/fedora-infra/anitya/blob/master/alembic.ini">alembic.ini</a>
+from Anitya repository.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>alembic<span class="w"> </span>-c<span class="w"> </span>&lt;path_to_alembic.ini&gt;<span class="w"> </span>upgrade<span class="w"> </span>head
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The migrations needs to be applied each time upgrade of Anitya is done.</p>
+</div>
+</section>
+<section id="fedora-messaging">
+<h3>Fedora messaging<a class="headerlink" href="#fedora-messaging" title="Link to this heading">¶</a></h3>
+<p>The Anitya needs to connect to RabbitMQ server which will listen for it’s messages. For deployment
+of your own RabbitMQ server please look at the <a class="reference external" href="https://www.rabbitmq.com/">official documentation</a>.</p>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Anitya</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=fedora-infra&repo=anitya&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user-guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin-user-guide.html">Admin User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Administration Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="integrating-with-anitya.html">Integrating with Anitya</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Database models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="glossary.html" title="previous chapter">Glossary</a></li>
+      <li>Next: <a href="integrating-with-anitya.html" title="next chapter">Integrating with Anitya</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" style="text-align: center">
+      &copy;2022, Red Hat, Inc. and others.|
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.16</a>
+      (<a href="https://github.com/fedora-infra/anitya/tree/master/docs/_templates">customized</a>)
+      |
+      <a href="https://github.com/fedora-infra/anitya/tree/master/docs/admin-guide.rst"
+          rel="nofollow">View source</a>
+    </div>
+  </body>
+</html>
