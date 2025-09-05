@@ -1,0 +1,43 @@
+Metadata-Version: 2.3
+Name: finch-tensor-lite
+Version: 0.1.0
+Summary: 
+Author: Willow Ahrens
+Author-email: willow.marie.ahrens@gmail.com
+Requires-Python: >=3.11,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Provides-Extra: test
+Requires-Dist: donfig (>=0.8.1.post1,<0.9.0)
+Requires-Dist: mypy (==1.15.*) ; extra == "test"
+Requires-Dist: numba (>=0.61)
+Requires-Dist: numpy (>=0.61.0) ; extra == "test"
+Requires-Dist: numpy (>=1.19)
+Requires-Dist: pre-commit (>=3.6.0,<4) ; extra == "test"
+Requires-Dist: pytest (>=7.4.4,<8) ; extra == "test"
+Requires-Dist: pytest-cov (>=4.1.0,<5) ; extra == "test"
+Requires-Dist: pytest-mypy (==1.*) ; extra == "test"
+Requires-Dist: pytest-regressions (>=2.8.1,<2.9.0) ; extra == "test"
+Requires-Dist: scipy (>=1.7,<2) ; extra == "test"
+Requires-Dist: sparse (>=0.17.0) ; extra == "test"
+Description-Content-Type: text/markdown
+
+# finch-tensor-lite
+
+The pure-Python rewrite of [Finch.jl](https://github.com/finch-tensor/Finch.jl), designed to eventually replace [finch-tensor](https://pypi.org/project/finch-tensor/).
+
+## Source
+The source code for `finch-tensor-lite` is available on GitHub at [https://github.com/finch-tensor/finch-tensor-lite](https://github.com/FinchTensor/finch-tensor-lite)
+
+## Installation
+
+`finch-tensor-lite` is available on PyPi, and can be installed with pip:
+```bash
+pip install finch-tensor-lite
+```
+
+## Contributing
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines, development setup, and best practices.
+
