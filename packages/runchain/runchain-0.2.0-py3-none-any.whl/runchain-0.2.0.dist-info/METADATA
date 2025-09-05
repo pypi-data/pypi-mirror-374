@@ -1,0 +1,118 @@
+Metadata-Version: 2.4
+Name: runchain
+Version: 0.2.0
+Summary: A tool for running command chains
+Author-email: Richard Terry <code@radiac.net>
+License-Expression: BSD-3-Clause
+Project-URL: Homepage, https://radiac.net/projects/runchain/
+Project-URL: Documentation, https://github.com/radiac/runchain
+Project-URL: Changelog, https://runchain.readthedocs.io/en/latest/changelog.html
+Project-URL: Repository, https://github.com/radiac/runchain
+Project-URL: Issues, https://github.com/radiac/runchain/issues
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: click
+Requires-Dist: crondir
+Dynamic: license-file
+
+# runchain
+
+[![PyPI](https://img.shields.io/pypi/v/runchain.svg)](https://pypi.org/project/runchain/)
+[![Documentation](https://readthedocs.org/projects/runchain/badge/?version=latest)](https://runchain.readthedocs.io/en/latest/)
+[![Tests](https://github.com/radiac/runchain/actions/workflows/ci.yml/badge.svg)](https://github.com/radiac/runchain/actions/workflows/ci.yml)
+[![Coverage](https://codecov.io/gh/radiac/runchain/branch/main/graph/badge.svg?token=BCNM45T6GI)](https://codecov.io/gh/radiac/runchain)
+
+Manage and execute chains of scripts.
+
+Runchain allows you to group scripts into named chains, schedule them with cron, and
+run them in a predictable order. Perfect for backup scripts and maintenance tasks.
+
+- Group scripts into ordered chains
+- Schedule chains with crondir integration
+- Simple Python API and CLI interface
+
+## Usage
+
+Install runchain:
+
+```bash
+pip install runchain
+```
+
+Create a backup chain by adding scripts:
+
+```bash
+runchain add backup ~/scripts/database-backup.sh 10
+runchain add backup /usr/local/bin/file-backup.py 20-files
+runchain add backup ./30-cleanup.sh
+```
+
+List your chains:
+
+```bash
+runchain list
+```
+
+List scripts in a specific chain:
+
+```bash
+runchain list backup
+```
+
+Run a chain manually:
+
+```bash
+runchain run backup
+```
+
+Schedule a chain with crondir:
+
+```bash
+runchain cron backup "0 2 * * *"
+```
+
+Remove a script or entire chain:
+
+```bash
+runchain remove backup 20-files
+runchain remove backup
+```
+
+Or you may find it easier to skip the install step and run it using [uv](https://docs.astral.sh/uv/):
+
+```bash
+uvx runchain add backup ~/scripts/backup.sh 10
+uvx runchain cron backup "0 2 * * *"
+uvx runchain run backup
+```
+
+By default, runchain stores chains in `~/.runchain/`, with each chain in its own subdirectory.
+
+For full command line options, see [command documentation](https://runchain.readthedocs.io/en/latest/commands.html)
+
+## Example
+
+For an example of setting up a backup chain, see
+[How to create a backup chain](https://runchain.readthedocs.io/en/latest/howto-backup.html)
+in the documentation.
+
+## Python API
+
+```python
+from runchain import Chain, list_chains
+
+# List all chains
+chains = list_chains()
+
+# Work with a specific chain
+backup = Chain("backup")
+backup.add("~/scripts/database.sh", "10")
+backup.cron("0 2 * * *")
+backup.run()
+```
+
+See the [API documentation](https://runchain.readthedocs.io/en/latest/api.html) for more details.
