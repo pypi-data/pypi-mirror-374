@@ -1,0 +1,23 @@
+{% set title = gettext("Log viewer") %}
+{% set back_url = "/" %}
+{% set styles = ["log"] %}
+{% set script = "log" %}
+{% extends "base_static.jinja2" %}
+
+{% block content %}
+
+<div class="buttons">
+    <form action="/log/clear">
+        <input type="submit" value="{% trans %}Clear log file{% endtrans %}">
+    </form>
+
+    <button id="scroll-button">{% trans %}Scroll to bottom{% endtrans %}</button>
+</div>
+
+{% if log_content %}
+<div class="logbox">{{ log_content }}</div>
+{% else %}
+<p>{{ error }}</p>
+{% endif %}
+
+{% endblock content %}
