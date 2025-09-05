@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "param-server"
+version = "1.0.0"
+authors = [
+    {name = "Cognexa"},
+]
+description = "A distributed parameter server for managing configuration across processes"
+requires-python = ">=3.12"
+dependencies = [
+    "pyyaml>=6.0",
+    "click>=8.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=1.1.0",
+]
+
+[project.scripts]
+param-server = "param_server.server:main"
+param-cli = "cli.param_cli:main"
+
+
+[tool.hatch.build.targets.wheel]
+packages = ["param_server", "cli"]

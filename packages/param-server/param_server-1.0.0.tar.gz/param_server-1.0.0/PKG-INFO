@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: param-server
+Version: 1.0.0
+Summary: A distributed parameter server for managing configuration across processes
+Author: Cognexa
+Requires-Python: >=3.12
+Requires-Dist: click>=8.0
+Requires-Dist: pyyaml>=6.0
+Provides-Extra: dev
+Requires-Dist: pytest-asyncio>=1.1.0; extra == 'dev'
+Requires-Dist: pytest>=7.0; extra == 'dev'

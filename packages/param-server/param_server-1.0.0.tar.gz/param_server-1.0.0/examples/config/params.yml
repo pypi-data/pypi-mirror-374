@@ -1,0 +1,30 @@
+# Example parameter configuration
+camera:
+  exposure: 0.033  # 30 FPS
+  gain: 1.0
+  resolution:
+    width: 1920
+    height: 1080
+  auto_exposure: true
+  
+system:
+  debug: false
+  log_level: "INFO"
+  max_connections: 10
+  
+robot:
+  arm:
+    joint1: 0.0
+    joint2: 0.0
+    joint3: 0.0
+    speed: 1.0
+  base:
+    x: 0.0
+    y: 0.0
+    theta: 0.0
+    max_speed: 2.0
+    
+network:
+  timeout: 5.0
+  retry_count: 3
+  buffer_size: 1024
