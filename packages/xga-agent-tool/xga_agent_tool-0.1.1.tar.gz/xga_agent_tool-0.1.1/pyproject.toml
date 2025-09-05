@@ -1,0 +1,23 @@
+[project]
+name = "xga-agent-tool"
+version = "0.1.1"
+description = "Extreme Agent Tool Proxy"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "a2a-sdk==0.3.3",
+    "colorlog==6.9.0",
+    "mcp==1.13.0",
+    "pyyaml==6.0.2",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+exclude = ["log/*", ".idea/*"]
+
+[project.scripts]
+xga-agent-tool = "xga_agent_tool.a2a_tool_proxy_app:main"
+example-a2a-server = "examples.a2a.a2a_server_app:main"

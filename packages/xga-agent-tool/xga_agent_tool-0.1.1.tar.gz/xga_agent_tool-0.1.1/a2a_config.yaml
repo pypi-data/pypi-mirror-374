@@ -1,0 +1,7 @@
+EquipFaultAgent:                                  ## agent name
+  agent_card_base_url: "http://localhost:37070"   ## Mandatory
+  agent_card_path:                                ## Optional, default is '/.well-known/agent.json'
+  tool_name: "query_equip_fault_cause"            ## Mandatory, mcp agent tool name
+  tool_desc:                                      ## Optional, if empty, will use AgentCard agent description
+  input_desc: "Fault info include Fault Code"     ## Optional, mcp agent tool 'input' parameter description
+
