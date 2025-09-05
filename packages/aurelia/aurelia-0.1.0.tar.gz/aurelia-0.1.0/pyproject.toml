@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aurelia"
+version = "0.1.0"
+description = "Simulate realistic ARPES spectra with experimental artifacts for analysis and machine-learning applications."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "MengXing Na", email = "mengxing.na@gmail.com"},
+    {name = "Matteo Michiardi"}
+]
+dependencies = [
+    "numpy>=1.21",
+    "matplotlib>=3.5",
+    "scipy>=1.10",
+    "h5py>=3.8"
+]
+
+[project.urls]
+Homepage = "https://github.com/qmlab-ubc-ca/aurelia"
+Documentation = "https://github.com/qmlab-ubc-ca/aurelia/wiki"
