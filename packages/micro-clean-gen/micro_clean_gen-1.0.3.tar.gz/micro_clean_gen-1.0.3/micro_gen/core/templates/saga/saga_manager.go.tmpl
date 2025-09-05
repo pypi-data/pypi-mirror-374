@@ -1,0 +1,142 @@
+package saga
+
+import (
+	"context"
+	"fmt"
+	"path/filepath"
+
+	"github.com/dgraph-io/badger/v4"
+	"github.com/redis/go-redis/v9"
+
+	"{{.project_name}}/internal/entity"
+	"{{.project_name}}/pkg/config"
+	"{{.project_name}}/pkg/logger"
+)
+
+// SagaManager Saga事务管理器
+type SagaManager struct {
+	service SagaService
+	logger  logger.Logger
+}
+
+// NewSagaManager 创建新的Saga管理器
+func NewSagaManager(cfg *config.Config, logger logger.Logger) (*SagaManager, error) {
+	var store SagaStore
+	var executor *entity.SagaStepExecutor
+
+	// 根据配置选择存储类型
+	switch cfg.SagaLevel {
+	case "high":
+		redisClient := redis.NewClient(&redis.Options{
+			Addr:     cfg.RedisAddr,
+			Password: cfg.RedisPassword,
+			DB:       cfg.RedisDB,
+		})
+		store = NewRedisSagaStore(redisClient, "saga", logger)
+	case "normal":
+		// 使用项目根目录下的data目录作为Badger存储路径
+		dataDir := filepath.Join("data", "sagas")
+		badgerStore, err := NewBadgerSagaStore(dataDir, logger)
+		if err != nil {
+			return nil, fmt.Errorf("create badger store: %w", err)
+		}
+		store = badgerStore
+	case "low":
+		store = NewMemorySagaStore(logger)
+	default:
+		// 默认使用内存存储
+		store = NewMemorySagaStore(logger)
+	}
+
+	executor = entity.NewSagaStepExecutor(logger)
+	service := NewSagaService(store, executor, logger, cfg)
+
+	return &SagaManager{
+		service: service,
+		logger:  logger,
+	}, nil
+}
+
+// GetService 获取Saga服务
+func (m *SagaManager) GetService() SagaService {
+	return m.service
+}
+
+// GetExecutor 获取步骤执行器
+func (m *SagaManager) GetExecutor() *entity.SagaStepExecutor {
+	// 从service中获取executor
+	if sagaService, ok := m.service.(*sagaService); ok {
+		return sagaService.executor
+	}
+	return nil
+}
+
+// RegisterStepHandler 注册步骤处理器
+func (m *SagaManager) RegisterStepHandler(stepType string, handler entity.SagaStepHandler) {
+	if executor := m.GetExecutor(); executor != nil {
+		executor.RegisterHandler(stepType, handler)
+	}
+}
+
+// Close 关闭管理器
+func (m *SagaManager) Close() error {
+	// 清理资源
+	if sagaService, ok := m.service.(*sagaService); ok {
+		if badgerStore, ok := sagaService.store.(*BadgerSagaStore); ok {
+			return badgerStore.Close()
+		}
+	}
+	return nil
+}
+
+// SagaManagerFactory Saga管理器工厂
+var (
+	instance *SagaManager
+)
+
+// GetSagaManager 获取全局Saga管理器实例
+func GetSagaManager(cfg *config.Config, logger logger.Logger) (*SagaManager, error) {
+	if instance == nil {
+		var err error
+		instance, err = NewSagaManager(cfg, logger)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return instance, nil
+}
+
+// ResetSagaManager 重置全局实例（用于测试）
+func ResetSagaManager() {
+	if instance != nil {
+		instance.Close()
+		instance = nil
+	}
+}
+
+// SagaContextKey Saga上下文键
+type SagaContextKey string
+
+const (
+	SagaIDKey SagaContextKey = "saga_id"
+	StepIDKey SagaContextKey = "step_id"
+)
+
+// WithSagaContext 将Saga信息添加到上下文
+func WithSagaContext(ctx context.Context, sagaID, stepID string) context.Context {
+	ctx = context.WithValue(ctx, SagaIDKey, sagaID)
+	ctx = context.WithValue(ctx, StepIDKey, stepID)
+	return ctx
+}
+
+// GetSagaIDFromContext 从上下文获取Saga ID
+func GetSagaIDFromContext(ctx context.Context) (string, bool) {
+	sagaID, ok := ctx.Value(SagaIDKey).(string)
+	return sagaID, ok
+}
+
+// GetStepIDFromContext 从上下文获取Step ID
+func GetStepIDFromContext(ctx context.Context) (string, bool) {
+	stepID, ok := ctx.Value(StepIDKey).(string)
+	return stepID, ok
+}

@@ -1,0 +1,252 @@
+package task
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"time"
+	"{{.project_name}}/internal/entity"
+)
+
+// ExampleTaskHandler 示例任务处理器
+type ExampleTaskHandler struct {
+	name string
+}
+
+// NewExampleTaskHandler 创建示例任务处理器
+func NewExampleTaskHandler(name string) *ExampleTaskHandler {
+	return &ExampleTaskHandler{name: name}
+}
+
+// Handle 处理任务
+func (h *ExampleTaskHandler) Handle(ctx context.Context, task *entity.TaskData) (map[string]interface{}, error) {
+	log.Printf("[%s] 开始处理任务: %s, 类型: %s", h.name, task.ID, task.Type)
+	
+	// 模拟任务处理
+	select {
+	case <-time.After(2 * time.Second):
+		// 任务处理完成
+		result := map[string]interface{}{
+			"processed_at": time.Now().Format(time.RFC3339),
+			"handler":      h.name,
+			"payload":      task.Payload,
+		}
+		log.Printf("[%s] 任务完成: %s", h.name, task.ID)
+		return result, nil
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	}
+}
+
+// GetTimeout 获取超时时间
+func (h *ExampleTaskHandler) GetTimeout() time.Duration {
+	return 5 * time.Minute
+}
+
+// SetupTaskManagement 设置任务管理
+func SetupTaskManagement() error {
+	// 创建任务管理器
+	taskManager, err := NewTaskManager()
+	if err != nil {
+		return fmt.Errorf("failed to create task manager: %w", err)
+	}
+
+	// 注册任务处理器
+	emailHandler := NewExampleTaskHandler("email-service")
+	reportHandler := NewExampleTaskHandler("report-service")
+	cleanupHandler := NewExampleTaskHandler("cleanup-service")
+
+	taskManager.RegisterHandler("email_notification", emailHandler)
+	taskManager.RegisterHandler("report_generation", reportHandler)
+	taskManager.RegisterHandler("data_cleanup", cleanupHandler)
+
+	// 启动任务处理器
+	ctx := context.Background()
+	if err := taskManager.Start(ctx); err != nil {
+		return fmt.Errorf("failed to start task manager: %w", err)
+	}
+
+	// 提交示例任务
+	taskID1, err := taskManager.SubmitTask(ctx, "email_notification", "high", map[string]interface{}{
+		"recipient": "user@example.com",
+		"subject":   "Welcome Email",
+		"template":  "welcome",
+	})
+	if err != nil {
+		log.Printf("Failed to submit email task: %v", err)
+	} else {
+		log.Printf("Submitted email task: %s", taskID1)
+	}
+
+	taskID2, err := taskManager.SubmitTask(ctx, "report_generation", "normal", map[string]interface{}{
+		"report_type": "monthly",
+		"user_id":     "user123",
+		"date_range":  map[string]string{"start": "2024-01-01", "end": "2024-01-31"},
+	})
+	if err != nil {
+		log.Printf("Failed to submit report task: %v", err)
+	} else {
+		log.Printf("Submitted report task: %s", taskID2)
+	}
+
+	// 调度定时任务
+	scheduledTime := time.Now().Add(1 * time.Hour)
+	taskID3, err := taskManager.ScheduleTask(ctx, "data_cleanup", "low", map[string]interface{}{
+		"cleanup_type": "old_logs",
+		"retention_days": 30,
+	}, scheduledTime)
+	if err != nil {
+		log.Printf("Failed to schedule cleanup task: %v", err)
+	} else {
+		log.Printf("Scheduled cleanup task: %s", taskID3)
+	}
+
+	// 创建任务调度器
+	scheduler := NewTaskScheduler(taskManager)
+	
+	// 添加定时任务
+	scheduler.AddSchedule("daily_cleanup", &Schedule{
+		TaskType: "data_cleanup",
+		Priority: "low",
+		Payload: map[string]interface{}{
+			"cleanup_type": "temp_files",
+			"retention_hours": 24,
+		},
+		CronExpr: "0 2 * * *", // 每天凌晨2点
+		NextRun:  time.Now().Add(24 * time.Hour),
+	})
+
+	scheduler.AddSchedule("weekly_report", &Schedule{
+		TaskType: "report_generation",
+		Priority: "normal",
+		Payload: map[string]interface{}{
+			"report_type": "weekly_summary",
+			"recipients":  []string{"admin@example.com"},
+		},
+		CronExpr: "0 9 * * 1", // 每周一上午9点
+		NextRun:  time.Now().Add(7 * 24 * time.Hour),
+	})
+
+	// 启动调度器
+	go scheduler.Start(ctx)
+
+	// 等待中断信号
+	<-ctx.Done()
+
+	// 清理
+	taskManager.Stop()
+	log.Println("Task management stopped")
+
+	return nil
+}
+
+// HTTPHandlers HTTP处理器
+func HTTPHandlers(taskManager *TaskManager) map[string]func() {
+	return map[string]func(){
+		"/api/tasks": func() {
+			// 获取任务列表
+			ctx := context.Background()
+			tasks, err := taskManager.ListTasks(ctx, "")
+			if err != nil {
+				log.Printf("Failed to list tasks: %v", err)
+				return
+			}
+			log.Printf("Tasks: %+v", tasks)
+		},
+		"/api/tasks/create": func() {
+			// 创建任务
+			ctx := context.Background()
+			taskID, err := taskManager.SubmitTask(ctx, "email_notification", "high", map[string]interface{}{
+				"recipient": "user@example.com",
+				"subject":   "Test Email",
+			})
+			if err != nil {
+				log.Printf("Failed to create task: %v", err)
+				return
+			}
+			log.Printf("Created task: %s", taskID)
+		},
+		"/api/tasks/status": func() {
+			// 获取任务状态
+			ctx := context.Background()
+			task, err := taskManager.GetTaskStatus(ctx, "task-id")
+			if err != nil {
+				log.Printf("Failed to get task status: %v", err)
+				return
+			}
+			log.Printf("Task status: %+v", task)
+		},
+	}
+}
+
+// IntegrationExample 集成示例
+func IntegrationExample() {
+	// 创建任务管理器
+	taskManager, err := NewTaskManager()
+	if err != nil {
+		log.Fatalf("Failed to create task manager: %v", err)
+	}
+
+	// 注册处理器
+	taskManager.RegisterHandler("send_email", &ExampleTaskHandler{name: "email"})
+	taskManager.RegisterHandler("generate_report", &ExampleTaskHandler{name: "report"})
+	taskManager.RegisterHandler("cleanup_data", &ExampleTaskHandler{name: "cleanup"})
+
+	// 启动处理器
+	ctx := context.Background()
+	if err := taskManager.Start(ctx); err != nil {
+		log.Fatalf("Failed to start task manager: %v", err)
+	}
+
+	// 使用示例
+	fmt.Println("=== 任务管理使用示例 ===")
+	
+	// 1. 提交普通任务
+	fmt.Println("1. 提交邮件通知任务...")
+	emailTaskID, _ := taskManager.SubmitTask(ctx, "send_email", "high", map[string]interface{}{
+		"to":      "user@example.com",
+		"subject": "欢迎邮件",
+		"body":    "欢迎使用我们的服务！",
+	})
+	fmt.Printf("   任务ID: %s\n", emailTaskID)
+
+	// 2. 提交报告生成任务
+	fmt.Println("2. 提交报告生成任务...")
+	reportTaskID, _ := taskManager.SubmitTask(ctx, "generate_report", "normal", map[string]interface{}{
+		"report_type": "monthly",
+		"user_id":     "user123",
+		"date_from":   "2024-01-01",
+		"date_to":     "2024-01-31",
+	})
+	fmt.Printf("   任务ID: %s\n", reportTaskID)
+
+	// 3. 调度定时任务
+	fmt.Println("3. 调度定时清理任务...")
+	scheduledTime := time.Now().Add(5 * time.Minute)
+	cleanupTaskID, _ := taskManager.ScheduleTask(ctx, "cleanup_data", "low", map[string]interface{}{
+		"cleanup_type": "old_logs",
+		"retention_days": 30,
+	}, scheduledTime)
+	fmt.Printf("   任务ID: %s, 执行时间: %s\n", cleanupTaskID, scheduledTime.Format("2006-01-02 15:04:05"))
+
+	// 4. 查询任务状态
+	fmt.Println("4. 查询任务状态...")
+	if task, err := taskManager.GetTaskStatus(ctx, emailTaskID); err == nil {
+		fmt.Printf("   邮件任务状态: %s\n", task.Status)
+	}
+
+	// 5. 列出所有任务
+	fmt.Println("5. 列出所有任务...")
+	if tasks, err := taskManager.ListTasks(ctx, ""); err == nil {
+		for _, t := range tasks {
+			fmt.Printf("   任务: %s, 类型: %s, 状态: %s\n", t.ID, t.Type, t.Status)
+		}
+	}
+
+	// 等待任务完成（实际应用中应该使用更优雅的方式）
+	time.Sleep(3 * time.Second)
+
+	// 停止任务管理器
+	taskManager.Stop()
+	fmt.Println("任务管理器已停止")
+}

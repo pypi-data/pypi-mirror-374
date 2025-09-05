@@ -1,0 +1,176 @@
+# CQRS 配置示例
+# 使用说明详见 CQRS_DSL_GUIDE.md
+
+aggregates:
+  - name: User
+    fields:
+      - name: username
+        type: string
+        json: username
+      - name: email
+        type: string
+        json: email
+      - name: age
+        type: int
+        json: age
+    commands:
+      - name: CreateUser
+        fields:
+          - name: username
+            type: string
+            json: username
+            required: true
+          - name: email
+            type: string
+            json: email
+            required: true
+          - name: age
+            type: int
+            json: age
+      - name: UpdateUser
+        fields:
+          - name: username
+            type: string
+            json: username
+          - name: email
+            type: string
+            json: email
+          - name: age
+            type: int
+            json: age
+    events:
+      - name: UserCreated
+        fields:
+          - name: userId
+            type: string
+            json: user_id
+          - name: username
+            type: string
+            json: username
+          - name: email
+            type: string
+            json: email
+          - name: age
+            type: int
+            json: age
+          - name: createdAt
+            type: time.Time
+            json: created_at
+      - name: UserUpdated
+        fields:
+          - name: userId
+            type: string
+            json: user_id
+          - name: username
+            type: string
+            json: username
+          - name: email
+            type: string
+            json: email
+          - name: age
+            type: int
+            json: age
+          - name: updatedAt
+            type: time.Time
+            json: updated_at
+    readModel:
+      name: UserReadModel
+      fields:
+        - name: userId
+          type: string
+          json: user_id
+        - name: username
+          type: string
+          json: username
+        - name: email
+          type: string
+          json: email
+        - name: age
+          type: int
+          json: age
+        - name: createdAt
+          type: time.Time
+          json: created_at
+        - name: updatedAt
+          type: time.Time
+          json: updated_at
+
+  - name: Order
+    fields:
+      - name: userId
+        type: string
+        json: user_id
+      - name: totalAmount
+        type: float64
+        json: total_amount
+      - name: status
+        type: string
+        json: status
+    commands:
+      - name: CreateOrder
+        fields:
+          - name: userId
+            type: string
+            json: user_id
+            required: true
+          - name: totalAmount
+            type: float64
+            json: total_amount
+            required: true
+      - name: UpdateOrderStatus
+        fields:
+          - name: orderId
+            type: string
+            json: order_id
+            required: true
+          - name: status
+            type: string
+            json: status
+            required: true
+    events:
+      - name: OrderCreated
+        fields:
+          - name: orderId
+            type: string
+            json: order_id
+          - name: userId
+            type: string
+            json: user_id
+          - name: totalAmount
+            type: float64
+            json: total_amount
+          - name: createdAt
+            type: time.Time
+            json: created_at
+      - name: OrderStatusUpdated
+        fields:
+          - name: orderId
+            type: string
+            json: order_id
+          - name: status
+            type: string
+            json: status
+          - name: updatedAt
+            type: time.Time
+            json: updated_at
+    readModel:
+      name: OrderReadModel
+      fields:
+        - name: orderId
+          type: string
+          json: order_id
+        - name: userId
+          type: string
+          json: user_id
+        - name: totalAmount
+          type: float64
+          json: total_amount
+        - name: status
+          type: string
+          json: status
+        - name: createdAt
+          type: time.Time
+          json: created_at
+        - name: updatedAt
+          type: time.Time
+          json: updated_at

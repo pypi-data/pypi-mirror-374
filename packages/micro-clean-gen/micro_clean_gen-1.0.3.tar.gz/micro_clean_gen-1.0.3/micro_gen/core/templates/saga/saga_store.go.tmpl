@@ -1,0 +1,350 @@
+package saga
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"time"
+
+	"github.com/redis/go-redis/v9"
+	"github.com/dgraph-io/badger/v4"
+
+	"{{.project_name}}/internal/entity"
+	"{{.project_name}}/pkg/logger"
+)
+
+// MemorySagaStore 内存存储实现
+type MemorySagaStore struct {
+	data map[string]*entity.SagaTransaction
+	logger logger.Logger
+}
+
+// NewMemorySagaStore 创建内存存储
+func NewMemorySagaStore(logger logger.Logger) *MemorySagaStore {
+	return &MemorySagaStore{
+		data:   make(map[string]*entity.SagaTransaction),
+		logger: logger,
+	}
+}
+
+func (m *MemorySagaStore) Create(ctx context.Context, saga *entity.SagaTransaction) error {
+	m.data[saga.ID] = saga
+	m.logger.Debugf("MemorySagaStore: 创建Saga事务: %s", saga.ID)
+	return nil
+}
+
+func (m *MemorySagaStore) Get(ctx context.Context, sagaID string) (*entity.SagaTransaction, error) {
+	saga, exists := m.data[sagaID]
+	if !exists {
+		return nil, fmt.Errorf("saga not found: %s", sagaID)
+	}
+	return saga, nil
+}
+
+func (m *MemorySagaStore) Update(ctx context.Context, saga *entity.SagaTransaction) error {
+	m.data[saga.ID] = saga
+	m.logger.Debugf("MemorySagaStore: 更新Saga事务: %s", saga.ID)
+	return nil
+}
+
+func (m *MemorySagaStore) List(ctx context.Context, status *entity.SagaStatus) ([]*entity.SagaTransaction, error) {
+	var result []*entity.SagaTransaction
+	for _, saga := range m.data {
+		if status == nil || saga.Status == *status {
+			result = append(result, saga)
+		}
+	}
+	return result, nil
+}
+
+func (m *MemorySagaStore) Delete(ctx context.Context, sagaID string) error {
+	delete(m.data, sagaID)
+	m.logger.Debugf("MemorySagaStore: 删除Saga事务: %s", sagaID)
+	return nil
+}
+
+func (m *MemorySagaStore) Cleanup(ctx context.Context, before time.Time) error {
+	for id, saga := range m.data {
+		if saga.Status == entity.SagaStatusCompleted || saga.Status == entity.SagaStatusCompensated {
+			if saga.UpdatedAt.Before(before) {
+				delete(m.data, id)
+				m.logger.Debugf("MemorySagaStore: 清理Saga事务: %s", id)
+			}
+		}
+	}
+	return nil
+}
+
+// RedisSagaStore Redis存储实现
+type RedisSagaStore struct {
+	client *redis.Client
+	prefix string
+	logger logger.Logger
+}
+
+// NewRedisSagaStore 创建Redis存储
+func NewRedisSagaStore(client *redis.Client, prefix string, logger logger.Logger) *RedisSagaStore {
+	return &RedisSagaStore{
+		client: client,
+		prefix: prefix,
+		logger: logger,
+	}
+}
+
+func (r *RedisSagaStore) getKey(sagaID string) string {
+	return fmt.Sprintf("%s:saga:%s", r.prefix, sagaID)
+}
+
+func (r *RedisSagaStore) Create(ctx context.Context, saga *entity.SagaTransaction) error {
+	data, err := json.Marshal(saga)
+	if err != nil {
+		return fmt.Errorf("marshal saga: %w", err)
+	}
+
+	key := r.getKey(saga.ID)
+	err = r.client.Set(ctx, key, data, 24*time.Hour).Err()
+	if err != nil {
+		return fmt.Errorf("redis set: %w", err)
+	}
+
+	r.logger.Debugf("RedisSagaStore: 创建Saga事务: %s", saga.ID)
+	return nil
+}
+
+func (r *RedisSagaStore) Get(ctx context.Context, sagaID string) (*entity.SagaTransaction, error) {
+	key := r.getKey(sagaID)
+	data, err := r.client.Get(ctx, key).Result()
+	if err != nil {
+		if err == redis.Nil {
+			return nil, fmt.Errorf("saga not found: %s", sagaID)
+		}
+		return nil, fmt.Errorf("redis get: %w", err)
+	}
+
+	var saga entity.SagaTransaction
+	if err := json.Unmarshal([]byte(data), &saga); err != nil {
+		return nil, fmt.Errorf("unmarshal saga: %w", err)
+	}
+
+	return &saga, nil
+}
+
+func (r *RedisSagaStore) Update(ctx context.Context, saga *entity.SagaTransaction) error {
+	data, err := json.Marshal(saga)
+	if err != nil {
+		return fmt.Errorf("marshal saga: %w", err)
+	}
+
+	key := r.getKey(saga.ID)
+	err = r.client.Set(ctx, key, data, 24*time.Hour).Err()
+	if err != nil {
+		return fmt.Errorf("redis set: %w", err)
+	}
+
+	r.logger.Debugf("RedisSagaStore: 更新Saga事务: %s", saga.ID)
+	return nil
+}
+
+func (r *RedisSagaStore) List(ctx context.Context, status *entity.SagaStatus) ([]*entity.SagaTransaction, error) {
+	pattern := fmt.Sprintf("%s:saga:*", r.prefix)
+	keys, err := r.client.Keys(ctx, pattern).Result()
+	if err != nil {
+		return nil, fmt.Errorf("redis keys: %w", err)
+	}
+
+	var result []*entity.SagaTransaction
+	for _, key := range keys {
+		data, err := r.client.Get(ctx, key).Result()
+		if err != nil {
+			continue
+		}
+
+		var saga entity.SagaTransaction
+		if err := json.Unmarshal([]byte(data), &saga); err != nil {
+			continue
+		}
+
+		if status == nil || saga.Status == *status {
+			result = append(result, &saga)
+		}
+	}
+
+	return result, nil
+}
+
+func (r *RedisSagaStore) Delete(ctx context.Context, sagaID string) error {
+	key := r.getKey(sagaID)
+	err := r.client.Del(ctx, key).Err()
+	if err != nil {
+		return fmt.Errorf("redis del: %w", err)
+	}
+
+	r.logger.Debugf("RedisSagaStore: 删除Saga事务: %s", sagaID)
+	return nil
+}
+
+func (r *RedisSagaStore) Cleanup(ctx context.Context, before time.Time) error {
+	sagas, err := r.List(ctx, nil)
+	if err != nil {
+		return err
+	}
+
+	for _, saga := range sagas {
+		if (saga.Status == entity.SagaStatusCompleted || saga.Status == entity.SagaStatusCompensated) &&
+			saga.UpdatedAt.Before(before) {
+			if err := r.Delete(ctx, saga.ID); err != nil {
+				r.logger.Errorf("清理Saga事务失败: %s, 错误: %v", saga.ID, err)
+				continue
+			}
+			r.logger.Debugf("RedisSagaStore: 清理Saga事务: %s", saga.ID)
+		}
+	}
+
+	return nil
+}
+
+// BadgerSagaStore Badger存储实现
+type BadgerSagaStore struct {
+	db     *badger.DB
+	logger logger.Logger
+}
+
+// NewBadgerSagaStore 创建Badger存储
+func NewBadgerSagaStore(dbPath string, logger logger.Logger) (*BadgerSagaStore, error) {
+	if err := ensureDir(dbPath); err != nil {
+		return nil, fmt.Errorf("ensure directory: %w", err)
+	}
+
+	db, err := badger.Open(badger.DefaultOptions(dbPath))
+	if err != nil {
+		return nil, fmt.Errorf("open badger db: %w", err)
+	}
+
+	return &BadgerSagaStore{
+		db:     db,
+		logger: logger,
+	}, nil
+}
+
+func (b *BadgerSagaStore) Close() error {
+	return b.db.Close()
+}
+
+func (b *BadgerSagaStore) Create(ctx context.Context, saga *entity.SagaTransaction) error {
+	data, err := json.Marshal(saga)
+	if err != nil {
+		return fmt.Errorf("marshal saga: %w", err)
+	}
+
+	return b.db.Update(func(txn *badger.Txn) error {
+		key := []byte(fmt.Sprintf("saga:%s", saga.ID))
+		return txn.Set(key, data)
+	})
+}
+
+func (b *BadgerSagaStore) Get(ctx context.Context, sagaID string) (*entity.SagaTransaction, error) {
+	var saga entity.SagaTransaction
+	
+	err := b.db.View(func(txn *badger.Txn) error {
+		key := []byte(fmt.Sprintf("saga:%s", sagaID))
+		item, err := txn.Get(key)
+		if err != nil {
+			if err == badger.ErrKeyNotFound {
+				return fmt.Errorf("saga not found: %s", sagaID)
+			}
+			return fmt.Errorf("get saga: %w", err)
+		}
+
+		return item.Value(func(val []byte) error {
+			return json.Unmarshal(val, &saga)
+		})
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &saga, nil
+}
+
+func (b *BadgerSagaStore) Update(ctx context.Context, saga *entity.SagaTransaction) error {
+	data, err := json.Marshal(saga)
+	if err != nil {
+		return fmt.Errorf("marshal saga: %w", err)
+	}
+
+	return b.db.Update(func(txn *badger.Txn) error {
+		key := []byte(fmt.Sprintf("saga:%s", saga.ID))
+		return txn.Set(key, data)
+	})
+}
+
+func (b *BadgerSagaStore) List(ctx context.Context, status *entity.SagaStatus) ([]*entity.SagaTransaction, error) {
+	var result []*entity.SagaTransaction
+
+	err := b.db.View(func(txn *badger.Txn) error {
+		opts := badger.DefaultIteratorOptions
+		opts.Prefix = []byte("saga:")
+		
+		it := txn.NewIterator(opts)
+		defer it.Close()
+
+		for it.Rewind(); it.Valid(); it.Next() {
+			item := it.Item()
+			err := item.Value(func(val []byte) error {
+				var saga entity.SagaTransaction
+				if err := json.Unmarshal(val, &saga); err != nil {
+					return err
+				}
+
+				if status == nil || saga.Status == *status {
+					result = append(result, &saga)
+				}
+				return nil
+			})
+			if err != nil {
+				continue
+			}
+		}
+		return nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}
+
+func (b *BadgerSagaStore) Delete(ctx context.Context, sagaID string) error {
+	return b.db.Update(func(txn *badger.Txn) error {
+		key := []byte(fmt.Sprintf("saga:%s", sagaID))
+		return txn.Delete(key)
+	})
+}
+
+func (b *BadgerSagaStore) Cleanup(ctx context.Context, before time.Time) error {
+	sagas, err := b.List(ctx, nil)
+	if err != nil {
+		return err
+	}
+
+	for _, saga := range sagas {
+		if (saga.Status == entity.SagaStatusCompleted || saga.Status == entity.SagaStatusCompensated) &&
+			saga.UpdatedAt.Before(before) {
+			if err := b.Delete(ctx, saga.ID); err != nil {
+				b.logger.Errorf("清理Saga事务失败: %s, 错误: %v", saga.ID, err)
+				continue
+			}
+			b.logger.Debugf("BadgerSagaStore: 清理Saga事务: %s", saga.ID)
+		}
+	}
+
+	return nil
+}
+
+// ensureDir 确保目录存在
+func ensureDir(dir string) error {
+	import "os"
+	return os.MkdirAll(dir, 0755)
+}

@@ -1,0 +1,37 @@
+package projection
+
+// Query 读模型查询条件
+type Query struct {
+	ModelType string                 `json:"model_type"`
+	Filters   map[string]interface{} `json:"filters"`
+	Limit     int                    `json:"limit"`
+	Offset    int                    `json:"offset"`
+}
+
+// NewQuery 创建新的查询条件
+func NewQuery(modelType string) Query {
+	return Query{
+		ModelType: modelType,
+		Filters:   make(map[string]interface{}),
+		Limit:     100,
+		Offset:    0,
+	}
+}
+
+// WithFilter 添加过滤条件
+func (q Query) WithFilter(key string, value interface{}) Query {
+	q.Filters[key] = value
+	return q
+}
+
+// WithLimit 设置分页限制
+func (q Query) WithLimit(limit int) Query {
+	q.Limit = limit
+	return q
+}
+
+// WithOffset 设置分页偏移
+func (q Query) WithOffset(offset int) Query {
+	q.Offset = offset
+	return q
+}

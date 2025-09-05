@@ -1,0 +1,57 @@
+# Magic 魔法初始化配置文件示例
+# 用于 micro-gen magic 命令的 --config 参数
+
+# 项目名称
+project:
+  name: "magic-microservice"
+  description: "一键生成的完整微服务"
+
+# 事件溯源配置
+event_sourcing:
+  enabled: true
+  nats:
+    url: "nats://localhost:4222"
+    stream: "events"
+    cluster: "micro-services"
+
+# 会话配置
+session:
+  enabled: true
+  redis:
+    addr: "localhost:6379"
+    password: ""
+    db: 0
+  memory_fallback: true
+
+# 任务配置
+task:
+  enabled: true
+  max_workers: 10
+  queue_size: 1000
+
+# Saga配置
+saga:
+  enabled: true
+  timeout: "30s"
+  retry_attempts: 3
+
+# 投影配置
+projection:
+  enabled: true
+  update_interval: "1s"
+  batch_size: 100
+  
+# 数据库配置
+database:
+  type: "postgresql"
+  host: "localhost"
+  port: 5432
+  name: "magic_service"
+  user: "magic_user"
+  password: "magic_password"
+
+# 日志配置
+logging:
+  level: "info"
+  format: "json"
+  output: "stdout"

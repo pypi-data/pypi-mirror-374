@@ -1,0 +1,327 @@
+package entity
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"time"
+
+	"{{.project_name}}/pkg/logger"
+)
+
+// SagaStatus 表示Saga事务状态
+type SagaStatus string
+
+const (
+	SagaStatusPending   SagaStatus = "pending"
+	SagaStatusRunning   SagaStatus = "running"
+	SagaStatusCompleted SagaStatus = "completed"
+	SagaStatusFailed    SagaStatus = "failed"
+	SagaStatusCompensated SagaStatus = "compensated"
+)
+
+// SagaStepStatus 表示单个步骤状态
+type SagaStepStatus string
+
+const (
+	StepStatusPending    SagaStepStatus = "pending"
+	StepStatusExecuting  SagaStepStatus = "executing"
+	StepStatusCompleted  SagaStepStatus = "completed"
+	StepStatusFailed     SagaStepStatus = "failed"
+	StepStatusCompensated SagaStepStatus = "compensated"
+)
+
+// SagaStep 表示Saga的一个步骤
+type SagaStep struct {
+	StepID      string                 `json:"step_id"`
+	Name        string                 `json:"name"`
+	Status      SagaStepStatus         `json:"status"`
+	Payload     map[string]interface{} `json:"payload,omitempty"`
+	Result      map[string]interface{} `json:"result,omitempty"`
+	Error       string                 `json:"error,omitempty"`
+	ExecuteAt   time.Time              `json:"execute_at,omitempty"`
+	CompensateAt time.Time              `json:"compensate_at,omitempty"`
+	Order       int                    `json:"order"`
+}
+
+// SagaTransaction 表示一个完整的Saga事务
+type SagaTransaction struct {
+	ID           string                 `json:"id"`
+	Name         string                 `json:"name"`
+	Status       SagaStatus             `json:"status"`
+	Steps        []SagaStep             `json:"steps"`
+	Payload      map[string]interface{} `json:"payload,omitempty"`
+	CreatedAt    time.Time              `json:"created_at"`
+	UpdatedAt    time.Time              `json:"updated_at"`
+	CompletedAt  *time.Time             `json:"completed_at,omitempty"`
+	Error        string                 `json:"error,omitempty"`
+	Context      map[string]interface{} `json:"context,omitempty"`
+}
+
+// NewSagaTransaction 创建新的Saga事务
+func NewSagaTransaction(name string, steps []SagaStep, payload map[string]interface{}) *SagaTransaction {
+	now := time.Now()
+	return &SagaTransaction{
+		ID:        generateSagaID(),
+		Name:      name,
+		Status:    SagaStatusPending,
+		Steps:     steps,
+		Payload:   payload,
+		CreatedAt: now,
+		UpdatedAt: now,
+		Context:   make(map[string]interface{}),
+	}
+}
+
+// AddStep 添加步骤
+func (s *SagaTransaction) AddStep(step SagaStep) {
+	step.Order = len(s.Steps) + 1
+	s.Steps = append(s.Steps, step)
+	s.UpdatedAt = time.Now()
+}
+
+// GetStep 获取指定步骤
+func (s *SagaTransaction) GetStep(stepID string) *SagaStep {
+	for i := range s.Steps {
+		if s.Steps[i].StepID == stepID {
+			return &s.Steps[i]
+		}
+	}
+	return nil
+}
+
+// UpdateStepStatus 更新步骤状态
+func (s *SagaTransaction) UpdateStepStatus(stepID string, status SagaStepStatus, result map[string]interface{}, err error) {
+	for i := range s.Steps {
+		if s.Steps[i].StepID == stepID {
+			s.Steps[i].Status = status
+			s.Steps[i].Result = result
+			if err != nil {
+				s.Steps[i].Error = err.Error()
+			}
+			if status == StepStatusCompleted {
+				s.Steps[i].ExecuteAt = time.Now()
+			} else if status == StepStatusCompensated {
+				s.Steps[i].CompensateAt = time.Now()
+			}
+			s.UpdatedAt = time.Now()
+			break
+		}
+	}
+}
+
+// IsCompleted 检查是否所有步骤都完成
+func (s *SagaTransaction) IsCompleted() bool {
+	for _, step := range s.Steps {
+		if step.Status != StepStatusCompleted {
+			return false
+		}
+	}
+	return true
+}
+
+// GetFailedStep 获取第一个失败的步骤
+func (s *SagaTransaction) GetFailedStep() *SagaStep {
+	for _, step := range s.Steps {
+		if step.Status == StepStatusFailed {
+			return &step
+		}
+	}
+	return nil
+}
+
+// GetCompensateSteps 获取需要补偿的步骤（按逆序）
+func (s *SagaTransaction) GetCompensateSteps() []SagaStep {
+	var compensateSteps []SagaStep
+	for i := len(s.Steps) - 1; i >= 0; i-- {
+		if s.Steps[i].Status == StepStatusCompleted {
+			compensateSteps = append(compensateSteps, s.Steps[i])
+		}
+	}
+	return compensateSteps
+}
+
+// MarshalJSON 自定义JSON序列化
+func (s *SagaTransaction) MarshalJSON() ([]byte, error) {
+	type Alias SagaTransaction
+	return json.Marshal(&struct {
+		*Alias
+		CreatedAt   string `json:"created_at"`
+		UpdatedAt   string `json:"updated_at"`
+		CompletedAt string `json:"completed_at,omitempty"`
+	}{
+		Alias:       (*Alias)(s),
+		CreatedAt:   s.CreatedAt.Format(time.RFC3339),
+		UpdatedAt:   s.UpdatedAt.Format(time.RFC3339),
+		CompletedAt: func() string {
+			if s.CompletedAt != nil {
+				return s.CompletedAt.Format(time.RFC3339)
+			}
+			return ""
+		}(),
+	})
+}
+
+// UnmarshalJSON 自定义JSON反序列化
+func (s *SagaTransaction) UnmarshalJSON(data []byte) error {
+	type Alias SagaTransaction
+	aux := &struct {
+		*Alias
+		CreatedAt   string `json:"created_at"`
+		UpdatedAt   string `json:"updated_at"`
+		CompletedAt string `json:"completed_at,omitempty"`
+	}{
+		Alias: (*Alias)(s),
+	}
+
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+
+	var err error
+	s.CreatedAt, err = time.Parse(time.RFC3339, aux.CreatedAt)
+	if err != nil {
+		return err
+	}
+	s.UpdatedAt, err = time.Parse(time.RFC3339, aux.UpdatedAt)
+	if err != nil {
+		return err
+	}
+
+	if aux.CompletedAt != "" {
+		completedAt, err := time.Parse(time.RFC3339, aux.CompletedAt)
+		if err != nil {
+			return err
+		}
+		s.CompletedAt = &completedAt
+	}
+
+	return nil
+}
+
+// SagaStepBuilder Saga步骤构建器
+type SagaStepBuilder struct {
+	step SagaStep
+}
+
+// NewSagaStepBuilder 创建新的步骤构建器
+func NewSagaStepBuilder(name string) *SagaStepBuilder {
+	return &SagaStepBuilder{
+		step: SagaStep{
+			StepID: generateStepID(),
+			Name:   name,
+			Status: StepStatusPending,
+		},
+	}
+}
+
+// WithPayload 设置步骤负载
+func (b *SagaStepBuilder) WithPayload(payload map[string]interface{}) *SagaStepBuilder {
+	b.step.Payload = payload
+	return b
+}
+
+// Build 构建步骤
+func (b *SagaStepBuilder) Build() SagaStep {
+	return b.step
+}
+
+// SagaBuilder Saga事务构建器
+type SagaBuilder struct {
+	transaction *SagaTransaction
+}
+
+// NewSagaBuilder 创建新的Saga构建器
+func NewSagaBuilder(name string) *SagaBuilder {
+	return &SagaBuilder{
+		transaction: NewSagaTransaction(name, nil, nil),
+	}
+}
+
+// AddStep 添加步骤
+func (b *SagaBuilder) AddStep(step SagaStep) *SagaBuilder {
+	b.transaction.AddStep(step)
+	return b
+}
+
+// WithPayload 设置负载
+func (b *SagaBuilder) WithPayload(payload map[string]interface{}) *SagaBuilder {
+	b.transaction.Payload = payload
+	return b
+}
+
+// Build 构建Saga事务
+func (b *SagaBuilder) Build() *SagaTransaction {
+	return b.transaction
+}
+
+// generateSagaID 生成Saga事务ID
+func generateSagaID() string {
+	return fmt.Sprintf("saga_%d", time.Now().UnixNano())
+}
+
+// generateStepID 生成步骤ID
+func generateStepID() string {
+	return fmt.Sprintf("step_%d", time.Now().UnixNano())
+}
+
+// SagaStepHandler 步骤处理器接口
+type SagaStepHandler interface {
+	Execute(ctx context.Context, step *SagaStep, payload map[string]interface{}) (map[string]interface{}, error)
+	Compensate(ctx context.Context, step *SagaStep, payload map[string]interface{}) error
+}
+
+// SagaStepExecutor 步骤执行器
+type SagaStepExecutor struct {
+	handlers map[string]SagaStepHandler
+	logger   logger.Logger
+}
+
+// NewSagaStepExecutor 创建新的步骤执行器
+func NewSagaStepExecutor(logger logger.Logger) *SagaStepExecutor {
+	return &SagaStepExecutor{
+		handlers: make(map[string]SagaStepHandler),
+		logger:   logger,
+	}
+}
+
+// RegisterHandler 注册步骤处理器
+func (e *SagaStepExecutor) RegisterHandler(stepType string, handler SagaStepHandler) {
+	e.handlers[stepType] = handler
+}
+
+// ExecuteStep 执行步骤
+func (e *SagaStepExecutor) ExecuteStep(ctx context.Context, step *SagaStep, payload map[string]interface{}) (map[string]interface{}, error) {
+	handler, exists := e.handlers[step.Name]
+	if !exists {
+		return nil, fmt.Errorf("handler not found for step: %s", step.Name)
+	}
+
+	e.logger.Infof("开始执行步骤: %s", step.Name)
+	result, err := handler.Execute(ctx, step, payload)
+	if err != nil {
+		e.logger.Errorf("步骤执行失败: %s, 错误: %v", step.Name, err)
+		return nil, err
+	}
+
+	e.logger.Infof("步骤执行成功: %s", step.Name)
+	return result, nil
+}
+
+// CompensateStep 补偿步骤
+func (e *SagaStepExecutor) CompensateStep(ctx context.Context, step *SagaStep, payload map[string]interface{}) error {
+	handler, exists := e.handlers[step.Name]
+	if !exists {
+		return fmt.Errorf("handler not found for step: %s", step.Name)
+	}
+
+	e.logger.Infof("开始补偿步骤: %s", step.Name)
+	err := handler.Compensate(ctx, step, payload)
+	if err != nil {
+		e.logger.Errorf("步骤补偿失败: %s, 错误: %v", step.Name, err)
+		return err
+	}
+
+	e.logger.Infof("步骤补偿成功: %s", step.Name)
+	return nil
+}

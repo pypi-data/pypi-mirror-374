@@ -1,0 +1,104 @@
+package entity
+
+import (
+	"time"
+)
+
+// Session 会话接口定义
+type Session interface {
+	GetID() string
+	GetData() map[string]interface{}
+	GetCreatedAt() time.Time
+	GetExpiresAt() time.Time
+	GetLastAccessedAt() time.Time
+	IsExpired() bool
+	GetIP() string
+	GetUserAgent() string
+	Touch()
+}
+
+// SessionData 会话数据结构
+type SessionData struct {
+	ID             string                 `json:"id"`
+	Data           map[string]interface{} `json:"data"`
+	CreatedAt      time.Time              `json:"created_at"`
+	ExpiresAt      time.Time              `json:"expires_at"`
+	LastAccessedAt time.Time              `json:"last_accessed_at"`
+	IP             string                 `json:"ip"`
+	UserAgent      string                 `json:"user_agent"`
+}
+
+// NewSessionData 创建新的会话数据
+func NewSessionData(id string, ttl time.Duration) *SessionData {
+	now := time.Now()
+	return &SessionData{
+		ID:             id,
+		Data:           make(map[string]interface{}),
+		CreatedAt:      now,
+		ExpiresAt:      now.Add(ttl),
+		LastAccessedAt: now,
+	}
+}
+
+// GetID 获取会话ID
+func (s *SessionData) GetID() string {
+	return s.ID
+}
+
+
+
+// GetData 获取会话数据
+func (s *SessionData) GetData() map[string]interface{} {
+	return s.Data
+}
+
+// GetCreatedAt 获取创建时间
+func (s *SessionData) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetExpiresAt 获取过期时间
+func (s *SessionData) GetExpiresAt() time.Time {
+	return s.ExpiresAt
+}
+
+// GetLastAccessedAt 获取最后访问时间
+func (s *SessionData) GetLastAccessedAt() time.Time {
+	return s.LastAccessedAt
+}
+
+// IsExpired 检查会话是否过期
+func (s *SessionData) IsExpired() bool {
+	return time.Now().After(s.ExpiresAt)
+}
+
+// GetIP 获取IP地址
+func (s *SessionData) GetIP() string {
+	return s.IP
+}
+
+// GetUserAgent 获取用户代理
+func (s *SessionData) GetUserAgent() string {
+	return s.UserAgent
+}
+
+// Touch 更新最后访问时间
+func (s *SessionData) Touch() {
+	s.LastAccessedAt = time.Now()
+}
+
+// SetValue 设置会话值
+func (s *SessionData) SetValue(key string, value interface{}) {
+	s.Data[key] = value
+}
+
+// GetValue 获取会话值
+func (s *SessionData) GetValue(key string) (interface{}, bool) {
+	val, ok := s.Data[key]
+	return val, ok
+}
+
+// DeleteValue 删除会话值
+func (s *SessionData) DeleteValue(key string) {
+	delete(s.Data, key)
+}

@@ -1,0 +1,85 @@
+package projection
+
+import (
+	"context"
+
+	"{{.ModuleName}}/internal/entity"
+	"{{.ModuleName}}/internal/entity/projection"
+)
+
+// ReadModelRepository 读模型存储接口（用例层接口）
+type ReadModelRepository interface {
+	Save(ctx context.Context, model *projection.ReadModel) error
+	FindByID(ctx context.Context, id string, modelType string) (*projection.ReadModel, error)
+	FindByQuery(ctx context.Context, query projection.Query) ([]*projection.ReadModel, error)
+	Delete(ctx context.Context, id string, modelType string) error
+}
+
+// {{.AggregateName}}ProjectionService {{.AggregateName}}投影用例服务
+type {{.AggregateName}}ProjectionService struct {
+	repo ReadModelRepository
+}
+
+// New{{.AggregateName}}ProjectionService 创建投影服务
+func New{{.AggregateName}}ProjectionService(repo ReadModelRepository) *{{.AggregateName}}ProjectionService {
+	return &{{.AggregateName}}ProjectionService{
+		repo: repo,
+	}
+}
+
+// HandleEvent 处理领域事件并更新读模型
+func (s *{{.AggregateName}}ProjectionService) HandleEvent(ctx context.Context, event entity.DomainEvent) error {
+	// 加载现有读模型
+	existing, err := s.repo.FindByID(ctx, event.GetAggregateID(), "{{.AggregateLower}}")
+	if err != nil && err != projection.ErrReadModelNotFound {
+		return err
+	}
+	
+	// 创建或获取读模型
+	var model *{{.AggregateName}}ReadModel
+	if existing != nil {
+		// 转换为特定类型
+		model = &{{.AggregateName}}ReadModel{
+			ReadModel: existing,
+		}
+	} else {
+		model = New{{.AggregateName}}ReadModel(event.GetAggregateID())
+	}
+	
+	// 应用事件
+	if err := model.ApplyEvent(event); err != nil {
+		return err
+	}
+	
+	// 保存更新
+	return s.repo.Save(ctx, model.ReadModel)
+}
+
+// Get{{.AggregateName}} 获取{{.AggregateName}}读模型
+func (s *{{.AggregateName}}ProjectionService) Get{{.AggregateName}}(ctx context.Context, id string) (*{{.AggregateName}}ReadModel, error) {
+	model, err := s.repo.FindByID(ctx, id, "{{.AggregateLower}}")
+	if err != nil {
+		return nil, err
+	}
+	
+	return &{{.AggregateName}}ReadModel{
+		ReadModel: model,
+	}, nil
+}
+
+// Query{{.AggregateName}}s 查询{{.AggregateName}}读模型列表
+func (s *{{.AggregateName}}ProjectionService) Query{{.AggregateName}}s(ctx context.Context, query projection.Query) ([]*{{.AggregateName}}ReadModel, error) {
+	models, err := s.repo.FindByQuery(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	
+	var result []*{{.AggregateName}}ReadModel
+	for _, model := range models {
+		result = append(result, &{{.AggregateName}}ReadModel{
+			ReadModel: model,
+		})
+	}
+	
+	return result, nil
+}

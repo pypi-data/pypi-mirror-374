@@ -1,0 +1,118 @@
+package task
+
+import (
+	"context"
+	"fmt"
+	"time"
+)
+
+// Task 简洁的任务结构
+type Task struct {
+	ID      string                 `json:"id"`
+	Type    string                 `json:"type"`
+	Status  string                 `json:"status"`
+	Payload map[string]interface{} `json:"payload"`
+	Result  map[string]interface{} `json:"result,omitempty"`
+	Error   string                 `json:"error,omitempty"`
+	Created time.Time              `json:"created"`
+	Updated time.Time              `json:"updated"`
+}
+
+func NewTask(taskType string, payload map[string]interface{}) *Task {
+	now := time.Now()
+	return &Task{
+		ID:      fmt.Sprintf("task_%d", now.UnixNano()),
+		Type:    taskType,
+		Status:  "pending",
+		Payload: payload,
+		Created: now,
+		Updated: now,
+	}
+}
+
+// Store 任务存储接口
+type Store interface {
+	Save(ctx context.Context, task *Task) error
+	Get(ctx context.Context, id string) (*Task, error)
+	List(ctx context.Context, status string) ([]*Task, error)
+	Delete(ctx context.Context, id string) error
+}
+
+// MemoryStore 内存存储
+type MemoryStore struct {
+	tasks map[string]*Task
+}
+
+func NewMemoryStore() *MemoryStore {
+	return &MemoryStore{
+		tasks: make(map[string]*Task),
+	}
+}
+
+func (m *MemoryStore) Save(ctx context.Context, task *Task) error {
+	m.tasks[task.ID] = task
+	return nil
+}
+
+func (m *MemoryStore) Get(ctx context.Context, id string) (*Task, error) {
+	task, ok := m.tasks[id]
+	if !ok {
+		return nil, fmt.Errorf("task not found")
+	}
+	return task, nil
+}
+
+func (m *MemoryStore) List(ctx context.Context, status string) ([]*Task, error) {
+	var result []*Task
+	for _, task := range m.tasks {
+		if status == "" || task.Status == status {
+			result = append(result, task)
+		}
+	}
+	return result, nil
+}
+
+func (m *MemoryStore) Delete(ctx context.Context, id string) error {
+	delete(m.tasks, id)
+	return nil
+}
+
+// Worker 任务处理器
+type Worker struct {
+	store    Store
+	handlers map[string]func(context.Context, map[string]interface{}) (map[string]interface{}, error)
+}
+
+func NewWorker(store Store) *Worker {
+	return &Worker{
+		store:    store,
+		handlers: make(map[string]func(context.Context, map[string]interface{}) (map[string]interface{}, error)),
+	}
+}
+
+func (w *Worker) Register(taskType string, handler func(context.Context, map[string]interface{}) (map[string]interface{}, error)) {
+	w.handlers[taskType] = handler
+}
+
+func (w *Worker) Process(ctx context.Context, task *Task) error {
+	handler, ok := w.handlers[task.Type]
+	if !ok {
+		return fmt.Errorf("no handler for task type: %s", task.Type)
+	}
+
+	task.Status = "running"
+	task.Updated = time.Now()
+	w.store.Save(ctx, task)
+
+	result, err := handler(ctx, task.Payload)
+	if err != nil {
+		task.Status = "failed"
+		task.Error = err.Error()
+	} else {
+		task.Status = "completed"
+		task.Result = result
+	}
+
+	task.Updated = time.Now()
+	return w.store.Save(ctx, task)
+}

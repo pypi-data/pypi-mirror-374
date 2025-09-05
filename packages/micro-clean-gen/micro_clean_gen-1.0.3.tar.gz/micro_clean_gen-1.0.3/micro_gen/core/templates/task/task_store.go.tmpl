@@ -1,0 +1,119 @@
+package task
+
+import (
+	"context"
+	"fmt"
+	"time"
+	"{{.project_name}}/internal/entity"
+)
+
+// TaskStore 任务存储接口
+type TaskStore interface {
+	Create(ctx context.Context, task *entity.TaskData) error
+	Get(ctx context.Context, taskID string) (*entity.TaskData, error)
+	Update(ctx context.Context, task *entity.TaskData) error
+	Delete(ctx context.Context, taskID string) error
+	ListByStatus(ctx context.Context, status entity.TaskStatus) ([]*entity.TaskData, error)
+	ListPending(ctx context.Context) ([]*entity.TaskData, error)
+	ListScheduled(ctx context.Context) ([]*entity.TaskData, error)
+	DeleteExpired(ctx context.Context) error
+}
+
+// MemoryStore 内存任务存储
+type MemoryStore struct {
+	tasks map[string]*entity.TaskData
+}
+
+// NewMemoryStore 创建内存任务存储
+func NewMemoryStore() *MemoryStore {
+	return &MemoryStore{
+		tasks: make(map[string]*entity.TaskData),
+	}
+}
+
+// Create 创建任务
+func (m *MemoryStore) Create(ctx context.Context, task *entity.TaskData) error {
+	m.tasks[task.ID] = task
+	return nil
+}
+
+// Get 获取任务
+func (m *MemoryStore) Get(ctx context.Context, taskID string) (*entity.TaskData, error) {
+	task, exists := m.tasks[taskID]
+	if !exists {
+		return nil, fmt.Errorf("task not found")
+	}
+	return task, nil
+}
+
+// Update 更新任务
+func (m *MemoryStore) Update(ctx context.Context, task *entity.TaskData) error {
+	if _, exists := m.tasks[task.ID]; !exists {
+		return fmt.Errorf("task not found")
+	}
+	m.tasks[task.ID] = task
+	return nil
+}
+
+// Delete 删除任务
+func (m *MemoryStore) Delete(ctx context.Context, taskID string) error {
+	delete(m.tasks, taskID)
+	return nil
+}
+
+// ListByStatus 按状态列出任务
+func (m *MemoryStore) ListByStatus(ctx context.Context, status entity.TaskStatus) ([]*entity.TaskData, error) {
+	var result []*entity.TaskData
+	for _, task := range m.tasks {
+		if task.Status == status {
+			result = append(result, task)
+		}
+	}
+	return result, nil
+}
+
+// ListPending 列出待处理任务
+func (m *MemoryStore) ListPending(ctx context.Context) ([]*entity.TaskData, error) {
+	var result []*entity.TaskData
+	now := time.Now()
+	for _, task := range m.tasks {
+		if task.Status == entity.TaskStatusPending {
+			if task.ScheduledAt == nil || now.After(*task.ScheduledAt) {
+				result = append(result, task)
+			}
+		}
+	}
+	return result, nil
+}
+
+// ListScheduled 列出定时任务
+func (m *MemoryStore) ListScheduled(ctx context.Context) ([]*entity.TaskData, error) {
+	var result []*entity.TaskData
+	now := time.Now()
+	for _, task := range m.tasks {
+		if task.Status == entity.TaskStatusPending && task.ScheduledAt != nil && task.ScheduledAt.After(now) {
+			result = append(result, task)
+		}
+	}
+	return result, nil
+}
+
+// DeleteExpired 删除过期任务
+func (m *MemoryStore) DeleteExpired(ctx context.Context) error {
+	now := time.Now()
+	for id, task := range m.tasks {
+		if task.IsExpired() || (task.Status == entity.TaskStatusCompleted && now.Sub(*task.CompletedAt) > 24*time.Hour) {
+			delete(m.tasks, id)
+		}
+	}
+	return nil
+}
+
+// ListAll 获取所有任务（调试用）
+func (m *MemoryStore) ListAll(ctx context.Context) ([]*entity.TaskData, error) {
+	var result []*entity.TaskData
+	for _, task := range m.tasks {
+		result = append(result, task)
+	}
+	return result, nil
+}

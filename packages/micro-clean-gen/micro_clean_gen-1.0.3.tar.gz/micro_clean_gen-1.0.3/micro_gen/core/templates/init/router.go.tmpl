@@ -1,0 +1,24 @@
+package http
+
+import (
+	"{{project_name}}/pkg/config"
+	"{{project_name}}/pkg/logger"
+	"{{project_name}}/adapter/handler"
+	"github.com/gin-gonic/gin"
+)
+
+// SetupRouter 设置路由
+func SetupRouter(cfg *config.Config, log *logger.Logger) *gin.Engine {
+	r := gin.Default()
+	
+	// 健康检查路由
+	healthHandler := handler.NewHealthHandler(cfg)
+	
+	// 健康检查端点
+	r.GET("/health", healthHandler.HealthCheck)
+	r.GET("/ready", healthHandler.ReadinessCheck)
+	
+	// TODO: 添加其他业务路由
+	
+	return r
+}

@@ -1,0 +1,36 @@
+package {{.AggregateLower}}
+
+import (
+	"{{.ModuleName}}/internal/projection"
+	"{{.ModuleName}}/internal/{{.AggregateLower}}/entity"
+)
+
+// {{.AggregateName}}ProjectionProcessor {{.AggregateName}}投影处理器
+type {{.AggregateName}}ProjectionProcessor struct {
+	repository projection.ReadModelRepository
+}
+
+// New{{.AggregateName}}ProjectionProcessor 创建{{.AggregateName}}投影处理器
+func New{{.AggregateName}}ProjectionProcessor(repo projection.ReadModelRepository) *{{.AggregateName}}ProjectionProcessor {
+	return &{{.AggregateName}}ProjectionProcessor{
+		repository: repo,
+	}
+}
+
+// SupportedEventTypes 返回支持的事件类型
+func (p *{{.AggregateName}}ProjectionProcessor) SupportedEventTypes() []string {
+	return []string{
+		// TODO: 添加支持的事件类型
+	}
+}
+
+// ProcessEvent 处理事件
+func (p *{{.AggregateName}}ProjectionProcessor) ProcessEvent(event interface{}) error {
+	// TODO: 实现事件处理逻辑
+	// 1. 获取事件数据
+	// 2. 加载或创建读模型
+	// 3. 应用事件到读模型
+	// 4. 保存读模型
+	
+	return nil
+}

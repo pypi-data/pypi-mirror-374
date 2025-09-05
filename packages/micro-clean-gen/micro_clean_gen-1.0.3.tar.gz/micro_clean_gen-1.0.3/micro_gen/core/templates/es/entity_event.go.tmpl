@@ -1,0 +1,21 @@
+package entity
+
+import "time"
+
+// 领域事件接口，一切领域事件都必须显式地实现该接口
+type DomainEvent interface {
+	GetEventID() string      // 事件ID
+	GetEventType() string    // 事件类型
+	GetAggregateID() string  // 聚合根ID
+	GetAggregateType() string // 聚合根类型
+	GetCreatedAt() time.Time // 事件发生时间
+	GetVersion() int         // 事件版本
+}
+
+// Snapshot 快照实体：聚合根的状态快照
+type Snapshot interface {
+	GetAggregateID() string    // 聚合根ID
+	GetAggregateType() string  // 聚合类型
+	GetVersion() int           // 快照对应的事件版本
+	GetCreatedAt() time.Time   // 快照创建时间
+}

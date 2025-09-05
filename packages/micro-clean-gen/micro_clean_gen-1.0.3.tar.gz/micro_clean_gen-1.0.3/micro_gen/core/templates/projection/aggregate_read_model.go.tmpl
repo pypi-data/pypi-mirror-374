@@ -1,0 +1,65 @@
+package projection
+
+import (
+	"{{.ModuleName}}/internal/entity"
+	"{{.ModuleName}}/internal/entity/projection"
+)
+
+// {{.AggregateName}}ReadModel {{.AggregateName}}聚合的读模型实体
+type {{.AggregateName}}ReadModel struct {
+	*projection.ReadModel
+	
+	// 业务字段
+{{range .Fields}}	{{.name}} {{.type}} `json:"{{.json}}"`
+{{end}}
+}
+
+// New{{.AggregateName}}ReadModel 创建{{.AggregateName}}读模型
+func New{{.AggregateName}}ReadModel(id string) *{{.AggregateName}}ReadModel {
+	return &{{.AggregateName}}ReadModel{
+		ReadModel: projection.NewReadModel(id, "{{.AggregateLower}}"),
+	}
+}
+
+// ApplyEvent 应用领域事件到读模型
+func (m *{{.AggregateName}}ReadModel) ApplyEvent(event entity.DomainEvent) error {
+	switch event.GetEventType() {
+	case "{{.AggregateName}}Created":
+		return m.applyCreated(event)
+	case "{{.AggregateName}}Updated":
+		return m.applyUpdated(event)
+	case "{{.AggregateName}}Deleted":
+		return m.applyDeleted(event)
+	default:
+		return nil // 忽略不相关事件
+	}
+}
+
+func (m *{{.AggregateName}}ReadModel) applyCreated(event entity.DomainEvent) error {
+	// 从事件数据填充业务字段
+	data := event.GetData()
+	
+	// TODO: 根据实际事件结构填充字段
+	// 示例：
+	// if name, ok := data["name"]; ok {
+	// 	m.Name = name.(string)
+	// }
+	
+	return nil
+}
+
+func (m *{{.AggregateName}}ReadModel) applyUpdated(event entity.DomainEvent) error {
+	// 从事件数据更新业务字段
+	data := event.GetData()
+	
+	// TODO: 根据实际事件结构更新字段
+	_ = data
+	
+	return nil
+}
+
+func (m *{{.AggregateName}}ReadModel) applyDeleted(event entity.DomainEvent) error {
+	// 标记为已删除或清理数据
+	// 可以设置删除标记或清空字段
+	return nil
+}

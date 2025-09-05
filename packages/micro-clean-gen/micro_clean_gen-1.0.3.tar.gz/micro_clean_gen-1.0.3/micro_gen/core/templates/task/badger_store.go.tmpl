@@ -1,0 +1,435 @@
+package task
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"time"
+	"{{.project_name}}/internal/entity"
+	"github.com/dgraph-io/badger/v4"
+)
+
+// BadgerTaskStore Badger任务存储实现
+type BadgerTaskStore struct {
+	db     *badger.DB
+	prefix string
+}
+
+// NewBadgerTaskStore 创建Badger任务存储
+func NewBadgerTaskStore(dbPath string) (*BadgerTaskStore, error) {
+	opts := badger.DefaultOptions(dbPath)
+	opts.Logger = nil // 禁用日志输出
+	
+	db, err := badger.Open(opts)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open badger db: %w", err)
+	}
+
+	store := &BadgerTaskStore{
+		db:     db,
+		prefix: "task",
+	}
+
+	// 启动后台清理过期任务
+	go store.cleanupExpiredTasks()
+
+	return store, nil
+}
+
+// buildKey 构建存储键
+func (b *BadgerTaskStore) buildKey(id string) []byte {
+	return []byte(fmt.Sprintf("%s:%s", b.prefix, id))
+}
+
+// buildIndexKey 构建索引键
+func (b *BadgerTaskStore) buildIndexKey(indexType, value string) []byte {
+	return []byte(fmt.Sprintf("%s:index:%s:%s", b.prefix, indexType, value))
+}
+
+// Create 创建任务
+func (b *BadgerTaskStore) Create(ctx context.Context, task *entity.TaskData) error {
+	if task == nil {
+		return fmt.Errorf("task cannot be nil")
+	}
+
+	data, err := json.Marshal(task)
+	if err != nil {
+		return fmt.Errorf("failed to marshal task: %w", err)
+	}
+
+	ttl := 7 * 24 * time.Hour
+
+	return b.db.Update(func(txn *badger.Txn) error {
+		// 存储任务数据
+		e := badger.NewEntry(b.buildKey(task.ID), data).WithTTL(ttl)
+		if err := txn.SetEntry(e); err != nil {
+			return err
+		}
+
+		// 添加到状态索引
+		statusKey := b.buildIndexKey("status", string(task.Status))
+		if err := b.addToIndex(txn, statusKey, task.ID); err != nil {
+			return err
+		}
+
+		// 添加到优先级索引
+		priorityKey := b.buildIndexKey("priority", string(task.Priority))
+		if err := b.addToIndex(txn, priorityKey, task.ID); err != nil {
+			return err
+		}
+
+		// 添加到类型索引
+		if task.Type != "" {
+			typeKey := b.buildIndexKey("type", string(task.Type))
+			if err := b.addToIndex(txn, typeKey, task.ID); err != nil {
+				return err
+			}
+		}
+
+		return nil
+	})
+}
+
+// Get 获取任务
+func (b *BadgerTaskStore) Get(ctx context.Context, taskID string) (*entity.TaskData, error) {
+	var task entity.TaskData
+	
+	err := b.db.View(func(txn *badger.Txn) error {
+		item, err := txn.Get(b.buildKey(taskID))
+		if err != nil {
+			if err == badger.ErrKeyNotFound {
+				return fmt.Errorf("task not found")
+			}
+			return err
+		}
+
+		return item.Value(func(val []byte) error {
+			return json.Unmarshal(val, &task)
+		})
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &task, nil
+}
+
+// Update 更新任务
+func (b *BadgerTaskStore) Update(ctx context.Context, task *entity.TaskData) error {
+	if task == nil {
+		return fmt.Errorf("task cannot be nil")
+	}
+
+	// 获取旧任务以更新索引
+	oldTask, err := b.Get(ctx, task.ID)
+	if err != nil {
+		return fmt.Errorf("get old task: %w", err)
+	}
+
+	data, err := json.Marshal(task)
+	if err != nil {
+		return fmt.Errorf("failed to marshal task: %w", err)
+	}
+
+	ttl := 7 * 24 * time.Hour
+
+	return b.db.Update(func(txn *badger.Txn) error {
+		// 更新任务数据
+		e := badger.NewEntry(b.buildKey(task.ID), data).WithTTL(ttl)
+		if err := txn.SetEntry(e); err != nil {
+			return err
+		}
+
+		// 如果状态改变，更新索引
+		if oldTask.Status != task.Status {
+			// 从旧状态索引移除
+			oldStatusKey := b.buildIndexKey("status", string(oldTask.Status))
+			if err := b.removeFromIndex(txn, oldStatusKey, task.ID); err != nil {
+				return err
+			}
+
+			// 添加到新状态索引
+			newStatusKey := b.buildIndexKey("status", string(task.Status))
+			if err := b.addToIndex(txn, newStatusKey, task.ID); err != nil {
+				return err
+			}
+		}
+
+		return nil
+	})
+}
+
+// Delete 删除任务
+func (b *BadgerTaskStore) Delete(ctx context.Context, taskID string) error {
+	// 获取任务以清理索引
+	task, err := b.Get(ctx, taskID)
+	if err != nil {
+		return fmt.Errorf("get task: %w", err)
+	}
+
+	return b.db.Update(func(txn *badger.Txn) error {
+		// 删除任务数据
+		if err := txn.Delete(b.buildKey(taskID)); err != nil && err != badger.ErrKeyNotFound {
+			return err
+		}
+
+		// 从所有索引中移除
+		statusKey := b.buildIndexKey("status", string(task.Status))
+		if err := b.removeFromIndex(txn, statusKey, taskID); err != nil {
+			return err
+		}
+
+		priorityKey := b.buildIndexKey("priority", string(task.Priority))
+		if err := b.removeFromIndex(txn, priorityKey, taskID); err != nil {
+			return err
+		}
+
+		if task.Type != "" {
+			typeKey := b.buildIndexKey("type", string(task.Type))
+			if err := b.removeFromIndex(txn, typeKey, taskID); err != nil {
+				return err
+			}
+		}
+
+		return nil
+	})
+}
+
+// ListByStatus 按状态列出任务
+func (b *BadgerTaskStore) ListByStatus(ctx context.Context, status entity.TaskStatus) ([]*entity.TaskData, error) {
+	return b.listByIndex(ctx, "status", string(status))
+}
+
+// ListPending 列出待处理任务
+func (b *BadgerTaskStore) ListPending(ctx context.Context) ([]*entity.TaskData, error) {
+	tasks, err := b.ListByStatus(ctx, entity.TaskStatusPending)
+	if err != nil {
+		return nil, err
+	}
+
+	var pendingTasks []*entity.TaskData
+	for _, task := range tasks {
+		if task.IsReadyToRun() {
+			pendingTasks = append(pendingTasks, task)
+		}
+	}
+
+	return pendingTasks, nil
+}
+
+// ListScheduled 列出定时任务
+func (b *BadgerTaskStore) ListScheduled(ctx context.Context) ([]*entity.TaskData, error) {
+	tasks, err := b.ListByStatus(ctx, entity.TaskStatusPending)
+	if err != nil {
+		return nil, err
+	}
+
+	var scheduledTasks []*entity.TaskData
+	now := time.Now()
+	for _, task := range tasks {
+		if task.Status == entity.TaskStatusPending && task.ScheduledAt != nil && task.ScheduledAt.After(now) {
+			scheduledTasks = append(scheduledTasks, task)
+		}
+	}
+
+	return scheduledTasks, nil
+}
+
+// DeleteExpired 删除过期任务
+func (b *BadgerTaskStore) DeleteExpired(ctx context.Context) error {
+	return b.db.Update(func(txn *badger.Txn) error {
+		// 扫描所有任务
+		it := txn.NewIterator(badger.DefaultIteratorOptions)
+		defer it.Close()
+
+		prefix := b.buildKey("")
+		for it.Seek(prefix); it.ValidForPrefix(prefix); it.Next() {
+			item := it.Item()
+			
+			var task entity.TaskData
+			err := item.Value(func(val []byte) error {
+				return json.Unmarshal(val, &task)
+			})
+			if err != nil {
+				continue
+			}
+
+			if shouldDelete(&task) {
+				if err := txn.Delete(item.KeyCopy(nil)); err != nil && err != badger.ErrKeyNotFound {
+					continue
+				}
+
+				// 从索引中移除
+				statusKey := b.buildIndexKey("status", string(task.Status))
+				_ = b.removeFromIndex(txn, statusKey, task.ID)
+			}
+		}
+
+		return nil
+	})
+}
+
+// ListAll 获取所有任务（调试用）
+func (b *BadgerTaskStore) ListAll(ctx context.Context) ([]*entity.TaskData, error) {
+	var tasks []*entity.TaskData
+
+	err := b.db.View(func(txn *badger.Txn) error {
+		it := txn.NewIterator(badger.DefaultIteratorOptions)
+		defer it.Close()
+
+		prefix := b.buildKey("")
+		for it.Seek(prefix); it.ValidForPrefix(prefix); it.Next() {
+			item := it.Item()
+			
+			var task entity.TaskData
+			err := item.Value(func(val []byte) error {
+				return json.Unmarshal(val, &task)
+			})
+			if err != nil {
+				continue
+			}
+
+			tasks = append(tasks, &task)
+		}
+
+		return nil
+	})
+
+	return tasks, err
+}
+
+// addToIndex 添加到索引
+func (b *BadgerTaskStore) addToIndex(txn *badger.Txn, indexKey []byte, taskID string) error {
+	// 获取当前索引集合
+	item, err := txn.Get(indexKey)
+	var ids []string
+	
+	if err == nil {
+		_ = item.Value(func(val []byte) error {
+			return json.Unmarshal(val, &ids)
+		})
+	}
+
+	// 添加新ID
+	ids = append(ids, taskID)
+	
+	data, err := json.Marshal(ids)
+	if err != nil {
+		return err
+	}
+
+	e := badger.NewEntry(indexKey, data).WithTTL(7 * 24 * time.Hour)
+	return txn.SetEntry(e)
+}
+
+// removeFromIndex 从索引中移除
+func (b *BadgerTaskStore) removeFromIndex(txn *badger.Txn, indexKey []byte, taskID string) error {
+	item, err := txn.Get(indexKey)
+	if err != nil {
+		return err
+	}
+
+	var ids []string
+	err = item.Value(func(val []byte) error {
+		return json.Unmarshal(val, &ids)
+	})
+	if err != nil {
+		return err
+	}
+
+	// 移除指定ID
+	newIds := make([]string, 0, len(ids))
+	for _, id := range ids {
+		if id != taskID {
+			newIds = append(newIds, id)
+		}
+	}
+
+	if len(newIds) == 0 {
+		return txn.Delete(indexKey)
+	}
+
+	data, err := json.Marshal(newIds)
+	if err != nil {
+		return err
+	}
+
+	e := badger.NewEntry(indexKey, data).WithTTL(7 * 24 * time.Hour)
+	return txn.SetEntry(e)
+}
+
+// listByIndex 按索引列出任务
+func (b *BadgerTaskStore) listByIndex(ctx context.Context, indexType, value string) ([]*entity.TaskData, error) {
+	indexKey := b.buildIndexKey(indexType, value)
+	
+	var taskIDs []string
+	err := b.db.View(func(txn *badger.Txn) error {
+		item, err := txn.Get(indexKey)
+		if err != nil {
+			if err == badger.ErrKeyNotFound {
+				taskIDs = []string{}
+				return nil
+			}
+			return err
+		}
+
+		return item.Value(func(val []byte) error {
+			return json.Unmarshal(val, &taskIDs)
+		})
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	var tasks []*entity.TaskData
+	for _, id := range taskIDs {
+		task, err := b.Get(ctx, id)
+		if err != nil {
+			continue
+		}
+		tasks = append(tasks, task)
+	}
+
+	return tasks, nil
+}
+
+// cleanupExpiredTasks 清理过期任务
+func (b *BadgerTaskStore) cleanupExpiredTasks() {
+	ticker := time.NewTicker(1 * time.Hour)
+	defer ticker.Stop()
+
+	for range ticker.C {
+		ctx := context.Background()
+		_ = b.DeleteExpired(ctx)
+		b.db.RunValueLogGC(0.5)
+	}
+}
+
+// Close 关闭存储
+func (b *BadgerTaskStore) Close() error {
+	return b.db.Close()
+}
+
+// shouldDelete 判断是否应该删除任务
+func shouldDelete(task *entity.TaskData) bool {
+	now := time.Now()
+	
+	// 完成的任务保留24小时
+	if task.Status == entity.TaskStatusCompleted && task.CompletedAt != nil {
+		return now.Sub(*task.CompletedAt) > 24*time.Hour
+	}
+	
+	// 失败的任务保留7天
+	if task.Status == entity.TaskStatusFailed && task.UpdatedAt.Before(now.Add(-7*24*time.Hour)) {
+		return true
+	}
+	
+	// 取消的任务保留1天
+	if task.Status == entity.TaskStatusCancelled && task.UpdatedAt.Before(now.Add(-24*time.Hour)) {
+		return true
+	}
+	
+	return false
+}

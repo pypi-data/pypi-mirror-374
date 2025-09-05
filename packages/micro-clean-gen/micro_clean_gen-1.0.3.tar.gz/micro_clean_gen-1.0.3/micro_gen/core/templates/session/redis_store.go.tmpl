@@ -1,0 +1,131 @@
+package session
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"time"
+
+	"github.com/redis/go-redis/v9"
+	"{{project_name}}/internal/entity"
+)
+
+// RedisStore Redis会话存储实现
+type RedisStore struct {
+	client *redis.Client
+	prefix string
+}
+
+// NewRedisStore 创建Redis会话存储
+func NewRedisStore(client *redis.Client) *RedisStore {
+	return &RedisStore{
+		client: client,
+		prefix: "session:",
+	}
+}
+
+// Create 创建会话
+func (r *RedisStore) Create(ctx context.Context, session *entity.SessionData) error {
+	data, err := json.Marshal(session)
+	if err != nil {
+		return fmt.Errorf("marshal session: %w", err)
+	}
+
+	key := r.buildKey(session.ID)
+	ttl := time.Until(session.ExpiresAt)
+	if ttl <= 0 {
+		ttl = 24 * time.Hour
+	}
+
+	return r.client.Set(ctx, key, data, ttl).Err()
+}
+
+// Get 获取会话
+func (r *RedisStore) Get(ctx context.Context, sessionID string) (*entity.SessionData, error) {
+	key := r.buildKey(sessionID)
+	data, err := r.client.Get(ctx, key).Result()
+	if err != nil {
+		if err == redis.Nil {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("get session: %w", err)
+	}
+
+	var session entity.SessionData
+	if err := json.Unmarshal([]byte(data), &session); err != nil {
+		return nil, fmt.Errorf("unmarshal session: %w", err)
+	}
+
+	// 检查是否过期
+	if session.IsExpired() {
+		// 删除过期会话
+		_ = r.Delete(ctx, sessionID)
+		return nil, nil
+	}
+
+	return &session, nil
+}
+
+// Update 更新会话
+func (r *RedisStore) Update(ctx context.Context, session *entity.SessionData) error {
+	return r.Create(ctx, session) // 使用相同的逻辑
+}
+
+// Delete 删除会话
+func (r *RedisStore) Delete(ctx context.Context, sessionID string) error {
+	key := r.buildKey(sessionID)
+	return r.client.Del(ctx, key).Err()
+}
+
+// DeleteAll 删除所有会话（调试用）
+func (r *RedisStore) DeleteAll(ctx context.Context) error {
+	pattern := r.prefix + "*"
+	keys, err := r.client.Keys(ctx, pattern).Result()
+	if err != nil {
+		return err
+	}
+
+	if len(keys) > 0 {
+		return r.client.Del(ctx, keys...).Err()
+	}
+	return nil
+}
+
+// ListAll 获取所有会话（调试用）
+func (r *RedisStore) ListAll(ctx context.Context) ([]*entity.SessionData, error) {
+	pattern := r.prefix + "*"
+	keys, err := r.client.Keys(ctx, pattern).Result()
+	if err != nil {
+		return nil, err
+	}
+
+	var sessions []*entity.SessionData
+	for _, key := range keys {
+		data, err := r.client.Get(ctx, key).Result()
+		if err != nil {
+			continue
+		}
+
+		var session entity.SessionData
+		if err := json.Unmarshal([]byte(data), &session); err != nil {
+			continue
+		}
+
+		if !session.IsExpired() {
+			sessions = append(sessions, &session)
+		}
+	}
+
+	return sessions, nil
+}
+
+// CleanupExpired 清理过期会话
+func (r *RedisStore) CleanupExpired(ctx context.Context) error {
+	// Redis会自动清理过期的键，这里可以实现额外的清理逻辑
+	return nil
+}
+
+// buildKey 构建Redis键
+func (r *RedisStore) buildKey(sessionID string) string {
+	return r.prefix + sessionID
+}

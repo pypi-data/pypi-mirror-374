@@ -1,0 +1,63 @@
+package projection
+
+import (
+	"errors"
+	"time"
+)
+
+var (
+	// ErrReadModelNotFound 读模型不存在
+	ErrReadModelNotFound = errors.New("read model not found")
+	// ErrInvalidQuery 查询参数无效
+	ErrInvalidQuery = errors.New("invalid query")
+)
+
+// ReadModel 读模型实体，位于entity层
+type ReadModel struct {
+	ID        string                 `json:"id"`
+	Type      string                 `json:"type"`
+	Data      map[string]interface{} `json:"data"`
+	Version   int64                  `json:"version"`
+	CreatedAt time.Time              `json:"created_at"`
+	UpdatedAt time.Time              `json:"updated_at"`
+}
+
+// NewReadModel 创建新的读模型实体
+func NewReadModel(id string, modelType string) *ReadModel {
+	return &ReadModel{
+		ID:        id,
+		Type:      modelType,
+		Data:      make(map[string]interface{}),
+		Version:   1,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+}
+
+// GetID 返回读模型ID
+func (m *ReadModel) GetID() string {
+	return m.ID
+}
+
+// GetType 返回读模型类型
+func (m *ReadModel) GetType() string {
+	return m.Type
+}
+
+// GetVersion 返回版本号
+func (m *ReadModel) GetVersion() int64 {
+	return m.Version
+}
+
+// IncrementVersion 增加版本号
+func (m *ReadModel) IncrementVersion() {
+	m.Version++
+	m.UpdatedAt = time.Now()
+}
+
+// ApplyData 应用事件数据
+func (m *ReadModel) ApplyData(data map[string]interface{}) {
+	for k, v := range data {
+		m.Data[k] = v
+	}
+}

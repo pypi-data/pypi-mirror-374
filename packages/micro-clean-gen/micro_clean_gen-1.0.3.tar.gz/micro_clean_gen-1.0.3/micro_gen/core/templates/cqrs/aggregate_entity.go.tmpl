@@ -1,0 +1,41 @@
+package entity
+
+import (
+	"errors"
+	"time"
+
+	"{{.ModuleName}}/internal/entity"
+)
+
+// {{.AggregateName}} {{.AggregateName}}聚合根
+type {{.AggregateName}} struct {
+	*entity.AggregateRoot
+	
+{{range .Fields}}	{{.name}} {{.type}} `json:"{{.json}}"`
+{{end}}
+}
+
+// New{{.AggregateName}} 创建新的{{.AggregateName}}
+func New{{.AggregateName}}(id string) *{{.AggregateName}} {
+	return &{{.AggregateName}}{
+		AggregateRoot: entity.NewAggregateRoot(id, "{{.AggregateName}}"),
+	}
+}
+
+// HandleCommand 处理命令
+func (a *{{.AggregateName}}) HandleCommand(command interface{}) error {
+	switch cmd := command.(type) {
+	// TODO: 实现具体命令处理
+	default:
+		return errors.New("unknown command")
+	}
+}
+
+// ApplyEvent 应用事件
+func (a *{{.AggregateName}}) ApplyEvent(event entity.DomainEvent) error {
+	switch event.GetEventType() {
+	// TODO: 实现具体事件应用
+	default:
+		return nil // 忽略不相关事件
+	}
+}

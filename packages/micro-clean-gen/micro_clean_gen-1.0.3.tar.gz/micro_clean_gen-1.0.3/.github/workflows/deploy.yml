@@ -1,0 +1,23 @@
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.21'
+    - name: Build
+      run: go build -v ./...
+    - name: Test
+      run: go test -v ./...
+    - name: Build Docker image
+      run: docker build -t ${{ github.repository }}:latest .
+name: Build and Deploy
+'on':
+  pull_request:
+    branches:
+    - main
+  push:
+    branches:
+    - main

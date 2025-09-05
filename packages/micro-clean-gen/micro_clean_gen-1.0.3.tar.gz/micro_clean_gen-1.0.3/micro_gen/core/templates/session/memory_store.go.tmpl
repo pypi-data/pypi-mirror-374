@@ -1,0 +1,125 @@
+package session
+
+import (
+	"context"
+	"sync"
+	"time"
+
+	"{{project_name}}/internal/entity"
+)
+
+// MemoryStore 内存会话存储实现
+type MemoryStore struct {
+	sessions map[string]*entity.SessionData
+	mutex    sync.RWMutex
+}
+
+// NewMemoryStore 创建内存会话存储
+func NewMemoryStore() *MemoryStore {
+	return &MemoryStore{
+		sessions: make(map[string]*entity.SessionData),
+	}
+}
+
+// Create 创建会话
+func (m *MemoryStore) Create(ctx context.Context, session *entity.SessionData) error {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+	m.sessions[session.ID] = session
+	return nil
+}
+
+// Get 获取会话
+func (m *MemoryStore) Get(ctx context.Context, sessionID string) (*entity.SessionData, error) {
+	m.mutex.RLock()
+	defer m.mutex.RUnlock()
+
+	session, exists := m.sessions[sessionID]
+	if !exists {
+		return nil, nil
+	}
+
+	if session.IsExpired() {
+		// 自动清理过期会话
+		go func() {
+			m.mutex.Lock()
+			defer m.mutex.Unlock()
+			delete(m.sessions, sessionID)
+		}()
+		return nil, nil
+	}
+
+	return session, nil
+}
+
+// Update 更新会话
+func (m *MemoryStore) Update(ctx context.Context, session *entity.SessionData) error {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+	m.sessions[session.ID] = session
+	return nil
+}
+
+// Delete 删除会话
+func (m *MemoryStore) Delete(ctx context.Context, sessionID string) error {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+	delete(m.sessions, sessionID)
+	return nil
+}
+
+// DeleteExpired 删除过期会话（保留作为扩展接口）
+func (m *MemoryStore) DeleteExpired(ctx context.Context) error {
+	return m.CleanupExpired(ctx)
+}
+
+// ListAll 获取所有活跃会话（调试用）
+func (m *MemoryStore) ListAll(ctx context.Context) ([]*entity.SessionData, error) {
+	m.mutex.RLock()
+	defer m.mutex.RUnlock()
+
+	var sessions []*entity.SessionData
+	for _, session := range m.sessions {
+		if !session.IsExpired() {
+			sessions = append(sessions, session)
+		}
+	}
+
+	return sessions, nil
+}
+
+// CleanupExpired 清理过期会话
+func (m *MemoryStore) CleanupExpired(ctx context.Context) error {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	now := time.Now()
+	for id, session := range m.sessions {
+		if session.IsExpired() || now.After(session.ExpiresAt) {
+			delete(m.sessions, id)
+		}
+	}
+	return nil
+}
+
+// GetStats 获取存储统计信息（调试用）
+func (m *MemoryStore) GetStats() map[string]interface{} {
+	m.mutex.RLock()
+	defer m.mutex.RUnlock()
+
+	active := 0
+	expired := 0
+	for _, session := range m.sessions {
+		if session.IsExpired() {
+			expired++
+		} else {
+			active++
+		}
+	}
+
+	return map[string]interface{}{
+		"total":   len(m.sessions),
+		"active":  active,
+		"expired": expired,
+	}
+}

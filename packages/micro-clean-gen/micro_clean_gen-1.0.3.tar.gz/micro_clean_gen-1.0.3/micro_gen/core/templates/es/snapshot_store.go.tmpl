@@ -1,0 +1,136 @@
+package event
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"time"
+
+	"github.com/dgraph-io/badger/v4"
+	"{{project_name}}/internal/entity"
+	"{{project_name}}/internal/usecase/event"
+	"{{project_name}}/pkg/config"
+)
+
+// badgerSnapshotStore 基于Badger的快照存储实现
+type badgerSnapshotStore struct {
+	db *badger.DB
+}
+
+// 确保badgerSnapshotStore实现了SnapshotStore接口
+var _ event.SnapshotStore = (*badgerSnapshotStore)(nil)
+
+// NewSnapshotStore 创建快照存储实例
+func NewSnapshotStore(cfg *config.Config) (event.SnapshotStore, error) {
+	// 使用Badger作为本地KV存储
+	opts := badger.DefaultOptions("data/snapshots")
+	opts.SyncWrites = false  // 提高性能
+	opts.Logger = nil        // 静默模式
+	
+	db, err := badger.Open(opts)
+	if err != nil {
+		return nil, fmt.Errorf("open badger db: %w", err)
+	}
+	
+	return &badgerSnapshotStore{
+		db: db,
+	}, nil
+}
+
+// SaveSnapshot 保存聚合快照
+func (s *badgerSnapshotStore) SaveSnapshot(ctx context.Context, snapshot *entity.Snapshot) error {
+	if snapshot == nil {
+		return fmt.Errorf("snapshot cannot be nil")
+	}
+	
+	data, err := json.Marshal(snapshot)
+	if err != nil {
+		return fmt.Errorf("marshal snapshot: %w", err)
+	}
+	
+	key := s.buildKey(snapshot.GetAggregateID())
+	
+	err = s.db.Update(func(txn *badger.Txn) error {
+		return txn.Set(key, data)
+	})
+	
+	if err != nil {
+		return fmt.Errorf("save snapshot: %w", err)
+	}
+	
+	return nil
+}
+
+// LoadSnapshot 加载聚合快照
+func (s *badgerSnapshotStore) LoadSnapshot(ctx context.Context, aggregateID string) (*entity.Snapshot, error) {
+	if aggregateID == "" {
+		return nil, fmt.Errorf("aggregateID cannot be empty")
+	}
+	
+	key := s.buildKey(aggregateID)
+	var data []byte
+	
+	err := s.db.View(func(txn *badger.Txn) error {
+		item, err := txn.Get(key)
+		if err != nil {
+			return err
+		}
+		
+		return item.Value(func(val []byte) error {
+			data = append([]byte{}, val...)
+			return nil
+		})
+	})
+	
+	if err == badger.ErrKeyNotFound {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, fmt.Errorf("load snapshot: %w", err)
+	}
+	
+	var snapshot entity.Snapshot
+	if err := json.Unmarshal(data, &snapshot); err != nil {
+		return nil, fmt.Errorf("unmarshal snapshot: %w", err)
+	}
+	
+	return &snapshot, nil
+}
+
+// LoadLatestSnapshot 加载最新快照
+func (s *badgerSnapshotStore) LoadLatestSnapshot(ctx context.Context, aggregateID string) (*entity.Snapshot, error) {
+	// 目前只存储一个最新快照，所以直接调用LoadSnapshot
+	return s.LoadSnapshot(ctx, aggregateID)
+}
+
+// DeleteSnapshot 删除快照
+func (s *badgerSnapshotStore) DeleteSnapshot(ctx context.Context, aggregateID string, version int) error {
+	if aggregateID == "" {
+		return fmt.Errorf("aggregateID cannot be empty")
+	}
+	
+	key := s.buildKey(aggregateID)
+	
+	err := s.db.Update(func(txn *badger.Txn) error {
+		return txn.Delete(key)
+	})
+	
+	if err == badger.ErrKeyNotFound {
+		return nil
+	}
+	if err != nil {
+		return fmt.Errorf("delete snapshot: %w", err)
+	}
+	
+	return nil
+}
+
+// Close 关闭存储连接
+func (s *badgerSnapshotStore) Close() error {
+	return s.db.Close()
+}
+
+// buildKey 构建存储键
+func (s *badgerSnapshotStore) buildKey(aggregateID string) []byte {
+	return []byte(fmt.Sprintf("snapshot:%s", aggregateID))
+}

@@ -1,0 +1,283 @@
+package task
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"time"
+	"{{.project_name}}/internal/entity"
+	"github.com/redis/go-redis/v9"
+)
+
+// RedisTaskStore Redis任务存储实现
+type RedisTaskStore struct {
+	client *redis.Client
+	prefix string
+}
+
+// NewRedisTaskStore 创建Redis任务存储
+func NewRedisTaskStore(client *redis.Client) *RedisTaskStore {
+	return &RedisTaskStore{
+		client: client,
+		prefix: "task:",
+	}
+}
+
+// Create 创建任务
+func (r *RedisTaskStore) Create(ctx context.Context, task *entity.TaskData) error {
+	data, err := json.Marshal(task)
+	if err != nil {
+		return fmt.Errorf("marshal task: %w", err)
+	}
+
+	key := r.buildKey(task.ID)
+	
+	// 设置TTL为7天
+	ttl := 7 * 24 * time.Hour
+	
+	// 存储任务数据
+	err = r.client.Set(ctx, key, data, ttl).Err()
+	if err != nil {
+		return fmt.Errorf("set task: %w", err)
+	}
+
+	// 添加到状态索引
+	statusKey := r.buildStatusKey(task.Status)
+	err = r.client.SAdd(ctx, statusKey, task.ID).Err()
+	if err != nil {
+		return fmt.Errorf("add to status index: %w", err)
+	}
+
+	// 添加到优先级索引
+	priorityKey := r.buildPriorityKey(task.Priority)
+	err = r.client.SAdd(ctx, priorityKey, task.ID).Err()
+	if err != nil {
+		return fmt.Errorf("add to priority index: %w", err)
+	}
+
+	// 如果任务类型不为空，添加到类型索引
+	if task.Type != "" {
+		typeKey := r.buildTypeKey(task.Type)
+		err = r.client.SAdd(ctx, typeKey, task.ID).Err()
+		if err != nil {
+			return fmt.Errorf("add to type index: %w", err)
+		}
+	}
+
+	return nil
+}
+
+// Get 获取任务
+func (r *RedisTaskStore) Get(ctx context.Context, taskID string) (*entity.TaskData, error) {
+	key := r.buildKey(taskID)
+	data, err := r.client.Get(ctx, key).Result()
+	if err != nil {
+		if err == redis.Nil {
+			return nil, fmt.Errorf("task not found")
+		}
+		return nil, fmt.Errorf("get task: %w", err)
+	}
+
+	var task entity.TaskData
+	if err := json.Unmarshal([]byte(data), &task); err != nil {
+		return nil, fmt.Errorf("unmarshal task: %w", err)
+	}
+
+	return &task, nil
+}
+
+// Update 更新任务
+func (r *RedisTaskStore) Update(ctx context.Context, task *entity.TaskData) error {
+	// 获取旧任务以更新索引
+	oldTask, err := r.Get(ctx, task.ID)
+	if err != nil {
+		return fmt.Errorf("get old task: %w", err)
+	}
+
+	// 更新任务数据
+	data, err := json.Marshal(task)
+	if err != nil {
+		return fmt.Errorf("marshal task: %w", err)
+	}
+
+	key := r.buildKey(task.ID)
+	err = r.client.Set(ctx, key, data, 7*24*time.Hour).Err()
+	if err != nil {
+		return fmt.Errorf("update task: %w", err)
+	}
+
+	// 如果状态改变，更新索引
+	if oldTask.Status != task.Status {
+		// 从旧状态索引移除
+		oldStatusKey := r.buildStatusKey(oldTask.Status)
+		_ = r.client.SRem(ctx, oldStatusKey, task.ID).Err()
+
+		// 添加到新状态索引
+		newStatusKey := r.buildStatusKey(task.Status)
+		_ = r.client.SAdd(ctx, newStatusKey, task.ID).Err()
+	}
+
+	return nil
+}
+
+// Delete 删除任务
+func (r *RedisTaskStore) Delete(ctx context.Context, taskID string) error {
+	// 获取任务以清理索引
+	task, err := r.Get(ctx, taskID)
+	if err != nil {
+		return fmt.Errorf("get task: %w", err)
+	}
+
+	// 删除任务数据
+	key := r.buildKey(taskID)
+	err = r.client.Del(ctx, key).Err()
+	if err != nil {
+		return fmt.Errorf("delete task: %w", err)
+	}
+
+	// 从所有索引中移除
+	statusKey := r.buildStatusKey(task.Status)
+	_ = r.client.SRem(ctx, statusKey, taskID).Err()
+
+	priorityKey := r.buildPriorityKey(task.Priority)
+	_ = r.client.SRem(ctx, priorityKey, taskID).Err()
+
+	if task.Type != "" {
+		typeKey := r.buildTypeKey(task.Type)
+		_ = r.client.SRem(ctx, typeKey, taskID).Err()
+	}
+
+	return nil
+}
+
+// ListByStatus 按状态列出任务
+func (r *RedisTaskStore) ListByStatus(ctx context.Context, status entity.TaskStatus) ([]*entity.TaskData, error) {
+	statusKey := r.buildStatusKey(status)
+	ids, err := r.client.SMembers(ctx, statusKey).Result()
+	if err != nil {
+		return nil, fmt.Errorf("get task ids by status: %w", err)
+	}
+
+	var tasks []*entity.TaskData
+	for _, id := range ids {
+		task, err := r.Get(ctx, id)
+		if err != nil {
+			continue // 跳过无效的任务
+		}
+		tasks = append(tasks, task)
+	}
+
+	return tasks, nil
+}
+
+// ListPending 列出待处理任务
+func (r *RedisTaskStore) ListPending(ctx context.Context) ([]*entity.TaskData, error) {
+	statusKey := r.buildStatusKey(entity.TaskStatusPending)
+	ids, err := r.client.SMembers(ctx, statusKey).Result()
+	if err != nil {
+		return nil, fmt.Errorf("get pending task ids: %w", err)
+	}
+
+	var tasks []*entity.TaskData
+	now := time.Now()
+	for _, id := range ids {
+		task, err := r.Get(ctx, id)
+		if err != nil {
+			continue
+		}
+		if task.IsReadyToRun() {
+			tasks = append(tasks, task)
+		}
+	}
+
+	return tasks, nil
+}
+
+// ListScheduled 列出定时任务
+func (r *RedisTaskStore) ListScheduled(ctx context.Context) ([]*entity.TaskData, error) {
+	statusKey := r.buildStatusKey(entity.TaskStatusPending)
+	ids, err := r.client.SMembers(ctx, statusKey).Result()
+	if err != nil {
+		return nil, fmt.Errorf("get scheduled task ids: %w", err)
+	}
+
+	var tasks []*entity.TaskData
+	now := time.Now()
+	for _, id := range ids {
+		task, err := r.Get(ctx, id)
+		if err != nil {
+			continue
+		}
+		if task.Status == entity.TaskStatusPending && task.ScheduledAt != nil && task.ScheduledAt.After(now) {
+			tasks = append(tasks, task)
+		}
+	}
+
+	return tasks, nil
+}
+
+// DeleteExpired 删除过期任务
+func (r *RedisTaskStore) DeleteExpired(ctx context.Context) error {
+	// 获取所有任务并检查是否过期
+	for _, status := range []entity.TaskStatus{
+		entity.TaskStatusCompleted,
+		entity.TaskStatusFailed,
+		entity.TaskStatusCancelled,
+	} {
+		tasks, err := r.ListByStatus(ctx, status)
+		if err != nil {
+			continue
+		}
+
+		for _, task := range tasks {
+			if shouldDelete(task) {
+				_ = r.Delete(ctx, task.ID)
+			}
+		}
+	}
+
+	return nil
+}
+
+
+
+// ListAll 获取所有任务（调试用）
+func (r *RedisTaskStore) ListAll(ctx context.Context) ([]*entity.TaskData, error) {
+	pattern := r.prefix + "*"
+	keys, err := r.client.Keys(ctx, pattern).Result()
+	if err != nil {
+		return nil, fmt.Errorf("get all task keys: %w", err)
+	}
+
+	var tasks []*entity.TaskData
+	for _, key := range keys {
+		id := key[len(r.prefix):]
+		task, err := r.Get(ctx, id)
+		if err != nil {
+			continue
+		}
+		tasks = append(tasks, task)
+	}
+
+	return tasks, nil
+}
+
+// buildKey 构建Redis键
+func (r *RedisTaskStore) buildKey(taskID string) string {
+	return r.prefix + taskID
+}
+
+// buildStatusKey 构建状态索引键
+func (r *RedisTaskStore) buildStatusKey(status entity.TaskStatus) string {
+	return fmt.Sprintf("%sstatus:%s", r.prefix, status)
+}
+
+// buildPriorityKey 构建优先级索引键
+func (r *RedisTaskStore) buildPriorityKey(priority entity.TaskPriority) string {
+	return fmt.Sprintf("%spriority:%s", r.prefix, priority)
+}
+
+// buildTypeKey 构建类型索引键
+func (r *RedisTaskStore) buildTypeKey(taskType entity.TaskType) string {
+	return fmt.Sprintf("%stype:%s", r.prefix, taskType)
+}

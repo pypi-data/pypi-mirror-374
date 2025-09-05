@@ -1,0 +1,108 @@
+# CRUD实体配置示例
+# 一键生成完整的CURD操作
+
+entities:
+  # 用户实体
+  - name: User
+    table: users
+    description: "系统用户"
+    soft_delete: true
+    timestamps: true
+    fields:
+      - name: username
+        type: string
+        required: true
+        unique: true
+        description: "用户名"
+      - name: email
+        type: string
+        required: true
+        unique: true
+        description: "邮箱地址"
+      - name: password
+        type: string
+        required: true
+        description: "密码哈希"
+      - name: avatar
+        type: string
+        required: false
+        description: "头像URL"
+      - name: status
+        type: int
+        required: true
+        default: 1
+        description: "用户状态: 1正常 2禁用"
+      - name: last_login_at
+        type: "*time.Time"
+        required: false
+        description: "最后登录时间"
+
+  # 文章实体
+  - name: Post
+    table: posts
+    description: "博客文章"
+    soft_delete: true
+    timestamps: true
+    fields:
+      - name: title
+        type: string
+        required: true
+        description: "文章标题"
+      - name: content
+        type: string
+        required: true
+        description: "文章内容"
+      - name: summary
+        type: string
+        required: false
+        description: "文章摘要"
+      - name: author_id
+        type: uint
+        required: true
+        index: true
+        description: "作者ID"
+      - name: status
+        type: int
+        required: true
+        default: 1
+        description: "发布状态: 1草稿 2已发布 3已归档"
+      - name: view_count
+        type: int
+        required: true
+        default: 0
+        description: "浏览次数"
+      - name: tags
+        type: string
+        required: false
+        description: "文章标签，JSON格式"
+
+  # 评论实体
+  - name: Comment
+    table: comments
+    description: "文章评论"
+    soft_delete: true
+    timestamps: true
+    fields:
+      - name: post_id
+        type: uint
+        required: true
+        index: true
+        description: "文章ID"
+      - name: user_id
+        type: uint
+        required: true
+        index: true
+        description: "用户ID"
+      - name: content
+        type: string
+        required: true
+        description: "评论内容"
+      - name: parent_id
+        type: "*uint"
+        required: false
+        description: "父评论ID"
+      - name: like_count
+        type: int
+        required: true
+        default: 0
+        description: "点赞数"

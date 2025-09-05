@@ -1,0 +1,150 @@
+package session
+
+import (
+	"context"
+	"time"
+
+	"{{project_name}}/internal/entity"
+)
+
+// SessionStore 会话存储接口
+type SessionStore interface {
+	Create(ctx context.Context, session *entity.SessionData) error
+	Get(ctx context.Context, id string) (*entity.SessionData, error)
+	Update(ctx context.Context, session *entity.SessionData) error
+	Delete(ctx context.Context, id string) error
+	DeleteExpired(ctx context.Context) error
+}
+
+// SessionService 会话服务接口
+type SessionService interface {
+	CreateSession(ctx context.Context, ttl time.Duration, ip, userAgent string) (*entity.SessionData, error)
+	GetSession(ctx context.Context, id string) (*entity.SessionData, error)
+	UpdateSession(ctx context.Context, id string, updates map[string]interface{}) error
+	DeleteSession(ctx context.Context, id string) error
+	RefreshSession(ctx context.Context, id string) (*entity.SessionData, error)
+}
+
+// sessionService 会话服务实现
+type sessionService struct {
+	store SessionStore
+}
+
+// NewSessionService 创建会话服务
+func NewSessionService(store SessionStore) SessionService {
+	return &sessionService{
+		store: store,
+	}
+}
+
+// CreateSession 创建新会话
+func (s *sessionService) CreateSession(
+	ctx context.Context,
+	ttl time.Duration,
+	ip, userAgent string,
+) (*entity.SessionData, error) {
+	session := entity.NewSessionData(generateSessionID(), ttl)
+	session.IP = ip
+	session.UserAgent = userAgent
+
+	if err := s.store.Create(ctx, session); err != nil {
+		return nil, err
+	}
+
+	return session, nil
+}
+
+// GetSession 获取会话
+func (s *sessionService) GetSession(ctx context.Context, sessionID string) (*entity.SessionData, error) {
+	return s.store.Get(ctx, sessionID)
+}
+
+// UpdateSession 更新会话数据
+func (s *sessionService) UpdateSession(ctx context.Context, sessionID string, data map[string]interface{}) error {
+	session, err := s.store.Get(ctx, sessionID)
+	if err != nil {
+		return err
+	}
+
+	if session == nil {
+		return ErrSessionNotFound
+	}
+
+	if session.IsExpired() {
+		return ErrSessionExpired
+	}
+
+	// 更新数据
+	for key, value := range data {
+		session.SetValue(key, value)
+	}
+	session.Touch()
+	return s.store.Update(ctx, session)
+}
+
+// DeleteSession 删除会话
+func (s *sessionService) DeleteSession(ctx context.Context, sessionID string) error {
+	return s.store.Delete(ctx, sessionID)
+}
+
+// RefreshSession 刷新会话（延长过期时间）
+func (s *sessionService) RefreshSession(ctx context.Context, sessionID string) (*entity.SessionData, error) {
+	session, err := s.store.Get(ctx, sessionID)
+	if err != nil {
+		return nil, err
+	}
+
+	if session == nil {
+		return nil, ErrSessionNotFound
+	}
+
+	if session.IsExpired() {
+		return nil, ErrSessionExpired
+	}
+
+	session.Touch()
+	// 延长过期时间（例如延长24小时）
+	session.ExpiresAt = time.Now().Add(24 * time.Hour)
+	if err := s.store.Update(ctx, session); err != nil {
+		return nil, err
+	}
+	return session, nil
+}
+
+// IsValid 检查会话是否有效
+func (s *sessionService) IsValid(ctx context.Context, sessionID string) bool {
+	session, err := s.store.Get(ctx, sessionID)
+	if err != nil || session == nil {
+		return false
+	}
+	return !session.IsExpired()
+}
+
+// CleanupExpiredSessions 清理过期会话
+func (s *sessionService) CleanupExpiredSessions(ctx context.Context) error {
+	return s.store.DeleteExpired(ctx)
+}
+
+// 错误定义
+var (
+	ErrSessionNotFound   = &SessionError{Code: "SESSION_NOT_FOUND", Message: "会话不存在"}
+	ErrSessionExpired    = &SessionError{Code: "SESSION_EXPIRED", Message: "会话已过期"}
+	ErrInvalidSessionType = &SessionError{Code: "INVALID_SESSION_TYPE", Message: "无效的会话类型"}
+)
+
+// SessionError 会话错误
+type SessionError struct {
+	Code    string
+	Message string
+}
+
+func (e *SessionError) Error() string {
+	return e.Message
+}
+
+// generateSessionID 生成会话ID
+func generateSessionID() string {
+	// 这里应该使用更安全的随机数生成器
+	// 简化版本，实际应该使用crypto/rand
+	return "sess_" + time.Now().Format("20060102150405") + "_" + "random"
+}
