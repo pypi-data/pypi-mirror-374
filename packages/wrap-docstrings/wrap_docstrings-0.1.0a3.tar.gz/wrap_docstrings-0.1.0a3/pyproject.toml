@@ -1,0 +1,97 @@
+[project]
+name = "wrap-docstrings"
+version = "0.1.0a3"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Bryon Tjanaka", email = "bryon.tjanaka@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+wrap-docstrings = "wrap_docstrings:main"
+
+[build-system]
+requires = ["uv_build>=0.8.0,<0.9"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.3.0",
+    "pytest>=8.4.1",
+    "ruff>=0.12.9",
+    "ty>=0.0.1a20",
+]
+
+[tool.ruff.lint]
+# Reference: https://docs.astral.sh/ruff/rules/
+select = [
+  # "ANN",  # flake8-annotations
+  "B",  # flake8-bugbear
+  "A",  # flake8-builtins
+  "COM818",  # trailing-comma-on-bare-tuple
+  "C4",  # flake8-comprehensions
+  "EXE",  # flake8-executable
+  "FA",  # flake8-future-annotations
+  "PIE",  # flake8-pie
+  "RSE",  # flake8-raise
+  "SIM",  # flake8-simplify
+  "TD",  # flake8-todos
+  "ARG",  # flake8-unused-arguments
+  "FLY",  # flynt
+  "I",  # isort
+  "NPY",  # numpy
+  "PD",  # pandas-vet
+  "D",  # pydocstyle
+  "PL",  # pylint
+  "PYI",  # flake8-pyi
+  "PT",  # pytest
+  "N",  # pep8-naming
+  "E",  # pycodestyle errors
+  "W",  # pycodestyle warnings
+  "F",  # pyflakes
+  "UP",  # pyupgrade
+  "RUF",  # ruff-specific rules
+]
+ignore = [
+  "B024",  # abstract-base-class-without-abstract-method; we have base classes where no methods are abstract.
+  "B027",  # empty-method-without-abstract-decorator; we have base class methods that are empty.
+  "E501",  # line-too-long; we already have the formatter.
+  "ARG002",  # unused-method-argument; we have many cases where arguments have to be included for API compatibility.
+  "PD901",  # pandas-df-variable-name; this rule is actually deprecated in ruff.
+  "RUF022",  # unsorted-dunder-all; we sort it ourselves.
+  "SIM108",  # if-else-block-instead-of-if-exp; rather opinionated.
+  "PT011",  # pytest-raises-too-broad
+  "PT030",  # pytest-warns-too-broad
+  "PLR2004",  # magic-value-comparison
+  "PLC0415",  # import-outside-top-level
+  "PLC0206",  # dict-index-missing-items
+  "PLW2901",  # redefined-loop-name
+  "D107",  # undocumented-public-init; we document the class rather than __init__
+  # These are pylint's errors about "too many X"
+  "PLR0904",
+  "PLR0911",
+  "PLR0912",
+  "PLR0913",
+  "PLR0914",
+  "PLR0915",
+  "PLR0916",
+  "PLR0917",
+  "PLR1702",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*" = ["D"]
+
+[tool.ruff.lint.pep8-naming]
+ignore-names = [
+  "F",  # torch.nn.functional
+  "G",  # GAN generator
+]
+
+[tool.ruff.lint.isort]
+known-first-party = []
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
