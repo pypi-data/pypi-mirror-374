@@ -1,0 +1,5 @@
+[console_scripts]
+mltf = mlflow_mltf_gateway.scripts:main
+
+[mlflow.project_backend]
+gateway = mlflow_mltf_gateway.gateway_backend:gateway_backend_builder
