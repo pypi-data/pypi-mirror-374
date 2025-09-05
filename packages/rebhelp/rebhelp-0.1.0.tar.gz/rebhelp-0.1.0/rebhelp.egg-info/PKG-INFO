@@ -1,0 +1,41 @@
+Metadata-Version: 2.4
+Name: rebhelp
+Version: 0.1.0
+Summary: Helper package for REBOUND: units, simulation generators, and orbital hierarchy utilities
+Author: Arvill Abbineni
+Author-email: arvillacl17@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Astronomy
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: rebound>=3.0.0
+Requires-Dist: numpy>=1.20
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# rebhelp
+
+Helper package for REBOUND:
+
+## Features
+
+- **units**: Mass and velocity converters (Earth, Moon, Sun)
+- **simgen**: One-line REBOUND simulation generators
+- **get_orbit**: Hierarchical orbit calculations for S-type planetary systems
+
+Rest should have self explanatory docstrings
+
+## Installation
+
+```bash
+pip install rebhelp
