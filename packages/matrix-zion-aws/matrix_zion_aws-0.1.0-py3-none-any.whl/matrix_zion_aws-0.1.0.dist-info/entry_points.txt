@@ -1,0 +1,6 @@
+[matrix.plugins]
+aws_dynamodb=matrix.aws.dynamodb:DynamoDBPlugin
+aws_s3=matrix.aws.s3:S3Plugin
+aws_sns=matrix.aws.sns:SNSPlugin
+aws_sqs=matrix.aws.sqs:SQSPlugin
+
