@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "connections-tui"
+version = "0.0.7"
+description = "Play NYT Connections in the Terminal with no additional dependencies."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICEN[CS]E.*"]
+keywords = ["nyt", "games", "connections", "tui"]
+authors = [
+    { name = "Michael Pilosov", email = "consistentbayes@gmail.com" }
+]
+requires-python = ">=3.8"
+dependencies = []
+
+[project.scripts]
+connections-tui = "connections_tui:run"
+
+[project.urls]
+Homepage = "https://github.com/mathematicalmichael/connections-tui"
+Repository = "https://github.com/mathematicalmichael/connections-tui.git"
+
