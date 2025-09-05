@@ -1,0 +1,61 @@
+[build-system]
+requires = [
+    "setuptools >= 77.0.3",
+    "setuptools-scm >= 8"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pybreathe"
+dynamic = ["version"]
+authors = [
+    { name="Thibaut Coustillet", email="thib.coustillet@gmail.com" },
+]
+description = "A python package for respiratory air flow rates analysis"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "matplotlib>=3.10.1",
+    "numpy>=2.2.4", 
+    "openpyxl>=3.1.5", 
+    "pandas>=2.2.3", 
+    "scipy>=1.15.2",
+    "seaborn>=0.13.2",
+    "xlrd>=2.0.1"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent"
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.optional-dependencies]
+dev = [
+    "ipykernel>=6.29.5",
+    "jupyterlab>=4.4.1",
+    "pytest>=8.4.0",
+    "pylint>=3.3.5",
+    "pycodestyle>=2.13.0",
+    "pydocstyle>=6.3.0",
+    "black>=25.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/tcoustillet/pybreathe"
+Source = "https://github.com/tcoustillet/pybreathe"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools.package-data]
+"pybreathe.datasets" = ["*.txt"]
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+local_scheme = "no-local-version"

@@ -1,0 +1,22 @@
+name: venv_pybreathe
+channels:
+  - conda-forge
+  - defaults
+  - https://repo.anaconda.com/pkgs/main
+  - https://repo.anaconda.com/pkgs/r
+  - https://repo.anaconda.com/pkgs/msys2
+dependencies:
+  - anaconda::ipykernel
+  - anaconda::pandas
+  - anaconda::scipy
+  - anaconda::numpy
+  - conda-forge::matplotlib
+  - conda-forge::jupyterlab
+  - anaconda::openpyxl
+  - anaconda::seaborn
+  - conda-forge::pytest
+  - anaconda::pylint
+  - conda-forge::pycodestyle
+  - conda-forge::pydocstyle
+  - conda-forge::black
+prefix: C:\Users\CoustilletT\anaconda3\envs\venv_pybreathe
