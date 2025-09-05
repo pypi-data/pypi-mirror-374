@@ -1,0 +1,272 @@
+Metadata-Version: 2.4
+Name: vector-mcp
+Version: 0.1.1
+Summary: Integrate RAG into AI Agents via MCP Server. Supports multiple Vector database technologies.
+Author-email: Audel Rouhi <knucklessg1@gmail.com>
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: Public Domain
+Classifier: Environment :: Console
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: fastmcp>=2.11.3
+Requires-Dist: sentence_transformers>=5.1.0
+Requires-Dist: markdownify>=1.2.0
+Requires-Dist: beautifulsoup4>=4.13.5
+Requires-Dist: ebooklib>=0.19
+Requires-Dist: html2text>=2025.4.15
+Requires-Dist: ipython>=8.37.0
+Requires-Dist: pypdf>=6.0.0
+Requires-Dist: protobuf>=6.32.0
+Requires-Dist: llama-index>=0.13.3
+Requires-Dist: llama-index-llms-langchain>=0.7.0
+Requires-Dist: llama-index-embeddings-huggingface>=0.6.0
+Requires-Dist: chromadb>=1.0.20
+Requires-Dist: llama-index-vector-stores-chroma>=0.5.2
+Provides-Extra: pgvector
+Requires-Dist: pgvector>=0.4.1; extra == "pgvector"
+Requires-Dist: psycopg[binary]>=3.2.9; (platform_system == "Windows" or platform_system == "Darwin") and extra == "pgvector"
+Requires-Dist: psycopg>=3.2.9; platform_system == "Linux" and extra == "pgvector"
+Requires-Dist: llama-index-vector-stores-postgres>=0.6.4; extra == "pgvector"
+Provides-Extra: chromadb
+Requires-Dist: chromadb>=1.0.20; extra == "chromadb"
+Requires-Dist: llama-index-vector-stores-chroma>=0.5.2; extra == "chromadb"
+Provides-Extra: couchbase
+Requires-Dist: couchbase>=4.4.0; extra == "couchbase"
+Requires-Dist: llama-index-vector-stores-couchbase>=0.5.0; extra == "couchbase"
+Provides-Extra: qdrant
+Requires-Dist: qdrant-client>=1.15.1; extra == "qdrant"
+Requires-Dist: fastembed>=0.7.3; extra == "qdrant"
+Requires-Dist: llama-index-vector-stores-qdrant>=0.8.2; extra == "qdrant"
+Provides-Extra: mongodb
+Requires-Dist: pymongo>4.12.1; extra == "mongodb"
+Requires-Dist: llama-index-vector-stores-mongodb>=0.8.0; extra == "mongodb"
+Provides-Extra: all
+Requires-Dist: fastmcp>=2.11.3; extra == "all"
+Requires-Dist: sentence_transformers>=5.1.0; extra == "all"
+Requires-Dist: markdownify>=1.2.0; extra == "all"
+Requires-Dist: beautifulsoup4>=4.13.5; extra == "all"
+Requires-Dist: ebooklib>=0.19; extra == "all"
+Requires-Dist: html2text>=2025.4.15; extra == "all"
+Requires-Dist: ipython>=8.37.0; extra == "all"
+Requires-Dist: pypdf>=6.0.0; extra == "all"
+Requires-Dist: protobuf>=6.32.0; extra == "all"
+Requires-Dist: llama-index>=0.13.3; extra == "all"
+Requires-Dist: llama-index-llms-langchain>=0.7.0; extra == "all"
+Requires-Dist: llama-index-embeddings-huggingface>=0.6.0; extra == "all"
+Requires-Dist: pgvector>=0.4.1; extra == "all"
+Requires-Dist: psycopg>=3.2.9; extra == "all"
+Requires-Dist: chromadb>=1.0.20; extra == "all"
+Requires-Dist: couchbase>=4.4.0; extra == "all"
+Requires-Dist: qdrant-client>=1.15.1; extra == "all"
+Requires-Dist: fastembed>=0.7.3; extra == "all"
+Requires-Dist: pymongo>4.12.1; extra == "all"
+Requires-Dist: llama-index-vector-stores-mongodb>=0.8.0; extra == "all"
+Requires-Dist: llama-index-vector-stores-qdrant>=0.8.2; extra == "all"
+Requires-Dist: llama-index-vector-stores-couchbase>=0.5.0; extra == "all"
+Requires-Dist: llama-index-vector-stores-chroma>=0.5.2; extra == "all"
+Requires-Dist: llama-index-vector-stores-postgres>=0.6.4; extra == "all"
+Dynamic: license-file
+
+# Vector Database MCP Server
+
+![PyPI - Version](https://img.shields.io/pypi/v/vector-mcp)
+![PyPI - Downloads](https://img.shields.io/pypi/dd/vector-mcp)
+![GitHub Repo stars](https://img.shields.io/github/stars/Knuckles-Team/vector-mcp)
+![GitHub forks](https://img.shields.io/github/forks/Knuckles-Team/vector-mcp)
+![GitHub contributors](https://img.shields.io/github/contributors/Knuckles-Team/vector-mcp)
+![PyPI - License](https://img.shields.io/pypi/l/vector-mcp)
+![GitHub](https://img.shields.io/github/license/Knuckles-Team/vector-mcp)
+
+![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/Knuckles-Team/vector-mcp)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/Knuckles-Team/vector-mcp)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/Knuckles-Team/vector-mcp)
+![GitHub issues](https://img.shields.io/github/issues/Knuckles-Team/vector-mcp)
+
+![GitHub top language](https://img.shields.io/github/languages/top/Knuckles-Team/vector-mcp)
+![GitHub language count](https://img.shields.io/github/languages/count/Knuckles-Team/vector-mcp)
+![GitHub repo size](https://img.shields.io/github/repo-size/Knuckles-Team/vector-mcp)
+![GitHub repo file count (file type)](https://img.shields.io/github/directory-file-count/Knuckles-Team/vector-mcp)
+![PyPI - Wheel](https://img.shields.io/pypi/wheel/vector-mcp)
+![PyPI - Implementation](https://img.shields.io/pypi/implementation/vector-mcp)
+
+*Version: 0.1.1*
+
+This is an MCP Server implementation which allows for a standardized
+collection management system across vector database technologies.
+
+This was heavily inspired by the RAG implementation of Microsoft's Autogen V1 framework, however,
+this was changed to an MCP server model instead.
+
+AI Agents can:
+
+- Create collections with documents stored on the local filesystem or URLs
+- Add documents to a collection
+- Utilize collection for retrieval augmented generation (RAG)
+- Delete collection
+
+Supports:
+
+- ChromaDB - 95% Tested
+- PGVector - 90% Tested
+- Couchbase - 80% Tested
+- Qdrant - 80% Tested
+- MongoDB - 80% Tested
+
+This repository is actively maintained - Contributions and bug reports are welcome!
+
+Automated tests are planned
+
+<details>
+  <summary><b>Usage:</b></summary>
+
+## Using as an MCP Server:
+
+### Creating Collection
+AI Prompt:
+```text
+Create a collection called zapdos with the documents in this directory:
+/home/user/Documents/Chroma
+```
+
+AI Response:
+```text
+The collection named "zapdos" has been successfully created or retrieved from the vector database
+using the documents in the directory /home/user/Documents/Chroma.
+Let me know if you'd like to perform any further actions, such as querying the collection or adding more documents!
+```
+
+### Retrieving from Collection
+
+AI Prompt:
+```text
+Create a collection called zapdos with the documents in this directory:
+/home/user/Documents/Chroma
+```
+
+AI Response:
+```text
+The collection named "zapdos" has been successfully created or retrieved from the vector database
+using the documents in the directory /home/user/Documents/Chroma.
+Let me know if you'd like to perform any further actions, such as querying the collection or adding more documents!
+```
+
+### Deleting Collection
+
+AI Prompt:
+```text
+Delete the collection called memory
+```
+
+AI Response:
+```text
+The collection named "memory" has been successfully deleted.
+Let me know if you'd like to create a new collection or perform any other actions!
+```
+
+</details>
+
+<details>
+  <summary><b>Example:</b></summary>
+
+### Use in CLI
+
+
+| Short Flag | Long Flag        | Description                   |
+|------------|------------------|-------------------------------|
+| -h         | --help           | See Usage                     |
+| -h         | --host           | Host of Vector Database       |
+| -p         | --port           | Port of Vector Database       |
+| -d         | --path           | Path of local Vector Database |
+| -t         | --transport      | Transport Type (https/stdio)  |
+
+```bash
+vector-mcp
+```
+
+### Use with AI
+
+Deploy MCP Server as a Service
+```bash
+docker pull knucklessg1/vector-mcp:latest
+```
+
+Modify the `compose.yml`
+
+```compose
+services:
+  vector-mcp-mcp:
+    image: knucklessg1/vector-mcp:latest
+    volumes:
+      - development:/root/Development
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8001
+    ports:
+      - 8001:8001
+```
+
+Configure `mcp.json`
+
+```json
+{
+  "mcpServers": {
+    "vector_mcp": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--with",
+        "vector-mcp",
+        "vector-mcp"
+      ],
+      "env": {
+        "DATABASE_TYPE": "chromadb",                   // Optional
+        "COLLECTION_NAME": "memory",                   // Optional
+        "DOCUMENT_DIRECTORY": "/home/user/Documents/"  // Optional
+      },
+      "timeout": 300000
+    }
+  }
+}
+
+```
+
+</details>
+
+<details>
+  <summary><b>Installation Instructions:</b></summary>
+
+Install Python Package
+
+```bash
+python -m pip install vector-mcp
+```
+
+PGVector dependencies
+
+```bash
+python -m pip install vector-mcp[pgvector]
+```
+
+All
+
+```bash
+python -m pip install vector-mcp[all]
+```
+
+
+</details>
+
+<details>
+  <summary><b>Repository Owners:</b></summary>
+
+
+<img width="100%" height="180em" src="https://github-readme-stats.vercel.app/api?username=Knucklessg1&show_icons=true&hide_border=true&&count_private=true&include_all_commits=true" />
+
+![GitHub followers](https://img.shields.io/github/followers/Knucklessg1)
+![GitHub User's stars](https://img.shields.io/github/stars/Knucklessg1)
+</details>
+
+Special shoutouts to Microsoft Autogen V1 ♥️
