@@ -1,0 +1,41 @@
+[project]
+name = "unienv"
+description = "Unified robot environment framework supporting multiple tensor and simulation backends"
+readme = "README.md"
+license = "MIT"
+version = "0.0.1b2"
+requires-python = ">= 3.10"
+dependencies = [
+    "numpy",
+    "xbarray>=0.0.1a8",
+    "pillow",
+    "h5py",
+]
+
+[project.urls]
+Homepage = "https://www.quantumcookie.xyz/project/unienv/"
+Documentation = "https://readthedocs.org"
+Repository = "https://github.com/UniEnvOrg/UniEnvPy"
+Issues = "https://github.com/UniEnvOrg/UniEnvPy/issues"
+Changelog = "https://github.com/UniEnvOrg/UniEnvPy/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+gymnasium = [
+    "gymnasium>=0.29.0",
+]
+video = [
+    "moviepy>=2.1"
+]
+mjx = [
+    "playground",
+]
+maniskill = [
+    "mani_skill>=3.0.0b12"
+]
+
+[tool.setuptools.packages.find]
+include = ["*"]
+exclude = ["training*", "tests*"]
