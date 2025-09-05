@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling>=1.18"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agentcube"                     # 包名（小写，最终在 PyPI 显示会规范化）
+version = "0.0.0a0"                    # 预发布占位版本
+description = "Placeholder pre-release to reserve the package name."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Your Name" }]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+]
+keywords = ["agent", "framework", "ai"]
+
+[project.urls]
+Homepage = "https://github.com/zhengdewei/agentcube"
