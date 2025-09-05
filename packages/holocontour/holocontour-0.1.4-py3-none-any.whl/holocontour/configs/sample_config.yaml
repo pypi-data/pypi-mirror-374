@@ -1,0 +1,25 @@
+#contour:
+#  avg_thresh: 63
+#  min_contour_area: 30
+#  seed_thresh: 45
+#  save_plot: true
+#  median: false
+#  hist_match: true
+#  ref_path: 'D:\mojmas\files\Projects\holocontour\src\holocontour\data\001-4923.pgm(406,428)-Z43.50.png'
+
+contour:
+  avg_thresh: 81
+  max_attempts: 5
+  increase_avg: 5
+  min_contour_area: 30
+  seed_thresh: 45
+  save_plot: true
+  median: false
+  hist_match: true
+  ref_path: 'src\holocontour\data\001-4923.pgm(406,428)-Z43.50.png'
+
+input_metadata:
+  lat: 54.0123
+  lon: 1.0123
+  date: 2024-06-01
+  ext: ".png"
