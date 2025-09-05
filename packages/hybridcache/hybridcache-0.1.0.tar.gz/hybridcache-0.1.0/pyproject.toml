@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hybridcache"
+version = "0.1.0"
+description = "A hybrid LFU + LRU cache implementation in Python"
+authors = [
+  { name="Aniruddha Joshi", email="your_email@example.com" }
+]
+license = { file="LICENSE" }
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["cache", "lfu", "lru", "hybrid", "python"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-username/hybridcache"
