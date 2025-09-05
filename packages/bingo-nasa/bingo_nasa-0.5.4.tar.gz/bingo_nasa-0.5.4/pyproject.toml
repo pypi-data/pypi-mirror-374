@@ -1,0 +1,61 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel",
+    "ninja",
+    "cmake>=3.12",
+    "pybind11[global]",
+    "setuptools-scm>=8",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bingo-nasa"
+keywords = ["symbolic regression"]
+description = "A package for genetic optimization and symbolic regression."
+authors = [
+    {name = "Geoffrey Bomarito", email = "geoffrey.f.bomarito@nasa.gov" }
+]
+requires-python = ">=3.9"
+readme = "README.md"
+license = {file = "LICENSE.txt"}
+dynamic = ["version"]
+dependencies = [
+    "mpi4py>=4.0",
+    "numpy",
+    "scipy",
+    "dill",
+    "sympy",
+    "scikit-learn",
+    "smcpy",
+    "pybind11[global]",
+]
+classifiers = [
+    "License :: OSI Approved :: Apache Software License",
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.urls]
+Documentation = "https://nasa.github.io/bingo/"
+Repository = "https://github.com/nasa/bingo"
+
+[project.optional-dependencies]
+ONNX = ["onnx"]
+TESTS = [
+    "pytest",
+    "pytest-mock",
+    "pytest-timeout",
+    "pytest-cov",
+    "coverage",
+    "coveralls"
+]
+
+[tool.cibuildwheel]
+skip = "pp*"
+
+[tool.setuptools_scm]
+local_scheme = "no-local-version"
