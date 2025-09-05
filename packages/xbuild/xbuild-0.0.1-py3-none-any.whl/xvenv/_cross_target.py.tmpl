@@ -1,0 +1,95 @@
+# A site package that turns a virtual environment
+# into a {os} {multiarch} cross-platform virtual environment
+import functools
+import os
+import platform
+import subprocess
+import sys
+import sysconfig
+
+
+def monkeypatch(module):
+    """A decorator for patching a function in a module."""
+    def _dec(fn):
+        orig_fn = getattr(module, fn.__name__, None)
+        setattr(module, fn.__name__, fn)
+        functools.wraps(orig_fn)(fn)
+
+    return _dec
+
+
+def patch_cross_env():
+    ###########################################################################
+    # sys module patches
+    ###########################################################################
+    sys.cross_compiling = True
+    sys.platform = "{platform}"
+    sys.implementation._multiarch = "{multiarch}"
+    sys.abiflags = "{abiflags}"
+
+    if sys.version_info < (3, 14):
+        sys.base_prefix = sysconfig.get_config_var("prefix")
+        sys.base_exec_prefix = sysconfig.get_config_var("prefix")
+    else:
+        sys.base_prefix = sysconfig._get_sysconfigdata()["prefix"]
+        sys.base_exec_prefix = sysconfig._get_sysconfigdata()["prefix"]
+
+    ###########################################################################
+    # os module patches
+    ###########################################################################
+    @monkeypatch(os)
+    def uname():
+        return os.uname_result(
+            (
+                "{os_sysname}",
+                "{os_nodename}",
+                "{os_release}",
+                "{os_version}",
+                "{arch}",
+            )
+        )
+
+    ###########################################################################
+    # platform module patches
+    ###########################################################################
+    @monkeypatch(platform)
+    def uname():
+        return platform.uname_result(
+            system="{os}",
+            node="{os_nodename}",
+            release="{release}",
+            version="{os_version}",
+            machine="{arch}",
+        )
+
+    # -------------------------------------------------------------------------
+{platform_extra}
+    ###########################################################################
+    # subprocess module patches
+    ###########################################################################
+    subprocess._can_fork_exec = True
+
+    ###########################################################################
+    # sysconfig module patches
+    ###########################################################################
+
+    @monkeypatch(sysconfig)
+    def get_platform():
+        return "{platform}-{platform_version}-{machine}"
+
+    @monkeypatch(sysconfig)
+    def get_sysconfigdata_name():
+        return "_sysconfigdata__{platform}_{multiarch}"
+
+    # Ensure module-level values cached at time of import are updated.
+    sysconfig._BASE_PREFIX = sys.base_prefix
+    sysconfig._BASE_EXEC_PREFIX = sys.base_exec_prefix
+
+    # Force sysconfig data to be loaded (and cached).
+    sysconfig._init_config_vars()
+
+
+# if XBUILD_ENV=off is in the environment, don't apply any environment shims.
+# This reverts the environment to a native build environment.
+if os.environ.get("XBUILD_ENV", "on").lower() in {{"1", "on"}}:
+    patch_cross_env()
