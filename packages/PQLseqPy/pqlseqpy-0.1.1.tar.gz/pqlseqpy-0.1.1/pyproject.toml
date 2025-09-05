@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PQLseqPy"
+version = "0.1.1"
+description = "Fast PQLseq"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Ali Akbari", email = "alek0991@gmail.com" }
+]
+dependencies = [
+  "pandas",
+  "numpy",
+  "statsmodels",
+  "scipy"
+]
