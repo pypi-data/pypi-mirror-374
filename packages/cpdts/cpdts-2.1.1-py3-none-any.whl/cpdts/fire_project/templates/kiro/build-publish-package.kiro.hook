@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Build and Publish Package",
+  "description": "Automatically builds and publishes Python package to PyPI when pyproject.toml is modified. Cleans dist folder, increments version, builds wheel, and publishes to PyPI.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered",
+    "patterns": [
+      "pyproject.toml"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "The pyproject.toml file has been modified. Please execute the following steps in order:\n\n1. Clean the dist folder by running: `uv run --link-mode=copy src/scripts/clean.py `\n2. Increment the version number in pyproject.toml (increase the version field by 1)\n3. Build the wheel package by running: `uv build --wheel`\n4. Publish to PyPI by running: `uv publish`\n\nMake sure to execute these commands in the project root directory and handle any errors that may occur during the process."
+  }
+}
