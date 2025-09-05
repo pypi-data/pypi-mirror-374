@@ -1,0 +1,60 @@
+#!/bin/bash
+## Flags in Python re module
+#################################
+## NOTE #########################
+## Flag	Alias	Effect
+## re.IGNORECASE	re.I	Case-insensitive
+## re.MULTILINE	re.M	^ and $ match per line
+## re.DOTALL	re.S	. matches newline
+## re.VERBOSE	re.X	Allow multi-line + comments in regex
+## re.ASCII	re.A	Force ASCII-only \w, \b, \d, etc.
+## re.LOCALE	re.L	Locale-aware (deprecated in Py3)
+## re.DEBUG	—	Print regex debug info
+## re.TEMPLATE	—	For re.Scanner (rare)
+#################################
+## ARGUMENTS ####################
+## 
+## SCRIPT #####################
+
+python3 <<EOF
+
+import re
+
+# re.IGNORECASE / re.I Case-insensitive matching.
+print(re.findall(r"hello", "Hello hEllO HELLO", re.I))
+# ['Hello', 'hEllO', 'HELLO']
+
+# re.MULTILINE / re.M ^ and $ match at every line, not just the whole string.
+text = "first line\nsecond line\nthird line"
+print(re.findall(r"^s\w+", text))           # []
+print(re.findall(r"^s\w+", text, re.M))     # ['second']
+
+# re.DOTALL / re.S . matches newlines too.
+text = "line1\nline2"
+print(re.findall(r".+", text))           # ['line1', 'line2']
+print(re.findall(r".+", text, re.S))     # ['line1\nline2']
+
+
+# re.VERBOSE / re.X Allow multi-line regex with comments & whitespace.
+pattern = re.compile(r"""
+    (\d+)       # capture number
+    \s*         # optional spaces
+    (apples?)   # apple or apples
+""", re.X)
+
+print(pattern.findall("5 apples, 1 apple"))
+# [('5', 'apples'), ('1', 'apple')]
+
+
+# re.ASCII / re.A \w, \b, \d etc. match ASCII-only, not Unicode.
+print(re.findall(r"\w+", "café"))              # ['café']
+print(re.findall(r"\w+", "café", re.ASCII))    # ['caf']
+
+# DEBUG Print debug information when compiling regex.
+re.compile(r"\d+", re.DEBUG)
+
+# Combining Flags
+pattern = re.compile(r"^hello.world$", re.I | re.M | re.S)
+print(bool(pattern.match("HELLO\nWORLD")))
+
+EOF

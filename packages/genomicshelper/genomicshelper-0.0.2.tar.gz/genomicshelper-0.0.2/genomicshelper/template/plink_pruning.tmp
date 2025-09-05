@@ -1,0 +1,19 @@
+#!/bin/bash
+## Run SNP pruning using PLINK
+#################################
+## NOTE #########################
+##
+#################################
+## ARGUMENTS ####################
+## bfile = plink bfile prefix
+## out ="plink_results"
+## threads = 2
+## hildset = ${bfile}.hild.snplist
+#################################
+
+plink2 \
+    --bfile ${bfile} \
+    --maf 0.01 \
+    --exclude ${hildset} \
+    --indep-pairwise 50 5 0.2 \
+    --out ${out}

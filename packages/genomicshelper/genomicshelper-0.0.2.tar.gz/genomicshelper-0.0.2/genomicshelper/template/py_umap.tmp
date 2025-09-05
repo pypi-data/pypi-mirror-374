@@ -1,0 +1,34 @@
+#!/bin/bash
+## Run UMAP in Python
+#################################
+## NOTE #########################
+## Uniform Manifold Approximation and Projection
+#################################
+## ARGUMENTS ####################
+## 
+## SCRIPT #####################
+
+python3 <<EOF
+import numpy as np
+import umap
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_digits
+
+# Load example data (handwritten digits)
+digits = load_digits()
+X = digits.data
+y = digits.target
+
+# Run UMAP
+reducer = umap.UMAP(n_neighbors=15, min_dist=0.1, n_components=2, random_state=42)
+X_umap = reducer.fit_transform(X)
+
+print(X_umap)
+
+# Visualize
+plt.figure(figsize=(8,6))
+scatter = plt.scatter(X_umap[:, 0], X_umap[:, 1], c=y, cmap="Spectral", s=10)
+plt.colorbar(scatter, boundaries=np.arange(11)-0.5).set_ticks(np.arange(10))
+plt.title("UMAP projection of Digits dataset")
+
+EOF

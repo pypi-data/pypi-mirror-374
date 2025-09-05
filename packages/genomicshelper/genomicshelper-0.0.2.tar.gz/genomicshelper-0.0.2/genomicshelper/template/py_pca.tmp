@@ -1,0 +1,46 @@
+#!/bin/bash
+## Run PCA in Python
+#################################
+## NOTE #########################
+## Principal Component Analysis
+#################################
+## ARGUMENTS ####################
+## file :
+## SCRIPT #####################
+
+python3 <<EOF
+
+import numpy as np
+import pandas as pd
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+
+# Example dataset (5 samples, 4 features)
+data = np.array([
+    [2.5, 2.4, 1.5, 2.2],
+    [0.5, 0.7, 0.8, 0.6],
+    [2.2, 2.9, 1.6, 2.7],
+    [1.9, 2.2, 1.4, 2.5],
+    [3.1, 3.0, 2.1, 3.2]
+])
+
+# Step 1: Standardize data (important for PCA)
+scaler = StandardScaler()
+data_scaled = scaler.fit_transform(data)
+
+# Step 2: Run PCA (keep 2 components)
+pca = PCA(n_components=2)
+pca_result = pca.fit_transform(data_scaled)
+
+# Step 3: Print results
+print("Explained variance ratio:", pca.explained_variance_ratio_)
+print("PCA result:\n", pca_result)
+
+# Step 4: Plot PCA
+plt.scatter(pca_result[:,0], pca_result[:,1])
+plt.xlabel("PC1")
+plt.ylabel("PC2")
+plt.title("PCA Result")
+
+EOF

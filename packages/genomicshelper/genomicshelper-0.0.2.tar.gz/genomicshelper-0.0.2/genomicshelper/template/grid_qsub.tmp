@@ -1,0 +1,16 @@
+#!/bin/bash
+## Submit job using Grid Engine
+#################################
+## NOTE #########################
+## -cwd Run the job in the current working directory instead of the user's home directory.
+## -o temp  Redirects the standard output (stdout) of the job to the file temp.
+## -e tempe Redirects the standard error (stderr) of the job to the file tempe.
+## -q Specifies the queue to run on.
+## s_vmem: Soft memory limit (mem_req)
+## h_vmem: Hard memory limit
+#################################
+## ARGUMENTS ####################
+## i :
+## SCRIPT #####################
+
+qsub -cwd -o temp -e tempe -q '!mjobs_rerun.q' -l s_vmem=8G ./run.sh ${i}
