@@ -1,0 +1,39 @@
+[project]
+name = "rtedata"
+version = "1.0.5"
+description = "Python wrapper for RTE API requests"
+authors = [
+  { name="Henri Upton", email="henriupton99@gmail.com" },
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "pandas>=2.2.3",
+    "requests>=2.32.3",
+]
+
+[tool.uv.workspace]
+members = [
+    "rtedata",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5",
+    "pytest>=8.3.5",
+]
+dv = []
+
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project.urls]
+Homepage = "https://github.com/henriupton99/rtedata"
+Issues = "https://github.com/henriupton99/rtedata/issues"
