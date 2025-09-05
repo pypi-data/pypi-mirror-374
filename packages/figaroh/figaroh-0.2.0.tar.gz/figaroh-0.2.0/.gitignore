@@ -1,0 +1,15 @@
+old_files/
+data_list.docx
+**.pyc
+**/.DS_Store
+build/*
+cmake/*
+.vscode/*
+
+# Python packaging
+dist/
+*.egg-info/
+__pycache__/
+
+# Examples and models moved to separate repository
+# See: https://github.com/thanhndv212/figaroh-examples
