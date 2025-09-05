@@ -1,0 +1,140 @@
+# SIIHA - SDK
+
+## What is SIIHA SDK?
+SIIHA is a micro-resilience assistant that blends **emotional awareness × suggestion maps × workspace tools**.  
+**SIIHA SDK v0.1.0** exposes a focused capability: **Create Google Calendar events** from natural language, with **built-in dedupe**. It’s designed for local OAuth, terminal-first workflows, and consistent behavior across CLI / UI integrations.
+
+---
+
+## Features (v0.1.0)
+- 🗓️ **Google Calendar – Create Event**
+  - zh/EN **natural-language parsing** for dates/times, location, attendees.
+  - **Cross-day** handling (e.g., `晚上11點到凌晨1點`).
+  - **下個月 [date]** with month-end clamp; **explicit year** (e.g., `2026/1/2`).
+  - Location markers `地點：/location:`、`@ Zoom / at ...`；attendees extraction & dedupe.
+- 🔁 **Idempotent creation (dedupe)**: same instant (timezone-normalized) + normalized title within the same day → treated as duplicate.
+- 🧩 **Configurable**: `DEFAULT_TIMEZONE`, `DEFAULT_CALENDAR_ID`, `GOOGLE_SEND_UPDATES`.
+
+---
+
+## Example (natural input)
+Meet with Marketing team tomorrow 3PM, location: HQ Meeting Room 2, attendees: debby@example.com
+
+---
+
+## Quickstart
+
+### 0) Prerequisite
+```bash
+python --version           # >= 3.10 (3.11 recommended)
+python -m pip install -U pip
+python -m pip install -U build twine pytest
+
+```
+
+### 1)  OAuth setup (Desktop app)
+1. In Google Cloud Console, create OAuth 2.0 Client (Desktop).
+2. Download the client secrets as `credentials.json` and place it at the project root.
+3. Run a one-time bootstrap to generate `token.json` (also kept at root):
+```bash
+python quickstart.py
+
+```
+#### Required scopes (minimum):
+- https://www.googleapis.com/auth/calendar.events
+- (or the broader) https://www.googleapis.com/auth/calendar
+Keep credentials.json and token.json private. They are in .gitignore by default.
+
+### 2) Install (editable for development)
+```bash
+cd C:\Users\(YOURFOLDER)\siiha-sdk
+python -m build                 # (optional) build wheel & sdist into dist/
+python -m pip install -e .      # recommended for local dev
+
+```
+
+---
+
+## Usage
+A) Parse → Create (minimal)
+```bash
+from siiha_sdk.nlp import parse_natural_event
+from siiha_sdk.calendar import create_calendar_event
+
+text = "下個月 5號 下午3點到4點 和文巽討論 OAuth，地點：Teams，邀請 debby@example.com"
+p = parse_natural_event(text)          # {'title', 'start_iso', 'end_iso', 'location', 'attendees', ...}
+res = create_calendar_event(**p, dedupe=True)
+print(res)                             # {'ok': True, 'eventId': ..., 'deduped': False/True, ...}
+```
+
+B) Target a test calendar (avoid polluting primary)
+- Set environment variable SIIHA_TEST_CALENDAR_ID=your_test_calendar_id or
+- Override in code:
+```bash
+from siiha_sdk import config
+config.DEFAULT_CALENDAR_ID = "your_test_calendar_id"
+```
+
+C) Dedupe behavior
+- Duplicate if and only if:
+1. Same instant (RFC3339 compared as actual instant; timezone forms like +08:00 vs Z still dedupe), and
+2. Normalized title equals (trim/whitespace collapse/commas normalized/case-fold).
+- Location / attendees differences do not affect dedupe.
+
+---
+
+## Tests
+Parser smoke test
+```bash
+python tests/quickstart_create_event.py
+```
+
+Dedupe scenarios (creates events)
+```bash
+# (optional) direct events to a test calendar
+# PowerShell:
+$env:SIIHA_TEST_CALENDAR_ID="your_test_calendar_id"
+# Bash:
+export SIIHA_TEST_CALENDAR_ID=your_test_calendar_id
+
+python tests/dedupe_scenarios.py
+```
+
+(Tip) You can tag test events by passing description="#SDK_TEST" to create_calendar_event(...) and clean them later via a small script.
+
+---
+
+## Configuration
+These live in siiha_sdk/config.py:
+- DEFAULT_TIMEZONE = "Asia/Taipei"
+- DEFAULT_CALENDAR_ID = "primary"
+- GOOGLE_SEND_UPDATES = "all" (Google will email updates to attendees)
+
+Override at runtime:
+```bash
+from siiha_sdk import config
+config.DEFAULT_TIMEZONE = "Asia/Tokyo"
+config.DEFAULT_CALENDAR_ID = "your_cal_id"
+config.GOOGLE_SEND_UPDATES = "none"  # or "externalOnly" / "all"
+```
+
+---
+
+## Known limitations
+- All-day events, recurrence, reminders, and conferenceData (Meet links) are not supported yet.
+- Language coverage is focused on common zh/EN patterns; other languages/phrases may need extensions.
+- Description is optional and not auto-generated (except when you pass one).
+- Dedupe checks only within the same local day window at creation time.
+
+---
+
+## Security
+- Do not commit credentials.json or token.json.
+- Use a test calendar for automated tests.
+- Principle of least privilege for your Google account.
+
+---
+
+## Versioning & License
+- Versioning: SemVer (MAJOR.MINOR.PATCH). Current: v0.1.0.
+- License: MIT (see LICENSE).
