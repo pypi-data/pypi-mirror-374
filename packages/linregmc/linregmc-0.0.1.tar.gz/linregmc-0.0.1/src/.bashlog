@@ -1,0 +1,20 @@
+  555  cd src
+  556  mkdir example_package_per
+  560  cd ..
+  532  cd src
+  533  ls
+  534  ls example_package_parsod/
+  535  ln -sf ../../linregmc.py .
+  536  ls
+  537  mv example_package_parsod/ linregmc
+  538  mv linregmc.py linregmc
+  548  cd ..
+  571  cd src/
+  572  ls
+  573  mv linregmc/linregmc.py .
+  574  ls
+  575  mv linregmc ../linregmc_package
+  581  cd src/
+  582  mv ../linregmc_package/ linregmc
+  583  mv linregmc.py linregmc
+  587  cd ..

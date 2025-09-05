@@ -1,0 +1,42 @@
+  522  cd packaging_mclinreg/
+  523  ls
+  527  cd packaging_mclinreg/
+  528  vi README.MD 
+  529  ls
+  530  vi pyproject.toml 
+  531  rm -r dist/
+  549  cd ..
+  550  ls
+  551  vi pyproject.toml 
+  552  vi README.MD 
+  553  vi README.MD 
+  554  ls
+  555  python -m pip install --upgrade build
+  556  python -m build
+  557  python -m pip install --upgrade twine
+  558  python -m twine upload --repository testpypi dist/*
+  568  cd ../packaging_linregmc/
+  569  ls
+  570  vi src
+  576  cd ..
+  577  ls
+  578  cat pyproject.toml 
+  579  python -m build
+  580  ls
+  588  cd ..
+  589  python -m build
+  590  python -m twine upload --repository testpypi dist/*
+  591  vi pyproject.toml 
+  592  python -m build
+  593  ls
+  594  ls dist/
+  595  python -m twine upload --repository testpypi dist/*0.0.2*
+  596  vi src/linregmc/__init__.py 
+  597  vi pyproject.toml 
+  598  python -m build
+  599  python -m twine upload --repository testpypi dist/*0.0.3*
+  603  cd packaging_linregmc/
+  604  rm -r dist
+  605  vi pyproject.toml 
+  606  ls -lt ../linregmc.py 
+  607  cp ../linregmc.py src/linregmc/
