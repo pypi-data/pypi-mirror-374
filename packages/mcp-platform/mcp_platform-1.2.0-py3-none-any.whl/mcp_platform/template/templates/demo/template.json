@@ -1,0 +1,163 @@
+{
+  "name": "Demo Hello MCP Server",
+  "description": "A simple demonstration MCP server that provides greeting tools using FastMCP",
+  "version": "1.0.0",
+  "author": "Data Everything",
+  "category": "Demo",
+  "tags": [
+    "demo",
+    "greeting",
+    "hello",
+    "fastmcp",
+    "http"
+  ],
+  "docker_image": "dataeverything/mcp-demo",
+  "docker_tag": "latest",
+  "ports": {
+    "7071": 7071
+  },
+  "command": [],
+  "transport": {
+    "default": "http",
+    "supported": ["http", "stdio"],
+    "port": 7071
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "hello_from": {
+        "type": "string",
+        "title": "Greeting Source",
+        "description": "Name or message to include in greetings",
+        "default": "MCP Platform",
+        "env_mapping": "MCP_HELLO_FROM"
+      },
+      "log_level": {
+        "type": "string",
+        "title": "Log Level",
+        "description": "Logging level for the server",
+        "enum": [
+          "debug",
+          "info",
+          "warning",
+          "error"
+        ],
+        "default": "info",
+        "env_mapping": "MCP_LOG_LEVEL"
+      },
+      "auth_mode": {
+        "type": "string",
+        "title": "Authentication Mode",
+        "description": "Choose authentication method (demo purposes only)",
+        "enum": ["none", "token", "basic"],
+        "default": "none",
+        "env_mapping": "MCP_AUTH_MODE"
+      },
+      "auth_token": {
+        "type": "string",
+        "title": "Authentication Token",
+        "description": "API token for authentication (required when auth_mode is 'token')",
+        "env_mapping": "MCP_AUTH_TOKEN"
+      },
+      "auth_username": {
+        "type": "string",
+        "title": "Username",
+        "description": "Username for basic authentication",
+        "env_mapping": "MCP_AUTH_USERNAME"
+      },
+      "auth_password": {
+        "type": "string",
+        "title": "Password",
+        "description": "Password for basic authentication",
+        "env_mapping": "MCP_AUTH_PASSWORD"
+      },
+      "allowed_dirs": {
+        "type": "string",
+        "title": "Allowed Directories",
+        "description": "Directories that the server can access for file operations. Only for demonstration purposes.",
+        "default": "/tmp",
+        "env_mapping": "MCP_ALLOWED_DIRS",
+        "volume_mount": true,
+        "command_arg": true
+      }
+    },
+    "anyOf": [
+      {
+        "properties": {
+          "auth_mode": {"const": "none"}
+        }
+      },
+      {
+        "properties": {
+          "auth_mode": {"const": "token"}
+        },
+        "required": ["auth_token"]
+      },
+      {
+        "properties": {
+          "auth_mode": {"const": "basic"}
+        },
+        "required": ["auth_username", "auth_password"]
+      }
+    ]
+  },
+  "capabilities": [
+    {
+      "name": "Greeting Tools",
+      "description": "Generate personalized greetings and messages",
+      "example": "Say hello, create custom messages, demonstrate MCP capabilities"
+    },
+    {
+      "name": "Server Information",
+      "description": "Provide server metadata and configuration details",
+      "example": "Get server info, check configuration, validate deployment"
+    }
+  ],
+  "tools": [
+    {
+      "name": "say_hello",
+      "description": "Generate a personalized greeting message",
+      "parameters": [
+        {
+          "name": "name",
+          "description": "Name of the person to greet (optional)",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "get_server_info",
+      "description": "Get information about the demo server",
+      "parameters": []
+    },
+    {
+      "name": "echo_message",
+      "description": "Echo back a message with server identification",
+      "parameters": [
+        {
+          "name": "message",
+          "description": "Message to echo back",
+          "type": "string",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "tool_discovery": "static",
+  "tool_endpoint": "/tools",
+  "has_image": true,
+  "origin": "internal",
+  "examples": {
+    "http_endpoint": "http://localhost:7071",
+    "cli_usage": [
+      "python -m mcp_platform deploy demo",
+      "python -m mcp_platform deploy demo --config hello_from='My Server'",
+      "python -m mcp_platform deploy demo --transport http --port 7071"
+    ],
+    "client_integration": {
+      "fastmcp": "from fastmcp.client import FastMCPClient\nclient = FastMCPClient(endpoint='http://localhost:7071')\nresult = client.call('say_hello', name='Alice')",
+      "curl": "curl -X POST http://localhost:7071/call -H 'Content-Type: application/json' -d '{\"method\": \"say_hello\", \"params\": {\"name\": \"Alice\"}}'"
+    }
+  }
+}
