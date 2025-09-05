@@ -1,0 +1,380 @@
+Metadata-Version: 2.4
+Name: hashid-analyzer
+Version: 2.0.0
+Summary: Comprehensive hash and token analyzer with persistent mode for security professionals
+Home-page: https://github.com/ninxp07/hash-id
+Author: XPAlchemnist
+Author-email: XPAlchemnist <xpalchemnist@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2025 ninxp07
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/ninxp07/hash-id
+Project-URL: Bug Tracker, https://github.com/ninxp07/hash-id/issues
+Project-URL: Source Code, https://github.com/ninxp07/hash-id
+Project-URL: Documentation, https://github.com/ninxp07/hash-id#readme
+Keywords: hash,analyzer,identification,security,cryptography,md5,sha1,sha256,sha512,ntlm,jwt,token,bcrypt,scrypt,pbkdf2,cryptocurrency,bitcoin,ethereum,penetration-testing,red-team,blue-team,cybersecurity,forensics,malware-analysis
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: System Administrators
+Classifier: Topic :: Security
+Classifier: Topic :: Security :: Cryptography
+Classifier: Topic :: System :: Systems Administration
+Classifier: Topic :: Utilities
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Operating System :: OS Independent
+Classifier: Environment :: Console
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests>=2.25.0
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: pytest-cov>=2.0; extra == "dev"
+Requires-Dist: black>=21.0; extra == "dev"
+Requires-Dist: flake8>=3.8; extra == "dev"
+Requires-Dist: mypy>=0.812; extra == "dev"
+Provides-Extra: full
+Requires-Dist: bcrypt>=3.2.0; extra == "full"
+Requires-Dist: PyJWT>=2.0.0; extra == "full"
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# HashID Analyzer
+
+[![PyPI version](https://badge.fury.io/py/hashid-analyzer.svg)](https://badge.fury.io/py/hashid-analyzer)
+[![Python Version](https://img.shields.io/badge/python-3.7+-blue.svg)](https://pypi.org/project/hashid-analyzer/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/ninxp07/hash-id/blob/main/LICENSE)
+[![Downloads](https://img.shields.io/pypi/dm/hashid-analyzer.svg)](https://pypi.org/project/hashid-analyzer/)
+[![GitHub Issues](https://img.shields.io/github/issues/ninxp07/hash-id)](https://github.com/ninxp07/hash-id/issues)
+[![GitHub Stars](https://img.shields.io/github/stars/ninxp07/hash-id)](https://github.com/ninxp07/hash-id/stargazers)
+
+A comprehensive, professional-grade tool for identifying and analyzing hash formats, authentication tokens, and encoded data. Enhanced with Blackploit HashID detection patterns for superior accuracy and coverage.
+
+**New in v2.0**: **Persistent Mode** - Keep the analyzer running for continuous analysis without restarting!
+
+Designed for penetration testers, red team operators, security researchers, and developers.
+
+## Features
+
+### Hash Detection & Analysis (Enhanced with Blackploit HashID)
+- **110+ Hash Algorithms**: MD5, SHA variants (1/224/256/384/512), BLAKE2, bcrypt, scrypt, PBKDF2
+- **Exotic Hash Support**: Haval, RipeMD, Tiger, SNEFRU, Whirlpool, GOST R 34.11-94
+- **Windows/Unix Formats**: NTLM, LM, Unix crypt variants ($1$, $5$, $6$), DES(Unix)
+- **Database Hashes**: MySQL (old/new), PostgreSQL, Oracle formats
+- **Application-Specific**: phpBB3, Wordpress, Joomla, Django framework hashes
+- **Gaming Hashes**: Lineage II C4, MaNGOS variants
+- **Advanced Pattern Recognition**: Blackploit-style confidence ranking system
+- **Multi-Algorithm Cracking**: Tests against multiple hash algorithms simultaneously
+
+### Token & API Key Analysis
+- **JWT (JSON Web Token)**: Complete parsing, security vulnerability detection, expiration checks
+- **API Keys**: GitHub, AWS, OpenAI, Slack, Google OAuth2 tokens
+- **Session Tokens**: Base64 encoded session data analysis
+- **Security Assessment**: Algorithm weakness detection, signature validation
+
+### Encoding & Decoding
+- **Base64 Variants**: Standard and URL-safe Base64 encoding
+- **Character Encodings**: Hex, URL encoding, HTML entities, Unicode escapes
+- **XOR Analysis**: Single-byte XOR key detection with meaningful text filtering
+- **Nested Encoding**: Multi-layer encoding detection and decoding
+
+### Cryptocurrency Support
+- **Bitcoin**: P2PKH, P2SH, and Bech32 address formats
+- **Ethereum**: Standard address validation
+- **Altcoins**: Litecoin, Dogecoin, Ripple, Monero addresses
+- **Blockchain Integration**: Ready for transaction history analysis
+
+### Advanced Analysis
+- **Shannon Entropy**: Randomness and pattern detection
+- **Pattern Analysis**: Repeating substrings, structural elements
+- **Online Lookups**: Integration with hash databases (respectful rate limiting)
+- **Smart Recommendations**: Context-aware security suggestions
+
+## Installation
+
+### From PyPI (Recommended)
+```bash
+# Install the latest stable version
+pip install hashid-analyzer
+
+# Install with optional dependencies for full features
+pip install hashid-analyzer[full]
+```
+
+### From Source
+```bash
+git clone https://github.com/ninxp07/hash-id.git
+cd hash-id
+pip install -e .
+```
+
+### Optional Dependencies
+```bash
+# For enhanced JWT support and bcrypt analysis
+pip install hashid-analyzer[full]
+
+# Or install individually
+pip install PyJWT bcrypt
+```
+
+### System Requirements
+- Python 3.7+
+- pip (Python package manager)
+- Internet connection (for online hash lookups)
+
+## Usage
+
+### Command Line Interface
+
+#### Single Hash/Token Analysis
+```bash
+# Analyze an MD5 hash
+hashid 5d41402abc4b2a76b9719d911017c592
+
+# Analyze a JWT token
+hashid eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWRtaW4ifQ.signature
+
+# Analyze with quiet output
+hashid -q 5d41402abc4b2a76b9719d911017c592
+
+# Quick analysis (skip intensive operations)
+hashid --quick 5d41402abc4b2a76b9719d911017c592
+```
+
+#### 🆕 Persistent Mode (New in v2.0)
+```bash
+# Start persistent mode - keeps running for multiple analyses
+hashid --persistent
+
+# Quick persistent mode
+hashid -p --quick
+
+# Analyze one hash then enter persistent mode
+hashid 5d41402abc4b2a76b9719d911017c592 --persistent
+```
+
+**Persistent Mode Commands:**
+- `help` - Show available commands
+- `history` - View analysis history
+- `stats` - Show session statistics
+- `clear` - Clear screen
+- `quit` - Exit persistent mode
+
+#### Batch Analysis
+```bash
+# Analyze multiple hashes from file
+hashid --file hashes.txt
+
+# Export batch results
+hashid --file hashes.txt --export json
+```
+
+#### Interactive Mode
+```bash
+# Interactive analysis session
+hashid --interactive
+```
+
+#### Export Results
+```bash
+# Export to JSON
+hashid <hash> --export json
+
+# Export to CSV
+hashid <hash> --export csv --output my_analysis.csv
+
+# Export to text report
+hashid <hash> --export txt
+```
+
+### Python Library Usage
+
+```python
+import hashid
+
+# Quick analysis (recommended)
+result = hashid.analyze("5d41402abc4b2a76b9719d911017c592")
+print(f"Detected formats: {result.results['detected_formats']}")
+print(f"Entropy: {result.results['entropy']}")
+
+# Fast analysis without intensive operations
+result = hashid.quick_analyze("5d41402abc4b2a76b9719d911017c592")
+
+# Advanced usage
+from hashid import HashTokenAnalyzer
+
+# Initialize analyzer
+analyzer = HashTokenAnalyzer("5d41402abc4b2a76b9719d911017c592")
+
+# Run comprehensive analysis
+analyzer.comprehensive_analysis()
+
+# Access detailed results
+print(f"Detected formats: {analyzer.results['detected_formats']}")
+print(f"Blackploit ranking: {analyzer.results.get('blackploit_analysis', {})}")
+print(f"Entropy: {analyzer.results['entropy']}")
+```
+
+## Output Examples
+
+### Enhanced Hash Analysis with Blackploit Ranking
+```
+[*] Analyzing input: 5d41402abc4b2a76b9719d911017c592
+[*] Input length: 32 characters
+[+] Detected potential formats: MD5, MD4, NTLM, Haval-128, Tiger-128...
+[*] Shannon entropy: 3.480 bits
+[*] Character frequency analysis:
+  Digits: 23/32 (71.9%)
+  Letters: 9/32 (28.1%)
+  Symbols: 0/32 (0.0%)
+
+Blackploit-style confidence ranking:
+  Most likely: MD5
+  Alternative: MD4  
+  Less likely: NTLM, Domain Cached Credentials, Haval-128
+[!!!] Password found using MD5: 'hello'
+```
+
+### JWT Analysis
+```
+[*] JWT Analysis - Algorithm: HS256, Type: JWT
+[!] WARNING: Token expired on 2024-01-01T00:00:00
+[*] Payload: {'user': 'admin', 'exp': 1704067200}
+```
+
+### Cryptocurrency Address
+```
+[+] Detected potential formats: Bitcoin Address (P2PKH/P2SH)
+[*] Recommendations: Cryptocurrency address detected - check blockchain explorers
+```
+
+## Security Features
+
+### Responsible Disclosure
+- **Rate Limited**: Online lookups use respectful rate limiting
+- **Privacy Focused**: No data logging or external transmission without consent
+- **Defensive Only**: Designed for legitimate security testing
+
+### Security Checks
+- JWT algorithm validation (detects `none` algorithm attacks)
+- Token expiration verification
+- Weak algorithm detection
+- Entropy-based randomness assessment
+
+## Advanced Features
+
+### Pattern Recognition
+- Detects repeating substrings and structural patterns
+- Identifies low-entropy data suggesting weak randomness
+- Character frequency analysis for anomaly detection
+
+### Multi-Format Detection
+- Simultaneous analysis across multiple potential formats
+- Context-aware recommendations based on detected types
+- Nested encoding detection (Base64 within URL encoding, etc.)
+
+### Extensible Architecture
+- Modular design for easy addition of new hash types
+- Plugin-style pattern detection system
+- Configurable analysis depth and timeout settings
+
+## File Formats
+
+### Input File Format (for --file option)
+```
+# Comments start with #
+5d41402abc4b2a76b9719d911017c592
+098f6bcd4621d373cade4e832627b4f6
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWRtaW4ifQ.signature
+1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2
+```
+
+### Export Formats
+- **JSON**: Complete analysis results with metadata
+- **CSV**: Tabular format for spreadsheet analysis
+- **TXT**: Human-readable report format
+
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](https://github.com/ninxp07/hash-id/blob/main/CONTRIBUTING.md) for details.
+
+### Development Setup
+```bash
+git clone https://github.com/ninxp07/hash-id.git
+cd hash-id
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\\Scripts\\activate
+pip install -e .[dev]
+```
+
+### Running Tests
+```bash
+python -m pytest tests/
+python -m pytest --cov=hashid tests/
+```
+
+## Known Issues
+
+- NTLM cracking requires additional dependencies on some systems
+- Online lookups may timeout with poor network connectivity
+- Large batch files (>10MB) may require increased memory
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Disclaimer
+
+This tool is intended for legitimate security testing and educational purposes only. Users are responsible for ensuring they have proper authorization before analyzing any data. The authors are not responsible for any misuse of this software.
+
+## Acknowledgments
+
+- Hash algorithm implementations from Python's `hashlib` library
+- JWT specification from RFC 7519
+- Cryptocurrency address formats from respective blockchain documentation
+- Security research community for vulnerability patterns and recommendations
+
+## Support
+
+- **Documentation**: [GitHub Wiki](https://github.com/ninxp07/hash-id/wiki)
+- **Issues**: [GitHub Issues](https://github.com/ninxp07/hash-id/issues)
+- **PyPI Package**: [hashid-analyzer](https://pypi.org/project/hashid-analyzer/)
+- **Security**: For security issues, please email xpalchemnist@gmail.com
+
+## Stats
+
+![GitHub Contributors](https://img.shields.io/github/contributors/ninxp07/hash-id)
+![GitHub Last Commit](https://img.shields.io/github/last-commit/ninxp07/hash-id)
+![GitHub Repo Size](https://img.shields.io/github/repo-size/ninxp07/hash-id)
+
+---
+
+Full credit to Blackploit HashID project.
