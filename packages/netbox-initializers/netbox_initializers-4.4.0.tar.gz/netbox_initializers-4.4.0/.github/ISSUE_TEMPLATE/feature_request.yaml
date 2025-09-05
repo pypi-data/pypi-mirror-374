@@ -1,0 +1,19 @@
+---
+name: ✨ Feature Request
+description: Propose a new NetBox initializers feature
+labels: ["enhancement"]
+body:
+  - type: textarea
+    attributes:
+      label: Proposed functionality
+      description: >
+        Describe in detail the new feature or behavior you are proposing.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Use case
+      description: >
+        Explain the use case the feature will enable.
+    validations:
+      required: true

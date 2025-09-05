@@ -1,0 +1,52 @@
+[project]
+name = "netbox-initializers"
+authors = [{ name = "Tobias Genannt", email = "tobias.genannt@gmail.com" }]
+classifiers = [
+  "Framework :: Django",
+  "Environment :: Plugins",
+  "Topic :: System :: Networking",
+  "Topic :: System :: Systems Administration",
+]
+description = "Load initial data into Netbox"
+readme = "README.md"
+license = "Apache-2.0"
+dynamic = ["version"]
+
+requires-python = ">=3.10"
+dependencies = ["ruamel-yaml>=0.18.10"]
+
+[project.urls]
+repository = "https://github.com/tobiasge/netbox-initializers"
+issues = "https://github.com/tobiasge/netbox-initializers/issues"
+releasenotes = "https://github.com/tobiasge/netbox-initializers/releases"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/netbox_initializers/version.py"
+
+[tool.uv]
+dev-dependencies = ["ruff==0.12"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+extend-select = ["I", "PL", "W191", "W291", "W292", "W293"]
+ignore = ["PLR0912", "PLR0915"]
+
+[tool.ruff.lint.isort]
+section-order = [
+  "future",
+  "standard-library",
+  "third-party",
+  "first-party",
+  "local-folder",
+]
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
