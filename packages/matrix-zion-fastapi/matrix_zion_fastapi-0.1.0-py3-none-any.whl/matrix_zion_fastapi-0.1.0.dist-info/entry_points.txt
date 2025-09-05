@@ -1,0 +1,5 @@
+[matrix.plugins]
+fastapi_api=matrix.fastapi.api:FastAPIApiPlugin
+fastapi_middleware=matrix.fastapi.middleware:FastAPIMiddlewarePlugin
+fastapi_web=matrix.fastapi.web:FastAPIWebPlugin
+
