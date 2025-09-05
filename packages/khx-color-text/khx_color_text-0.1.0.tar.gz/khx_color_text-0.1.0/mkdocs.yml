@@ -1,0 +1,28 @@
+site_name: khx_color_text
+site_description: A minimal Python package for printing colored text in the terminal
+site_author: ABUELTAYEF Khader
+site_url: https://khader-x.github.io/khx_color_text/
+
+repo_name: Khader-X/khx_color_text
+repo_url: https://github.com/Khader-X/khx_color_text
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: blue
+      accent: cyan
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - toc.integrate
+
+nav:
+  - Home: index.md
+  - Examples: examples.md
+
+markdown_extensions:
+  - codehilite
+  - admonition
+  - toc:
+      permalink: true

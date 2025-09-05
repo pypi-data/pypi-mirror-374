@@ -1,0 +1,44 @@
+name: Generate Documentation Assets
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  generate-assets:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .[docs]
+    
+    - name: Generate SVG assets
+      run: |
+        python scripts/gen_assets.py
+    
+    - name: Upload assets
+      uses: actions/upload-artifact@v4
+      with:
+        name: doc-assets
+        path: docs/assets/*.svg
+    
+    - name: Build documentation
+      run: |
+        mkdocs build
+    
+    - name: Deploy to GitHub Pages
+      if: github.ref == 'refs/heads/main'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./site
