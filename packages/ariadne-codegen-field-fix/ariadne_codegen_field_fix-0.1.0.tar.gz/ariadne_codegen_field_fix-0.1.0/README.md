@@ -1,0 +1,31 @@
+# Ariadne Codegen Field Fix Plugin
+
+This plugin aims to fix a really annoying issue with ariadne-codegen, where the original fieldname (from the provided graphql schema) isn't used when creating custom field calls. This disparity causes queries to break if the graphql API cannot handle snake-case, but you want generated field names to use snake-case.
+
+## Installation
+
+All you have to do to install the plugin is run
+
+```bash
+pip install ariadne-codegen-field-fix
+```
+
+Then just add the plugin to your ariadne config.
+
+## Usage
+
+To use this plugin simply add `"ariadne_codegen_field_fix"` to your plugins list.
+
+### Example
+
+```toml
+[tool.ariadne-codegen]
+schema_path = "schema.graphql"
+enable_custom_operations = true
+convert_to_snake_case = true
+plugins = ["ariadne_codegen_field_fix"]
+```
+
+## Under the hood
+
+Under the hood the actual ariadne-codegen plugin class does nothing (due to poor hook support), the real magic happens when the plugin module gets loaded and the `client_generators.custom_fields.CustomFieldsGenerator` class gets monkey patched (via `client_generators.package.CustomFieldsGenerator`).

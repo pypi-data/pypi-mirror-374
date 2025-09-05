@@ -1,0 +1,30 @@
+[project]
+name = "ariadne-codegen-field-fix"
+version = "0.1.0"
+description = ""
+authors = [{ name = "Ewen Lorimer", email = "dev@ewenlorimer.org" }]
+readme = "README.md"
+
+[tool.poetry]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4"
+ariadne-codegen = "^0.15.2"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4.1"
+pytest-xdist = "^3.8.0"
+pytest-cov = "^6.2.1"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.ariadne-codegen]
+schema_path = "test/schema.graphql"
+target_package_name = "generated_client"
+target_package_path = "test/"
+enable_custom_operations = true
+convert_to_snake_case = true
+plugins = ["ariadne_codegen_field_fix"]
