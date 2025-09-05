@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+########################################
+[project]
+name = "stexus"
+license = "Apache-2.0"
+license-files = [
+    "LICENSE*"
+]
+dynamic = [
+    "version",
+    "readme",
+    "dependencies" ,
+    "optional-dependencies"
+]
+########################################
+########################################
+# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html#dynamic-metadata
+[tool.setuptools.dynamic.version]
+# i prefer doing version like this instead of doing it via scm
+# until i find ways to sync __version__.py and version tag i guess
+attr = "stexus.__version__" # i hate that i can't do newline like dict
+
+[tool.setuptools.dynamic.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[tool.setuptools.dynamic.dependencies]
+file = ["requirements.txt"]
+
+[tool.setuptools.dynamic.optional-dependencies.dev]
+file = ["requirements-dev.txt"]
+########################################
+########################################
+[tool.setuptools.packages.find]
+where = ["src"]  # list of folders that contain the packages (["."] by default)
+include = ["stexus*"]  # package names should match these glob patterns (["*"] by default)
+exclude = ["stexus.tests*"]  # exclude packages matching these glob patterns (empty by default)
+namespaces = false  # to disable scanning PEP 420 namespaces (true by default
+########################################
