@@ -1,0 +1,18 @@
+name: illuminator
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - arrow=1.2.3
+  - lxml=4.9.3
+  - matplotlib=3.7.2
+  - paho-mqtt=1.6.1
+  - pandapower=2.13.1
+  - pandas=1.5.3
+  - pip
+  - python>=3.11
+  - setuptools=68.0.0
+  - pip:
+    - mosaik==3.3.3 
+    - illuminator>=3.0.0-alpha
+    # - mosaik-api==3.0.3 # If mosaik != 3.1.1 then - mosaik-api==3.0.3 is needed
