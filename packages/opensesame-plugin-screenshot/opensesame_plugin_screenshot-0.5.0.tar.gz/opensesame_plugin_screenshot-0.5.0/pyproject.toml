@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "opensesame-plugin-screenshot"
+version = "0.5.0"
+description = "An OpenSesame Plugin for saving screenshots of stimuli and other screens within an experiment."
+authors = ["Bob Rosbag <debian@bobrosbag.nl>"]
+readme = "README.md"
+packages = [
+    {include = "opensesame_plugins"},
+]
+license = "LICENSE.md"
+homepage = "https://github.com/dev-jam/opensesame-plugin-screenshot"
+repository = "https://github.com/dev-jam/opensesame-plugin-screenshot"
+
+[tool.poetry.dependencies]
+python = ">= 3.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
