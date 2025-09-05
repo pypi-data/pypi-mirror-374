@@ -1,0 +1,92 @@
+Metadata-Version: 2.3
+Name: matrix-zion
+Version: 0.1.0
+Summary: Framework para microserviços Python com arquitetura de plugins
+License: MIT
+Keywords: microservices,framework,python,plugins,architecture
+Author: Tuyoshi Vinicius
+Author-email: tuyoshi.vinicius@gmail.com
+Requires-Python: >=3.10
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Provides-Extra: all
+Provides-Extra: aws
+Provides-Extra: dev
+Provides-Extra: fastapi
+Requires-Dist: importlib-metadata (>=5.0.0) ; python_version < "3.10"
+Requires-Dist: matrix-zion-aws (>=0.1.0) ; extra == "all"
+Requires-Dist: matrix-zion-aws (>=0.1.0) ; extra == "aws"
+Requires-Dist: matrix-zion-fastapi (>=0.1.0) ; extra == "all"
+Requires-Dist: matrix-zion-fastapi (>=0.1.0) ; extra == "fastapi"
+Requires-Dist: mypy (>=1.17.0) ; extra == "dev"
+Requires-Dist: pytest (>=8.0.0) ; extra == "dev"
+Requires-Dist: pytest-cov (>=4.0.0) ; extra == "dev"
+Requires-Dist: python-dotenv (>=1.0.0)
+Requires-Dist: ruff (>=0.8.0) ; extra == "dev"
+Project-URL: Bug Reports, https://github.com/tuyoshivinicius/python-microservice-v2/issues
+Project-URL: Documentation, https://github.com/tuyoshivinicius/python-microservice-v2/blob/main/README.md
+Project-URL: Homepage, https://github.com/tuyoshivinicius/python-microservice-v2
+Project-URL: Repository, https://github.com/tuyoshivinicius/python-microservice-v2
+Description-Content-Type: text/markdown
+
+# Matrix Zion Framework
+
+[![PyPI version](https://badge.fury.io/py/matrix-zion.svg)](https://badge.fury.io/py/matrix-zion)
+[![Python Versions](https://img.shields.io/pypi/pyversions/matrix-zion.svg)](https://pypi.org/project/matrix-zion/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+Framework modular para microserviços Python com arquitetura de plugins extensível.
+
+## 🚀 Características
+
+- **Arquitetura de Plugins**: Sistema extensível baseado em entry points
+- **Modular**: Core minimalista com funcionalidades via plugins
+- **Type Safe**: Suporte completo ao sistema de tipos do Python
+- **Configurável**: Configuração via variáveis de ambiente e arquivos
+- **Testável**: Projetado para facilitar testes unitários e de integração
+
+## 📦 Instalação
+
+```bash
+pip install matrix-zion
+```
+
+## 🎯 Uso Básico
+
+```python
+from matrix.zion import Zion
+
+# Inicializar o framework
+app = Zion()
+
+# O framework automaticamente descobre e carrega plugins instalados
+app.discover_plugins()
+
+# Executar a aplicação
+app.run()
+```
+
+## 🔌 Plugins Disponíveis
+
+- **matrix-zion-aws**: Integração com serviços AWS (DynamoDB, S3, SQS)
+- **matrix-zion-fastapi**: Suporte para APIs REST com FastAPI
+
+## 📚 Documentação
+
+Para documentação completa, visite: [GitHub Repository](https://github.com/tuyoshivinicius/python-microservice-v2)
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Por favor, leia nosso guia de contribuição antes de submeter PRs.
+
+## 📄 Licença
+
+Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
