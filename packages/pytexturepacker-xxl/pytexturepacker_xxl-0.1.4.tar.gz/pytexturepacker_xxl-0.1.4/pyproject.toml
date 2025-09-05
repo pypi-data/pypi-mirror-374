@@ -1,0 +1,41 @@
+[project]
+name = "pytexturepacker-xxl"
+version = "0.1.4"
+description = "对PyTexturePacker做一个小的扩展"
+readme = "README.rst"
+requires-python = ">=3.13"
+license = "MIT"
+authors = [
+    { name = "Quanyong Huang", email = "quanyongh@foxmail.com" },
+    { name = "lyonDan", email = "liangdan6690@gmail.com" }
+]
+keywords = ["TexturePacker", "cocos2d-x", "sprite-sheet", "texture-pack"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia :: Graphics",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "pillow>=11.3.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/lyonDan/PyTexturePacker"
+Repository = "https://github.com/lyonDan/PyTexturePacker"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/PyTexturePacker",
+    "/README.rst",
+    "/LICENSE.txt",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["PyTexturePacker"]
+
