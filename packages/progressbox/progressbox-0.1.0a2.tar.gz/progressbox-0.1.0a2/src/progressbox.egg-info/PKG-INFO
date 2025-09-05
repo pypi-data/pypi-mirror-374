@@ -1,0 +1,94 @@
+Metadata-Version: 2.4
+Name: progressbox
+Version: 0.1.0a2
+Summary: Stage-aware progress monitoring for parallel Python jobs
+Author-email: Zaafir Hasan <zaafirfhasan@gmail.com>
+License: MIT
+Keywords: progress,parallel,monitoring,multiprocessing,joblib
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: System :: Monitoring
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: wcwidth>=0.2.5
+Provides-Extra: rich
+Requires-Dist: rich>=12.0.0; extra == "rich"
+Provides-Extra: perf
+Requires-Dist: orjson>=3.8.0; extra == "perf"
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0; extra == "dev"
+Requires-Dist: black>=22.0; extra == "dev"
+Requires-Dist: ruff>=0.1.0; extra == "dev"
+Requires-Dist: mypy>=1.0; extra == "dev"
+Requires-Dist: ipython; extra == "dev"
+Dynamic: license-file
+
+# ProgressBox 📦
+
+> Stage-aware progress monitoring for parallel Python jobs
+
+![Python Version](https://img.shields.io/badge/python-3.9%2B-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Status](https://img.shields.io/badge/status-alpha-orange)
+
+## Features
+
+- 🎯 **Stage-aware tracking** - Monitor different stages of computation with timing analysis
+- ⚡ **True parallelism** - Built for multiprocessing, threading, and joblib
+- 📊 **Rich statistics** - ETA, throughput, stage timing breakdown
+- 🖼️ **Beautiful display** - Fixed-width Unicode box with perfect alignment
+- 🔧 **Production ready** - Logging, snapshots, error handling
+
+## Installation
+
+```bash
+pip install progressbox
+```
+
+## Quick Start
+
+```python
+import progressbox as pbox
+
+# Simple usage
+config = pbox.Config(total=100, n_workers=4)
+with pbox.Progress(config) as progress:
+    for i in range(100):
+        progress.task_start(i, worker=i % 4)
+        progress.task_update(i, stage="processing")
+        # ... do work ...
+        progress.task_finish(i)
+```
+
+## Joblib Integration
+
+```python
+from joblib import Parallel, delayed
+import progressbox as pbox
+
+# Your existing joblib code, now with progress!
+results = pbox.adapters.joblib_progress(
+    items,
+    process_func,
+    n_jobs=6,
+    config=pbox.Config(total=len(items))
+)
+```
+
+## Documentation
+
+See [full documentation](https://progressbox.readthedocs.io) for more examples and API reference.
+
+## License
+
+MIT License - see LICENSE file for details.
