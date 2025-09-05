@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools<81", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pycolorslib"           # Your library name
+version = "0.1.2"           # Start with 0.1.0
+description = "A library that adds colour variables"
+authors = [{ name="kovu"}]
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
