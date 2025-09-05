@@ -1,0 +1,13 @@
+package {{.AggregateLower}}
+
+// {{.CommandName}}Command {{.CommandName}}命令
+type {{.CommandName}}Command struct {
+{{range .Fields}}	{{.name}} {{.type}} `json:"{{.json}}"`
+{{end}}
+}
+
+// Validate 验证命令
+cfunc (c *{{.CommandName}}Command) Validate() error {
+	// TODO: 实现命令验证逻辑
+	return nil
+}

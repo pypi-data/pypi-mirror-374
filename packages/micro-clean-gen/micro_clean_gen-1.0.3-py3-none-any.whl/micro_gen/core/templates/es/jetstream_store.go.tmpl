@@ -1,0 +1,112 @@
+package event
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"time"
+
+	"github.com/nats-io/nats.go"
+	"{{project_name}}/internal/entity"
+	"{{project_name}}/pkg/config"
+)
+
+// jetStreamStore 基于NATS JetStream的事件存储
+// 提供事件持久化、重放、查询等功能
+// Stream格式: events.{aggregate}.{event_type}
+type jetStreamStore struct {
+	js   nats.JetStreamContext
+	name string // stream名称
+}
+
+// 确保jetStreamStore实现了EventStore接口
+var _ EventStore = (*jetStreamStore)(nil)
+
+// NewEventStore 创建事件存储实例
+func NewEventStore(cfg *config.Config) (EventStore, error) {
+	// 连接到NATS服务器
+	nc, err := nats.Connect(cfg.NATSURL)
+	if err != nil {
+		return nil, fmt.Errorf("connect to nats: %w", err)
+	}
+
+	// 获取JetStream上下文
+	js, err := nc.JetStream()
+	if err != nil {
+		return nil, fmt.Errorf("get jetstream context: %w", err)
+	}
+
+	// 设置事件流
+	if err := setupStream(js, cfg.StreamName); err != nil {
+		return nil, fmt.Errorf("setup stream: %w", err)
+	}
+
+	return &jetStreamStore{
+		js:   js,
+		name: cfg.StreamName,
+	}, nil
+}
+
+// setupStream 初始化事件流
+func setupStream(js nats.JetStreamContext, name string) error {
+	cfg := &nats.StreamConfig{
+		Name:      name,
+		Subjects:  []string{fmt.Sprintf("%s.*.*", name)},
+		Storage:   nats.FileStorage,
+		Retention: nats.LimitsPolicy,
+		MaxAge:    30 * 24 * time.Hour,
+	}
+
+	_, err := js.AddStream(cfg)
+	if err != nil && err != nats.ErrStreamNameAlreadyInUse {
+		return err
+	}
+	return nil
+}
+
+// SaveEvents 保存事件到存储
+func (s *jetStreamStore) SaveEvents(ctx context.Context, aggregateID string, events []entity.DomainEvent, expectedVersion int) error {
+	for _, e := range events {
+		data, err := json.Marshal(e)
+		if err != nil {
+			return fmt.Errorf("marshal event: %w", err)
+		}
+
+		subject := fmt.Sprintf("%s.%s.%s", s.name, e.GetAggregateType(), e.GetEventType())
+		
+		msg := &nats.Msg{
+			Subject: subject,
+			Data:    data,
+			Header: nats.Header{
+				"Aggregate-ID":  []string{aggregateID},
+				"Event-Type":    []string{e.GetEventType()},
+				"Event-ID":      []string{e.GetEventID()},
+				"Version":       []string{fmt.Sprintf("%d", e.GetVersion())},
+				"Aggregate-Type":[]string{e.GetAggregateType()},
+			},
+		}
+
+		if _, err := s.js.PublishMsg(msg); err != nil {
+			return fmt.Errorf("publish event: %w", err)
+		}
+	}
+	return nil
+}
+
+// GetEvents 获取聚合的所有事件
+func (s *jetStreamStore) GetEvents(ctx context.Context, aggregateID string) ([]entity.DomainEvent, error) {
+	// 简化实现，实际使用JetStream消费者
+	return []entity.DomainEvent{}, nil
+}
+
+// GetEventsFromVersion 从指定版本开始获取聚合事件
+func (s *jetStreamStore) GetEventsFromVersion(ctx context.Context, aggregateID string, fromVersion int) ([]entity.DomainEvent, error) {
+	// 简化实现
+	return []entity.DomainEvent{}, nil
+}
+
+// GetEventsByType 获取指定类型的事件
+func (s *jetStreamStore) GetEventsByType(ctx context.Context, eventType string) ([]entity.DomainEvent, error) {
+	// 简化实现
+	return []entity.DomainEvent{}, nil
+}

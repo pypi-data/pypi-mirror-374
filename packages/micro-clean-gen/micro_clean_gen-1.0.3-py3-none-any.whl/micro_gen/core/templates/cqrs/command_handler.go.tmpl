@@ -1,0 +1,36 @@
+package usecase
+
+import (
+	"context"
+
+	"{{.ModuleName}}/internal/entity"
+	"{{.ModuleName}}/internal/repository"
+	"{{.ModuleName}}/internal/{{.AggregateLower}}/entity"
+	"{{.ModuleName}}/internal/{{.AggregateLower}}/event"
+)
+
+// {{.CommandName}}Handler {{.CommandName}}命令处理器
+type {{.CommandName}}Handler struct {
+	repository repository.AggregateRepository
+	eventBus   entity.EventBus
+}
+
+// New{{.CommandName}}Handler 创建{{.CommandName}}命令处理器
+func New{{.CommandName}}Handler(repo repository.AggregateRepository, eventBus entity.EventBus) *{{.CommandName}}Handler {
+	return &{{.CommandName}}Handler{
+		repository: repo,
+		eventBus:   eventBus,
+	}
+}
+
+// Handle 处理命令
+func (h *{{.CommandName}}Handler) Handle(ctx context.Context, cmd *{{.CommandName}}Command) error {
+	// TODO: 实现命令处理逻辑
+	// 1. 验证命令
+	// 2. 加载聚合
+	// 3. 执行业务逻辑
+	// 4. 保存聚合
+	// 5. 发布事件
+	
+	return nil
+}

@@ -1,0 +1,116 @@
+package config
+
+import (
+	"os"
+	"strconv"
+	"time"
+
+	"github.com/joho/godotenv"
+	"go.uber.org/zap"
+)
+
+// Config 应用配置
+type Config struct {
+	// 服务配置
+	AppName    string
+	AppVersion string
+	AppPort    string
+	AppEnv     string
+
+	// 数据库配置
+	DBHost     string
+	DBPort     string
+	DBName     string
+	DBUser     string
+	DBPassword string
+
+	// 日志配置
+	LogLevel string
+}
+
+// Load 加载配置
+func Load() (*Config, error) {
+	// 加载 .env 文件
+	if err := godotenv.Load(); err != nil {
+		// 如果文件不存在，使用默认值
+	}
+
+	config := &Config{
+		AppName:    getEnv("APP_NAME", "{{project_name}}"),
+		AppVersion: getEnv("APP_VERSION", "1.0.0"),
+		AppPort:    getEnv("APP_PORT", "8080"),
+		AppEnv:     getEnv("APP_ENV", "development"),
+		DBHost:     getEnv("DB_HOST", "localhost"),
+		DBPort:     getEnv("DB_PORT", "3306"),
+		DBName:     getEnv("DB_NAME", "{{project_name}}"),
+		DBUser:     getEnv("DB_USER", "root"),
+		DBPassword: getEnv("DB_PASSWORD", ""),
+		LogLevel:   getEnv("LOG_LEVEL", "info"),
+	}
+
+	return config, nil
+}
+
+// GetZapLogLevel 获取 zap 日志级别
+func (c *Config) GetZapLogLevel() zap.AtomicLevel {
+	switch c.LogLevel {
+	case "debug":
+		return zap.NewAtomicLevelAt(zap.DebugLevel)
+	case "warn":
+		return zap.NewAtomicLevelAt(zap.WarnLevel)
+	case "error":
+		return zap.NewAtomicLevelAt(zap.ErrorLevel)
+	default:
+		return zap.NewAtomicLevelAt(zap.InfoLevel)
+	}
+}
+
+// IsDevelopment 是否为开发环境
+func (c *Config) IsDevelopment() bool {
+	return c.AppEnv == "development"
+}
+
+// IsProduction 是否为生产环境
+func (c *Config) IsProduction() bool {
+	return c.AppEnv == "production"
+}
+
+// GetDSN 获取数据库连接字符串
+func (c *Config) GetDSN() string {
+	return c.DBUser + ":" + c.DBPassword + "@tcp(" + c.DBHost + ":" + c.DBPort + ")/" + c.DBName + "?charset=utf8mb4&parseTime=True&loc=Local"
+}
+
+// getEnv 获取环境变量，如果不存在返回默认值
+func getEnv(key, defaultValue string) string {
+	if value := os.Getenv(key); value != "" {
+		return value
+	}
+	return defaultValue
+}
+
+// getEnvAsBool 获取布尔类型的环境变量
+func getEnvAsBool(key string, defaultValue bool) bool {
+	valStr := getEnv(key, "")
+	if val, err := strconv.ParseBool(valStr); err == nil {
+		return val
+	}
+	return defaultValue
+}
+
+// getEnvAsInt 获取整数类型的环境变量
+func getEnvAsInt(key string, defaultValue int) int {
+	valStr := getEnv(key, "")
+	if val, err := strconv.Atoi(valStr); err == nil {
+		return val
+	}
+	return defaultValue
+}
+
+// getEnvAsDuration 获取时间类型的环境变量
+func getEnvAsAsDuration(key string, defaultValue time.Duration) time.Duration {
+	valStr := getEnv(key, "")
+	if val, err := time.ParseDuration(valStr); err == nil {
+		return val
+	}
+	return defaultValue
+}

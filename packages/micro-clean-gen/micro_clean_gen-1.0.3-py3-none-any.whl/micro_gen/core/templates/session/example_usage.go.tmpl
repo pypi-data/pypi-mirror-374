@@ -1,0 +1,103 @@
+package session
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"net/http"
+	"time"
+
+	"{{project_name}}/pkg/config"
+	"{{project_name}}/internal/usecase/session"
+	"{{project_name}}/internal/entity"
+)
+
+// 使用示例：会话管理
+func setupSessionManagement() error {
+	// 加载配置
+	cfg, err := config.Load()
+	if err != nil {
+		return fmt.Errorf("failed to load config: %w", err)
+	}
+	
+	// 创建会话管理器
+	sessionManager, err := NewSessionManager(cfg)
+	if err != nil {
+		return fmt.Errorf("failed to create session manager: %w", err)
+	}
+
+	// 创建会话
+	ctx := context.Background()
+	sess, err := sessionManager.CreateSession(ctx, 24*time.Hour, "192.168.1.1", "Mozilla/5.0")
+	if err != nil {
+		return fmt.Errorf("failed to create session: %w", err)
+	}
+	fmt.Printf("Created session: %s\n", sess.GetID())
+
+	// 获取会话
+	retrievedSession, err := sessionManager.GetSession(ctx, sess.GetID())
+	if err != nil {
+		return fmt.Errorf("failed to get session: %w", err)
+	}
+	fmt.Printf("Retrieved session: %s\n", retrievedSession.GetID())
+
+	// 更新会话数据
+	updates := map[string]interface{}{
+		"last_page": "/dashboard",
+		"theme":     "dark",
+		"user_id":   "user-123", // 如果需要关联用户，可以存储在会话数据中
+	}
+	if err := sessionManager.UpdateSession(ctx, sess.GetID(), updates); err != nil {
+		return fmt.Errorf("failed to update session: %w", err)
+	}
+
+	// 删除会话
+	if err := sessionManager.DeleteSession(ctx, sess.GetID()); err != nil {
+		return fmt.Errorf("failed to delete session: %w", err)
+	}
+
+	return nil
+}
+
+// 中间件示例：会话验证
+func sessionMiddleware(sessionManager session.SessionService) func(next http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			// 从cookie或header获取session ID
+			sessionID := getSessionIDFromRequest(r)
+			if sessionID == "" {
+				http.Error(w, "未授权", http.StatusUnauthorized)
+				return
+			}
+
+			// 验证会话
+			if !sessionManager.IsValid(r.Context(), sessionID) {
+				http.Error(w, "会话无效或已过期", http.StatusUnauthorized)
+				return
+			}
+
+			// 将会话信息添加到上下文
+			session, _ := sessionManager.GetSession(r.Context(), sessionID)
+			ctx := context.WithValue(r.Context(), "session", session)
+			next.ServeHTTP(w, r.WithContext(ctx))
+		})
+	}
+}
+
+// 获取会话ID的工具函数
+func getSessionIDFromRequest(r *http.Request) string {
+	// 优先从cookie获取
+	cookie, err := r.Cookie("session_id")
+	if err == nil && cookie.Value != "" {
+		return cookie.Value
+	}
+
+	// 从header获取
+	return r.Header.Get("X-Session-ID")
+}
+
+// 获取当前会话的辅助函数
+func GetCurrentSession(ctx context.Context) (entity.Session, bool) {
+	session, ok := ctx.Value("session").(entity.Session)
+	return session, ok
+}

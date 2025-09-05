@@ -1,0 +1,106 @@
+// 使用示例：基于NATS JetStream的事件存储和总线
+package example
+
+import (
+	"context"
+	"log"
+	"time"
+
+	"{{project_name}}/pkg/config"
+	"{{project_name}}/pkg/event"
+	"{{project_name}}/internal/entity"
+)
+
+// 示例：初始化事件系统
+func setupEventSystem() {
+	// 加载配置
+	cfg, err := config.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// 创建事件存储
+	store, err := event.NewEventStore(cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// 创建事件总线
+	bus, err := event.NewEventBus(cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// 创建快照存储
+	snapshotStore, err := event.NewSnapshotStore(cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer snapshotStore.Close()
+
+	// 使用示例
+	ctx := context.Background()
+	
+	// 发布事件
+	event := &YourDomainEvent{
+		AggregateID: "user-123",
+		EventType:   "UserCreated",
+		// ... 其他字段
+	}
+	
+	if err := store.SaveEvents(ctx, "user-123", []entity.DomainEvent{event}, 0); err != nil {
+		log.Printf("保存事件失败: %v", err)
+	}
+
+	// 保存快照示例
+	userSnapshot := &entity.UserSnapshot{
+		ID:      "user-123",
+		Version: 1,
+	}
+	
+	if err := snapshotStore.SaveSnapshot(ctx, "user-123", userSnapshot, 1); err != nil {
+		log.Printf("保存快照失败: %v", err)
+	}
+
+	// 获取快照示例
+	snapshot, err := snapshotStore.LoadSnapshot(ctx, "user-123")
+	if err != nil {
+		log.Printf("获取快照失败: %v", err)
+	} else if snapshot != nil {
+		log.Printf("加载快照成功，版本: %d", snapshot.GetVersion())
+	}
+
+	// 订阅事件
+	handler := &YourEventHandler{}
+	if err := bus.Subscribe("UserCreated", handler); err != nil {
+		log.Printf("订阅事件失败: %v", err)
+	}
+}
+
+// YourDomainEvent 示例领域事件
+type YourDomainEvent struct {
+	AggregateID string
+	EventType   string
+	// 添加其他字段
+}
+
+func (e *YourDomainEvent) GetEventID() string      { return e.AggregateID + "-" + time.Now().Format("20060102150405") }
+func (e *YourDomainEvent) GetEventType() string  { return e.EventType }
+func (e *YourDomainEvent) GetAggregateID() string { return e.AggregateID }
+func (e *YourDomainEvent) GetAggregateType() string { return "User" }
+func (e *YourDomainEvent) GetCreatedAt() time.Time { return time.Now() }
+func (e *YourDomainEvent) GetVersion() int { return 1 }
+
+
+
+// YourEventHandler 示例事件处理器
+type YourEventHandler struct{}
+
+func (h *YourEventHandler) Handle(ctx context.Context, event entity.DomainEvent) error {
+	log.Printf("处理事件: %s", event.GetEventType())
+	return nil
+}
+
+func (h *YourEventHandler) EventType() string {
+	return "UserCreated"
+}

@@ -1,0 +1,208 @@
+package task
+
+import (
+	"context"
+	"fmt"
+	"sync"
+	"time"
+	"{{.project_name}}/internal/entity"
+	"{{.project_name}}/internal/usecase/task"
+)
+
+// TaskManager 任务管理器
+type TaskManager struct {
+	service task.TaskService
+}
+
+// NewTaskManager 创建任务管理器
+func NewTaskManager() (*TaskManager, error) {
+	store := NewMemoryStore() // 可以根据配置选择不同的存储
+	service := task.NewTaskService(store)
+
+	return &TaskManager{
+		service: service,
+	}, nil
+}
+
+// Start 启动任务管理器
+func (tm *TaskManager) Start(ctx context.Context) error {
+	return tm.service.StartTaskProcessor(ctx)
+}
+
+// Stop 停止任务管理器
+func (tm *TaskManager) Stop() {
+	tm.service.StopTaskProcessor()
+}
+
+// RegisterHandler 注册任务处理器
+func (tm *TaskManager) RegisterHandler(taskType entity.TaskType, handler task.TaskHandler) {
+	tm.service.RegisterHandler(taskType, handler)
+}
+
+// SubmitTask 提交任务
+func (tm *TaskManager) SubmitTask(ctx context.Context, taskType entity.TaskType, priority entity.TaskPriority, payload map[string]interface{}) (string, error) {
+	task, err := tm.service.CreateTask(ctx, taskType, priority, payload)
+	if err != nil {
+		return "", fmt.Errorf("failed to create task: %w", err)
+	}
+	return task.ID, nil
+}
+
+// ScheduleTask 调度定时任务
+func (tm *TaskManager) ScheduleTask(ctx context.Context, taskType entity.TaskType, priority entity.TaskPriority, payload map[string]interface{}, scheduledAt time.Time) (string, error) {
+	task, err := tm.service.CreateScheduledTask(ctx, taskType, priority, payload, scheduledAt)
+	if err != nil {
+		return "", fmt.Errorf("failed to create scheduled task: %w", err)
+	}
+	return task.ID, nil
+}
+
+// GetTaskStatus 获取任务状态
+func (tm *TaskManager) GetTaskStatus(ctx context.Context, taskID string) (*entity.TaskData, error) {
+	return tm.service.GetTask(ctx, taskID)
+}
+
+// CancelTask 取消任务
+func (tm *TaskManager) CancelTask(ctx context.Context, taskID string) error {
+	return tm.service.CancelTask(ctx, taskID)
+}
+
+// ListTasks 列出任务
+func (tm *TaskManager) ListTasks(ctx context.Context, status entity.TaskStatus) ([]*entity.TaskData, error) {
+	return tm.service.ListTasks(ctx, status)
+}
+
+// BackgroundTaskHandler 后台任务处理器
+type BackgroundTaskHandler struct {
+	name string
+}
+
+// NewBackgroundTaskHandler 创建后台任务处理器
+func NewBackgroundTaskHandler(name string) *BackgroundTaskHandler {
+	return &BackgroundTaskHandler{name: name}
+}
+
+// Handle 处理任务
+func (h *BackgroundTaskHandler) Handle(ctx context.Context, task *entity.TaskData) (map[string]interface{}, error) {
+	// 这里可以根据task.Type实现不同的处理逻辑
+	switch task.Type {
+	case entity.TaskTypeDataCleanup:
+		return h.handleDataCleanup(ctx, task)
+	case entity.TaskTypeReportGeneration:
+		return h.handleReportGeneration(ctx, task)
+	case entity.TaskTypeEmailNotification:
+		return h.handleEmailNotification(ctx, task)
+	default:
+		return nil, fmt.Errorf("unknown task type: %s", task.Type)
+	}
+}
+
+// GetTimeout 获取超时时间
+func (h *BackgroundTaskHandler) GetTimeout() time.Duration {
+	return 30 * time.Minute
+}
+
+// handleDataCleanup 处理数据清理任务
+func (h *BackgroundTaskHandler) handleDataCleanup(ctx context.Context, task *entity.TaskData) (map[string]interface{}, error) {
+	// 实现数据清理逻辑
+	result := map[string]interface{}{
+		"cleaned_records": 1000,
+		"duration_ms":      1500,
+	}
+	return result, nil
+}
+
+// handleReportGeneration 处理报告生成任务
+func (h *BackgroundTaskHandler) handleReportGeneration(ctx context.Context, task *entity.TaskData) (map[string]interface{}, error) {
+	// 实现报告生成逻辑
+	result := map[string]interface{}{
+		"report_id":   "report-123",
+		"report_url":  "/reports/report-123.pdf",
+		"duration_ms": 5000,
+	}
+	return result, nil
+}
+
+// handleEmailNotification 处理邮件通知任务
+func (h *BackgroundTaskHandler) handleEmailNotification(ctx context.Context, task *entity.TaskData) (map[string]interface{}, error) {
+	// 实现邮件通知逻辑
+	result := map[string]interface{}{
+		"emails_sent": 10,
+		"duration_ms": 2000,
+	}
+	return result, nil
+}
+
+// TaskScheduler 任务调度器
+type TaskScheduler struct {
+	taskManager *TaskManager
+	schedules   map[string]*Schedule
+	mu          sync.RWMutex
+}
+
+// Schedule 定时任务配置
+type Schedule struct {
+	TaskType entity.TaskType
+	Priority entity.TaskPriority
+	Payload  map[string]interface{}
+	CronExpr string
+	NextRun  time.Time
+}
+
+// NewTaskScheduler 创建任务调度器
+func NewTaskScheduler(taskManager *TaskManager) *TaskScheduler {
+	return &TaskScheduler{
+		taskManager: taskManager,
+		schedules:   make(map[string]*Schedule),
+	}
+}
+
+// AddSchedule 添加定时任务
+func (ts *TaskScheduler) AddSchedule(name string, schedule *Schedule) {
+	ts.mu.Lock()
+	defer ts.mu.Unlock()
+	ts.schedules[name] = schedule
+}
+
+// RemoveSchedule 移除定时任务
+func (ts *TaskScheduler) RemoveSchedule(name string) {
+	ts.mu.Lock()
+	defer ts.mu.Unlock()
+	delete(ts.schedules, name)
+}
+
+// Start 启动调度器
+func (ts *TaskScheduler) Start(ctx context.Context) {
+	ticker := time.NewTicker(1 * time.Minute)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-ticker.C:
+			ts.checkSchedules(ctx)
+		}
+	}
+}
+
+// checkSchedules 检查并执行定时任务
+func (ts *TaskScheduler) checkSchedules(ctx context.Context) {
+	ts.mu.RLock()
+	schedules := make([]*Schedule, 0, len(ts.schedules))
+	for _, schedule := range ts.schedules {
+		schedules = append(schedules, schedule)
+	}
+	ts.mu.RUnlock()
+
+	now := time.Now()
+	for _, schedule := range schedules {
+		if now.After(schedule.NextRun) {
+			// 执行定时任务
+			ts.taskManager.SubmitTask(ctx, schedule.TaskType, schedule.Priority, schedule.Payload)
+			
+			// 更新下次运行时间（简单实现，实际应该使用cron解析器）
+			schedule.NextRun = now.Add(1 * time.Hour)
+		}
+	}
+}

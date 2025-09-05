@@ -1,0 +1,130 @@
+package event
+
+import (
+	"context"
+	"fmt"
+	"sync"
+
+	"github.com/nats-io/nats.go"
+	"{{project_name}}/internal/entity"
+	"{{project_name}}/pkg/config"
+)
+
+// jetStreamBus 基于NATS JetStream的事件总线
+// 提供可靠的事件发布和订阅机制
+// 支持持久化订阅和消费者组
+type jetStreamBus struct {
+	js   nats.JetStreamContext
+	name string
+	subs map[string]*nats.Subscription
+	mu   sync.RWMutex
+}
+
+// 确保jetStreamBus实现了EventBus接口
+var _ EventBus = (*jetStreamBus)(nil)
+
+// NewEventBus 创建事件总线实例
+func NewEventBus(cfg *config.Config) (EventBus, error) {
+	// 连接到NATS服务器
+	nc, err := nats.Connect(cfg.NATSURL)
+	if err != nil {
+		return nil, fmt.Errorf("connect to nats: %w", err)
+	}
+
+	// 获取JetStream上下文
+	js, err := nc.JetStream()
+	if err != nil {
+		return nil, fmt.Errorf("get jetstream context: %w", err)
+	}
+
+	return &jetStreamBus{
+		js:   js,
+		name: cfg.StreamName,
+		subs: make(map[string]*nats.Subscription),
+	}, nil
+}
+
+// Publish 发布事件到JetStream
+func (b *jetStreamBus) Publish(ctx context.Context, event entity.DomainEvent) error {
+	subject := fmt.Sprintf("%s.%s.%s", b.name, event.GetAggregateType(), event.GetEventType())
+	
+	data, err := event.MarshalJSON()
+	if err != nil {
+		return fmt.Errorf("marshal event: %w", err)
+	}
+
+	msg := &nats.Msg{
+		Subject: subject,
+		Data:    data,
+	}
+
+	_, err = b.js.PublishMsg(msg)
+	return err
+}
+
+// Subscribe 订阅事件
+// handler: 事件处理器函数
+func (b *jetStreamBus) Subscribe(eventType string, handler EventHandler) error {
+	return b.subscribeGroup("", eventType, handler)
+}
+
+// SubscribeGroup 按消费者组订阅事件
+// group: 消费者组名称，用于负载均衡
+func (b *jetStreamBus) SubscribeGroup(group, eventType string, handler EventHandler) error {
+	return b.subscribeGroup(group, eventType, handler)
+}
+
+func (b *jetStreamBus) subscribeGroup(group, eventType string, handler EventHandler) error {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+
+	subject := fmt.Sprintf("%s.*.%s", b.name, eventType)
+	
+	consumerName := fmt.Sprintf("%s-%s", b.name, eventType)
+	if group != "" {
+		consumerName = fmt.Sprintf("%s-%s", consumerName, group)
+	}
+
+	// 创建持久化消费者
+	consumerConfig := &nats.ConsumerConfig{
+		Durable:       consumerName,
+		AckPolicy:     nats.AckExplicitPolicy,
+		DeliverPolicy: nats.DeliverNewPolicy,
+	}
+
+	// 创建订阅
+	sub, err := b.js.Subscribe(subject, func(msg *nats.Msg) {
+		var event entity.DomainEvent
+		if err := json.Unmarshal(msg.Data, &event); err != nil {
+			msg.Nak() // 重新投递
+			return
+		}
+
+		ctx := context.Background()
+		if err := handler.Handle(ctx, event); err != nil {
+			msg.Nak() // 处理失败，重新投递
+			return
+		}
+
+		msg.Ack() // 确认处理成功
+	}, nats.Durable(consumerName))
+
+	if err != nil {
+		return fmt.Errorf("subscribe: %w", err)
+	}
+
+	b.subs[consumerName] = sub
+	return nil
+}
+
+// Close 关闭所有订阅
+func (b *jetStreamBus) Close() error {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+
+	for name, sub := range b.subs {
+		sub.Unsubscribe()
+		delete(b.subs, name)
+	}
+	return nil
+}

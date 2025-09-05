@@ -1,0 +1,30 @@
+package {{.AggregateLower}}
+
+import (
+	"time"
+
+	"{{.ModuleName}}/internal/entity"
+)
+
+// {{.EventName}}Event {{.EventName}}事件
+type {{.EventName}}Event struct {
+	*entity.DomainEventBase
+	
+{{range .Fields}}	{{.name}} {{.type}} `json:"{{.json}}"`
+{{end}}
+}
+
+// New{{.EventName}}Event 创建{{.EventName}}事件
+func New{{.EventName}}Event(aggregateID string{{range .Fields}}, {{.name}} {{.type}}{{end}}) *{{.EventName}}Event {
+	event := &{{.EventName}}Event{
+		DomainEventBase: entity.NewDomainEventBase(aggregateID, "{{.AggregateName}}", "{{.EventName}}"),
+		{{range .Fields}}
+		{{.name}}: {{.name}},{{end}}
+	}
+	return event
+}
+
+// GetEventType 返回事件类型
+func (e *{{.EventName}}Event) GetEventType() string {
+	return "{{.EventName}}"
+}

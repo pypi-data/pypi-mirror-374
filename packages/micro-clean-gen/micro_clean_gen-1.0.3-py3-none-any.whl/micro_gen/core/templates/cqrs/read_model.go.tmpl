@@ -1,0 +1,31 @@
+package {{.AggregateLower}}
+
+import (
+	"time"
+
+	"{{.ModuleName}}/internal/projection"
+)
+
+// {{.AggregateName}}ReadModel {{.AggregateName}}读模型
+type {{.AggregateName}}ReadModel struct {
+	*projection.ReadModel
+	
+{{range .Fields}}	{{.name}} {{.type}} `json:"{{.json}}"`
+{{end}}
+}
+
+// New{{.AggregateName}}ReadModel 创建新的{{.AggregateName}}读模型
+func New{{.AggregateName}}ReadModel(id string) *{{.AggregateName}}ReadModel {
+	return &{{.AggregateName}}ReadModel{
+		ReadModel: projection.NewReadModel(id, "{{.AggregateName}}"),
+	}
+}
+
+// ApplyEvent 应用事件到读模型
+func (r *{{.AggregateName}}ReadModel) ApplyEvent(event interface{}) error {
+	switch evt := event.(type) {
+	// TODO: 实现事件应用逻辑
+	default:
+		return nil // 忽略不相关事件
+	}
+}

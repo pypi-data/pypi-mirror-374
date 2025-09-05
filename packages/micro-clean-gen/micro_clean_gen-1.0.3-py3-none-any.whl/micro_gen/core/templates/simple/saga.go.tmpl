@@ -1,0 +1,136 @@
+package saga
+
+import (
+	"context"
+	"fmt"
+	"time"
+)
+
+// Step 事务步骤
+type Step struct {
+	Name      string                 `json:"name"`
+	Handler   string                 `json:"handler"`
+	Payload   map[string]interface{} `json:"payload"`
+	Compensate string                 `json:"compensate,omitempty"`
+}
+
+// Transaction 事务
+type Transaction struct {
+	ID      string  `json:"id"`
+	Name    string  `json:"name"`
+	Steps   []Step  `json:"steps"`
+	Current int     `json:"current"`
+	Status  string  `json:"status"`
+	Created time.Time `json:"created"`
+	Updated time.Time `json:"updated"`
+}
+
+func NewTransaction(name string, steps []Step) *Transaction {
+	now := time.Now()
+	return &Transaction{
+		ID:      fmt.Sprintf("tx_%d", now.UnixNano()),
+		Name:    name,
+		Steps:   steps,
+		Current: 0,
+		Status:  "pending",
+		Created: now,
+		Updated: now,
+	}
+}
+
+// Store 事务存储接口
+type Store interface {
+	Save(ctx context.Context, tx *Transaction) error
+	Get(ctx context.Context, id string) (*Transaction, error)
+}
+
+// MemoryStore 内存存储
+type MemoryStore struct {
+	txs map[string]*Transaction
+}
+
+func NewMemoryStore() *MemoryStore {
+	return &MemoryStore{
+		txs: make(map[string]*Transaction),
+	}
+}
+
+func (m *MemoryStore) Save(ctx context.Context, tx *Transaction) error {
+	m.txs[tx.ID] = tx
+	return nil
+}
+
+func (m *MemoryStore) Get(ctx context.Context, id string) (*Transaction, error) {
+	tx, ok := m.txs[id]
+	if !ok {
+		return nil, fmt.Errorf("transaction not found")
+	}
+	return tx, nil
+}
+
+// Coordinator 事务协调器
+type Coordinator struct {
+	store        Store
+	handlers     map[string]func(context.Context, map[string]interface{}) error
+	compensators map[string]func(context.Context, map[string]interface{}) error
+}
+
+func NewCoordinator(store Store) *Coordinator {
+	return &Coordinator{
+		store:        store,
+		handlers:     make(map[string]func(context.Context, map[string]interface{}) error),
+		compensators: make(map[string]func(context.Context, map[string]interface{}) error),
+	}
+}
+
+func (c *Coordinator) Register(name string, handler func(context.Context, map[string]interface{}) error, compensator func(context.Context, map[string]interface{}) error)) {
+	c.handlers[name] = handler
+	c.compensators[name] = compensator
+}
+
+func (c *Coordinator) Execute(ctx context.Context, tx *Transaction) error {
+	tx.Status = "running"
+	tx.Updated = time.Now()
+	c.store.Save(ctx, tx)
+
+	for i, step := range tx.Steps {
+		handler, ok := c.handlers[step.Handler]
+		if !ok {
+			return fmt.Errorf("no handler for step: %s", step.Handler)
+		}
+
+		if err := handler(ctx, step.Payload); err != nil {
+			tx.Status = "failed"
+			tx.Current = i
+			tx.Updated = time.Now()
+			c.store.Save(ctx, tx)
+			return c.compensate(ctx, tx)
+		}
+
+		tx.Current = i + 1
+		tx.Updated = time.Now()
+		c.store.Save(ctx, tx)
+	}
+
+	tx.Status = "completed"
+	tx.Updated = time.Now()
+	return c.store.Save(ctx, tx)
+}
+
+func (c *Coordinator) compensate(ctx context.Context, tx *Transaction) error {
+	for i := tx.Current - 1; i >= 0; i-- {
+		step := tx.Steps[i]
+		if step.Compensate == "" {
+			continue
+		}
+
+		compensator, ok := c.compensators[step.Handler]
+		if ok {
+			compensator(ctx, step.Payload)
+		}
+	}
+
+	tx.Status = "compensated"
+	tx.Updated = time.Now()
+	return c.store.Save(ctx, tx)
+}

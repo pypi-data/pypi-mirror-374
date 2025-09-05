@@ -1,0 +1,320 @@
+package saga
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"{{.project_name}}/internal/entity"
+	"{{.project_name}}/pkg/config"
+	"{{.project_name}}/pkg/logger"
+)
+
+// SagaService Saga事务服务接口
+type SagaService interface {
+	// 创建Saga事务
+	CreateSaga(ctx context.Context, name string, steps []entity.SagaStep, payload map[string]interface{}) (*entity.SagaTransaction, error)
+	
+	// 启动Saga事务
+	StartSaga(ctx context.Context, sagaID string) error
+	
+	// 执行下一步
+	ExecuteNextStep(ctx context.Context, sagaID string) error
+	
+	// 完成步骤
+	CompleteStep(ctx context.Context, sagaID string, stepID string, result map[string]interface{}) error
+	
+	// 失败步骤
+	FailStep(ctx context.Context, sagaID string, stepID string, err error) error
+	
+	// 补偿事务
+	Compensate(ctx context.Context, sagaID string) error
+	
+	// 获取Saga事务状态
+	GetSaga(ctx context.Context, sagaID string) (*entity.SagaTransaction, error)
+	
+	// 获取所有Saga事务
+	ListSagas(ctx context.Context, status *entity.SagaStatus) ([]*entity.SagaTransaction, error)
+	
+	// 清理完成的Saga事务
+	CleanupCompleted(ctx context.Context, before time.Time) error
+}
+
+// sagaService Saga事务服务实现
+type sagaService struct {
+	store      SagaStore
+	executor   *entity.SagaStepExecutor
+	logger     logger.Logger
+	config     *config.Config
+}
+
+// SagaStore Saga存储接口
+type SagaStore interface {
+	Create(ctx context.Context, saga *entity.SagaTransaction) error
+	Get(ctx context.Context, sagaID string) (*entity.SagaTransaction, error)
+	Update(ctx context.Context, saga *entity.SagaTransaction) error
+	List(ctx context.Context, status *entity.SagaStatus) ([]*entity.SagaTransaction, error)
+	Delete(ctx context.Context, sagaID string) error
+	Cleanup(ctx context.Context, before time.Time) error
+}
+
+// NewSagaService 创建新的Saga服务
+func NewSagaService(store SagaStore, executor *entity.SagaStepExecutor, logger logger.Logger, config *config.Config) SagaService {
+	return &sagaService{
+		store:    store,
+		executor: executor,
+		logger:   logger,
+		config:   config,
+	}
+}
+
+// CreateSaga 创建Saga事务
+func (s *sagaService) CreateSaga(ctx context.Context, name string, steps []entity.SagaStep, payload map[string]interface{}) (*entity.SagaTransaction, error) {
+	if len(steps) == 0 {
+		return nil, fmt.Errorf("saga must have at least one step")
+	}
+
+	// 验证步骤顺序
+	for i, step := range steps {
+		if step.Order != i+1 {
+			steps[i].Order = i + 1
+		}
+	}
+
+	saga := entity.NewSagaTransaction(name, steps, payload)
+	
+	s.logger.Infof("创建Saga事务: %s, 步骤数: %d", saga.ID, len(steps))
+	
+	if err := s.store.Create(ctx, saga); err != nil {
+		s.logger.Errorf("创建Saga事务失败: %v", err)
+		return nil, fmt.Errorf("create saga: %w", err)
+	}
+
+	return saga, nil
+}
+
+// StartSaga 启动Saga事务
+func (s *sagaService) StartSaga(ctx context.Context, sagaID string) error {
+	saga, err := s.store.Get(ctx, sagaID)
+	if err != nil {
+		return fmt.Errorf("get saga: %w", err)
+	}
+
+	if saga.Status != entity.SagaStatusPending {
+		return fmt.Errorf("saga already started or completed")
+	}
+
+	saga.Status = entity.SagaStatusRunning
+	saga.UpdatedAt = time.Now()
+
+	if err := s.store.Update(ctx, saga); err != nil {
+		return fmt.Errorf("update saga: %w", err)
+	}
+
+	s.logger.Infof("启动Saga事务: %s", sagaID)
+	
+	// 执行第一个步骤
+	return s.ExecuteNextStep(ctx, sagaID)
+}
+
+// ExecuteNextStep 执行下一步
+func (s *sagaService) ExecuteNextStep(ctx context.Context, sagaID string) error {
+	saga, err := s.store.Get(ctx, sagaID)
+	if err != nil {
+		return fmt.Errorf("get saga: %w", err)
+	}
+
+	if saga.Status != entity.SagaStatusRunning {
+		return fmt.Errorf("saga is not running")
+	}
+
+	// 查找下一个待执行的步骤
+	var nextStep *entity.SagaStep
+	for i := range saga.Steps {
+		if saga.Steps[i].Status == entity.StepStatusPending {
+			nextStep = &saga.Steps[i]
+			break
+		}
+	}
+
+	if nextStep == nil {
+		// 所有步骤已完成
+		if saga.IsCompleted() {
+			saga.Status = entity.SagaStatusCompleted
+			now := time.Now()
+			saga.CompletedAt = &now
+			saga.UpdatedAt = time.Now()
+			
+			s.logger.Infof("Saga事务完成: %s", sagaID)
+			return s.store.Update(ctx, saga)
+		}
+		return fmt.Errorf("no pending steps found")
+	}
+
+	// 执行步骤
+	nextStep.Status = entity.StepStatusExecuting
+	nextStep.ExecuteAt = time.Now()
+	saga.UpdatedAt = time.Now()
+
+	if err := s.store.Update(ctx, saga); err != nil {
+		return fmt.Errorf("update saga: %w", err)
+	}
+
+	// 异步执行步骤（可以改为同步或基于消息队列）
+	go func() {
+		ctx := context.Background()
+		result, err := s.executor.ExecuteStep(ctx, nextStep, saga.Payload)
+		
+		if err != nil {
+			s.FailStep(ctx, sagaID, nextStep.StepID, err)
+		} else {
+			s.CompleteStep(ctx, sagaID, nextStep.StepID, result)
+		}
+	}()
+
+	return nil
+}
+
+// CompleteStep 完成步骤
+func (s *sagaService) CompleteStep(ctx context.Context, sagaID string, stepID string, result map[string]interface{}) error {
+	saga, err := s.store.Get(ctx, sagaID)
+	if err != nil {
+		return fmt.Errorf("get saga: %w", err)
+	}
+
+	step := saga.GetStep(stepID)
+	if step == nil {
+		return fmt.Errorf("step not found")
+	}
+
+	if step.Status != entity.StepStatusExecuting {
+		return fmt.Errorf("step is not executing")
+	}
+
+	step.Status = entity.StepStatusCompleted
+	step.Result = result
+	saga.UpdatedAt = time.Now()
+
+	if err := s.store.Update(ctx, saga); err != nil {
+		return fmt.Errorf("update saga: %w", err)
+	}
+
+	s.logger.Infof("步骤完成: %s/%s", sagaID, stepID)
+
+	// 继续执行下一步
+	return s.ExecuteNextStep(ctx, sagaID)
+}
+
+// FailStep 失败步骤
+func (s *sagaService) FailStep(ctx context.Context, sagaID string, stepID string, err error) error {
+	saga, err := s.store.Get(ctx, sagaID)
+	if err != nil {
+		return fmt.Errorf("get saga: %w", err)
+	}
+
+	step := saga.GetStep(stepID)
+	if step == nil {
+		return fmt.Errorf("step not found")
+	}
+
+	step.Status = entity.StepStatusFailed
+	step.Error = err.Error()
+	saga.Status = entity.SagaStatusFailed
+	saga.Error = err.Error()
+	saga.UpdatedAt = time.Now()
+
+	if updateErr := s.store.Update(ctx, saga); updateErr != nil {
+		return fmt.Errorf("update saga: %w", updateErr)
+	}
+
+	s.logger.Errorf("步骤失败: %s/%s, 错误: %v", sagaID, stepID, err)
+
+	// 触发补偿
+	return s.Compensate(ctx, sagaID)
+}
+
+// Compensate 补偿事务
+func (s *sagaService) Compensate(ctx context.Context, sagaID string) error {
+	saga, err := s.store.Get(ctx, sagaID)
+	if err != nil {
+		return fmt.Errorf("get saga: %w", err)
+	}
+
+	if saga.Status != entity.SagaStatusFailed {
+		return fmt.Errorf("saga is not failed")
+	}
+
+	compensateSteps := saga.GetCompensateSteps()
+	if len(compensateSteps) == 0 {
+		saga.Status = entity.SagaStatusCompensated
+		saga.UpdatedAt = time.Now()
+		return s.store.Update(ctx, saga)
+	}
+
+	s.logger.Infof("开始补偿Saga事务: %s, 需要补偿步骤数: %d", sagaID, len(compensateSteps))
+
+	// 按逆序执行补偿
+	for _, step := range compensateSteps {
+		if err := s.executor.CompensateStep(ctx, &step, saga.Payload); err != nil {
+			s.logger.Errorf("补偿步骤失败: %s/%s, 错误: %v", sagaID, step.StepID, err)
+			// 记录补偿失败，但不停止
+			continue
+		}
+		
+		// 更新步骤状态
+		saga.UpdateStepStatus(step.StepID, entity.StepStatusCompensated, nil, nil)
+		if err := s.store.Update(ctx, saga); err != nil {
+			s.logger.Errorf("更新补偿状态失败: %v", err)
+		}
+	}
+
+	saga.Status = entity.SagaStatusCompensated
+	saga.UpdatedAt = time.Now()
+	
+	s.logger.Infof("Saga事务补偿完成: %s", sagaID)
+	return s.store.Update(ctx, saga)
+}
+
+// GetSaga 获取Saga事务状态
+func (s *sagaService) GetSaga(ctx context.Context, sagaID string) (*entity.SagaTransaction, error) {
+	return s.store.Get(ctx, sagaID)
+}
+
+// ListSagas 获取所有Saga事务
+func (s *sagaService) ListSagas(ctx context.Context, status *entity.SagaStatus) ([]*entity.SagaTransaction, error) {
+	return s.store.List(ctx, status)
+}
+
+// CleanupCompleted 清理完成的Saga事务
+func (s *sagaService) CleanupCompleted(ctx context.Context, before time.Time) error {
+	s.logger.Infof("清理完成时间早于 %v 的Saga事务", before)
+	return s.store.Cleanup(ctx, before)
+}
+
+// SagaCoordinator Saga协调器
+type SagaCoordinator struct {
+	service SagaService
+	logger  logger.Logger
+}
+
+// NewSagaCoordinator 创建新的Saga协调器
+func NewSagaCoordinator(service SagaService, logger logger.Logger) *SagaCoordinator {
+	return &SagaCoordinator{
+		service: service,
+		logger:  logger,
+	}
+}
+
+// ExecuteSaga 执行完整Saga事务
+func (c *SagaCoordinator) ExecuteSaga(ctx context.Context, name string, steps []entity.SagaStep, payload map[string]interface{}) (*entity.SagaTransaction, error) {
+	saga, err := c.service.CreateSaga(ctx, name, steps, payload)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.service.StartSaga(ctx, saga.ID); err != nil {
+		return nil, err
+	}
+
+	return saga, nil
+}

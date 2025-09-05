@@ -1,0 +1,36 @@
+package main
+
+import (
+	"{{project_name}}/pkg/config"
+	"{{project_name}}/pkg/logger"
+	"{{project_name}}/pkg/http"
+)
+
+func main() {
+	// 加载配置
+	cfg, err := config.Load()
+	if err != nil {
+		panic("加载配置失败: " + err.Error())
+	}
+
+	// 初始化日志
+	log, err := logger.New(cfg)
+	if err != nil {
+		panic("初始化日志失败: " + err.Error())
+	}
+
+	// 设置路由
+	router := http.SetupRouter(cfg, log)
+
+	log.Info("{{project_name}} 服务启动成功", 
+		"app_name", cfg.AppName,
+		"app_version", cfg.AppVersion,
+		"app_port", cfg.AppPort,
+		"app_env", cfg.AppEnv,
+	)
+
+	// 启动服务
+	if err := router.Run(":" + cfg.AppPort); err != nil {
+		log.Fatal("启动服务失败", "error", err)
+	}
+}

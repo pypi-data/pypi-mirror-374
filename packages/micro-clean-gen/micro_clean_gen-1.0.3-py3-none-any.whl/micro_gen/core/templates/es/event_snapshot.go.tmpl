@@ -1,0 +1,87 @@
+package event
+
+import (
+	"context"
+	"fmt"
+
+	"{{project_name}}/internal/entity"
+)
+
+// SnapshotStore 事件快照接口：定义存储/加载聚合快照的能力（优化事件重放性能）
+type SnapshotStore interface {
+	// SaveSnapshot 保存聚合快照
+	SaveSnapshot(ctx context.Context, snapshot *entity.Snapshot) error
+	
+	// LoadSnapshot 加载聚合快照
+	LoadSnapshot(ctx context.Context, aggregateID string) (*entity.Snapshot, error)
+	
+	// LoadLatestSnapshot 加载最新快照
+	LoadLatestSnapshot(ctx context.Context, aggregateID string) (*entity.Snapshot, error)
+	
+	// DeleteSnapshot 删除快照
+	DeleteSnapshot(ctx context.Context, aggregateID string, version int) error
+}
+
+// SnapshotStoreError 快照存储错误
+type SnapshotStoreError struct {
+	AggregateID string
+	Version     int
+	Message     string
+	Cause       error
+}
+
+func (e *SnapshotStoreError) Error() string {
+	if e.Cause != nil {
+		return fmt.Sprintf("snapshot store error: aggregate_id=%s, version=%d, message=%s, cause=%v", e.AggregateID, e.Version, e.Message, e.Cause)
+	}
+	return fmt.Sprintf("snapshot store error: aggregate_id=%s, version=%d, message=%s", e.AggregateID, e.Version, e.Message)
+}
+
+func (e *SnapshotStoreError) Unwrap() error {
+	return e.Cause
+}
+
+// SnapshotStrategy 快照策略接口
+type SnapshotStrategy interface {
+	ShouldCreateSnapshot(version int, eventCount int) bool
+	GetSnapshotInterval() int
+}
+
+// DefaultSnapshotStrategy 默认快照策略
+type DefaultSnapshotStrategy struct {
+	Interval int
+}
+
+func NewDefaultSnapshotStrategy(interval int) *DefaultSnapshotStrategy {
+	return &DefaultSnapshotStrategy{Interval: interval}
+}
+
+func (s *DefaultSnapshotStrategy) ShouldCreateSnapshot(version int, eventCount int) bool {
+	return version%s.Interval == 0
+}
+
+func (s *DefaultSnapshotStrategy) GetSnapshotInterval() int {
+	return s.Interval
+}
+
+// VersionBasedSnapshotStrategy 基于版本的快照策略
+type VersionBasedSnapshotStrategy struct {
+	Versions []int
+}
+
+func NewVersionBasedSnapshotStrategy(versions []int) *VersionBasedSnapshotStrategy {
+	return &VersionBasedSnapshotStrategy{Versions: versions}
+}
+
+func (s *VersionBasedSnapshotStrategy) ShouldCreateSnapshot(version int, eventCount int) bool {
+	for _, v := range s.Versions {
+		if v == version {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *VersionBasedSnapshotStrategy) GetSnapshotInterval() int {
+	return 0
+}

@@ -1,0 +1,360 @@
+package saga
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"time"
+
+	"{{.project_name}}/internal/entity"
+	"{{.project_name}}/pkg/config"
+	"{{.project_name}}/pkg/logger"
+)
+
+// ExamplePaymentHandler 支付步骤处理器示例
+type ExamplePaymentHandler struct{}
+
+func (h *ExamplePaymentHandler) Execute(ctx context.Context, step *entity.SagaStep, payload map[string]interface{}) (map[string]interface{}, error) {
+	log.Printf("执行支付步骤: %s", step.Name)
+	
+	// 模拟支付处理
+	amount := payload["amount"]
+	if amount == nil {
+		return nil, fmt.Errorf("amount is required")
+	}
+
+	// 这里可以调用实际的支付服务
+	result := map[string]interface{}{
+		"transaction_id": fmt.Sprintf("txn_%d", time.Now().Unix()),
+		"status":         "completed",
+		"amount":         amount,
+	}
+
+	return result, nil
+}
+
+func (h *ExamplePaymentHandler) Compensate(ctx context.Context, step *entity.SagaStep, payload map[string]interface{}) error {
+	log.Printf("补偿支付步骤: %s", step.Name)
+	
+	// 这里可以调用退款服务
+	if step.Result != nil {
+		transactionID := step.Result["transaction_id"]
+		log.Printf("退款交易ID: %v", transactionID)
+	}
+
+	return nil
+}
+
+// ExampleInventoryHandler 库存步骤处理器示例
+type ExampleInventoryHandler struct{}
+
+func (h *ExampleInventoryHandler) Execute(ctx context.Context, step *entity.SagaStep, payload map[string]interface{}) (map[string]interface{}, error) {
+	log.Printf("执行库存步骤: %s", step.Name)
+	
+	// 模拟库存扣减
+	productID := payload["product_id"]
+	quantity := payload["quantity"]
+	
+	result := map[string]interface{}{
+		"product_id": productID,
+		"quantity":   quantity,
+		"status":     "reserved",
+	}
+
+	return result, nil
+}
+
+func (h *ExampleInventoryHandler) Compensate(ctx context.Context, step *entity.SagaStep, payload map[string]interface{}) error {
+	log.Printf("补偿库存步骤: %s", step.Name)
+	
+	// 这里可以恢复库存
+	if step.Result != nil {
+		productID := step.Result["product_id"]
+		quantity := step.Result["quantity"]
+		log.Printf("恢复库存: product_id=%v, quantity=%v", productID, quantity)
+	}
+
+	return nil
+}
+
+// ExampleOrderHandler 订单步骤处理器示例
+type ExampleOrderHandler struct{}
+
+func (h *ExampleOrderHandler) Execute(ctx context.Context, step *entity.SagaStep, payload map[string]interface{}) (map[string]interface{}, error) {
+	log.Printf("执行订单步骤: %s", step.Name)
+	
+	// 模拟创建订单
+	orderID := fmt.Sprintf("order_%d", time.Now().Unix())
+	result := map[string]interface{}{
+		"order_id": orderID,
+		"status":   "created",
+	}
+
+	return result, nil
+}
+
+func (h *ExampleOrderHandler) Compensate(ctx context.Context, step *entity.SagaStep, payload map[string]interface{}) error {
+	log.Printf("补偿订单步骤: %s", step.Name)
+	
+	// 这里可以取消订单
+	if step.Result != nil {
+		orderID := step.Result["order_id"]
+		log.Printf("取消订单: %v", orderID)
+	}
+
+	return nil
+}
+
+// ExampleSagaOrchestrator Saga编排器示例
+type ExampleSagaOrchestrator struct {
+	sagaManager *SagaManager
+}
+
+// NewExampleSagaOrchestrator 创建示例Saga编排器
+func NewExampleSagaOrchestrator(sagaManager *SagaManager) *ExampleSagaOrchestrator {
+	orchestrator := &ExampleSagaOrchestrator{
+		sagaManager: sagaManager,
+	}
+	
+	// 注册步骤处理器
+	orchestrator.registerHandlers()
+	
+	return orchestrator
+}
+
+func (o *ExampleSagaOrchestrator) registerHandlers() {
+	// 注册支付处理器
+	o.sagaManager.RegisterStepHandler("payment", &ExamplePaymentHandler{})
+	
+	// 注册库存处理器
+	o.sagaManager.RegisterStepHandler("inventory", &ExampleInventoryHandler{})
+	
+	// 注册订单处理器
+	o.sagaManager.RegisterStepHandler("order", &ExampleOrderHandler{})
+}
+
+// CreateOrderSaga 创建订单Saga事务示例
+func (o *ExampleSagaOrchestrator) CreateOrderSaga(ctx context.Context, orderData map[string]interface{}) (*entity.SagaTransaction, error) {
+	// 构建Saga步骤
+	steps := []entity.SagaStep{
+		entity.NewSagaStepBuilder("order").
+			WithPayload(map[string]interface{}{
+				"action": "create_order",
+				"data":   orderData,
+			}).Build(),
+		
+		entity.NewSagaStepBuilder("inventory").
+			WithPayload(map[string]interface{}{
+				"action": "reserve_inventory",
+				"data":   orderData,
+			}).Build(),
+		
+		entity.NewSagaStepBuilder("payment").
+			WithPayload(map[string]interface{}{
+				"action": "process_payment",
+				"data":   orderData,
+			}).Build(),
+	}
+
+	// 创建Saga事务
+	saga, err := o.sagaManager.GetService().CreateSaga(ctx, "create_order", steps, orderData)
+	if err != nil {
+		return nil, fmt.Errorf("创建订单Saga失败: %w", err)
+	}
+
+	return saga, nil
+}
+
+// SetupSagaManager 设置Saga管理器示例
+func SetupSagaManager() (*SagaManager, error) {
+	// 加载配置
+	cfg, err := config.Load()
+	if err != nil {
+		return nil, fmt.Errorf("加载配置失败: %w", err)
+	}
+
+	// 创建日志器
+	log := logger.NewLogger(cfg.LogLevel)
+
+	// 创建Saga管理器
+	sagaManager, err := NewSagaManager(cfg, log)
+	if err != nil {
+		return nil, fmt.Errorf("创建Saga管理器失败: %w", err)
+	}
+
+	return sagaManager, nil
+}
+
+// ExampleUsage 完整使用示例
+func ExampleUsage() {
+	// 设置Saga管理器
+	sagaManager, err := SetupSagaManager()
+	if err != nil {
+		log.Fatalf("设置Saga管理器失败: %v", err)
+	}
+	defer sagaManager.Close()
+
+	// 创建编排器
+	orchestrator := NewExampleSagaOrchestrator(sagaManager)
+
+	// 示例订单数据
+	orderData := map[string]interface{}{
+		"user_id":    "user123",
+		"product_id": "product456",
+		"quantity":   2,
+		"amount":     199.99,
+	}
+
+	// 创建订单Saga
+	ctx := context.Background()
+	saga, err := orchestrator.CreateOrderSaga(ctx, orderData)
+	if err != nil {
+		log.Fatalf("创建订单Saga失败: %v", err)
+	}
+
+	log.Printf("创建订单Saga成功: %s", saga.ID)
+
+	// 启动Saga事务
+	service := sagaManager.GetService()
+	if err := service.StartSaga(ctx, saga.ID); err != nil {
+		log.Fatalf("启动Saga事务失败: %v", err)
+	}
+
+	log.Printf("启动Saga事务成功: %s", saga.ID)
+
+	// 等待Saga完成（实际应用中可以通过事件或轮询检查状态）
+	time.Sleep(5 * time.Second)
+
+	// 检查Saga状态
+	updatedSaga, err := service.GetSaga(ctx, saga.ID)
+	if err != nil {
+		log.Fatalf("获取Saga状态失败: %v", err)
+	}
+
+	log.Printf("Saga状态: %s", updatedSaga.Status)
+
+	// 列出所有Saga事务
+	sagas, err := service.ListSagas(ctx, nil)
+	if err != nil {
+		log.Fatalf("列出Saga事务失败: %v", err)
+	}
+
+	log.Printf("总Saga事务数: %d", len(sagas))
+
+	// 清理完成的Saga事务
+	cleanupTime := time.Now().Add(-24 * time.Hour)
+	if err := service.CleanupCompleted(ctx, cleanupTime); err != nil {
+		log.Printf("清理Saga事务失败: %v", err)
+	} else {
+		log.Println("清理完成的Saga事务成功")
+	}
+}
+
+// ExampleErrorHandling 错误处理示例
+func ExampleErrorHandling() {
+	// 模拟支付失败的场景
+	ctx := context.Background()
+	
+	// 设置Saga管理器
+	sagaManager, err := SetupSagaManager()
+	if err != nil {
+		log.Fatalf("设置Saga管理器失败: %v", err)
+	}
+	defer sagaManager.Close()
+
+	// 创建编排器
+	orchestrator := NewExampleSagaOrchestrator(sagaManager)
+
+	// 创建订单数据（包含错误触发条件）
+	orderData := map[string]interface{}{
+		"user_id":    "user123",
+		"product_id": "product456",
+		"quantity":   0, // 触发库存失败
+		"amount":     0, // 触发支付失败
+	}
+
+	// 创建Saga事务
+	saga, err := orchestrator.CreateOrderSaga(ctx, orderData)
+	if err != nil {
+		log.Fatalf("创建Saga失败: %v", err)
+	}
+
+	// 启动Saga事务
+	service := sagaManager.GetService()
+	if err := service.StartSaga(ctx, saga.ID); err != nil {
+		log.Fatalf("启动Saga失败: %v", err)
+	}
+
+	// 等待补偿完成
+	time.Sleep(10 * time.Second)
+
+	// 检查最终状态
+	finalSaga, err := service.GetSaga(ctx, saga.ID)
+	if err != nil {
+		log.Fatalf("获取最终状态失败: %v", err)
+	}
+
+	log.Printf("最终Saga状态: %s", finalSaga.Status)
+	if finalSaga.Error != "" {
+		log.Printf("错误信息: %s", finalSaga.Error)
+	}
+}
+
+// ExampleCustomHandler 自定义处理器示例
+func ExampleCustomHandler() {
+	// 自定义邮件发送处理器
+	type EmailHandler struct{}
+
+	func (h *EmailHandler) Execute(ctx context.Context, step *entity.SagaStep, payload map[string]interface{}) (map[string]interface{}, error) {
+		email := payload["email"]
+		subject := payload["subject"]
+		content := payload["content"]
+
+		log.Printf("发送邮件到: %s, 主题: %s", email, subject)
+		// 这里可以调用实际的邮件服务
+
+		return map[string]interface{}{
+			"email_id": fmt.Sprintf("email_%d", time.Now().Unix()),
+			"status":   "sent",
+		}, nil
+	}
+
+	func (h *EmailHandler) Compensate(ctx context.Context, step *entity.SagaStep, payload map[string]interface{}) error {
+		log.Printf("取消邮件发送: %s", step.Name)
+		// 这里可以调用邮件服务的取消接口
+		return nil
+	}
+
+	// 使用自定义处理器
+	ctx := context.Background()
+	sagaManager, err := SetupSagaManager()
+	if err != nil {
+		log.Fatalf("设置Saga管理器失败: %v", err)
+	}
+	defer sagaManager.Close()
+
+	// 注册自定义处理器
+	sagaManager.RegisterStepHandler("send_email", &EmailHandler{})
+
+	// 创建包含邮件步骤的Saga
+	steps := []entity.SagaStep{
+		entity.NewSagaStepBuilder("send_email").
+			WithPayload(map[string]interface{}{
+				"email":   "user@example.com",
+				"subject": "订单确认",
+				"content": "您的订单已确认",
+			}).Build(),
+	}
+
+	service := sagaManager.GetService()
+	saga, err := service.CreateSaga(ctx, "send_order_email", steps, nil)
+	if err != nil {
+		log.Fatalf("创建邮件Saga失败: %v", err)
+	}
+
+	if err := service.StartSaga(ctx, saga.ID); err != nil {
+		log.Fatalf("启动邮件Saga失败: %v", err)
+	}
+
+	log.Printf("邮件Saga创建成功: %s", saga.ID)
+}

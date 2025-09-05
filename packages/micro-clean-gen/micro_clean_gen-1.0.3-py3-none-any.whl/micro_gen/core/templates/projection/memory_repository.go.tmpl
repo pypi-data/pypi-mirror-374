@@ -1,0 +1,100 @@
+package persistence
+
+import (
+	"context"
+	"sync"
+
+	"{{.ModuleName}}/internal/entity/projection"
+)
+
+// MemoryReadModelRepository 内存实现的读模型存储适配器
+type MemoryReadModelRepository struct {
+	mu     sync.RWMutex
+	models map[string]map[string]*projection.ReadModel // type -> id -> model
+}
+
+// NewMemoryReadModelRepository 创建内存存储适配器
+func NewMemoryReadModelRepository() *MemoryReadModelRepository {
+	return &MemoryReadModelRepository{
+		models: make(map[string]map[string]*projection.ReadModel),
+	}
+}
+
+// Save 保存读模型到内存
+func (r *MemoryReadModelRepository) Save(ctx context.Context, model *projection.ReadModel) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	
+	if r.models[model.Type] == nil {
+		r.models[model.Type] = make(map[string]*projection.ReadModel)
+	}
+	
+	r.models[model.Type][model.ID] = model
+	return nil
+}
+
+// FindByID 根据ID和类型查找读模型
+func (r *MemoryReadModelRepository) FindByID(ctx context.Context, id string, modelType string) (*projection.ReadModel, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+	
+	if models, ok := r.models[modelType]; ok {
+		if model, ok := models[id]; ok {
+			return model, nil
+		}
+	}
+	
+	return nil, projection.ErrReadModelNotFound
+}
+
+// FindByQuery 根据查询条件查找读模型
+func (r *MemoryReadModelRepository) FindByQuery(ctx context.Context, query projection.Query) ([]*projection.ReadModel, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+	
+	var result []*projection.ReadModel
+	
+	if models, ok := r.models[query.ModelType]; ok {
+		for _, model := range models {
+			if r.matchesQuery(model, query) {
+				result = append(result, model)
+			}
+		}
+	}
+	
+	// 应用分页
+	start := query.Offset
+	if start >= len(result) {
+		return []*projection.ReadModel{}, nil
+	}
+	
+	end := start + query.Limit
+	if end > len(result) {
+		end = len(result)
+	}
+	
+	return result[start:end], nil
+}
+
+// Delete 删除读模型
+func (r *MemoryReadModelRepository) Delete(ctx context.Context, id string, modelType string) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	
+	if models, ok := r.models[modelType]; ok {
+		delete(models, id)
+	}
+	
+	return nil
+}
+
+func (r *MemoryReadModelRepository) matchesQuery(model *projection.ReadModel, query projection.Query) bool {
+	// 简单的查询匹配逻辑
+	for key, expected := range query.Filters {
+		actual, exists := model.Data[key]
+		if !exists || actual != expected {
+			return false
+		}
+	}
+	return true
+}

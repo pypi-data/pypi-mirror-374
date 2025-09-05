@@ -1,0 +1,155 @@
+package entity
+
+import (
+	"encoding/json"
+	"fmt"
+	"time"
+)
+
+// TaskStatus 任务状态
+type TaskStatus string
+
+const (
+	TaskStatusPending    TaskStatus = "pending"
+	TaskStatusRunning    TaskStatus = "running"
+	TaskStatusCompleted  TaskStatus = "completed"
+	TaskStatusFailed     TaskStatus = "failed"
+	TaskStatusCancelled  TaskStatus = "cancelled"
+)
+
+// TaskPriority 任务优先级
+type TaskPriority string
+
+const (
+	TaskPriorityLow    TaskPriority = "low"
+	TaskPriorityNormal TaskPriority = "normal"
+	TaskPriorityHigh   TaskPriority = "high"
+)
+
+// TaskType 任务类型
+type TaskType string
+
+// 预定义的任务类型
+const (
+	TaskTypeDataCleanup      TaskType = "data_cleanup"
+	TaskTypeReportGeneration TaskType = "report_generation"
+	TaskTypeEmailNotification TaskType = "email_notification"
+	TaskTypeSystemMaintenance TaskType = "system_maintenance"
+	TaskTypeDataSync          TaskType = "data_sync"
+	TaskTypeBackup            TaskType = "backup"
+	TaskTypeCleanup           TaskType = "cleanup"
+	TaskTypeHealthCheck       TaskType = "health_check"
+)
+
+// TaskData 任务数据结构
+type TaskData struct {
+	ID          string                 `json:"id"`
+	Type        TaskType               `json:"type"`
+	Status      TaskStatus             `json:"status"`
+	Priority    TaskPriority           `json:"priority"`
+	Payload     map[string]interface{} `json:"payload"`
+	Result      map[string]interface{} `json:"result,omitempty"`
+	Error       string                 `json:"error,omitempty"`
+	RetryCount  int                    `json:"retry_count"`
+	MaxRetries  int                    `json:"max_retries"`
+	Timeout     time.Duration          `json:"timeout"`
+	CreatedAt   time.Time              `json:"created_at"`
+	UpdatedAt   time.Time              `json:"updated_at"`
+	StartedAt   *time.Time             `json:"started_at,omitempty"`
+	CompletedAt *time.Time             `json:"completed_at,omitempty"`
+	ScheduledAt *time.Time             `json:"scheduled_at,omitempty"`
+}
+
+// NewTask 创建新任务
+func NewTask(taskType TaskType, priority TaskPriority, payload map[string]interface{}) *TaskData {
+	return &TaskData{
+		ID:         fmt.Sprintf("task_%d", time.Now().UnixNano()),
+		Type:       taskType,
+		Status:     TaskStatusPending,
+		Priority:   priority,
+		Payload:    payload,
+		RetryCount: 0,
+		MaxRetries: 3,
+		Timeout:    30 * time.Minute,
+		CreatedAt:  time.Now(),
+		UpdatedAt:  time.Now(),
+	}
+}
+
+// NewScheduledTask 创建定时任务
+func NewScheduledTask(taskType TaskType, priority TaskPriority, payload map[string]interface{}, scheduledAt time.Time) *TaskData {
+	task := NewTask(taskType, priority, payload)
+	task.ScheduledAt = &scheduledAt
+	task.Status = TaskStatusPending
+	return task
+}
+
+// IsReadyToRun 检查任务是否可以运行
+func (t *TaskData) IsReadyToRun() bool {
+	if t.Status != TaskStatusPending {
+		return false
+	}
+	if t.ScheduledAt != nil && time.Now().Before(*t.ScheduledAt) {
+		return false
+	}
+	return true
+}
+
+// IsExpired 检查任务是否超时
+func (t *TaskData) IsExpired() bool {
+	if t.Status != TaskStatusRunning || t.StartedAt == nil {
+		return false
+	}
+	return time.Since(*t.StartedAt) > t.Timeout
+}
+
+// IsRetryable 检查任务是否可以重试
+func (t *TaskData) IsRetryable() bool {
+	return t.RetryCount < t.MaxRetries && t.Status == TaskStatusFailed
+}
+
+// Start 开始任务
+func (t *TaskData) Start() {
+	now := time.Now()
+	t.Status = TaskStatusRunning
+	t.StartedAt = &now
+	t.UpdatedAt = time.Now()
+}
+
+// Complete 完成任务
+func (t *TaskData) Complete(result map[string]interface{}) {
+	t.Status = TaskStatusCompleted
+	t.Result = result
+	now := time.Now()
+	t.CompletedAt = &now
+	t.UpdatedAt = time.Now()
+}
+
+// Fail 任务失败
+func (t *TaskData) Fail(err error) {
+	t.Status = TaskStatusFailed
+	t.Error = err.Error()
+	t.RetryCount++
+	t.UpdatedAt = time.Now()
+}
+
+// Cancel 取消任务
+func (t *TaskData) Cancel() {
+	t.Status = TaskStatusCancelled
+	t.UpdatedAt = time.Now()
+}
+
+// MarshalBinary 实现二进制序列化
+func (t *TaskData) MarshalBinary() ([]byte, error) {
+	return json.Marshal(t)
+}
+
+// UnmarshalBinary 实现二进制反序列化
+func (t *TaskData) UnmarshalBinary(data []byte) error {
+	return json.Unmarshal(data, t)
+}
+
+// String 返回任务字符串表示
+func (t *TaskData) String() string {
+	return fmt.Sprintf("Task{ID: %s, Type: %s, Status: %s, Priority: %s}", t.ID, t.Type, t.Status, t.Priority)
+}

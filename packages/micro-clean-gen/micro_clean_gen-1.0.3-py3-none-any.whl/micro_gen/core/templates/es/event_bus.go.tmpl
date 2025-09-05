@@ -1,0 +1,22 @@
+package event
+
+import (
+	"context"
+
+	"{{project_name}}/internal/entity"
+)
+
+// EventHandler 事件处理器接口
+type EventHandler interface {
+	Handle(ctx context.Context, event entity.DomainEvent) error
+	EventType() string
+}
+
+// EventBus 事件总线接口
+type EventBus interface {
+	Publish(ctx context.Context, event entity.DomainEvent) error
+	Subscribe(eventType string, handler EventHandler) error
+	SubscribeGroup(groupID string, eventType string, handler EventHandler) error
+	Close() error
+}
+

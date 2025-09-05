@@ -1,0 +1,249 @@
+package task
+
+import (
+	"context"
+	"fmt"
+	"sync"
+	"time"
+	"{{.project_name}}/internal/entity"
+)
+
+// TaskService 任务服务接口
+type TaskService interface {
+	CreateTask(ctx context.Context, taskType entity.TaskType, priority entity.TaskPriority, payload map[string]interface{}) (*entity.TaskData, error)
+	CreateScheduledTask(ctx context.Context, taskType entity.TaskType, priority entity.TaskPriority, payload map[string]interface{}, scheduledAt time.Time) (*entity.TaskData, error)
+	GetTask(ctx context.Context, taskID string) (*entity.TaskData, error)
+	CancelTask(ctx context.Context, taskID string) error
+	DeleteTask(ctx context.Context, taskID string) error
+	ListTasks(ctx context.Context, status entity.TaskStatus) ([]*entity.TaskData, error)
+	StartTaskProcessor(ctx context.Context) error
+	StopTaskProcessor()
+	RegisterHandler(taskType entity.TaskType, handler TaskHandler)
+}
+
+// TaskHandler 任务处理器接口
+type TaskHandler interface {
+	Handle(ctx context.Context, task *entity.TaskData) (map[string]interface{}, error)
+	GetTimeout() time.Duration
+}
+
+// TaskHandlerFunc 任务处理器函数类型
+type TaskHandlerFunc func(ctx context.Context, task *entity.TaskData) (map[string]interface{}, error)
+
+// TaskStore 任务存储接口
+type TaskStore interface {
+	Create(ctx context.Context, task *entity.TaskData) error
+	Get(ctx context.Context, taskID string) (*entity.TaskData, error)
+	Update(ctx context.Context, task *entity.TaskData) error
+	Delete(ctx context.Context, taskID string) error
+	ListByStatus(ctx context.Context, status entity.TaskStatus) ([]*entity.TaskData, error)
+	ListPending(ctx context.Context) ([]*entity.TaskData, error)
+	ListScheduled(ctx context.Context) ([]*entity.TaskData, error)
+	DeleteExpired(ctx context.Context) error
+}
+
+// taskServiceImpl 任务服务实现
+type taskServiceImpl struct {
+	store        TaskStore
+	handlers     map[entity.TaskType]TaskHandler
+	mu           sync.RWMutex
+	processorCtx context.Context
+	processorCancel context.CancelFunc
+	isRunning    bool
+	workerCount  int
+}
+
+// NewTaskService 创建任务服务
+func NewTaskService(store TaskStore) TaskService {
+	return &taskServiceImpl{
+		store:       store,
+		handlers:    make(map[entity.TaskType]TaskHandler),
+		workerCount: 3,
+	}
+}
+
+// CreateTask 创建任务
+func (s *taskServiceImpl) CreateTask(ctx context.Context, taskType entity.TaskType, priority entity.TaskPriority, payload map[string]interface{}) (*entity.TaskData, error) {
+	task := entity.NewTask(taskType, priority, payload)
+	if err := s.store.Create(ctx, task); err != nil {
+		return nil, fmt.Errorf("failed to create task: %w", err)
+	}
+	return task, nil
+}
+
+// CreateScheduledTask 创建定时任务
+func (s *taskServiceImpl) CreateScheduledTask(ctx context.Context, taskType entity.TaskType, priority entity.TaskPriority, payload map[string]interface{}, scheduledAt time.Time) (*entity.TaskData, error) {
+	task := entity.NewScheduledTask(taskType, priority, payload, scheduledAt)
+	if err := s.store.Create(ctx, task); err != nil {
+		return nil, fmt.Errorf("failed to create scheduled task: %w", err)
+	}
+	return task, nil
+}
+
+// GetTask 获取任务
+func (s *taskServiceImpl) GetTask(ctx context.Context, taskID string) (*entity.TaskData, error) {
+	return s.store.Get(ctx, taskID)
+}
+
+// CancelTask 取消任务
+func (s *taskServiceImpl) CancelTask(ctx context.Context, taskID string) error {
+	task, err := s.store.Get(ctx, taskID)
+	if err != nil {
+		return fmt.Errorf("failed to get task: %w", err)
+	}
+
+	if task.Status != entity.TaskStatusPending && task.Status != entity.TaskStatusRunning {
+			return fmt.Errorf("can only cancel pending or running tasks")
+		}
+
+	task.Cancel()
+	return s.store.Update(ctx, task)
+}
+
+// DeleteTask 删除任务
+func (s *taskServiceImpl) DeleteTask(ctx context.Context, taskID string) error {
+	return s.store.Delete(ctx, taskID)
+}
+
+// ListTasks 列出任务
+func (s *taskServiceImpl) ListTasks(ctx context.Context, status entity.TaskStatus) ([]*entity.TaskData, error) {
+	return s.store.ListByStatus(ctx, status)
+}
+
+// RegisterHandler 注册任务处理器
+func (s *taskServiceImpl) RegisterHandler(taskType entity.TaskType, handler TaskHandler) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.handlers[taskType] = handler
+}
+
+// StartTaskProcessor 启动任务处理器
+func (s *taskServiceImpl) StartTaskProcessor(ctx context.Context) error {
+	s.mu.Lock()
+	if s.isRunning {
+		s.mu.Unlock()
+		return fmt.Errorf("task processor is already running")
+	}
+
+	s.processorCtx, s.processorCancel = context.WithCancel(ctx)
+	s.isRunning = true
+	s.mu.Unlock()
+
+	// 启动工作池
+	for i := 0; i < s.workerCount; i++ {
+		go s.worker(s.processorCtx, i)
+	}
+
+	// 启动定时任务调度器
+	go s.scheduler(s.processorCtx)
+
+	return nil
+}
+
+// StopTaskProcessor 停止任务处理器
+func (s *taskServiceImpl) StopTaskProcessor() {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	if s.processorCancel != nil {
+		s.processorCancel()
+	}
+	s.isRunning = false
+}
+
+// worker 工作进程
+func (s *taskServiceImpl) worker(ctx context.Context, workerID int) {
+	ticker := time.NewTicker(1 * time.Second)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-ticker.C:
+			s.processNextTask(ctx)
+		}
+	}
+}
+
+// scheduler 定时任务调度器
+func (s *taskServiceImpl) scheduler(ctx context.Context) {
+	ticker := time.NewTicker(10 * time.Second)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-ticker.C:
+			s.processScheduledTasks(ctx)
+		}
+	}
+}
+
+// processNextTask 处理下一个任务
+func (s *taskServiceImpl) processNextTask(ctx context.Context) {
+	tasks, err := s.store.ListPending(ctx)
+	if err != nil || len(tasks) == 0 {
+		return
+	}
+
+	for _, task := range tasks {
+		if !task.IsReadyToRun() {
+			continue
+		}
+
+		s.processTask(ctx, task)
+		break // 每次只处理一个任务
+	}
+}
+
+// processScheduledTasks 处理定时任务
+func (s *taskServiceImpl) processScheduledTasks(ctx context.Context) {
+	tasks, err := s.store.ListScheduled(ctx)
+	if err != nil {
+		return
+	}
+
+	now := time.Now()
+	for _, task := range tasks {
+		if task.ScheduledAt != nil && task.ScheduledAt.Before(now) {
+			task.Status = entity.TaskStatusPending
+			task.ScheduledAt = nil
+			if err := s.store.Update(ctx, task); err != nil {
+				// 记录日志或处理错误
+				_ = err
+			}
+		}
+	}
+}
+
+// processTask 处理单个任务
+func (s *taskServiceImpl) processTask(ctx context.Context, task *entity.TaskData) {
+	s.mu.RLock()
+	handler, exists := s.handlers[task.Type]
+	s.mu.RUnlock()
+
+	if !exists {
+		task.Fail(fmt.Errorf("no handler registered for task type: %s", task.Type))
+		_ = s.store.Update(ctx, task)
+		return
+	}
+
+	task.Start()
+	_ = s.store.Update(ctx, task)
+
+	// 创建带有超时的上下文
+	taskCtx, cancel := context.WithTimeout(ctx, handler.GetTimeout())
+	defer cancel()
+
+	result, err := handler.Handle(taskCtx, task)
+	if err != nil {
+		task.Fail(err)
+		_ = s.store.Update(ctx, task)
+		return
+	}
+
+	task.Complete(result)
+	_ = s.store.Update(ctx, task)
+}

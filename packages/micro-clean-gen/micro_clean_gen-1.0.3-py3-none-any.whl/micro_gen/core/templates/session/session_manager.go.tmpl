@@ -1,0 +1,41 @@
+package session
+
+import (
+	"fmt"
+	"path/filepath"
+
+	"github.com/redis/go-redis/v9"
+	"{{project_name}}/internal/usecase/session"
+	"{{project_name}}/pkg/config"
+)
+
+// NewSessionManager 创建会话管理器
+func NewSessionManager(cfg *config.Config) (session.SessionService, error) {
+	// 根据配置选择存储类型
+	switch cfg.SessionLevel {
+	case "high":
+		redisClient := redis.NewClient(&redis.Options{
+			Addr:     cfg.RedisAddr,
+			Password: cfg.RedisPassword,
+			DB:       cfg.RedisDB,
+		})
+		store := NewRedisStore(redisClient)
+		return session.NewSessionService(store), nil
+	case "normal":
+		// 使用项目根目录下的data目录作为Badger存储路径
+		dataDir := filepath.Join("data", "sessions")
+		badgerStore, err := NewBadgerStore(dataDir, "session")
+		if err != nil {
+			return nil, fmt.Errorf("create badger store: %w", err)
+		}
+		store := badgerStore
+		return session.NewSessionService(store), nil
+	case "low":
+		store := NewMemoryStore()
+		return session.NewSessionService(store), nil
+	default:
+		// 默认使用内存存储
+		store := NewMemoryStore()
+		return session.NewSessionService(store), nil
+	}
+}

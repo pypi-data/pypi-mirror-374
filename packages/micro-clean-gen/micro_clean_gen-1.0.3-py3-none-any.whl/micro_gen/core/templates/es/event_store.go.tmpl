@@ -1,0 +1,35 @@
+package event
+
+import (
+	"context"
+	"fmt"
+
+	"{{project_name}}/internal/entity"
+)
+
+// EventStore 事件存储接口
+type EventStore interface {
+	SaveEvents(ctx context.Context, aggregateID string, events []entity.DomainEvent, expectedVersion int) error
+	GetEvents(ctx context.Context, aggregateID string) ([]entity.DomainEvent, error)
+	GetEventsFromVersion(ctx context.Context, aggregateID string, fromVersion int) ([]entity.DomainEvent, error)
+	GetEventsByType(ctx context.Context, eventType string) ([]entity.DomainEvent, error)
+}
+
+// EventStoreError 事件存储错误
+type EventStoreError struct {
+	AggregateID string
+	EventType   string
+	Message     string
+	Cause       error
+}
+
+func (e *EventStoreError) Error() string {
+	if e.Cause != nil {
+		return fmt.Sprintf("event store error: aggregate_id=%s, event_type=%s, message=%s, cause=%v", e.AggregateID, e.EventType, e.Message, e.Cause)
+	}
+	return fmt.Sprintf("event store error: aggregate_id=%s, event_type=%s, message=%s", e.AggregateID, e.EventType, e.Message)
+}
+
+func (e *EventStoreError) Unwrap() error {
+	return e.Cause
+}
