@@ -1,0 +1,15 @@
+[build-system]
+requires = ["maturin>=1.4,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "wayne-trade"
+version = "0.1.0"
+description = "Formula to model matrix converter"
+requires-python = ">=3.8"
+authors = [{ name = "Alex Hallam", email = "alexhallam628@gmail.com" }]
+dependencies = ["polars>=1.8.2", "numpy>=1.21.0"]
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
+module-name = "wayne._wayne"
