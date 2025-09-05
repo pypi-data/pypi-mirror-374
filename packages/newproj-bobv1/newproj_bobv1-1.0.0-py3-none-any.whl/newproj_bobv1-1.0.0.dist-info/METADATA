@@ -1,0 +1,123 @@
+Metadata-Version: 2.4
+Name: newproj-bobv1
+Version: 1.0.0
+Summary: A fast, interactive Python project generator
+Home-page: https://github.com/Golden021/newproj
+Author: Liam G
+Author-email: TemNet021@outlook.com
+Project-URL: Bug Reports, https://github.com/Golden021/newproj/issues
+Project-URL: Source, https://github.com/Golden021/newproj
+Project-URL: Documentation, https://github.com/Golden021/newproj#readme
+Keywords: python project generator boilerplate template cli interactive pygame
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Code Generators
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: Licence.md
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: requires-python
+Dynamic: summary
+
+NewProj ⚡
+
+A lightweight Python project generator for developers
+
+📌 Overview
+
+NewProj is a boilerplate generator that helps you quickly set up new Python projects without wasting time on repetitive setup.
+Whether you’re building a small script, a Pygame project, or something larger, NewProj gives you a clean starting point in seconds.
+
+👉 No more copy-pasting folders and requirements.txt. Just run one command and you’re ready to code.
+
+✨ Features
+
+🛠 Interactive wizard – create projects with guided prompts.
+
+⚡ Fast CLI mode – skip the prompts and generate instantly.
+
+📂 Built-in templates:
+
+basic → Standard Python project (src, tests, docs, README, requirements).
+
+pygame → Starter setup for Pygame projects (assets folder, main game loop).
+
+🧩 Extensible – add your own templates easily.
+
+✅ Cross-platform – works on Windows, macOS, and Linux.
+
+🚀 Installation
+pip install newproj
+
+
+Or clone the repo and install locally:
+
+git clone https://github.com/your-username/newproj.git
+cd newproj
+pip install -e .
+
+🖥 Usage
+🔹 Interactive mode (recommended)
+python -m newproj.cli
+
+
+You’ll be prompted for:
+
+Project name
+
+Template (basic, pygame)
+
+Confirmation before creation
+
+🔹 Quick CLI mode
+python -m newproj.cli my_api --template basic
+python -m newproj.cli space_game --template pygame
+
+📂 Example Output
+my_project/
+├── docs/
+├── src/
+├── tests/
+├── main.py
+├── requirements.txt
+├── README.md
+└── .gitignore
+
+🔮 Roadmap
+
+ Add more built-in templates (Flask API, FastAPI, Data Science).
+
+ Improve interactive wizard with arrow-key menus.
+
+ Publish package to PyPI.
+
+ Add template versioning (e.g., pygame@2).
+
+🤝 Contributing
+
+Contributions are welcome!
+
+Fork this repo
+
+Create a new branch (feature/my-cool-template)
+
+Submit a PR 🎉
