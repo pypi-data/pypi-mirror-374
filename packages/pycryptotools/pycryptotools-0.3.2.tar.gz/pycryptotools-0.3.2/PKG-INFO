@@ -1,0 +1,57 @@
+Metadata-Version: 2.1
+Name: pycryptotools
+Version: 0.3.2
+Summary: Python Crypto Coin Tools
+Home-page: https://github.com/Toporin/pycryptotools
+Author: Toporin
+Author-email: satochip.wallet@gmail.com
+Project-URL: Github, https://github.com/Toporin
+Project-URL: Webshop, https://satochip.io/
+Project-URL: Telegram, https://t.me/Satochip
+Project-URL: Twitter, https://twitter.com/satochip
+Project-URL: Source, https://github.com/Toporin/pycryptotools
+Project-URL: Tracker, https://github.com/Toporin/pycryptotools/issues
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Security :: Cryptography
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Pycryptotools, Python library for Crypto coins signatures and transactions
+
+[![Latest Version](https://img.shields.io/pypi/v/pycryptotools.svg?style=flat)](https://pypi.org/project/pycryptotools/)
+
+This is a fork of Vitalik Buterin's original [pybitcointools](https://github.com/vbuterin/pybitcointools) library.
+
+It has been heavily modified and simplified to provide basic service such as:
+* recovering address from a public key for various blockchain
+* recovering wif from private key
+* get the balance for a given address on a blockchain, using block explorer web services API
+* get assets (token & NFT) linked to a given address on a blockchain
+
+Installation:
+
+```bash
+pip install pycryptotools
+```
+
+Library supports the following blockchains:
+
+* Bitcoin mainnet & testnet 
+* Bitcoin Cash mainnet & testnet
+* Litecoin mainnet & testnet
+* Counterparty mainnet & testnet
+* Ethereum mainnet & testnet
+* Polygon mainnet & testnet
+
+
+## Note
+
+This software is provided 'as-is', without any express or implied warranty. 
+In no event will the authors be held liable for any damages arising from the use of this software.
