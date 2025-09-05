@@ -1,0 +1,29 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-24.04]
+        python-version: ["3.10", "3.13"]
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-environment: hostile
+          environment-file: environment.yml
+          python-version: ${{ matrix.python-version }}
+          auto-activate-base: false
+          conda-remove-defaults: true
+      - run: pip install '.[dev]'
+      - run: python -m pytest
