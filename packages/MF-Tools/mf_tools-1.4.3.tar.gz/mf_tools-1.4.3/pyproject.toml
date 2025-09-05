@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "MF-Tools"
+version = "1.4.3"
+description = "Collection of helpful utilities for Manim"
+authors = ["John Connell <johnconnelltutor@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/TheMathematicFanatic/MF_Tools"
+readme = "README.md"
+
+packages = [
+  { include = "MF_Tools", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+manim = { version = ">=0.17.0", optional = true }
+manimgl = { version = ">=1.7.0", optional = true }
+
+[tool.poetry.extras]
+manimce = ["manim"]
+manimgl = ["manimgl"]
+
+[tool.poetry.plugins."manim.plugins"]
+"MF_Tools" = "MF_Tools"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
