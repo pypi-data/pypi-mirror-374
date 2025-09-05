@@ -1,0 +1,42 @@
+[flake8]
+# Configuration for flake8 linter
+# https://flake8.pycqa.org/en/latest/user/configuration.html
+
+# Maximum line length to match Black's default
+max-line-length = 88
+
+# Ignore specific error codes
+ignore = 
+    # E203: whitespace before ':' (conflicts with Black)
+    E203,
+    # W503: line break before binary operator (PEP 8 now recommends this)
+    W503,
+    # E501: line too long (handled by Black)
+    E501
+
+# Exclude directories from linting
+exclude = 
+    .git,
+    __pycache__,
+    .venv,
+    venv,
+    build,
+    dist,
+    *.egg-info
+
+# Files to include
+filename = *.py
+
+# Show source code for each error
+show-source = True
+
+# Count the number of occurrences of each error/warning code
+statistics = True
+
+# Maximum cyclomatic complexity
+max-complexity = 10
+
+# Per-file ignores (if needed)
+per-file-ignores = 
+    # Allow unused imports in __init__.py files
+    __init__.py:F401

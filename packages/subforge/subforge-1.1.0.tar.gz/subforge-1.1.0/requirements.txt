@@ -1,0 +1,19 @@
+# SubForge - AI-Powered Subagent Factory
+# Dependencies for the full-featured CLI interface
+
+# CLI framework and rich formatting
+typer>=0.9.0
+rich>=13.0.0
+
+# Development tools for code quality
+flake8>=6.0.0
+black>=23.0.0
+autopep8>=2.0.0
+ruff>=0.1.0
+
+# Core dependencies (these are built-in to Python 3.8+)
+# asyncio - built-in
+# dataclasses - built-in  
+# pathlib - built-in
+# json - built-in
+# typing - built-in

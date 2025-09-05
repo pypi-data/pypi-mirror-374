@@ -1,0 +1,46 @@
+# SubForge - Package Manifest
+# Created: 2025-09-02 19:58 UTC-3 São Paulo
+# This file specifies additional files to include in the source distribution
+
+# Include documentation
+include README.md
+include LICENSE
+include CHANGELOG.md
+
+# Include all template files
+recursive-include subforge/templates *.md
+recursive-include subforge/templates *.json
+recursive-include subforge/templates *.yaml
+recursive-include subforge/templates *.yml
+recursive-include subforge/templates *.txt
+
+# Include configuration examples
+include .flake8
+include requirements.txt
+
+# Include scripts
+recursive-include scripts *.sh
+recursive-include scripts *.py
+
+# Include test files for development
+recursive-include tests *.py
+recursive-include tests *.json
+recursive-include tests *.md
+
+# Exclude unnecessary files
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.swp
+global-exclude .DS_Store
+global-exclude __pycache__
+global-exclude .git
+global-exclude .gitignore
+global-exclude .venv
+global-exclude venv
+global-exclude .idea
+global-exclude .vscode
+
+# Exclude dashboard (separate package)
+prune subforge-dashboard
+prune .claude
+prune .subforge

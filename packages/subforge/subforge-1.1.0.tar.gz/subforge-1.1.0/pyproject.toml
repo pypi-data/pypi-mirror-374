@@ -1,0 +1,134 @@
+# SubForge - Modern Python Packaging Configuration
+# Created: 2025-09-02 19:57 UTC-3 São Paulo
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "subforge"
+dynamic = ["version"]
+authors = [
+    {name = "SubForge Contributors"},
+]
+description = "AI-powered subagent factory for Claude Code developers"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.8"
+keywords = [
+    "claude",
+    "ai",
+    "subagents",
+    "automation",
+    "development",
+    "tools",
+    "cli",
+    "orchestration",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Code Generators",
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+    "Framework :: AsyncIO",
+]
+
+[project.urls]
+Homepage = "https://github.com/FAL1989/subforge"
+Documentation = "https://github.com/FAL1989/subforge#readme"
+Repository = "https://github.com/FAL1989/subforge"
+Issues = "https://github.com/FAL1989/subforge/issues"
+
+[project.optional-dependencies]
+rich = [
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+]
+dev = [
+    "flake8>=6.0.0",
+    "black>=23.0.0",
+    "autopep8>=2.0.0",
+    "ruff>=0.1.0",
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+]
+full = [
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "flake8>=6.0.0",
+    "black>=23.0.0",
+    "autopep8>=2.0.0",
+    "ruff>=0.1.0",
+]
+
+[project.scripts]
+subforge = "subforge.simple_cli:main"
+subforge-rich = "subforge.cli:main"
+
+[tool.setuptools]
+packages = ["subforge", "subforge.core", "subforge.core.testing", "subforge.templates"]
+
+[tool.setuptools.package-data]
+subforge = [
+    "templates/*.md",
+    "templates/**/*.md",
+    "templates/**/**/*.md",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "subforge.__version__"}
+
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
+include = '\.pyi?$'
+
+[tool.ruff]
+line-length = 88
+target-version = "py38"
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+ignore = [
+    "E501",  # line too long, handled by black
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+
+[tool.coverage.run]
+source = ["subforge"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if __name__ == .__main__.:",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+]
