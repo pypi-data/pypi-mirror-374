@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "substrate-telemetry-client"
+version = "0.1.1"
+authors = [
+  { name="W3F SecOps Team", email="secops@web3.foundation" },
+]
+description = "A Python client for Substrate telemetry."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "websockets>=10.0"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/w3f/substrate-telemetry-client-py"
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP"]
