@@ -1,0 +1,81 @@
+Metadata-Version: 2.3
+Name: nova-galaxy
+Version: 0.11.2
+Summary: Utilties for accessing the ORNL Galaxy instance
+License: MIT
+Keywords: NOVA,Galaxy,python
+Author: Greg Watson
+Author-email: watsongr@ornl.gov
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: bioblend (>=1.5.0)
+Requires-Dist: blinker (>=1.9.0)
+Requires-Dist: deprecated (>=1.2.18)
+Requires-Dist: nova-common (>=0.2.0)
+Requires-Dist: pytest-asyncio (>=0.26.0)
+Requires-Dist: tomli (>=2.0.2)
+Description-Content-Type: text/markdown
+
+# nova-galaxy
+=======================
+
+# Introduction
+
+This is the repository for the nova-galaxy project. This project creates a python package that makes it easier to work with the ORNL Galaxy instance.
+
+## Documentation
+
+A user guide, examples, and a full API for this package can be found at https://nova-galaxy.readthedocs.io/en/stable/.
+
+## Installation
+You can install this package directly with
+
+```commandline
+pip install nova-galaxy
+```
+
+or with Poetry by placing the following in your pyproject.toml file (you can version lock with typical Semantic Versioning syntax)
+
+
+```
+[tool.poetry.dependencies]
+nova-galaxy = "*"
+```
+
+## Formatting
+```commandline
+poetry run ruff format
+```
+
+## Linting
+```commandline
+poetry run ruff check
+poetry run mypy .
+```
+
+## Testing
+You can run the tests for this package with the following command from the base directory:
+```commandline
+NOVA_GALAXY_TEST_GALAXY_URL=galaxy-url NOVA_GALAXY_TEST_GALAXY_KEY=key poetry run pytest tests/
+```
+with `NOVA_GALAXY_TEST_GALAXY_URL` being the url of your Galaxy instance and `NOVA_GALAXY_TEST_GALAXY_KEY` being your
+Galaxy API Key.
+
+To run tests with coverage (include the above environment variables):
+```commandline
+poetry run coverage run
+poetry run coverage report
+```
+
+## CI/CD in GitLab
+
+Take a look at the `.gitlab-ci.yml` file. It configures pipelines to run in [GitLab](https://code.ornl.gov/ndip/project-templates/python/-/pipelines).
+Some jobs will run automatically on each commit, jobs to
+build packages and Docker images need to be trigerred manually. Don't forget to set versions properly:
+in `pyproject.toml` for python package and in `.gitlab-ci.yml` for Docker tag.
+
