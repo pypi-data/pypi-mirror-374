@@ -1,0 +1,5 @@
+{% if perms.netbox_entraid_tools.contact_admin %}
+<a href="{{ resolve_url }}" class="btn btn-primary btn-sm">
+  <i class="mdi mdi-account-search"></i> Update from EntraID
+</a>
+{% endif %}

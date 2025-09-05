@@ -1,0 +1,157 @@
+{% if perms.netbox_entraid_tools.contact_admin %}
+{% load helpers %}
+<script>
+// Define debug_mode based on context variable - force to true for troubleshooting
+var debug_mode = true; // Override to ensure debugging is on
+var netboxBulkFormId = null; // Will store the detected form ID
+
+function debug_log() {
+    // Always log regardless of debug_mode setting during troubleshooting
+    console.log.apply(console, arguments);
+}
+
+// Find the bulk form in NetBox 
+function findNetBoxBulkForm() {
+    // Strategy 1: Try the known ID first
+    let bulkForm = document.getElementById('id_bulk_select_form');
+    if (bulkForm) {
+        debug_log('Found bulk form with id="id_bulk_select_form"');
+        return {form: bulkForm, id: 'id_bulk_select_form'};
+    }
+    
+    // Strategy 2: Find the form with checkboxes for contact selection
+    let forms = document.getElementsByTagName('form');
+    debug_log('Searching through ' + forms.length + ' forms on the page');
+    
+    for (let i = 0; i < forms.length; i++) {
+        let form = forms[i];
+        
+        // Check if this form has checkboxes with name="pk"
+        let pkInputs = form.querySelectorAll('input[name="pk"]');
+        if (pkInputs.length > 0) {
+            debug_log('Found bulk form with ' + pkInputs.length + ' pk checkboxes, id=' + (form.id || 'none'));
+            return {form: form, id: form.id || 'netbox-bulk-form-' + i};
+        }
+    }
+    
+    // Strategy 3: Look for class patterns that might indicate the bulk form
+    for (let i = 0; i < forms.length; i++) {
+        let form = forms[i];
+        if (form.className.includes('bulk') || form.className.includes('list')) {
+            debug_log('Found potential bulk form by class name: ' + form.className);
+            return {form: form, id: form.id || 'netbox-bulk-form-' + i};
+        }
+    }
+    
+    // Last resort: Look for any form with a table
+    for (let i = 0; i < forms.length; i++) {
+        let form = forms[i];
+        if (form.querySelector('table')) {
+            debug_log('Found form with table, assuming it might be the bulk form');
+            return {form: form, id: form.id || 'netbox-bulk-form-' + i};
+        }
+    }
+    
+    // No suitable form found
+    return null;
+}
+
+// Wait for DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    debug_log('EntraID tools script loaded at ' + new Date().toISOString());
+    
+    // Try to find the NetBox bulk form
+    let formInfo = findNetBoxBulkForm();
+    
+    if (!formInfo) {
+        console.error('ERROR: Could not find any suitable bulk selection form!');
+        return;
+    }
+    
+    // Store the detected form ID for later use
+    netboxBulkFormId = formInfo.id;
+    const bulkForm = formInfo.form;
+    
+    // If form doesn't have an ID, assign one
+    if (!bulkForm.id) {
+        bulkForm.id = netboxBulkFormId;
+        debug_log('Assigned ID to form:', netboxBulkFormId);
+    }
+    
+    // Log form properties for debugging
+    debug_log('Found bulk form:', netboxBulkFormId);
+    debug_log('Form action:', bulkForm.action);
+    debug_log('Form method:', bulkForm.method);
+    debug_log('Form elements:', bulkForm.elements.length);
+});
+</script>
+
+<div id="entraid_tools_container" style="display:none;">
+  <!-- Button will be inserted here once we find the form ID -->
+  <button type="submit" 
+          id="entraid_bulk_update_btn"
+          name="_resolve" 
+          formaction="{% url 'plugins:netbox_entraid_tools:bulk_contact_resolve_entraid' %}" 
+          formmethod="POST"
+          class="btn btn-primary btn-sm">
+    <i class="mdi mdi-account-search"></i> Resolve Selected
+  </button>
+</div>
+
+<script>
+// Additional script to enhance the HTML button with proper event handling
+document.addEventListener('DOMContentLoaded', function() {
+    // Wait a short time to ensure form detection is complete
+    setTimeout(function() {
+        const entraidBtn = document.getElementById('entraid_bulk_update_btn');
+        const container = document.getElementById('entraid_tools_container');
+        
+        if (!entraidBtn || !netboxBulkFormId) {
+            console.error('ERROR: Either button not found or form ID not detected!');
+            return;
+        }
+        
+        debug_log('Found EntraID button in DOM');
+        debug_log('Using detected form ID:', netboxBulkFormId);
+        
+        // Set the form attribute to the detected ID
+        entraidBtn.setAttribute('form', netboxBulkFormId);
+        
+        // Make the container visible
+        container.style.display = 'inline-block';
+        
+        entraidBtn.addEventListener('click', function(e) {
+            debug_log('EntraID button clicked at ' + new Date().toISOString());
+            
+            // Get selected items using the detected form ID
+            const bulkForm = document.getElementById(netboxBulkFormId);
+            if (!bulkForm) {
+                e.preventDefault();
+                console.error('ERROR: Form not found at click time!');
+                return;
+            }
+            
+            const selectedItems = Array.from(bulkForm.querySelectorAll('input[name=pk]:checked')).map(i => i.value);
+            debug_log('Selected items:', selectedItems);
+            
+            if (selectedItems.length === 0) {
+                e.preventDefault(); // Only prevent submission if no items selected
+                alert('Please select at least one contact to update from EntraID.');
+                return;
+            }
+            
+            // Log form properties at click time
+            debug_log('Form found:', bulkForm ? 'Yes' : 'No');
+            debug_log('Form ID:', netboxBulkFormId);
+            debug_log('Form action before click:', bulkForm.action);
+            debug_log('Form action from button:', this.getAttribute('formaction'));
+            debug_log('Form method before click:', bulkForm.method);
+            debug_log('Form method from button:', this.getAttribute('formmethod'));
+            
+            // Don't prevent default form submission
+            debug_log('Proceeding with form submission...');
+        });
+    }, 500); // Small delay to ensure form detection is complete
+});
+</script>
+{% endif %}

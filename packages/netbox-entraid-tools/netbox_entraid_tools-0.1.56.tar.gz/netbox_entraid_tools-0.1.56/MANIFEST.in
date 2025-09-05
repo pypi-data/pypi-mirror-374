@@ -1,0 +1,15 @@
+# MANIFEST.in
+include *.md
+include LICENSE
+include requirements.txt
+
+# Include all Python modules (including migrations)
+recursive-include netbox_entraid_tools *.py
+
+# Include templates & static assets
+recursive-include netbox_entraid_tools/templates *.html
+recursive-include netbox_entraid_tools/static *
+
+# No compiled clutter
+global-exclude __pycache__ *.pyc *.pyo *.pyd
+exclude AGENT_CONTEXT.md

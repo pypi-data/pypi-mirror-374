@@ -1,0 +1,49 @@
+[build-system]
+requires = [
+    "setuptools>=61.0.0",
+    "wheel>=0.37.0",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "netbox-entraid-tools"
+# Dynamic version will be read from __init__.py by setuptools
+dynamic = ["version"]
+description = "Jobs and utilities for EntraID hygiene in NetBox"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache Software License"}
+authors = [
+    {name = "Bacardi -  N.I.T.", email = "netbox@bacardi.com"}
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Framework :: Django",
+]
+dependencies = [
+    "requests>=2.31.0",
+    "azure-identity>=1.15.0",
+    "azure-data-tables>=12.5.0",
+]
+
+[project.urls]
+ Homepage = "https://github.com/bacardi-code/techops-networking-netbox-entraid-tools"
+ "Bug Tracker" = "https://github.com/bacardi-code/techops-networking-netbox-entraid-tools/issues"
+ "Source Code" = "https://github.com/bacardi-code/techops-networking-netbox-entraid-tools"
+
+[project.entry-points."netbox_plugins"]
+netbox_entraid_tools = "netbox_entraid_tools"
+
+[tool.setuptools]
+include-package-data = true
+packages = ["netbox_entraid_tools"]
+
+[tool.setuptools.dynamic]
+version = {attr = "netbox_entraid_tools.__version__"}
+
+[tool.setuptools.package-data]
+"netbox_entraid_tools" = [
+    "templates/netbox_entraid_tools/*.html",
+    "static/netbox_entraid_tools/*",
+]
