@@ -1,0 +1,54 @@
+from typing import Dict
+
+
+class MCPResource:
+    def __init__(self, url: str, env_key: str):
+        self.url = url
+        self._env_key = env_key
+
+    def openai(self) -> Dict[str, str]:
+        return {
+            "type": "mcp",
+            "server_label": self._env_key,
+            "server_url": self.url,
+            "require_approval": "never",
+        }
+
+    def anthropic(self) -> Dict[str, str]:
+        return {
+            "type": "url",
+            "url": self.url,
+            "name": self._env_key,
+        }
+
+    def list_tools(self):
+        import requests
+
+        """
+        Make a request to list available tools from the MCP endpoint.
+
+        Returns:
+            List of available tools with name, description, and input_schema
+        """
+        payload = {"jsonrpc": "2.0", "method": "tools/list", "params": {}, "id": 2}
+
+        response = requests.post(self.url, json=payload)
+        data = response.json()
+
+        # Extract tools from the response
+        if "result" in data and "tools" in data["result"]:
+            tools = data["result"]["tools"]
+
+            available_tools = [
+                {
+                    "name": tool.get("name"),
+                    "description": tool.get("description"),
+                    "input_schema": tool.get("inputSchema"),
+                }
+                for tool in tools
+            ]
+
+            return available_tools
+        else:
+            # Handle error or empty response
+            return []
