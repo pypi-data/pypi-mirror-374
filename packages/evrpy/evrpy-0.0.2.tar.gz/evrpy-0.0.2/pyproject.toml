@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "evrpy"
+version = "0.0.2"
+description = "Python wrapper for Evrmore RPC CLI"
+readme = "README.md"
+authors = [{ name = "neubtrino", email = "neubtrino_evrmore@proton.me" }]
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = []
+keywords = [
+  "evrmore",
+  "blockchain",
+  "rpc",
+  "cli",
+  "wrapper",
+  "cryptocurrency",
+  "crypto"
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3 :: Only",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Libraries",
+  "Topic :: Internet",
+]
+
+
+[project.urls]
+Homepage = "https://github.com/neubtrino/evrpy"
+"Bug Tracker" = "https://github.com/neubtrino/evrpy/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["evrpy*"]
