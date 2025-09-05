@@ -1,0 +1,20 @@
+import asyncio
+
+from aduib_mcp_router.app_factory import create_app
+from aduib_mcp_router.libs import app_context
+from aduib_mcp_router.mcp_router.router_manager import RouterManager
+
+app=None
+if not app:
+    app=create_app()
+
+async def run_app():
+    router_manager = RouterManager.get_router_manager()
+    app.router_manager = router_manager
+    app_context.set(app)
+    task= [router_manager.init_mcp_clients()]
+    await asyncio.gather(*task, return_exceptions=True)
+
+
+def main():
+    asyncio.run(run_app())
