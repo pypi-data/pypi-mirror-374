@@ -1,0 +1,119 @@
+Metadata-Version: 2.3
+Name: oagi
+Version: 0.3.0
+Summary: Official API of OpenAGI Foundation
+Project-URL: Homepage, https://github.com/agiopen-org/oagi
+Author-email: OpenAGI Foundation <contact@agiopen.org>
+License: MIT License
+        
+        Copyright (c) 2025 OpenAGI Foundation
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Requires-Python: >=3.10
+Requires-Dist: httpx>=0.28.0
+Requires-Dist: pillow>=11.3.0
+Requires-Dist: pyautogui>=0.9.54
+Requires-Dist: pydantic>=2.0.0
+Description-Content-Type: text/markdown
+
+# OAGI Python SDK
+
+Python SDK for the OAGI API - vision-based task automation.
+
+## Installation
+
+```bash
+pip install oagi  # requires Python >= 3.10
+```
+
+## Quick Start
+
+Set your API credentials:
+```bash
+export OAGI_API_KEY="your-api-key"
+export OAGI_BASE_URL="https://api.oagi.com"  # or your server URL
+```
+
+### Single-Step Analysis
+
+Analyze a screenshot and get recommended actions:
+
+```python
+from oagi import single_step
+
+step = single_step(
+    task_description="Click the submit button",
+    screenshot="screenshot.png"  # or bytes, or Image object
+)
+
+print(f"Actions: {step.actions}")
+print(f"Complete: {step.is_complete}")
+```
+
+### Automated Task Execution
+
+Run tasks automatically with screenshot capture and action execution:
+
+```python
+from oagi import ShortTask, ScreenshotMaker, PyautoguiActionHandler
+
+task = ShortTask()
+completed = task.auto_mode(
+    "Search weather on Google",
+    max_steps=10,
+    executor=PyautoguiActionHandler(),  # Executes mouse/keyboard actions
+    image_provider=ScreenshotMaker(),    # Captures screenshots
+)
+```
+
+### Image Processing
+
+Process and optimize images before sending to API:
+
+```python
+from oagi import PILImage, ImageConfig
+
+# Load and compress an image
+image = PILImage.from_file("large_screenshot.png")
+config = ImageConfig(
+    format="JPEG",
+    quality=85,
+    width=1260,
+    height=700
+)
+compressed = image.transform(config)
+
+# Use with single_step
+step = single_step("Click button", screenshot=compressed)
+```
+
+## Examples
+
+See the [`examples/`](examples/) directory for more usage patterns:
+- `google_weather.py` - Basic task execution with `ShortTask`
+- `single_step.py` - Basic single-step inference
+- `screenshot_with_config.py` - Image compression and optimization
+- `execute_task_auto.py` - Automated task execution
+
+## Documentation
+
+
+## License
+
+MIT
