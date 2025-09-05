@@ -1,0 +1,1 @@
+# Empty - thin client has no local agents
