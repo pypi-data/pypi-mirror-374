@@ -1,0 +1,80 @@
+Metadata-Version: 2.4
+Name: msl-kcdb
+Version: 1.0.0
+Summary: Search the BIPM key comparison database (KCDB).
+Project-URL: Changelog, https://mslnz.github.io/msl-kcdb/about/release-notes/
+Project-URL: Documentation, https://mslnz.github.io/msl-kcdb/
+Project-URL: Homepage, https://mslnz.github.io/msl-kcdb/
+Project-URL: Issues, https://github.com/MSLNZ/msl-kcdb/issues
+Project-URL: Source, https://github.com/MSLNZ/msl-kcdb
+Author-email: Measurement Standards Laboratory of New Zealand <info@measurement.govt.nz>
+Maintainer-email: Joseph Borbely <joseph.borbely@measurement.govt.nz>
+License: MIT License
+        
+        Copyright (c) 2025, Measurement Standards Laboratory of New Zealand
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE.txt
+Keywords: API,BIPM,KCDB,MSL
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+
+# MSL-KCDB
+
+[![Tests Status](https://github.com/MSLNZ/msl-kcdb/actions/workflows/ci.yml/badge.svg)](https://github.com/MSLNZ/msl-kcdb/actions/workflows/ci.yml)
+[![Docs Status](https://github.com/MSLNZ/msl-kcdb/actions/workflows/docs.yml/badge.svg)](https://github.com/MSLNZ/msl-kcdb/actions/workflows/docs.yml)
+[![PyPI - Version](https://img.shields.io/pypi/v/msl-kcdb?logo=pypi&logoColor=gold&label=PyPI&color=blue)](https://pypi.org/project/msl-kcdb/)
+[![PyPI - Python Versions](https://img.shields.io/pypi/pyversions/msl-kcdb.svg?logo=python&label=Python&logoColor=gold)](https://pypi.org/project/msl-kcdb/)
+
+## Overview
+Search the key comparison database, [KCDB](https://www.bipm.org/kcdb/), that is provided by the International Bureau of Weights and Measures, [BIPM](https://www.bipm.org/en/).
+
+## Install
+`msl-kcdb` is available at the [Python Package Index](https://pypi.org/project/msl-kcdb/) and can be installed with `pip`
+
+```console
+pip install msl-kcdb
+```
+
+## User Guide
+Three classes are available to search the three metrology domains
+
+* [ChemistryBiology](https://mslnz.github.io/msl-kcdb/latest/api/chemistry_biology/) &mdash; Search the Chemistry and Biology database
+* [Physics](https://mslnz.github.io/msl-kcdb/latest/api/general_physics/) &mdash; Search the General Physics database
+* [Radiation](https://mslnz.github.io/msl-kcdb/latest/api/ionizing_radiation/) &mdash; Search the Ionizing Radiation database
+
+See the [examples](https://mslnz.github.io/msl-kcdb/latest/examples/) on how to use each of these classes to extract information from the KCDB. Example scripts are also available in the `msl-kcdb` [repository](https://github.com/MSLNZ/msl-kcdb/tree/main/examples).
+
+## Documentation
+The documentation for `msl-kcdb` is available [here](https://mslnz.github.io/msl-kcdb/).
