@@ -1,0 +1,40 @@
+framework:
+  name: hle
+  pkg_name: hle
+  full_name: Humanity's Last Exam
+  description: Humanity's Last Exam (HLE) is a multi-modal benchmark at the frontier of human knowledge, designed to be the final closed-ended academic benchmark of its kind with broad subject coverage. Humanity's Last Exam consists of 3,000 questions across dozens of subjects, including mathematics, humanities, and the natural sciences. HLE is developed globally by subject-matter experts and consists of multiple-choice and short-answer questions suitable for automated grading.
+  url: https://github.com/centerforaisafety/hle
+  source: https://gitlab-master.nvidia.com/dl/JoC/competitive_evaluation/core_evals_frameworks/hle
+defaults:
+  command: >-
+    hle_eval --dataset=cais/hle --model_name={{target.api_endpoint.model_id}} --model_url={{target.api_endpoint.url}} 
+    --temperature={{config.params.temperature}} --top_p={{config.params.top_p}} --timeout={{config.params.request_timeout}} 
+    {% if config.params.limit_samples is not none %}--limit {{config.params.limit_samples}}{% endif %} --output_dir={{config.output_dir}} 
+    {% if target.api_endpoint.api_key is not none %}--api_key_name={{target.api_endpoint.api_key}}{% endif %} --max_retries={{config.params.max_retries}} --num_workers={{config.params.parallelism}} 
+    --max_new_tokens={{config.params.max_new_tokens}} --text_only --generate --judge
+  config:
+    # As in Artificial Analysis [https://artificialanalysis.ai/methodology/intelligence-benchmarking]
+    #  - 2,684 text-only questions
+    #  - OpenAI's GPT-4o (Aug) model as a judge
+    params:
+      limit_samples: null
+      temperature: 0.0  # as in Artificial Analysis
+      top_p: 1.0  # Default for OpenAI api
+      request_timeout: 600.0
+      max_new_tokens: 4096  # as in Artificial Analysis; In the original repo: 8192
+      max_retries: 30  # as in Artificial Analysis
+      parallelism: 100
+  target:
+    api_endpoint: {} # required to add: url, model_id
+evaluations:
+- name: hle
+  description: hle
+  defaults:
+    config:
+      type: hle
+      supported_endpoint_types:
+      - chat
+      params:
+        task: hle
+
+
