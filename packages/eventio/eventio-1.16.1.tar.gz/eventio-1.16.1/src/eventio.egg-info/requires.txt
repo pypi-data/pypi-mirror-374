@@ -1,0 +1,17 @@
+numpy>=1.21
+corsikaio<0.6.0,>=0.3.3
+zstandard>0.11.1
+
+[all]
+eventio[dev,test]
+
+[dev]
+setuptools_scm
+
+[examples]
+astropy<8.0.0a0,>=5.3
+ctapipe~=0.24.0
+matplotlib
+
+[test]
+pytest
