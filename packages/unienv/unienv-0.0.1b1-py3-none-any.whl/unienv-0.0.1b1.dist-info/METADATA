@@ -1,0 +1,20 @@
+Metadata-Version: 2.4
+Name: unienv
+Version: 0.0.1b1
+Requires-Python: >=3.10
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: xbarray>=0.0.1a8
+Requires-Dist: pillow
+Requires-Dist: h5py
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Provides-Extra: gymnasium
+Requires-Dist: gymnasium>=0.29.0; extra == "gymnasium"
+Provides-Extra: video
+Requires-Dist: moviepy>=2.1; extra == "video"
+Provides-Extra: mjx
+Requires-Dist: playground; extra == "mjx"
+Provides-Extra: maniskill
+Requires-Dist: mani_skill>=3.0.0b12; extra == "maniskill"
+Dynamic: license-file
