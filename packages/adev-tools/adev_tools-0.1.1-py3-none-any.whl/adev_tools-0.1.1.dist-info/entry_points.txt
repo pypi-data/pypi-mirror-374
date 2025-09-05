@@ -1,0 +1,19 @@
+[console_scripts]
+adev-branch = adev_tools.adev_branch:main
+adev-ci-copy = adev_tools.ci_copy:main
+adev-ci-stlink = adev_tools.ci_stlink:main
+adev-cloneupstream = adev_tools.py_cloneupstream:main
+adev-commit = adev_tools.git_commit:main
+adev-config-example = adev_tools.config_example:main
+adev-diff2commit = adev_tools.diff2commit:main
+adev-fork = adev_tools.py_fork:main
+adev-gdrive-config = adev_tools.gdrive_scope_config:main
+adev-gdrive-open-altium = adev_tools.open_gdrive_altium:main
+adev-gdrive-upload = adev_tools.gdrive_service_account_upload:main
+adev-gitlab-runner-status = adev_tools.gitlab_runner_status:main
+adev-issues = adev_tools.issues:main
+adev-post-build = adev_tools.post_build:main
+adev-pre-build = adev_tools.pre_build:main
+adev-test-branch = adev_tools.test_branch_functionality:main
+adev-test-gdrive = adev_tools.test_gdrive_connection:main
+adev-test-upload-download = adev_tools.test_upload_download:main
