@@ -1,0 +1,237 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [x86_64, aarch64]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.SSO_ENABLED_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Configure Git for private repos
+        run: |
+          git config --global url."https://${{ secrets.SSO_ENABLED_TOKEN }}@github.com/".insteadOf "https://github.com/"
+
+      - name: Build wheels
+        uses: PyO3/maturin-action@v1
+        with:
+          target: ${{ matrix.target }}
+          args: --release --out dist --interpreter python3.12
+          sccache: "false"
+          manylinux: ${{ matrix.target == 'aarch64' && '2_28' || 'auto' }}
+          before-script-linux: |
+            git config --global url."https://${{ secrets.SSO_ENABLED_TOKEN }}@github.com/".insteadOf "https://github.com/"
+        env:
+          CARGO_NET_GIT_FETCH_WITH_CLI: true
+          PYO3_USE_ABI3_FORWARD_COMPATIBILITY: 1
+          DOCKER_NETRC_PATH: /dev/null
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-linux-${{ matrix.target }}
+          path: dist
+
+  windows:
+    runs-on: windows-2022
+    strategy:
+      matrix:
+        target: [x64]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.SSO_ENABLED_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Configure Git for private repos
+        run: |
+          git config --global url."https://${{ secrets.SSO_ENABLED_TOKEN }}@github.com/".insteadOf "https://github.com/"
+
+      - name: Build wheels
+        uses: PyO3/maturin-action@v1
+        with:
+          target: ${{ matrix.target }}
+          args: --release --out dist --interpreter python3.12
+          sccache: "false"
+        env:
+          CARGO_NET_GIT_FETCH_WITH_CLI: true
+          GITHUB_TOKEN: ${{ secrets.SSO_ENABLED_TOKEN }}
+          PYO3_USE_ABI3_FORWARD_COMPATIBILITY: 1
+          MACOSX_DEPLOYMENT_TARGET: ${{ matrix.target == 'aarch64' && '11.0' || '' }}
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-windows-${{ matrix.target }}
+          path: dist
+
+  macos:
+    # Build x86_64 on Intel runners and aarch64 on Apple Silicon runners
+    strategy:
+      matrix:
+        include:
+          - runner: macos-13
+            target: x86_64
+          - runner: macos-14
+            target: aarch64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.SSO_ENABLED_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          architecture: ${{ matrix.target == 'aarch64' && 'arm64' || 'x64' }}
+
+      - name: Configure Git for private repos
+        run: |
+          git config --global url."https://${{ secrets.SSO_ENABLED_TOKEN }}@github.com/".insteadOf "https://github.com/"
+
+      - name: Build wheels
+        uses: PyO3/maturin-action@v1
+        with:
+          target: ${{ matrix.target }}
+          args: --release --out dist --interpreter python3.12
+          sccache: "false"
+        env:
+          CARGO_NET_GIT_FETCH_WITH_CLI: true
+          GITHUB_TOKEN: ${{ secrets.SSO_ENABLED_TOKEN }}
+          PYO3_USE_ABI3_FORWARD_COMPATIBILITY: 1
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-macos-${{ matrix.target }}
+          path: dist
+
+  sdist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.SSO_ENABLED_TOKEN }}
+
+      - name: Configure Git for private repos
+        run: |
+          git config --global url."https://${{ secrets.SSO_ENABLED_TOKEN }}@github.com/".insteadOf "https://github.com/"
+
+      - name: Build sdist
+        uses: PyO3/maturin-action@v1
+        with:
+          command: sdist
+          args: --out dist
+        env:
+          CARGO_NET_GIT_FETCH_WITH_CLI: true
+          GITHUB_TOKEN: ${{ secrets.SSO_ENABLED_TOKEN }}
+
+      - name: Upload sdist
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-sdist
+          path: dist
+
+  validate-tag:
+    name: Validate Tag
+    runs-on: ubuntu-latest
+    if: "startsWith(github.ref, 'refs/tags/')"
+    outputs:
+      version-valid: ${{ steps.check-version.outputs.valid }}
+      tag-version: ${{ steps.extract-version.outputs.version }}
+      cargo-version: ${{ steps.cargo-version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.SSO_ENABLED_TOKEN }}
+
+      - name: Extract version from tag
+        id: extract-version
+        run: |
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          echo "Tag name: $TAG_NAME"
+          if [[ $TAG_NAME =~ ^v([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+            VERSION=${BASH_REMATCH[1]}
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "Extracted version: $VERSION"
+          else
+            echo "Invalid tag format: $TAG_NAME (expected: vX.Y.Z)"
+            exit 1
+          fi
+
+      - name: Get Cargo.toml version
+        id: cargo-version
+        run: |
+          CARGO_VERSION=$(grep '^version = ' Cargo.toml | head -1 | sed 's/version = "\(.*\)"/\1/')
+          echo "version=$CARGO_VERSION" >> $GITHUB_OUTPUT
+          echo "Cargo.toml version: $CARGO_VERSION"
+
+      - name: Check version match
+        id: check-version
+        run: |
+          TAG_VERSION="${{ steps.extract-version.outputs.version }}"
+          CARGO_VERSION="${{ steps.cargo-version.outputs.version }}"
+          
+          echo "Comparing versions:"
+          echo "  Tag version: $TAG_VERSION"
+          echo "  Cargo version: $CARGO_VERSION"
+          
+          if [ "$TAG_VERSION" = "$CARGO_VERSION" ]; then
+            echo "✅ Versions match!"
+            echo "valid=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Version mismatch!"
+            echo "Tag version ($TAG_VERSION) does not match Cargo.toml version ($CARGO_VERSION)"
+            echo "valid=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    if: "startsWith(github.ref, 'refs/tags/') && needs.validate-tag.outputs.version-valid == 'true'"
+    needs: [validate-tag, linux, windows, macos, sdist]
+    environment:
+      name: pypi
+      url: https://pypi.org/p/alwayson_py
+    permissions:
+      id-token: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: wheels-*
+          merge-multiple: true
+          path: dist
+
+      - name: Publish to PyPI
+        uses: PyO3/maturin-action@v1
+        with:
+          command: upload
+          args: --non-interactive --skip-existing dist/*
+        env:
+          MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+

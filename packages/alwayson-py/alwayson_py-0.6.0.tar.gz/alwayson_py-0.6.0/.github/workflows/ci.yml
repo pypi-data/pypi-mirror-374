@@ -1,0 +1,235 @@
+name: CI
+
+on:
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test:
+    name: Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-2022, macos-13]
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.SSO_ENABLED_TOKEN }}
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Configure Git for private repos
+        run: |
+          git config --global url."https://${{ secrets.SSO_ENABLED_TOKEN }}@github.com/".insteadOf "https://github.com/"
+        env:
+          CARGO_NET_GIT_FETCH_WITH_CLI: true
+
+      - name: Cache cargo dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Install maturin and create virtual environment
+        run: |
+          pip install --upgrade pip
+          pip install maturin
+          python -m venv .venv
+
+      - name: Build and install package
+        shell: bash
+        run: |
+          source .venv/bin/activate || source .venv/Scripts/activate
+          maturin develop
+        env:
+          CARGO_NET_GIT_FETCH_WITH_CLI: true
+
+      - name: Test basic import
+        shell: bash
+        run: |
+          source .venv/bin/activate || source .venv/Scripts/activate
+          python -c "import alwayson; print('Version:', alwayson.__version__)"
+
+      - name: Install test dependencies
+        shell: bash
+        run: |
+          source .venv/bin/activate || source .venv/Scripts/activate
+          pip install pytest pytest-asyncio
+
+      - name: Run tests
+        shell: bash
+        run: |
+          source .venv/bin/activate || source .venv/Scripts/activate
+          pytest tests/ -v
+        if: hashFiles('tests/*.py') != ''
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.SSO_ENABLED_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Configure Git for private repos
+        run: |
+          git config --global url."https://${{ secrets.SSO_ENABLED_TOKEN }}@github.com/".insteadOf "https://github.com/"
+
+      - name: Install Python dependencies
+        run: |
+          pip install black isort ruff mypy
+
+      - name: Check Rust formatting
+        run: cargo fmt --all -- --check
+
+      - name: Run Rust clippy
+        run: cargo clippy --all-targets --all-features -- -D warnings
+        env:
+          CARGO_NET_GIT_FETCH_WITH_CLI: true
+
+      - name: Install maturin and build
+        shell: bash
+        run: |
+          pip install maturin
+          python -m venv .venv
+          source .venv/bin/activate || source .venv/Scripts/activate
+          maturin develop
+        env:
+          CARGO_NET_GIT_FETCH_WITH_CLI: true
+
+      - name: Check Python formatting with black
+        run: black --check python/
+        if: hashFiles('python/**/*.py') != ''
+
+      - name: Check Python imports with isort
+        run: isort --check-only python/
+        if: hashFiles('python/**/*.py') != ''
+
+      - name: Run ruff linter
+        run: ruff check python/
+        if: hashFiles('python/**/*.py') != ''
+
+  build:
+    name: Build wheels
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-2022, macos-13, macos-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.SSO_ENABLED_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Configure Git for private repos
+        run: |
+          git config --global url."https://${{ secrets.SSO_ENABLED_TOKEN }}@github.com/".insteadOf "https://github.com/"
+
+      - name: Build wheels
+        uses: PyO3/maturin-action@v1
+        with:
+          args: --release --out dist
+          sccache: 'true'
+        env:
+          CARGO_NET_GIT_FETCH_WITH_CLI: true
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-${{ matrix.os }}
+          path: dist
+
+  test-arm64:
+    name: Test ARM64 (Apple Silicon)
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.SSO_ENABLED_TOKEN }}
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Configure Git for private repos
+        run: |
+          git config --global url."https://${{ secrets.SSO_ENABLED_TOKEN }}@github.com/".insteadOf "https://github.com/"
+
+      - name: Install maturin and create virtual environment
+        run: |
+          pip install --upgrade pip
+          pip install maturin
+          python -m venv .venv
+
+      - name: Build and install package
+        shell: bash
+        run: |
+          source .venv/bin/activate
+          maturin develop
+        env:
+          CARGO_NET_GIT_FETCH_WITH_CLI: true
+
+      - name: Test basic import and functionality
+        shell: bash
+        run: |
+          source .venv/bin/activate
+          python -c "
+          import alwayson
+          print('✓ Import successful')
+          print('Version:', alwayson.__version__)
+          
+          # Test basic functionality
+          value = alwayson.TwPrim.string('Hello from ARM64!')
+          print('✓ TwPrim.string created:', value.get_value())
+          
+          number = alwayson.TwPrim.number(42.0)
+          print('✓ TwPrim.number created:', number.get_value())
+          
+          json_data = number.to_json()
+          print('✓ JSON serialization:', json_data)
+          
+          print('✓ All ARM64 tests passed!')
+          "
