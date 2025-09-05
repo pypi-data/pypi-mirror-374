@@ -1,0 +1,25 @@
+include LICENSE
+include README.md
+include CHANGELOG.md
+include docs/MANUAL_COBRA.md
+include cobra.mod
+include cobra.toml
+include pcobra.toml
+include pyproject.toml
+include Makefile
+include scripts/install.sh
+include scripts/run.sh
+include .env.example
+
+recursive-include src/pcobra *.py
+recursive-include src/pcobra *.toml
+recursive-include src/pcobra *.yaml
+recursive-include src/pcobra *.json
+recursive-include src/pcobra *.ini
+recursive-include src/pcobra *.cfg
+recursive-include src/pcobra *.md
+recursive-include src/pcobra *.txt
+recursive-include src/pcobra *.html
+
+recursive-include notebooks *
+recursive-include docs/frontend *
