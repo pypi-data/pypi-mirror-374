@@ -1,0 +1,467 @@
+/* Network Canvas Plugin Styles */
+
+.topology-container {
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.topology-container:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Enhanced Site Container Styles */
+.site-container {
+    cursor: move;
+    transition: all 0.2s ease;
+}
+
+.site-container:hover .site-boundary {
+    stroke: #007bff !important;
+    stroke-width: 3 !important;
+    filter: drop-shadow(2px 2px 4px rgba(0, 123, 255, 0.3));
+}
+
+.site-boundary {
+    transition: all 0.3s ease;
+    cursor: move;
+}
+
+.site-boundary.dragging {
+    stroke: #007bff !important;
+    stroke-width: 4 !important;
+    fill: rgba(0, 123, 255, 0.1) !important;
+}
+
+/* Resize Handle Styles */
+.resize-handle-group {
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.resize-handle-group:hover {
+    opacity: 1;
+}
+
+.resize-handle {
+    cursor: nw-resize;
+    transition: all 0.2s ease;
+}
+
+.resize-handle:hover {
+    fill: #0056b3 !important;
+    transform: scale(1.1);
+}
+
+/* Device Node Styles */
+.device-node {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.device-node:hover {
+    stroke-width: 3px;
+    filter: brightness(1.2) drop-shadow(3px 3px 6px rgba(0, 0, 0, 0.3));
+    transform: scale(1.1);
+}
+
+.device-node.selected {
+    stroke: #ffc107;
+    stroke-width: 4px;
+    filter: brightness(1.3) drop-shadow(4px 4px 8px rgba(255, 193, 7, 0.4));
+}
+
+.device-node.dragging {
+    stroke: #17a2b8;
+    stroke-width: 4px;
+    filter: brightness(1.2) drop-shadow(4px 4px 8px rgba(23, 162, 184, 0.4));
+}
+
+/* Enhanced Device Type Colors */
+.device-switch { fill: #17a2b8; }
+.device-router { fill: #28a745; }
+.device-server { fill: #fd7e14; }
+.device-firewall { fill: #dc3545; }
+.device-ap { fill: #6f42c1; }
+.device-vm { fill: #ffc107; }
+.device-unknown { fill: #6c757d; }
+
+/* Enhanced Connection/Link Styles */
+.connection-line {
+    stroke: #495057;
+    stroke-width: 2px;
+    transition: all 0.2s ease;
+    opacity: 0.8;
+}
+
+.connection-line:hover {
+    stroke: #007bff;
+    stroke-width: 3px;
+    opacity: 1;
+}
+
+.connection-active {
+    stroke: #28a745;
+    stroke-dasharray: 5,5;
+    animation: dash 2s linear infinite;
+}
+
+.connection-inactive {
+    stroke: #dc3545;
+    stroke-dasharray: 10,5;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: -10;
+    }
+}
+
+/* Labels and Text */
+.device-label {
+    font-family: 'Roboto', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    fill: #333333;
+    text-anchor: middle;
+    pointer-events: none;
+}
+
+.device-label-background {
+    fill: rgba(255, 255, 255, 0.95);
+    stroke: #dee2e6;
+    stroke-width: 1px;
+    rx: 4;
+    pointer-events: none;
+}
+
+/* Tooltip Styles */
+.topology-tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    pointer-events: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    max-width: 250px;
+    z-index: 1000;
+    border-left: 4px solid #007bff;
+}
+
+.topology-tooltip h6 {
+    margin: 0 0 8px 0;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.topology-tooltip .tooltip-detail {
+    margin: 4px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.tooltip-detail .label {
+    font-weight: 500;
+    color: #ccc;
+}
+
+.tooltip-detail .value {
+    color: white;
+    margin-left: 8px;
+}
+
+/* Control Panel */
+.topology-controls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 8px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #dee2e6;
+    z-index: 100;
+}
+
+.topology-controls .btn {
+    margin: 2px;
+    font-size: 11px;
+    padding: 4px 8px;
+}
+
+/* Loading Spinner */
+.topology-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 200;
+}
+
+.topology-loading .spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Legend */
+.topology-legend {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #dee2e6;
+    font-size: 11px;
+    z-index: 100;
+}
+
+.topology-legend h6 {
+    margin: 0 0 8px 0;
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin: 4px 0;
+}
+
+.legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-right: 8px;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Stats Panel */
+.topology-stats {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.topology-stats .row {
+    margin: 0;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 10px;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #007bff;
+    display: block;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .topology-controls {
+        position: static;
+        margin-bottom: 10px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .topology-legend {
+        position: static;
+        margin-top: 10px;
+        width: 100%;
+    }
+    
+    .topology-container {
+        min-height: 300px;
+    }
+    
+    .device-label {
+        font-size: 10px;
+    }
+}
+
+/* Enhanced Tooltip Styles */
+.topology-tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    line-height: 1.4;
+    max-width: 250px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    pointer-events: none;
+}
+
+.topology-tooltip strong {
+    color: #ffc107;
+    font-weight: 600;
+}
+
+/* Enhanced Controls */
+.topology-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.control-group {
+    display: flex;
+    gap: 4px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 2px;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.control-group .btn {
+    border: none;
+    margin: 0;
+    border-radius: 4px;
+}
+
+/* Site Label Enhancements */
+.site-label {
+    font-weight: bold;
+    font-size: 16px;
+    fill: #495057;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+    transition: all 0.2s ease;
+}
+
+.site-container:hover .site-label {
+    fill: #007bff;
+    font-size: 17px;
+}
+
+/* Device Count Badge Enhancements */
+.device-count-badge {
+    transition: all 0.3s ease;
+    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.site-container:hover .device-count-badge {
+    transform: scale(1.1);
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.device-count-text {
+    font-weight: bold;
+    transition: all 0.3s ease;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Enhanced Device Labels */
+.device-label-group {
+    transition: all 0.2s ease;
+}
+
+.device-label-bg {
+    transition: all 0.2s ease;
+    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.device-node:hover + .device-label-group .device-label-bg {
+    fill: rgba(0, 123, 255, 0.1);
+    stroke: #007bff;
+    stroke-width: 2;
+}
+
+.device-label {
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.device-node:hover + .device-label-group .device-label {
+    font-weight: bold;
+    fill: #007bff;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .topology-container {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        border-color: #495057;
+    }
+    
+    .device-label {
+        fill: #f8f9fa;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    }
+    
+    .topology-controls, .topology-legend {
+        background: rgba(52, 58, 64, 0.95);
+        border-color: #495057;
+        color: #f8f9fa;
+    }
+}
+
+/* Site Organization Styles */
+.site-boundary {
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.site-boundary:hover {
+    opacity: 1;
+}
+
+.site-label {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+    pointer-events: none;
+}
+
+.device-count-badge {
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+.device-count-text {
+    font-family: 'Roboto', sans-serif;
+    pointer-events: none;
+}
+
+/* Device Icon Styles */
+.device-icon {
+    font-size: 16px;
+    pointer-events: none;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
