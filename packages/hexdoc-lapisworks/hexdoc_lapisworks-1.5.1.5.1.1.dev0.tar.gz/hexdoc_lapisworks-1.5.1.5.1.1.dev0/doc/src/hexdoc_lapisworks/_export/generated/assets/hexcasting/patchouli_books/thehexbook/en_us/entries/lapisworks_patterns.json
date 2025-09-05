@@ -1,0 +1,73 @@
+{
+    "name": "pages.lapisworks.lapisworks_patterns.title",
+    "icon": "lapisworks:amel2",
+    "advancement": "lapisworks:got_lapis",
+    "category": "hexcasting:lapisworks",
+    "sortnum": 3,
+    "pages": [
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:imbue_lap",
+            "anchor": "lapisworks:imbue_lap",
+            "input": "",
+            "output": "",
+            "text": "pages.lapisworks.lapisworks_patterns.imbue_lap.summary"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:swap_amel",
+            "anchor": "lapisworks:swap_amel",
+            "input": "",
+            "output": "",
+            "text": "pages.lapisworks.lapisworks_patterns.swap_amel.summary"
+        },
+        {
+            "type": "patchouli:text",
+            "text": "pages.lapisworks.lapisworks_patterns.bodily_enchantments_wait"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:moar_health",
+            "anchor": "lapisworks:moar_health",
+            "input": "entity, num",
+            "output": "",
+            "text": "pages.lapisworks.lapisworks_patterns.moar_health.summary"
+        },
+        {
+            "type": "patchouli:text",
+            "text": "pages.lapisworks.lapisworks_patterns.moar_health.detailed"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:moar_attack",
+            "anchor": "lapisworks:moar_attack",
+            "input": "entity, num",
+            "output": "",
+            "text": "pages.lapisworks.lapisworks_patterns.moar_attack.summary"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:moar_speed",
+            "anchor": "lapisworks:moar_speed",
+            "input": "entity, num",
+            "output": "",
+            "text": "pages.lapisworks.lapisworks_patterns.moar_speed.summary"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:gib_dexterity",
+            "anchor": "lapisworks:gib_dexterity",
+            "input": "entity, num",
+            "output": "",
+            "text": "pages.lapisworks.lapisworks_patterns.gib_dexterity.summary"
+        },
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "lapisworks:check_attr",
+            "anchor": "lapisworks:check_attr",
+            "input": "entity, num",
+            "output": "",
+            "text": "pages.lapisworks.lapisworks_patterns.check_attr.summary"
+        }
+    ]
+}

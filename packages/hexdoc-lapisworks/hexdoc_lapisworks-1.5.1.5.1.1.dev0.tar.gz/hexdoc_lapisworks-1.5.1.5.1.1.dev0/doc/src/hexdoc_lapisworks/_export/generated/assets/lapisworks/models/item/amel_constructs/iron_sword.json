@@ -1,0 +1,14 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "lapisworks:item/amel_isword"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "lapisworks:blocking": 1.0
+            },
+            "model": "lapisworks:item/amel_constructs/iron_sword_blocking"
+        }
+    ]
+}
