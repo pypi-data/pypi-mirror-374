@@ -1,0 +1,15 @@
+aiohttp>=3.8.0
+asyncio
+pathlib
+typing-extensions>=4.0.0
+
+[dev]
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.0.0
+
+[full]
+rich>=13.0.0
+colorama>=0.4.6
