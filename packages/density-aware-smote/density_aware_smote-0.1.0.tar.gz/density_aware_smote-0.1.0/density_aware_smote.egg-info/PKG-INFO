@@ -1,0 +1,48 @@
+Metadata-Version: 2.4
+Name: density-aware-smote
+Version: 0.1.0
+Summary: Density Aware SMOTE: A Python package for density-aware synthetic oversampling
+Author-email: Your Name <your.email@example.com>
+Project-URL: Homepage, https://github.com/nbeeeel/Improved-Oversampling-Density-Aware-Smote
+Project-URL: Bug Tracker, https://github.com/nbeeeel/Improved-Oversampling-Density-Aware-Smote/issues
+Keywords: SMOTE,oversampling,machine-learning,imbalanced-data,synthetic-data
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: numpy
+Requires-Dist: scikit-learn
+Requires-Dist: matplotlib
+Dynamic: license-file
+
+# Density Aware SMOTE
+
+![PyPI version](https://img.shields.io/pypi/v/density-aware-smote?color=blue)
+![Python versions](https://img.shields.io/pypi/pyversions/density-aware-smote)
+![License](https://img.shields.io/github/license/nbeeeel/Improved-Oversampling-Density-Aware-Smote)
+
+A Python package implementing **Density Aware SMOTE**, developed in the [**Improved-Oversampling-Density-Aware-Smote** repository](https://github.com/nbeeeel/Improved-Oversampling-Density-Aware-Smote).  
+This method enhances SMOTE by generating synthetic samples based on **local data density**, reducing oversampling in sparse regions and preserving valuable patterns in dense areas.
+
+---
+
+##  Features
+- Density-aware oversampling tuned for local distribution  
+- Flexible sampling strategy: `auto`, ratio float, or custom class counts  
+- Custom neighbor selection: `random`, `nearest`, `farthest`  
+- Seamless integration with scikit-learn pipelines  
+- Built-in visuals: class distribution, synthetic samples, decision boundaries  
+
+---
+
+##  Installation
+
+```bash
+pip install density-aware-smote
