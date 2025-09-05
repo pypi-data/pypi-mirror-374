@@ -1,0 +1,30 @@
+Metadata-Version: 2.4
+Name: funcnodes-span
+Version: 1.0.0
+Summary: SPectral ANalysis (SPAN) for funcnodes
+Project-URL: homepage, https://github.com/Linkdlab/funcnodes_span
+Project-URL: source, https://github.com/Linkdlab/funcnodes_span
+Project-URL: tracker, https://github.com/Linkdlab/funcnodes_span/issues
+Project-URL: download, https://pypi.org/project/funcnodes-span/#files
+Author-email: Kourosh Rezaei <kourosh.rezaei@linkdlab.de>, Julian Kimmig <julian.kimmig@linkdlab.de>
+License: AGPL-3.0
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)
+Requires-Python: >=3.11
+Requires-Dist: funcnodes-core>=1.0.4
+Requires-Dist: funcnodes-lmfit>=0.2.0
+Requires-Dist: funcnodes-numpy
+Requires-Dist: funcnodes-pandas
+Requires-Dist: funcnodes-plotly
+Requires-Dist: funcnodes>=1.0.0
+Requires-Dist: lmfit
+Requires-Dist: numba<1.0.0,>=0.61.0
+Requires-Dist: pybaselines
+Requires-Dist: scipy
+Description-Content-Type: text/markdown
+
+SPectral ANalysis (SPAN) for funcnodes
