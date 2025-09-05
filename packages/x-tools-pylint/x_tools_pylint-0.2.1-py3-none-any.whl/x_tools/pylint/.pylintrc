@@ -1,0 +1,89 @@
+# This file contains config like here:
+#     https://github.com/kubeflow/examples/blob/master/.pylintrc
+
+[MASTER]
+
+# ignore=test_*.py
+ignore=.venv,.idea,.git
+
+# Use multiple processes to speed up Pylint.  MBr: jobs>1 doesn't work on Windows.
+jobs=1
+
+
+
+[BASIC]
+# Minimum line length for functions/classes that require docstrings, shorter
+# ones are exempt.
+docstring-min-length=5
+
+
+
+[FORMAT]
+
+# Maximum number of characters on a single line.
+max-line-length=160
+
+# Maximum number of lines in a module
+max-module-lines=800
+
+# String used as indentation unit. This is usually "    " (4 spaces) or "\t" (1 tab).
+indent-string='    '
+
+# Number of spaces of indent required inside a hanging  or continued line.
+indent-after-paren=8
+
+
+# Expected format of line ending, e.g. empty (any line ending), LF or CRLF.
+expected-line-ending-format=LF
+
+
+
+[MISCELLANEOUS]
+
+# List of note tags to take in consideration, separated by a comma.
+notes=FIXME,TODO
+
+
+
+[SIMILARITIES]
+
+# Minimum lines number of a similarity.
+min-similarity-lines=10
+
+# Ignore comments when computing similarities.
+ignore-comments=yes
+
+# Ignore docstrings when computing similarities.
+ignore-docstrings=yes
+
+# Ignore imports when computing similarities.
+ignore-imports=no
+
+
+[DESIGN]
+
+# Maximum number of arguments for function / method
+max-args=10
+max-positional-arguments=10
+
+# Argument names that match this expression will be ignored.
+# Default to name with leading underscore
+ignored-argument-names=_.*
+
+# Maximum number of locals for function / method body
+max-locals=15
+
+# Maximum number of return / yield for function / method body
+max-returns=6
+
+# Maximum number of branch for function / method body
+max-branches=12
+
+# Maximum number of statements in function / method body
+max-statements=50
+
+# Maximum number of parents for a class (see R0901).
+max-parents=7
+
+# Maximum number of attributes for a class (see R0902).
+max-attributes=20
