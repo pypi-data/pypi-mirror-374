@@ -1,0 +1,398 @@
+Metadata-Version: 2.4
+Name: khx_color_text
+Version: 0.3.0
+Summary: A comprehensive Python package for printing colored and styled text in the terminal with decorative lines, extensive customization options, and IDE autocomplete support
+Project-URL: Homepage, https://github.com/Khader-X/khx_color_text
+Project-URL: Repository, https://github.com/Khader-X/khx_color_text
+Project-URL: Issues, https://github.com/Khader-X/khx_color_text/issues
+Author-email: ABUELTAYEF Khader <abueltayef.khader@gmail.com>
+License: MIT
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Terminals
+Requires-Python: >=3.9
+Requires-Dist: colorama>=0.4.6
+Provides-Extra: docs
+Requires-Dist: matplotlib>=3.7; extra == 'docs'
+Requires-Dist: mkdocs-material>=9.6; extra == 'docs'
+Requires-Dist: mkdocs>=1.6; extra == 'docs'
+Requires-Dist: rich>=13; extra == 'docs'
+Provides-Extra: test
+Requires-Dist: pytest>=8; extra == 'test'
+Description-Content-Type: text/markdown
+
+# khx_color_text
+
+[![Python Version](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://python.org)
+[![PyPI version](https://badge.fury.io/py/khx-color-text.svg)](https://badge.fury.io/py/khx-color-text)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![CI Status](https://img.shields.io/badge/CI-passing-green.svg)](https://github.com/Khader-X/khx_color_text/actions)
+[![Downloads](https://pepy.tech/badge/khx-color-text)](https://pepy.tech/project/khx-color-text)
+
+A comprehensive Python package for printing colored and styled text in the terminal with extensive customization options and cross-platform support.
+
+**🎉 Now available on PyPI!** Install with: `pip install khx_color_text`
+
+<img src="docs/assets/main_showcase.svg" alt="khx_color_text comprehensive showcase" width="1400">
+
+## ✨ Features
+
+- **🎨 Multiple Color Formats**: Predefined colors, hex codes (#FF0000), and RGB tuples (255, 0, 0)
+- **✨ Text Styling**: Bold, italic, underline, strikethrough, dim, and bright styles
+- **🌈 Background Colors**: Support for background colors in all color formats
+- **🔧 Single API**: One powerful `cprint()` function for all features
+- **🖥️ Cross-platform**: Works on Windows, macOS, and Linux
+- **📦 Zero Dependencies**: Uses only Python standard library and colorama
+- **🎯 Type Safe**: Full type hints and mypy support
+- **⚡ CLI Tool**: Feature-rich command-line interface
+- **📏 Decorative Lines**: Create beautiful terminal lines with `cline()` function
+- **🔤 Character Names**: IDE autocomplete support for 50+ line characters
+- **📐 Auto-sizing**: Automatic terminal width detection for perfect lines
+- **📚 Rich Examples**: Comprehensive documentation and examples
+
+## Installation
+
+```bash
+pip install khx_color_text
+```
+
+## Quick Start
+
+<img src="docs/assets/basic_usage_terminal.svg" alt="Basic usage example" width="800">
+
+```python
+from khx_color_text import cprint, cline
+
+# Basic colors
+cprint("Hello, World!", "red")
+cprint("Success message", "green")
+
+# Hex colors
+cprint("Custom orange", "#FF6B35")
+
+# RGB colors
+cprint("Custom purple", (138, 43, 226))
+
+# With styling
+cprint("Bold red text", "red", style="bold")
+cprint("Multiple styles", "blue", style=["bold", "underline"])
+
+# With background
+cprint("Highlighted text", "white", bg_color="red")
+
+# Complex combinations
+cprint("Fancy text", "#00FF00", bg_color=(50, 50, 50), style=["bold", "italic"])
+
+# NEW: Decorative lines
+cline()  # Simple line filling terminal width
+cline("*", color="#FF0000")  # Red asterisk line
+cline("full_block", color="#00FF00")  # Green block line using character name
+cline("wave_dash", width=50, color="#0000FF")  # Blue wave line with custom width
+```
+
+## Color Support
+
+### Complete Color Palette
+<img src="docs/assets/color_palette_large.svg" alt="Complete color palette" width="1400">
+
+**Basic Colors**: red, green, blue, yellow, cyan, magenta, white, black  
+**Bright Colors**: bright_red, bright_green, bright_blue, bright_yellow, bright_cyan, bright_magenta, bright_white, bright_black  
+**Aliases**: orange, purple, pink, gray, grey
+
+**Bright Colors Example:**
+<img src="docs/assets/bright_color_terminal.svg" alt="Bright colors example" width="800">
+
+### Hex Colors
+<img src="docs/assets/hex_color_terminal.svg" alt="Hex color example" width="800">
+
+<img src="docs/assets/hex_colors_large.svg" alt="Hex color examples" width="1400">
+
+- **Hex Format**: `#FF0000`, `#f00` (3 or 6 digit hex)
+- **Full range**: Any valid hex color supported
+
+### RGB Colors
+<img src="docs/assets/rgb_colors_large.svg" alt="RGB color examples" width="1400">
+
+- **RGB Format**: `(255, 0, 0)` (values 0-255)
+- **Precise control**: 16.7 million colors available
+
+## Decorative Lines
+
+**NEW in v0.3.0**: Create beautiful terminal lines with the `cline()` function!
+
+```python
+from khx_color_text import cline
+
+# Basic lines
+cline()  # Fills entire terminal width
+cline("*", color="#FF0000")  # Red asterisk line
+cline("=", width=50, color="blue")  # Blue equals line, 50 chars wide
+
+# Using character names (with IDE autocomplete!)
+cline("full_block", color="#00FF00")  # █ Green block line
+cline("wave_dash", color="#FF00FF")   # 〜 Purple wave line
+cline("black_diamond", color="#FFFF00")  # ◆ Yellow diamond line
+cline("infinity", color="#00FFFF")    # ∞ Cyan infinity line
+
+# Advanced styling
+cline("black_star", color="#FFD700", bg_color="#000080", style="bold")
+```
+
+### Character Categories
+- **Basic ASCII**: asterisk, dash, equals, underscore, etc.
+- **Unicode Box Drawing**: horizontal, heavy_horizontal, double_horizontal
+- **Block Characters**: full_block, dark_shade, medium_shade, light_shade
+- **Wave Patterns**: tilde, wave_dash, almost_equal, triple_tilde
+- **Decorative**: black_star, heart_suit, diamond_suit, black_diamond
+- **Geometric**: black_up_triangle, black_down_triangle, black_left_pointer
+- **Mathematical**: infinity, summation, integral, square_root
+
+### Features
+- **Auto-sizing**: Lines automatically fill terminal width
+- **50+ Characters**: Extensive library of line characters
+- **IDE Support**: Full autocomplete for character names
+- **Type Safe**: Literal types for character names
+- **Flexible**: Use direct characters or descriptive names
+
+## Text Styling
+
+<img src="docs/assets/text_styles_large.svg" alt="Text styling options" width="1400">
+
+Available styles: `bold`, `italic`, `underline`, `strikethrough`, `dim`, `bright`
+
+### Style Combinations
+<img src="docs/assets/style_combinations_extra_large.svg" alt="Style combinations showcase" width="1400">
+
+### Background Colors
+<img src="docs/assets/background_colors_large.svg" alt="Background color support" width="1400">
+
+```python
+# Single style
+cprint("Bold text", "red", style="bold")
+
+# Multiple styles
+cprint("Bold and underlined", "blue", style=["bold", "underline"])
+
+# Using TextStyle enum
+from khx_color_text import TextStyle
+cprint("Enum style", "green", style=TextStyle.BOLD)
+```
+
+## CLI Usage
+
+<img src="docs/assets/cli_usage_terminal.svg" alt="CLI usage example" width="800">
+
+<img src="docs/assets/cli_demo_large.svg" alt="CLI demonstration" width="1400">
+
+The package includes a powerful command-line tool `khx-ct`:
+
+### Advanced CLI Features
+<img src="docs/assets/advanced_cli_extra_large.svg" alt="Advanced CLI features" width="1400">
+
+```bash
+# Basic usage
+khx-ct "Hello, World!" -c red
+
+# Hex colors
+khx-ct "Custom color" --hex "#FF6B35"
+
+# RGB colors
+khx-ct "RGB color" --rgb "255,107,53"
+
+# With styling
+khx-ct "Bold text" -c blue -s bold
+
+# Multiple styles
+khx-ct "Fancy text" -c green -s bold,underline
+
+# With background
+khx-ct "Highlighted" -c white --bg red
+
+# Show examples
+khx-ct --examples
+khx-ct --advanced-examples
+khx-ct --showcase
+```
+
+## API Reference
+
+### `cprint(text, color=None, bg_color=None, style=None, end="\n", sep=" ", file=None)`
+
+Print colored and styled text to the terminal.
+
+**Parameters:**
+- `text` (str): The text to print
+- `color` (str | tuple, optional): Text color in various formats
+- `bg_color` (str | tuple, optional): Background color
+- `style` (str | list, optional): Text style(s)
+- `end` (str): String appended after text (default: newline)
+- `sep` (str): String between multiple arguments (default: space)
+- `file`: File object to write to (default: sys.stdout)
+
+### `cline(char="-", width=None, color=None, bg_color=None, style=None, fill_terminal=True)`
+
+**NEW**: Create decorative terminal lines with automatic width detection.
+
+**Parameters:**
+- `char` (str | CharacterName): Character to use or character name (default: "-")
+- `width` (int, optional): Line width. If None, uses terminal width or 50
+- `color` (str | tuple, optional): Text color in various formats
+- `bg_color` (str | tuple, optional): Background color
+- `style` (str | list, optional): Text style(s)
+- `fill_terminal` (bool): Auto-fill terminal width when width is None (default: True)
+
+**Character Names:** Full IDE autocomplete support for 50+ character names like:
+- `"asterisk"` → `*`, `"full_block"` → `█`, `"wave_dash"` → `〜`
+- `"infinity"` → `∞`, `"black_star"` → `★`, `"heart_suit"` → `♥`
+
+**Color Formats:**
+- Predefined: `"red"`, `"bright_green"`, `"orange"`
+- Hex: `"#FF0000"`, `"#f00"`
+- RGB: `(255, 0, 0)`
+
+**Styles:**
+- Single: `"bold"`, `"italic"`, `"underline"`
+- Multiple: `["bold", "underline"]`
+- Enum: `TextStyle.BOLD`
+
+## Examples
+
+<img src="docs/assets/api_examples_large.svg" alt="Python API examples" width="1400">
+
+### Comprehensive Usage Examples
+<img src="docs/assets/comprehensive_examples_extra_large.svg" alt="Comprehensive usage examples" width="1400">
+
+### Real-World Use Cases
+<img src="docs/assets/real_world_use_cases_extra_large.svg" alt="Real-world use cases" width="1400">
+
+### Integration Examples
+<img src="docs/assets/integration_examples_extra_large.svg" alt="Integration examples" width="1400">
+
+### Error Handling
+<img src="docs/assets/error_handling_extra_large.svg" alt="Error handling and validation" width="1400">
+
+### Basic Usage
+
+**Success Messages:**
+<img src="docs/assets/success_message_terminal.svg" alt="Success message example" width="800">
+
+**Error Messages:**
+<img src="docs/assets/error_message_terminal.svg" alt="Error message example" width="800">
+
+**Warning Messages:**
+<img src="docs/assets/warning_message_terminal.svg" alt="Warning message example" width="800">
+
+**Info Messages:**
+<img src="docs/assets/info_message_terminal.svg" alt="Info message example" width="800">
+
+```python
+from khx_color_text import cprint
+
+# Run basic examples
+if __name__ == "__main__":
+    cprint("Red text", "red")
+    cprint("Green text", "green")
+    cprint("Blue text", "blue")
+```
+
+### Advanced Features
+```python
+from khx_color_text import cprint, TextStyle
+
+if __name__ == "__main__":
+    # Hex colors
+    cprint("Orange text", "#FF6B35")
+    cprint("Purple text", "#8A2BE2")
+    
+    # RGB colors
+    cprint("Custom red", (255, 0, 0))
+    cprint("Custom blue", (0, 100, 200))
+    
+    # Styling
+    cprint("Bold red", "red", style="bold")
+    cprint("Italic blue", "blue", style="italic")
+    cprint("Multiple styles", "green", style=["bold", "underline"])
+    
+    # Background colors
+    cprint("White on red", "white", bg_color="red")
+    cprint("Yellow on purple", "yellow", bg_color="#800080")
+    
+    # Complex combinations
+    cprint("Ultimate text", "#00FF00", bg_color=(50, 50, 50), 
+           style=[TextStyle.BOLD, TextStyle.ITALIC])
+```
+
+## Installation & Quick Start
+
+<img src="docs/assets/installation_demo_large.svg" alt="Installation demonstration" width="1400">
+
+## Feature Evolution
+
+<img src="docs/assets/feature_comparison_large.svg" alt="Feature comparison v0.1.0 to v0.2.0" width="1400">
+
+## Testing
+
+Run the test suite:
+
+```bash
+# Basic functionality tests
+python tests/test_basic_functionality.py
+
+# Advanced features tests  
+python tests/test_advanced_features.py
+
+# Color utility tests
+python tests/test_color_utilities.py
+```
+
+## How Previews Are Generated
+
+The SVG previews above are generated using the `scripts/gen_assets.py` script. This script uses Rich Console to capture colored output and export it as SVG files. The previews are automatically regenerated on each push to the main branch via GitHub Actions.
+
+To regenerate the previews locally:
+
+```bash
+pip install -e .[docs]
+python scripts/gen_assets.py
+```
+
+## Cross-Platform Support
+
+This package uses `colorama` to ensure colored output works correctly on Windows, macOS, and Linux terminals.
+
+## Package Statistics
+
+- **PyPI**: https://pypi.org/project/khx-color-text/
+- **Source Code**: https://github.com/Khader-X/khx_color_text
+- **Documentation**: https://khader-x.github.io/khx_color_text/
+- **Issues**: https://github.com/Khader-X/khx_color_text/issues
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+MIT License - see LICENSE file for details.
+
+## Author
+
+**ABUELTAYEF Khader**
+- Email: abueltayef.khader@gmail.com
+- GitHub Personal: [@Khader20](https://github.com/Khader20)
+- GitHub Organization: [@Khader-X](https://github.com/Khader-X)
+- PyPI: [Khader20](https://pypi.org/user/Khader20/)
