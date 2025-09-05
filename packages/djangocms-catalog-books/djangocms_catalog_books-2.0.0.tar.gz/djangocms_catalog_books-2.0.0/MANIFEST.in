@@ -1,0 +1,6 @@
+graft catalog_books/templates
+graft catalog_books/locale
+graft catalog_books/static
+global-exclude __pycache__/*
+include pyproject.toml
+include setup.py

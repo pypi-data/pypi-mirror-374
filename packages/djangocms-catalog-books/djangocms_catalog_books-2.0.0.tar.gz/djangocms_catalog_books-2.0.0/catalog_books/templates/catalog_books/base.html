@@ -1,0 +1,28 @@
+{% extends CMS_TEMPLATE %}
+{% load cms_tags %}
+
+{% block content %}
+    <div class="catalog-books-content">
+        <div class="before-catalog-books">
+            {% block catalog_book_before_content %}
+                {% if book_list %}
+                    {% static_placeholder 'catalog_book_before_content' %}
+                {% else %}
+                    {% static_placeholder 'catalog_book_detail_before_content' %}
+                {% endif %}
+            {% endblock %}
+        </div>
+        <div class="catalog-books">
+            {% block catalog_book_content %}{% endblock %}
+        </div>
+        <div class="after-catalog-books">
+            {% block catalog_book_after_content %}
+                {% if book_list %}
+                    {% static_placeholder 'catalog_book_after_content' %}
+                {% else %}
+                    {% static_placeholder 'catalog_book_detail_after_content' %}
+                {% endif %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock content %}

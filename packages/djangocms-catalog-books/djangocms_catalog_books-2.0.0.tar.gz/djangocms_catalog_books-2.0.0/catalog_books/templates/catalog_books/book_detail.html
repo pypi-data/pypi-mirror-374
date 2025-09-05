@@ -1,0 +1,147 @@
+{% extends "catalog_books/base.html" %}
+{% load i18n cms_tags thumbnail static catalog_books %}
+
+{% block title %}
+    {{ book.name }} - {{ block.super }}
+{% endblock %}
+
+{% block catalog_book_side %}
+    {% static_placeholder 'book_side' %}
+{% endblock %}
+
+{% block catalog_book_content %}
+    <div class="container catalog-books book-detail {% if book.hide %}hidden{% endif %}">
+        <div class="row {{ books_css_name|default_if_none:"" }}">
+            <div class="side-one col col-12 col-lg-4 col-md-12">
+                <div class="img-box">
+                    {% if book.new %}
+                        <div class="new"><div>{% translate "New" context "new-book" %}</div></div>
+                    {% endif %}
+                    {% if book.bestseller %}
+                        <div class="bestseller"><div>{% translate "Bestseller" %}</div></div>
+                    {% endif %}
+                    {% if book.coming_soon %}
+                        <div class="coming-soon"><div>{% translate "Coming soon" %}</div></div>
+                    {% endif %}
+                    {% if book.preview %}
+                        <img class="preview" width="{{ thumbnail_width }}" height="{{ thumbnail_height }}" src="{% thumbnail book.preview thumbnail_size crop upscale subject_location=book.preview.subject_location %}" alt="{{ book.preview.alt }}">
+                    {% else %}
+                        {% with img_src="catalog_books/img/without-cover-LANGUAGE_CODE.svg"|map_language_code:LANGUAGE_CODE %}
+                            <img class="preview without-cover" width="{{ thumbnail_width }}" height="{{ thumbnail_height }}" src="{% static img_src %}" alt="{{ book.preview.alt }}">
+                        {% endwith %}
+                    {% endif %}
+                </div>
+                <ul class="download-sample">
+                    {% if book.sample %}
+                        <li>
+                            <a href="{% get_media_prefix %}{{ book.sample.file }}" title="{% translate "Download in format" %} {{ book.sample|file_ext_description }}.">{% translate "Sample" %} <span class="file-ext">{{ book.sample|file_extension }}</span></a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="side-two col col-12 col-lg-8 col-md-12">
+                <h2>{{ book.name }}</h2>
+                <div class="authors">
+                    {% for author in book.authors.all %}
+                        <span class="author">{% spaceless %}
+                            {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %},{% endif %}
+                        {% endspaceless %}</span>{% if book.authors_and_team %} <span class="and-team">{% translate "and team" %}</span>{% endif %}
+                    {% endfor %}
+                    <span class="issue-year">{{ book.issue|date:"Y" }}</span>
+                </div>
+                {% if book.stores.exists %}
+                    <div class="bookstore dropdown">
+                        <a class="btn btn-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{% translate "Buy" %}</a>
+                        <ul class="dropdown-menu">
+                            {% for store_page in book.stores.all %}
+                                <li><a class="dropdown-item" href="{{ store_page.url }}">{{ store_page.bookstore.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <div class="description">{{ book.description|default_if_none:"" }}</div>
+            </div>
+        </div>
+
+        <div class="row bibliographic-data">
+            <div class="side-one col col-12 col-lg-4 col-md-12">
+                <h3>{% translate "Bibliographic data" %}</h3>
+            </div>
+            <div class="side-one col col-12 col-lg-8 col-md-12 description">
+                <div><p>{% translate "Name" %}:</p><p>{{ book.name }}</p></div>
+                <div><p>{% translate "Author" %}:</p>
+                    <p>
+                        {% for author in book.authors.all %}
+                            <span class="author">{% spaceless %}
+                                {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %},{% endif %}
+                            {% endspaceless %}</span>{% if book.authors_and_team %} <span class="and-team">{% translate "and team" %}</span>{% endif %}
+                        {% endfor %}
+                    </p>
+                </div>
+                <div><p>ISBN:</p><p>{{ book.isbn|default_if_none:"" }}</p></div>
+                <div><p>{% translate "Description" %}:</p><p>{{ book.bibliographic_description|default_if_none:"" }}</p></div>
+                <div><p>{% translate "Dimensions" %}:</p><p>{{ book.dimensions|default_if_none:"" }}</p></div>
+                <div><p>{% translate "Issue year" %}:</p><p>{{ book.issue|date:"Y" }}</p></div>
+            </div>
+        </div>
+        {% if book.license %}
+            <div class="row license">
+                <div class="side-one col col-12 col-lg-4 col-md-12"><h3>{% translate "License" %}</h3></div>
+                <div class="side-one col col-12 col-lg-8 col-md-12 description">
+                    <div class="license-label"><span>{{ book.license.name }}</span> &nbsp; <span class="version">{{ book.license.version|default_if_none:"" }}</span></div>
+                    {{ book.license.description }}
+                    {% if book.license.icon %}
+                        <img src="{% get_media_prefix %}{{ book.license.icon.file }}" alt="icon" title="{{ book.license.name }} {{ book.license.version }}">
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+        {% have_authors_more_books book as authors_have_more_books %}
+        {% if authors_have_more_books %}
+            <div class="row author-next-books">
+                <div class="side-one col col-12 col-lg-4 col-md-12"><h3>{% translate "More books by the same author" %}</h3></div>
+                <div class="side-one col col-12 col-lg-8 col-md-12">
+                    {% get_authors_more_books book as books_query %}
+                    {% for more in books_query %}
+                        <div class="authors-more-books">
+                            <a href="{% url "catalog_books:book_detail" pk=more.pk %}" title="{% translate "Go to book detail." %}">
+                                <div class="img-box">
+                                    {% if more.preview %}
+                                        <img class="preview" width="{{ thumbnail_width_50perc }}" height="{{ thumbnail_height_50perc }}" src="{% thumbnail more.preview thumbnail_size_50perc crop upscale subject_location=more.preview.subject_location %}" alt="{{ more.preview.alt }}">
+                                    {% else %}
+                                        <div class="preview default" style="width: {{ thumbnail_width_50perc }}px; height: {{ thumbnail_height_50perc }}px"></div>
+                                    {% endif %}
+                                </div>
+                                <div class="book-content">
+                                    <h4>{{ more.name }}</h4>
+                                    <div class="authors">
+                                        {% for author in more.authors.all %}
+                                            <span class="author">{% spaceless %}
+                                                {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %},{% endif %}
+                                            {% endspaceless %}</span>{% if more.authors_and_team %} <span class="and-team">{% translate "and team" %}</span>{% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        {% if book.ebooks.exists %}
+            <div class="row for-download">
+                <div class="side-one col col-12 col-lg-4 col-md-12"><h3>{% translate "Download" %}</h3></div>
+                <div class="side-one col col-12 col-lg-8 col-md-12">
+                    <ul class="download">
+                        {% for ebook in book.ebooks.all %}
+                            <li>
+                                <a href="{% get_media_prefix %}{{ ebook.file }}" title="{{ ebook|file_ext_description }}"><span class="file-ext">{{ ebook|file_extension }}</span> <span class="file-size">({{ ebook.file.size|filesizeformat }})</span></a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+{% endblock %}
