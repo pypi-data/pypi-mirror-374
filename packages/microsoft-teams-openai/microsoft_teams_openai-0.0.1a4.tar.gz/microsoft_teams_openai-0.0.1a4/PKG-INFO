@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: microsoft-teams-openai
+Version: 0.0.1a4
+Summary: model package for enabling chat experiences with openai
+Author-email: Microsoft <TeamsAISDKFeedback@microsoft.com>
+License-Expression: MIT
+Keywords: agents,ai,bot,microsoft,teams
+Requires-Python: >=3.12
+Requires-Dist: microsoft-teams-ai
+Requires-Dist: microsoft-teams-common
+Requires-Dist: openai>=1.102.0
