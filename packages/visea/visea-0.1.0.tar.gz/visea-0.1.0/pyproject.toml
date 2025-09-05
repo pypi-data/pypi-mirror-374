@@ -1,0 +1,46 @@
+[build-system]
+requires = ["hatchling>=1.18"]
+build-backend = "hatchling.build"
+
+[project]
+name = "visea"
+version = "0.1.0"
+description = "Exploratory Rendering ENgine: target-aware tabular EDA and visualization"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Eren" }]
+keywords = ["eda", "visualization", "statistics", "ml", "pandas"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "License :: OSI Approved :: MIT License",
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = [
+  "numpy>=1.22",
+  "pandas>=1.5",
+  "scipy>=1.9",
+  "scikit-learn>=1.1",
+  "matplotlib>=3.5",
+  "seaborn>=0.12"
+]
+
+[project.urls]
+Homepage = "https://pypi.org/project/visea/"
+Repository = "https://github.com/your-user/visea"
+
+[project.optional-dependencies]
+plotly = ["plotly>=5.0"]
+dev = ["pytest>=7", "pytest-cov", "black", "ruff", "mypy", "build", "twine"]
+
+[project.scripts]
+visea = "visea.cli:main"
+
+[tool.hatch.build.targets.sdist]
+include = ["visea", "README.md", "CHANGELOG.md", "LICENSE"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["visea"]
