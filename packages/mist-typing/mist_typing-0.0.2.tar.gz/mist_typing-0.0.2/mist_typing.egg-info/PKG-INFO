@@ -1,0 +1,39 @@
+Metadata-Version: 2.4
+Name: mist_typing
+Version: 0.0.2
+Summary: multi-locus sequence typing (MLST) and cgMLST
+Author-email: Bert Bogaerts <bioit@sciensano.be>
+License-Expression: GPL-3.0-or-later
+Project-URL: Homepage, https://github.com/BioinformaticsPlatformWIV-ISP/MiST
+Project-URL: Issues, https://github.com/BioinformaticsPlatformWIV-ISP/MiST/issues
+Keywords: typing,mlst,phylogeny
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: PyYAML
+Requires-Dist: biopython
+Requires-Dist: bs4
+Requires-Dist: furl
+Requires-Dist: pandas
+Requires-Dist: pytest
+Requires-Dist: pytest-xdist
+Requires-Dist: rauth
+Requires-Dist: requests
+Dynamic: license-file
+
+# MiST
+
+MiST is a rapid, accurate and flexible (core-genome) multi-locus sequence typing (MLST) allele caller.
+It provides tools to download, index, and query schemes, as well as to construct (cg)MLST-based phylogenies.
+
+# DOCUMENTATION
+
+The documentation is available on the [Wiki](https://github.com/BioinformaticsPlatformWIV-ISP/MiST/wiki).
+
+# CITATION
+
+Bogaerts B, MiST (https://github.com/BioinformaticsPlatformWIV-ISP/MiST)
