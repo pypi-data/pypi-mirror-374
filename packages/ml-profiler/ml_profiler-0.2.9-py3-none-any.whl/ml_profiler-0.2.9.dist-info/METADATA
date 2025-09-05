@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: ml_profiler
+Version: 0.2.9
+Summary: Automated ML profiling and reporting tool
+Author: Divyanshu Chouhan
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: scikit-learn
+Requires-Dist: matplotlib
+Requires-Dist: seaborn
+Requires-Dist: shap
+
+# ML Profiler
+
+**ML Profiler** is a lightweight Python library that automates machine learning profiling and reporting. It helps you understand your dataset, preprocess it, select models, evaluate performance, and generate explainability insights—all in one line.
+
+## 🔧 Features
+
+- 📊 Data summary and missing value analysis
+- 🧼 Preprocessing suggestions (encoding, scaling)
+- 🧠 Auto model selection (classification/regression)
+- 📈 Model training and evaluation
+- 🔍 SHAP-based explainability
+- 📄 HTML report generation
+
+## 🚀 Installation
+
+```bash
+pip install ml-profiler
