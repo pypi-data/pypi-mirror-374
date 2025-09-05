@@ -1,0 +1,45 @@
+[project]
+name = "abs-geolocation-core"
+version = "0.1.0"
+description = "Shared service for the azure maps location service"
+authors = [
+    {name = "AutoBridgeSystems", email = "info@autobridgesystems.com"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11,<4.0"
+dependencies = [
+    "azure-maps-route (>=1.0.0b3,<2.0.0)",
+    "azure-maps-search (>=2.0.0b2,<3.0.0)",
+    "azure-core",
+    "pydantic (>=2.0.0)",
+    "fastapi (>=0.100.0)",
+    "dependency-injector (>=4.48.1,<5.0.0)",
+    "httpx (>=0.28.1,<0.29.0)"
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest (>=7.0.0)",
+    "pytest-asyncio (>=0.21.0)",
+    "pytest-cov (>=4.0.0)",
+    "pytest-mock (>=3.10.0)",
+    "coverage[toml] (>=7.0.0)"
+]
+dev = [
+    "black (>=23.0.0)",
+    "isort (>=5.12.0)",
+    "flake8 (>=6.0.0)",
+    "mypy (>=1.0.0)",
+    "pre-commit (>=3.0.0)"
+]
+
+
+[tool.poetry]
+packages = [
+    { include = "abs_geolocation_core" }
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
