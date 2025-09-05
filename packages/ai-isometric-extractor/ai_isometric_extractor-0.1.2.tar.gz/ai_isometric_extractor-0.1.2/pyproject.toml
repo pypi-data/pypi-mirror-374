@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-isometric-extractor"
+version = "0.1.2"
+description = "YOLOv8 + Keras based isometric diagram extraction"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [{ name="Nabeel Ahmed Khan", email="nbeel.original@gmail.com" }]
+
+dependencies = [
+  "ultralytics",
+  "tensorflow",
+  "numpy",
+  "opencv-python",
+  "matplotlib",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"ai_isometric_extractor" = ["*.pt", "*.keras"]
