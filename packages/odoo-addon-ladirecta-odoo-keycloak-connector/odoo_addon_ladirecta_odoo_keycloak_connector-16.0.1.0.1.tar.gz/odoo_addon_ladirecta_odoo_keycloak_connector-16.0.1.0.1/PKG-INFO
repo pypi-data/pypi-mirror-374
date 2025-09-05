@@ -1,0 +1,23 @@
+Metadata-Version: 2.4
+Name: odoo-addon-ladirecta_odoo_keycloak_connector
+Version: 16.0.1.0.1
+Summary: La Directa Keycloak Connector
+Home-page: https://git.coopdevs.org/talaios/addons/odoo-directa#
+Author: Coopdevs Treball SCCL,
+License: AGPL-3
+Classifier: Programming Language :: Python
+Classifier: Framework :: Odoo
+Classifier: Framework :: Odoo :: 16.0
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3
+Requires-Python: >=3.10
+Requires-Dist: odoo-addon-component_event<16.1dev,>=16.0dev
+Requires-Dist: odoo-addon-contract<16.1dev,>=16.0dev
+Requires-Dist: odoo<16.1dev,>=16.0a
+Requires-Dist: python-keycloak
+Dynamic: author
+Dynamic: classifier
+Dynamic: home-page
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary

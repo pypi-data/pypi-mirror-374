@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="view_company_form">
+        <field name="name">res.company.form.keycloak</field>
+        <field name="inherit_id" ref="base.view_company_form" />
+        <field name="model">res.company</field>
+        <field name="arch" type="xml">
+            <group name="social_media" position="before">
+                <group name="keycloak" string="Keycloak Configuration">
+                    <field name="keycloak_connector_enabled" />
+                    <field name="keycloak_url" />
+                    <field name="keycloak_user_realm_name" />
+                    <field name="keycloak_admin_user" />
+                    <field name="keycloak_admin_password" password="True" />
+                    <field name="keycloak_realm_name" />
+                    <field name="keycloak_client_id" />
+                    <field name="keycloak_client_secret_master_realm" password="True" />
+                    <field name="keycloak_subs_group_id" />
+                </group>
+            </group>
+        </field>
+    </record>
+</odoo>
