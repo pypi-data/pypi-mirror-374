@@ -1,0 +1,29 @@
+Metadata-Version: 2.3
+Name: aiorisk
+Version: 0.1.2.1
+Summary: 
+License: MIT License. See LICENSE file
+Author: Evgeny (Krymmy) Momotov
+Author-email: evgeny.momotov@gmail.com
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Requires-Dist: aiohttp (>=3.11.5)
+Requires-Dist: pydantic (>=2.10.0)
+Requires-Dist: websockets (>=15.0)
+Project-URL: Download, https://github.com/KrymmyEM/tbank_kassa_api/archive/master.zip
+Project-URL: Repository, https://github.com/KrymmyEM/AioRisk/
+Description-Content-Type: text/markdown
+
+# AioRisk
+
+Aiorisk - async Asterisk ARI Wrapper
+Not based on 
