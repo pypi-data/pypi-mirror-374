@@ -1,0 +1,55 @@
+Metadata-Version: 2.4
+Name: molass_legacy
+Version: 0.2.4
+Summary: Matrix Optimization with Low-rank factorization for Automated analysis of SEC-SAXS
+Project-URL: Repository, https://github.com/freesemt/molass-legacy
+Author: Molass Community
+Maintainer: Molass Community
+License: GNU General Public License v3.0
+License-File: LICENSE.txt
+Keywords: SEC-SAXS
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python
+Requires-Python: <3.13,>=3.9
+Requires-Dist: lmfit
+Requires-Dist: matplotlib
+Requires-Dist: molass>=0.3.0
+Requires-Dist: numba
+Requires-Dist: numpy
+Requires-Dist: openpyxl
+Requires-Dist: psutil
+Requires-Dist: pybaselines>=1.2.0
+Requires-Dist: pyperclip
+Requires-Dist: python-tkdnd
+Requires-Dist: pywin32
+Requires-Dist: ruptures
+Requires-Dist: scikit-learn
+Requires-Dist: scipy<1.16.0
+Requires-Dist: screeninfo
+Requires-Dist: seaborn
+Requires-Dist: statsmodels
+Requires-Dist: termcolor
+Requires-Dist: toml
+Requires-Dist: wmi
+Description-Content-Type: text/markdown
+
+<h1 align="center"><a href="https://freesemt.github.io/molass-legacy"><img src="docs/_static/molass-legacy.png" width="400"></a></h1>
+
+Molass Legacy is an open-source version of [MOLASS](https://pfwww.kek.jp/saxs/MOLASSE.html) an analytical tool for SEC-SAXS experiment data currently hosted at [Photon Factory](https://www2.kek.jp/imss/pf/eng/) or [SPring-8](http://www.spring8.or.jp/en/), Japan.
+
+To install this package, use pip as follows.
+
+```
+pip install -U molass_legacy
+```
+
+For details, see also:
+
+- **Legacy Reference:** https://freesemt.github.io/molass-legacy for legacy function reference
+
+See also:
+
+- **Molass Library Repository:** https://github.com/nshimizu0721/molass-library
+
+<br>
