@@ -1,0 +1,13 @@
+include AUTHORS.rst
+include CONTRIBUTING.rst
+include HISTORY.rst
+include LICENSE
+include README.rst
+include requirements.txt
+include Makefile
+include docs/*
+exclude deprecated/*
+exclude scripts/*
+exclude utils/*
+recursive-include src/ufig/res *
+recursive-include tests *

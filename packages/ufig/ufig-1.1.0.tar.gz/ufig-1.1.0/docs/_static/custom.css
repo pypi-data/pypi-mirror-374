@@ -1,0 +1,14 @@
+/* Override background of code blocks (especially shell/console) */
+.highlight .hll {
+    background-color: transparent !important;
+}
+
+/* General code block override */
+div.highlight pre {
+    background-color: #f8f8f8 !important;  /* light gray or whatever you like */
+    color: #2c3e50;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1em;
+    font-family: Consolas, Monaco, monospace;
+}

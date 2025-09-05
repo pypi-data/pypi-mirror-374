@@ -1,0 +1,512 @@
+@article{ufig,
+	title        = {An Ultra Fast Image Generator (UFig) for wide-field astronomy},
+	author       = {Bergé, Joel and Gamper, Lukas and Réfrégier, Alexandre and Amara, Adam},
+	year         = 2013,
+	month        = feb,
+	journal      = {Astronomy and Computing},
+	volume       = 1,
+	pages        = {23–32},
+	doi          = {10.1016/j.ascom.2013.01.001},
+	issn         = {2213-1337},
+	abstractnote = {Simulated wide-field images are becoming an important part of observational astronomy, either to prepare for new surveys or to test measurement methods. In order to efficiently explore vast parameter spaces, the computational speed of simulation codes is a central requirement to their implementation. We introduce the Ultra Fast Image Generator (UFig) which aims to bring wide-field imaging simulations to the current limits of computational capabilities. We achieve this goal through: (1) models of galaxies, stars and observational conditions, which, while simple, capture the key features necessary for realistic simulations, and (2) state-of-the-art computational and implementation optimizations. We present the performances of UFig and show that it is faster than existing public simulation codes by several orders of magnitude. It allows us to produce images more quickly than SExtractor needs to analyze them. For instance, it can simulate a typical 0.25deg2 Subaru SuprimeCam image (10k×8k pixels) with a 5-σ limiting magnitude of R=26 in 30 s on a laptop, yielding an average simulation time for a galaxy of 30 μs. This code is complementary to end-to-end simulation codes and can be used as a fast, central component of observational methods relying on simulations. For instance, it can be used to efficiently calibrate high-precision measurements, as recently suggested for cosmic shear.}
+}
+
+@article{fischbacher,
+	title        = {GalSBI: phenomenological galaxy population model for cosmology using simulation-based inference},
+	author       = {Fischbacher, Silvan and Kacprzak, Tomasz and Tortorelli, Luca and Moser, Beatrice and Refregier, Alexandre and Gebhardt, Patrick and Gruen, Daniel},
+	year         = 2025,
+	month        = {june},
+	journal      = {Journal of Cosmology and Astroparticle Physics},
+	volume       = 2025,
+	number       = {06},
+	pages        = {007},
+	doi          = {10.1088/1475-7516/2025/06/007},
+	issn         = {1475-7516},
+	abstractnote = {
+		Abstract
+
+		We present GalSBI, a phenomenological model of the galaxy population for cosmological applications using simulation-based inference. The model is based on analytical parametrizations of galaxy luminosity functions, morphologies and spectral energy distributions. Model constraints are derived through iterative Approximate Bayesian Computation, by comparing Hyper Suprime-Cam deep field images with simulations which include a forward model of instrumental, observational and source extraction effects. We developed an emulator trained on image simulations using a normalizing flow. We use it to accelerate the inference by predicting detection probabilities, including blending effects and photometric properties of each object, while accounting for background and PSF variations. This enables robustness tests for all elements of the forward model and the inference. The model demonstrates excellent performance when comparing photometric properties from simulations with observed imaging data for key parameters such as magnitudes, colors and sizes. The redshift distribution of simulated galaxies agrees well with high-precision photometric redshifts in the COSMOS field within 1.5σ for all magnitude cuts. Additionally, we demonstrate how GalSBI’s redshifts can be utilized for splitting galaxy catalogs into tomographic bins, highlighting its potential for current and upcoming surveys. GalSBI is fully open-source, with the accompanying Python package, galsbi ( https://cosmo-docs.phys.ethz.ch/galsbi/ ), offering an easy interface to quickly generate realistic, survey-independent galaxy catalogs.
+	}
+}
+
+@article{galsbi,
+	title        = {$\texttt{galsbi}$: A Python package for the GalSBI galaxy population model},
+	author       = {Fischbacher, Silvan and Moser, Beatrice and Kacprzak, Tomasz and Herbel, Joerg and Tortorelli, Luca and Schmitt, Uwe and Refregier, Alexandre and Amara, Adam},
+	year         = 2024,
+	month        = dec,
+	publisher    = {arXiv},
+	number       = {arXiv:2412.08722},
+	doi          = {10.48550/arXiv.2412.08722},
+	url          = {http://arxiv.org/abs/2412.08722},
+	note         = {arXiv:2412.08722 [astro-ph]},
+	abstractnote = {Large-scale structure surveys measure the shape and position of millions of galaxies in order to constrain the cosmological model with high precision. The resulting large data volume poses a challenge for the analysis of the data, from the estimation of photometric redshifts to the calibration of shape measurements. We present GalSBI, a model for the galaxy population, to address these challenges. This phenomenological model is constrained by observational data using simulation-based inference (SBI). The $texttt{galsbi}$ Python package provides an easy interface to generate catalogs of galaxies based on the GalSBI model, including their photometric properties, and to simulate realistic images of these galaxies using the $texttt{UFig}$ package.}
+}
+@article{herbel,
+	title        = {The redshift distribution of cosmological samples: a forward modeling approach},
+	author       = {Herbel, Jörg and Kacprzak, Tomasz and Amara, Adam and Refregier, Alexandre and Bruderer, Claudio and Nicola, Andrina},
+	year         = 2017,
+	month        = aug,
+	journal      = {Journal of Cosmology and Astroparticle Physics},
+	volume       = 2017,
+	number       = {08},
+	pages        = {035–035},
+	doi          = {10.1088/1475-7516/2017/08/035},
+	issn         = {1475-7516},
+	note         = {arXiv: 1705.05386},
+	abstractnote = {Determining the redshift distribution $n(z)$ of galaxy samples is essential for several cosmological probes including weak lensing. For imaging surveys, this is usually done using photometric redshifts estimated on an object-by-object basis. We present a new approach for directly measuring the global $n(z)$ of cosmological galaxy samples, including uncertainties, using forward modeling. Our method relies on image simulations produced using UFig (Ultra Fast Image Generator) and on ABC (Approximate Bayesian Computation) within the $MCCL$ (Monte-Carlo Control Loops) framework. The galaxy population is modeled using parametric forms for the luminosity functions, spectral energy distributions, sizes and radial profiles of both blue and red galaxies. We apply exactly the same analysis to the real data and to the simulated images, which also include instrumental and observational effects. By adjusting the parameters of the simulations, we derive a set of acceptable models that are statistically consistent with the data. We then apply the same cuts to the simulations that were used to construct the target galaxy sample in the real data. The redshifts of the galaxies in the resulting simulated samples yield a set of $n(z)$ distributions for the acceptable models. We demonstrate the method by determining $n(z)$ for a cosmic shear like galaxy sample from the 4-band Subaru Suprime-Cam data in the COSMOS field. We also complement this imaging data with a spectroscopic calibration sample from the VVDS survey. We compare our resulting posterior $n(z)$ distributions to the one derived from photometric redshifts estimated using 36 photometric bands in COSMOS and find good agreement. This offers good prospects for applying our approach to current and future large imaging surveys.}
+}
+@article{herbel_psf,
+	title        = {Fast Point Spread Function Modeling with Deep Learning},
+	author       = {Herbel, Jörg and Kacprzak, Tomasz and Amara, Adam and Refregier, Alexandre and Lucchi, Aurelien},
+	year         = 2018,
+	month        = jul,
+	journal      = {Journal of Cosmology and Astroparticle Physics},
+	volume       = 2018,
+	number       = {07},
+	pages        = {054–054},
+	doi          = {10.1088/1475-7516/2018/07/054},
+	issn         = {1475-7516},
+	note         = {arXiv:1801.07615 [astro-ph, stat]},
+	abstractnote = {Modeling the Point Spread Function (PSF) of wide-field surveys is vital for many astrophysical applications and cosmological probes including weak gravitational lensing. The PSF smears the image of any recorded object and therefore needs to be taken into account when inferring properties of galaxies from astronomical images. In the case of cosmic shear, the PSF is one of the dominant sources of systematic errors and must be treated carefully to avoid biases in cosmological parameters. Recently, forward modeling approaches to calibrate shear measurements within the Monte-Carlo Control Loops ($MCCL$) framework have been developed. These methods typically require simulating a large amount of wide-field images, thus, the simulations need to be very fast yet have realistic properties in key features such as the PSF pattern. Hence, such forward modeling approaches require a very flexible PSF model, which is quick to evaluate and whose parameters can be estimated reliably from survey data. We present a PSF model that meets these requirements based on a fast deep-learning method to estimate its free parameters. We demonstrate our approach on publicly available SDSS data. We extract the most important features of the SDSS sample via principal component analysis. Next, we construct our model based on perturbations of a fixed base profile, ensuring that it captures these features. We then train a Convolutional Neural Network to estimate the free parameters of the model from noisy images of the PSF. This allows us to render a model image of each star, which we compare to the SDSS stars to evaluate the performance of our method. We find that our approach is able to accurately reproduce the SDSS PSF at the pixel level, which, due to the speed of both the model evaluation and the parameter estimation, offers good prospects for incorporating our method into the $MCCL$ framework.}
+}
+@article{tortorelli1,
+	title        = {Measurement of the B-band Galaxy Luminosity Function with Approximate Bayesian Computation},
+	author       = {Tortorelli, Luca and Fagioli, Martina and Herbel, Jörg and Amara, Adam and Kacprzak, Tomasz and Refregier, Alexandre},
+	year         = 2020,
+	month        = jan,
+	doi          = {10.1088/1475-7516/2020/09/048},
+	url          = {https://arxiv.org/abs/2001.07727v2},
+	abstractnote = {The galaxy Luminosity Function (LF) is a key observable for galaxy formation, evolution studies and for cosmology. In this work, we propose a novel technique to forward model wide-field broad-band galaxy surveys using the fast image simulator UFig and measure the LF of galaxies in the B-band. We use Approximate Bayesian Computation (ABC) to constrain the galaxy population model parameters of the simulations and match data from CFHTLS. We define a number of distance metrics between the simulated and the survey data. By exploring the parameter space of the galaxy population model through ABC to find the set of parameters that minimize these distance metrics, we obtain constraints on the LFs of blue and red galaxies as a function of redshift. We find that $mathrm{M^*}$ fades by $Delta mathrm{M}^*_{mathrm{0.1-1.0,b}} = 0.68 pm 0.52$ and $Delta mathrm{M}^*_{mathrm{0.1-1.0,r}} = 0.54 pm 0.48$ magnitudes between redshift $mathrm{z = 1}$ and $mathrm{z = 0.1}$ for blue and red galaxies, respectively. We also find that $phi^*$ for blue galaxies stays roughly constant between redshift $mathrm{z = 0.1}$ and $mathrm{z=1}$, while for red galaxies it decreases by $sim 35%$. We compare our results to other measurements, finding good agreement at all redshifts, for both blue and red galaxies. To further test our results, we compare the redshift distributions for survey and simulated data. We use the spectroscopic redshift distribution from the VIMOS Public Extragalactic Redshift Survey (VIPERS) and we apply the same selection in colours and magnitudes on our simulations. We find a good agreement between the survey and the simulated redshift distributions. We provide best-fit values and uncertainties for the parameters of the LF. This work offers excellent prospects for measuring other galaxy population properties as a function of redshift using ABC.},
+	language     = {en}
+}
+@article{tortorelli2,
+	title        = {The PAU Survey: Measurement of Narrow-band galaxy properties with Approximate Bayesian Computation},
+	author       = {Tortorelli, Luca and Siudek, Malgorzata and Moser, Beatrice and Kacprzak, Tomasz and Berner, Pascale and Refregier, Alexandre and Amara, Adam and García-Bellido, Juan and Cabayol, Laura and Carretero, Jorge and Castander, Francisco J. and De Vicente, Juan and Eriksen, Martin and Fernandez, Enrique and Gaztanaga, Enrique and Hildebrandt, Hendrik and Joachimi, Benjamin and Miquel, Ramon and Sevilla-Noarbe, Ignacio and Padilla, Cristóbal and Renard, Pablo and Sanchez, Eusebio and Serrano, Santiago and Tallada-Crespí, Pau and Wright, Angus H.},
+	year         = 2021,
+	month        = jun,
+	doi          = {10.1088/1475-7516/2021/12/013},
+	url          = {https://arxiv.org/abs/2106.02651v2},
+	abstractnote = {Narrow-band imaging surveys allow the study of the spectral characteristics of galaxies without the need of performing their spectroscopic follow-up. In this work, we forward-model the Physics of the Accelerating Universe Survey (PAUS) narrow-band data. The aim is to improve the constraints on the spectral coefficients used to create the galaxy spectral energy distributions (SED) of the galaxy population model in Tortorelli et al. 2020. In that work, the model parameters were inferred from the Canada-France-Hawaii Telescope Legacy Survey (CFHTLS) data using Approximate Bayesian Computation (ABC). This led to stringent constraints on the B-band galaxy luminosity function parameters, but left the spectral coefficients only broadly constrained. To address that, we perform an ABC inference using CFHTLS and PAUS data. This is the first time our approach combining forward-modelling and ABC is applied simultaneously to multiple datasets. We test the results of the ABC inference by comparing the narrow-band magnitudes of the observed and simulated galaxies using Principal Component Analysis, finding a very good agreement. Furthermore, we prove the scientific potential of the constrained galaxy population model to provide realistic stellar population properties by measuring them with the SED fitting code textsc{CIGALE}. We use CFHTLS broad-band and PAUS narrow-band photometry for a flux-limited ($mathrm{i}<22.5$) sample of galaxies up to redshift $mathrm{z sim 0.8}$. We find that properties like stellar masses, star-formation rates, mass-weighted stellar ages and metallicities are in agreement within errors between observations and simulations. Overall, this work shows the ability of our galaxy population model to correctly forward-model a complex dataset such as PAUS and the ability to reproduce the diversity of galaxy properties at the redshift range spanned by CFHTLS and PAUS.},
+	language     = {en}
+}
+@article{tortorelli3,
+	title        = {The PAU Survey: A Forward Modeling Approach for Narrow-band Imaging},
+	author       = {Tortorelli, Luca and Della Bruna, Lorenza and Herbel, Jörg and Amara, Adam and Refregier, Alexandre and Alarcon, Alex and Castander, Francisco J. and De Vicente, Juan and Eriksen, Martin and Fernandez, Enrique and García-Bellido, Juan and Gaztanaga, Enrique and Miquel, Ramon and Padilla, Cristobal and Sanchez, Eusebio and Serrano, Santiago and Stothert, Lee and Tonello, Nadia},
+	year         = 2018,
+	month        = nov,
+	journal      = {Journal of Cosmology and Astroparticle Physics},
+	volume       = 2018,
+	number       = 11,
+	pages        = {035–035},
+	doi          = {10.1088/1475-7516/2018/11/035},
+	issn         = {1475-7516},
+	note         = {arXiv:1805.05340 [astro-ph]},
+	abstractnote = {Weak gravitational lensing is a powerful probe of the dark sector, once measurement systematic errors can be controlled. In Refregier & Amara (2014), a calibration method based on forward modeling, called MCCL, was proposed. This relies on fast image simulations (e.g., UFig; Berge et al. 2013) that capture the key features of galaxy populations and measurement effects. The MCCL approach has been used in Herbel et al. (2017) to determine the redshift distribution of cosmological galaxy samples and, in the process, the authors derived a model for the galaxy population mainly based on broad-band photometry. Here, we test this model by forward modeling the 40 narrow-band photometry given by the novel PAU Survey (PAUS). For this purpose, we apply the same forced photometric pipeline on data and simulations using Source Extractor (Bertin & Arnouts 1996). The image simulation scheme performance is assessed at the image and at the catalogues level. We find good agreement for the distribution of pixel values, the magnitudes, in the magnitude-size relation and the interband correlations. A principal component analysis is then performed, in order to derive a global comparison of the narrow-band photometry between the data and the simulations. We use a `mixing’ matrix to quantify the agreement between the observed and simulated sets of Principal Components (PCs). We find good agreement, especially for the first three most significant PCs. We also compare the coefficients of the PCs decomposition. While there are slight differences for some coefficients, we find that the distributions are in good agreement. Together, our results show that the galaxy population model derived from broad-band photometry is in good overall agreement with the PAUS data. This offers good prospect for incorporating spectral information to the galaxy model by adjusting it to the PAUS narrow-band data using forward modeling.}
+}
+@article{kacprzak,
+	title        = {Monte Carlo Control Loops for cosmic shear cosmology with DES Year 1},
+	author       = {Kacprzak, T. and Herbel, J. and Nicola, A. and Sgier, R. and Tarsitano, F. and Bruderer, C. and Amara, A. and Refregier, A. and Bridle, S. L. and Drlica-Wagner, A. and Gruen, D. and Hartley, W. G. and Hoyle, B. and Secco, L. F. and Zuntz, J. and Annis, J. and Avila, S. and Bertin, E. and Brooks, D. and Buckley-Geer, E. and Rosell, A. Carnero and Kind, M. Carrasco and Carretero, J. and da Costa, L. N. and De Vicente, J. and Desai, S. and Diehl, H. T. and Doel, P. and García-Bellido, J. and Gaztanaga, E. and Gruendl, R. A. and Gschwend, J. and Gutierrez, G. and Hollowood, D. L. and Honscheid, K. and James, D. J. and Jarvis, M. and Lima, M. and Maia, M. A. G. and Marshall, J. L. and Melchior, P. and Menanteau, F. and Miquel, R. and Paz-Chinchón, F. and Plazas, A. A. and Sanchez, E. and Scarpine, V. and Serrano, S. and Sevilla-Noarbe, I. and Smith, M. and Suchyta, E. and Swanson, M. E. C. and Tarle, G. and Vikram, V. and Weller, J.},
+	year         = 2020,
+	month        = apr,
+	journal      = {Physical Review D},
+	volume       = 101,
+	number       = 8,
+	pages        = {082003},
+	doi          = {10.1103/PhysRevD.101.082003},
+	issn         = {2470-0010, 2470-0029},
+	note         = {arXiv: 1906.01018},
+	abstractnote = {Weak lensing by large-scale structure is a powerful probe of cosmology and of the dark universe. This cosmic shear technique relies on the accurate measurement of the shapes and redshifts of background galaxies and requires precise control of systematic errors. The Monte Carlo Control Loops (MCCL) is a forward modelling method designed to tackle this problem. It relies on the Ultra Fast Image Generator (UFig) to produce simulated images tuned to match the target data statistically, followed by calibrations and tolerance loops. We present the first end-to-end application of this method, on the Dark Energy Survey (DES) Year 1 wide field imaging data. We simultaneously measure the shear power spectrum $C_{ell}$ and the redshift distribution $n(z)$ of the background galaxy sample. The method includes maps of the systematic sources, Point Spread Function (PSF), an Approximate Bayesian Computation (ABC) inference of the simulation model parameters, a shear calibration scheme, and the fast estimation of the covariance matrix. We find a close statistical agreement between the simulations and the DES Y1 data using an array of diagnostics. In a non-tomographic setting, we derive a set of $C_ell$ and $n(z)$ curves that encode the cosmic shear measurement, as well as the systematic uncertainty. Following a blinding scheme, we measure the combination of $Omega_m$, $sigma_8$, and intrinsic alignment amplitude $A_{rm{IA}}$, defined as $S_8D_{rm{IA}} = sigma_8(Omega_m/0.3)^{0.5}D_{rm{IA}}$, where $D_{rm{IA}}=1-0.11(A_{rm{IA}}-1)$. We find $S_8D_{rm{IA}}=0.895^{+0.054}_{-0.039}$, where systematics are at the level of roughly 60% of the statistical errors. We discuss these results in the context of earlier cosmic shear analyses of the DES Y1 data. Our findings indicate that this method and its fast runtime offer good prospects for cosmic shear measurements with future wide-field surveys.},
+	language     = {en}
+}
+@article{moser,
+	title        = {Simulation-based inference of deep fields: galaxy population model and redshift distributions},
+	author       = {Moser, Beatrice and Kacprzak, Tomasz and Fischbacher, Silvan and Refregier, Alexandre and Grimm, Dominic and Tortorelli, Luca},
+	year         = 2024,
+	month        = may,
+	journal      = {Journal of Cosmology and Astroparticle Physics},
+	volume       = 2024,
+	number       = {05},
+	pages        = {049},
+	doi          = {10.1088/1475-7516/2024/05/049},
+	issn         = {1475-7516},
+	note         = {arXiv:2401.06846 [astro-ph]},
+	abstractnote = {Accurate redshift calibration is required to obtain unbiased cosmological information from large-scale galaxy surveys. In a forward modelling approach, the redshift distribution n(z) of a galaxy sample is measured using a parametric galaxy population model constrained by observations. We use a model that captures the redshift evolution of the galaxy luminosity functions, colours, and morphology, for red and blue samples. We constrain this model via simulation-based inference, using factorized Approximate Bayesian Computation (ABC) at the image level. We apply this framework to HSC deep field images, complemented with photometric redshifts from COSMOS2020. The simulated telescope images include realistic observational and instrumental effects. By applying the same processing and selection to real data and simulations, we obtain a sample of n(z) distributions from the ABC posterior. The photometric properties of the simulated galaxies are in good agreement with those from the real data, including magnitude, colour and redshift joint distributions. We compare the posterior n(z) from our simulations to the COSMOS2020 redshift distributions obtained via template fitting photometric data spanning the wavelength range from UV to IR. We mitigate sample variance in COSMOS by applying a reweighting technique. We thus obtain a good agreement between the simulated and observed redshift distributions, with a difference in the mean at the 1$sigma$ level up to a magnitude of 24 in the i band. We discuss how our forward model can be applied to current and future surveys and be further extended. The ABC posterior and further material will be made publicly available at https://cosmology.ethz.ch/research/software-lab/ufig.html.}
+}
+@article{scikit-learn,
+	title        = {Scikit-learn: Machine Learning in Python},
+	author       = {Pedregosa, Fabian and Varoquaux, Gaël and Gramfort, Alexandre and Michel, Vincent and Thirion, Bertrand and Grisel, Olivier and Blondel, Mathieu and Müller, Andreas and Nothman, Joel and Louppe, Gilles and Prettenhofer, Peter and Weiss, Ron and Dubourg, Vincent and Vanderplas, Jake and Passos, Alexandre and Cournapeau, David and Brucher, Matthieu and Perrot, Matthieu and Duchesnay, Édouard},
+	year         = 2018,
+	month        = jun,
+	journal      = {arXiv:1201.0490 [cs]},
+	url          = {http://arxiv.org/abs/1201.0490},
+	note         = {arXiv: 1201.0490},
+	abstractnote = {Scikit-learn is a Python module integrating a wide range of state-of-the-art machine learning algorithms for medium-scale supervised and unsupervised problems. This package focuses on bringing machine learning to non-specialists using a general-purpose high-level language. Emphasis is put on ease of use, performance, documentation, and API consistency. It has minimal dependencies and is distributed under the simplified BSD license, encouraging its use in both academic and commercial settings. Source code, binaries, and documentation can be downloaded from http://scikit-learn.org.}
+}
+@article{numpy,
+	title        = {The NumPy array: a structure for efficient numerical computation},
+	author       = {Van Der Walt, Stefan and Colbert, S. Chris and Varoquaux, Gaël},
+	year         = 2011,
+	month        = mar,
+	journal      = {Computing in Science & Engineering},
+	volume       = 13,
+	number       = 2,
+	pages        = {22–30},
+	doi          = {10.1109/MCSE.2011.37},
+	issn         = {1521-9615},
+	note         = {arXiv: 1102.1523},
+	abstractnote = {In the Python world, NumPy arrays are the standard representation for numerical data. Here, we show how these arrays enable efficient implementation of numerical computations in a high-level language. Overall, three techniques are applied to improve performance: vectorizing calculations, avoiding copying data in memory, and minimizing operation counts. We first present the NumPy array structure, then show how to use it for efficient computation, and finally how to share array data with other libraries.}
+}
+@article{scipy,
+	title        = {SciPy 1.0--Fundamental Algorithms for Scientific Computing in Python},
+	author       = {Virtanen, Pauli and Gommers, Ralf and Oliphant, Travis E. and Haberland, Matt and Reddy, Tyler and Cournapeau, David and Burovski, Evgeni and Peterson, Pearu and Weckesser, Warren and Bright, Jonathan and van der Walt, Stéfan J. and Brett, Matthew and Wilson, Joshua and Millman, K. Jarrod and Mayorov, Nikolay and Nelson, Andrew R. J. and Jones, Eric and Kern, Robert and Larson, Eric and Carey, C. J. and Polat, İlhan and Feng, Yu and Moore, Eric W. and VanderPlas, Jake and Laxalde, Denis and Perktold, Josef and Cimrman, Robert and Henriksen, Ian and Quintero, E. A. and Harris, Charles R. and Archibald, Anne M. and Ribeiro, Antônio H. and Pedregosa, Fabian and van Mulbregt, Paul and Contributors, SciPy 1 0},
+	year         = 2020,
+	month        = mar,
+	journal      = {Nature Methods},
+	volume       = 17,
+	number       = 3,
+	pages        = {261–272},
+	doi          = {10.1038/s41592-019-0686-2},
+	issn         = {1548-7091, 1548-7105},
+	note         = {arXiv: 1907.10121},
+	abstractnote = {SciPy is an open source scientific computing library for the Python programming language. SciPy 1.0 was released in late 2017, about 16 years after the original version 0.1 release. SciPy has become a de facto standard for leveraging scientific algorithms in the Python programming language, with more than 600 unique code contributors, thousands of dependent packages, over 100,000 dependent repositories, and millions of downloads per year. This includes usage of SciPy in almost half of all machine learning projects on GitHub, and usage by high profile projects including LIGO gravitational wave analysis and creation of the first-ever image of a black hole (M87). The library includes functionality spanning clustering, Fourier transforms, integration, interpolation, file I/O, linear algebra, image processing, orthogonal distance regression, minimization algorithms, signal processing, sparse matrix handling, computational geometry, and statistics. In this work, we provide an overview of the capabilities and development practices of the SciPy library and highlight some recent technical developments.}
+}
+@article{astropy,
+	title        = {Astropy: A community Python package for astronomy},
+	author       = {{Astropy Collaboration} and Robitaille, Thomas P. and Tollerud, Erik J. and Greenfield, Perry and Droettboom, Michael and Bray, Erik and Aldcroft, Tom and Davis, Matt and Ginsburg, Adam and Price-Whelan, Adrian M. and Kerzendorf, Wolfgang E. and Conley, Alexander and Crighton, Neil and Barbary, Kyle and Muna, Demitri and Ferguson, Henry and Grollier, Frédéric and Parikh, Madhura M. and Nair, Prasanth H. and Unther, Hans M. and Deil, Christoph and Woillez, Julien and Conseil, Simon and Kramer, Roban and Turner, James E. H. and Singer, Leo and Fox, Ryan and Weaver, Benjamin A. and Zabalza, Victor and Edwards, Zachary I. and Azalee Bostroem, K. and Burke, D. J. and Casey, Andrew R. and Crawford, Steven M. and Dencheva, Nadia and Ely, Justin and Jenness, Tim and Labrie, Kathleen and Lim, Pey Lian and Pierfederici, Francesco and Pontzen, Andrew and Ptak, Andy and Refsdal, Brian and Servillat, Mathieu and Streicher, Ole},
+	year         = 2013,
+	month        = oct,
+	journal      = {Astronomy and Astrophysics},
+	volume       = 558,
+	pages        = {A33},
+	doi          = {10.1051/0004-6361/201322068},
+	issn         = {0004-6361},
+	note         = {ADS Bibcode: 2013A&A...558A..33A},
+	abstractnote = {We present the first public version (v0.2) of the open-source and community-developed Python package, Astropy. This package provides core astronomy-related functionality to the community, including support for domain-specific file formats such as flexible image transport system (FITS) files, Virtual Observatory (VO) tables, and common ASCII table formats, unit and physical quantity conversions, physical constants specific to astronomy, celestial coordinate and time transformations, world coordinate system (WCS) support, generalized containers for representing gridded as well as tabular data, and a framework for cosmological transformations and conversions. Significant functionality is under activedevelopment, such as a model fitting framework, VO client and server tools, and aperture and point spread function (PSF) photometry tools. The core development team is actively making additions and enhancements to the current code base, and we encourage anyone interested to participate in the development of future Astropy versions.}
+}
+@inproceedings{numba,
+	title        = {Numba: a LLVM-based Python JIT compiler},
+	author       = {Lam, Siu Kwan and Pitrou, Antoine and Seibert, Stanley},
+	year         = 2015,
+	month        = nov,
+	booktitle    = {Proceedings of the Second Workshop on the LLVM Compiler Infrastructure in HPC},
+	publisher    = {Association for Computing Machinery},
+	address      = {New York, NY, USA},
+	series       = {LLVM ’15},
+	pages        = {1–6},
+	doi          = {10.1145/2833157.2833162},
+	isbn         = {978-1-4503-4005-2},
+	url          = {https://dl.acm.org/doi/10.1145/2833157.2833162},
+	abstractnote = {Dynamic, interpreted languages, like Python, are attractive for domain-experts and scientists experimenting with new ideas. However, the performance of the interpreter is often a barrier when scaling to larger data sets. This paper presents a just-in-time compiler for Python that focuses in scientific and array-oriented computing. Starting with the simple syntax of Python, Numba compiles a subset of the language into efficient machine code that is comparable in performance to a traditional compiled language. In addition, we share our experience in building a JIT compiler using LLVM[1].},
+	collection   = {LLVM ’15}
+}
+@article{healpy,
+	title        = {healpy: equal area pixelization and spherical harmonics transforms for data on the sphere in Python},
+	author       = {Zonca, Andrea and Singer, Leo P. and Lenz, Daniel and Reinecke, Martin and Rosset, Cyrille and Hivon, Eric and Gorski, Krzysztof M.},
+	year         = 2019,
+	month        = mar,
+	journal      = {Journal of Open Source Software},
+	volume       = 4,
+	number       = 35,
+	pages        = 1298,
+	doi          = {10.21105/joss.01298},
+	issn         = {2475-9066},
+	abstractnote = {Zonca et al., (2019). healpy: equal area pixelization and spherical harmonics transforms for data on the sphere in Python. Journal of Open Source Software, 4(35), 1298, https://doi.org/10.21105/joss.01298},
+	language     = {en}
+}
+@article{sextractor,
+	title        = {SExtractor: Software for source extraction},
+	author       = {Bertin, E. and Arnouts, S.},
+	year         = 1996,
+	month        = jun,
+	journal      = {Astronomy and Astrophysics Supplement Series},
+	publisher    = {EDP Sciences},
+	volume       = 117,
+	number       = 22,
+	pages        = {393–404},
+	doi          = {10.1051/aas:1996164},
+	issn         = {0365-0138, 1286-4846},
+	rights       = {© European Southern Observatory (ESO), 1996},
+	abstractnote = {We present the automated techniques we have developed for new software that optimally detects, deblends, measures and classifies sources from astronomical images: SExtractor (<i>Source Extractor <i/>). We show that a very reliable star/galaxy separation can be achieved on most images using a neural network trained with <i>simulated<i/> images. Salient features of SExtractor include its ability to work on very large images, with minimal human intervention, and to deal with a wide variety of object shapes and magnitudes. It is therefore particularly suited to the analysis of large extragalactic surveys.},
+	language     = {en}
+}
+@article{besancon,
+	title        = {A synthetic view on structure and evolution of the Milky Way},
+	author       = {Robin, A. C. and Reylé, C. and Derrière, S. and Picaud, S.},
+	year         = 2003,
+	month        = oct,
+	journal      = {Astronomy & Astrophysics},
+	publisher    = {EDP Sciences},
+	volume       = 409,
+	number       = 22,
+	pages        = {523–540},
+	doi          = {10.1051/0004-6361:20031117},
+	issn         = {0004-6361, 1432-0746},
+	rights       = {© ESO, 2003},
+	abstractnote = {Since the Hipparcos mission and recent large scale surveys in the optical and the near-infrared, new constraints have been obtained on the structure and evolution history of the Milky Way. The population synthesis approach is a useful tool to interpret such data sets and to test scenarios of evolution of the Galaxy. We present here new constraints on evolution parameters obtained from the Besançon model of population synthesis and analysis of optical and near-infrared star counts. The Galactic potential is computed self-consistently, in agreement with Hipparcos results and the observed rotation curve. Constraints are posed on the outer bulge structure, the warped and flared disc, the thick disc and the spheroid populations. The model is tuned to produce reliable predictions in the visible and the near-infrared in wide photometric bands from <i>U<i/> to <i>K<i/>. Finally, we describe applications such as photometric and astrometric simulations and a new classification tool based on a Bayesian probability estimator, which could be used in the framework of Virtual Observatories. As examples, samples of simulated star counts at different wavelengths and directions are also given.},
+	language     = {en}
+}
+@misc{imsim,
+	title        = {imSim: GalSim-based Rubin Observatory Image Simulation Package},
+	author       = {{LSST Dark Energy Science Collaboration (DESC)}},
+	year         = 2024,
+	note         = {Accessed: 2024-10-21},
+	howpublished = {\url{https://github.com/LSSTDESC/Imsim}},
+	license      = {BSD-3-Clause}
+}
+@article{galsim,
+	title        = {GalSim: The modular galaxy image simulation toolkit},
+	author       = {Rowe, B. T. P. and Jarvis, M. and Mandelbaum, R. and Bernstein, G. M. and Bosch, J. and Simet, M. and Meyers, J. E. and Kacprzak, T. and Nakajima, R. and Zuntz, J. and Miyatake, H. and Dietrich, J. P. and Armstrong, R. and Melchior, P. and Gill, M. S. S.},
+	year         = 2015,
+	month        = apr,
+	journal      = {Astronomy and Computing},
+	volume       = 10,
+	pages        = {121–150},
+	doi          = {10.1016/j.ascom.2015.02.002},
+	issn         = {2213-1337},
+	abstractnote = {GalSim is a collaborative, open-source project aimed at providing an image simulation tool of enduring benefit to the astronomical community. It provides a software library for generating images of astronomical objects such as stars and galaxies in a variety of ways, efficiently handling image transformations and operations such as convolution and rendering at high precision. We describe the GalSim software and its capabilities, including necessary theoretical background. We demonstrate that the performance of GalSim meets the stringent requirements of high precision image analysis applications such as weak gravitational lensing, for current datasets and for the Stage IV dark energy surveys of the Large Synoptic Survey Telescope, ESA’s Euclid mission, and NASA’s WFIRST-AFTA mission. The GalSim project repository is public and includes the full code history, all open and closed issues, installation instructions, documentation, and wiki pages (including a Frequently Asked Questions section). The GalSim repository can be found at https://github.com/GalSim-developers/GalSim.}
+}
+@article{skymaker,
+	title        = {SkyMaker: astronomical image simulations made easy.},
+	author       = {Bertin, E.},
+	year         = 2009,
+	month        = jan,
+	journal      = {Memorie della Societa Astronomica Italiana},
+	volume       = 80,
+	pages        = 422,
+	issn         = {0037-8720},
+	note         = {ADS Bibcode: 2009MmSAI..80..422B},
+	abstractnote = {SKYMAKER is a software package for creating artificial astronomical images. I show how such a tool could be used in the framework of the Virtual Observatory to generate virtual observations from simulation data.}
+}
+@article{great8,
+	title        = {Results of the GREAT08 Challenge: an image analysis competition for cosmological lensing: Results of the GREAT08 Challenge},
+	author       = {Bridle, Sarah and Balan, Sreekumar T. and Bethge, Matthias and Gentile, Marc and Harmeling, Stefan and Heymans, Catherine and Hirsch, Michael and Hosseini, Reshad and Jarvis, Mike and Kirk, Donnacha and Kitching, Thomas and Kuijken, Konrad and Lewis, Antony and Paulin-Henriksson, Stephane and Schölkopf, Bernhard and Velander, Malin and Voigt, Lisa and Witherick, Dugan and Amara, Adam and Bernstein, Gary and Courbin, Frédéric and Gill, Mandeep and Heavens, Alan and Mandelbaum, Rachel and Massey, Richard and Moghaddam, Baback and Rassat, Anais and Réfrégier, Alexandre and Rhodes, Jason and Schrabback, Tim and Shawe-Taylor, John and Shmakova, Marina and Van Waerbeke, Ludovic and Wittman, David},
+	year         = 2010,
+	month        = may,
+	journal      = {Monthly Notices of the Royal Astronomical Society},
+	pages        = {no-no},
+	doi          = {10.1111/j.1365-2966.2010.16598.x},
+	issn         = {00358711, 13652966},
+	language     = {en}
+}
+@article{great10,
+	title        = {Image Analysis for Cosmology: Results from the GREAT10 Galaxy Challenge},
+	author       = {Kitching, T. D. and Balan, S. T. and Bridle, S. and Cantale, N. and Courbin, F. and Eifler, T. and Gentile, M. and Gill, M. S. S. and Harmeling, S. and Heymans, C. and Hirsch, M. and Honscheid, K. and Kacprzak, T. and Kirkby, D. and Margala, D. and Massey, R. J. and Melchior, P. and Nurbaeva, G. and Patton, K. and Rhodes, J. and Rowe, B. T. P. and Taylor, A. N. and Tewes, M. and Viola, M. and Witherick, D. and Voigt, L. and Young, J. and Zuntz, J.},
+	year         = 2012,
+	month        = jul,
+	journal      = {Monthly Notices of the Royal Astronomical Society},
+	volume       = 423,
+	number       = 4,
+	pages        = {3163–3208},
+	doi          = {10.1111/j.1365-2966.2012.21095.x},
+	issn         = {00358711},
+	note         = {arXiv:1202.5254 [astro-ph]},
+	abstractnote = {In this paper we present results from the weak lensing shape measurement GRavitational lEnsing Accuracy Testing 2010 (GREAT10) Galaxy Challenge. This marks an order of magnitude step change in the level of scrutiny employed in weak lensing shape measurement analysis. We provide descriptions of each method tested and include 10 evaluation metrics over 24 simulation branches. GREAT10 was the first shape measurement challenge to include variable fields; both the shear field and the Point Spread Function (PSF) vary across the images in a realistic manner. The variable fields enable a variety of metrics that are inaccessible to constant shear simulations including a direct measure of the impact of shape measurement inaccuracies, and the impact of PSF size and ellipticity, on the shear power spectrum. To assess the impact of shape measurement bias for cosmic shear we present a general pseudo-Cl formalism, that propagates spatially varying systematics in cosmic shear through to power spectrum estimates. We also show how one-point estimators of bias can be extracted from variable shear simulations. The GREAT10 Galaxy Challenge received 95 submissions and saw a factor of 3 improvement in the accuracy achieved by shape measurement methods. The best methods achieve sub-percent average biases. We find a strong dependence in accuracy as a function of signal-to-noise, and indications of a weak dependence on galaxy type and size. Some requirements for the most ambitious cosmic shear experiments are met above a signal-to-noise ratio of 20. These results have the caveat that the simulated PSF was a ground-based PSF. Our results are a snapshot of the accuracy of current shape measurement methods and are a benchmark upon which improvement can continue. This provides a foundation for a better understanding of the strengths and limitations of shape measurement methods.}
+}
+@article{great3,
+	title        = {GREAT3 results – I. Systematic errors in shear estimation and the impact of real galaxy morphology},
+	author       = {Mandelbaum, Rachel and Rowe, Barnaby and Armstrong, Robert and Bard, Deborah and Bertin, Emmanuel and Bosch, James and Boutigny, Dominique and Courbin, Frederic and Dawson, William A. and Donnarumma, Annamaria and Fenech Conti, Ian and Gavazzi, Raphaël and Gentile, Marc and Gill, Mandeep S. S. and Hogg, David W. and Huff, Eric M. and Jee, M. James and Kacprzak, Tomasz and Kilbinger, Martin and Kuntzer, Thibault and Lang, Dustin and Luo, Wentao and March, Marisa C. and Marshall, Philip J. and Meyers, Joshua E. and Miller, Lance and Miyatake, Hironao and Nakajima, Reiko and Ngolé Mboula, Fred Maurice and Nurbaeva, Guldariya and Okura, Yuki and Paulin-Henriksson, Stéphane and Rhodes, Jason and Schneider, Michael D. and Shan, Huanyuan and Sheldon, Erin S. and Simet, Melanie and Starck, Jean-Luc and Sureau, Florent and Tewes, Malte and Zarb Adami, Kristian and Zhang, Jun and Zuntz, Joe},
+	year         = 2015,
+	month        = jul,
+	journal      = {Monthly Notices of the Royal Astronomical Society},
+	volume       = 450,
+	number       = 3,
+	pages        = {2963–3007},
+	doi          = {10.1093/mnras/stv781},
+	issn         = {0035-8711, 1365-2966},
+	abstractnote = {We present ﬁrst results from the third GRavitational lEnsing Accuracy Testing (GREAT3) challenge, the third in a sequence of challenges for testing methods of inferring weak gravitational lensing shear distortions from simulated galaxy images. GREAT3 was divided into experiments to test three speciﬁc questions, and included simulated space- and ground-based data with constant or cosmologically varying shear ﬁelds. The simplest (control) experiment included parametric galaxies with a realistic distribution of signal-to-noise, size, and ellipticity, and a complex point spread function (PSF). The other experiments tested the additional impact of realistic galaxy morphology, multiple exposure imaging, and the uncertainty about a spatially varying PSF; the last two questions will be explored in Paper II. The 24 participating teams competed to estimate lensing shears to within systematic error tolerances for upcoming Stage-IV dark energy surveys, making 1525 submissions overall. GREAT3 saw considerable variety and innovation in the types of methods applied. Several teams now meet or exceed the targets in many of the tests conducted (to within the statistical errors). We conclude that the presence of realistic galaxy morphology in simulations changes shear calibration biases by ∼1 per cent for a wide range of methods. Other effects such as truncation biases due to ﬁnite galaxy postage stamps, and the impact of galaxy type as measured by the Se´rsic index, are quantiﬁed for the ﬁrst time. Our results generalize previous studies regarding sensitivities to galaxy size and signal-to-noise, and to PSF properties such as seeing and defocus. Almost all methods’ results support the simple model in which additive shear biases depend linearly on PSF ellipticity.},
+	language     = {en}
+}
+@article{bruderer,
+	title        = {Calibrated Ultra Fast Image Simulations for the Dark Energy Survey},
+	author       = {Bruderer, Claudio and Chang, Chihway and Refregier, Alexandre and Amara, Adam and Berge, Joel and Gamper, Lukas},
+	year         = 2016,
+	month        = jan,
+	journal      = {The Astrophysical Journal},
+	volume       = 817,
+	number       = 1,
+	pages        = 25,
+	doi          = {10.3847/0004-637X/817/1/25},
+	issn         = {0004-637X, 1538-4357},
+	note         = {arXiv:1504.02778 [astro-ph]},
+	abstractnote = {Weak lensing by large-scale structure is a powerful technique to probe the dark components of the universe. To understand the measurement process of weak lensing and the associated systematic effects, image simulations are becoming increasingly important. For this purpose we present a first implementation of the $textit{Monte Carlo Control Loops}$ ($textit{MCCL}$; Refregier & Amara 2014), a coherent framework for studying systematic effects in weak lensing. It allows us to model and calibrate the shear measurement process using image simulations from the Ultra Fast Image Generator (UFig; Berge et al. 2013). We apply this framework to a subset of the data taken during the Science Verification period (SV) of the Dark Energy Survey (DES). We calibrate the UFig simulations to be statistically consistent with DES images. We then perform tolerance analyses by perturbing the simulation parameters and study their impact on the shear measurement at the one-point level. This allows us to determine the relative importance of different input parameters to the simulations. For spatially constant systematic errors and six simulation parameters, the calibration of the simulation reaches the weak lensing precision needed for the DES SV survey area. Furthermore, we find a sensitivity of the shear measurement to the intrinsic ellipticity distribution, and an interplay between the magnitude-size and the pixel value diagnostics in constraining the noise model. This work is the first application of the $textit{MCCL}$ framework to data and shows how it can be used to methodically study the impact of systematics on the cosmic shear measurement.}
+}
+@article{matplotlib,
+	title        = {Matplotlib: A 2D Graphics Environment},
+	author       = {Hunter, John D.},
+	year         = 2007,
+	month        = may,
+	journal      = {Computing in Science Engineering},
+	volume       = 9,
+	number       = 3,
+	pages        = {90–95},
+	doi          = {10.1109/MCSE.2007.55},
+	issn         = {1558-366X},
+	abstractnote = {Matplotlib is a 2D graphics package used for Python for application development, interactive scripting,and publication-quality image generation across user interfaces and operating systems}
+}
+@article{trianglechain1,
+	title        = {Redshift requirements for cosmic shear with intrinsic alignment},
+	author       = {Fischbacher, Silvan and Kacprzak, Tomasz and Blazek, Jonathan and Refregier, Alexandre},
+	year         = 2023,
+	month        = jan,
+	journal      = {Journal of Cosmology and Astroparticle Physics},
+	volume       = 2023,
+	number       = {01},
+	pages        = {033},
+	doi          = {10.1088/1475-7516/2023/01/033},
+	issn         = {1475-7516},
+	note         = {arXiv:2207.01627 [astro-ph]},
+	abstractnote = {Intrinsic alignment (IA) modelling and photometric redshift estimation are two of the main sources of systematic uncertainty in weak lensing surveys. We investigate the impact of redshift errors and their interplay with different IA models. Generally, errors on the mean $delta_z$ and on the width $sigma_z$ of the redshift bins can both lead to biases in cosmological constraints. We find that such biases can, however, only be partially resolved by marginalizing over $delta_z$ and $sigma_z$. For Stage-III surveys, $delta_z$ and $sigma_z$ cannot be well constrained due to limited statistics. The resulting biases are thus sensitive to prior volume effects. For Stage-IV surveys, we observe that marginalizing over the redshift parameters has an impact and reduces the bias. We derive requirements on the uncertainty of $sigma_z$ and $delta_z$ for both Stage-III and Stage-IV surveys. We assume that the redshift systematic errors on $S_8$ should be less than half of the statistical errors, and the median bias should be smaller than $0.25sigma$. We find that the uncertainty on $delta_z$ has to be $lesssim0.025$ for the NLA IA model with a Stage-III survey. For $sigma_z$, the requirement is met even for large uncertainties $leq0.3$. For the TATT IA model, the uncertainty on $delta_z$ has to be $lesssim0.02$ and the uncertainty on $sigma_z$ has to be $lesssim0.2$. For Stage-IV surveys, the uncertainty on $delta_z$ has to be $lesssim0.005$ and the uncertainty on $sigma_z$ should be $lesssim0.1$, with no significant dependence on the IA model. This required high precision will be a challenge for the redshift calibration of these future surveys. Finally, we investigate whether the interplay between redshift systematics and IA modelling can explain the $S_8$-tension between cosmic shear results and CMB measurements. We find that this is unlikely to explain the current $S_8$-tension.}
+}
+@article{trianglechain2,
+	title        = {DeepLSS: Breaking Parameter Degeneracies in Large-Scale Structure with Deep-Learning Analysis of Combined Probes},
+	author       = {Kacprzak, Tomasz and Fluri, Janis},
+	year         = 2022,
+	month        = jul,
+	journal      = {Physical Review X},
+	volume       = 12,
+	pages        = {031029},
+	doi          = {10.1103/PhysRevX.12.031029},
+	note         = {arXiv:2203.09616 [astro-ph]},
+	abstractnote = {In classical cosmological analysis of large-scale structure surveys with two-point functions, the parameter measurement precision is limited by several key degeneracies within the cosmology and astrophysics sectors. For cosmic shear, clustering amplitude σ8 and matter density Ωm roughly follow the S8=σ8(Ωm/0.3 )0.5 relation. In turn, S8 is highly correlated with the intrinsic galaxy alignment amplitude AIA. For galaxy clustering, the bias bg is degenerate with both σ8 and Ωm, as well as the stochasticity rg. Moreover, the redshift evolution of intrinsic alignment (IA) and bias can cause further parameter confusion. A tomographic two-point probe combination can partially lift these degeneracies. In this work we demonstrate that a deep-learning analysis of combined probes of weak gravitational lensing and galaxy clustering, which we call DeepLSS, can effectively break these degeneracies and yield significantly more precise constraints on σ8, Ωm, AIA, bg, rg, and IA redshift evolution parameter ηIA. In a simulated forecast for a stage-III survey, we find that the most significant gains are in the IA sector: the precision of AIA is increased by approximately 8 times and is almost perfectly decorrelated from S8. Galaxy bias bg is improved by 1.5 times, stochasticity rg by 3 times, and the redshift evolution ηIA and ηb by 1.6 times. Breaking these degeneracies leads to a significant gain in constraining power for σ8 and Ωm, with the figure of merit improved by 15 times. We give an intuitive explanation for the origin of this information gain using sensitivity maps. These results indicate that the fully numerical, map-based forward-modeling approach to cosmological inference with machine learning may play an important role in upcoming large-scale structure surveys. We discuss perspectives and challenges in its practical deployment for a full survey analysis.}
+}
+@article{sbi_review,
+	title        = {The frontier of simulation-based inference},
+	author       = {Cranmer, Kyle and Brehmer, Johann and Louppe, Gilles},
+	year         = 2020,
+	month        = dec,
+	journal      = {Proceedings of the National Academy of Sciences},
+	publisher    = {Proceedings of the National Academy of Sciences},
+	volume       = 117,
+	number       = 48,
+	pages        = {30055–30062},
+	doi          = {10.1073/pnas.1912789117},
+	abstractnote = {Many domains of science have developed complex simulations to describe phenomena of interest. While these simulations provide high-fidelity models, they are poorly suited for inference and lead to challenging inverse problems. We review the rapidly developing field of simulation-based inference and identify the forces giving additional momentum to the field. Finally, we describe how the frontier is expanding so that a broad audience can appreciate the profound influence these developments may have on science.}
+}
+
+@phdthesis{bruderer_phd,
+	title        = {Forward modeling for gravitational lensing in cosmology},
+	author       = {Bruderer, Claudio Marco},
+	year         = 2018,
+	month        = jan,
+	journal      = {Ph.D. Thesis},
+	url          = {https://ui.adsabs.harvard.edu/abs/2018PhDT.......263B},
+	note         = {ADS Bibcode: 2018PhDT.......263B}
+}
+
+@article{chang,
+	title        = {Modeling the Transfer Function for the Dark Energy Survey},
+	author       = {
+		Chang, C. and Busha, M. T. and Wechsler, R. H. and Refregier, A. and Amara,
+		A. and Rykoff, E. and Becker, M. R. and Bruderer, C. and Gamper, L. and
+		Leistedt, B. and Peiris, H. and Abbott, T. and Abdalla, F. B. and Balbinot,
+		E. and Banerji, M. and Bernstein, R. A. and Bertin, E. and Brooks, D. and
+		Carnero, A. and Desai, S. and da Costa, L. N. and Cunha, C. E. and Eifler, T.
+		and Evrard, A. E. and Fausti Neto, A. and Gerdes, D. and Gruen, D. and James,
+		D. and Kuehn, K. and Maia, M. A. G. and Makler, M. and Ogando, R. and Plazas,
+		A. and Sanchez, E. and Santiago, B. and Schubnell, M. and Sevilla-Noarbe, I.
+		and Smith, C. and Soares-Santos, M. and Suchyta, E. and Swanson, M. E. C. and
+		Tarle, G. and Zuntz, J.
+	},
+	year         = 2015,
+	month        = mar,
+	journal      = {The Astrophysical Journal},
+	publisher    = {IOP},
+	volume       = 801,
+	pages        = 73,
+	doi          = {10.1088/0004-637X/801/2/73},
+	issn         = {0004-637X},
+	note         = {ADS Bibcode: 2015ApJ...801...73C},
+	abstractnote = {
+		We present a forward-modeling simulation framework designed to model the data
+		products from the Dark Energy Survey (DES). This forward-model process can be
+		thought of as a transfer function—a mapping from cosmological/astronomical
+		signals to the final data products used by the scientists. Using output from
+		the cosmological simulations (the Blind Cosmology Challenge), we generate
+		simulated images (the Ultra Fast Image Simulator) and catalogs representative
+		of the DES data. In this work we demonstrate the framework by simulating the
+		244 deg2 coadd images and catalogs in five bands for the DES Science
+		Verification data. The simulation output is compared with the corresponding
+		data to show that major characteristics of the images and catalogs can be
+		captured. We also point out several directions of future improvements. Two
+		practical examples—star-galaxy classification and proximity effects on object
+		detection—are then used to illustrate how one can use the simulations to
+		address systematics issues in data analysis. With clear understanding of the
+		simplifications in our model, we show that one can use the simulations
+		side-by-side with data products to interpret the measurements. This forward
+		modeling approach is generally applicable for other upcoming and future
+		surveys. It provides a powerful tool for systematics studies that is
+		sufficiently realistic and highly controllable.
+	}
+}
+
+@article{des,
+	title        = {The Dark Energy Survey: more than dark energy - an overview},
+	author       = {Dark Energy Survey Collaboration and Abbott, T. and Abdalla, F. B. and Aleksić, J. and Allam, S. and Amara, A. and Bacon, D. and Balbinot, E. and Banerji, M. and Bechtol, K. and Benoit-Lévy, A. and Bernstein, G. M. and Bertin, E. and Blazek, J. and Bonnett, C. and Bridle, S. and Brooks, D. and Brunner, R. J. and Buckley-Geer, E. and Burke, D. L. and Caminha, G. B. and Capozzi, D. and Carlsen, J. and Carnero-Rosell, A. and Carollo, M. and Carrasco-Kind, M. and Carretero, J. and Castander, F. J. and Clerkin, L. and Collett, T. and Conselice, C. and Crocce, M. and Cunha, C. E. and D’Andrea, C. B. and da Costa, L. N. and Davis, T. M. and Desai, S. and Diehl, H. T. and Dietrich, J. P. and Dodelson, S. and Doel, P. and Drlica-Wagner, A. and Estrada, J. and Etherington, J. and Evrard, A. E. and Fabbri, J. and Finley, D. A. and Flaugher, B. and Foley, R. J. and Fosalba, P. and Frieman, J. and García-Bellido, J. and Gaztanaga, E. and Gerdes, D. W. and Giannantonio, T. and Goldstein, D. A. and Gruen, D. and Gruendl, R. A. and Guarnieri, P. and Gutierrez, G. and Hartley, W. and Honscheid, K. and Jain, B. and James, D. J. and Jeltema, T. and Jouvel, S. and Kessler, R. and King, A. and Kirk, D. and Kron, R. and Kuehn, K. and Kuropatkin, N. and Lahav, O. and Li, T. S. and Lima, M. and Lin, H. and Maia, M. A. G. and Makler, M. and Manera, M. and Maraston, C. and Marshall, J. L. and Martini, P. and McMahon, R. G. and Melchior, P. and Merson, A. and Miller, C. J. and Miquel, R. and Mohr, J. J. and Morice-Atkinson, X. and Naidoo, K. and Neilsen, E. and Nichol, R. C. and Nord, B. and Ogando, R. and Ostrovski, F. and Palmese, A. and Papadopoulos, A. and Peiris, H. V. and Peoples, J. and Percival, W. J. and Plazas, A. A. and Reed, S. L. and Refregier, A. and Romer, A. K. and Roodman, A. and Ross, A. and Rozo, E. and Rykoff, E. S. and Sadeh, I. and Sako, M. and Sánchez, C. and Sanchez, E. and Santiago, B. and Scarpine, V. and Schubnell, M. and Sevilla-Noarbe, I. and Sheldon, E. and Smith, M. and Smith, R. C. and Soares-Santos, M. and Sobreira, F. and Soumagnac, M. and Suchyta, E. and Sullivan, M. and Swanson, M. and Tarle, G. and Thaler, J. and Thomas, D. and Thomas, R. C. and Tucker, D. and Vieira, J. D. and Vikram, V. and Walker, A. R. and Wechsler, R. H. and Weller, J. and Wester, W. and Whiteway, L. and Wilcox, H. and Yanny, B. and Zhang, Y. and Zuntz, J.},
+	year         = 2016,
+	month        = aug,
+	journal      = {Monthly Notices of the Royal Astronomical Society},
+	publisher    = {OUP},
+	volume       = 460,
+	pages        = {1270–1299},
+	doi          = {10.1093/mnras/stw641},
+	issn         = {0035-8711},
+	note         = {ADS Bibcode: 2016MNRAS.460.1270D},
+	abstractnote = {This overview paper describes the legacy prospect and discovery potential of the Dark Energy Survey (DES) beyond cosmological studies, illustrating it with examples from the DES early data. DES is using a wide-field camera (DECam) on the 4 m Blanco Telescope in Chile to image 5000 sq deg of the sky in five filters (grizY). By its completion, the survey is expected to have generated a catalogue of 300 million galaxies with photometric redshifts and 100 million stars. In addition, a time-domain survey search over 27 sq deg is expected to yield a sample of thousands of Type Ia supernovae and other transients. The main goals of DES are to characterize dark energy and dark matter, and to test alternative models of gravity; these goals will be pursued by studying large-scale structure, cluster counts, weak gravitational lensing and Type Ia supernovae. However, DES also provides a rich data set which allows us to study many other aspects of astrophysics. In this paper, we focus on additional science with DES, emphasizing areas where the survey makes a difference with respect to other current surveys. The paper illustrates, using early data (from `Science Verification’, and from the first, second and third seasons of observations), what DES can tell us about the Solar system, the Milky Way, galaxy evolution, quasars and other topics. In addition, we show that if the cosmological model is assumed to be Λ+cold dark matter, then important astrophysics can be deduced from the primary DES probes. Highlights from DES early data include the discovery of 34 trans-Neptunian objects, 17 dwarf satellites of the Milky Way, one published z > 6 quasar (and more confirmed) and two published superluminous supernovae (and more confirmed).}
+}
+
+@article{hsc,
+	title        = {The Hyper Suprime-Cam SSP Survey: Overview and survey design},
+	author       = {Aihara, Hiroaki and Arimoto, Nobuo and Armstrong, Robert and Arnouts, Stéphane and Bahcall, Neta A and Bickerton, Steven and Bosch, James and Bundy, Kevin and Capak, Peter L and Chan, James H H and Chiba, Masashi and Coupon, Jean and Egami, Eiichi and Enoki, Motohiro and Finet, Francois and Fujimori, Hiroki and Fujimoto, Seiji and Furusawa, Hisanori and Furusawa, Junko and Goto, Tomotsugu and Goulding, Andy and Greco, Johnny P and Greene, Jenny E and Gunn, James E and Hamana, Takashi and Harikane, Yuichi and Hashimoto, Yasuhiro and Hattori, Takashi and Hayashi, Masao and Hayashi, Yusuke and Hełminiak, Krzysztof G and Higuchi, Ryo and Hikage, Chiaki and Ho, Paul T P and Hsieh, Bau-Ching and Huang, Kuiyun and Huang, Song and Ikeda, Hiroyuki and Imanishi, Masatoshi and Inoue, Akio K and Iwasawa, Kazushi and Iwata, Ikuru and Jaelani, Anton T and Jian, Hung-Yu and Kamata, Yukiko and Karoji, Hiroshi and Kashikawa, Nobunari and Katayama, Nobuhiko and Kawanomoto, Satoshi and Kayo, Issha and Koda, Jin and Koike, Michitaro and Kojima, Takashi and Komiyama, Yutaka and Konno, Akira and Koshida, Shintaro and Koyama, Yusei and Kusakabe, Haruka and Leauthaud, Alexie and Lee, Chien-Hsiu and Lin, Lihwai and Lin, Yen-Ting and Lupton, Robert H and Mandelbaum, Rachel and Matsuoka, Yoshiki and Medezinski, Elinor and Mineo, Sogo and Miyama, Shoken and Miyatake, Hironao and Miyazaki, Satoshi and Momose, Rieko and More, Anupreeta and More, Surhud and Moritani, Yuki and Moriya, Takashi J and Morokuma, Tomoki and Mukae, Shiro and Murata, Ryoma and Murayama, Hitoshi and Nagao, Tohru and Nakata, Fumiaki and Niida, Mana and Niikura, Hiroko and Nishizawa, Atsushi J and Obuchi, Yoshiyuki and Oguri, Masamune and Oishi, Yukie and Okabe, Nobuhiro and Okamoto, Sakurako and Okura, Yuki and Ono, Yoshiaki and Onodera, Masato and Onoue, Masafusa and Osato, Ken and Ouchi, Masami and Price, Paul A and Pyo, Tae-Soo and Sako, Masao and Sawicki, Marcin and Shibuya, Takatoshi and Shimasaku, Kazuhiro and Shimono, Atsushi and Shirasaki, Masato and Silverman, John D and Simet, Melanie and Speagle, Joshua and Spergel, David N and Strauss, Michael A and Sugahara, Yuma and Sugiyama, Naoshi and Suto, Yasushi and Suyu, Sherry H and Suzuki, Nao and Tait, Philip J and Takada, Masahiro and Takata, Tadafumi and Tamura, Naoyuki and Tanaka, Manobu M and Tanaka, Masaomi and Tanaka, Masayuki and Tanaka, Yoko and Terai, Tsuyoshi and Terashima, Yuichi and Toba, Yoshiki and Tominaga, Nozomu and Toshikawa, Jun and Turner, Edwin L and Uchida, Tomohisa and Uchiyama, Hisakazu and Umetsu, Keiichi and Uraguchi, Fumihiro and Urata, Yuji and Usuda, Tomonori and Utsumi, Yousuke and Wang, Shiang-Yu and Wang, Wei-Hao and Wong, Kenneth C and Yabe, Kiyoto and Yamada, Yoshihiko and Yamanoi, Hitomi and Yasuda, Naoki and Yeh, Sherry and Yonehara, Atsunori and Yuma, Suraphong},
+	year         = 2018,
+	month        = jan,
+	journal      = {Publications of the Astronomical Society of Japan},
+	volume       = 70,
+	number       = {SP1},
+	pages        = {S4},
+	doi          = {10.1093/pasj/psx066},
+	issn         = {0004-6264},
+	abstractnote = {Hyper Suprime-Cam (HSC) is a wide-field imaging camera on the prime focus of the 8.2-m Subaru telescope on the summit of Mauna Kea in Hawaii. A team of scientists from Japan, Taiwan, and Princeton University is using HSC to carry out a 300-night multi-band imaging survey of the high-latitude sky. The survey includes three layers: the Wide layer will cover 1400 deg2 in five broad bands (grizy), with a 5 σ point-source depth of r ≈ 26. The Deep layer covers a total of 26 deg2 in four fields, going roughly a magnitude fainter, while the UltraDeep layer goes almost a magnitude fainter still in two pointings of HSC (a total of 3.5 deg2). Here we describe the instrument, the science goals of the survey, and the survey strategy and data processing. This paper serves as an introduction to a special issue of the Publications of the Astronomical Society of Japan, which includes a large number of technical and scientific papers describing results from the early phases of this survey.}
+}
+
+@article{pau1,
+	title        = {Measuring Baryon Acoustic Oscillations Along the Line of Sight with Photometric Redshifts: The PAU Survey},
+	author       = {Benítez, N. and Gaztañaga, E. and Miquel, R. and Castander, F. and Moles, M. and Crocce, M. and Fernández-Soto, A. and Fosalba, P. and Ballesteros, F. and Campa, J. and Cardiel-Sas, L. and Castilla, J. and Cristóbal-Hornillos, D. and Delfino, M. and Fernández, E. and Fernández-Sopuerta, C. and García-Bellido, J. and Lobo, J. A. and Martínez, V. J. and Ortiz, A. and Pacheco, A. and Paredes, S. and Pons-Bordería, M. J. and Sánchez, E. and Sánchez, S. F. and Varela, J. and de Vicente, J. F.},
+	year         = 2009,
+	month        = jan,
+	journal      = {The Astrophysical Journal},
+	publisher    = {The American Astronomical Society},
+	volume       = 691,
+	number       = 1,
+	pages        = 241,
+	doi          = {10.1088/0004-637X/691/1/241},
+	issn         = {0004-637X},
+	abstractnote = {Baryon Acoustic Oscillations (BAOs) provide a “standard ruler” of known physical length, making it one of the most promising probes of the nature of dark energy (DE). The detection of BAOs as an excess of power in the galaxy distribution at a certain scale requires measuring galaxy positions and redshifts. “Transversal” (or “angular”) BAOs measure the angular size of this scale projected in the sky and provide information about the angular distance. “Line-of-sight” (or “radial”) BAOs require very precise redshifts, but provide a direct measurement of the Hubble parameter at different redshifts, a more sensitive probe of DE. The main goal of this paper is to show that it is possible to obtain photometric redshifts with enough precision (σz) to measure BAOs along the line of sight. There is a fundamental limitation as to how much one can improve the BAO measurement by reducing σz. We show that σz ∼ 0.003(1 + z) is sufficient: a much better precision will produce an oversampling of the BAO peak without a significant improvement on its detection, while a much worse precision will result in the effective loss of the radial information. This precision in redshift can be achieved for bright, red galaxies, featuring a prominent 4000 Å break, by using a filter system comprising about 40 filters, each with a width close to 100 Å, covering the wavelength range from ∼4000 to ∼8000 Å, supplemented by two broad-band filters similar to the Sloan Digital Sky Survey u and z bands. We describe the practical implementation of this idea, a new galaxy survey project, PAU16, to be carried out with a telescope/camera combination with an etendue about 20 m2 deg2, equivalent to a 2 m telescope equipped with a 6 deg2 field of view camera, and covering 8000 deg2 in the sky in four years. We expect to measure positions and redshifts for over 14 million red, early-type galaxies with L > L⋆ and iAB ≲ 22.5 in the redshift interval 0.1 < z < 0.9, with a precision σz < 0.003(1 + z). This population has a number density n ≳ 10−3 Mpc−3 h3 galaxies within the 9 Gpc3 h−3 volume to be sampled by our survey, ensuring that the error in the determination of the BAO scale is not limited by shot noise. By itself, such a survey will deliver precisions of order 5% in the dark-energy equation of state parameter w, if assumed constant, and can determine its time derivative when combined with future cosmic microwave background measurements. In addition, PAU will yield high-quality redshift and low-resolution spectroscopy for hundreds of millions of other galaxies, including a very significant high-redshift population. The data set produced by this survey will have a unique legacy value, allowing a wide range of astrophysical studies.},
+	language     = {en}
+}
+@article{pau2,
+	title        = {Precise photometric redshifts with a narrow-band filter set: the PAU survey at the William Herschel Telescope},
+	author       = {Martí, P. and Miquel, R. and Castander, F. J. and Gaztañaga, E. and Eriksen, M. and Sánchez, C.},
+	year         = 2014,
+	month        = {july},
+	journal      = {Monthly Notices of the Royal Astronomical Society},
+	volume       = 442,
+	number       = 1,
+	pages        = {92–109},
+	doi          = {10.1093/mnras/stu801},
+	issn         = {0035-8711},
+	abstractnote = {The Physics of the Accelerating Universe (PAU) survey at the William Herschel Telescope will use a new optical camera (PAUCam) with a large set of narrow-band filters to perform a photometric galaxy survey with a quasi-spectroscopic redshift precision of σ(z)/(1 + z) ∼ 0.0035 and map the large-scale structure of the universe in three dimensions up to iAB &lt; 22.5–23.0. In this paper, we present a detailed photo-z performance study using photometric simulations for 40 equally spaced 12.5-nm-wide (full width at half-maximum) filters with an ∼25 per cent overlap and spanning the wavelength range from 450 to 850 nm, together with a ugrizY broad-band filter system. We then present the migration matrix rij, containing the probability that a galaxy in a true redshift bin j is measured in a photo-z bin i, and study its effect on the determination of galaxy auto- and cross-correlations. Finally, we also study the impact on the photo-z performance of small variations of the filter set in terms of width, wavelength coverage, etc., and find a broad region where slightly modified filter sets provide similar results, with the original set being close to optimal.}
+}
+
+@inproceedings{phosim,
+	title        = {{PhoSim: A Tool to Simulate Astronomical Images One Photon at a Time}},
+	author       = {{Peterson}, J. and {Dutta}, A. and {Jernigan}, G. and {Remocaldo}, C. and {Sembroski}, G.},
+	year         = 2020,
+	month        = jan,
+	booktitle    = {American Astronomical Society Meeting Abstracts \#235},
+	series       = {American Astronomical Society Meeting Abstracts},
+	volume       = 235,
+	pages        = {313.03},
+	eid          = {313.03},
+	adsurl       = {https://ui.adsabs.harvard.edu/abs/2020AAS...23531303P},
+	adsnote      = {Provided by the SAO/NASA Astrophysics Data System}
+}

@@ -1,0 +1,119 @@
+stages:
+    - fast_tests
+    - slow_tests
+    - build_docs
+    - publish_docs
+
+variables:
+    GIT_STRATEGY: clone
+    GIT_DEPTH: "1"
+
+
+.setup: &setup
+    image: ghcr.io/astral-sh/uv:python3.12-bookworm-slim
+    variables:
+      UV_LINK_MODE: "copy"
+    before_script:
+      - apt update && apt install -y git gcc g++ clang make
+
+style:
+    <<: *setup
+    stage: fast_tests
+    script:
+        - uv venv --python 3.12
+        - uv sync --dev
+        - make style-check
+
+
+tests_fast:
+    <<: *setup
+    stage: fast_tests
+    parallel:
+        matrix:
+        - PYTHON_VERSION: ['3.9', '3.10', '3.11', '3.12']
+    script:
+        - test ${PYTHON_VERSION} = 3.11 && apt install -y python3.11-dev
+        - uv venv --python ${PYTHON_VERSION}
+        - uv sync --dev
+        - make tests
+
+publication:
+    stage: fast_tests
+    image: docker:24.0.2
+    services:
+      - name: docker:24.0.2-dind
+        alias: docker
+        variables:
+          DOCKER_TLS_CERTDIR: ''
+          HTTP_PROXY: "http://proxy.ethz.ch:3128"
+          HTTPS_PROXY: "http://proxy.ethz.ch:3128"
+    script:
+      - unset http_proxy
+      - unset https_proxy
+      - unset HTTP_PROXY
+      - unset HTTPS_PROXY
+      - >
+        docker run
+        --rm
+        -i
+        --volume $PWD/paper:/data
+        --user $(id -u):$(id -g)
+        --env JOURNAL=joss
+        openjournals/inara
+
+
+slow_tests:
+    <<: *setup
+    stage: slow_tests
+    script:
+        - uv venv --python ${PYTHON_VERSION}
+        - uv sync --dev
+        - make tests ARGS=--runslow
+
+
+coverage:
+    <<: *setup
+    stage: slow_tests
+    variables:
+      # disable numba to also compute coverage for jit annotated functions:
+      NUMBA_DISABLE_JIT: "1"
+    script:
+        - uv venv --python 3.12
+        - uv sync --dev
+        - make coverage
+        - uv run coverage xml
+    coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
+    artifacts:
+        paths:
+            - coverage.xml
+            - htmlcov
+
+
+docs:
+    <<: *setup
+    stage: build_docs
+    script:
+        - uv venv --python 3.12
+        - uv sync --dev
+        - make docs
+        - cp -R htmlcov docs/_build/html
+    dependencies:
+        - coverage
+    artifacts:
+           paths:
+             - docs/_build/html
+
+
+publish_docs:
+    image: eeacms/rsync
+    script:
+        - chmod 0600 ${COSMO_DOCS_SSH_KEY}
+        - >
+          rsync -e "ssh -i ${COSMO_DOCS_SSH_KEY} -o StrictHostKeyChecking=no" -rav --mkpath docs/_build/html/ docs@cosmo-docs.phys.ethz.ch:ufig
+    stage: publish_docs
+    dependencies:
+        - docs
+    when: manual
+    only:
+        - master
+        - main

@@ -1,0 +1,102 @@
+# vim:ft=toml
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ufig"
+dynamic = ["version"]
+description = 'Package for fast image simulations'
+readme = {file = "README.md", content-type = "text/markdown"}
+license = {text = "MIT License"}
+keywords = []
+authors = [
+  {name = "Silvan Fischbacher"},
+  {name = "Beatrice Moser"},
+  {name = "Tomasz Kacprzak"},
+  {name = "Joerg Herbel"},
+  {name = "Claudio Bruderer"},
+  {name = "Joel Akeret"},
+  {name = "Lukas Gamper"},
+  {name = "Joel Berge"},
+  {name = "Luca Tortorelli"},
+  {name = "Uwe Schmitt"},
+]
+
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+  "astropy>=6.0.1",
+  "cosmic_toolbox>=0.3.1",
+  "cosmo-torrent",
+  "darkskysync>=0.2.0",
+  "h5py>=3.12.1",
+  "healpy",
+  "ivy-wfengine>=0.4.0",
+  "numba>=0.60.0",
+  "numpy",
+  "scikit-learn",
+  "scipy",
+  "tensorflow"
+]
+
+[project.urls]
+Source = "https://gitlab.com/cosmology-ethz/ufig"
+Documentation = "https://cosmo-docs.phys.ethz.ch/ufig"
+
+[tool.hatch.version]
+path = "src/ufig/__init__.py"
+pattern = "__version__ = \"(?P<version>[^']+)\""
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.uv]
+dev-dependencies = [
+    "uv",
+    "twine",
+    "build",
+    "hatchling",
+    "wheel",
+    "pre-commit",
+    "ruff",
+    "black",
+    "pytest",
+    "pytest-regtest",
+    "pytest-cov",
+    "sphinx",
+    "sphinx-rtd-theme",
+    "myst-parser",
+    "sphinx-copybutton>=0.5.2",
+]
+
+[tool.coverage.run]
+branch = true
+
+[tool.ruff]
+exclude = ["*.ipynb"]
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+]

@@ -1,0 +1,82 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: ufig
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+
+
+authors:
+  - given-names: "Silvan"
+    family-names: "Fischbacher"
+    email: silvan@ethz.ch
+    orcid: 'https://orcid.org/0000-0003-3799-4451'
+    affiliation: ETHZ
+  - given-names: "Beatrice"
+    family-names: "Moser"
+    email: beatrice.moser@hotmail.it
+    orcid: 'https://orcid.org/0000-0001-9864-3124'
+  - given-names: "Tomasz"
+    family-names: "Kacprzak"
+    email: tomaszk@phys.ethz.ch
+    orcid: 'https://orcid.org/0000-0001-5570-7503'
+    affiliation: ETHZ
+  - given-names: "Luca"
+    family-names: "Tortorelli"
+    email: luca.tortorelli@physik.lmu.de
+    orcid: 'https://orcid.org/0000-0002-8012-7495'
+    affiliation: LMU Munich
+  - given-names: "Joerg"
+    family-names: "Herbel"
+    email: joerg.herbel@gmail.com
+  - given-names: "Claudio"
+    family-names: "Bruderer"
+    email: claudio.bruderer@gmail.com
+  - given-names: "Uwe"
+    family-names: "Schmitt"
+    email: uwe.schmitt@id.ethz.ch
+    orcid: 'https://orcid.org/0000-0002-4658-0616'
+    affiliation: ETHZ
+  - given-names: "Alexandre"
+    family-names: "Refregier"
+    email: alexandre.refregier@phys.ethz.ch
+    orcid: 'https://orcid.org/0000-0001-9864-3124'
+    affiliation: ETHZ
+  - given-names: "Joel"
+    family-names: "Berge"
+    email: joel.berge@onera.fr
+  - given-names: "Lukas"
+    family-names: "Gamper"
+    email: gamperl@gmail.com
+  - given-names: "Adam"
+    family-names: "Amara"
+    email: a.amara@surrey.ac.uk
+    orcid: 'https://orcid.org/0000-0001-9864-3124'
+    affiliation: ETHZ
+identifiers:
+  - type: url
+    value: 'https://arxiv.org/abs/2412.08716'
+repository-code: 'https://gitlab.com/cosmology-ethz/ufig'
+url: 'https://cosmo-docs.phys.ethz.ch/ufig/'
+abstract: >-
+   With the rise of simulation-based inference (SBI) methods, simulations need
+   to be fast as well as realistic. 𝚄𝙵𝚒𝚐 𝚟𝟷 is a public Python package that
+   generates simulated astronomical images with exceptional speed - taking
+   approximately the same time as source extraction. This makes it particularly
+   well-suited for simulation-based inference (SBI) methods where computational
+   efficiency is crucial. To render an image, 𝚄𝙵𝚒𝚐 requires a galaxy catalog
+   and a description of the point spread function (PSF). It can also add
+   background noise, sample stars using the Besançon model of the Milky Way,
+   and run 𝚂𝙴𝚡𝚝𝚛𝚊𝚌𝚝𝚘𝚛 to extract sources from the rendered image. The extracted
+   sources can be matched to the intrinsic catalog, flagged based on 𝚂𝙴𝚡𝚝𝚛𝚊𝚌𝚝𝚘𝚛
+   output and survey masks, and emulators can be used to bypass the image
+   simulation and extraction steps. A first version of 𝚄𝙵𝚒𝚐 was presented in
+   Bergé et al. (2013) and the software has since been used and further
+   developed in a variety of forward modelling applications.
+license: MIT
+commit: ""
+version: 1.0.0
+date-released: ""
