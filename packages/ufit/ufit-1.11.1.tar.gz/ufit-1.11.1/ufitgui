@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+#  -*- coding: utf-8 -*-
+# *****************************************************************************
+# ufit, a universal scattering fitting suite
+#
+# Copyright (c) 2013-2025, Georg Brandl and contributors.  All rights reserved.
+# Licensed under a 2-clause BSD license, see LICENSE.
+# *****************************************************************************
+
+import ufit.gui
+
+if __name__ == '__main__':
+    ufit.gui.main()

@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: ufit
+Version: 1.11.1
+Summary: Universal scattering data fitting tool
+Home-page: https://forge.frm2.tum.de/review/plugins/gitiles/mlz/general/ufit
+Author: Georg Brandl
+Author-email: g.brandl@fz-juelich.de
+License: BSD-2-Clause
+License-File: LICENSE
+Requires-Dist: matplotlib>=3.0
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: PyQt5
+Requires-Dist: lmfit
+Provides-Extra: repl
+Requires-Dist: qtconsole; extra == "repl"
+Provides-Extra: minuit
+Requires-Dist: iminuit; extra == "minuit"
+Provides-Extra: cluster
+Requires-Dist: paramiko; extra == "cluster"

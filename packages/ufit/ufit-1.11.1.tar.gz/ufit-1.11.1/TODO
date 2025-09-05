@@ -1,0 +1,19 @@
+API
+===
+
+* refactor Dataset to be more logical and to have official data setters/getters
+
+GUI
+===
+
+* arbitrary math. operations on datasets (x and y -> calc. dy automatically)
+* combination of two datasets by math. operation
+* add'l parameters
+* export plot as python script / ipython notebook (?)
+* sqwtas
+
+Bugs
+====
+
+* str() -> unicode()
+* fix initial guess Y axis chaos
