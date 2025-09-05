@@ -1,0 +1,75 @@
+{
+  "generated_at": "2025-09-03T10:32:25.144522",
+  "monitoring_duration": "0:00:04.007945",
+  "total_events": 5,
+  "system_info": {
+    "cpu_cores": 24,
+    "cpu_frequency_mhz": 3187.0,
+    "memory_total_mb": 65327.86328125,
+    "memory_available_mb": 44645.13671875
+  },
+  "memory_usage": {
+    "average_mb": 19.87109375,
+    "maximum_mb": 19.875,
+    "minimum_mb": 19.85546875,
+    "current_mb": 19.875,
+    "average_bytes": 20836352.0,
+    "maximum_bytes": 20840448,
+    "minimum_bytes": 20819968,
+    "current_bytes": 20840448
+  },
+  "cpu_usage": {
+    "average_percent": 3.7199999999999998,
+    "maximum_percent": 9.2,
+    "minimum_percent": 0.5,
+    "current_percent": 1.9
+  },
+  "thresholds": {
+    "max_memory_usage_mb": 1024.0,
+    "max_cpu_usage_percent": 80.0,
+    "max_execution_time_seconds": 300.0
+  },
+  "performance_analysis": {
+    "memory_threshold_exceeded": false,
+    "cpu_threshold_exceeded": false,
+    "memory_optimization_suggestions": [],
+    "cpu_optimization_suggestions": []
+  },
+  "events": [
+    {
+      "timestamp": "2025-09-03T10:32:20.934902",
+      "event": "start",
+      "memory_usage": 20819968,
+      "cpu_usage": 9.2,
+      "execution_time": 1756863141.0354254
+    },
+    {
+      "timestamp": "2025-09-03T10:32:22.237368",
+      "event": "operation_1",
+      "memory_usage": 20840448,
+      "cpu_usage": 0.5,
+      "execution_time": 1756863142.337755
+    },
+    {
+      "timestamp": "2025-09-03T10:32:23.539246",
+      "event": "operation_2",
+      "memory_usage": 20840448,
+      "cpu_usage": 1.9,
+      "execution_time": 1756863143.6400886
+    },
+    {
+      "timestamp": "2025-09-03T10:32:24.842278",
+      "event": "operation_3",
+      "memory_usage": 20840448,
+      "cpu_usage": 5.1,
+      "execution_time": 1756863144.9426565
+    },
+    {
+      "timestamp": "2025-09-03T10:32:24.942851",
+      "event": "stop",
+      "memory_usage": 20840448,
+      "cpu_usage": 1.9,
+      "execution_time": 1756863145.0432243
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+[GENERAL]
+log_level = INFO
+timeout = 300
+max_retries = 3
+retry_delay = 5
+
+[PROGRAMMER]
+programmer_cli = STM32_Programmer_CLI.exe
+connect_mode = underReset
+programming_speed = 8000
+erase_mode = sector
+verify_mode = checksum
+mass_erase = False
+verify = False
+
+#####
+stlink_sn = 066AFF303550503043035447
+offset = 0x08020000
+#####
+
+[FLASH_CHECK]
+# Flash address to check before programming
+check_address = 0x08020000
+# Expected 4-byte value at the address (hex format)
+expected_value = 0x20030000
+serial_address = 0x080232c4
+# max retry attempts for reading different values
+max_retry_attempts = 10
+# Delay between retry attempts (seconds)
+retry_delay = 2
+
+[SERIAL]
+port = COM4
+baudrate = 115200
+serial_timeout = 10
+
+[VOICE_ANNOUNCEMENT]
+# Enable voice announcements
+enable_voice = True
+# Language for voice announcements (ko for Korean, en for English)
+language = ko
+# Announce when board is completed (expected value matches)
+announce_board_completed = True
+# Announce when programming starts
+announce_programming_start = True
+# Announce when programming completes
+announce_programming_complete = True
+# Announce errors
+announce_errors = True
+data_bits = 8
+stop_bits = 1
+parity = none
+flow_control = none
+
+[FILES]
+firmware_dir = upload_firmware
+log_directory = logs
+temp_directory = temp
+firmware_pattern = *.bin
+max_file_size = 1048576
