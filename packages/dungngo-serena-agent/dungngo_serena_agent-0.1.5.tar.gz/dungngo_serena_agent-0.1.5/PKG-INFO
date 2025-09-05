@@ -1,0 +1,51 @@
+Metadata-Version: 2.4
+Name: dungngo-serena-agent
+Version: 0.1.5
+Summary:  (republished for testing)
+Project-URL: Homepage, https://github.com/oraios/serena
+Author-email: dungngo <test@dungngo.dev>
+License: MIT
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: <3.12,>=3.11
+Requires-Dist: anthropic>=0.54.0
+Requires-Dist: docstring-parser>=0.16
+Requires-Dist: dotenv>=0.9.9
+Requires-Dist: flask>=3.0.0
+Requires-Dist: jinja2>=3.1.6
+Requires-Dist: joblib>=1.5.1
+Requires-Dist: mcp==1.12.3
+Requires-Dist: overrides<8,>=7.7.0
+Requires-Dist: pathspec>=0.12.1
+Requires-Dist: psutil>=7.0.0
+Requires-Dist: pydantic>=2.10.6
+Requires-Dist: pyright<2,>=1.1.396
+Requires-Dist: python-dotenv<2,>=1.0.0
+Requires-Dist: pyyaml>=6.0.2
+Requires-Dist: requests<3,>=2.32.3
+Requires-Dist: ruamel-yaml>=0.18.0
+Requires-Dist: sensai-utils>=1.5.0
+Requires-Dist: tiktoken>=0.9.0
+Requires-Dist: tqdm>=4.67.1
+Requires-Dist: types-pyyaml>=6.0.12.20241230
+Provides-Extra: agno
+Requires-Dist: agno>=1.2.6; extra == 'agno'
+Requires-Dist: sqlalchemy>=2.0.40; extra == 'agno'
+Provides-Extra: dev
+Requires-Dist: black[jupyter]>=23.7.0; extra == 'dev'
+Requires-Dist: jinja2; extra == 'dev'
+Requires-Dist: mypy>=1.16.1; extra == 'dev'
+Requires-Dist: poethepoet>=0.20.0; extra == 'dev'
+Requires-Dist: pytest-xdist>=3.5.0; extra == 'dev'
+Requires-Dist: pytest>=8.0.2; extra == 'dev'
+Requires-Dist: ruff>=0.0.285; extra == 'dev'
+Requires-Dist: syrupy>=4.9.1; extra == 'dev'
+Requires-Dist: toml-sort>=0.24.2; extra == 'dev'
+Requires-Dist: types-pyyaml>=6.0.12.20241230; extra == 'dev'
+Requires-Dist: types-requests>=2.32.4.20241230; extra == 'dev'
+Provides-Extra: google
+Requires-Dist: google-genai>=1.8.0; extra == 'google'
+Description-Content-Type: text/plain
+
+Package managed by MseeP.ai
