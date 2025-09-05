@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Phashcat"
+version = "0.1.1"
+description = "Pythonic monoid-style builder around hashcat CLI with bundled binary."
+readme = "README.md"
+authors = [
+  { name = "Avi Twil" }
+]
+license = { text = "MIT" }
+requires-python = ">=3.9"
+
+keywords = ["hashcat", "cli", "wrapper", "security", "pentest", "builder", "monoid"]
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Information Technology",
+  "Intended Audience :: Science/Research",
+  "Topic :: Security",
+  "Topic :: Utilities",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13"
+]
+
+[project.urls]
+Homepage = "https://github.com/avitwil/Phashcat"
+Issues = "https://github.com/avitwil/Phashcat/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["Phashcat*"]
+namespaces = false
+
+# הכי חשוב: כולל *כל* הקבצים בתוך Phashcat ותתי-התיקיות שלה
+[tool.setuptools.package-data]
+"Phashcat.hashcat" = ["hashcat", "hashcat.exe", "hashcat.hcstat2"]
