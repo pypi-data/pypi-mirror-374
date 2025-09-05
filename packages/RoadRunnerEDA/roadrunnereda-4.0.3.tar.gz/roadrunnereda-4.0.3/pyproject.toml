@@ -1,0 +1,50 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools >= 61.0"]
+
+[project]
+name = "RoadRunnerEDA"
+dynamic = ["version"]
+dependencies = [
+    "lupa",
+    "pyyaml",
+    "psutil"
+]
+requires-python = ">=3.9"
+authors = [
+    {name = "Mattis Hasler", email = "mattis.hasler@barkhauseninstitut.org"}
+]
+maintainers = [
+    {name = "Mattis Hasler", email = "mattis.hasler@barkhauseninstitut.org"}
+]
+description = "EDA project management"
+#readme = "README.md"
+license = {file = "LICENSE"}
+
+[project.scripts]
+roadrunner = "roadrunner.run:main"
+rr = "roadrunner.run:main"
+
+[tool.setuptools.dynamic]
+version = {file = "roadrunner/version"}
+
+[tool.setuptools]
+packages = [
+    'roadrunner',
+    'roadrunner.tools',
+    'roadrunner.tools.vivado',
+    'roadrunner.tools.vcs',
+    'roadrunner.assets',
+    'roadrunner.modules',
+    'roadrunner.runner',
+    'roadexec'
+]
+
+[tool.setuptools.package-data]
+    'roadrunner.assets' = ['*/*']
+    'roadrunner' = ['version']
+   
+
+[tool.setuptools.data-files]
+    'share/bash-completion/completions' = ['script/bash_completion/rr']
+

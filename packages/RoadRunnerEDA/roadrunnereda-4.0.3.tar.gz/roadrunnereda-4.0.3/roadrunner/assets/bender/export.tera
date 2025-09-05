@@ -1,0 +1,7 @@
+#{{ HEADER_AUTOGEN }}
+{% for file in all_files %}install -D {{ file | replace(from=root ~ "/", to="") }} result/{{ file | replace(from=root ~ "/", to="")}}
+{% endfor %}
+{% for absdir in all_incdirs %}{% set dir = absdir | replace(from=root ~ "/", to="")%}{#
+#}mkdir -p result/{{ dir }}
+cp -r {{ dir }}/* result/{{ dir }}
+{% endfor %}
