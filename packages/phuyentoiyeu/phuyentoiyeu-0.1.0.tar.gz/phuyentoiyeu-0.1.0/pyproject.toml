@@ -1,0 +1,21 @@
+[project]
+name = "phuyentoiyeu"
+version = "0.1.0"
+description = "A package for thanglieuphuyen"
+authors = [
+    {name = "Nguyen Gia Bao",email = "bao.luu22022004@hcmut.edu.vn"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy (>=2.3.2,<3.0.0)",
+    "python-math (>=0.0.1,<0.0.2)"
+]
+
+[tool.poetry]
+packages = [{include = "phuyentoiyeu", from = "src"}]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
