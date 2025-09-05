@@ -1,0 +1,116 @@
+<!-- templates/blocks/apresentacao_block.html -->
+{% load wagtailcore_tags %}
+
+<section class="apresentacao-secao py-16" 
+         style="background-color: {{ value.cor_fundo }};">
+    
+    <div class="apresentacao-container mx-auto px-4">
+        <div class="apresentacao-wrapper mx-auto text-center">
+            
+            <!-- Título -->
+            <h2 class="apresentacao-titulo font-bold mb-8"
+                style="color: {{ value.cor_titulo }};">
+                {{ value.titulo }}
+            </h2>
+
+            <!-- Quadrado de conteúdo -->
+            <div class="apresentacao-conteudo-box rounded-lg mb-8 shadow-lg text-left"
+                 style="background-color: {{ value.cor_quadrado }};">
+                <div class="apresentacao-texto leading-relaxed"
+                     style="color: {{ value.cor_titulo }};">
+                    {{ value.conteudo|richtext }}
+                </div>
+            </div>
+
+            <!-- Botão -->
+            {% if value.botao_texto and value.botao_url %}
+                <div class="apresentacao-botao-wrapper flex justify-center">
+                    <a href="{{ value.botao_url }}" 
+                       class="apresentacao-botao inline-flex items-center justify-center 
+                              px-8 font-semibold rounded-full 
+                              text-white transition-all duration-300"
+                       style="background-color: {{ value.cor_botao }};"
+                       onmouseover="this.style.backgroundColor='{{ value.cor_botao_hover }}'"
+                       onmouseout="this.style.backgroundColor='{{ value.cor_botao }}'">
+                        
+                        {% if value.botao_icone %}
+                            <i class="apresentacao-icone {{ value.botao_icone }} mr-2"></i>
+                        {% endif %}
+                        
+                        {{ value.botao_texto }}
+                    </a>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+
+<style>
+    .apresentacao-botao {
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        font-size: 1.125rem;
+        padding: 12px 16px;
+        border-radius: 32px;
+        width: 200px;
+        gap: 20px;
+    }
+
+    .apresentacao-titulo {
+        font-size: 2.25rem;
+        margin-bottom: 0px;
+    }
+
+    @media (min-width: 768px) {
+        .apresentacao-titulo {
+            font-size: 3rem;
+        }
+    }
+
+    .apresentacao-container {
+        max-width: 1200px;
+    }
+
+    .apresentacao-wrapper {
+        max-width: 1142px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .apresentacao-conteudo-box {
+        padding: 60px 120px;
+    }
+
+    @media (min-width: 768px) {
+        .apresentacao-conteudo-box {
+            padding: 3rem;
+        }
+    }
+    
+    .apresentacao-botao:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+    
+    /* Forçar cores do richtext */
+    .apresentacao-secao .apresentacao-texto * {
+        color: inherit !important;
+        text-align: left;
+    }
+
+    .apresentacao-secao {
+        padding: 90px 0;
+    }
+
+    .apresentacao-texto {
+        font-size: 1.125rem;
+    }
+    
+    .apresentacao-secao .apresentacao-texto p,
+    .apresentacao-secao .apresentacao-texto div,
+    .apresentacao-secao .apresentacao-texto span {
+        color: inherit !important;
+    }
+</style>
