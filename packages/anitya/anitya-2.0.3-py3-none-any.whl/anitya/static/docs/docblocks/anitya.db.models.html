@@ -1,0 +1,163 @@
+<!--
+	Overriding Alabaster Theme to replace link to static page source
+	with a link to GitHub. Using instructions from official guide.
+
+	https://www.sphinx-doc.org/en/master/templating.html#jinja-sphinx-templating-primer
+-->
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>anitya.db.models &#8212; Anitya 1.9.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=9f6847e8" />
+    <script src="../_static/documentation_options.js?v=c4cb232b"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Database models" href="../database.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-anitya.db.models">
+<span id="anitya-db-models"></span><h1>anitya.db.models<a class="headerlink" href="#module-anitya.db.models" title="Link to this heading">¶</a></h1>
+<p>SQLAlchemy database models.</p>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ApiToken</span></code>(**kwargs)</p></td>
+<td><p>A table for user API tokens.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Distro</span></code>(name)</p></td>
+<td><p>Class Distro</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">GUID</span></code>(*args, **kwargs)</p></td>
+<td><p>Platform-independent GUID type.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Packages</span></code>(**kwargs)</p></td>
+<td><p>Class Packages</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Project</span></code>(**kwargs)</p></td>
+<td><p>Models an upstream project and maps it to a database table.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProjectFlag</span></code>(**kwargs)</p></td>
+<td><p>Class ProjectFlag</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProjectVersion</span></code>(**kwargs)</p></td>
+<td><p>Models of version table representing version on project.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Run</span></code>(**kwargs)</p></td>
+<td><p>Class Run</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">User</span></code>(**kwargs)</p></td>
+<td><p>A table for Anitya users.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Anitya</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=fedora-infra&repo=anitya&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-user-guide.html">Admin User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integrating-with-anitya.html">Integrating with Anitya</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Development Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../database.html">Database models</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">anitya.db.models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database.html#database-schema">Database Schema</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../database.html">Database models</a><ul>
+      <li>Previous: <a href="../database.html" title="previous chapter">Database models</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" style="text-align: center">
+      &copy;2022, Red Hat, Inc. and others.|
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.16</a>
+      (<a href="https://github.com/fedora-infra/anitya/tree/master/docs/_templates">customized</a>)
+      |
+      <a href="https://github.com/fedora-infra/anitya/tree/master/docs/docblocks/anitya.db.models.rst"
+          rel="nofollow">View source</a>
+    </div>
+  </body>
+</html>

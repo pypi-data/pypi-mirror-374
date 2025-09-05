@@ -1,0 +1,373 @@
+<!--
+	Overriding Alabaster Theme to replace link to static page source
+	with a link to GitHub. Using instructions from official guide.
+
+	https://www.sphinx-doc.org/en/master/templating.html#jinja-sphinx-templating-primer
+-->
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>anitya.lib.versions.base &#8212; Anitya 1.9.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for anitya.lib.versions.base</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright © 2017-2020 Red Hat, Inc.</span>
+<span class="c1">#</span>
+<span class="c1"># This copyrighted material is made available to anyone wishing to use,</span>
+<span class="c1"># modify, copy, or redistribute it subject to the terms and conditions</span>
+<span class="c1"># of the GNU General Public License v.2, or (at your option) any later</span>
+<span class="c1"># version.  This program is distributed in the hope that it will be</span>
+<span class="c1"># useful, but WITHOUT ANY WARRANTY expressed or implied, including the</span>
+<span class="c1"># implied warranties of MERCHANTABILITY or FITNESS FOR A PARTICULAR</span>
+<span class="c1"># PURPOSE.  See the GNU General Public License for more details.  You</span>
+<span class="c1"># should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation,</span>
+<span class="c1"># Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.</span>
+<span class="c1">#</span>
+<span class="c1"># Any Red Hat trademarks that are incorporated in the source</span>
+<span class="c1"># code or documentation are not subject to the GNU General Public</span>
+<span class="c1"># License and may only be used or replicated with the express permission</span>
+<span class="c1"># of Red Hat, Inc.</span>
+<span class="sd">&quot;&quot;&quot;The Anitya versions API.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">packaging.version</span>
+
+<span class="kn">from</span> <span class="nn">anitya.lib.exceptions</span> <span class="kn">import</span> <span class="n">InvalidVersion</span>
+
+<span class="c1">#: A regular expression to determine if the version string contains a &#39;v&#39; prefix.</span>
+<span class="n">v_prefix</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;v\d.*&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Version"><a class="viewcode-back" href="../../../../api.html#anitya.lib.versions.base.Version">[docs]</a><span class="nd">@functools</span><span class="o">.</span><span class="n">total_ordering</span>
+<span class="k">class</span> <span class="nc">Version</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The base class for versions.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Generic Version&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">version</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">created_on</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">pattern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cursor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">commit_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">pre_release_filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor of Version class.</span>
+
+<span class="sd">        Params:</span>
+<span class="sd">            version: Raw version</span>
+<span class="sd">            prefix: Prefix to remove</span>
+<span class="sd">            created_on: Date of creation</span>
+<span class="sd">            pattern: Calendar version pattern.</span>
+<span class="sd">                See `Calendar version scheme_` for more information.</span>
+<span class="sd">            cursor: An opaque, backend-specific cursor pointing to the version.</span>
+<span class="sd">            commit_url: A URL pointing to the commit tagged as the version.</span>
+<span class="sd">            pre_release_filter: A filter used to identify pre-release versions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
+        <span class="k">if</span> <span class="n">prefix</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prefixes</span> <span class="o">=</span> <span class="n">prefix</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+            <span class="c1"># Sort from shorter to longest, this will prevent stripping</span>
+            <span class="c1"># shorter prefix instead of larger.</span>
+            <span class="c1"># For example:</span>
+            <span class="c1"># version = release_db-1.2.3</span>
+            <span class="c1"># prefixes = release_db-;release</span>
+            <span class="c1"># would return db-1.2.3 instead of 1.2.3 if the sort is not done</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prefixes</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prefixes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_on</span> <span class="o">=</span> <span class="n">created_on</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">pattern</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="n">cursor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">commit_url</span> <span class="o">=</span> <span class="n">commit_url</span>
+        <span class="k">if</span> <span class="n">pre_release_filter</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pre_release_filters</span> <span class="o">=</span> <span class="n">pre_release_filter</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pre_release_filters</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a parsed, string version of this instance&#39;s version.</span>
+<span class="sd">        If parsing fails, the original version string is returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">())</span>
+        <span class="k">except</span> <span class="n">InvalidVersion</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span>
+
+<div class="viewcode-block" id="Version.parse"><a class="viewcode-back" href="../../../../api.html#anitya.lib.versions.base.Version.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse the version string to an object representing the version.</span>
+
+<span class="sd">        This does some minimal string processing, stripping any prefix set on</span>
+<span class="sd">        project.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The version string. Sub-classes may return a different type.</span>
+<span class="sd">            object: Sub-classes may return a special class that represents the</span>
+<span class="sd">            version. This must support comparison operations and return</span>
+<span class="sd">            a parsed, prefix-stripped version when ``__str__`` is invoked.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            InvalidVersion: If the version cannot be parsed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># If there&#39;s a prefix set on the project, strip it if it&#39;s present</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span>
+        <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefixes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">prefix</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
+                <span class="n">version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="c1"># Many projects prefix their tags with &#39;v&#39;, so strip it if it&#39;s present</span>
+        <span class="k">if</span> <span class="n">v_prefix</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">version</span><span class="p">):</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="n">version</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+        <span class="k">return</span> <span class="n">version</span></div>
+
+<div class="viewcode-block" id="Version.prerelease"><a class="viewcode-back" href="../../../../api.html#anitya.lib.versions.base.Version.prerelease">[docs]</a>    <span class="k">def</span> <span class="nf">prerelease</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if a version is a pre-release version.</span>
+
+<span class="sd">        This basic version implementation does not have a concept of</span>
+<span class="sd">        pre-releases.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">for</span> <span class="n">pre_release_filter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_release_filters</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">pre_release_filter</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="c1"># special filter mode &quot;odds&quot;</span>
+            <span class="c1">#</span>
+            <span class="c1"># The following is an attempt to filter versions for packages</span>
+            <span class="c1"># that may use odd-numbered versions for development releases.</span>
+            <span class="c1"># This mode attempts to use the `packaging` version parsing to</span>
+            <span class="c1"># extract a possible release tuple from the provided version</span>
+            <span class="c1"># string, which should work for most version schemas. If an odd</span>
+            <span class="c1"># value is detected for the target field, the filter will flag. By</span>
+            <span class="c1"># default, this mode will target the &quot;minor&quot; field, but this can</span>
+            <span class="c1"># be overridden by appending a target index via `!odds:&lt;idx&gt;`. For</span>
+            <span class="c1"># example, `!odds:2` will attempt to use the &quot;micro&quot; field. For</span>
+            <span class="c1"># cases where the version cannot be parsed due to an unsupported</span>
+            <span class="c1"># schema, the filter processing will just ignore/skip the entry.</span>
+            <span class="k">if</span> <span class="n">pre_release_filter</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;!odds&quot;</span><span class="p">):</span>
+                <span class="c1"># determine the specific field to use when considering &quot;odd&quot;</span>
+                <span class="c1"># releases -- by default, the &quot;minor&quot; (index 1) will be used</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">raw_target_idx</span> <span class="o">=</span> <span class="n">pre_release_filter</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">target_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">raw_target_idx</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                    <span class="n">target_idx</span> <span class="o">=</span> <span class="mi">1</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">rguess</span> <span class="o">=</span> <span class="n">packaging</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span><span class="o">.</span><span class="n">release</span>
+                    <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">target_idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">rguess</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">rguess</span><span class="p">[</span><span class="n">target_idx</span><span class="p">]</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">except</span> <span class="n">packaging</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">InvalidVersion</span><span class="p">:</span>
+                    <span class="k">continue</span>
+            <span class="k">elif</span> <span class="n">pre_release_filter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Version.postrelease"><a class="viewcode-back" href="../../../../api.html#anitya.lib.versions.base.Version.postrelease">[docs]</a>    <span class="k">def</span> <span class="nf">postrelease</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if a version is a post-release version.</span>
+
+<span class="sd">        This basic version implementation does not have a concept of</span>
+<span class="sd">        post-releases.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Version.newer"><a class="viewcode-back" href="../../../../api.html#anitya.lib.versions.base.Version.newer">[docs]</a>    <span class="k">def</span> <span class="nf">newer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_versions</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check a version against a list of other versions to see if it&#39;s newer.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; version = Version(version=&#39;1.1.0&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; version.newer([Version(version=&#39;1.0.0&#39;)])</span>
+<span class="sd">            True</span>
+<span class="sd">            &gt;&gt;&gt; version.newer([&#39;1.0.0&#39;, &#39;0.0.1&#39;])  # You can pass strings!</span>
+<span class="sd">            True</span>
+<span class="sd">            &gt;&gt;&gt; version.newer([&#39;1.2.0&#39;, &#39;2.0.1&#39;])</span>
+<span class="sd">            False</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other_versions (list): A list of version strings or Version</span>
+<span class="sd">                objects to check the `version` string against.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if self is the newest version, ``False otherwise``.</span>
+<span class="sd">        Raises:</span>
+<span class="sd">            InvalidVersion: if one or more of the version</span>
+<span class="sd">                strings provided cannot be parsed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other_versions</span><span class="p">,</span> <span class="p">(</span><span class="n">Version</span><span class="p">,</span> <span class="nb">str</span><span class="p">)):</span>
+            <span class="n">other_versions</span> <span class="o">=</span> <span class="p">[</span><span class="n">other_versions</span><span class="p">]</span>
+        <span class="n">cast_versions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">version</span> <span class="ow">in</span> <span class="n">other_versions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)):</span>
+                <span class="n">version</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">)</span>
+            <span class="n">cast_versions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span>  <span class="c1"># pylint: disable=R1729</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">v</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">cast_versions</span><span class="p">]</span>
+        <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Support &lt; comparison via objects returned from :meth:`parse`&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">parsed_self</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">InvalidVersion</span><span class="p">:</span>
+            <span class="n">parsed_self</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">parsed_other</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">InvalidVersion</span><span class="p">:</span>
+            <span class="n">parsed_other</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Handle the cases where one or both aren&#39;t parsable. Parsable versions</span>
+        <span class="c1"># always sort higher than unparsable versions.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed_self</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">parsed_other</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="fm">__lt__</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed_other</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed_self</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="n">parsed_self</span><span class="o">.</span><span class="fm">__lt__</span><span class="p">(</span><span class="n">parsed_other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Support == comparison via objects returned from :meth:`parse`&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">parsed_self</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">InvalidVersion</span><span class="p">:</span>
+            <span class="n">parsed_self</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">parsed_other</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">InvalidVersion</span><span class="p">:</span>
+            <span class="n">parsed_other</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed_self</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">parsed_other</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parsed_self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">parsed_other</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Anitya</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=fedora-infra&repo=anitya&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user-guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../admin-user-guide.html">Admin User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../glossary.html">Glossary</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../admin-guide.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../integrating-with-anitya.html">Integrating with Anitya</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../database.html">Database models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" style="text-align: center">
+      &copy;2022, Red Hat, Inc. and others.|
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      (<a href="https://github.com/fedora-infra/anitya/tree/master/docs/_templates">customized</a>)
+      |
+      <a href="https://github.com/fedora-infra/anitya/tree/master/docs/_modules/anitya/lib/versions/base.rst"
+          rel="nofollow">View source</a>
+    </div>
+  </body>
+</html>

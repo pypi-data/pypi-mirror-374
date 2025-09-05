@@ -1,0 +1,540 @@
+<!--
+	Overriding Alabaster Theme to replace link to static page source
+	with a link to GitHub. Using instructions from official guide.
+
+	https://www.sphinx-doc.org/en/master/templating.html#jinja-sphinx-templating-primer
+-->
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>anitya.lib.backends &#8212; Anitya 1.9.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for anitya.lib.backends</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># This file is a part of the Anitya project.</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright © 2014-2020 Pierre-Yves Chibon &lt;pingou@pingoured.fr&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation; either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program; if not, write to the Free Software</span>
+<span class="c1"># Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA</span>
+<span class="sd">&quot;&quot;&quot;The Anitya backends API.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">fnmatch</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+
+<span class="c1"># sre_constants contains re exceptions</span>
+<span class="kn">import</span> <span class="nn">sre_constants</span>  <span class="c1"># pylint: disable=W4901</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span> <span class="k">as</span> <span class="nn">urllib</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">urllib.error</span> <span class="kn">import</span> <span class="n">URLError</span>
+
+<span class="kn">import</span> <span class="nn">arrow</span>
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">anitya.config</span> <span class="kn">import</span> <span class="n">config</span> <span class="k">as</span> <span class="n">anitya_config</span>
+<span class="kn">from</span> <span class="nn">anitya.lib.exceptions</span> <span class="kn">import</span> <span class="n">AnityaPluginException</span>
+<span class="kn">from</span> <span class="nn">anitya.lib.versions</span> <span class="kn">import</span> <span class="n">GLOBAL_DEFAULT</span><span class="p">,</span> <span class="n">RpmVersion</span>
+
+<span class="n">REGEX</span> <span class="o">=</span> <span class="n">anitya_config</span><span class="p">[</span><span class="s2">&quot;DEFAULT_REGEX&quot;</span><span class="p">]</span>
+
+<span class="c1"># Default headers for requests</span>
+<span class="n">REQUEST_HEADERS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Anitya </span><span class="si">{</span><span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span><span class="s1">&#39;anitya&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2"> &quot;</span>
+    <span class="s2">&quot;at release-monitoring.org&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;From&quot;</span><span class="p">:</span> <span class="n">anitya_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ADMIN_EMAIL&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;If-modified-since&quot;</span><span class="p">:</span> <span class="n">arrow</span><span class="o">.</span><span class="n">Arrow</span><span class="p">(</span><span class="mi">1970</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;ddd, DD MMM YYYY HH:mm:ss&quot;</span><span class="p">)</span>
+    <span class="o">+</span> <span class="s2">&quot; GMT&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">_log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="c1"># Use a common http session, so we don&#39;t have to go re-establishing https</span>
+<span class="c1"># connections over and over and over again.</span>
+<span class="n">http_session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="BaseBackend"><a class="viewcode-back" href="../../../api.html#anitya.lib.backends.BaseBackend">[docs]</a><span class="k">class</span> <span class="nc">BaseBackend</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The base class that all the different backends should extend.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        name (str): The backend name. This is displayed to the user and used in</span>
+<span class="sd">            URLs.</span>
+<span class="sd">        examples (list): A list of strings that are displayed to the user to</span>
+<span class="sd">            indicate example project URLs.</span>
+<span class="sd">        default_regex (str): A regular expression to use by default with the</span>
+<span class="sd">            backend.</span>
+<span class="sd">        more_info (str): A string that provides more detailed information to</span>
+<span class="sd">            the user about the backend.</span>
+<span class="sd">        default_version_scheme (str): The default version scheme for this</span>
+<span class="sd">            backend. This is only used if both the project and the ecosystem</span>
+<span class="sd">            the project is a part of do not define a default version scheme.</span>
+<span class="sd">            If this is not defined, :data:`anitya.lib.versions.GLOBAL_DEFAULT`</span>
+<span class="sd">            is used.</span>
+<span class="sd">        check_interval (`datetime.timedelta`): Interval which is used for periodic</span>
+<span class="sd">            checking for new versions. This could be overriden by backend plugin.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">examples</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">default_regex</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">more_info</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">default_version_scheme</span> <span class="o">=</span> <span class="n">GLOBAL_DEFAULT</span>
+    <span class="n">check_interval</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BaseBackend.expand_subdirs"><a class="viewcode-back" href="../../../api.html#anitya.lib.backends.BaseBackend.expand_subdirs">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">expand_subdirs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">last_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">glob_char</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Expand dirs containing ``glob_char`` in the given URL with the latest</span>
+<span class="sd">        Example URL: ``https://www.example.com/foo/*/``</span>
+
+<span class="sd">        The globbing char can be bundled with other characters enclosed within</span>
+<span class="sd">        the same slashes in the URL like ``/rel*/``.</span>
+
+<span class="sd">        Code originally from Till Maas as part of</span>
+<span class="sd">        `cnucnu &lt;https://fedorapeople.org/cgit/till/public_git/cnucnu.git/&gt;`_</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">glob_pattern</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/([^/]*</span><span class="si">{</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">glob_char</span><span class="p">)</span><span class="si">}</span><span class="s2">[^/]*)/&quot;</span>
+        <span class="n">glob_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">glob_pattern</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">glob_match</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">url</span>
+        <span class="n">glob_str</span> <span class="o">=</span> <span class="n">glob_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># url until first slash before glob_match</span>
+        <span class="n">url_prefix</span> <span class="o">=</span> <span class="n">url</span><span class="p">[</span><span class="mi">0</span> <span class="p">:</span> <span class="n">glob_match</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># everything after the slash after glob_match</span>
+        <span class="n">url_suffix</span> <span class="o">=</span> <span class="n">url</span><span class="p">[</span><span class="n">glob_match</span><span class="o">.</span><span class="n">end</span><span class="p">()</span> <span class="p">:]</span>
+
+        <span class="n">html_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\bhref\s*=\s*[&quot;</span><span class="se">\&#39;</span><span class="s1">]([^&quot;</span><span class="se">\&#39;</span><span class="s1">/]+)/[&quot;</span><span class="se">\&#39;</span><span class="s1">]&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+        <span class="n">text_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^d.+\s(\S+)\s*$&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">url_prefix</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">call_url</span><span class="p">(</span><span class="n">url_prefix</span><span class="p">,</span> <span class="n">last_change</span><span class="o">=</span><span class="n">last_change</span><span class="p">)</span>
+            <span class="c1"># When FTP server is called, Response object is not created</span>
+            <span class="c1"># and we get binary string instead</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">dir_listing</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="n">dir_listing</span> <span class="o">=</span> <span class="n">resp</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">dir_listing</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">url</span>
+            <span class="n">subdirs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">regex</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;ftp://&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">text_regex</span> <span class="ow">or</span> <span class="n">html_regex</span>
+            <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">regex</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">dir_listing</span><span class="p">):</span>
+                <span class="n">subdir</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">subdir</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;..&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">subdir</span><span class="p">,</span> <span class="n">glob_str</span><span class="p">):</span>
+                    <span class="n">subdirs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subdir</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">subdirs</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">url</span>
+            <span class="n">sorted_subdirs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">RpmVersion</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">subdirs</span><span class="p">])</span>
+            <span class="n">latest</span> <span class="o">=</span> <span class="n">sorted_subdirs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">version</span>
+
+            <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">url_prefix</span><span class="si">}{</span><span class="n">latest</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">url_suffix</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">expand_subdirs</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">glob_char</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">url</span></div>
+
+<div class="viewcode-block" id="BaseBackend.get_version"><a class="viewcode-back" href="../../../api.html#anitya.lib.backends.BaseBackend.get_version">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Method called to retrieve the latest version of the projects</span>
+<span class="sd">        provided, project that relies on the backend of this plugin.</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">            project (:obj:`anitya.db.models.Project`): Project object whose backend</span>
+<span class="sd">                corresponds to the current plugin.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Latest version found upstream</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AnityaPluginException: A</span>
+<span class="sd">                :obj:`anitya.lib.exceptions.AnityaPluginException` exception</span>
+<span class="sd">                when the versions cannot be retrieved correctly</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_ordered_versions</span><span class="p">(</span><span class="n">project</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="BaseBackend.get_version_url"><a class="viewcode-back" href="../../../api.html#anitya.lib.backends.BaseBackend.get_version_url">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_version_url</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Method called to retrieve the url used to check for new version</span>
+<span class="sd">        of the project provided, project that relies on the backend of this plugin.</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">            project (:obj:`anitya.db.models.Project`): Project object whose backend</span>
+<span class="sd">                corresponds to the current plugin.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: url used for version checking</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="BaseBackend.get_versions"><a class="viewcode-back" href="../../../api.html#anitya.lib.backends.BaseBackend.get_versions">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_versions</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Method called to retrieve all the versions (that can be found)</span>
+<span class="sd">        of the projects provided, project that relies on the backend of</span>
+<span class="sd">        this plugin.</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">            project (:obj:`anitya.db.models.Project`): Project object whose backend</span>
+<span class="sd">                corresponds to the current plugin.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            :obj:`list`: A list of all the possible releases found. The items</span>
+<span class="sd">                in the list can either be strings of versions or dictionaries</span>
+<span class="sd">                containing at minimum the version (in a `version` key).</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AnityaPluginException: A</span>
+<span class="sd">                :obj:`anitya.lib.exceptions.AnityaPluginException` exception</span>
+<span class="sd">                when the versions cannot be retrieved correctly</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="BaseBackend.check_feed"><a class="viewcode-back" href="../../../api.html#anitya.lib.backends.BaseBackend.check_feed">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">check_feed</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Method called to retrieve the latest uploads to a given backend,</span>
+<span class="sd">        via, for example, RSS or an API.</span>
+
+<span class="sd">        Not all backends may support this.  It can be used to look for updates</span>
+<span class="sd">        much more quickly than scanning all known projects.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            :obj:`list`: A list of 4-tuples, containing the project name, homepage, the</span>
+<span class="sd">            backend, and the version.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AnityaPluginException: A</span>
+<span class="sd">                :obj:`anitya.lib.exceptions.AnityaPluginException` exception</span>
+<span class="sd">                when the versions cannot be retrieved correctly</span>
+<span class="sd">            NotImplementedError: If backend does not</span>
+<span class="sd">                support batch updates.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="BaseBackend.get_ordered_versions"><a class="viewcode-back" href="../../../api.html#anitya.lib.backends.BaseBackend.get_ordered_versions">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_ordered_versions</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Method called to retrieve all the versions (that can be found)</span>
+<span class="sd">        of the projects provided, ordered from the oldest to the newest.</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">            project (:obj:`anitya.db.models.Project`): Project object whose backend</span>
+<span class="sd">                corresponds to the current plugin.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            :obj:`list`: A sorted list of all the possible releases found</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AnityaPluginException: A</span>
+<span class="sd">                :obj:`anitya.lib.exceptions.AnityaPluginException` exception</span>
+<span class="sd">                when the versions cannot be retrieved correctly</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vlist</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_versions</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
+        <span class="n">sorted_versions</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">create_version_objects</span><span class="p">(</span><span class="n">vlist</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">version</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sorted_versions</span><span class="p">]</span></div>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_filter_versions</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">filter_list</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method used to call as argument of Python filter function.</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">            version (:obj:`list`): List of versions. For example [&quot;1.0.0, 1.0.0-alpha&quot;]</span>
+<span class="sd">            filter_list (:obj:`list`): List of strings to use as filter.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (bool): Result of the filter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">filter_str</span> <span class="ow">in</span> <span class="n">filter_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">filter_str</span> <span class="ow">and</span> <span class="n">filter_str</span> <span class="ow">in</span> <span class="n">version</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="BaseBackend.filter_versions"><a class="viewcode-back" href="../../../api.html#anitya.lib.backends.BaseBackend.filter_versions">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">filter_versions</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">versions</span><span class="p">,</span> <span class="n">filter_string</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Method called to filter versions list by filter_string.</span>
+<span class="sd">        Filter string is first parsed by delimiter and then applied on list of versions.</span>
+<span class="sd">        For example: list of versions [&quot;1.0.0&quot;, &quot;1.0.0-alpha&quot;, &quot;1.0.0-beta&quot;]</span>
+<span class="sd">        when filtered by &quot;alpha;beta&quot; will return [&quot;1.0.0&quot;].</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">            versions (:obj:`list`): List of versions. For example [&quot;1.0.0, 1.0.0-alpha&quot;]</span>
+<span class="sd">            filter_string (str): String to use for filtering.</span>
+<span class="sd">                It contains list of strings delimited by &quot;;&quot;.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            :obj:`list`: A list of filtered versions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Filtering versions &#39;</span><span class="si">%s</span><span class="s2">&#39; by filter &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">versions</span><span class="p">,</span> <span class="n">filter_string</span><span class="p">)</span>
+        <span class="n">filtered_versions</span> <span class="o">=</span> <span class="n">versions</span>
+        <span class="k">if</span> <span class="n">filter_string</span><span class="p">:</span>
+            <span class="n">filter_list</span> <span class="o">=</span> <span class="n">filter_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+            <span class="n">filtered_versions</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">version</span>
+                <span class="k">for</span> <span class="n">version</span> <span class="ow">in</span> <span class="n">versions</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_filter_versions</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">filter_list</span><span class="p">)</span>
+            <span class="p">]</span>
+
+        <span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Filtered versions &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">filtered_versions</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">filtered_versions</span></div>
+
+<div class="viewcode-block" id="BaseBackend.call_url"><a class="viewcode-back" href="../../../api.html#anitya.lib.backends.BaseBackend.call_url">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">call_url</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">last_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insecure</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dedicated method to query a URL.</span>
+
+<span class="sd">        It is important to use this method as it allows to query them with</span>
+<span class="sd">        a defined user-agent header thus informing the projects we are</span>
+<span class="sd">        querying what our intentions are.</span>
+
+<span class="sd">        To prevent downloading the whole content of the page each time the url is called.</span>
+<span class="sd">        We are using If-modified-since header field.</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">            url (str): The url to request (get).</span>
+<span class="sd">            last_change (`arrow.Arrow`, optional): Time when the latest version was obtained.</span>
+<span class="sd">                This value is used in If-modified-since header field. If there is no value</span>
+<span class="sd">                provided we will use start of the epoch (1.1. 1970).</span>
+<span class="sd">            insecure (bool, optional): Flag for secure/insecure connection.</span>
+<span class="sd">                Defaults to False.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            In case of FTP url it returns binary encoded string</span>
+<span class="sd">            otherwise :obj:`requests.Response` object.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">REQUEST_HEADERS</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">last_change</span><span class="p">:</span>
+            <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;If-modified-since&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">last_change</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;ddd, DD MMM YYYY HH:mm:ss&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; GMT&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;*&quot;</span> <span class="ow">in</span> <span class="n">url</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">expand_subdirs</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">last_change</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+
+        <span class="k">if</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;ftp://&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;ftps://&quot;</span><span class="p">):</span>
+            <span class="n">socket</span><span class="o">.</span><span class="n">setdefaulttimeout</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+
+            <span class="n">req</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="n">req</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">,</span> <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">])</span>
+            <span class="n">req</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s2">&quot;From&quot;</span><span class="p">,</span> <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;From&quot;</span><span class="p">])</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Ignore this bandit issue, the url is checked above</span>
+                <span class="n">resp</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>  <span class="c1"># nosec # pylint: disable=R1732</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+            <span class="k">except</span> <span class="n">URLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AnityaPluginException</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;Could not call &quot;</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">&quot; with error: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">reason</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+            <span class="k">except</span> <span class="ne">UnicodeDecodeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AnityaPluginException</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;FTP response cannot be decoded with UTF-8: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+
+            <span class="k">return</span> <span class="n">content</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Works around https://github.com/kennethreitz/requests/issues/2863</span>
+            <span class="c1"># Currently, requests does not start new TCP connections based on</span>
+            <span class="c1"># TLS settings. This means that if a connection is ever started to</span>
+            <span class="c1"># a host with `verify=False`, further requests to that</span>
+            <span class="c1"># (scheme, host, port) combination will also be insecure, even if</span>
+            <span class="c1"># `verify=True` is passed to requests.</span>
+            <span class="c1">#</span>
+            <span class="c1"># This starts a new session which is immediately discarded when the</span>
+            <span class="c1"># request is insecure. We don&#39;t get to pool connections for these</span>
+            <span class="c1"># requests, but it stops us from making insecure requests by</span>
+            <span class="c1"># accident. This can be removed in requests-3.0.</span>
+            <span class="k">if</span> <span class="n">insecure</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">r_session</span><span class="p">:</span>
+                    <span class="n">resp</span> <span class="o">=</span> <span class="n">r_session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">resp</span> <span class="o">=</span> <span class="n">http_session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">resp</span></div></div>
+
+
+<div class="viewcode-block" id="get_versions_by_regex"><a class="viewcode-back" href="../../../api.html#anitya.lib.backends.get_versions_by_regex">[docs]</a><span class="k">def</span> <span class="nf">get_versions_by_regex</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">regex</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">insecure</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;For the provided url, return all the version retrieved via the</span>
+<span class="sd">    specified regular expression.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">last_change</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">get_time_last_created_version</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">BaseBackend</span><span class="o">.</span><span class="n">call_url</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">last_change</span><span class="o">=</span><span class="n">last_change</span><span class="p">,</span> <span class="n">insecure</span><span class="o">=</span><span class="n">insecure</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> ERROR: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">AnityaPluginException</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Could not call : &quot;</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">&quot; of &quot;</span><span class="si">{</span><span class="n">project</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot;, with error: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="p">)</span> <span class="kn">from</span> <span class="nn">err</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+        <span class="c1"># Not modified</span>
+        <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">304</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">text</span>
+
+    <span class="k">return</span> <span class="n">get_versions_by_regex_for_text</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">regex</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_versions_by_regex_for_text"><a class="viewcode-back" href="../../../api.html#anitya.lib.backends.get_versions_by_regex_for_text">[docs]</a><span class="k">def</span> <span class="nf">get_versions_by_regex_for_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">regex</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;For the provided text, return all the version retrieved via the</span>
+<span class="sd">    specified regular expression.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">upstream_versions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">text</span><span class="p">)))</span>
+    <span class="k">except</span> <span class="n">sre_constants</span><span class="o">.</span><span class="n">error</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="k">raise</span> <span class="n">AnityaPluginException</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">project</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: invalid regular expression&quot;</span>
+        <span class="p">)</span> <span class="kn">from</span> <span class="nn">err</span>
+
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">version</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">upstream_versions</span><span class="p">):</span>
+        <span class="c1"># If the version retrieved is a tuple, re-constitute it</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">version</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">v</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">])</span>
+
+        <span class="n">upstream_versions</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">version</span>
+
+        <span class="k">if</span> <span class="s2">&quot; &quot;</span> <span class="ow">in</span> <span class="n">version</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AnityaPluginException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">project</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: invalid upstream version:&gt;</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&lt; - </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;- </span><span class="si">{</span><span class="n">regex</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">upstream_versions</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">AnityaPluginException</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">project</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: no upstream version found. - </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> -  </span><span class="si">{</span><span class="n">regex</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+    <span class="c1"># Filter retrieved versions</span>
+    <span class="n">filtered_versions</span> <span class="o">=</span> <span class="n">BaseBackend</span><span class="o">.</span><span class="n">filter_versions</span><span class="p">(</span>
+        <span class="n">upstream_versions</span><span class="p">,</span> <span class="n">project</span><span class="o">.</span><span class="n">version_filter</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">filtered_versions</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Anitya</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=fedora-infra&repo=anitya&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user-guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin-user-guide.html">Admin User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin-guide.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../integrating-with-anitya.html">Integrating with Anitya</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../database.html">Database models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" style="text-align: center">
+      &copy;2022, Red Hat, Inc. and others.|
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      (<a href="https://github.com/fedora-infra/anitya/tree/master/docs/_templates">customized</a>)
+      |
+      <a href="https://github.com/fedora-infra/anitya/tree/master/docs/_modules/anitya/lib/backends.rst"
+          rel="nofollow">View source</a>
+    </div>
+  </body>
+</html>

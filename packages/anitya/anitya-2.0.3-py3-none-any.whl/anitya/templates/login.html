@@ -1,0 +1,14 @@
+{% extends "master.html" %}
+
+{% block title %}Login · Anitya{% endblock %}
+
+{% block body %}
+<div class="d-flex align-itmes-start gap-3">
+    {% for backend in available_backends %}
+    <a title="{{ backend }}" class="btn btn-outline-primary" role="button" href="{{ url_for('anitya_auth.login', name=backend.lower()) }}">
+      <img src="{{url_for('anitya_ui.static', filename=backend.lower() + '_logo.png')}}">
+      <span>{{ backend }}</span>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

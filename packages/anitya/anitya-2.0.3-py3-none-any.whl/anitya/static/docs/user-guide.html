@@ -1,0 +1,587 @@
+<!--
+	Overriding Alabaster Theme to replace link to static page source
+	with a link to GitHub. Using instructions from official guide.
+
+	https://www.sphinx-doc.org/en/master/templating.html#jinja-sphinx-templating-primer
+-->
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>User Guide &#8212; Anitya 1.9.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=9f6847e8" />
+    <script src="_static/documentation_options.js?v=c4cb232b"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Admin User Guide" href="admin-user-guide.html" />
+    <link rel="prev" title="Anitya" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="user-guide">
+<h1>User Guide<a class="headerlink" href="#user-guide" title="Link to this heading">¶</a></h1>
+<p>Anitya attempts to select reasonable default settings for projects and in many
+cases, these should work just fine. However, there are millions of software
+projects out there and some do not follow common release methods. In those
+cases, Anitya offers more flexible tools.</p>
+<p>In this chapter of documentation you can find use cases that could be performed
+by user in Anitya.</p>
+<p>For use cases which needs admin permissions, please refer to <a class="reference internal" href="admin-user-guide.html"><span class="doc">Admin User Guide</span></a>.</p>
+<section id="logging-in">
+<h2>Logging in<a class="headerlink" href="#logging-in" title="Link to this heading">¶</a></h2>
+<p>To <a class="reference external" href="https://release-monitoring.org/login">log in</a> to Anitya you need to have an account. Anitya itself doesn’t provide
+any way to create an account, but it provides option to log in with 3rd party
+account. Currently you can log in with either Fedora account or use custom openid
+server.</p>
+</section>
+<section id="logging-out">
+<h2>Logging out<a class="headerlink" href="#logging-out" title="Link to this heading">¶</a></h2>
+<p>If you are currently logged in Anitya, you can log out by clicking on <a class="reference external" href="https://release-monitoring.org/logout">logout</a>
+link in the page header.</p>
+</section>
+<section id="listing-projects">
+<h2>Listing Projects<a class="headerlink" href="#listing-projects" title="Link to this heading">¶</a></h2>
+<p>Anitya provides multiple ways of listing the available projects. All options
+are accessible from <em>projects</em> menu in site header. You don’t need to be logged
+in to list the projects.</p>
+<p>From this menu you can choose from these options:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://release-monitoring.org/projects">all</a> will show you table containing all the projects available in Anitya
+sorted by name.</p></li>
+<li><p><a class="reference external" href="https://release-monitoring.org/projects/updates">updated</a> will show you table containing all the projects that Anitya checked
+without issue. This table is sorted by the time the last check was done.</p></li>
+<li><p><a class="reference external" href="https://release-monitoring.org/projects/updates/failed">failed to update</a> will show you table containing all the projects that Anitya
+failed to check for new version. On this page you can find number of unsuccessful
+attempts and the reason for the error. This table is sorted by number of unsuccessful
+attempts.</p></li>
+<li><p><a class="reference external" href="https://release-monitoring.org/projects/updates/never_updated">never updated</a> will show you table containing all the projects that Anitya never
+checked without an issue. In most cases this means that the project is incorrectly
+set up. They are ordered by the date of creation with the oldest on the top of table.</p></li>
+<li><p><a class="reference external" href="https://release-monitoring.org/projects/updates/archived">archived</a> will show you projects, that are archived and Anitya no longer checks
+for new versions of these projects. The archived project can no longer be edited, but
+it is good to have them available for history.</p></li>
+</ul>
+<p>Each option allows you to filter the list by using fields above the table. These
+fields are supporting patterns. For example you can search for projects ending
+with <code class="docutils literal notranslate"><span class="pre">py</span></code> by typing <code class="docutils literal notranslate"><span class="pre">*py</span></code>.</p>
+</section>
+<section id="finding-project-by-name">
+<h2>Finding Project by Name<a class="headerlink" href="#finding-project-by-name" title="Link to this heading">¶</a></h2>
+<p>To find project by name quickly you can use a search field in top of the page.
+This field supports pattern recognition. For example you can search for projects ending
+with <code class="docutils literal notranslate"><span class="pre">py</span></code> by typing <code class="docutils literal notranslate"><span class="pre">*py</span></code>.</p>
+</section>
+<section id="creating-new-project">
+<span id="creating-project"></span><h2>Creating New Project<a class="headerlink" href="#creating-new-project" title="Link to this heading">¶</a></h2>
+<p>You can <a class="reference external" href="https://release-monitoring.org/project/new">create new projects</a> in the web interface if you are logged in.
+When you create a new project, you must select a <a class="reference internal" href="glossary.html#term-backend"><span class="xref std std-term">backend</span></a> to fetch
+the version with. If the project is released in several places, please use
+the backend for the language <a class="reference internal" href="glossary.html#term-ecosystem"><span class="xref std std-term">ecosystem</span></a>. For example, if a project is
+hosted on <a class="reference external" href="https://github.com/">GitHub</a> and publishes releases to <a class="reference external" href="https://pypi.python.org/">PyPI</a>, use the PyPI backend.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Occasionally projects stop publishing releases to their ecosystem’s package
+index, but continue to tag releases. In those cases, it’s fine to use the
+backend for the source hosting service (GitHub, BitBucket, etc.) the project
+is using.</p>
+</div>
+<p>Bellow you will find the fields currently available on project with description.</p>
+<section id="project-name">
+<h3>Project Name<a class="headerlink" href="#project-name" title="Link to this heading">¶</a></h3>
+<p>The project name should match the upstream project name. Duplicate project names
+are allowed as long as the projects are not part of the same ecosystem. That is,
+you can have two projects called <code class="docutils literal notranslate"><span class="pre">msgpack</span></code>, but you cannot have two projects
+called <code class="docutils literal notranslate"><span class="pre">msgpack</span></code> that are both in the <code class="docutils literal notranslate"><span class="pre">PyPI</span></code> ecosystem.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When project is not part of any ecosystem, duplicate projects are detected
+based on the homepage of project.</p>
+</div>
+</section>
+<section id="homepage">
+<h3>Homepage<a class="headerlink" href="#homepage" title="Link to this heading">¶</a></h3>
+<p>Homepage of the project. If the project doesn’t have any homepage you could use the URL
+where project is hosted.</p>
+</section>
+<section id="backends">
+<h3>Backends<a class="headerlink" href="#backends" title="Link to this heading">¶</a></h3>
+<p>The backend of a project tells Anitya how to retrieve the versions of the
+project.</p>
+<p>The backends available are:</p>
+<ul>
+<li><p><strong>BitBucket</strong> for projects hosted on <a class="reference external" href="https://bitbucket.org">BitBucket</a></p>
+<p>You need to provide <strong>BitBucket owner/project</strong>. For example if project is hosted on
+<em>https://bitbucket.org/zzzeek/sqlalchemy</em> this field needs to contain <em>zzzeek/sqlalchemy</em></p>
+</li>
+<li><p><strong>Cgit</strong> for projects hosted on <a class="reference external" href="https://git.zx2c4.com/cgit/about/">Cgit server</a></p>
+<p>You need to provide <strong>Cgit project url</strong> which needs to point to project root on
+Cgit server.</p>
+</li>
+<li><p><strong>CPAN</strong> for perl projects hosted on <a class="reference external" href="https://www.cpan.org/">CPAN</a></p></li>
+<li><p><strong>CRAN</strong> for R projects hosted on <a class="reference external" href="https://cran.r-project.org/">CRAN</a></p></li>
+<li><p><strong>crates.io</strong> for crates hosted on <a class="reference external" href="https://crates.io/">crates.io</a></p></li>
+<li><p><strong>Debian project</strong> for projects hosted on the
+<a class="reference external" href="http://ftp.debian.org/debian/pool/main/">Debian ftp</a></p></li>
+<li><p><strong>Drupal6</strong> for Drupal6 modules hosted on
+<a class="reference external" href="https://drupal.org/project/">drupal.org</a></p></li>
+<li><p><strong>Drupal7</strong> for Drupal7 modules hosted on
+<a class="reference external" href="https://drupal.org/project/">drupal.org</a></p></li>
+<li><p><strong>folder</strong> for projects whose release archives are provided in a
+basic apache folder or modified one.</p>
+<p>You need to provide <strong>Version URL</strong> where the archives could be found.</p>
+</li>
+<li><p><strong>Freshmeat</strong> for projects hosted on
+<a class="reference external" href="http://freshmeat.net/">freshmeat.net</a> / <a class="reference external" href="http://freecode.com/">freecode.com</a></p></li>
+<li><p><strong>GitHub</strong> for projects hosted on <a class="reference external" href="https://github.com/">github.com</a>.
+This backend is using <a class="reference external" href="https://developer.github.com/v4/">Github v4 API</a>.</p>
+<p>You need to provide <strong>GitHub owner/project</strong>. For example if project is hosted on
+<em>https://github.com/zzzeek/sqlalchemy</em> this field needs to contain <em>zzzeek/sqlalchemy</em>.</p>
+<p>When the <strong>GitHub</strong> backend is selected you can also check the option to <strong>Check releases
+instead of tags</strong>, this will tell Anitya to retrieve GitHub releases instead of tags.
+It could be helpful when project is using tags for other things than just releases.</p>
+</li>
+<li><p><strong>GitLab</strong> for projects hosted on
+<a class="reference external" href="https://about.gitlab.com/">GitLab server</a>.
+This backend is using <a class="reference external" href="https://docs.gitlab.com/ee/api/README.html">GitLab API v4</a>.</p>
+<p>You need to provide <strong>GitLab project url</strong> which needs to point to project root on
+GitLab server.</p>
+</li>
+<li><p><strong>Gitea</strong> for projects hosted on
+<a class="reference external" href="https://docs.gitea.com/">Gitea server</a>.
+This backend can also be used for projects that are hosted on
+<a class="reference external" href="https://forgejo.org/">Forgejo server</a> as Forgejo API is one-to-one compatible with
+Gitea API.</p>
+<p>You need to provide <strong>Gitea/Forgejo project url</strong> which needs to point to project root on
+either Gitea server or Forgejo server.</p>
+</li>
+<li><p><strong>GNOME</strong> for projects hosted on
+<a class="reference external" href="https://download.gnome.org/sources/">download.gnome.org</a></p></li>
+<li><p><strong>GNU Project</strong> for projects hosted on <a class="reference external" href="https://www.gnu.org/software/">gnu.org</a></p></li>
+<li><p><strong>Gogs</strong> for projects hosted on <a class="reference external" href="https://gogs.io/">Gogs server</a></p>
+<p>You need to provide <strong>Gogs project url</strong> which needs to point to project root on
+Gogs server.</p>
+</li>
+<li><p><strong>Google code</strong> for projects hosted on
+<a class="reference external" href="https://code.google.com/">code.google.com</a>
+(removed in Anitya 1.3.0, see <a class="reference external" href="https://github.com/fedora-infra/anitya/issues/1068">issue</a> for additional info)</p></li>
+<li><p><strong>Hackage</strong> for projects hosted on
+<a class="reference external" href="https://hackage.haskell.org/">hackage.haskell.org</a></p></li>
+<li><p><strong>Launchpad</strong> for projects hosted on
+<a class="reference external" href="https://launchpad.net/">launchpad.net</a></p></li>
+<li><p><strong>Maven Central</strong> for projects hosted on
+<a class="reference external" href="https://search.maven.org/">maven.org</a></p></li>
+<li><p><strong>npmjs</strong> for projects hosted on <a class="reference external" href="https://www.npmjs.org/">npmjs.org</a></p></li>
+<li><p><strong>Packagist</strong> for projects hosted on
+<a class="reference external" href="https://packagist.org/">packagist.org</a></p>
+<p>You need to provide <strong>Packagist owner/group</strong>. For example if project is hosted on
+<em>https://packagist.org/packages/phpunit/php-code-coverage</em> this field needs to contain
+<em>phpunit/php-code-coverage</em></p>
+</li>
+<li><p><strong>pagure</strong> for projects hosted on
+<a class="reference external" href="https://pagure.io/">pagure.io</a></p></li>
+<li><p><strong>PEAR</strong> for projects hosted on
+<a class="reference external" href="https://pear.php.net/">pear.php.net</a></p></li>
+<li><p><strong>PECL</strong> for projects hosted on
+<a class="reference external" href="https://pecl.php.net/">pecl.php.net</a></p></li>
+<li><p><strong>PyPI</strong> for projects hosted on
+<a class="reference external" href="https://pypi.python.org/pypi">pypi.python.org</a></p></li>
+<li><p><strong>Rubygems</strong> for projects hosted on
+<a class="reference external" href="https://rubygems.org/">rubygems.org</a></p></li>
+<li><p><strong>Sourcefoge</strong> for projects hosted on
+<a class="reference external" href="https://sourceforge.net/">sourceforge.net</a></p>
+<p>You need to provide <strong>Sourceforge name</strong> if the name on RSS feed is different then the
+project name on Sourceforge.</p>
+</li>
+<li><p><strong>Sourceforge (git)</strong> for projects hosted on
+<a class="reference external" href="https://sourceforge.net">sourceforge.net</a></p>
+<p>Sourceforge (git) retrieves the git tags in case a project hosted on sourceforge has them.
+When a url to get the tags from is not provided, the sourceforge homepage of a project
+is used to guess the version url.</p>
+</li>
+<li><p><strong>SourceHut</strong> for projects hosted on <a class="reference external" href="https://sr.ht/">sr.ht</a>.
+This backend uses RSS feeds on projects. For example:
+<a class="reference external" href="https://git.sr.ht/~sircmpwn/scdoc/refs/rss.xml">scdoc rss feed</a></p>
+<p>You need to provide <strong>SourceHut owner/project</strong>. For example if project is hosted on
+<em>https://git.sr.ht/~sircmpwn/scdoc</em> this field needs to contain <em>sircmpwn/scdoc</em>.
+Notice the <em>~</em> character, it’s not a part of <strong>owner/project</strong>.</p>
+</li>
+<li><p><strong>Stackage</strong> for projects hosted on
+<a class="reference external" href="https://www.stackage.org/">www.stackage.org</a></p></li>
+</ul>
+<p>If your project cannot be used with any of these backend you can always try
+the <strong>custom</strong> backend. <strong>custom</strong> backend is for projects who require a more
+flexible way of finding their version.</p>
+<p>The custom backend requires two arguments:</p>
+<ul class="simple">
+<li><p><strong>Version URL</strong> is the url of the page where the versions information can be
+found, for example for <a class="reference external" href="http://banshee.fm/">banshee</a>
+that would be <a class="reference external" href="http://banshee.fm/download/">their download page</a></p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It’s possible to provide a “glob” for projects that place their tarballs
+in multiple directories. For example, gcc uses
+<code class="docutils literal notranslate"><span class="pre">https://ftp.gnu.org/gnu/gcc/*/</span></code> to find the tarballs in each version
+directory.</p>
+</div>
+<ul class="simple">
+<li><p><strong>Regex</strong> is a regular expression using the Python <a class="reference external" href="https://docs.python.org/3/library/re.html">re</a> syntax to find the
+releases on the <strong>Version URL</strong> page.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In most cases, you can set the <strong>Regex</strong> to <cite>DEFAULT</cite> which will
+make Anitya use its default regular expression:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(?i){project name}(?:[-_]?(?:minsrc|src|source))?[-_]([^-/_\s]+?)(?:[-_](?:minsrc|src|source|asc|release))?\.(?:tar|t[bglx]z|tbz2|zip)
+</pre></div>
+</div>
+</div>
+</section>
+<section id="version-scheme">
+<span id="id2"></span><h3>Version Scheme<a class="headerlink" href="#version-scheme" title="Link to this heading">¶</a></h3>
+<p>Version scheme is used for sorting the retrieved versions for the projects.
+Anitya provides several different versions schemes.</p>
+<ul class="simple">
+<li><p><strong>RPM</strong> corresponds to versioning used by <a class="reference external" href="https://docs.fedoraproject.org/en-US/packaging-guidelines/Versioning/">RPM packages</a></p></li>
+<li><p><strong>Calendar</strong> corresponds to project versions in format described
+on <a class="reference external" href="https://calver.org/">Calendar Versioning</a></p></li>
+<li><p><strong>Semantic</strong> corresponds to project versions in format described
+on <a class="reference external" href="https://semver.org/">Semantic Versioning 2.0.0</a></p></li>
+<li><p><strong>Python (PEP 440)</strong> corresponds to project versions used by
+the <a class="reference external" href="https://pypi.org/">Python Package Index</a>
+and defined in <a class="reference external" href="https://www.python.org/dev/peps/pep-0440/#version-scheme">PEP 440</a></p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Anitya currently doesn’t work well with projects that are using multiple
+versions schemes throughout their life. For these projects just use the most
+recent scheme and the rest will be moved to bottom unsorted.</p>
+</div>
+</section>
+<section id="version-prefix">
+<h3>Version Prefix<a class="headerlink" href="#version-prefix" title="Link to this heading">¶</a></h3>
+<p>The version prefix can be used to retrieve the exact version number when the
+upstream maintainer prefixes its versions.</p>
+<p>For example, if the project’s version are: <code class="docutils literal notranslate"><span class="pre">foo-1.2</span></code>, you can set the
+version prefix to <code class="docutils literal notranslate"><span class="pre">foo-</span></code> to tell Anitya how to get the version <code class="docutils literal notranslate"><span class="pre">1.2</span></code>.</p>
+<p>You can specify multiple prefixes by separating them by <code class="docutils literal notranslate"><span class="pre">;</span></code>. For example
+<code class="docutils literal notranslate"><span class="pre">foo-;v</span></code> will remove both <code class="docutils literal notranslate"><span class="pre">foo-</span></code> and <code class="docutils literal notranslate"><span class="pre">v</span></code> from retrieved versions.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It’s common for projects to prefix their source control tags with a <code class="docutils literal notranslate"><span class="pre">v</span></code> when
+making a release. Anitya will automatically strip this from versions it finds.</p>
+</div>
+<p>More concrete examples:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/junit-team/junit/tags">junit</a> tags are of the form:
+<code class="docutils literal notranslate"><span class="pre">r&lt;version&gt;</span></code>, to retrieve the version, one can set the version prefix
+to <code class="docutils literal notranslate"><span class="pre">r</span></code>.</p></li>
+<li><p><a class="reference external" href="https://github.com/adrianlopezroche/fdupes/tags">fdupes</a> tags are of
+the form <code class="docutils literal notranslate"><span class="pre">fdupes-&lt;version&gt;</span></code>, for this project, the version prefix can
+be set to <code class="docutils literal notranslate"><span class="pre">fdupes-</span></code>.</p></li>
+</ul>
+</section>
+<section id="pre-release-filter">
+<h3>Pre-release filter<a class="headerlink" href="#pre-release-filter" title="Link to this heading">¶</a></h3>
+<p>Anitya will attempt recognition of stable and unstable versions for projects
+using <a class="reference internal" href="#version-scheme"><span class="std std-ref">version schemes</span></a>. Sometimes recognition may not
+work for a project and in this field a user can specify strings that will be
+considered as unstable release.</p>
+<p>For example, if the project’s version are: <code class="docutils literal notranslate"><span class="pre">1.2alpha</span></code>, you can set the
+pre-release filter to <code class="docutils literal notranslate"><span class="pre">alpha</span></code> to tell Anitya to treat this release as unstable.</p>
+<p>You can specify multiple filters by separating them by <code class="docutils literal notranslate"><span class="pre">;</span></code>. For example
+<code class="docutils literal notranslate"><span class="pre">alpha;beta</span></code> will mark versions with <code class="docutils literal notranslate"><span class="pre">alpha</span></code> and <code class="docutils literal notranslate"><span class="pre">beta</span></code> as unstable.</p>
+<p>For projects using odd-numbered versions for development releases, the filter
+pattern <code class="docutils literal notranslate"><span class="pre">!odds[:n]</span></code> can be used to help identify development releases as
+pre-releases. For projects which use an odd minor version to identify
+development releases, a filter <code class="docutils literal notranslate"><span class="pre">!odds</span></code> can be used (e.g. versions <code class="docutils literal notranslate"><span class="pre">1.0</span></code> and
+<code class="docutils literal notranslate"><span class="pre">1.2</span></code> is considered a stable version, where <code class="docutils literal notranslate"><span class="pre">1.1</span></code> is considered a
+pre-release version). For projects which use a different field as a marker for
+old versions, an offset value (<code class="docutils literal notranslate"><span class="pre">n</span></code>) can be provided. For example, the filter
+<code class="docutils literal notranslate"><span class="pre">!odds:2</span></code> can be used to configure an odd micro version to identify
+development releases (e.g. versions <code class="docutils literal notranslate"><span class="pre">1.0.4</span></code> and <code class="docutils literal notranslate"><span class="pre">1.0.6</span></code> is considered a
+stable version, where <code class="docutils literal notranslate"><span class="pre">1.0.5</span></code> is considered a pre-release version).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This filter is applied after recognition of unstable versions by <a class="reference internal" href="#version-scheme"><span class="std std-ref">Version Scheme</span></a>.
+So the filter is not needed for cases where <a class="reference internal" href="#version-scheme"><span class="std std-ref">Version Scheme</span></a> is able to recognize
+unstable versions.</p>
+</div>
+</section>
+<section id="version-filter">
+<h3>Version filter<a class="headerlink" href="#version-filter" title="Link to this heading">¶</a></h3>
+<p>Sometimes the upstream project is tagging things that aren’t releases. For this case
+you can use this field to specify which version shouldn’t be retrieved by Anitya.</p>
+<p>For example, if the project has tag <code class="docutils literal notranslate"><span class="pre">xyz</span></code>, you can set the
+version filter to <code class="docutils literal notranslate"><span class="pre">xyz</span></code> to tell Anitya to ignore this tag.</p>
+<p>You can specify multiple filters by separating them by <code class="docutils literal notranslate"><span class="pre">;</span></code>. For example
+<code class="docutils literal notranslate"><span class="pre">notrelease;test</span></code> will ignore versions with <code class="docutils literal notranslate"><span class="pre">notrelease</span></code> and <code class="docutils literal notranslate"><span class="pre">test</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This filter is not applied on version that is already retrieved, but if you
+create the filter and the admin deletes the version, it will not be retrieved
+again.</p>
+</div>
+</section>
+<section id="regular-expressions">
+<h3>Regular Expressions<a class="headerlink" href="#regular-expressions" title="Link to this heading">¶</a></h3>
+<p>Sometimes you need to use a custom regular expression to find the version
+on a page. Anitya accepts user-defined regular expressions using the Python
+<a class="reference external" href="https://docs.python.org/3/library/re.html">re</a> syntax. This option is only available when using <strong>custom</strong> backend.</p>
+<p>The simplest way to check your regular expression is to open a python shell
+and test it.</p>
+<p>Below is an example on how it can be done:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://www.opendx.org/download.html&#39;</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">re</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">text</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;version.is ([\d]*)\.&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+<span class="go">[u&#39;4&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;version.is ([\d\.-]*)\.&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+<span class="go">[u&#39;4.4.4&#39;]</span>
+</pre></div>
+</div>
+<p>If you prefer graphical representation you can use
+<a class="reference external" href="https://www.debuggex.com/">Debuggex</a>.</p>
+<p>The regular expression <code class="docutils literal notranslate"><span class="pre">version.is</span> <span class="pre">([\d\.]*)\.</span></code> can then be provided to
+anitya and used to find the new releases.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only the captured groups are used as version, delimited by dot.
+For example: <code class="docutils literal notranslate"><span class="pre">1_2_3</span></code> could be captured by regular expression <code class="docutils literal notranslate"><span class="pre">(\d)_(\d)_(\d)</span></code>.
+This will create version <code class="docutils literal notranslate"><span class="pre">1.2.3</span></code>.</p>
+</div>
+</section>
+<section id="check-latest-release-on-submit">
+<h3>Check latest release on submit<a class="headerlink" href="#check-latest-release-on-submit" title="Link to this heading">¶</a></h3>
+<p>This option will tell the Anitya to do a check for versions when the project is
+submitted. In other case the project is scheduled and checked on next run check service,
+this service is doing checks regularly multiple times a day.</p>
+</section>
+<section id="distro-optional">
+<h3>Distro (optional)<a class="headerlink" href="#distro-optional" title="Link to this heading">¶</a></h3>
+<p>When creating a new project in Anitya you can specify distribution in which the project
+could be found. You can select from distributions that are already available in Anitya
+or you can create a new one later, see <a class="reference internal" href="#creating-distribution"><span class="std std-ref">Creating a New Distribution</span></a>.</p>
+</section>
+<section id="package-optional">
+<h3>Package (optional)<a class="headerlink" href="#package-optional" title="Link to this heading">¶</a></h3>
+<p>If you selected the distribution you must write the package name under which the project
+is known in distribution. For example python projects in Fedora distribution are prefixed
+with <code class="docutils literal notranslate"><span class="pre">python3-</span></code> prefix, so the project <em>alembic</em> will be called <code class="docutils literal notranslate"><span class="pre">python3-alembic</span></code> in
+Fedora. However the name of the project in Anitya should still be <em>alembic</em>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can add any number of distribution mappings as long as the mapping is unique in Anitya.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>One project could be mapped against multiple packages in one distribution.</p>
+</div>
+</section>
+<section id="test-check">
+<h3>Test check<a class="headerlink" href="#test-check" title="Link to this heading">¶</a></h3>
+<p>You can test your changes before submitting by using the <strong>Test check</strong> button at the bottom
+of the project form. This will take the current values from the fields and do a check for
+new version with temporary project. This is very useful if you are doing multiple changes
+and you are not sure of the output.</p>
+</section>
+</section>
+<section id="editing-project">
+<h2>Editing Project<a class="headerlink" href="#editing-project" title="Link to this heading">¶</a></h2>
+<p>You can edit any project in the web interface if you have logged in.
+The editing of a project could be done from the project page by clicking
+on button <strong>Edit</strong>.</p>
+<p>The editing is very similar to creating a new project with the exception of optional
+fields which are missing. For field reference please check <a class="reference internal" href="#creating-project"><span class="std std-ref">Creating New Project</span></a>.</p>
+</section>
+<section id="creating-new-distribution-mapping">
+<span id="creating-distribution-mapping"></span><h2>Creating New Distribution Mapping<a class="headerlink" href="#creating-new-distribution-mapping" title="Link to this heading">¶</a></h2>
+<p>To add a new mapping of the project to distribution you can use <strong>Add new distribution mapping</strong>
+under the <em>Mappings</em> table on project page.</p>
+<p>This opens a new page which allows you to add a new mapping for the distribution of your choice.</p>
+<section id="distribution">
+<h3>Distribution<a class="headerlink" href="#distribution" title="Link to this heading">¶</a></h3>
+<p>You can select from distributions that are already available in Anitya
+or you can create a new one and add the mapping later, see <a class="reference internal" href="#creating-distribution"><span class="std std-ref">Creating a New Distribution</span></a>
+for how to create a new distribution.</p>
+</section>
+<section id="package-name">
+<h3>Package name<a class="headerlink" href="#package-name" title="Link to this heading">¶</a></h3>
+<p>If you selected the distribution you must write the package name under which the project
+is known in distribution. For example python projects in Fedora distribution are prefixed
+with <code class="docutils literal notranslate"><span class="pre">python3-</span></code> prefix, so the project <em>alembic</em> will be called <code class="docutils literal notranslate"><span class="pre">python3-alembic</span></code> in
+Fedora.</p>
+</section>
+</section>
+<section id="editing-distribution-mapping">
+<h2>Editing Distribution Mapping<a class="headerlink" href="#editing-distribution-mapping" title="Link to this heading">¶</a></h2>
+<p>To edit existing mapping of the project to distribution you can use <strong>Edit</strong> button beside
+corresponding mapping in the <em>Mappings</em> table on project page.</p>
+<p>This opens a new page which is similar to <a class="reference internal" href="#creating-distribution-mapping"><span class="std std-ref">Creating New Distribution Mapping</span></a> page.
+See <a class="reference internal" href="#creating-distribution-mapping"><span class="std std-ref">Creating New Distribution Mapping</span></a> for more info about fields.</p>
+</section>
+<section id="flagging-a-project">
+<h2>Flagging a Project<a class="headerlink" href="#flagging-a-project" title="Link to this heading">¶</a></h2>
+<p>If you find a project which contains bad version, is duplicate, or is no longer supported upstream,
+you can flag this project. To flag a project you can use <strong>Flag</strong> button in top of the project
+page. This will redirect you to <em>Flag project</em> form, where you need to provide a reason. The flagged
+project will be later reviewed by admin user.</p>
+</section>
+<section id="listing-distributions">
+<span id="id3"></span><h2>Listing Distributions<a class="headerlink" href="#listing-distributions" title="Link to this heading">¶</a></h2>
+<p>Anitya provides a way to look at all the distributions that Anitya knows about and that could be used
+when working with project mapping. To list all the distributions just click on the <a class="reference external" href="https://release-monitoring.org/distros">distros</a> link in
+the header of page. This will show you a page with list of all the distributions sorted by name.</p>
+</section>
+<section id="creating-a-new-distribution">
+<span id="creating-distribution"></span><h2>Creating a New Distribution<a class="headerlink" href="#creating-a-new-distribution" title="Link to this heading">¶</a></h2>
+<p>If you are missing any distribution in Anitya you can add it. To add a new distribution first list the
+existing distributions, see <a class="reference internal" href="#listing-distributions"><span class="std std-ref">Listing Distributions</span></a>, and then click <a class="reference external" href="https://release-monitoring.org/distro/add">Add a new distribution</a> button.
+This will redirect you to a new page where you can fill out a distribution name and submit the new
+distribution.</p>
+</section>
+<section id="obtaining-an-api-token">
+<h2>Obtaining an API Token<a class="headerlink" href="#obtaining-an-api-token" title="Link to this heading">¶</a></h2>
+<p>If you need to communicate through API with Anitya (see <a class="reference internal" href="api.html"><span class="doc">API Documentation</span></a> for more info) you will need
+an API token for any operation that is changing data in Anitya. To obtain one, you need to
+click on the <a class="reference external" href="https://release-monitoring.org/settings">settings</a> link in page header. This will redirect you to your user settings page.
+Here you can see your User Id, which could be needed by admin user for some use cases,
+and API tokens. You can create a new token here, just provide some description (optional)
+and click <strong>Create API Token</strong> button.</p>
+</section>
+<section id="removing-an-api-token">
+<h2>Removing an API Token<a class="headerlink" href="#removing-an-api-token" title="Link to this heading">¶</a></h2>
+<p>If you wish to remove an existing API token created for your account, you need to
+click on the <a class="reference external" href="https://release-monitoring.org/settings">settings</a> link in page header. This will redirect you to your user settings page.
+Here you can see your User Id, which could be needed by admin user for some use cases,
+and API tokens. You can remove a existing token here, just click <strong>Remove API Token</strong> button
+beside the API token you want to remove.</p>
+</section>
+<section id="reporting-issues">
+<h2>Reporting Issues<a class="headerlink" href="#reporting-issues" title="Link to this heading">¶</a></h2>
+<p>You can report problems on our <a class="reference external" href="https://github.com/fedora-infra/anitya/issues">issue tracker</a>. The <a class="reference external" href="https://github.com/fedora-infra/anitya">source code</a> is also
+available on GitHub. The development team hangs out in <code class="docutils literal notranslate"><span class="pre">#fedora-apps</span></code> on the
+<a class="reference external" href="https://libera.chat/">libera</a> network. Please do stop by and say hello.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Anitya</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=fedora-infra&repo=anitya&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#logging-in">Logging in</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#logging-out">Logging out</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#listing-projects">Listing Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#finding-project-by-name">Finding Project by Name</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-new-project">Creating New Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#editing-project">Editing Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-new-distribution-mapping">Creating New Distribution Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#editing-distribution-mapping">Editing Distribution Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#flagging-a-project">Flagging a Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#listing-distributions">Listing Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-new-distribution">Creating a New Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#obtaining-an-api-token">Obtaining an API Token</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#removing-an-api-token">Removing an API Token</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reporting-issues">Reporting Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="admin-user-guide.html">Admin User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin-guide.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integrating-with-anitya.html">Integrating with Anitya</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Database models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Anitya</a></li>
+      <li>Next: <a href="admin-user-guide.html" title="next chapter">Admin User Guide</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" style="text-align: center">
+      &copy;2022, Red Hat, Inc. and others.|
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.16</a>
+      (<a href="https://github.com/fedora-infra/anitya/tree/master/docs/_templates">customized</a>)
+      |
+      <a href="https://github.com/fedora-infra/anitya/tree/master/docs/user-guide.rst"
+          rel="nofollow">View source</a>
+    </div>
+  </body>
+</html>

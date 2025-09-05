@@ -1,0 +1,334 @@
+<!--
+	Overriding Alabaster Theme to replace link to static page source
+	with a link to GitHub. Using instructions from official guide.
+
+	https://www.sphinx-doc.org/en/master/templating.html#jinja-sphinx-templating-primer
+-->
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Admin User Guide &#8212; Anitya 1.9.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=9f6847e8" />
+    <script src="_static/documentation_options.js?v=c4cb232b"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Release Notes" href="release-notes.html" />
+    <link rel="prev" title="User Guide" href="user-guide.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="admin-user-guide">
+<h1>Admin User Guide<a class="headerlink" href="#admin-user-guide" title="Link to this heading">¶</a></h1>
+<p>This guide is intended for people, who have been granted administrator rights in Anitya.
+It will describe the use cases that can be done by the administrator user.</p>
+<section id="delete-project">
+<h2>Delete Project<a class="headerlink" href="#delete-project" title="Link to this heading">¶</a></h2>
+<p>As admin in Anitya you have rights to delete the project, but this should be done
+only if you are sure that this project has no value. To delete a project, go on the
+project page and click <strong>Delete</strong> button in bottom of the project table.</p>
+</section>
+<section id="test-check-on-project">
+<span id="test-check"></span><h2>Test Check on Project<a class="headerlink" href="#test-check-on-project" title="Link to this heading">¶</a></h2>
+<p>As admin you can do a test check for releases on the project. This is done by clicking
+<strong>Test check</strong> button in top of the project table beside latest version. This will do a
+check for new releases and shows you the output of the operation in pop-up window. This
+operation will not change anything in the database, just shows you what will happen when
+next check for this project will be done.</p>
+</section>
+<section id="full-check-on-project">
+<span id="full-check"></span><h2>Full Check on Project<a class="headerlink" href="#full-check-on-project" title="Link to this heading">¶</a></h2>
+<p>As admin you can do a manual check for releases on the project. This is done by clicking
+<strong>Full check</strong> button in top of the project table beside latest version. This will do a
+check for new releases and saves the result. It’s recommended to always do a <a class="reference internal" href="#test-check"><span class="std std-ref">Test Check on Project</span></a>
+before.</p>
+</section>
+<section id="archive-project">
+<h2>Archive Project<a class="headerlink" href="#archive-project" title="Link to this heading">¶</a></h2>
+<p>As admin you can archive project. The archived project could no longer be edited and is not
+checked for a new releases, but will remain read-only in Anitya database. The archivation
+could be done by clicking the <strong>Archive</strong> button in bottom of project table on project page.
+This option is particularly useful for projects that are no longer alive upstream.</p>
+</section>
+<section id="unarchive-project">
+<h2>Unarchive Project<a class="headerlink" href="#unarchive-project" title="Link to this heading">¶</a></h2>
+<p>As admin you can unarchive archived projects. This could be done by clicking the
+<strong>Unarchive</strong> button in bottom of archived project table on project page.</p>
+</section>
+<section id="delete-a-version-on-project">
+<h2>Delete a Version on Project<a class="headerlink" href="#delete-a-version-on-project" title="Link to this heading">¶</a></h2>
+<p>As admin you have a power to delete any version on project. This could be useful
+if the project was incorrectly setup and retrieved something that is not considered
+a release. To delete a version click on the <strong>[x]</strong> beside the desired version in
+versions table on project page.</p>
+</section>
+<section id="delete-all-versions-on-project">
+<h2>Delete All Versions on Project<a class="headerlink" href="#delete-all-versions-on-project" title="Link to this heading">¶</a></h2>
+<p>It’s sometimes easier to just delete all the versions and do a <a class="reference internal" href="#full-check"><span class="std std-ref">Full Check on Project</span></a> again.
+In this case the admin could delete all versions at once by clicking <strong>Delete versions</strong>
+button in bottom of the versions table on project page. Be aware that this could
+send plenty of messages, because the message is sent every time a version is deleted.</p>
+</section>
+<section id="delete-mapping-on-project">
+<h2>Delete Mapping on Project<a class="headerlink" href="#delete-mapping-on-project" title="Link to this heading">¶</a></h2>
+<p>As admin you can delete a mapping on the project. This could be needed if the project is
+renamed in the distribution or no longer provided by the distribution. To delete the
+mapping click on the <strong>Delete</strong> button beside the mapping you want to delete in the mappings
+table on the project info page.</p>
+</section>
+<section id="delete-distribution">
+<h2>Delete Distribution<a class="headerlink" href="#delete-distribution" title="Link to this heading">¶</a></h2>
+<p>As admin you can delete a distribution in Anitya. This could be useful if there is distribution
+containing typo and the correct distribution is already in Anitya. It is always good to check
+if the distribution doesn’t have any project mapped to it, to check click on the <a class="reference external" href="https://release-monitoring.org/distros">distros</a>
+link in header and then click on the distribution you plan to delete. If there is no project
+mapped to this distribution it could be safely deleted. Otherwise the project mappings will
+be deleted with the distribution.</p>
+<p>To delete the distribution click on the <a class="reference external" href="https://release-monitoring.org/distros">distros</a> link in page header and then click on <strong>Delete</strong>
+button on the row which contains distribution you want to delete.</p>
+</section>
+<section id="edit-an-existing-distribution">
+<h2>Edit an Existing Distribution<a class="headerlink" href="#edit-an-existing-distribution" title="Link to this heading">¶</a></h2>
+<p>As admin you can edit a name of existing distribution in Anitya. To edit the distribution name
+clink on the <a class="reference external" href="https://release-monitoring.org/distros">distros</a> link in header and then click on <strong>Edit</strong> button bellow the name of
+distribution you want to edit.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The name must be unique, so if you change the name to distribution
+that already exists in Anitya, it will not be allowed.</p>
+</div>
+</section>
+<section id="user-management">
+<h2>User management<a class="headerlink" href="#user-management" title="Link to this heading">¶</a></h2>
+<p>As admin user you are allowed to do a basic user management. This includes banning a user,
+giving admin rights or revoke them. To get to user management page click <a class="reference external" href="https://release-monitoring.org/users">users</a> link in
+page header. You can find some basic info about the users like <em>User Id</em>, <em>Username</em>, <em>E-mail</em>,
+if the user is currently admin and if the user is active or not.</p>
+<section id="ban-user">
+<h3>Ban user<a class="headerlink" href="#ban-user" title="Link to this heading">¶</a></h3>
+<p>Sometimes there is a situation that needs the user to be banned from Anitya. If this is ever
+needed you can do it by clicking the <strong>Ban</strong> button in the row with desired user. This user
+is then marked as inactive and could no longer login to Anitya. The user needs to have
+<em>Active</em> set to <cite>True</cite> otherwise this action is not available.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This option should be used as last resort.</p>
+</div>
+</section>
+<section id="remove-ban">
+<h3>Remove ban<a class="headerlink" href="#remove-ban" title="Link to this heading">¶</a></h3>
+<p>To remove ban from a user click on the <strong>Remove ban</strong> button in the row with desired user.
+The user will be marked as active and will be able to login to Anitya again.
+The user needs to have <em>Active</em> set to <cite>False</cite> otherwise this action is not available.</p>
+</section>
+<section id="give-admin-rights">
+<h3>Give admin rights<a class="headerlink" href="#give-admin-rights" title="Link to this heading">¶</a></h3>
+<p>To give admin rights to another user click <strong>Give admin permissions</strong> button in the
+row with desired user. The user needs to have <em>Admin</em> set to <cite>False</cite> otherwise this action
+is not available.</p>
+</section>
+<section id="revoke-admin-rights">
+<h3>Revoke admin rights<a class="headerlink" href="#revoke-admin-rights" title="Link to this heading">¶</a></h3>
+<p>To revoke admin rights from another user click <strong>Revoke admin permissions</strong> button in the
+row with desired user. The user needs to have <em>Admin</em> set to <cite>True</cite> otherwise this action
+is not available.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Admin user which is specified in Anitya configuration file can’t be striped of admin
+rights this way.</p>
+</div>
+</section>
+</section>
+<section id="solving-flags">
+<h2>Solving Flags<a class="headerlink" href="#solving-flags" title="Link to this heading">¶</a></h2>
+<p>The flags could be solved on Flags page, which is accessed through <a class="reference external" href="https://release-monitoring.org/flags">flags</a> link in the page
+header.</p>
+<section id="basics">
+<h3>Basics<a class="headerlink" href="#basics" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>try to not remove anything that could be of value</p></li>
+<li><p>when removing something, try to create as little impact for others as possible</p></li>
+<li><p>check <a class="reference external" href="https://release-monitoring.org/flags">flags</a> once in a while</p></li>
+<li><p>if in doubt, ask in #fedora-apps on <a class="reference external" href="https://libera.chat/">libera</a> IRC</p></li>
+</ul>
+</section>
+<section id="cases">
+<h3>Cases<a class="headerlink" href="#cases" title="Link to this heading">¶</a></h3>
+<p>Below are a number of common flags submitted by users. Please don’t view these as rigid laws, but as guidelines to make our handling of cases consistent. Feel free to adapt them, if it seems reasonable.</p>
+<section id="project-x-is-a-duplicate">
+<h4>Project X is a duplicate!<a class="headerlink" href="#project-x-is-a-duplicate" title="Link to this heading">¶</a></h4>
+<ol class="arabic simple">
+<li><p>check if this actually is a duplicate; if not, close the flag</p></li>
+<li><p>check which name matches the name used by the project itself</p></li>
+<li><p>check which one seems more correct/complete (i.e. version source, distro mappings, …)</p></li>
+<li><p>transfer valuable information/settings from to-be-deleted project to will-stay project, if any</p></li>
+<li><p>delete the project duplicate, close the flag</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The flag will be deleted automatically if the flagged project is the one that will
+be deleted.</p>
+</div>
+</section>
+<section id="pypi-gem-duplicates">
+<h4>pypi/gem/… duplicates<a class="headerlink" href="#pypi-gem-duplicates" title="Link to this heading">¶</a></h4>
+<p>Two projects: “nispor” on GitHub, “nispor” on pypi/gem/whatever.</p>
+<ol class="arabic simple">
+<li><p>check if there is any value added by the pypi/gem/… package (e.g. the versions are different, pypi lags behind, tagging on github are unreliable …). If there is, do nothing.</p></li>
+<li><p>transfer valuable information/settings from github project to pypi project, if any</p></li>
+<li><p>if there is no added value, delete the pypi one</p></li>
+</ol>
+</section>
+<section id="please-delete-this-thing-was-just-testing">
+<h4>“Please delete this thing, was just testing”<a class="headerlink" href="#please-delete-this-thing-was-just-testing" title="Link to this heading">¶</a></h4>
+<ol class="arabic simple">
+<li><p>check if this seems reasonable</p></li>
+<li><p>delete the thing (project, mapping, version, …).</p></li>
+</ol>
+</section>
+<section id="package-does-not-exist-in-distribution-please-delete-mapping">
+<h4>Package does not exist in distribution, please delete mapping<a class="headerlink" href="#package-does-not-exist-in-distribution-please-delete-mapping" title="Link to this heading">¶</a></h4>
+<p>Check if it really doesn’t exist, then:</p>
+<ol class="loweralpha simple">
+<li><p>does exist: do nothing</p></li>
+<li><p>doesn’t exist: delete the mapping</p></li>
+<li><p>existed in old, non-EOL version: do nothing</p></li>
+<li><p>existed in old, EOL version: delete</p></li>
+</ol>
+</section>
+<section id="user-s-flag-is-wrong-user-misunderstood">
+<h4>User’s flag is wrong, user misunderstood, …<a class="headerlink" href="#user-s-flag-is-wrong-user-misunderstood" title="Link to this heading">¶</a></h4>
+<p>Just close. If you feel very motivated or it seems important, mail them and try to clear it up.</p>
+</section>
+<section id="upstream-dead">
+<h4>Upstream dead<a class="headerlink" href="#upstream-dead" title="Link to this heading">¶</a></h4>
+<ol class="arabic">
+<li><p>Check if the project is really dead upstream</p>
+<p>Last commit date is usually a good thing to check.</p>
+</li>
+<li><p>Archive the project</p>
+<p>This will lower the amount of projects which are checked for new versions,
+but the project will be still in Anitya, if anybody would want to look at it.</p>
+</li>
+</ol>
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Anitya</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=fedora-infra&repo=anitya&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="user-guide.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Admin User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#delete-project">Delete Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-check-on-project">Test Check on Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#full-check-on-project">Full Check on Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#archive-project">Archive Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#unarchive-project">Unarchive Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#delete-a-version-on-project">Delete a Version on Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#delete-all-versions-on-project">Delete All Versions on Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#delete-mapping-on-project">Delete Mapping on Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#delete-distribution">Delete Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#edit-an-existing-distribution">Edit an Existing Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#user-management">User management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#solving-flags">Solving Flags</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin-guide.html">Administration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integrating-with-anitya.html">Integrating with Anitya</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Database models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="user-guide.html" title="previous chapter">User Guide</a></li>
+      <li>Next: <a href="release-notes.html" title="next chapter">Release Notes</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" style="text-align: center">
+      &copy;2022, Red Hat, Inc. and others.|
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.16</a>
+      (<a href="https://github.com/fedora-infra/anitya/tree/master/docs/_templates">customized</a>)
+      |
+      <a href="https://github.com/fedora-infra/anitya/tree/master/docs/admin-user-guide.rst"
+          rel="nofollow">View source</a>
+    </div>
+  </body>
+</html>
