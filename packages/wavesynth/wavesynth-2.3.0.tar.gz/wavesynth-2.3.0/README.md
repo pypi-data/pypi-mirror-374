@@ -1,0 +1,68 @@
+# `wavesynth`
+
+A simple sound-synthesis library that provides a simplified stateful API
+for generating music. The API is intentionally analogous to the `turtle`
+API to assist in the creation of music-based assignments that duplicate
+lessons from graphics-based assignments for more accessible course
+design.
+
+The library has fairly unsophisticated synthesis resulting in pretty
+basic sounds, and is also not super performant, although both of these
+things could be improved.
+
+A log of notes is printed to assist with debugging and/or for matching
+desired output.
+
+Designed by Peter Mawhorter.
+Contributions from Lyn & Ohana Turbak.
+
+
+## Dependencies
+
+Writing audio to `.wav` files can be accomplished using just the built-in
+Python modules, but if you want to play audio directly from Python,
+you'll need either `pyglet` or `simpleaudio`.
+
+
+## Installing
+
+To install from PyPI, run the following command on the command-line:
+
+```sh
+python -m pip install wavesynth
+```
+
+Once it's installed, you can run a built-in example using:
+
+```sh
+python -m wavesynth
+```
+
+
+## Documentation
+
+See [the
+documentation](https://cs.wellesley.edu/~pmwh/wavesynth/docs/wavesynth)
+for more details on how to use it and what each function does.
+
+
+## Changelog
+
+- Version 2.3.0 allows the use of `pyglet` instead of `simpleaudio` for
+    `playTrack` support as well as adding an open-in-browser fallback.
+- Version 2.2.0 adds support for playing audio directly via `IPython`
+    when running in a Jupyter notebook, without needing to use
+    `simpleaudio`. This also creates an audio widget in the page via
+    which the sound can be replayed without re-running the code if
+    desired.
+- Version 2.1.0 changes volume handling so that `louder` can cause volume
+    values to go above 1.0, but internally loudness does not increase
+    beyond 1.0. This means that symmetric calls to `louder` and then
+    `quieter` will always cancel each other out, even if the `louder`
+    calls would take the volume above 1.0.
+- Version 2.0.0 replaces `stepUp` and `stepDown` with `climbUp` and
+    `climbDown` and removes `leapUp` and `leapDown`. New functions like
+    `setFundamental` and `setScaleType` manage an internal notion of key
+    signature which controls how `climbUp` and `climbDown` change
+    pitches. To emulate the old `leap` functionality, set the scale type
+    to a pentatonic scale and use the `climb` functions.
