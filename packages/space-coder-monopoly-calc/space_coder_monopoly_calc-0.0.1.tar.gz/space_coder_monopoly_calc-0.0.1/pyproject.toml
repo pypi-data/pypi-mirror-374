@@ -1,0 +1,25 @@
+# pyproject.toml
+
+[build-system]
+requires      = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "space_-_coder-monopoly-calc"
+version = "0.0.1"
+description = "A simple command line calculator"
+readme = "README.md"
+authors = [{ name = "Madhav Garg", email = "gargm0325@wrdsb.ca" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "pynput",
+]
+requires-python = ">=3.9"
+
+[project.scripts]
+cmd_calc = "calc.__main__:main"
