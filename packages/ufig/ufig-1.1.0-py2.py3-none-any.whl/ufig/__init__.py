@@ -1,0 +1,5 @@
+# SPDX-FileCopyrightText: 2024-present Uwe Schmitt <uwe.schmitt@id.ethz.ch>
+#
+# SPDX-License-Identifier: MIT
+
+__version__ = "1.1.0"
