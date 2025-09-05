@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Eval Results</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Visual indicators for sort direction on headers */
+      #results-table thead th[aria-sort="ascending"]::after {
+        content: " ▲";
+        font-size: 0.75rem; /* text-sm */
+        color: #6b7280; /* gray-500 */
+      }
+      #results-table thead th[aria-sort="descending"]::after {
+        content: " ▼";
+        font-size: 0.75rem; /* text-sm */
+        color: #6b7280; /* gray-500 */
+      }
+      /* Column resizer handle */
+      #results-table thead th .col-resizer {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 6px;
+        height: 100%;
+        cursor: col-resize;
+        user-select: none;
+      }
+      #results-table thead th .col-resizer:hover {
+        background: linear-gradient(to right, transparent, rgba(0,0,0,0.05));
+      }
+      body.twevals-col-resize {
+        cursor: col-resize !important;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-gray-50 text-gray-900 p-6">
+    <div class="flex items-center gap-3 mb-4">
+      <h1 class="text-2xl font-semibold mr-auto tracking-tight">Eval Results</h1>
+      <div id="loading-indicator" class="hidden items-center text-sm text-gray-600">
+        <svg class="animate-spin h-4 w-4 mr-2 text-gray-500" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+        </svg>
+        Loading…
+      </div>
+      <div class="hidden md:block relative">
+        <input id="search-input" type="search" placeholder="Search…"
+          class="pl-8 pr-3 py-2 border rounded w-64 bg-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300" />
+        <svg class="h-4 w-4 text-gray-400 absolute left-2 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </div>
+      <div class="relative">
+        <button id="actions-toggle" class="px-3 py-2 bg-gray-900 text-white rounded shadow-sm">
+          Actions ▾
+        </button>
+        <div id="actions-menu" class="hidden absolute right-0 mt-2 w-44 bg-white border rounded shadow z-20 py-1">
+          <button class="block w-full text-left px-3 py-2 text-sm hover:bg-gray-50" data-action="refresh">Refresh</button>
+          <button class="block w-full text-left px-3 py-2 text-sm hover:bg-gray-50" data-action="rerun">Rerun</button>
+          <div class="my-1 border-t"></div>
+          <button class="block w-full text-left px-3 py-2 text-sm hover:bg-gray-50" data-action="export-json">Export JSON</button>
+          <button class="block w-full text-left px-3 py-2 text-sm hover:bg-gray-50" data-action="export-csv">Export CSV</button>
+        </div>
+      </div>
+      <div class="relative">
+        <button id="columns-toggle" class="px-3 py-2 bg-gray-100 border rounded">
+          Columns ▾
+        </button>
+        <div
+          id="columns-menu"
+          class="hidden absolute right-0 mt-2 w-56 bg-white border rounded shadow z-10 p-3"
+        >
+          <p class="text-sm font-semibold mb-2">Toggle columns</p>
+          <div class="space-y-1 text-sm">
+            <label class="flex items-center gap-2">
+              <input type="checkbox" data-col="function" checked /> Function
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" data-col="dataset" checked /> Dataset
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" data-col="labels" checked /> Labels
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" data-col="input" checked /> Input
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" data-col="output" checked /> Output
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" data-col="error" checked /> Error
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" data-col="scores" checked /> Scores
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" data-col="latency" checked /> Latency
+            </label>
+          </div>
+          <div class="mt-3 border-t pt-3 flex items-center gap-2">
+            <button id="reset-columns" class="text-xs px-2 py-1 border rounded">
+              Reset Columns
+            </button>
+            <button id="reset-sorting" class="text-xs px-2 py-1 border rounded">
+              Reset Sorting
+            </button>
+            <button id="reset-widths" class="text-xs px-2 py-1 border rounded">
+              Reset Widths
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="results"
+      hx-get="/results"
+      hx-trigger="load"
+      hx-swap="innerHTML"
+    ></div>
+
+    <script>
+      // Dropdown toggle
+      const toggleBtn = document.getElementById("columns-toggle");
+      const menuEl = document.getElementById("columns-menu");
+      toggleBtn.addEventListener("click", () => {
+        menuEl.classList.toggle("hidden");
+      });
+      document.addEventListener("click", (e) => {
+        if (!menuEl.contains(e.target) && e.target !== toggleBtn) {
+          menuEl.classList.add("hidden");
+        }
+      });
+
+      const STORAGE_KEY = "twevals:hidden_columns";
+      const SORT_STORAGE_KEY = "twevals:sort_state";
+      const WIDTHS_STORAGE_KEY = "twevals:col_widths";
+      const EXPANDED_ROW_KEY = "twevals:expanded_row";
+      function getHiddenCols() {
+        try {
+          return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        } catch {
+          return [];
+        }
+      }
+      function setHiddenCols(cols) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(cols));
+      }
+      function getSortState() {
+        try {
+          return JSON.parse(localStorage.getItem(SORT_STORAGE_KEY) || "[]");
+        } catch {
+          return [];
+        }
+      }
+      function setSortState(state) {
+        localStorage.setItem(SORT_STORAGE_KEY, JSON.stringify(state));
+      }
+      function getColWidths() {
+        try {
+          return JSON.parse(localStorage.getItem(WIDTHS_STORAGE_KEY) || "{}");
+        } catch {
+          return {};
+        }
+      }
+      function setColWidths(map) {
+        localStorage.setItem(WIDTHS_STORAGE_KEY, JSON.stringify(map));
+      }
+      function applyColumnVisibility() {
+        const hidden = new Set(getHiddenCols());
+        const resultsTable = document.getElementById("results-table");
+        if (!resultsTable) return;
+        const allCols = [
+          "function",
+          "dataset",
+          "labels",
+          "input",
+          "output",
+          "error",
+          "scores",
+          "latency",
+        ];
+        for (const col of allCols) {
+          const isHidden = hidden.has(col);
+          const selector = `[data-col="${col}"]`;
+          document
+            .querySelectorAll(`#results-table thead th${selector}, #results-table tbody td${selector}`)
+            .forEach((el) => {
+              if (isHidden) el.classList.add("hidden");
+              else el.classList.remove("hidden");
+            });
+        }
+        // Sync checkboxes
+        document
+          .querySelectorAll('#columns-menu input[type="checkbox"][data-col]')
+          .forEach((cb) => {
+            cb.checked = !hidden.has(cb.getAttribute("data-col"));
+          });
+      }
+
+      function onToggleCheckbox(e) {
+        const col = e.target.getAttribute("data-col");
+        const hidden = new Set(getHiddenCols());
+        if (e.target.checked) hidden.delete(col);
+        else hidden.add(col);
+        setHiddenCols([...hidden]);
+        applyColumnVisibility();
+      }
+
+      // Apply stored column widths
+      function applyColumnWidths(table) {
+        if (!table) return;
+        const widths = getColWidths();
+        Object.keys(widths).forEach((col) => {
+          const w = widths[col];
+          if (!w) return;
+          const selector = `[data-col="${col}"]`;
+          table
+            .querySelectorAll(`thead th${selector}, tbody td${selector}`)
+            .forEach((el) => {
+              el.style.width = `${w}px`;
+              el.style.minWidth = `${w}px`;
+              el.style.maxWidth = `${w}px`;
+            });
+        });
+      }
+
+      // Initialize resizers on table headers
+      function initResizableColumns(table) {
+        if (!table) return;
+        const widths = getColWidths();
+        const ths = table.querySelectorAll('thead th[data-col]');
+        ths.forEach((th) => {
+          // Ensure relative positioning for the handle
+          if (getComputedStyle(th).position === 'static') {
+            th.style.position = 'relative';
+          }
+          // Avoid duplicating handles if re-initialized
+          if (th.querySelector('.col-resizer')) return;
+
+          const handle = document.createElement('div');
+          handle.className = 'col-resizer';
+          handle.setAttribute('aria-hidden', 'true');
+          th.appendChild(handle);
+
+          let startX = 0;
+          let startWidth = 0;
+          let colKey = th.getAttribute('data-col');
+
+          const minWidth = 60; // px
+          const maxWidth = 1000; // px
+
+          function onMouseMove(e) {
+            const dx = e.clientX - startX;
+            let newW = Math.max(minWidth, Math.min(maxWidth, startWidth + dx));
+            const selector = `[data-col="${colKey}"]`;
+            table
+              .querySelectorAll(`thead th${selector}, tbody td${selector}`)
+              .forEach((el) => {
+                el.style.width = `${newW}px`;
+                el.style.minWidth = `${newW}px`;
+                el.style.maxWidth = `${newW}px`;
+              });
+          }
+
+          function onMouseUp(e) {
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+            document.body.classList.remove('twevals-col-resize');
+            // Persist final width
+            const currentWidth = th.getBoundingClientRect().width;
+            const map = getColWidths();
+            map[colKey] = Math.round(currentWidth);
+            setColWidths(map);
+          }
+
+          handle.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            e.stopPropagation(); // don't trigger sort
+            startX = e.clientX;
+            startWidth = th.getBoundingClientRect().width;
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+            document.body.classList.add('twevals-col-resize');
+          });
+
+          // Prevent stray click event triggering sort
+          handle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          });
+
+          // Apply stored width initially
+          const saved = widths[colKey];
+          if (saved) {
+            const selector = `[data-col="${colKey}"]`;
+            table
+              .querySelectorAll(`thead th${selector}, tbody td${selector}`)
+              .forEach((el) => {
+                el.style.width = `${saved}px`;
+                el.style.minWidth = `${saved}px`;
+                el.style.maxWidth = `${saved}px`;
+              });
+          }
+        });
+      }
+
+      // Attach listeners for checkboxes
+      document
+        .querySelectorAll('#columns-menu input[type="checkbox"][data-col]')
+        .forEach((cb) => cb.addEventListener("change", onToggleCheckbox));
+
+      // Reset buttons
+      document.getElementById("reset-columns").addEventListener("click", () => {
+        setHiddenCols([]);
+        applyColumnVisibility();
+        menuEl.classList.add("hidden");
+      });
+      document.getElementById("reset-sorting").addEventListener("click", () => {
+        setSortState([]);
+        const table = document.getElementById("results-table");
+        if (table) applySortState(table);
+        menuEl.classList.add("hidden");
+      });
+      document.getElementById("reset-widths").addEventListener("click", () => {
+        setColWidths({});
+        const table = document.getElementById("results-table");
+        if (!table) return;
+        // Remove inline widths
+        table.querySelectorAll('th[data-col], td[data-col]').forEach((el) => {
+          el.style.width = '';
+          el.style.minWidth = '';
+          el.style.maxWidth = '';
+        });
+        menuEl.classList.add("hidden");
+      });
+
+      // Multi-column sorting
+      const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
+      function getCellValue(tr, col) {
+        const td = tr.querySelector(`td[data-col="${col}"]`);
+        if (!td) return "";
+        const dv = td.getAttribute("data-value");
+        return dv !== null ? dv : td.textContent.trim();
+      }
+      function parseValue(value, type) {
+        if (type === "number") {
+          const num = parseFloat(value);
+          return isNaN(num) ? Number.POSITIVE_INFINITY : num;
+        }
+        return value;
+      }
+      function compareValues(a, b, type) {
+        if (type === "number") {
+          return a - b;
+        }
+        return collator.compare(a, b);
+      }
+      function applySortState(table) {
+        const state = getSortState();
+        const headers = table.querySelectorAll("thead th[data-col]");
+        headers.forEach((th) => th.setAttribute("aria-sort", "none"));
+        const tbody = table.querySelector("tbody");
+        const mainRows = Array.from(tbody.querySelectorAll("tr[data-row='main']"));
+        // store original index for stable sort (only once) on main rows only
+        mainRows.forEach((tr, i) => {
+          if (!tr.hasAttribute("data-orig-index")) {
+            tr.setAttribute("data-orig-index", String(i));
+          }
+        });
+
+        if (!state.length) {
+          // Reset to original order: append main rows with their detail rows
+          mainRows
+            .slice()
+            .sort(
+              (a, b) =>
+                Number(a.getAttribute("data-orig-index")) -
+                Number(b.getAttribute("data-orig-index"))
+            )
+            .forEach((tr) => {
+              const id = tr.getAttribute('data-row-id');
+              const detail = tbody.querySelector(`tr[data-row='detail'][data-row-id='${id}']`);
+              tbody.appendChild(tr);
+              if (detail) tbody.appendChild(detail);
+            });
+          return;
+        }
+
+        // Update header aria-sort
+        state.forEach((s) => {
+          const th = table.querySelector(`thead th[data-col="${s.col}"]`);
+          if (th) th.setAttribute("aria-sort", s.dir === "asc" ? "ascending" : "descending");
+        });
+
+        mainRows
+          .slice()
+          .sort((ra, rb) => {
+            for (const s of state) {
+              const type = s.type || "string";
+              const va = parseValue(getCellValue(ra, s.col), type);
+              const vb = parseValue(getCellValue(rb, s.col), type);
+              const cmp = compareValues(va, vb, type);
+              if (cmp !== 0) return s.dir === "asc" ? cmp : -cmp;
+            }
+            return (
+              Number(ra.getAttribute("data-orig-index")) -
+              Number(rb.getAttribute("data-orig-index"))
+            );
+          })
+          .forEach((tr) => {
+            const id = tr.getAttribute('data-row-id');
+            const detail = tbody.querySelector(`tr[data-row='detail'][data-row-id='${id}']`);
+            tbody.appendChild(tr);
+            if (detail) tbody.appendChild(detail);
+          });
+      }
+
+      function toggleSort(table, col, type, multi) {
+        let state = getSortState();
+        const idx = state.findIndex((s) => s.col === col);
+        if (multi) {
+          if (idx === -1) state.push({ col, dir: "asc", type });
+          else if (state[idx].dir === "asc") state[idx].dir = "desc";
+          else state.splice(idx, 1); // remove if toggled past desc
+        } else {
+          if (idx === 0 && state[0].dir === "asc") state = [{ col, dir: "desc", type }];
+          else if (idx === 0 && state[0].dir === "desc") state = [];
+          else state = [{ col, dir: "asc", type }];
+        }
+        setSortState(state);
+        applySortState(table);
+      }
+
+      // Wire header clicks and initialize after results load/swap
+      document.addEventListener("htmx:afterSwap", function (e) {
+        if (e.target.id === "results") {
+          const table = document.getElementById("results-table");
+          if (table) applySortState(table);
+          applyColumnVisibility();
+          if (table) {
+            applyColumnWidths(table);
+            initResizableColumns(table);
+          }
+          initExpandHandlers();
+          initInlineEditing();
+          restoreExpandedRow();
+          wireActionsMenu();
+        }
+      });
+
+      // Delegate click on table headers for sorting (supports Shift+click)
+      document.addEventListener("click", function (e) {
+        const th = e.target.closest("#results thead th[data-col]");
+        if (!th) return;
+        const table = document.getElementById("results-table");
+        if (!table) return;
+        const col = th.getAttribute("data-col");
+        const type = th.getAttribute("data-type") || "string";
+        toggleSort(table, col, type, e.shiftKey);
+      });
+
+      // Client-side search filtering
+      const searchInput = document.getElementById('search-input');
+      if (searchInput) {
+        let timer;
+        searchInput.addEventListener('input', () => {
+          clearTimeout(timer);
+          timer = setTimeout(applySearchFilter, 120);
+        });
+      }
+      function applySearchFilter() {
+        const q = (document.getElementById('search-input')?.value || '').toLowerCase().trim();
+        const tbody = document.querySelector('#results-table tbody');
+        if (!tbody) return;
+        const mains = tbody.querySelectorAll("tr[data-row='main']");
+        mains.forEach((tr) => {
+          const id = tr.getAttribute('data-row-id');
+          const detail = tbody.querySelector(`tr[data-row='detail'][data-row-id='${id}']`);
+          if (!q) {
+            tr.classList.remove('hidden');
+            return;
+          }
+          const text = tr.textContent.toLowerCase();
+          const match = text.includes(q);
+          tr.classList.toggle('hidden', !match);
+          if (detail && detail.getAttribute('hidden') === null) {
+            if (!match) detail.setAttribute('hidden', '');
+          }
+        });
+      }
+
+      // Expand/collapse logic
+      function initExpandHandlers() {
+        const container = document.getElementById('results');
+        if (!container) return;
+        const tbody = document.querySelector('#results-table tbody');
+        if (!tbody) return;
+
+        function closeAll() {
+          tbody.querySelectorAll("tr[data-row='detail']").forEach((tr) => tr.setAttribute('hidden', ''));
+          container.querySelectorAll('.expand-btn[aria-expanded="true"]').forEach((b) => {
+            b.setAttribute('aria-expanded', 'false');
+            const icon = b.querySelector('.icon');
+            if (icon) icon.textContent = '▸';
+          });
+        }
+
+        function openRow(rowId) {
+          const detail = tbody.querySelector(`tr[data-row='detail'][data-row-id='${rowId}']`);
+          const btn = container.querySelector(`.expand-btn[data-row-id='${rowId}']`);
+          if (!detail || !btn) return;
+          closeAll();
+          detail.removeAttribute('hidden');
+          btn.setAttribute('aria-expanded', 'true');
+          const icon = btn.querySelector('.icon');
+          if (icon) icon.textContent = '▾';
+          try { localStorage.setItem(EXPANDED_ROW_KEY, rowId); } catch {}
+        }
+
+        container.querySelectorAll('.expand-btn').forEach((btn) => {
+          // Remove previous listener by cloning
+          const clone = btn.cloneNode(true);
+          btn.parentNode.replaceChild(clone, btn);
+          clone.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const rowId = clone.getAttribute('data-row-id');
+            const detail = tbody.querySelector(`tr[data-row='detail'][data-row-id='${rowId}']`);
+            const isOpen = detail && !detail.hasAttribute('hidden');
+            if (isOpen) {
+              closeAll();
+              try { localStorage.removeItem(EXPANDED_ROW_KEY); } catch {}
+            } else {
+              openRow(rowId);
+            }
+          });
+        });
+
+        // helper to restore after refresh
+        window.restoreExpandedRow = function restoreExpandedRow() {
+          let rowId = null;
+          try { rowId = localStorage.getItem(EXPANDED_ROW_KEY); } catch {}
+          if (rowId) openRow(rowId);
+        }
+      }
+
+      // Inline editing logic
+      function initInlineEditing() {
+        const container = document.getElementById('results');
+        const table = document.getElementById('results-table');
+        if (!container || !table) return;
+        const runId = table.getAttribute('data-run-id') || 'latest';
+
+        container.querySelectorAll('.edit-btn').forEach((btn) => {
+          const rowId = btn.getAttribute('data-row-id');
+          const detail = container.querySelector(`tr[data-row='detail'][data-row-id='${rowId}']`);
+          const saveBtn = container.querySelector(`.save-btn[data-row-id='${rowId}']`);
+          const cancelBtn = container.querySelector(`.cancel-btn[data-row-id='${rowId}']`);
+          if (!detail || !saveBtn || !cancelBtn) return;
+
+          btn.addEventListener('click', () => enterEdit(rowId));
+          cancelBtn.addEventListener('click', () => exitEdit(rowId, true));
+          saveBtn.addEventListener('click', () => saveEdit(rowId, runId));
+        });
+
+        function toggleEditUI(detail, editing) {
+          detail.querySelectorAll('.view-section').forEach((el) => el.classList.toggle('hidden', editing));
+          detail.querySelectorAll('.edit-section').forEach((el) => el.classList.toggle('hidden', !editing));
+          const rowId = detail.getAttribute('data-row-id');
+          const editBtn = container.querySelector(`.edit-btn[data-row-id='${rowId}']`);
+          const saveBtn = container.querySelector(`.save-btn[data-row-id='${rowId}']`);
+          const cancelBtn = container.querySelector(`.cancel-btn[data-row-id='${rowId}']`);
+          if (editBtn && saveBtn && cancelBtn) {
+            editBtn.classList.toggle('hidden', editing);
+            saveBtn.classList.toggle('hidden', !editing);
+            cancelBtn.classList.toggle('hidden', !editing);
+          }
+        }
+
+        function enterEdit(rowId) {
+          const detail = container.querySelector(`tr[data-row='detail'][data-row-id='${rowId}']`);
+          if (!detail) return;
+          toggleEditUI(detail, true);
+          // Initialize inputs from original data attributes if needed
+          const ds = detail.getAttribute('data-original-dataset') || '';
+          const lbls = JSON.parse(detail.getAttribute('data-original-labels') || '[]');
+          const md = JSON.parse(detail.getAttribute('data-original-metadata') || 'null');
+          const ann = detail.getAttribute('data-original-annotation') || '';
+          const dsInput = detail.querySelector(`#dataset-input-${rowId}`);
+          const lbInput = detail.querySelector(`#labels-input-${rowId}`);
+          const mdInput = detail.querySelector(`#metadata-input-${rowId}`);
+          const annInput = detail.querySelector(`#annotation-input-${rowId}`);
+          if (dsInput) dsInput.value = ds;
+          if (lbInput) lbInput.value = (lbls || []).join(', ');
+          if (mdInput) mdInput.value = md ? JSON.stringify(md, null, 2) : '';
+          if (annInput) annInput.value = ann;
+        }
+
+        function exitEdit(rowId, resetValues) {
+          const detail = container.querySelector(`tr[data-row='detail'][data-row-id='${rowId}']`);
+          if (!detail) return;
+          if (resetValues) {
+            const ds = detail.getAttribute('data-original-dataset') || '';
+            const lbls = JSON.parse(detail.getAttribute('data-original-labels') || '[]');
+            const md = JSON.parse(detail.getAttribute('data-original-metadata') || 'null');
+            const ann = detail.getAttribute('data-original-annotation') || '';
+            const dsInput = detail.querySelector(`#dataset-input-${rowId}`);
+            const lbInput = detail.querySelector(`#labels-input-${rowId}`);
+            const mdInput = detail.querySelector(`#metadata-input-${rowId}`);
+            const annInput = detail.querySelector(`#annotation-input-${rowId}`);
+            if (dsInput) dsInput.value = ds;
+            if (lbInput) lbInput.value = (lbls || []).join(', ');
+            if (mdInput) mdInput.value = md ? JSON.stringify(md, null, 2) : '';
+            if (annInput) annInput.value = ann;
+            // reset scores inputs
+            const scores = JSON.parse(detail.getAttribute('data-original-scores') || '[]');
+            const editor = detail.querySelector(`#scores-editor-${rowId}`);
+            if (editor) {
+              const cards = editor.querySelectorAll('.border.rounded.p-2.bg-gray-50');
+              cards.forEach((card, i) => {
+                const s = scores[i];
+                if (!s) return;
+                const k = card.querySelector('[name="score-key"]');
+                const v = card.querySelector('[name="score-value"]');
+                const p = card.querySelector('[name="score-passed"]');
+                const n = card.querySelector('[name="score-notes"]');
+                if (k) k.value = s.key || '';
+                if (v) v.value = (s.value ?? '');
+                if (p) p.value = (s.passed === true ? 'true' : s.passed === false ? 'false' : '');
+                if (n) n.value = (s.notes ?? '');
+              });
+            }
+          }
+          toggleEditUI(detail, false);
+        }
+
+        async function saveEdit(rowId, runId) {
+          const detail = container.querySelector(`tr[data-row='detail'][data-row-id='${rowId}']`);
+          if (!detail) return;
+          const dsInput = detail.querySelector(`#dataset-input-${rowId}`);
+          const lbInput = detail.querySelector(`#labels-input-${rowId}`);
+          const mdInput = detail.querySelector(`#metadata-input-${rowId}`);
+          const editor = detail.querySelector(`#scores-editor-${rowId}`);
+
+          let metadata = null;
+          const mdRaw = (mdInput && mdInput.value.trim()) || '';
+          if (mdRaw) {
+            try { metadata = JSON.parse(mdRaw); }
+            catch (e) { alert('Invalid metadata JSON'); return; }
+          }
+
+          // Build scores payload
+          const scorePayload = [];
+          if (editor) {
+            editor.querySelectorAll('.border.rounded.p-2.bg-gray-50').forEach((card) => {
+              const k = card.querySelector('[name="score-key"]').value.trim();
+              const vRaw = card.querySelector('[name="score-value"]').value.trim();
+              const pVal = card.querySelector('[name="score-passed"]').value;
+              const nVal = card.querySelector('[name="score-notes"]').value.trim();
+              const s = { key: k };
+              if (vRaw !== '') {
+                const num = Number(vRaw);
+                if (!Number.isNaN(num)) s.value = num;
+              }
+              if (pVal === 'true') s.passed = true;
+              else if (pVal === 'false') s.passed = false;
+              if (nVal !== '') s.notes = nVal;
+              // only include if has key and at least value/passed/notes
+              if (s.key && (s.value !== undefined || s.passed !== undefined || s.notes !== undefined)) {
+                scorePayload.push(s);
+              }
+            });
+          }
+
+          const annInput = detail.querySelector(`#annotation-input-${rowId}`);
+          const annValue = annInput ? annInput.value.trim() : '';
+          
+          const payload = {
+            dataset: dsInput ? dsInput.value.trim() : undefined,
+            labels: lbInput ? lbInput.value.split(',').map(x => x.trim()).filter(Boolean) : undefined,
+            result: {
+              metadata: metadata,
+              scores: scorePayload,
+              annotation: annValue || null
+            }
+          };
+
+          try {
+            const resp = await fetch(`/api/runs/${runId}/results/${rowId}`, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            if (!resp.ok) {
+              const t = await resp.text();
+              throw new Error(t || 'Failed to save');
+            }
+          } catch (e) {
+            alert(`Save failed: ${e}`);
+            return;
+          }
+
+          // Refresh the results panel to reflect changes
+          const results = document.getElementById('results');
+          if (results) {
+            try { localStorage.setItem(EXPANDED_ROW_KEY, rowId); } catch {}
+            htmx.ajax('GET', '/results', { target: '#results', swap: 'innerHTML' });
+          }
+        }
+      }
+
+
+      function wireExportButtons() {
+        const table = document.getElementById('results-table');
+        const runId = table ? (table.getAttribute('data-run-id') || 'latest') : 'latest';
+        const jsonBtn = document.getElementById('export-json');
+        const csvBtn = document.getElementById('export-csv');
+        if (jsonBtn) {
+          jsonBtn.onclick = () => {
+            window.location.href = `/api/runs/${runId}/export/json`;
+          };
+        }
+        if (csvBtn) {
+          csvBtn.onclick = () => {
+            window.location.href = `/api/runs/${runId}/export/csv`;
+          };
+        }
+      }
+
+      function wireActionsMenu() {
+        const table = document.getElementById('results-table');
+        const runId = table ? (table.getAttribute('data-run-id') || 'latest') : 'latest';
+        const toggle = document.getElementById('actions-toggle');
+        const menu = document.getElementById('actions-menu');
+        if (!toggle || !menu) return;
+
+        toggle.onclick = () => menu.classList.toggle('hidden');
+        document.addEventListener('click', (e) => {
+          if (!menu.contains(e.target) && e.target !== toggle) menu.classList.add('hidden');
+        });
+
+        menu.querySelectorAll('[data-action]').forEach((el) => {
+          el.onclick = async (e) => {
+            const act = e.currentTarget.getAttribute('data-action');
+            menu.classList.add('hidden');
+            if (act === 'refresh') {
+              showLoading();
+              htmx.ajax('GET', '/results', { target: '#results', swap: 'innerHTML' });
+            } else if (act === 'rerun') {
+              try {
+                showLoading();
+                const resp = await fetch('/api/runs/rerun', { method: 'POST' });
+                if (!resp.ok) throw new Error(await resp.text());
+                htmx.ajax('GET', '/results', { target: '#results', swap: 'innerHTML' });
+              } catch (e) {
+                alert('Rerun failed: ' + e);
+              } finally {
+                hideLoading();
+              }
+            } else if (act === 'export-json') {
+              window.location.href = `/api/runs/${runId}/export/json`;
+            } else if (act === 'export-csv') {
+              window.location.href = `/api/runs/${runId}/export/csv`;
+            }
+          };
+        });
+      }
+
+      function showLoading() { const el = document.getElementById('loading-indicator'); if (el) el.classList.remove('hidden'); }
+      function hideLoading() { const el = document.getElementById('loading-indicator'); if (el) el.classList.add('hidden'); }
+      document.body.addEventListener('htmx:beforeRequest', showLoading);
+      document.body.addEventListener('htmx:afterSwap', hideLoading);
+      document.body.addEventListener('htmx:responseError', hideLoading);
+
+      // Copy-to-clipboard for pre blocks (icon toggles)
+      document.addEventListener('click', async (e) => {
+        const btn = e.target.closest('.copy-btn');
+        if (!btn) return;
+        const id = btn.getAttribute('data-copy');
+        const pre = document.getElementById(id);
+        if (!pre) return;
+        try {
+          await navigator.clipboard.writeText(pre.innerText);
+          const copyIcon = btn.querySelector('.copy-icon');
+          const checkIcon = btn.querySelector('.check-icon');
+          if (copyIcon && checkIcon) {
+            copyIcon.classList.add('hidden');
+            checkIcon.classList.remove('hidden');
+            setTimeout(() => { copyIcon.classList.remove('hidden'); checkIcon.classList.add('hidden'); }, 900);
+          }
+        } catch (err) {
+          alert('Copy failed');
+        }
+      });
+    </script>
+  </body>
+  </html>
