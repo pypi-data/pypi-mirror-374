@@ -1,0 +1,34 @@
+{
+  "expected_data_object": {
+    "score": 0.366666667,
+    "tests": [
+      {
+        "max_points": 2,
+        "message": "No response from initialization with timeout 0.05",
+        "name": "initialization_timeout",
+        "points_frac": 0.0,
+        "points": 0.0,
+        "test_id": "test_timeout.py::test_query[student_code]",
+        "outcome": "error"
+      },
+      {
+        "max_points": 2,
+        "message": "",
+        "name": "function_timeout",
+        "points_frac": 0.1,
+        "points": 0.2,
+        "test_id": "test_timeout.py::test_query_slow[student_code]",
+        "outcome": "failed"
+      },
+      {
+        "max_points": 2,
+        "message": "",
+        "name": "function_timeout",
+        "points_frac": 1.0,
+        "points": 2.0,
+        "test_id": "test_timeout.py::test_query_fast[student_code]",
+        "outcome": "passed"
+      }
+    ]
+  }
+}
