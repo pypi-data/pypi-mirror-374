@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "merge-subtitles"
+version = "1.0.0"
+authors = [
+    {name = "Lorenzo Wood", email = "lorenzo@lorenzowood.com"},
+]
+description = "A tool for merging MP4 video files with SRT subtitle files into MKV format"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: Multimedia :: Video :: Conversion",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+]
+keywords = ["video", "subtitles", "ffmpeg", "mp4", "srt", "mkv", "conversion"]
+
+[project.urls]
+Homepage = "https://github.com/lorenzowood/merge-subtitles"
+"Bug Reports" = "https://github.com/lorenzowood/merge-subtitles/issues"
+"Source" = "https://github.com/lorenzowood/merge-subtitles"
+
+[project.scripts]
+merge-subtitles = "merge_subtitles.main:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-mock>=3.10.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+python_classes = ["Test*"]
+addopts = ["-v", "--tb=short"]
