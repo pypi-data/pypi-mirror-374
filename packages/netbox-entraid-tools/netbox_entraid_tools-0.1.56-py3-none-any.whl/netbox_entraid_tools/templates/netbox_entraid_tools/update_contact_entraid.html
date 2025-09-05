@@ -1,0 +1,31 @@
+{% extends "base/base.html" %}
+{% block content %}
+<h2>Update Contact from EntraID</h2>
+<form method="post">
+    {% csrf_token %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Field</th>
+                <th>Current Value</th>
+                <th>Proposed Value (EntraID)</th>
+                <th>Update?</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for field, current, proposed in fields %}
+            <tr{% if current != proposed %} class="table-warning"{% endif %}>
+                <td>{{ field }}</td>
+                <td>{{ current }}</td>
+                <td>{{ proposed }}</td>
+                <td>
+                    <input type="checkbox" name="update_{{ field }}" {% if current != proposed %}checked{% endif %}>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">Update Selected Fields</button>
+    <a href="{{ contact.get_absolute_url }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

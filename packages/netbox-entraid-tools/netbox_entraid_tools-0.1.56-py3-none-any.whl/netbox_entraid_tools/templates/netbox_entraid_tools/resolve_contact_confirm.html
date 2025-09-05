@@ -1,0 +1,115 @@
+{% extends 'generic/object_edit.html' %}
+{% load form_helpers %}
+
+{% block title %}{% if bulk %}Bulk Resolve Contacts{% else %}Resolve Contact{% endif %} from EntraID{% endblock %}
+
+{% block form %}
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <h5 class="card-header">
+        {% if bulk %}Bulk Resolve Contacts{% else %}Resolve Contact{% endif %} from EntraID
+      </h5>
+      <div class="card-body">
+        {% if bulk %}
+          <p>This will resolve/update <strong>{{ selected_count }} selected contacts</strong> from EntraID.</p>
+          
+          {# Get the selected contact IDs from the view context #}
+          {% if selected_contacts %}
+            {% for pk in selected_contacts %}
+              <input type="hidden" name="pk" value="{{ pk }}">
+            {% endfor %}
+          {% endif %}
+        {% else %}
+          <p>This will resolve/update contact <strong>{{ contact.name }}</strong> (ID {{ contact.pk }}) from EntraID.</p>
+        {% endif %}
+        
+        {% if form %}
+          {% render_field form.dry_run %}
+        {% else %}
+          {# Fallback when form is not available #}
+          <div class="form-group">
+            <label class="form-check-label" for="id_dry_run">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" name="dry_run" class="custom-control-input" id="id_dry_run" checked>
+                <label class="custom-control-label" for="id_dry_run">Dry Run</label>
+              </div>
+              <small class="form-text text-muted">Don't make any changes; just show what would happen</small>
+            </label>
+          </div>
+        {% endif %}
+        
+        {% load helpers %}
+        <script>
+          // Debug script for form submission issues that respects debug mode setting
+          document.addEventListener('DOMContentLoaded', function() {
+            var debug_mode = {{ debug_mode|default:False|yesno:"true,false" }};
+            
+            function debug_log() {
+                if (debug_mode) {
+                    console.log.apply(console, arguments);
+                }
+            }
+            
+            debug_log('Confirm page loaded');
+            debug_log('Selected contacts:', {{ selected_contacts|default:'[]'|safe }});
+            debug_log('Selected count:', {{ selected_count|default:'0' }});
+            debug_log('Form available:', {{ form|yesno:'true,false' }});
+            
+            // Ensure all hidden inputs are present
+            const form = document.querySelector('form');
+            if (form) {
+              debug_log('Form found:', form);
+              
+              // Log all hidden inputs
+              const hiddenInputs = form.querySelectorAll('input[type=hidden]');
+              debug_log('Hidden inputs:', Array.from(hiddenInputs).map(i => `${i.name}=${i.value}`));
+              
+              // Check for PK inputs
+              const pkInputs = form.querySelectorAll('input[name=pk]');
+              debug_log('PK inputs:', Array.from(pkInputs).map(i => i.value));
+              
+              if (pkInputs.length === 0) {
+                debug_log('No PK inputs found in form!');
+                
+                // Check if they're available in the URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const pkParams = urlParams.getAll('pk');
+                
+                if (pkParams.length > 0) {
+                  debug_log('PK params found in URL:', pkParams);
+                  
+                  // Add them to the form - this happens regardless of debug mode
+                  pkParams.forEach(pk => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'pk';
+                    input.value = pk;
+                    form.appendChild(input);
+                    debug_log('Added PK input for:', pk);
+                  });
+                }
+              }
+            }
+          });
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block buttons %}
+{% if bulk %}
+<a href="{% url 'tenancy:contact_list' %}" class="btn btn-outline-secondary">
+  Cancel
+</a>
+{% else %}
+<a href="{% url 'tenancy:contact' pk=contact.pk %}" class="btn btn-outline-secondary">
+  Cancel
+</a>
+{% endif %}
+<button type="submit" name="_update" class="btn btn-primary">
+  <i class="mdi mdi-play-circle-outline"></i> Enqueue Job
+</button>
+{% endblock %}
