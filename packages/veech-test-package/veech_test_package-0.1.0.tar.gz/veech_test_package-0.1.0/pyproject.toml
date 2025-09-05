@@ -1,0 +1,12 @@
+[project]
+name = "veech-test-package"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [{ name = "Alessandro Vecchi", email = "pypi@veech.me" }]
+requires-python = ">=3.12"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
