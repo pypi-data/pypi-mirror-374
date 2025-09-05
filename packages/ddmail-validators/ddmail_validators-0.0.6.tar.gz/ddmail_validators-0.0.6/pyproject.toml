@@ -1,0 +1,43 @@
+[project]
+name = "ddmail_validators"
+version = "0.0.6"
+authors = [
+  { name="Robin Larsson", email="me@drz.se" },
+]
+description = "Python package for validating input for the DDMail project"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "dnspython",
+]
+license = "AGPL-3.0"
+license-files = ["LICEN[CS]E*"]
+
+[project.optional-dependencies]
+dev = [
+  "dnspython",
+  "pytest",
+  "pytest-cov",
+  "ruff",
+  "pyright",
+  "hatchling",
+  "twine",
+]
+test = [
+  "dnspython",
+  "pytest",
+  "pytest-cov",
+  "flake8",
+]
+
+[project.urls]
+Homepage = "https://github.com/drzobin/ddmail_validators"
+Issues = "https://github.com/drzobin/ddmail_validators/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
