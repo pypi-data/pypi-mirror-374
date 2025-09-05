@@ -1,0 +1,104 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hvac-did-flash"
+version = "1.1.0"
+description = "STM32 Firmware Programming System for HVAC devices with DID flash support"
+readme = "README.md"
+license = "MIT"
+authors = [
+    {name = "HVAC Team", email = "team@example.com"}
+]
+maintainers = [
+    {name = "HVAC Team", email = "team@example.com"}
+]
+keywords = ["STM32", "firmware", "programming", "HVAC", "DID", "flash"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Manufacturing",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Embedded Systems",
+    "Topic :: System :: Hardware :: Hardware Drivers",
+]
+dependencies = [
+    "pyserial>=3.5",
+    "configparser",
+    "packaging>=25.0",
+]
+requires-python = ">=3.8"
+
+[project.optional-dependencies]
+dev = [
+    "black>=23.3.0",
+    "pylint>=2.17.4",
+    "pytest>=7.3.1",
+    "isort>=5.13.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-org/hvac-did-flash"
+Documentation = "https://github.com/your-org/hvac-did-flash/blob/main/README.md"
+Repository = "https://github.com/your-org/hvac-did-flash.git"
+"Bug Tracker" = "https://github.com/your-org/hvac-did-flash/issues"
+
+[project.scripts]
+hvac-auto-program = "hvac_did_flash.auto_program:main"
+hvac-did-flash = "hvac_did_flash.did_flash:main"
+
+[tool.setuptools]
+packages = ["hvac_did_flash"]
+
+[tool.setuptools.package-data]
+hvac_did_flash = [
+    "config.ini.sample",
+    "dbc/*",
+    "docs/*.md",
+    "FCEV_US_25J040001_5/firmware/*.bin",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+
+[tool.pylint.messages_control]
+disable = [
+    "too-many-arguments",
+    "too-many-instance-attributes",
+    "too-many-locals",
+    "too-few-public-methods",
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests",
+]
