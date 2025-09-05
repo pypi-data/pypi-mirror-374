@@ -1,0 +1,28 @@
+[CDF-25204] 📊 Dump streamlit apps (#1895)
+
+# Description
+
+Adds support for dumping streamlit apps. This is typically used by users
+that creates a streamlit app using the fusion UI in a dev CDF project,
+and then, dumping it, enables the user to add it to governance in a prod
+CDF project.
+
+<img width="963" height="138" alt="image"
+src="https://github.com/user-attachments/assets/0acd3d4b-3f16-44e0-93f7-cebb8b72c766"
+/>
+
+
+## Changelog
+
+- [x] Patch
+- [ ] Skip
+
+## cdf
+
+### Added
+
+- [alpha] Support for dumping streamlit apps, `cdf dump streamlit`. 
+
+## templates
+
+No changes.
