@@ -1,0 +1,42 @@
+- name: Prepare host to install Rally
+  hosts: all
+  tasks:
+    - name: Install python3.10-dev (Ubuntu 22.04)
+      become: true
+      package:
+        state: present
+        name: python3.10-dev
+      when:
+        - ansible_distribution == "Ubuntu"
+        - ansible_distribution_version == "22.04"
+
+    - name: Install python3.12-dev (Ubuntu 24.04)
+      become: true
+      package:
+        state: present
+        name:
+          - python3.12-dev
+          - python3.12-full
+      when:
+        - ansible_distribution == "Ubuntu"
+        - ansible_distribution_version == "24.04"
+
+    - name: Install pip3 and venv
+      become: true
+      shell:
+        executable: /bin/bash
+        chdir: '{{ zuul.project.src_dir }}'
+        # noqa risky-shell-pipe if python3 fails, nothing is working
+        cmd: |
+          set -e
+          python_version=`python3 --version | awk '{print $2}'`
+          echo $python_version
+          curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
+          python3 /tmp/get-pip.py {% if ansible_distribution_version == "24.04" %}--break-system-packages{% endif %}
+
+          pip3 install virtualenv {% if ansible_distribution_version == "24.04" %}--break-system-packages{% endif %}
+
+    - name: Prepare rally plugins stored at home dir
+      shell: |
+        mkdir --parents ~/.rally/plugins
+        cp --recursive {{ zuul.project.src_dir }}/rally-jobs/plugins/* ~/.rally/plugins

@@ -1,0 +1,8 @@
+[console_scripts]
+rally = rally.cli.main:main
+
+[oslo.config.opts]
+rally = rally.common.opts:list_opts
+
+[oslo.config.opts.defaults]
+rally = rally.common.opts:update_opt_defaults

@@ -1,0 +1,19 @@
+# The order of packages is significant, because pip processes them in the order
+# of appearance. Changing the order has an impact on the overall integration
+# process, which may cause wedges in the gate later.
+
+hacking>=4.0                                           # Apache Software License
+
+fixtures                                               # Apache-2.0 or BSD
+pytest                                                 # MIT
+# py.test plugin for measuring coverage.
+pytest-cov                                             # MIT
+# py.test plugin for generating HTML reports
+pytest-html                                            # MIT
+# py.test xdist plugin for distributed testing and loop-on-failing modes
+pytest-xdist
+
+ddt                                                    # MIT
+
+docutils                                               # BSD License/GNU General Public License (GPL)/Python Software Foundation License
+Pygments                                               # BSD-2-Clause

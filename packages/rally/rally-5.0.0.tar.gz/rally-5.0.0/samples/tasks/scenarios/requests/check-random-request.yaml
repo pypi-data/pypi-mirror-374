@@ -1,0 +1,25 @@
+---
+version: 2
+title: "HTTP random request sample"
+description: "Sample task demonstrating random HTTP request selection scenario"
+tags: ["http", "requests", "random", "sample"]
+subtasks:
+  - title: "Random HTTP request validation"
+    scenario:
+      HttpRequests.check_random_request:
+        requests:
+          -
+            url: "http://www.example.com"
+            method: "GET"
+            status_code: 200
+          -
+            url: "http://www.openstack.org"
+            method: "GET"
+        status_code: 200
+    runner:
+      constant:
+        times: 20
+        concurrency: 5
+    sla:
+      failure_rate:
+        max: 0
