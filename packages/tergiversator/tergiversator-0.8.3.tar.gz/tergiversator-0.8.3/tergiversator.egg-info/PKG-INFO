@@ -1,0 +1,16 @@
+Metadata-Version: 2.4
+Name: tergiversator
+Version: 0.8.3
+Summary: Run multiple duplicity backups from a central host
+Home-page: https://codeberg.org/gwync/tergiversator
+Author: Gwyn Ciesla
+Author-email: gwync@protonmail.com
+License: GPL-3.0-or-later
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+License-File: COPYING
+Requires-Dist: psutil
+Requires-Dist: PyYAML
+Dynamic: license-file
+
+Run multiple duplicity backups from a central host

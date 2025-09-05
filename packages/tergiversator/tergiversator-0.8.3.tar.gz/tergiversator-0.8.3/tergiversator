@@ -1,0 +1,518 @@
+#!/usr/bin/python3
+""" Run multiple duplicity backups from a central host """
+
+# Copyright (C) 2025 Gwyn Ciesla
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+import argparse
+import datetime
+import gettext
+import os
+import shutil
+import signal
+import sqlite3
+import subprocess
+import sys
+import tempfile
+from multiprocessing import Pool
+from pathlib import Path
+
+import psutil
+import yaml
+
+import tergiversate
+
+
+def sigint_handler(signo, frame):
+    # pylint: disable=unused-argument
+    """Clean up lockfile on SIGINT"""
+    Path.unlink(LOCKFILE)
+    sys.exit(1)
+
+
+VERSION = "0.8.3"
+
+LOCALEDIR = os.path.dirname(tergiversate.__file__) + "/locales"
+
+if "LANG" in os.environ:
+    LANGUAGE = os.environ["LANG"]
+else:
+    LANGUAGE = "en"
+
+if not os.path.isdir(LOCALEDIR + "/" + LANGUAGE):
+    LANGUAGE = "en"
+
+TRANS = gettext.translation("tergiversate", localedir=LOCALEDIR, languages=[LANGUAGE])
+TRANS.install()
+
+_ = TRANS.gettext
+
+
+for program in ["sshfs", "duplicity"]:
+    if not tergiversate.check_for(program):
+        print(f"{program} not found")
+        sys.exit(1)
+
+MY_ENV = os.environ.copy()
+
+PARSER = argparse.ArgumentParser(
+    description=_("Run multiple duplicity backups from a central host")
+)
+PARSER.add_argument(
+    "command",
+    metavar="COMMAND",
+    type=str,
+    nargs="?",
+    help="prune | index | search | restore",
+)
+PARSER.add_argument(
+    "-c",
+    "--config",
+    type=str,
+    action="store",
+    dest="config",
+    help=_("Path to configuration file"),
+)
+PARSER.add_argument("-v", "--version", action="version", version=VERSION)
+ARGS = PARSER.parse_args()
+
+
+CONFIGFILE = "config.yml"
+
+HOMEDIR = str(Path.home())
+
+CONFFILES = [
+    "config.yml",
+    os.path.join(HOMEDIR, ".tergiversator/config.yml"),
+    "/etc/tergiversator/config.yml",
+]
+
+if ARGS.config:
+    CONFIGFILE = ARGS.config
+else:
+    for file in CONFFILES:
+        if os.path.isfile(file):
+            CONFIGFILE = file
+            break
+
+signal.signal(signal.SIGINT, sigint_handler)
+
+LOCKFILE = f"{HOMEDIR}/.tergiversator-{CONFIGFILE.replace('/', '_')}.lock"
+
+if os.path.isfile(LOCKFILE):
+    with open(LOCKFILE, "r", encoding="utf-8") as lfile:
+        lcontent = lfile.read()
+    try:
+        LOCKPID = int(lcontent)
+    except ValueError as error:
+        print(error)
+        print(_("Invalid lockfile, removing"))
+        Path.unlink(LOCKFILE)
+        LOCKPID = 0
+
+    if LOCKPID != 0:
+        if psutil.pid_exists(LOCKPID):
+            TPROC = psutil.Process(LOCKPID)
+            for CHILD in TPROC.children(recursive=True):
+                print(
+                    _(
+                        "Already running {TARGET} with config file {CONFIGFILE}, exiting."
+                    ).format(CONFIGFILE=CONFIGFILE, TARGET=CHILD.cmdline()[-1])
+                )
+                sys.exit(1)
+        else:
+            Path.unlink(LOCKFILE)
+            print(
+                _(
+                    "Found lockfile but process isn't running, cleaning up and proceeding."
+                )
+            )
+
+
+Path.touch(LOCKFILE)
+with open(LOCKFILE, "w", encoding="utf-8") as lfile:
+    lfile.write(str(os.getpid()))
+
+try:
+    with open(CONFIGFILE, "r", encoding="utf-8") as conffile:
+        try:
+            config = yaml.safe_load(conffile)
+        except yaml.YAMLError as error:
+            print(error)
+            Path.unlink(LOCKFILE)
+            sys.exit(1)
+except FileNotFoundError as error:
+    print(error)
+    Path.unlink(LOCKFILE)
+    sys.exit(1)
+
+RETENTION = config.get("config").get("retention", "2M")
+FULL_EVERY = config.get("config").get("full_every", "1M")
+USER = config.get("config").get("user", "root")
+PATH = config.get("config").get("path", "backups")
+PASSPHRASE = config.get("config").get("passphrase")
+HOSTLIST = config.get("config").get("hostlist", "hostlist.yml")
+STRICTHOSTKEY = config.get("config").get("strict_hostkey_checking", "no")
+AUTOINDEX = config.get("config").get("autoindex", "no")
+PORT = config.get("config").get("ssh_port", "22")
+PROCESSES = config.get("config").get("processes", "0")
+
+if not os.path.isdir(PATH):
+    print(_("Backup path '{path}' does not exist, aborting.").format(path=PATH))
+    sys.exit(1)
+
+PROC_ERROR = _("Invalid 'processes' setting, defaulting to number of logical CPUs")
+
+PROCS = None
+
+try:
+    PROCS = int(PROCESSES)
+    if PROCS == 0:
+        PROCS = None
+    elif PROCS < 1:
+        print(PROC_ERROR)
+        PROCS = None
+except ValueError as error:
+    print(PROC_ERROR)
+
+if "keyid" in config.get("config"):
+    KEYID = config.get("config").get("keyid")
+    KEYSTRING = f" --encrypt-key {KEYID} "
+else:
+    KEYSTRING = " "
+
+MY_ENV["PASSPHRASE"] = PASSPHRASE
+
+with open(HOSTLIST, "r", encoding="utf-8") as hostfile:
+    try:
+        hosts = yaml.safe_load(hostfile)
+    except yaml.YAMLError as error:
+        print(error)
+        Path.unlink(LOCKFILE)
+        sys.exit(1)
+
+if ARGS.command:
+    match ARGS.command:
+        case "prune":
+            for orphan in tergiversate.find_orphans(PATH, hosts):
+                remove = input(
+                    _("{orphan} present but not in hostlist, remove? [N/y]").format(
+                        orphan=orphan
+                    )
+                )
+                if remove in ["y", "Y"]:
+                    try:
+                        shutil.rmtree(orphan)
+                        print(_("{orphan} removed.").format(orphan=orphan))
+                    except shutil.Error as error:
+                        print(error)
+            Path.unlink(LOCKFILE)
+            sys.exit(0)
+
+        case "index":
+            filedata, errors = tergiversate.create_index(
+                hosts, KEYSTRING, PATH, MY_ENV, _
+            )
+            ERRORLEN = len(errors)
+            if ERRORLEN > 0:
+                print(errors)
+            index_return, errors = tergiversate.write_index(filedata, PATH)
+            ERRORLEN = len(errors)
+            if ERRORLEN > 0:
+                print(errors)
+            Path.unlink(LOCKFILE)
+            sys.exit(0)
+
+        case "search":
+            if not os.path.isfile(f"{PATH}/index.db"):
+                create = input(_("No index found, create? [N/y]"))
+                if create in ["y", "Y"]:
+                    filedata, errors = tergiversate.create_index(
+                        hosts, KEYSTRING, PATH, MY_ENV, _
+                    )
+                    ERRORLEN = len(errors)
+                    if ERRORLEN > 0:
+                        print(errors)
+                    index_return, errors = tergiversate.write_index(filedata, PATH)
+                    ERRORLEN = len(errors)
+                    if ERRORLEN > 0:
+                        print(errors)
+                else:
+                    print(_("Aborting"))
+                    Path.unlink(LOCKFILE)
+                    sys.exit(0)
+            search_string = input(_("Enter search string: "))
+            connection = sqlite3.connect(f"{PATH}/index.db")
+            cursor = connection.cursor()
+            QUERY = f"SELECT host, datetime, path FROM files WHERE path LIKE '%{search_string}%'"
+            results = cursor.execute(QUERY)
+            for result in results.fetchall():
+                print(f"{result[0]}: {result[1]} {result[2]}")
+            Path.unlink(LOCKFILE)
+            sys.exit(0)
+
+        case "restore":
+            print()
+            for host in hosts:
+                print(f"{host}")
+            print()
+            host_choice = input(_("Please enter host to restore: "))
+            if host_choice not in hosts:
+                print(
+                    _("Invalid host entered: {host_choice}").format(
+                        host_choice=host_choice
+                    )
+                )
+                Path.unlink(LOCKFILE)
+                sys.exit(1)
+
+            for path in hosts[host_choice]:
+                if isinstance(path, dict):
+                    if "settings" in path:
+                        if "user" in path.get("settings"):
+                            USER = path.get("settings").get("user")
+                        if "port" in path.get("settings"):
+                            PORT = path.get("settings").get("port")
+                        if "passphrase" in path.get("settings"):
+                            PASSPHRASE = path.get("settings").get("passphrase")
+                        if "stricthostkey" in path.get("settings"):
+                            STRICTHOSTKEY = path.get("settings").get("stricthostkey")
+                        if "keystring" in path.get("settings"):
+                            KEYSTRING = path.get("settings").get("keystring")
+
+            print()
+            for path in hosts[host_choice]:
+                if not isinstance(path, str):
+                    continue
+                print(f"{path}")
+            print()
+            path_choice = input(
+                _("Please enter path to restore from host {host_choice}: ").format(
+                    host_choice=host_choice
+                )
+            )
+            if path_choice not in hosts[host_choice]:
+                print(
+                    _(
+                        "Invalid path entered for host {host_choice}: {path_choice}"
+                    ).format(host_choice=host_choice, path_choice=path_choice)
+                )
+                Path.unlink(LOCKFILE)
+                sys.exit(1)
+
+            print()
+            list_backups = input(_("List backup history? [N/y]"))
+            if list_backups in ["y", "Y"]:
+                subprocess.run(
+                    [
+                        "duplicity",
+                        "collection-status",
+                        f"file://{PATH}/{host_choice}{path_choice}",
+                    ],
+                    env=MY_ENV,
+                    stderr=subprocess.STDOUT,
+                    check=True,
+                )
+
+            print()
+            print(_("Enter restore date/time; see duplicity man page for time formats"))
+            restore_date = input(_("Leave blank for most recent backup: "))
+            if restore_date == "":
+                RESTORE_DATE = ""
+            else:
+                RESTORE_DATE = "--time {restore_date}"
+
+            try:
+                remote_home = (
+                    subprocess.run(
+                        [
+                            "ssh",
+                            f"{USER}@{host_choice}",
+                            "-p",
+                            f"{PORT}",
+                            "-o",
+                            f"StrictHostKeyChecking={STRICTHOSTKEY}",
+                            "echo $HOME",
+                        ],
+                        env=MY_ENV,
+                        stderr=subprocess.STDOUT,
+                        stdout=subprocess.PIPE,
+                        check=True,
+                        timeout=15,
+                    )
+                    .stdout.decode()
+                    .replace("\n", "")
+                )
+                LOCATION = input(
+                    _("Restore locally or to remote")
+                    + f" {USER}@{host_choice}:{remote_home}? [L/r]"
+                )
+            except (subprocess.TimeoutExpired, subprocess.CalledProcessError) as error:
+                print(error)
+                LOCATION = "l"
+
+            restorepath = (
+                f"{datetime.datetime.now().strftime('%Y-%m-%d')}"
+                + f"-{datetime.datetime.now().strftime('%H:%M')}"
+                + f"-{host_choice}{path_choice.replace('/', '_')}"
+            )
+            if restore_date != "":
+                restorepath = restorepath + f"-{restore_date}"
+
+            print()
+            if LOCATION in ["r", "R"]:
+                restore = input(
+                    _("Restore")
+                    + f" {host_choice}:{path_choice} "
+                    + _("to")
+                    + f" {USER}@{host_choice}:{remote_home}/{restorepath}? [N/y]: "
+                )
+            else:
+                restore = input(
+                    _("Restore")
+                    + f" {host_choice}:{path_choice} "
+                    + _("to")
+                    + f" {restorepath}? [N/y]: "
+                )
+            if restore in ["y", "Y"]:
+                MY_ENV["PASSPHRASE"] = PASSPHRASE
+                if LOCATION in ["r", "R"]:
+                    MOUNTDIR = tempfile.mkdtemp()
+
+                    # check if mounted
+                    OUTPUT = tergiversate.unmount_if_mounted(MOUNTDIR, MY_ENV)
+
+                    # mount
+                    OUT, SUM, BRK = tergiversate.mount_remote(
+                        MOUNTDIR, USER, host_choice, remote_home, STRICTHOSTKEY, PORT, _
+                    )
+                    if BRK == 1:
+                        OUTPUT += OUT
+                        SUMMARY = SUM
+                        print(SUMMARY)
+                        print(OUTPUT)
+                        Path.unlink(LOCKFILE)
+                        sys.exit(1)
+
+                    command = (
+                        f"duplicity{KEYSTRING}--allow-source-mismatch restore "
+                        + f"{RESTORE_DATE} file://"
+                        + PATH
+                        + "/"
+                        + host_choice
+                        + path_choice
+                        + f" {MOUNTDIR}/{restorepath}"
+                    )
+                    try:
+                        subprocess.run(
+                            command.split(" "),
+                            env=MY_ENV,
+                            stderr=subprocess.STDOUT,
+                            check=True,
+                        )
+                    except subprocess.CalledProcessError as error:
+                        print(error)
+                        Path.unlink(LOCKFILE)
+                        sys.exit(1)
+                else:
+                    command = (
+                        f"duplicity{KEYSTRING}--allow-source-mismatch restore file://"
+                        + PATH
+                        + "/"
+                        + host_choice
+                        + path_choice
+                        + f" {restorepath}"
+                    )
+                    try:
+                        subprocess.run(
+                            command.split(" "),
+                            env=MY_ENV,
+                            stderr=subprocess.STDOUT,
+                            check=True,
+                        )
+                    except subprocess.CalledProcessError as error:
+                        print(error)
+                        Path.unlink(LOCKFILE)
+                        sys.exit(1)
+            Path.unlink(LOCKFILE)
+            sys.exit(0)
+
+        case _:
+            print(_("Invalid command"))
+            Path.unlink(LOCKFILE)
+            sys.exit(1)
+
+# backup
+
+if not os.path.isdir(PATH):
+    os.mkdir(PATH)
+
+OUTPUT = ""
+SUMMARY = ""
+
+DEFAULT_SETTINGS = {
+    "settings": {
+        "user": "root",
+        "port": "22",
+        "passphrase": PASSPHRASE,
+        "backpath": PATH,
+        "stricthostkey": STRICTHOSTKEY,
+        "keystring": KEYSTRING,
+        "full_every": FULL_EVERY,
+        "retention": RETENTION,
+        "unable_to_execute": _("Unable to execute"),
+        "error": _("error"),
+        "unavailable": _("Unavailable"),
+    }
+}
+
+# Merge defaults into per-host config overrides
+for key, value in hosts.items():
+    MERGED = 0
+    for path in value:
+        if isinstance(path, dict):
+            path["settings"] = DEFAULT_SETTINGS["settings"] | path["settings"]
+            MERGED = 1
+    if MERGED == 0:
+        value.append(DEFAULT_SETTINGS)
+
+if __name__ == "__main__":
+    with Pool(PROCS) as pool:
+        RESULTS = pool.map(tergiversate.backup_host, hosts.items())
+        for result in RESULTS:
+            SUMMARY += result[0]
+            OUTPUT += result[1]
+
+
+# Print output
+print(f"tergiversator {VERSION}")
+print("-----------" + _("Summary") + "-----------")
+print(SUMMARY)
+print("-----------------------------")
+print(OUTPUT)
+
+# Create index if configured to do so
+if AUTOINDEX == "yes":
+    filedata, errors = tergiversate.create_index(hosts, KEYSTRING, PATH, MY_ENV, _)
+    ERRORLEN = len(errors)
+    if ERRORLEN > 0:
+        print(errors)
+    index_return, errors = tergiversate.write_index(filedata, PATH)
+    ERRORLEN = len(errors)
+    if ERRORLEN > 0:
+        print(errors)
+
+Path.unlink(LOCKFILE)
