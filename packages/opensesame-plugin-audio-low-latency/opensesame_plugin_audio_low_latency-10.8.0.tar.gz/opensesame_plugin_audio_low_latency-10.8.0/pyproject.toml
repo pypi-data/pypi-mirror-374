@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "opensesame-plugin-audio_low_latency"
+version = "10.8.0"
+description = "An OpenSesame Plug-in for playing and recording audio files with low latency on Linux"
+authors = ["Bob Rosbag <debian@bobrosbag.nl>"]
+readme = "README.md"
+packages = [
+    {include = "opensesame_plugins"},
+]
+license = "LICENSE.md"
+homepage = "https://github.com/dev-jam/opensesame-plugin-audio_low_latency"
+repository = "https://github.com/dev-jam/opensesame-plugin-audio_low_latency"
+
+[tool.poetry.dependencies]
+python = ">= 3.7"
+sounddevice = "*"
+pyaudio = "*"
+numpy = "*"
+pygame = ">= 2.0.0"
+pyalsaaudio = {version = ">= 0.8.4", platform = "linux"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
