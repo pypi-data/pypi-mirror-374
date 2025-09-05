@@ -1,0 +1,24 @@
+---
+# HMC vault file for zhmcclient projects
+#
+# This file defines the credentials for real HMCs for use by the zhmcclient
+# projects. Their HMC definitions are specified in a corresponding HMC inventory
+# file.
+#
+# The format of HMC vault files is described in
+# https://python-zhmcclient.readthedocs.io/en/master/development.html#hmc-vault-file
+
+hmc_auth:
+
+  HMC1:
+    userid: ensadmin
+    password: password
+    verify: false
+
+  MOCKED_Z16_CLASSIC:
+    userid: dummy
+    password: dummy
+
+  MOCKED_Z16_DPM:
+    userid: dummy
+    password: dummy
