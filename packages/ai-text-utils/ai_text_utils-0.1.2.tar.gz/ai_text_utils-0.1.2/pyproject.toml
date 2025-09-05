@@ -1,0 +1,26 @@
+[project]
+name = "ai-text-utils"
+version = "0.1.2"
+description = ""
+authors = [
+    {name = "venkatkedar007",email = "kedarnath.career@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "torch",
+    "tiktoken",
+    "numpy",
+    "beautifulsoup4"
+]
+
+[tool.poetry]
+packages = [{include = "ai_text_utils", from = "src"}]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+text-utils="ai_text_utils.cli.main:main"
