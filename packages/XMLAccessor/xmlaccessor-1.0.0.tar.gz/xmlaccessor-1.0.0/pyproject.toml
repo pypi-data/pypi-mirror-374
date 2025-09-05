@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools >= 61.0",]
+build-backend = "setuptools.build_meta"
+
+[project]
+dynamic = ["version"]
+name="XMLAccessor"
+requires-python = ">=3.8"
+authors = [
+    {name = "Phillip Harry T", email = "philliptinsley44@gmail.com"}
+]
+description = "Populate Python Classes from XML"
+readme = "README.md"
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: Other/Proprietary License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Information Technology", 
+]
+keywords = ["XML", "xml", "lxml", "cast", "populate", "nested", "xmlaccessor"]
+
+[tool.setuptools.dynamic]
+version = {attr = "XMLAccessor.__version__"}
+
+[project.scripts]
