@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ccfx"
+version = "1.0.6"
+description = "This package simplifies regular common actions for quick prototyping in a user friendly way"
+readme = "README.md"
+license = "MIT"
+authors = [{name = "Celray James CHAWANDA", email = "celray@chawanda.com"}]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "netCDF4",
+    "yt_dlp",
+    "gdal",
+    "numpy",
+    "shapely",
+    "geopandas",
+    "pandas",
+    "xlsxwriter",
+    "pyodbc",
+    "sqlalchemy",
+    "python-docx",
+    "py7zr",
+    "mutagen",
+    "requests",
+    "tqdm",
+    "pillow",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/celray/ccfx"
