@@ -1,0 +1,230 @@
+name: Deploy to PyPI
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number to release (e.g., 0.1.8)'
+        required: true
+        type: string
+      prerelease:
+        description: 'Is this a pre-release?'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+      with:
+        version: "latest"
+
+    - name: Set up Python 3.11
+      run: uv python install 3.11
+
+    - name: Install dependencies (for PyPI compatibility test)
+      run: |
+        uv sync --extra orca
+        uv add --dev pytest pytest-cov
+
+    - name: Run tests (without ActivitySim - PyPI compatibility)
+      run: |
+        uv run pytest tests/test_basic.py -v
+        uv run pytest tests/test_core.py -v
+        uv run pytest tests/test_orca_unit.py -v
+        uv run pytest tests/test_orca_integration.py::TestOrcaIntegration::test_01_local_testing_full_run -v
+
+  test-with-activitysim:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+      with:
+        version: "latest"
+
+    - name: Set up Python 3.11
+      run: uv python install 3.11
+
+    - name: Install dependencies (with ActivitySim for development test)
+      run: |
+        uv sync --extra orca --group activitysim
+        uv add --dev pytest pytest-cov
+
+    - name: Run tests (with ActivitySim - development compatibility)
+      run: |
+        uv run pytest tests/test_basic.py -v
+        uv run pytest tests/test_core.py -v
+        uv run pytest tests/test_orca_unit.py -v
+        uv run pytest tests/test_orca_integration.py::TestOrcaIntegration::test_01_local_testing_full_run -v
+
+  update-version:
+    needs: [test, test-with-activitysim]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+      with:
+        version: "latest"
+
+    - name: Set up Python 3.11
+      run: uv python install 3.11
+
+    - name: Update version in pyproject.toml
+      run: |
+        sed -i 's/^version = "[^"]*"/version = "${{ inputs.version }}"/' pyproject.toml
+        echo "Updated version to ${{ inputs.version }}"
+        grep '^version = ' pyproject.toml
+
+    - name: Update version in __init__.py
+      run: |
+        sed -i 's/^__version__ = "[^"]*"/__version__ = "${{ inputs.version }}"/' src/tlpytools/__init__.py
+        echo "Updated __init__.py version to ${{ inputs.version }}"
+        grep '^__version__ = ' src/tlpytools/__init__.py
+
+    - name: Commit version changes and create tag
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add pyproject.toml src/tlpytools/__init__.py
+        
+        # Check if tag already exists first
+        if git tag -l "v${{ inputs.version }}" | grep -q "v${{ inputs.version }}"; then
+          echo "Tag v${{ inputs.version }} already exists - skipping all changes"
+          echo "Ready for deployment using existing tag"
+        else
+          # Tag doesn't exist, check if we have changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit, but tag doesn't exist"
+            echo "Creating tag from current state"
+            git tag -a "v${{ inputs.version }}" -m "Release version ${{ inputs.version }}"
+            git push origin "v${{ inputs.version }}"
+            echo "Tag v${{ inputs.version }} created and pushed"
+          else
+            # We have changes and no tag exists - commit, push, and tag
+            git commit -m "Bump version to ${{ inputs.version }}"
+            git push origin HEAD
+            git tag -a "v${{ inputs.version }}" -m "Release version ${{ inputs.version }}"
+            git push origin "v${{ inputs.version }}"
+            echo "Version changes committed, pushed, and tagged as v${{ inputs.version }}"
+          fi
+        fi
+
+    - name: Verify tag creation
+      run: |
+        git fetch --tags
+        if git tag -l "v${{ inputs.version }}" | grep -q "v${{ inputs.version }}"; then
+          echo "Tag v${{ inputs.version }} verified successfully"
+        else
+          echo "Error: Tag v${{ inputs.version }} not found!"
+          exit 1
+        fi
+
+  build:
+    needs: update-version
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.ref }}
+        fetch-depth: 0  # Fetch all history for tags
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+      with:
+        version: "latest"
+
+    - name: Set up Python 3.11
+      run: uv python install 3.11
+
+    - name: Fetch latest changes and checkout tag
+      run: |
+        git fetch origin
+        git checkout "v${{ inputs.version }}"
+
+    - name: Build package
+      run: |
+        uv build
+        ls -la dist/
+
+    - name: Verify package contents
+      run: |
+        uv run pip install dist/*.whl
+        uv run python -c "import tlpytools; print(f'Package version: {tlpytools.__version__}')"
+        uv run python -c "from tlpytools.orca.orchestrator import OrcaOrchestrator; print('ORCA import successful')"
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist
+        path: dist/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: dist
+        path: dist/
+
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        password: ${{ secrets.PYPI_API_TOKEN }}
+
+  create-release:
+    needs: [deploy]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: v${{ inputs.version }}  # Checkout the specific tag
+        fetch-depth: 0
+
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ inputs.version }}
+        release_name: TLPyTools v${{ inputs.version }}
+        body: |
+          ## TLPyTools v${{ inputs.version }}
+          
+          This release includes updates to the TransLink Python Tools package.
+          
+          ### Installation
+          ```bash
+          pip install tlpytools==${{ inputs.version }}
+          ```
+          
+          ### Using UV (Recommended)
+          ```bash
+          uv add tlpytools==${{ inputs.version }}
+          ```
+          
+          ### Changes
+          - Version bump to ${{ inputs.version }}
+          - See commit history for detailed changes
+          
+          ### Documentation
+          - [README](https://github.com/TransLinkForecasting/tlpytools/blob/main/README.md)
+          - [ORCA Documentation](https://github.com/TransLinkForecasting/tlpytools/blob/main/DOCS_ORCA.md)
+          - [Developer Guide](https://github.com/TransLinkForecasting/tlpytools/blob/main/DEVELOPER_GUIDE.md)
+        draft: false
+        prerelease: ${{ inputs.prerelease }}
