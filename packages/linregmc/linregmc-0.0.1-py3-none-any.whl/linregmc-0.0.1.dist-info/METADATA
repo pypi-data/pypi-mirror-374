@@ -1,0 +1,21 @@
+Metadata-Version: 2.4
+Name: linregmc
+Version: 0.0.1
+Summary: Linear regression with Monte Carlo error analysis
+Project-URL: Homepage, https://github.com/parsod/BFKdemos
+Author-email: Par Soderhjelm <par.soderhjelm@bpc.lu.se>
+License-Expression: MIT
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
+# linregmc package  (Linear regression with Monte Carlo error analysis)
+
+This package is a single module which contains three functions
+
+createmcdata - introduce noise in the data based on known experimental precision
+linreg       - perform multiple linear regressions and calculate goodness-of-fit
+errconf      - get confidence intervals, plot distributions etc.
+
+TODO: Add detailed documentation here

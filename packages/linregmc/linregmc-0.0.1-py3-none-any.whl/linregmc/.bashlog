@@ -1,0 +1,15 @@
+  557  cd example_package_per/
+  558  echo -n >__init__.py
+  559  vi example.py
+  539  cd linregmc/
+  540  ls
+  541  ls -lt
+  542  rm example.py 
+  543  vi __init__.py 
+  544  ls
+  545  rm linregmc.py 
+  546  cp ../../../linregmc.py .
+  547  ls
+  584  cd linregmc/
+  585  ls
+  586  vi __init__.py
