@@ -1,0 +1,12 @@
+[console_scripts]
+cphdcheck = sarkit.verification._cphdcheck:main
+cphdinfo = sarkit.cphd._cphdinfo:main
+crsdcheck = sarkit.verification._crsdcheck:main
+crsdinfo = sarkit.crsd._crsdinfo:main
+sicdcheck = sarkit.verification._sicdcheck:main
+sicdinfo = sarkit.sicd._sicdinfo:main
+siddcheck = sarkit.verification._siddcheck:main
+siddinfo = sarkit.sidd._siddinfo:main
+
+[gui_scripts]
+
