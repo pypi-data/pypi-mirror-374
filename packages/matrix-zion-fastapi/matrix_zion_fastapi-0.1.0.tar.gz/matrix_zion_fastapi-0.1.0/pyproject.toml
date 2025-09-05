@@ -1,0 +1,54 @@
+[project]
+name = "matrix-zion-fastapi"
+version = "0.1.0"
+description = "Extensão FastAPI para o framework Matrix - Plugin para APIs REST"
+authors = [
+    {name = "Tuyoshi Vinicius", email = "tuyoshi.vinicius@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+keywords = ["microservices", "fastapi", "matrix", "plugin", "rest", "api"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+]
+
+dependencies = [
+    "matrix-zion>=0.1.0",
+    "fastapi>=0.100.0",
+    "uvicorn>=0.20.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "httpx>=0.24.0",
+    "pytest>=8.0.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/tuyoshivinicius/python-microservice-v2"
+"Repository" = "https://github.com/tuyoshivinicius/python-microservice-v2"
+"Bug Reports" = "https://github.com/tuyoshivinicius/python-microservice-v2/issues"
+"Documentation" = "https://github.com/tuyoshivinicius/python-microservice-v2/blob/main/README.md"
+
+# Entry points para descoberta de plugins
+[project.entry-points."matrix.plugins"]
+fastapi_web = "matrix.fastapi.web:FastAPIWebPlugin"
+fastapi_api = "matrix.fastapi.api:FastAPIApiPlugin"
+fastapi_middleware = "matrix.fastapi.middleware:FastAPIMiddlewarePlugin"
+
+[tool.poetry]
+package-mode = true
+packages = [{ include = "matrix", from = "src" }]
+
+[build-system]
+requires = ["poetry-core>=2.0.0"]
+build-backend = "poetry.core.masonry.api"
