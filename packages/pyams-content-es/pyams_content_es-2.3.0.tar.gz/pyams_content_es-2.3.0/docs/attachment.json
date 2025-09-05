@@ -1,0 +1,17 @@
+{
+	"description": "Extract attachments informations",
+	"processors": [
+		{
+			"foreach": {
+				"field": "attachments",
+				"processor": {
+					"attachment": {
+						"field": "_ingest._value.content",
+						"target_field": "_ingest._value.attachment",
+						"ignore_missing": true
+					}
+				}
+			}
+		}
+	]
+}

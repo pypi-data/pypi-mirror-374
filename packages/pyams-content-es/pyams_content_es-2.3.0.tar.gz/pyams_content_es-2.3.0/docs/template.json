@@ -1,0 +1,532 @@
+{
+  "index_patterns": [
+    "pyams_*"
+  ],
+  "template": {
+    "settings": {
+      "index": {
+        "number_of_replicas": 1,
+        "number_of_shards": 6,
+        "analysis": {
+          "filter": {
+            "elision_fr": {
+              "type": "elision",
+              "articles": [
+                "l",
+                "m",
+                "t",
+                "qu",
+                "n",
+                "s",
+                "j",
+                "d",
+                "c",
+                "jusqu",
+                "quoiqu",
+                "lorsqu",
+                "puisqu"
+              ]
+            },
+            "stemmer_fr": {
+              "type": "stemmer",
+              "language": "light_french"
+            },
+            "snowball_fr": {
+              "type": "snowball",
+              "language": "French"
+            },
+            "stop_fr": {
+              "ignore_case": "true",
+              "type": "stop",
+              "stopwords": "_french_"
+            }
+          },
+          "analyzer": {
+            "french_search": {
+              "filter": [
+                "stop_fr",
+                "asciifolding",
+                "lowercase",
+                "snowball_fr",
+                "elision_fr",
+                "stemmer_fr"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "french": {
+              "filter": [
+                "stop_fr",
+                "asciifolding",
+                "lowercase",
+                "snowball_fr",
+                "elision_fr",
+                "stemmer_fr"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "default": {
+              "type": "french"
+            }
+          }
+        }
+      }
+    },
+    "mappings": {
+      "_source": {
+        "enabled": true
+      },
+      "properties": {
+        "attachments": {
+          "properties": {
+            "attachment": {
+              "properties": {
+                "author": {
+                  "type": "text"
+                },
+                "content": {
+                  "type": "text"
+                },
+                "content_length": {
+                  "type": "long"
+                },
+                "content_type": {
+                  "type": "text"
+                },
+                "date": {
+                  "type": "date"
+                },
+                "keywords": {
+                  "type": "text"
+                },
+                "language": {
+                  "type": "text"
+                },
+                "title": {
+                  "type": "text"
+                }
+              }
+            },
+            "content": {
+              "type": "text"
+            },
+            "content_type": {
+              "type": "text"
+            },
+            "language": {
+              "type": "keyword"
+            },
+            "name": {
+              "type": "keyword"
+            }
+          }
+        },
+        "body": {
+          "properties": {
+            "en": {
+              "type": "text"
+            },
+            "es": {
+              "type": "text"
+            },
+            "de": {
+              "type": "text"
+            },
+            "fr": {
+              "type": "text",
+              "analyzer": "french",
+              "search_analyzer": "french_search"
+            }
+          }
+        },
+        "collections": {
+          "type": "keyword"
+        },
+        "content_type": {
+          "type": "keyword"
+        },
+        "data_type": {
+          "type": "keyword"
+        },
+        "description": {
+          "properties": {
+            "en": {
+              "type": "text"
+            },
+            "es": {
+              "type": "text"
+            },
+            "de": {
+              "type": "text"
+            },
+            "fr": {
+              "type": "text",
+              "analyzer": "french",
+              "search_analyzer": "french_search"
+            }
+          }
+        },
+        "extfile": {
+          "properties": {
+            "description": {
+              "properties": {
+                "en": {
+                  "type": "text"
+                },
+                "es": {
+                  "type": "text"
+                },
+                "de": {
+                  "type": "text"
+                },
+                "fr": {
+                  "type": "text",
+                  "analyzer": "french",
+                  "search_analyzer": "french_search"
+                }
+              }
+            },
+            "title": {
+              "properties": {
+                "en": {
+                  "type": "text"
+                },
+                "es": {
+                  "type": "text"
+                },
+                "de": {
+                  "type": "text"
+                },
+                "fr": {
+                  "type": "text",
+                  "analyzer": "french",
+                  "search_analyzer": "french_search"
+                }
+              }
+            }
+          }
+        },
+        "facet_label": {
+          "type": "keyword"
+        },
+        "facet_type_label": {
+          "type": "keyword"
+        },
+        "gallery": {
+          "properties": {
+            "en": {
+              "type": "text"
+            },
+            "es": {
+              "type": "text"
+            },
+            "de": {
+              "type": "text"
+            },
+            "fr": {
+              "type": "text",
+              "analyzer": "french",
+              "search_analyzer": "french_search"
+            }
+          }
+        },
+        "header": {
+          "properties": {
+            "en": {
+              "type": "text"
+            },
+            "es": {
+              "type": "text"
+            },
+            "de": {
+              "type": "text"
+            },
+            "fr": {
+              "type": "text",
+              "analyzer": "french",
+              "search_analyzer": "french_search"
+            }
+          }
+        },
+        "internal_id": {
+          "type": "keyword"
+        },
+        "keywords": {
+          "type": "keyword"
+        },
+        "link": {
+          "properties": {
+            "description": {
+              "properties": {
+                "en": {
+                  "type": "text"
+                },
+                "es": {
+                  "type": "text"
+                },
+                "de": {
+                  "type": "text"
+                },
+                "fr": {
+                  "type": "text",
+                  "analyzer": "french",
+                  "search_analyzer": "french_search"
+                }
+              }
+            },
+            "title": {
+              "properties": {
+                "en": {
+                  "type": "text"
+                },
+                "es": {
+                  "type": "text"
+                },
+                "de": {
+                  "type": "text"
+                },
+                "fr": {
+                  "type": "text",
+                  "analyzer": "french",
+                  "search_analyzer": "french_search"
+                }
+              }
+            }
+          }
+        },
+        "owner_id": {
+          "type": "keyword"
+        },
+        "contributor_id": {
+          "type": "keyword"
+        },
+        "parent_ids": {
+          "type": "keyword"
+        },
+        "reference_id": {
+          "type": "keyword"
+        },
+        "resource_info": {
+          "properties": {
+            "actors": {
+              "type": "text"
+            },
+            "author": {
+              "type": "text"
+            },
+            "awards": {
+              "properties": {
+                "en": {
+                  "type": "text"
+                },
+                "es": {
+                  "type": "text"
+                },
+                "de": {
+                  "type": "text"
+                },
+                "fr": {
+                  "type": "text",
+                  "analyzer": "french",
+                  "search_analyzer": "french_search"
+                }
+              }
+            },
+            "collection": {
+              "type": "keyword"
+            },
+            "colourist": {
+              "type": "text"
+            },
+            "director": {
+              "type": "text"
+            },
+            "drawer": {
+              "type": "text"
+            },
+            "editor": {
+              "type": "text"
+            },
+            "editor_reference": {
+              "type": "keyword"
+            },
+            "illustrator": {
+              "type": "text"
+            },
+            "isbn_number": {
+              "type": "keyword"
+            },
+            "lettering": {
+              "type": "text"
+            },
+            "original_title": {
+              "type": "text"
+            },
+            "producer": {
+              "type": "text"
+            },
+            "publisher_words": {
+              "properties": {
+                "en": {
+                  "type": "text"
+                },
+                "es": {
+                  "type": "text"
+                },
+                "de": {
+                  "type": "text"
+                },
+                "fr": {
+                  "type": "text",
+                  "analyzer": "french",
+                  "search_analyzer": "french_search"
+                }
+              }
+            },
+            "series": {
+              "type": "text"
+            },
+            "summary": {
+              "properties": {
+                "en": {
+                  "type": "text"
+                },
+                "es": {
+                  "type": "text"
+                },
+                "de": {
+                  "type": "text"
+                },
+                "fr": {
+                  "type": "text",
+                  "analyzer": "french",
+                  "search_analyzer": "french_search"
+                }
+              }
+            },
+            "synopsis": {
+              "properties": {
+                "en": {
+                  "type": "text"
+                },
+                "es": {
+                  "type": "text"
+                },
+                "de": {
+                  "type": "text"
+                },
+                "fr": {
+                  "type": "text",
+                  "analyzer": "french",
+                  "search_analyzer": "french_search"
+                }
+              }
+            },
+            "translator": {
+              "type": "text"
+            }
+          }
+        },
+        "short_name": {
+          "properties": {
+            "en": {
+              "type": "text"
+            },
+            "es": {
+              "type": "text"
+            },
+            "de": {
+              "type": "text"
+            },
+            "fr": {
+              "type": "text",
+              "analyzer": "french",
+              "search_analyzer": "french_search"
+            }
+          }
+        },
+        "tags": {
+          "type": "keyword"
+        },
+        "themes": {
+          "properties": {
+            "associations": {
+              "type": "keyword"
+            },
+            "parents": {
+              "type": "keyword"
+            },
+            "synonyms": {
+              "type": "keyword"
+            },
+            "terms": {
+              "type": "keyword"
+            }
+          }
+        },
+        "title": {
+          "properties": {
+            "en": {
+              "type": "text"
+            },
+            "es": {
+              "type": "text"
+            },
+            "de": {
+              "type": "text"
+            },
+            "fr": {
+              "type": "text",
+              "analyzer": "french",
+              "search_analyzer": "french_search"
+            }
+          }
+        },
+        "workflow": {
+          "properties": {
+            "created_date": {
+              "type": "date"
+            },
+            "date": {
+              "type": "date"
+            },
+            "effective_date": {
+              "type": "date"
+            },
+            "expiration_date": {
+              "type": "date"
+            },
+            "content_publication_date": {
+              "type": "date"
+            },
+            "first_publication_date": {
+              "type": "date"
+            },
+            "modified_date": {
+              "type": "date"
+            },
+            "name": {
+              "type": "keyword"
+            },
+            "principal": {
+              "type": "keyword"
+            },
+            "publication_date": {
+              "type": "date"
+            },
+            "push_end_date": {
+              "type": "date"
+            },
+            "status": {
+              "type": "keyword"
+            },
+            "visible_publication_date": {
+              "type": "date"
+            }
+          }
+        }
+      }
+    }
+  }
+}
