@@ -1,0 +1,20 @@
+Metadata-Version: 2.4
+Name: nebulaai-memory-agents
+Version: 0.1.0
+Summary: Python SDK + CLI for AI Agents with persistent memory (Supabase + OpenAI).
+Author: Temporal AI Technologies Inc.
+License: MIT
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: click
+Requires-Dist: openai
+Requires-Dist: supabase
+
+# nebulaai-memory-agents
+
+Python SDK + CLI for building AI Agents with **persistent memory**.
+
+## Install
+```bash
+pip install nebulaai-memory-agents
+

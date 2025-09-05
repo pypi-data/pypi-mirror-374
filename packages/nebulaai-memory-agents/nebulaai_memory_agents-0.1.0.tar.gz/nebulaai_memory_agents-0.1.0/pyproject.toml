@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nebulaai-memory-agents"
+version = "0.1.0"
+description = "Python SDK + CLI for AI Agents with persistent memory (Supabase + OpenAI)."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Temporal AI Technologies Inc." }]
+requires-python = ">=3.9"
+dependencies = [
+  "click",
+  "openai",
+  "supabase"
+]
+
+[project.scripts]
+memory-agents = "nebulaai_memory_agents.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
