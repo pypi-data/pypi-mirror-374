@@ -1,0 +1,77 @@
+Metadata-Version: 2.4
+Name: microsoft-teams-api
+Version: 0.0.1a4
+Summary: API package for Microsoft Teams
+Project-URL: Homepage, https://github.com/microsoft/teams.py/tree/main/packages/api/src/microsoft/teams/api
+Author-email: Microsoft <TeamsAISDKFeedback@microsoft.com>
+License-Expression: MIT
+Keywords: agents,ai,bot,microsoft,teams
+Requires-Python: >=3.12
+Requires-Dist: microsoft-teams-cards
+Requires-Dist: microsoft-teams-common
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: pyjwt[crypto]>=2.10.0
+Description-Content-Type: text/markdown
+
+> [!CAUTION]
+> This project is in active development and not ready for production use. It has not been publicly announced yet.
+
+# Microsoft Teams API Client
+
+Core API client library for Microsoft Teams Bot Framework integration.
+Provides HTTP clients, authentication, and typed models for Teams Bot Framework APIs.
+
+## Features
+
+- **API Clients**: Bot, User, Conversation, Team, and Meeting clients
+- **Authentication**: ClientCredentials and TokenCredentials support
+- **Activity Models**: Typed Pydantic models for Teams activities
+- **JWT Tokens**: JsonWebToken implementation with TokenProtocol interface
+
+## Authentication
+
+```python
+from microsoft.teams.api import ClientCredentials, TokenCredentials
+
+# Client credentials authentication
+credentials = ClientCredentials(
+    client_id="your-app-id",
+    client_secret="your-app-secret"
+)
+
+# Token-based authentication
+credentials = TokenCredentials(
+    client_id="your-app-id",
+    token=your_token_function
+)
+```
+
+## API Client Usage
+
+```python
+from microsoft.teams.api import ApiClient
+
+# Initialize API client
+api = ApiClient("https://smba.trafficmanager.net/amer/")
+
+# Bot token operations
+token_response = await api.bots.token.get(credentials)
+graph_token = await api.bots.token.get_graph(credentials)
+
+# User token operations
+user_token = await api.users.token.get(params)
+token_status = await api.users.token.get_status(params)
+```
+
+## Activity Models
+
+```python
+from microsoft.teams.api import MessageActivity, Activity, ActivityTypeAdapter
+
+# Validate incoming activities
+activity = ActivityTypeAdapter.validate_python(activity_data)
+
+# Work with typed activities
+if isinstance(activity, MessageActivity):
+    print(f"Message: {activity.text}")
+```
