@@ -1,0 +1,54 @@
+Metadata-Version: 2.3
+Name: opensesame-plugin-screenshot
+Version: 0.5.0
+Summary: An OpenSesame Plugin for saving screenshots of stimuli and other screens within an experiment.
+License: LICENSE.md
+Author: Bob Rosbag
+Author-email: debian@bobrosbag.nl
+Requires-Python: >=3.7
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Project-URL: Homepage, https://github.com/dev-jam/opensesame-plugin-screenshot
+Project-URL: Repository, https://github.com/dev-jam/opensesame-plugin-screenshot
+Description-Content-Type: text/markdown
+
+OpenSesame Plug-in: Screenshot
+==========
+
+*An OpenSesame plug-in for saving screenshots of stimuli and other screens within an experiment.*  
+
+Copyright, 2024, Bob Rosbag  
+
+
+## About
+
+This plug-in can make screenshots of stimuli and other screens and save it to png in the folder 'screenshots/subject-*/filename'. 
+
+This plug-in has two options:
+
+- *Verbose mode* for testing experiments.
+- *Screenshot file name*.
+
+
+## License
+
+This software is distributed under the terms of the GNU General Public License 3. The full license should be included in the file `COPYING`, or can be obtained from:
+
+- <http://www.gnu.org/licenses/gpl.txt>
+
+This plug-in contains works of others. Icons are derivatives of the Faenza icon theme.
+
+  
+## Documentation
+
+Installation instructions and documentation on OpenSesame are available on the documentation website:
+
+- <http://osdoc.cogsci.nl/>
+
