@@ -1,0 +1,930 @@
+2025-09-04  rocky <rb@dustyfeet.com>
+
+	* MANIFEST.in: Get ready for release 9.0.1.
+
+2025-08-30  rocky <rb@dustyfeet.com>
+
+	* README.rst, admin-tools/make-dist.sh, pymathics/trepan/version.py: 
+	Update README.rst
+
+2025-08-30  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #12 from Mathics3/release-9.0 Release 9.0
+
+2025-08-30  rocky <rb@dustyfeet.com>
+
+	* .gitignore, CHANGES.rst, ChangeLog-spell-corrected.diff,
+	Makefile, admin-tools/git2cl, pyproject.toml: Administrivia Revise ChangeLog generation
+
+2025-08-30  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/version.py: Get ready for release 9.0.0
+
+2025-08-26  rocky <rb@dustyfeet.com>
+
+	* README.rst: Update README.rst
+
+2025-08-26  rocky <rb@dustyfeet.com>
+
+	* admin-tools/make-dist.sh, pyproject.toml: Administrivia Rename repository. Remove 3.9 support
+
+2025-08-26  R. Bernstein <rocky@users.noreply.github.com>
+
+	* README.rst: Update README.rst
+
+2025-08-26  R. Bernstein <rocky@users.noreply.github.com>
+
+	* README.rst: Update README.rst
+
+2025-08-26  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/format.py, pymathics/trepan/tracing.py:
+	Improve TraceEvaluation and format Handle Slot[n] -> #n Remove extraneous:   Replace: x -> x   Newlines between trace output
+
+2025-08-24  rocky <rb@dustyfeet.com>
+
+	* pyproject.toml: More liberal setuptools It might make pyodide happy
+
+2025-08-16  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/__main__.py, pymathics/trepan/interrupt.py: Add
+	interrupt handler
+
+2025-08-03  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/processor/cmdproc.py,
+	pymathics/trepan/processor/command/info_subcmd/program.py: Add "info
+	program"
+
+2025-08-03  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/__main__.py, pymathics/trepan/lib/repl.py,
+	pymathics/trepan/processor/cmdproc.py,
+	pymathics/trepan/processor/command/abort.py,
+	pymathics/trepan/processor/command/mathics3.py,
+	pymathics/trepan/tracing.py, pyproject.toml: Add Interrupt
+	handler...  In this we also add an "abort" command
+
+2025-07-26  rocky <rb@dustyfeet.com>
+
+	* pyproject.toml: Use released trepan3k version 1.4.0
+
+2025-07-22  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/format.py: In format, test for "short_name"
+	attribute...  An M-expression might not have a Symbol head. So "short_name" might
+	not be applicable
+
+2025-07-21  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/format.py, pymathics/trepan/lib/repl.py,
+	pyproject.toml: Misc fixes...  Consider TREPAN_PYGMENTS_STYLE environment variable for setting
+	Pygments style.  Until release, we need branches of Mathics_Scanner and Mathics3
+	core.  The way to specify License format has changed yet again. Thanks,
+	Python!
+
+2025-07-01  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/__main__.py, pymathics/trepan/lib/location.py:
+	Fix bug in use of filename in location ..  and also set $TrackLocations
+
+2025-06-29  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/processor/cmdproc.py,
+	pymathics/trepan/processor/command/info_subcmd/program.py,
+	pymathics/trepan/processor/command/info_subcmd/return.py: tweak info
+	program and info return info program: show Mathics3 expression if that exists info return:
+	note that a None return value on a no-return keeps execution the
+	same
+
+2025-06-29  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/format.py, pymathics/trepan/lib/location.py,
+	pymathics/trepan/processor/cmdproc.py, pymathics/trepan/tracing.py:
+	More work on location display Move location formatting to its own module. pymathics.lib.format is
+	too large so split this up.  location.py when we don't need file/line tracking colorize files and
+	line and add column numbers.
+
+2025-06-29  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/format.py,
+	pymathics/trepan/processor/cmdproc.py,
+	pymathics/trepan/processor/location.py, pymathics/trepan/tracing.py:
+	Show locations on TraceEvaluation[]
+
+2025-06-29  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/processor/cmdproc.py,
+	pymathics/trepan/tracing.py: Improve TraceEvaluation & add
+	print_location tracing.py: "Returning x <- tuple(y)" becomes "Replacing x -> y"
+	cmdproc.py: add missing print_location() used by frame command
+
+2025-06-28  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/stack.py,
+	pymathics/trepan/processor/cmdproc.py,
+	pymathics/trepan/processor/command/python.py,
+	pymathics/trepan/processor/location.py: Try to use new API location
+	when possible
+
+2025-06-28  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/format.py,
+	pymathics/trepan/processor/command/set_subcmd/return.py: Two little
+	fixes format.py: Handle Alternatives correctly return.py: Adjust for new
+	location API
+
+2025-06-23  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/core.py,
+	pymathics/trepan/processor/cmdproc.py,
+	pymathics/trepan/processor/command/info_subcmd/program.py,
+	pymathics/trepan/processor/command/info_subcmd/return.py,
+	pymathics/trepan/processor/command/set_subcmd/return.py,
+	pymathics/trepan/tracing.py: Add "info return" Show the value the expression or value set by "set return" is going
+	to return.
+
+2025-06-23  R. Bernstein <rocky@users.noreply.github.com>
+
+	* README.rst: Grammarly-inspired changes
+
+2025-06-23  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/__main__.py,
+	pymathics/trepan/debug_evaluation.py, pymathics/trepan/tracing.py:
+	Fix some spelling typos
+
+2025-06-23  rocky <rb@dustyfeet.com>
+
+	* README.rst,
+	pymathics/trepan/processor/command/set_subcmd/return.py: Go over
+	README. Add "set return" command
+
+2025-06-23  rocky <rb@dustyfeet.com>
+
+	* README.rst, pymathics/trepan/processor/cmdproc.py,
+	pymathics/trepan/tracing.py: Allow changing DebugEvaluate values specifically, here the return value.  Document this in README.rst
+
+2025-06-15  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/format.py, pymathics/trepan/tracing.py:
+	Improve formatting for operators ...  and correct DebugEvaluation[]
+
+2025-06-14  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/format.py: Printexpression: add () for binary
+	precedence...  TODO: add unary precedence
+
+2025-06-08  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/processor/command/quit.py: Adapt quit command for
+	DebugEvaluate and Debugger.  Remove confirmation, since this is not something as drastic as quit
+	in a debugger.
+
+2025-06-08  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/format.py: Format Python function items
+	better...  We don't need to include the memory address, but make explicit note
+	that this is Python.
+
+2025-06-08  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/__main__.py,
+	pymathics/trepan/debug_evaluation.py,
+	pymathics/trepan/lib/exception.py,
+	pymathics/trepan/processor/cmdproc.py,
+	pymathics/trepan/processor/command/quit.py,
+	pymathics/trepan/tracing.py: Add "quit" command & use
+	skip_trivial_evaluation
+
+2025-06-07  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/core.py, pymathics/trepan/lib/repl.py,
+	pymathics/trepan/processor/cmdproc.py, pymathics/trepan/tracing.py:
+	Start DebugEvaluation...  Needs a change in mathics.core.eval
+
+2025-06-06  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/__init__.py, pymathics/trepan/__main__.py,
+	pymathics/trepan/debug_evaluation.py, pymathics/trepan/lib/core.py,
+	pymathics/trepan/tracing.py: WIP - start DebugEvaluation ...  DebugEvaluation[] is analogous to TraceEvaluation, but with stops
+	inside the Mathics3 Module trepan debugger.
+
+2025-05-26  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #11 from Mathics3/Mathics3-Module-refactor Convert to using pyproject.toml
+
+2025-01-30  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #10 from Mathics3/fix_docstring_typos Fix some docstring typos
+
+2025-01-28  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/version.py, pyproject.toml, setup.py: Have to
+	fall back to setup.py for now
+
+2025-01-27  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #9 from Mathics3/release-1.0.1 Get ready for release 1.0.1
+
+2025-01-23  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/__main__.py, pymathics/trepan/lib/repl.py,
+	pymathics/trepan/stacktrace.py: Track API changes
+
+2025-01-21  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/version.py: Bump version
+
+2025-01-21  rocky <rb@dustyfeet.com>
+
+	* admin-tools/make-dist.sh, pymathics/trepan/__main__.py: Correct
+	Debugger[] docstring
+
+2025-01-20  rocky <rb@dustyfeet.com>
+
+	* CHANGES.rst, Makefile, admin-tools/make-dist.sh,
+	admin-tools/pyenv-versions, pymathics/trepan/version.py,
+	pyproject.toml: Get ready for release 1.0.0
+
+2025-01-19  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/__main__.py: Go over Mathics3-Trepan docs
+
+2025-01-18  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/__main__.py: Correct Debugger.eval pattern
+
+2025-01-17  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/__main__.py, pymathics/trepan/stacktrace.py:
+	Track mathics-core eval docstring change
+
+2025-01-13  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/__main__.py, pymathics/trepan/tracing.py: Better
+	evalMethod tracing...  It's still flaky and needs work, but it works sometimes.
+
+2025-01-05  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/processor/command/printelement.py: Allow operator
+	format for printelement expressions
+
+2025-01-05  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/format.py: Track name change in mathics-core
+
+2024-12-30  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/format.py,
+	pymathics/trepan/processor/command/up.py,
+	pymathics/trepan/processor/frame.py: Fix misc bugs
+
+2024-12-24  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #8 from Mathics3/add-Stacktrace Formatted trepan version of Stacktrace[]
+
+2024-12-20  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #7 from Mathics3/operator-order Redo formatting handle binary and unary operators
+
+2024-12-16  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/stack.py,
+	pymathics/trepan/processor/command/frame.py,
+	pymathics/trepan/processor/command/up.py,
+	pymathics/trepan/processor/frame.py: Improve frame movement by
+	expression or builtin
+
+2024-12-15  rocky <rb@dustyfeet.com>
+
+	* README.rst, pymathics/trepan/__main__.py,
+	pymathics/trepan/tracing.py: evaluate -> evaluation to match
+	TraceEvaluation
+
+2024-12-15  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/tracing.py: Upgrade automatically TraceEvaluation
+
+2024-12-15  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/tracing.py: Misc changes
+
+2024-12-14  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/__main__.py, pymathics/trepan/lib/repl.py,
+	pymathics/trepan/tracing.py: Improve evaluation tracing
+
+2024-12-12  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/stack.py: Need a newline
+
+2024-12-11  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/stack.py: Some functions don't have
+	docstrings
+
+2024-12-04  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/processor/command/info_subcmd/signals.py,
+	pymathics/trepan/processor/command/mock.py: Add "info signals"
+
+2024-12-04  rocky <rb@dustyfeet.com>
+
+	* README.rst: Add signal handling screenshot
+
+2024-12-02  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/sighandler.py: Show python frame before
+	Mathics stack
+
+2024-12-02  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/repl.py, pymathics/trepan/lib/sighandler.py:
+	Print a nice Mathics stack for print handler
+
+2024-12-02  rocky <rb@dustyfeet.com>
+
+	* pymathics/trepan/lib/repl.py, pymathics/trepan/lib/sighandler.py,
+	pymathics/trepan/processor/command/handle.py: Start to customize
+	signal handler
+
+2024-12-02  rocky <rb@dustyfeet.com>
+
+	* .gitignore,
+	pymathics/trepan/processor/command/set_subcmd/args.py-notyet,
+	pyproject.toml: Revise for trepan move
+
+2024-12-02  rocky <rb@dustyfeet.com>
+
+	* README.rst, pymathics/{debugger => trepan}/__init__.py,
+	pymathics/{debugger => trepan}/__main__.py,
+	pymathics/trepan/api.py-notyet, pymathics/{debugger =>
+	trepan}/lib/__init__.py, pymathics/{debugger =>
+	trepan}/lib/core.py, pymathics/{debugger => trepan}/lib/format.py,
+	pymathics/{debugger => trepan}/lib/repl.py, pymathics/{debugger =>
+	trepan}/lib/stack.py, pymathics/{debugger =>
+	trepan}/processor/__init__.py, pymathics/{debugger =>
+	trepan}/processor/cmdproc.py, pymathics/{debugger =>
+	trepan}/processor/command/__init__.py, pymathics/{debugger =>
+	trepan}/processor/command/alias.py, pymathics/{debugger =>
+	trepan}/processor/command/backtrace.py, pymathics/{debugger =>
+	trepan}/processor/command/base_cmd.py, pymathics/{debugger =>
+	trepan}/processor/command/base_submgr.py, pymathics/{debugger =>
+	trepan}/processor/command/break.py-notyet, pymathics/{debugger =>
+	trepan}/processor/command/continue.py, pymathics/{debugger =>
+	trepan}/processor/command/down.py, pymathics/{debugger =>
+	trepan}/processor/command/eval.py, pymathics/{debugger =>
+	trepan}/processor/command/frame.py,
+	pymathics/trepan/processor/command/handle.py, pymathics/{debugger
+	=> trepan}/processor/command/help.py, pymathics/{debugger =>
+	trepan}/processor/command/help/.gitignore, pymathics/{debugger =>
+	trepan}/processor/command/help/README.md, pymathics/{debugger =>
+	trepan}/processor/command/help/arange.rst, pymathics/{debugger =>
+	trepan}/processor/command/help/command.rst, pymathics/{debugger =>
+	trepan}/processor/command/help/examples.rst, pymathics/{debugger =>
+	trepan}/processor/command/help/filename.rst, pymathics/{debugger =>
+	trepan}/processor/command/help/location.rst, pymathics/{debugger =>
+	trepan}/processor/command/help/range.rst, pymathics/{debugger =>
+	trepan}/processor/command/help/suffixes.rst, pymathics/{debugger =>
+	trepan}/processor/command/info.py, pymathics/{debugger =>
+	trepan}/processor/command/info_subcmd/__init__.py,
+	pymathics/{debugger =>
+	trepan}/processor/command/info_subcmd/args.py, pymathics/{debugger
+	=> trepan}/processor/command/info_subcmd/break.py,
+	pymathics/{debugger =>
+	trepan}/processor/command/info_subcmd/frame.py, pymathics/{debugger
+	=> trepan}/processor/command/info_subcmd/program.py,
+	pymathics/{debugger => trepan}/processor/command/kill.py,
+	pymathics/{debugger => trepan}/processor/command/mathics3.py,
+	pymathics/{debugger => trepan}/processor/command/mock.py,
+	pymathics/{debugger => trepan}/processor/command/printelement.py,
+	pymathics/{debugger => trepan}/processor/command/python.py,
+	pymathics/{debugger => trepan}/processor/command/reload.py,
+	pymathics/{debugger => trepan}/processor/command/set.py,
+	pymathics/{debugger =>
+	trepan}/processor/command/set_subcmd/__init__.py,
+	pymathics/{debugger =>
+	trepan}/processor/command/set_subcmd/aliases.py,
+	pymathics/{debugger =>
+	trepan}/processor/command/set_subcmd/args.py-notyet,
+	pymathics/{debugger =>
+	trepan}/processor/command/set_subcmd/autoeval.py,
+	pymathics/{debugger =>
+	trepan}/processor/command/set_subcmd/event.py, pymathics/{debugger
+	=> trepan}/processor/command/set_subcmd/highlight.py,
+	pymathics/{debugger =>
+	trepan}/processor/command/set_subcmd/style.py, pymathics/{debugger
+	=> trepan}/processor/command/set_subcmd/width.py,
+	pymathics/{debugger => trepan}/processor/command/show.py,
+	pymathics/{debugger =>
+	trepan}/processor/command/show_subcmd/__init__.py,
+	pymathics/{debugger =>
+	trepan}/processor/command/show_subcmd/aliases.py,
+	pymathics/{debugger =>
+	trepan}/processor/command/show_subcmd/autoeval.py,
+	pymathics/{debugger =>
+	trepan}/processor/command/show_subcmd/event.py, pymathics/{debugger
+	=> trepan}/processor/command/show_subcmd/highlight.py,
+	pymathics/{debugger =>
+	trepan}/processor/command/show_subcmd/listsize.py,
+	pymathics/{debugger =>
+	trepan}/processor/command/show_subcmd/style.py, pymathics/{debugger
+	=> trepan}/processor/command/show_subcmd/styles.py,
+	pymathics/{debugger => trepan}/processor/command/trepan3k.py,
+	pymathics/{debugger => trepan}/processor/command/up.py,
+	pymathics/{debugger => trepan}/processor/frame.py,
+	pymathics/{debugger => trepan}/processor/subcmd.py,
+	pymathics/{debugger => trepan}/tracing.py, pymathics/{debugger =>
+	trepan}/version.py, pyproject.toml: rename debugger to trepan...  In the long run, it might cause less confusion and clears the way
+	for other debuggers.
+
+2024-11-27  R. Bernstein <rocky@users.noreply.github.com>
+
+	* README.rst: Update README.rst
+
+2024-11-27  R. Bernstein <rocky@users.noreply.github.com>
+
+	* README.rst: Update README.rst
+
+2024-11-27  rocky <rb@dustyfeet.com>
+
+	* : Shorter shot
+
+2024-11-27  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/lib/stack.py: Track debugger API change..  add our first screenshot.
+
+2024-11-27  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #6 from Mathics3/TraceEvaluation-event-hooks Trace evaluation event hooks
+
+2024-11-17  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/tracing.py: Tweak when to show return value in
+	trace evaluate
+
+2024-11-17  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/__main__.py, pymathics/debugger/lib/core.py:
+	Add in mmatera's observation..  about the use of $Context and $ContextPath in the code and its
+	reduced need for "short=True"
+
+2024-11-17  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/__main__.py, pymathics/debugger/lib/core.py,
+	pymathics/debugger/tracing.py: Correct for the evaluate-* event
+	filtering
+
+2024-11-16  rocky <rb@dustyfeet.com>
+
+	* README.rst, pymathics/debugger/tracing.py: Go over docs. Remove
+	small bugs.
+
+2024-11-16  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/__main__.py, pymathics/debugger/lib/core.py,
+	pymathics/debugger/lib/repl.py,
+	pymathics/debugger/processor/cmdproc.py,
+	pymathics/debugger/tracing.py: Add hookk for .evaluate() methods Works with redo-TraceEvaluation-with-hooks branch in mathics-core
+
+2024-11-14  rocky <rb@dustyfeet.com>
+
+	* .gitignore, Makefile, pymathics/debugger/__main__.py,
+	pymathics/debugger/lib/core.py, pymathics/debugger/version.py,
+	pyproject.toml, setup.py: Revise using pyproject and released
+	trepan3k
+
+2024-11-12  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/__main__.py,
+	pymathics/debugger/processor/cmdproc.py,
+	pymathics/debugger/processor/command/info_subcmd/break.py,
+	pymathics/debugger/tracing.py: Revise for prompt-toolkit changes
+
+2024-10-20  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/processor/command/info_subcmd/frame.py: improve
+	format of "info frame" formatting
+
+2024-10-20  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/lib/format.py,
+	pymathics/debugger/processor/command/info_subcmd/program.py,
+	pymathics/debugger/processor/command/printelement.py: Add -p option
+	to printelement ...  This loosens the requirement that an element has to be a Mathics3
+	element. Instead it can be wrapped in a list, dict, or tuple.  Options, for example, works this way.
+
+2024-10-14  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/lib/core.py,
+	pymathics/debugger/processor/command/info_subcmd/program.py,
+	pymathics/debugger/tracing.py: "info program" now shows
+	method/function name
+
+2024-10-14  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/lib/format.py: Improve printexpression --- Handle printing Expressions[] that haven't been converted to a
+	specialize Python Object internal form.
+
+2024-10-13  rocky <rb@dustyfeet.com>
+
+	* README.rst: Correct RsT formatting
+
+2024-10-12  rocky <rb@dustyfeet.com>
+
+	* README.rst: Start adding some examples
+
+2024-10-12  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #5 from
+	Mathics3/add-top-level-evaluation-hook Add evalMethod event
+
+2024-10-11  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/lib/format.py: Track recent Pattern API changes
+
+2024-10-02  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/__main__.py, pymathics/debugger/lib/core.py,
+	pymathics/debugger/lib/stack.py, pymathics/debugger/tracing.py:
+	Support stop on specific functions in events...  In Sympy and mpmath, we support stopping on the Sympy, or mpmath
+	function name.  In Get we support stopping on getting a particular file name.
+
+2024-10-01  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/processor/command/down.py: Revise "down"
+	command comment
+
+2024-09-29  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/processor/command/info_subcmd/frame.py: Improve
+	"info frame": show function arguments, function path and line number if not eval
+	fn
+
+2024-09-27  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/lib/format.py,
+	pymathics/debugger/lib/stack.py,
+	pymathics/debugger/processor/command/info_subcmd/frame.py,
+	pymathics/debugger/processor/command/set_subcmd/event.py,
+	pymathics/debugger/processor/command/show_subcmd/event.py: More info
+	in bt...  also improve "info frame" and setting/reporting set/show event for
+	Get
+
+2024-09-27  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #4 from Mathics3/Get-debug-redux Get tracing
+
+2024-09-26  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/processor/command/backtrace.py: Correct
+	docstring for backtrace
+
+2024-09-26  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/lib/format.py,
+	pymathics/debugger/processor/command/printelement.py: Move around
+	testing order in printelement...  format.py: We need to test ListExpression before Expression since
+	ListExpression is a subclass of Expression.  printelement.py: printelement does *not* need the debugged program
+	to be running
+
+2024-09-23  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/__main__.py, pymathics/debugger/lib/core.py,
+	pymathics/debugger/processor/command/{break.py => break.py-notyet},
+	pymathics/debugger/processor/command/mathics3.py,
+	pymathics/debugger/tracing.py: Debug apply ignores Boxing applies
+	and ...  start apply_box event add not done break and start return command
+
+2024-09-22  rocky <rb@dustyfeet.com>
+
+	* setup.py: Rename project mathics->mathics3
+
+2024-09-22  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/processor/command/{mathics.py => mathics3.py}:
+	mathics -> mathics3
+
+2024-09-21  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/lib/core.py,
+	pymathics/debugger/processor/cmdproc.py,
+	pymathics/debugger/processor/command/eval.py,
+	pymathics/debugger/processor/command/mathics.py,
+	pymathics/debugger/processor/command/printelement.py,
+	pymathics/debugger/processor/frame.py: Misc small improvements...  * Revise some functions to make it more amenable to adding a
+	"return" command * Proper error return on debugger eval command * add find_builtin() to fund an eval() frame
+
+2024-09-21  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/processor/command/mathics.py: Add mathics
+	command ...  to allow us to go into a Mathics3 session
+
+2024-09-21  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/lib/format.py,
+	pymathics/debugger/processor/command/printelement.py,
+	pymathics/debugger/processor/command/reload.py: Better Pattern
+	formatting & ...  allow aliases in debugger reload command
+
+2024-09-20  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/__main__.py, pymathics/debugger/lib/format.py,
+	pymathics/debugger/lib/repl.py,
+	pymathics/debugger/processor/cmdproc.py,
+	pymathics/debugger/processor/command/show_subcmd/event.py,
+	pymathics/debugger/tracing.py: Add Get debugging and ...  * track BuiltinRule -> FunctionApplyRule.  * add more patterns to "printelement" command
+
+2024-09-17  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/lib/format.py,
+	pymathics/debugger/processor/command/printelement.py: Add more
+	Mathics types to printelement: BlankSequence, ExpressionPattern, FuncktionApplyRule
+
+2024-09-16  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #3 from Mathics3/add-trepan3-cmd Add ability to go into lower-level Python debugger
+
+2024-09-15  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/__main__.py, pymathics/debugger/lib/core.py,
+	pymathics/debugger/processor/command/trepan3k.py,
+	pymathics/debugger/tracing.py: Add ability to go into lower-level
+	Python debugger trepan3k. More could be done -- should trap quit symbol and handle
+	breakpoints. But this is a start.
+
+2024-09-15  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #2 from Mathics3/apply_rule-to_apply_function Apply rule to apply function
+
+2024-09-14  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/lib/core.py,
+	pymathics/debugger/processor/command/set_subcmd/event.py: Adjust for
+	revised trepan3k
+
+2024-09-08  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/__main__.py, pymathics/debugger/lib/format.py,
+	pymathics/debugger/lib/stack.py,
+	pymathics/debugger/processor/command/printelement.py,
+	pymathics/debugger/processor/command/set_subcmd/event.py,
+	pymathics/debugger/processor/command/show_subcmd/event.py:
+	do_replace -> apply_rule (for now) ...  stack.py: format apply and eval calls using Mathics3 formatting
+
+2024-09-07  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/lib/repl.py: Set default style colorful
+
+2024-09-07  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/processor/cmdproc.py,
+	pymathics/debugger/processor/command/eval.py: Add "eval" (a Mathics3
+	statement)
+
+2024-09-07  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/processor/command/set_subcmd/event.py,
+	pymathics/debugger/processor/command/show_subcmd/event.py:
+	Fix/Improve "set/show event"
+
+2024-09-06  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/__main__.py, pymathics/debugger/lib/format.py,
+	pymathics/debugger/tracing.py: Add apply tracing & use msg() in
+	printing
+
+2024-09-06  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/__main__.py: Revise DebugActivate docstring
+
+2024-09-06  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/lib/format.py,
+	pymathics/debugger/processor/command/printelement.py, setup.py: Use
+	pygments for format elements
+
+2024-09-06  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/__main__.py, pymathics/debugger/lib/repl.py,
+	pymathics/debugger/processor/cmdproc.py,
+	pymathics/debugger/processor/command/set_subcmd/event.py,
+	pymathics/debugger/processor/command/show_subcmd/event.py,
+	pymathics/debugger/tracing.py: Work on set/show event...  rename event "builtin" to "apply".
+
+2024-09-06  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/__main__.py, pymathics/debugger/lib/format.py,
+	pymathics/debugger/lib/repl.py,
+	pymathics/debugger/processor/cmdproc.py,
+	pymathics/debugger/processor/command/printelement.py,
+	pymathics/debugger/tracing.py: Add builtin event call...  to track built function apply calls
+
+2024-09-04  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/processor/command/down.py,
+	pymathics/debugger/processor/command/frame.py,
+	pymathics/debugger/processor/command/up.py,
+	pymathics/debugger/processor/frame.py: Some frame/up/down -b
+	improvements...  More need to happen though
+
+2024-09-03  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/lib/stack.py,
+	pymathics/debugger/processor/cmdproc.py,
+	pymathics/debugger/processor/command/info_subcmd/frame.py,
+	pymathics/debugger/processor/command/up.py: format Mathics3 calls
+	better; revise "up" command so that it can move by Mathics3 calls.  "down" and "frame" command need to be done next.
+
+2024-09-02  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/processor/command/info_subcmd/frame.py,
+	pymathics/debugger/processor/command/reload.py: WIP Show builtin
+	eval frames better...  The new code should be moved into a library, formatted nicely and
+	added to backtrace reload for subcommands improved
+
+2024-09-02  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/processor/command/info_subcmd/frame.py,
+	pymathics/debugger/processor/command/reload.py: "reload" can reload
+	subcommands ...  Reduce information on "info frame" unless "verbose" option used
+
+2024-09-01  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/processor/command/info_subcmd/program.py:
+	color->style in formatting...  trepan3k API changes here
+
+2024-09-01  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/processor/command/printelement.py: First cut at
+	showing Mathics3 Elements...  in a nicer more user-oriented way
+
+2024-09-01  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/processor/command/break.py,
+	pymathics/debugger/processor/command/reload.py,
+	pymathics/debugger/tracing.py: Add reload command...  and set Running status when entering the debugger via tracing
+
+2024-08-26  rocky <rb@dustyfeet.com>
+
+x	* setup.py: Bump minimum trepan3k version allowed...  its API has changed slightly
+
+2024-08-26  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #1 from Mathics3/add-REPL Add Debugger and DebugActivate
+
+2024-08-26  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/__init__.py: More verbiage for debugger
+
+2024-08-25  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/lib/stack.py,
+	pymathics/debugger/processor/command/backtrace.py, setup.py: Track
+	trepan3k API change...  so that backtrace colors look reasonable and are based on the color
+	style
+
+2024-08-25  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/processor/command/info_subcmd/program.py:
+	"mathics" option in callstack is now "builtin"
+
+2024-08-25  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/lib/stack.py: Add file location line to Builtin
+	backtrace
+
+2024-08-25  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/lib/stack.py,
+	pymathics/debugger/processor/cmdproc.py,
+	pymathics/debugger/processor/command/backtrace.py,
+	pymathics/debugger/processor/command/down.py,
+	pymathics/debugger/processor/command/frame.py,
+	pymathics/debugger/processor/command/set_subcmd/style.py,
+	pymathics/debugger/processor/command/up.py: Revert "up" and "down" a
+	bit ...  until understand better what we want.
+
+2024-08-24  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/processor/command/set_subcmd/args.py-notyet,
+	pymathics/debugger/processor/command/set_subcmd/autoeval.py,
+	pymathics/debugger/processor/command/set_subcmd/style.py,
+	pymathics/debugger/processor/command/show_subcmd/autoeval.py,
+	pymathics/debugger/processor/command/show_subcmd/style.py,
+	pymathics/debugger/processor/command/show_subcmd/styles.py: Fill out
+	"set" and "show" subcommands
+
+2024-08-24  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/processor/command/python.py: Add "python"
+	debugger command
+
+2024-08-24  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/__main__.py,
+	pymathics/debugger/processor/command/set_subcmd/event.py: Add hacky
+	"set event" command
+
+2024-08-23  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/lib/core.py,
+	pymathics/debugger/processor/command/break.py,
+	pymathics/debugger/processor/command/down.py,
+	pymathics/debugger/processor/command/frame.py,
+	pymathics/debugger/processor/command/info_subcmd/break.py,
+	pymathics/debugger/processor/command/info_subcmd/frame.py,
+	pymathics/debugger/processor/command/up.py: Add more trepan
+	commands...  break, down, info break, frame
+
+2024-08-23  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/lib/stack.py,
+	pymathics/debugger/processor/cmdproc.py,
+	pymathics/debugger/processor/command/info_subcmd/program.py: Better
+	backtrace for Expression and Builtin
+
+2024-08-23  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/__init__.py, pymathics/debugger/__main__.py,
+	pymathics/debugger/lib/core.py,
+	pymathics/debugger/processor/cmdproc.py,
+	pymathics/debugger/processor/command/__init__.py,
+	pymathics/debugger/repl.py, pymathics/debugger/tracing.py: Add
+	Debugger[] to directly call debugger...  Also, more cleanup.
+
+2024-08-22  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/processor/cmdproc.py,
+	pymathics/debugger/processor/command/info_subcmd/args.py,
+	pymathics/debugger/processor/command/set_subcmd/highlight.py,
+	pymathics/debugger/processor/command/set_subcmd/style.py,
+	pymathics/debugger/processor/command/set_subcmd/width.py,
+	pymathics/debugger/repl.py, pymathics/debugger/tracing.py: Dry code
+	a little bit
+
+2024-08-22  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/processor/command/info_subcmd/program.py: Start
+	"info program"
+
+2024-08-22  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/__main__.py, pymathics/debugger/lib/core.py,
+	pymathics/debugger/lib/stack.py,
+	pymathics/debugger/processor/cmdproc.py,
+	pymathics/debugger/processor/command/alias.py,
+	pymathics/debugger/processor/command/backtrace.py,
+	pymathics/debugger/processor/command/info_subcmd/args.py,
+	pymathics/debugger/processor/command/set_subcmd/args.py,
+	pymathics/debugger/processor/command/show_subcmd/args.py,
+	pymathics/debugger/tracing.py, setup.py: Start working on backtrace
+
+2024-08-21  rocky <rb@dustyfeet.com>
+
+	* pymathics/debugger/__init__.py, pymathics/debugger/__main__.py,
+	pymathics/debugger/lib/__init__.py, pymathics/debugger/lib/core.py,
+	pymathics/debugger/lib/stack.py,
+	pymathics/debugger/processor/__init__.py,
+	pymathics/debugger/processor/cmdproc.py,
+	pymathics/debugger/processor/command/__init__.py,
+	pymathics/debugger/processor/command/base_cmd.py,
+	pymathics/debugger/processor/command/base_submgr.py,
+	pymathics/debugger/processor/command/continue.py,
+	pymathics/debugger/processor/command/help.py,
+	pymathics/debugger/processor/command/help/.gitignore,
+	pymathics/debugger/processor/command/help/README.md,
+	pymathics/debugger/processor/command/help/arange.rst,
+	pymathics/debugger/processor/command/help/command.rst,
+	pymathics/debugger/processor/command/help/examples.rst,
+	pymathics/debugger/processor/command/help/filename.rst,
+	pymathics/debugger/processor/command/help/location.rst,
+	pymathics/debugger/processor/command/help/range.rst,
+	pymathics/debugger/processor/command/help/suffixes.rst,
+	pymathics/debugger/processor/command/info.py,
+	pymathics/debugger/processor/command/info_subcmd/__init__.py,
+	pymathics/debugger/processor/command/info_subcmd/args.py,
+	pymathics/debugger/processor/command/kill.py,
+	pymathics/debugger/processor/command/mock.py,
+	pymathics/debugger/processor/command/set.py,
+	pymathics/debugger/processor/command/set_subcmd/__init__.py,
+	pymathics/debugger/processor/command/set_subcmd/aliases.py,
+	pymathics/debugger/processor/command/set_subcmd/args.py,
+	pymathics/debugger/processor/command/set_subcmd/highlight.py,
+	pymathics/debugger/processor/command/set_subcmd/style.py,
+	pymathics/debugger/processor/command/set_subcmd/width.py,
+	pymathics/debugger/processor/command/show.py,
+	pymathics/debugger/processor/command/show_subcmd/__init__.py,
+	pymathics/debugger/processor/command/show_subcmd/aliases.py,
+	pymathics/debugger/processor/command/show_subcmd/args.py,
+	pymathics/debugger/processor/command/show_subcmd/highlight.py,
+	pymathics/debugger/processor/command/show_subcmd/listsize.py,
+	pymathics/debugger/processor/command/show_subcmd/style.py,
+	pymathics/debugger/processor/command/show_subcmd/styles.py,
+	pymathics/debugger/processor/subcmd.py, pymathics/debugger/repl.py:
+	First working REPL
+
+2024-08-19  rocky <rb@dustyfeet.com>
+
+	* Starting Mathics3 debugger project
