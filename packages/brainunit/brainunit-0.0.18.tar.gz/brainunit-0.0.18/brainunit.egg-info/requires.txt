@@ -1,0 +1,15 @@
+numpy
+typing_extensions
+saiunit==0.0.18
+
+[cpu]
+jax[cpu]
+
+[cuda12]
+jax[cuda12]
+
+[testing]
+pytest
+
+[tpu]
+jax[tpu]
