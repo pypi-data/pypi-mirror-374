@@ -1,0 +1,55 @@
+[project]
+name = "delpha-mcp"
+version = "0.1.16"
+description = "Intelligent AI Agents to ensure accurate, unique, and reliable customer data"
+authors = [
+  { name = "Victor Goubet", email = "support.api@delpha.io" }
+]
+maintainers = [
+  { name = "Delpha", email = "support.api@delpha.io" }
+]
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.8"
+license = "MIT"
+keywords = ["data quality", "validation", "MCP", "AI", "delpha", "email", "email finder", "email validator", "address", "name", "social", "phone", "website", "legal id"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Developers",
+  "Development Status :: 4 - Beta",
+  "Topic :: Software Development :: Libraries :: Application Frameworks"
+]
+dependencies = [
+  "fastmcp>=0.1.0",
+  "httpx>=0.25.0",
+  "pydantic>=2.0.0",
+  "pydantic-settings>=2.0.0",
+  "python-dotenv>=1.0.0",
+  "authlib>=1.2.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/Delpha-Assistant/DelphaMCP"
+Documentation = "https://github.com/Delpha-Assistant/DelphaMCP#readme"
+Issues = "https://github.com/Delpha-Assistant/DelphaMCP/issues"
+
+[project.scripts]
+delpha-mcp = "delpha_mcp.__main__:main"
+
+[project.optional-dependencies]
+dev = [
+  "ruff>=0.4.0",
+  "pytest>=7.0.0",
+  "build"
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["delpha_mcp"] 
