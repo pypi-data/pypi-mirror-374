@@ -1,0 +1,29 @@
+# DocForge - Open Source Edition
+# Simplified dependencies for self-contained document generation
+
+# ── Core AI & Document Generation ──────────────────────────────────
+openai>=1.0.0,<2.0.0
+tiktoken>=0.6.0
+
+# ── Configuration & Environment ────────────────────────────────────
+pydantic>=2.6.0,<3.0.0
+pydantic-settings>=2.0.0
+python-dotenv>=1.0.0
+
+# ── File Operations & Utilities ────────────────────────────────────
+PyYAML>=6.0.0
+python-slugify>=8.0.0
+
+# ── AI Orchestration (CrewAI) ──────────────────────────────────────
+crewai>=0.141.0
+
+# ── Optional: HTTP client for future integrations ─────────────────
+httpx>=0.24.0
+
+# ── Development & Testing (for contributors only) ─────────────────
+# Uncomment if you plan to contribute to DocForge development
+# pytest>=7.0.0
+# pytest-asyncio>=0.21.0
+# black>=23.0.0
+# flake8>=6.0.0
+# mypy>=1.0.0
