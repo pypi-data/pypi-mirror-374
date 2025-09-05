@@ -1,0 +1,24 @@
+Metadata-Version: 2.3
+Name: mrafit
+Version: 0.1.0
+Summary: 
+License: MIT
+Author: Utkarsh Saraswat
+Author-email: utkarsh.saraswat@lrz.de
+Requires-Python: >=3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: numpy (>=2.3.2,<3.0.0)
+Requires-Dist: pyqt6 (>=6.9.1,<7.0.0)
+Requires-Dist: pyyaml (>=6.0,<7.0)
+Requires-Dist: scikit-learn (>=1.7.1,<2.0.0)
+Requires-Dist: scipy (>=1.16.1,<2.0.0)
+Requires-Dist: seaborn (>=0.13.2,<0.14.0)
+Description-Content-Type: text/markdown
+
+# MRA FIT
+
+Fit curves with high precision using MRA
+
