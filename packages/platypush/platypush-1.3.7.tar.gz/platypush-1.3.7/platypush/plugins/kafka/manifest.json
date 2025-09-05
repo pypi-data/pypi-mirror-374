@@ -1,0 +1,14 @@
+{
+  "manifest": {
+    "events": [
+      "platypush.message.event.kafka.KafkaMessageEvent"
+    ],
+    "install": {
+      "pip": [
+        "kafka-python-ng"
+      ]
+    },
+    "package": "platypush.plugins.kafka",
+    "type": "plugin"
+  }
+}
