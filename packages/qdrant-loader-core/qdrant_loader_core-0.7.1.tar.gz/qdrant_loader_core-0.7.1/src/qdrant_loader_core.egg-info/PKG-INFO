@@ -1,0 +1,34 @@
+Metadata-Version: 2.4
+Name: qdrant-loader-core
+Version: 0.7.1
+Summary: Shared core for provider-agnostic LLM support and configuration mapping for qdrant-loader ecosystem
+Author-email: Martin Papy <martin.papy@cbtw.tech>
+License-Expression: GPL-3.0
+Project-URL: Homepage, https://qdrant-loader.net
+Project-URL: Documentation, https://qdrant-loader.net/docs/packages/core/README.html
+Project-URL: Repository, https://github.com/martin-papy/qdrant-loader
+Project-URL: Issues, https://github.com/martin-papy/qdrant-loader/issues
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Database
+Classifier: Topic :: Database :: Database Engines/Servers
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Text Processing :: Indexing
+Classifier: Topic :: Text Processing :: Linguistic
+Classifier: Environment :: Console
+Classifier: Typing :: Typed
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: pydantic>=2.0.0
+Provides-Extra: openai
+Requires-Dist: openai>=1.3.0; extra == "openai"
+Requires-Dist: tiktoken>=0.5.0; extra == "openai"
+Provides-Extra: ollama
+Requires-Dist: httpx>=0.24.0; extra == "ollama"
