@@ -1,0 +1,31 @@
+[project]
+name = "dungngo-mcp-server-box"
+version = "0.1.2"
+description = "Add your description here (republished for testing)"
+requires-python = ">=3.13"
+dependencies = [
+    "box-ai-agents-toolkit>=0.0.44",
+    "fastapi>=0.115.14",
+    "mcp[cli]>=1.10.1",
+    "python-dotenv>=1.1.1",
+]
+authors = [
+    { name = "dungngo", email = "test@dungngo.dev" },
+]
+
+[project.readme]
+content-type = "text/plain"
+text = "Package managed by MseeP.ai"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.26.0",
+    "pytest-cov>=6.1.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [
+    ".",
+    "src",
+]
