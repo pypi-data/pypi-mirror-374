@@ -1,0 +1,5 @@
+<fieldset class="border"
+		  i18n:domain="pyams_content_es">
+	<legend i18n:translate="">${view.legend}</legend>
+	<pre tal:define="(status, message) view.test()">${message}</pre>
+</fieldset>

@@ -1,0 +1,163 @@
+#
+# SOME DESCRIPTIVE TITLE
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE 1.0\n"
+"POT-Creation-Date: 2024-06-28 17:51+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Lingua 4.15.0\n"
+
+#: ./src/pyams_content_es/interfaces.py:37
+msgid "Elasticsearch documents indexer"
+msgstr ""
+
+#: ./src/pyams_content_es/interfaces.py:58
+msgid "ZODB connection name"
+msgstr ""
+
+#: ./src/pyams_content_es/interfaces.py:59
+msgid "Name of ZODB defining document indexer connection"
+msgstr ""
+
+#: ./src/pyams_content_es/interfaces.py:92
+msgid "Search analyzer"
+msgstr ""
+
+#: ./src/pyams_content_es/interfaces.py:93
+msgid ""
+"Used search analyzer; check index settings to get list of available "
+"analyzers..."
+msgstr ""
+
+#: ./src/pyams_content_es/interfaces.py:98
+msgid "Default operator"
+msgstr ""
+
+#: ./src/pyams_content_es/interfaces.py:99
+msgid "This is the default operator used to combine search terms"
+msgstr ""
+
+#: ./src/pyams_content_es/interfaces.py:111
+msgid "Search fields"
+msgstr ""
+
+#: ./src/pyams_content_es/interfaces.py:112
+msgid ""
+"List of fields used for quick search in backoffice, with their respective "
+"weight (if any)"
+msgstr ""
+
+#: ./src/pyams_content_es/interfaces.py:129
+msgid "Backoffice search fields"
+msgstr ""
+
+#: ./src/pyams_content_es/interfaces.py:130
+msgid ""
+"List of fields used for base search in backoffice, with their respective "
+"weight (if any)"
+msgstr ""
+
+#: ./src/pyams_content_es/interfaces.py:140
+msgid "Fulltext search fields"
+msgstr ""
+
+#: ./src/pyams_content_es/interfaces.py:141
+msgid ""
+"List of fields used for fulltext search, with their respective weight (if "
+"any)"
+msgstr ""
+
+#: ./src/pyams_content_es/zmi/search.py:106
+#: ./src/pyams_content_es/zmi/search.py:283
+msgid "Search text"
+msgstr ""
+
+#: ./src/pyams_content_es/zmi/search.py:107
+#: ./src/pyams_content_es/zmi/search.py:284
+msgid "Entered text will be search in titles, headers and descriptions"
+msgstr ""
+
+#: ./src/pyams_content_es/zmi/search.py:111
+#: ./src/pyams_content_es/zmi/search.py:288
+msgid "Fulltext search"
+msgstr ""
+
+#: ./src/pyams_content_es/zmi/search.py:112
+#: ./src/pyams_content_es/zmi/search.py:289
+msgid ""
+"Search in fulltext body, including attachments, instead on only searching in "
+"titles and headers"
+msgstr ""
+
+#: ./src/pyams_content_es/zmi/content.py:58
+msgid "Check index content"
+msgstr ""
+
+#: ./src/pyams_content_es/zmi/content.py:76
+msgid "Internal ID"
+msgstr ""
+
+#: ./src/pyams_content_es/zmi/content.py:79
+msgid "Modification date"
+msgstr ""
+
+#: ./src/pyams_content_es/zmi/content.py:82
+msgid "Workflow status"
+msgstr ""
+
+#: ./src/pyams_content_es/zmi/content.py:99
+msgid "Force reindex"
+msgstr ""
+
+#: ./src/pyams_content_es/zmi/content.py:102
+msgid "Cancel"
+msgstr ""
+
+#: ./src/pyams_content_es/zmi/content.py:111
+msgid "Index content check"
+msgstr ""
+
+#: ./src/pyams_content_es/zmi/content.py:112
+msgid "Current index content"
+msgstr ""
+
+#: ./src/pyams_content_es/zmi/content.py:138
+msgid ""
+"Documents informations are stored in an Elasticsearch index. If an error "
+"occurs, some documents can be stored in this index with different values from"
+" those stored into contents database.<br />If required, this operation will "
+"try to reindex document properties into Elasticsearch."
+msgstr ""
+
+#: ./src/pyams_content_es/zmi/content.py:172
+msgid "Request successful, index content has been updated"
+msgstr ""
+
+#: ./src/pyams_content_es/zmi/__init__.py:68
+msgid "Test connection"
+msgstr ""
+
+#: ./src/pyams_content_es/zmi/__init__.py:78
+msgid "Document indexer properties"
+msgstr ""
+
+#: ./src/pyams_content_es/zmi/__init__.py:120
+msgid "Quick search settings"
+msgstr ""
+
+#: ./src/pyams_content_es/zmi/__init__.py:140
+msgid "User search settings"
+msgstr ""
+
+#: ./src/pyams_content_es/zmi/__init__.py:179
+msgid "Content indexer test"
+msgstr ""

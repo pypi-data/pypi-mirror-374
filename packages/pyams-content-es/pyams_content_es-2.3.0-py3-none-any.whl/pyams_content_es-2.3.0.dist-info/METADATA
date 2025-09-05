@@ -1,0 +1,176 @@
+Metadata-Version: 2.1
+Name: pyams-content-es
+Version: 2.3.0
+Summary: Elasticsearch integration package for PyAMS content
+Home-page: https://pyams.readthedocs.io
+Author: Thierry Florac
+Author-email: tflorac@ulthar.net
+License: ZPL
+Keywords: Pyramid PyAMS
+Classifier: License :: OSI Approved :: Zope Public License
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Framework :: Pyramid
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+License-File: LICENSE
+Requires-Dist: setuptools
+Requires-Dist: elasticsearch
+Requires-Dist: elasticsearch-dsl
+Requires-Dist: persistent
+Requires-Dist: pyams-catalog
+Requires-Dist: pyams-content >=2.0.0
+Requires-Dist: pyams-elastic
+Requires-Dist: pyams-form >=2.1.0
+Requires-Dist: pyams-i18n
+Requires-Dist: pyams-layer
+Requires-Dist: pyams-security
+Requires-Dist: pyams-sequence
+Requires-Dist: pyams-site
+Requires-Dist: pyams-skin
+Requires-Dist: pyams-table
+Requires-Dist: pyams-template
+Requires-Dist: pyams-thesaurus
+Requires-Dist: pyams-utils >2.1.0
+Requires-Dist: pyams-viewlet
+Requires-Dist: pyams-workflow
+Requires-Dist: pyams-zmi
+Requires-Dist: pyams-zmq
+Requires-Dist: pyramid
+Requires-Dist: transaction
+Requires-Dist: zope.annotation
+Requires-Dist: zope.container
+Requires-Dist: zope.dublincore
+Requires-Dist: zope.interface
+Requires-Dist: zope.intid
+Requires-Dist: zope.lifecycleevent
+Requires-Dist: zope.schema
+Provides-Extra: test
+Requires-Dist: pyramid-zcml ; extra == 'test'
+Requires-Dist: zope.exceptions ; extra == 'test'
+
+========================
+PyAMS content ES package
+========================
+
+.. contents::
+
+
+What is PyAMS?
+==============
+
+PyAMS (Pyramid Application Management Suite) is a small suite of packages written for applications
+and content management with the Pyramid framework.
+
+**PyAMS** is actually mainly used to manage web sites through content management applications (CMS,
+see PyAMS_content package), but many features are generic and can be used inside any kind of web
+application.
+
+All PyAMS documentation is available on `ReadTheDocs <https://pyams.readthedocs.io>`_; source code
+is available on `Gitlab <https://gitlab.com/pyams>`_ and pushed to `Github
+<https://github.com/py-ams>`_. Doctests are available in the *doctests* source folder.
+
+
+What is PyAMS_content_ES?
+=========================
+
+*PyAMS_content* is the base of content management packages for PyAMS. It relies on its
+internal catalog for all features requiring content searching.
+
+If you can use an Elasticsearch index, the *PyAMS_content_es* package extends *PyAMS_content*
+to provide a set of custom utilities and adapters which relies on Elasticsearch instead of
+internal catalog to do content searches! It also allows using additional features, like
+full text search, including attachments, using ES *ingest-attachment* plug-in.
+
+All you have to do is to include *pyams_content_es* package **INSTEAD OF** default
+*pyams_content* in your Pyramid application configuration file, and to set a few properties
+to define Elasticsearch connexion and index settings.
+
+Look at *INSTALL.rst* to get instructions about how to configure an Elasticsearch index for
+PyAMS...
+
+
+Changelog
+=========
+
+2.3.0
+-----
+ - updated shared content index adapters
+
+2.2.3
+-----
+ - updated Gitlab CI for Python 3.11 and 3.12
+
+2.2.2
+-----
+ - reindex document when an inner component is added, modified or removed
+
+2.2.1
+-----
+ - updated search folders and filters management
+ - updated thesaurus filters types and parameters names
+
+2.2.0
+-----
+ - added support for paragraphs groups
+ - updated thesaurus based filters manual sorting mode
+
+2.1.0
+-----
+ - added contact paragraph indexer
+ - added illustration paragaph indexer
+ - added frame paragraph indexer
+ - added location map paragraph indexer
+
+2.0.1
+-----
+ - packaging issue...
+
+2.0.0
+-----
+ - first production version
+ - added support for views alphabetical ordering (requires keyword index fields on title)
+ - added support for Python 3.12
+
+1.99.8
+------
+ - added support for query post-filters (which are used only after aggregates calculation)
+
+1.99.7
+------
+ - don't remove asterisks from site root quick search query
+
+1.99.6
+------
+ - don't remove asterisks from shared tool quick search query
+
+1.99.5
+------
+ - provide document OID instead of original document when removing a document from index
+
+1.99.4
+------
+ - code refactoring
+ - updated doctests
+
+1.99.3
+------
+ - updated fulltext queries
+ - update current datetime getter
+ - code cleanup
+
+1.99.2
+------
+ - added aggregated filters support
+
+1.99.1
+------
+ - removed index checker for search folders
+ - added edit forms content getters
+
+1.99.0.1
+--------
+ - packaging issue
+
+1.99.0
+------
+ - first preliminary release

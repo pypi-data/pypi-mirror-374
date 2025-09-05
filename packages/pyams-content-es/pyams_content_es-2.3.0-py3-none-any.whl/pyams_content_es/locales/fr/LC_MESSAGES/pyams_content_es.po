@@ -1,0 +1,188 @@
+#
+# SOME DESCRIPTIVE TITLE
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE 1.0\n"
+"POT-Creation-Date: 2024-06-28 17:51+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Lingua 4.15.0\n"
+
+#: src/pyams_content_es/interfaces.py:37
+msgid "Elasticsearch documents indexer"
+msgstr "Indexation Elasticsearch"
+
+#: src/pyams_content_es/interfaces.py:58
+msgid "ZODB connection name"
+msgstr "Nom de la connexion ZODB"
+
+#: src/pyams_content_es/interfaces.py:59
+msgid "Name of ZODB defining document indexer connection"
+msgstr "Nom de la connexion vers la ZODB contenant les documents à indexer"
+
+#: src/pyams_content_es/interfaces.py:92
+msgid "Search analyzer"
+msgstr "Analyseur"
+
+#: src/pyams_content_es/interfaces.py:93
+msgid ""
+"Used search analyzer; check index settings to get list of available "
+"analyzers..."
+msgstr ""
+"Analyseur de recherche ; consultez les paramètres de l'index pour connaître "
+"la liste des analyseurs disponibles..."
+
+#: src/pyams_content_es/interfaces.py:98
+msgid "Default operator"
+msgstr "Opérateur par défaut"
+
+#: src/pyams_content_es/interfaces.py:99
+msgid "This is the default operator used to combine search terms"
+msgstr "Opérateur par défaut utilisé pour combiner les termes d'une recherche"
+
+#: src/pyams_content_es/interfaces.py:111
+msgid "Search fields"
+msgstr "Champs de recherche"
+
+#: src/pyams_content_es/interfaces.py:112
+msgid ""
+"List of fields used for quick search in backoffice, with their respective "
+"weight (if any)"
+msgstr ""
+"Liste des propriétés utilisées pour la recherche rapide en back-office, avec "
+"leurs poids respectifs éventuels"
+
+#: src/pyams_content_es/interfaces.py:129
+msgid "Backoffice search fields"
+msgstr "Champs de recherche « back-office »"
+
+#: src/pyams_content_es/interfaces.py:130
+msgid ""
+"List of fields used for base search in backoffice, with their respective "
+"weight (if any)"
+msgstr ""
+"Liste des propriétés utilisées pour la recherche en back-office, avec leurs "
+"poids respectifs éventuels"
+
+#: src/pyams_content_es/interfaces.py:140
+msgid "Fulltext search fields"
+msgstr "Champs de recherche « full-text »"
+
+#: src/pyams_content_es/interfaces.py:141
+msgid ""
+"List of fields used for fulltext search, with their respective weight (if "
+"any)"
+msgstr ""
+"Liste des propriétés utilisées pour la recherche fulltext (en back comme en "
+"front-office), avec leurs poids respectifs éventuels"
+
+#: src/pyams_content_es/zmi/search.py:106
+#: src/pyams_content_es/zmi/search.py:283
+msgid "Search text"
+msgstr "Texte recherché"
+
+#: src/pyams_content_es/zmi/search.py:107
+#: src/pyams_content_es/zmi/search.py:284
+msgid "Entered text will be search in titles, headers and descriptions"
+msgstr ""
+"Le texte indiqué sera recherché dans le titre, le chapô et la description "
+"des contenus..."
+
+#: src/pyams_content_es/zmi/search.py:111
+#: src/pyams_content_es/zmi/search.py:288
+msgid "Fulltext search"
+msgstr "Recherche « full-text »"
+
+#: src/pyams_content_es/zmi/search.py:112
+#: src/pyams_content_es/zmi/search.py:289
+msgid ""
+"Search in fulltext body, including attachments, instead on only searching in "
+"titles and headers"
+msgstr ""
+"En activant cette option, la recherche s'appuiera sur le contenu des blocs "
+"ainsi que sur les pièces jointes, et non seulement sur le titre, le chapô et "
+"la description..."
+
+#: src/pyams_content_es/zmi/content.py:58
+msgid "Check index content"
+msgstr "Vérifier le contenu de l'index"
+
+#: src/pyams_content_es/zmi/content.py:76
+msgid "Internal ID"
+msgstr "Identifiant interne"
+
+#: src/pyams_content_es/zmi/content.py:79
+msgid "Modification date"
+msgstr "Date de dernière modification"
+
+#: src/pyams_content_es/zmi/content.py:82
+msgid "Workflow status"
+msgstr "Statut du workflow"
+
+#: src/pyams_content_es/zmi/content.py:99
+msgid "Force reindex"
+msgstr "Forcer la réindexation"
+
+#: src/pyams_content_es/zmi/content.py:102
+msgid "Cancel"
+msgstr "Annuler"
+
+#: src/pyams_content_es/zmi/content.py:111
+msgid "Index content check"
+msgstr "Vérifier le contenu de l'index"
+
+#: src/pyams_content_es/zmi/content.py:112
+msgid "Current index content"
+msgstr "Contenu actuel de l'index"
+
+#: src/pyams_content_es/zmi/content.py:138
+msgid ""
+"Documents informations are stored in an Elasticsearch index. If an error "
+"occurs, some documents can be stored in this index with different values "
+"from those stored into contents database.<br />If required, this operation "
+"will try to reindex document properties into Elasticsearch."
+msgstr ""
+"Certaines propriétés des documents sont stockées dans un index "
+"Elasticsearch, afin de permettre des recherches très rapides ! Mais si une "
+"erreur se produit, les informations présentes dans cet index peuvent être "
+"différentes de celles présentes dans la base des contenus, ce qui peut "
+"générer des dysfonctionnements.<br />Si nécessaire, cette fonction peut "
+"tenter de forcer la mise à jour du document dans l'index Elasticsearch."
+
+#: src/pyams_content_es/zmi/content.py:172
+msgid "Request successful, index content has been updated"
+msgstr "La demande de mise à jour de l'index a été effectuée sans erreur"
+
+#: src/pyams_content_es/zmi/__init__.py:68
+msgid "Test connection"
+msgstr "Tester la connexion"
+
+#: src/pyams_content_es/zmi/__init__.py:78
+msgid "Document indexer properties"
+msgstr "Propriétés de l'indexeur"
+
+#: src/pyams_content_es/zmi/__init__.py:120
+msgid "Quick search settings"
+msgstr "Recherche rapide"
+
+#: src/pyams_content_es/zmi/__init__.py:140
+msgid "User search settings"
+msgstr "Recherche fulltext"
+
+#: src/pyams_content_es/zmi/__init__.py:179
+msgid "Content indexer test"
+msgstr "Test de connexion"
+
+#~ msgid ""
+#~ "List of fields used for fulltext search in backoffice, with their "
+#~ "respective weight (if any)"
+#~ msgstr ""
+#~ "Liste des propriétés utilisées pour la recherche fulltext en back-office, "
+#~ "avec leurs poids respectifs éventuels"
