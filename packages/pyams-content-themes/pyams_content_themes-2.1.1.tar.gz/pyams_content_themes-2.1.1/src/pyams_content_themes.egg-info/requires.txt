@@ -1,0 +1,16 @@
+setuptools
+fanstatic
+pyams_content>=2.7.0
+pyams_form
+pyams_layer
+pyams_portal
+pyams_skin
+pyams_template
+pyramid>=2.0.0
+
+[:python_version < "3.9"]
+importlib_resources
+
+[test]
+pyramid_zcml
+zope.exceptions
