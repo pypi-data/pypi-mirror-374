@@ -1,0 +1,52 @@
+Metadata-Version: 2.4
+Name: pagos
+Version: 0.5.5.dev0
+Summary: Python Analysis of Groundwater and Ocean Samples
+Author-email: Stanley Scott <sscott@iup.uni-heidelberg.de>
+Project-URL: Homepage, https://github.com/TeamPAGOS/PAGOS
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: lmfit>=1.2.2
+Requires-Dist: matplotlib>=3.8.2
+Requires-Dist: numpy>=1.26.2
+Requires-Dist: pandas>=2.2.0
+Requires-Dist: Pint>=0.24.4
+Requires-Dist: tqdm>=4.66.2
+Requires-Dist: uncertainties>=3.1.7
+Requires-Dist: wrapt>=1.16.0
+Provides-Extra: docs
+Requires-Dist: mkdocs; extra == "docs"
+Requires-Dist: mkdocs-material; extra == "docs"
+Requires-Dist: mike; extra == "docs"
+Dynamic: license-file
+
+[![DOI](https://zenodo.org/badge/914986668.svg)](https://doi.org/10.5281/zenodo.15675620)
+# PAGOS
+**P**ython **A**nalysis of **G**roundwater and **O**cean **S**amples (PAGOS) is a Python toolkit for creating and testing hydrological gas exchange models. Datasets from field campaigns containing data for a number of gas tracers can be used to optimise the parameters of gas exchange models, expressed as Python functions. These can be PAGOS' built-in models or user-defined.
+
+## Installation
+
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install PAGOS.
+PyPi link [here](https://pypi.org/project/pagos/).
+
+```bash
+pip install pagos
+```
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first
+to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+Feel free to contact the author Stanley Scott at [sscott@iup.uni-heidelberg.de](mailto:sscott@iup.uni-heidelberg.de?subject=PAGOS).
+
+## License
+
+[BSD-3-Clause](https://opensource.org/license/bsd-3-clause), see LICENSE file.\
+PAGOS was developed for Python 3 by Stanley Scott.
