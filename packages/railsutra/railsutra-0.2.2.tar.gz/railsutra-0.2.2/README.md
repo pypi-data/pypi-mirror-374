@@ -1,0 +1,78 @@
+# RailSutra
+
+---
+**Railsutra** is a lightweight Python package that provides Indian Railways information using **pandas**. It fetches data from the **National Train Enquiry System (NTES)** which allows you to make necessary railway related queries easily.  
+
+---
+## Table of Contents
+1. [Features](#features)
+2. [Installation](#installation)
+3. [Functions](#functions)
+   - [get_stn_name](#1-get_stn_namestn_code-str---str)
+   - [get_trains_btw_stns](#2-get_trains_btw_stnsfrom_stn-str-to_stn-str-flex_stn-bool--false---pandasdataframe)
+4. [Examples](#examples)
+5. [Notes](#notes)
+
+---
+
+## Features
+
+- Get trains running between two stations directly as Pandas DataFrame.  
+- Flexible station matching when searching for trains.  
+- Fully compatible with pandas for easy data analysis.  
+
+---
+
+## Installation
+
+Install via pip:
+
+```bash
+pip install railsutra
+```
+---
+
+## Functions
+
+#### **1. get_stn_name(stn_code: str) -> str**
+Get the full station name for a given station code.
+
+```python
+station = get_stn_name(stn_code='LKO') # lower-case allowed
+print(station)
+```
+```terminal
+LUCKNOW JN.
+```
+
+---
+
+#### **2. get_trains_btw_stns(from_stn: str, to_stn: str, flex_stn:bool = False) -> pandas.DataFrame**
+Fetch all trains running between two stations. Returns a pandas DataFrame with train details.
+
+- **from_stn** : From station code.
+- **to_stn** : To station code.
+- **flex_stn** *(optional)* : Set **true** to allow flexible station matching.
+
+```python
+import pandas as pd
+
+# following to be done for full DataFrame view.
+pd.set_option('display.max_rows',None)
+pd.set_option('display.max_columns',None)
+pd.set_option('display.width',None)
+
+dtf = get_trains_btw_stns('GKP','LJN',flex_stn=True)
+print(dtf)
+```
+```terminal
+  train_no      train_name service_days    train_type src_time   src_station src_code dest_time dest_station dest_code duration             classes
+0    12203  GARIB RATH EXP  Mon,Tue,Fri    Garib Rath    00:45  Gorakhpur Jn      GKP     05:55  Lucknow Jn.       LKO    05:10                  3E
+1    15114    CPR GTNR EXP        Daily  Mail Express    01:20  Gorakhpur Jn      GKP     06:35  Gomti Nagar      GTNR    05:15  1A,2A,3A,3E,SL,GEN
+
+```
+---
+
+## Notes
+- RailSutra uses **NTES - National Train Enquiry System** data. Schedules and status directly gets updated.
+- This package uses Internet Connectivity for fetching data, in absence of which will always return **Empty DataFrames**.
