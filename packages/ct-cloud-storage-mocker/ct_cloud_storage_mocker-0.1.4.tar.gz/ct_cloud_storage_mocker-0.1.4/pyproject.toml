@@ -1,0 +1,82 @@
+[project]
+dynamic = []
+
+name = "ct-cloud-storage-mocker"
+
+description = "Mocker library of Google Cloud Storage with local filesystem mounting. Update for python3.13 compatibility"
+authors = [
+    { name = "Jim Robinson", email = "jim.robinson@croud.com" },
+    { name = "Yusuke Oda", email = "odashi@inspiredco.ai" },
+]
+keywords = ["cloud storage", "gcloud", "google", "google cloud", "storage"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+license = "MIT"
+readme = "README.md"
+version = "0.1.4"
+
+[tool.poetry]
+
+
+[tool.poetry.requires-plugins]
+poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = ["plugin"] }
+
+[tool.poetry-dynamic-versioning]
+enable = false
+
+[tool.poetry.urls]
+Homepage = "https://github.com/CroudTech/cloud-storage-mocker"
+"Bug Tracker" = "https://github.com/CroudTech/cloud-storage-mocker/issues"
+
+[tool.poetry.dependencies]
+python = ">=3.8, <3.14"
+google-cloud-storage = ">=2.7.0"
+
+
+[tool.poetry.group.dev.dependencies]
+black = ">=22.10"
+flake8 = ">=5.0"
+isort = ">=5.10"
+mypy = ">=0.991"
+pyproject-flake8 = ">=5.0"
+pytest = ">=7.1"
+
+
+[tool.poetry.group.mypy.dependencies]
+mypy = ">=0.991"
+pytest = ">=7.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.hatch.build]
+include = [
+    "*.py",
+]
+exclude = [
+    "*_test.py",
+]
+only-packages = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ct_cloud_storage_mocker"]
+
+[tool.hatch.version]
+path = "src/ct_cloud_storage_mocker/_version.py"
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = "E203"
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+strict = true
