@@ -1,0 +1,33 @@
+[build-system]
+requires = ['maturin >=1.0,<2.0']
+build-backend = 'maturin'
+
+
+[project]
+authors = [
+  {email='aekasitt.g@siamintech.co.th', name='Sitt Guruvanich'},
+]
+classifiers = [
+  'Development Status :: 3 - Alpha',
+  'Programming Language :: Rust',
+  'Programming Language :: Python :: Implementation :: CPython',
+  'Operating System :: OS Independent',
+  'Intended Audience :: Developers',
+  'Topic :: Software Development :: Libraries :: Python Modules',
+]
+description = 'Language Server Protocol server for Simplicity blockchain programming language'
+name = 'oxeye'
+license = {file='LICENSE'}
+requires-python = '>=3.9'
+readme = 'README.md'
+version = '0.1.0'
+
+
+[project.scripts]
+oxeye = 'oxeye:serve'
+
+
+[tool.maturin]
+bindings = 'pyo3'
+module-name = 'oxeye'
+include = ['oxeye.pyi']
