@@ -1,0 +1,78 @@
+[project]
+name = "pytdi"
+dynamic = ["version"]
+description = "Manipulate and evaluate time-delay interferometry combinations."
+license = { text = "BSD-3-Clause" }
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    { name = "Martin Staab", email = "martin.staab@aei.mpg.de" },
+    { name = "Jean-Baptiste Bayle", email = "j2b.bayle@gmail.com" },
+    { name = "Olaf Hartwig", email = "olaf.hartwig@aei.mpg.de" },
+]
+maintainers = [
+    { name = "Martin Staab", email = "martin.staab@aei.mpg.de" },
+    { name = "Jean-Baptiste Bayle", email = "j2b.bayle@gmail.com" },
+    { name = "Olaf Hartwig", email = "olaf.hartwig@aei.mpg.de" },
+]
+keywords = [ "LISA", "INREP", "L01", "pre-processing", "noise reduction", "calibration" ]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Astronomy",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+    "h5py>=3.1.0",
+    "numpy>=1.19.5",
+    "scipy>=1.16.1",
+]
+
+[project.urls]
+Documentation = "https://lisa.pages.in2p3.fr/LDPG/wg6_inrep/pytdi"
+Repository = "https://gitlab.in2p3.fr/LISA/LDPG/wg6_inrep/pytdi"
+Issues = "https://gitlab.in2p3.fr/LISA/LDPG/wg6_inrep/pytdi/-/issues"
+
+[dependency-groups]
+dev = [
+    "anybadge>=1.9.0",
+    "black>=25.1.0",
+    "esbonio>=0.15.0",
+    "ipykernel>=5.5.6",
+    "ipython>=7.16.3",
+    "isort>=5.8.0",
+    "matplotlib>=3.10.6",
+    "mypy>=0.971",
+    "myst-parser>=4.0.1",
+    "nb-clean>=2.1.0",
+    "pre-commit>=2.1.1",
+    "pylint>=2.12.0",
+    "pytest>=7.0.1",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.6.1",
+    "requests>=2.32.5",
+    "sphinx>=5.3.0",
+    "sphinx-autodoc-typehints>=1.12.0",
+    "sphinx-copybutton>=0.5.0",
+    "sphinx-rtd-theme>=2.0.0",
+    "sphinxcontrib-bibtex>=2.5.0",
+]
+
+[tool.uv]
+package = true
+
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
+
+[tool.uv-dynamic-versioning]
+vcs = "git"
+style = "semver"
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+disable_error_code = "import-untyped"
+
+[build-system]
+requires = ["hatchling", "uv-dynamic-versioning"]
+build-backend = "hatchling.build"

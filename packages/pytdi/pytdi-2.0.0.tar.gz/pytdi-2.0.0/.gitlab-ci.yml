@@ -1,0 +1,237 @@
+# Official language image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/python/tags/
+image: python:3.11
+
+# Install uv
+before_script:
+  - pip install uv
+  - uv venv && uv sync
+  - source .venv/bin/activate
+
+stages:
+  - test
+  - build
+  - deploy
+
+# By default, do not download Git LFS files (no need for these test fixtures)
+variables:
+  GIT_LFS_SKIP_SMUDGE: 1
+
+# Lint code
+pylint:
+  stage: test
+  script:
+    - pylint pytdi
+
+# Run mypy static type checker
+mypy:
+  stage: test
+  script:
+    - mypy pytdi
+
+# Run black code formatter
+black:
+  stage: test
+  script:
+    - black --check .
+
+# Run pre-commit hooks
+pre-commit:
+  stage: test
+  script:
+    - pre-commit run --all-files
+
+# Run unit tests and generate report
+pytest:
+  stage: test
+  script:
+    - |
+      pytest -v \
+        --junitxml=report.xml \
+        --cov=pytest \
+        --cov-report=term \
+        --cov-report xml \
+        tests/test_calculate_advancements.py \
+        tests/test_lisa_tdi_combination.py \
+        tests/test_tdi_combination.py \
+        tests/test_timeshift.py \
+        tests/test_combination_from_string.py \
+        tests/test_clock_noise_correction.py \
+        tests/test_interface.py
+  variables:
+    GIT_LFS_SKIP_SMUDGE: 0
+  coverage: '/TOTAL.*\s+(\d+%)$/'
+  artifacts:
+    when: always
+    paths:
+      - report.xml
+      - coverage.xml
+    expire_in: 10 days
+    reports:
+      junit: report.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
+
+# Run tests for Michelson combinations
+# michelson:
+#   stage: test
+#   script:
+#     - |
+#       pytest -v \
+#         --junitxml=report.xml \
+#         --plotting \
+#         tests/test_michelson.py
+#   variables:
+#     GIT_LFS_SKIP_SMUDGE: 0
+#   artifacts:
+#     when: always
+#     paths:
+#       - "*.pdf"
+#     reports:
+#       junit: report.xml
+
+# Run tests for Sagnac combinations
+# sagnac:
+#   stage: test
+#   script:
+#     - |
+#       pytest -v \
+#         --junitxml=report.xml \
+#         --plotting \
+#         tests/test_sagnac.py
+#   variables:
+#     GIT_LFS_SKIP_SMUDGE: 0
+#   artifacts:
+#     when: always
+#     paths:
+#       - "*.pdf"
+#     reports:
+#       junit: report.xml
+
+# Run tests for quasi-orthogonal combinations
+# quasi-orthogonal:
+#   stage: test
+#   script:
+#     - |
+#       pytest -v \
+#         --junitxml=report.xml \
+#         --plotting \
+#         tests/test_ortho.py
+#   variables:
+#     GIT_LFS_SKIP_SMUDGE: 0
+#   artifacts:
+#     when: always
+#     paths:
+#       - "*.pdf"
+#     reports:
+#       junit: report.xml
+
+# Build package
+package:
+  stage: build
+  script:
+    - uv build
+    - unset UV_PUBLISH_TOKEN
+    - |
+      uv publish \
+        --dry-run \
+        --publish-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi \
+        --username gitlab-ci-token \
+        --password "$CI_JOB_TOKEN"
+  artifacts:
+    paths:
+      - dist
+    expire_in: 6 months
+
+# Build documentation
+docs:
+  stage: build
+  variables:
+    GIT_FETCH_EXTRA_FLAGS: --prune --quiet --tags
+  script:
+    - make -C docs clean html
+  artifacts:
+    paths:
+      - docs/_build
+    expire_in: 6 months
+
+# Create badges
+# (only for releases)
+badges:
+  stage: build
+  variables:
+    GIT_FETCH_EXTRA_FLAGS: --prune --quiet --tags
+  script:
+    - anybadge -l license -v "3-Clause BSD" -f license.svg -c dodgerblue
+    - anybadge -l documentation -v available -f documentation.svg -c green
+    - LATEST_VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)
+    - anybadge -l "latest release" -v $LATEST_VERSION -f release.svg -c steelblue
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+  artifacts:
+    paths:
+        - "*.svg"
+    when: always
+    expire_in: 10 days
+
+# Publish documentation
+# (only for releases)
+pages:
+  stage: deploy
+  dependencies:
+    - docs
+  before_script: []
+  script:
+    - mv docs/_build/html public
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v\d+(?:\.\d+){0,2}$/'
+  artifacts:
+    paths:
+      - public
+    expire_in: 10 years
+
+# Deploy to Gitlab registry
+# (only for releases)
+gitlab:
+  stage: deploy
+  dependencies:
+    - package
+  script:
+    - unset UV_PUBLISH_TOKEN
+    - |
+      uv publish \
+        --publish-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi \
+        --username gitlab-ci-token \
+        --password "$CI_JOB_TOKEN"
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v\d+(?:\.\d+){0,2}$/'
+
+
+# Deploy to PyPI registry
+# (only for releases)
+pypi:
+  stage: deploy
+  dependencies:
+    - package
+  script:
+    - uv publish
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v\d+(?:\.\d+){0,2}$/'
+
+# Deploy to Zenodo
+# (only for releases)
+zenodo:
+  stage: deploy
+  dependencies:
+    - package
+  script:
+    - |
+      python zenodo.py \
+        --project $ZENODO_ID \
+        --token $ZENODO_TOKEN \
+        --version ${CI_COMMIT_TAG#v} \
+        $ZENODO_AUTO_PUBLISH \
+        dist/pytdi-${CI_COMMIT_TAG#v}.tar.gz
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v\d+(?:\.\d+){0,2}$/'

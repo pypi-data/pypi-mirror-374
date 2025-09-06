@@ -1,0 +1,12 @@
+tests/data/LISA-static filter=lfs diff=lfs merge=lfs -text
+tests/data/LISA-keplerian filter=lfs diff=lfs merge=lfs -text
+tests/data/LISA-keplerian-doppler filter=lfs diff=lfs merge=lfs -text
+tests/data/TDIFromFile filter=lfs diff=lfs merge=lfs -text
+tests/data/filter_coeffs.npy filter=lfs diff=lfs merge=lfs -text
+tests/gws-1-1.h5 filter=lfs diff=lfs merge=lfs -text
+tests/gws-2-0.h5 filter=lfs diff=lfs merge=lfs -text
+tests/gws-2-3.h5 filter=lfs diff=lfs merge=lfs -text
+tests/keplerian-orbits-1-0-2.h5 filter=lfs diff=lfs merge=lfs -text
+tests/keplerian-orbits-2-0.h5 filter=lfs diff=lfs merge=lfs -text
+tests/keplerian-orbits-2-3.h5 filter=lfs diff=lfs merge=lfs -text
+tests/lisanode-1-4.h5 filter=lfs diff=lfs merge=lfs -text

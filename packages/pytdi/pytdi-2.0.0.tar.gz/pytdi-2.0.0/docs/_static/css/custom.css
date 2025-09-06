@@ -1,0 +1,19 @@
+.wy-side-nav-search, .wy-nav-top {
+    background-color: #f07400;
+}
+
+.wy-menu-vertical header, .wy-menu-vertical p.caption {
+    color: #f07400;
+}
+
+.wy-side-nav-search .wy-dropdown>a.icon img.logo, .wy-side-nav-search>a.icon img.logo {
+    max-width: 30%;
+}
+
+span.eqno {
+    float: right;
+}
+
+.rst-content div[class^=highlight] pre {
+    white-space: pre-wrap;
+}
