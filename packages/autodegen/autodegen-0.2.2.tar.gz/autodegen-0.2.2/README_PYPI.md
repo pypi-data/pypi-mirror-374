@@ -1,0 +1,270 @@
+# AutoDegen 🚀
+
+[![PyPI version](https://badge.fury.io/py/autodegen.svg)](https://badge.fury.io/py/autodegen)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+**Production-ready cryptocurrency trading analysis agent with enterprise-grade LLM hardening.**
+
+## 🌟 Features
+
+### 🛡️ **Enterprise-Grade LLM Security**
+- **Zero Meta Commentary**: Complete elimination of "I'll analyze..." and "The key will be..." responses
+- **Structured Output Enforcement**: Guaranteed consistent report format with Pydantic validation
+- **Production Hardening**: Circuit breaker, retry logic, timeout handling, and tool call firewall
+
+### 📊 **Comprehensive Market Analysis**
+- **Multi-Expert AI Coordination**: Technical, market, and news sentiment analysis
+- **Real-Time Data**: Integration with Binance, DeFiLlama, and crypto news sources
+- **Advanced Technical Indicators**: RSI, MACD, moving averages, Smart Money Concepts
+- **Multi-Timeframe Analysis**: 1h, 4h, daily perspectives with confluence signals
+
+### ⚡ **High-Performance Architecture**
+- **Async/Await**: Non-blocking operations for maximum throughput  
+- **Resilience Patterns**: Circuit breaker prevents cascade failures
+- **Comprehensive Testing**: 52+ test cases with 100% production readiness validation
+- **Type Safety**: Full type hints with mypy compatibility
+
+## 🚀 Quick Start
+
+### Installation
+
+```bash
+# Basic installation
+pip install autodegen
+
+# With CLI support  
+pip install autodegen[cli]
+
+# Development installation
+pip install autodegen[dev]
+```
+
+### Environment Setup
+
+Create a `.env` file or set environment variables:
+
+```bash
+FIREWORKS_API_KEY=your_fireworks_api_key      # Required
+OPENAI_API_KEY=your_openai_key               # Optional  
+BINANCE_API_KEY=your_binance_key             # Optional
+BINANCE_API_SECRET=your_binance_secret       # Optional
+```
+
+### Python API Usage
+
+```python
+import asyncio
+from autodegen import TradingAgent
+
+async def main():
+    # Initialize agent
+    agent = TradingAgent()
+    
+    # Get structured analysis
+    analysis = await agent.analyze("BTC", timeframe="4h")
+    
+    print(analysis.title)        # **COMPREHENSIVE TECHNICAL ANALYSIS: BTC**
+    print(analysis.market_state) # Current market conditions...
+    print(analysis.outlook)      # Bullish bias maintained above...
+    
+    # Get market overview
+    overview = await agent.get_market_overview()
+    print(overview)
+
+# Run analysis
+asyncio.run(main())
+```
+
+### CLI Usage
+
+```bash
+# Analyze a cryptocurrency
+autodegen analyze BTC --timeframe 4h --format rich
+
+# Get market overview  
+autodegen market
+
+# Check system health
+autodegen health
+
+# List supported symbols
+autodegen symbols
+```
+
+## 📖 Advanced Usage
+
+### Structured vs Unstructured Output
+
+```python
+# Structured output (recommended)
+structured_analysis = await agent.analyze("ETH", structured=True)
+print(f"Market State: {structured_analysis.market_state}")
+print(f"Trading Levels: {structured_analysis.trading_levels}")
+
+# Text output  
+text_analysis = await agent.analyze("ETH", structured=False)
+print(text_analysis)  # Raw markdown-formatted text
+```
+
+### Error Handling
+
+```python
+from autodegen import TradingAgent, APIError, ConfigurationError
+
+try:
+    agent = TradingAgent()
+    result = await agent.analyze("BTC")
+except ConfigurationError as e:
+    print(f"Setup error: {e}")
+except APIError as e:
+    print(f"API error: {e} (status: {e.status_code})")
+except Exception as e:
+    print(f"Unexpected error: {e}")
+```
+
+### Health Monitoring
+
+```python
+# Check system health
+health = await agent.health_check()
+
+if health["status"] == "healthy":
+    print("All systems operational")
+else:
+    print(f"System status: {health['status']}")
+    for component, status in health["components"].items():
+        print(f"  {component}: {status}")
+```
+
+## 🏗️ Architecture
+
+```
+AutoDegen
+├── 🧠 LLM Core (Production Hardened)
+│   ├── Circuit Breaker Pattern
+│   ├── Retry with Exponential Backoff  
+│   ├── Tool Call Firewall
+│   └── Structured Output Enforcement
+│
+├── 📊 Market Analysis Engine
+│   ├── Technical Expert (Charts & Indicators)
+│   ├── Market Expert (Liquidity & Volume)
+│   └── News Expert (Sentiment Analysis)
+│
+├── 🔌 Data Sources
+│   ├── Binance API (Price & Volume)
+│   ├── DeFiLlama (DeFi Metrics)
+│   └── News APIs (Market Sentiment)
+│
+└── 🛡️ Security & Reliability
+    ├── Input Validation & Sanitization
+    ├── Rate Limiting & Quotas
+    └── Comprehensive Logging
+```
+
+## 📈 Supported Cryptocurrencies
+
+**Major Coins**: BTC, ETH, BNB, SOL, ADA, XRP, DOT, AVAX
+
+**DeFi Tokens**: UNI, COMP, CRV, LINK, AAVE
+
+**Layer 1s**: ATOM, NEAR, ALGO, FTM, ICP
+
+**And more**: MATIC, VET, FLOW, SAND, MANA
+
+*Use `autodegen symbols` to see the full list*
+
+## 🔧 Configuration
+
+### API Keys Priority
+
+1. Constructor parameters
+2. Environment variables  
+3. `.env` file (if python-dotenv installed)
+
+### Timeout & Retry Settings
+
+```python
+agent = TradingAgent()
+
+# Custom timeout and structured output
+analysis = await agent.analyze(
+    symbol="BTC",
+    timeout=60.0,        # 60 second timeout
+    structured=True      # Enforce schema validation
+)
+```
+
+## 🧪 Production Hardening
+
+This agent includes **enterprise-grade production hardening** tested with 52+ comprehensive test cases:
+
+### 🛡️ **LLM Response Security**
+- **Meta Commentary Elimination**: Zero tolerance for "I'll analyze...", "The key will be..." responses
+- **Structured Schema Enforcement**: Guaranteed report format with required sections
+- **Content Validation**: Multi-layer filtering of banned tokens and meta statements
+
+### 🔒 **Security Features** 
+- **Tool Call Firewall**: Blocks dangerous function calls (execute_code, run_shell)
+- **Input Sanitization**: Automatic cleanup of potentially harmful content
+- **Circuit Breaker**: Prevents cascade failures with automatic recovery
+
+### ⚡ **Reliability Patterns**
+- **Retry Logic**: Exponential backoff with jitter (3 attempts default)
+- **Timeout Handling**: Graceful degradation on slow responses  
+- **Health Monitoring**: Real-time component status checking
+
+## 🧪 Testing & Quality
+
+```bash
+# Install development dependencies
+pip install autodegen[dev]
+
+# Run the production quality test battery  
+python -m pytest tests/run_quality_battery.py
+
+# Test specific components
+python -m pytest tests/ -v
+```
+
+**Quality Metrics:**
+- ✅ 52/52 tests passing (100% success rate)
+- ✅ Zero meta commentary leakage
+- ✅ 100% structured output compliance  
+- ✅ Enterprise resilience patterns validated
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](https://github.com/taygundogan/cryptotrading-agent/blob/main/CONTRIBUTING.md).
+
+### Development Setup
+
+```bash
+git clone https://github.com/taygundogan/cryptotrading-agent
+cd cryptotrading-agent
+pip install -e .[dev]
+
+# Run tests
+python tests/run_quality_battery.py
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/taygundogan/cryptotrading-agent/blob/main/LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with production-grade LLM hardening techniques
+- Inspired by enterprise trading system architectures  
+- Powered by Fireworks AI, OpenAI, and crypto data providers
+
+## 📞 Support
+
+- **Documentation**: [GitHub README](https://github.com/taygundogan/cryptotrading-agent)
+- **Issues**: [GitHub Issues](https://github.com/taygundogan/cryptotrading-agent/issues)  
+- **Discussions**: [GitHub Discussions](https://github.com/taygundogan/cryptotrading-agent/discussions)
+
+---
+
+**⚠️ Disclaimer**: This tool is for educational and informational purposes only. Cryptocurrency trading involves significant risk. Always do your own research and consider your risk tolerance before making trading decisions.

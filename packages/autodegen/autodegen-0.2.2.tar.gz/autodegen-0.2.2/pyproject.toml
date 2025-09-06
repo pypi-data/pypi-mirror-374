@@ -1,0 +1,153 @@
+[build-system]
+requires = ["hatchling>=1.21.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "autodegen"
+version = "0.2.2"
+description = "Production-ready crypto trading analysis agent with LLM hardening"
+readme = "README_PYPI.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+    { name = "Taygun Dogan", email = "taygundogan@example.com" }
+]
+keywords = ["crypto", "trading", "analysis", "agent", "llm", "binance", "defi"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Financial and Insurance Industry",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+
+dependencies = [
+    # Core dependencies
+    "httpx>=0.27.0",
+    "pydantic>=2.7.0",
+    "python-dotenv>=1.0.0",
+    "pandas>=2.2.0",
+    "numpy>=1.26.0",
+    
+    # Technical Analysis
+    "TA-Lib>=0.4.28",
+    "scipy>=1.11.0",
+    
+    # LLM and AI
+    "anthropic>=0.7.0",
+    "openai>=1.0.0",
+    
+    # Crypto APIs
+    "python-binance>=1.0.19",
+    
+    # Web and async
+    "aiohttp>=3.9.0",
+    "aiosqlite>=0.19.0",
+    "fastapi>=0.100.0",
+    "uvicorn>=0.20.0",
+    "websockets>=11.0",
+    
+    # Utils
+    "typer>=0.12.0",
+    "rich>=13.7.0",
+    "colorama>=0.4.6",
+    
+    # Type hints
+    "typing-extensions>=4.8.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.25.0",
+    "pytest-mock>=3.14.0",
+    "black>=24.0.0",
+    "ruff>=0.6.0",
+]
+
+test = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.25.0",
+    "pytest-mock>=3.14.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/taygundogan/cryptotrading-agent"
+Repository = "https://github.com/taygundogan/cryptotrading-agent"
+Issues = "https://github.com/taygundogan/cryptotrading-agent/issues"
+Documentation = "https://github.com/taygundogan/cryptotrading-agent#readme"
+
+[project.scripts]
+autodegen = "cryptotrading_agent.cli:main"
+trading-agent = "cryptotrading_agent.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cryptotrading_agent"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/README_PYPI.md",
+    "/LICENSE",
+]
+
+[tool.hatch.version]
+path = "src/cryptotrading_agent/__init__.py"
+
+# Development tools configuration
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--tb=short",
+    "--strict-markers",
+    "--disable-warnings",
+]
+asyncio_mode = "auto"
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.ruff]
+target-version = "py39"
+line-length = 88
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+]
+ignore = [
+    "E501",  # line too long, handled by black
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
