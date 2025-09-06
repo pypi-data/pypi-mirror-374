@@ -1,0 +1,207 @@
+Metadata-Version: 2.1
+Name: sap-bdc-connect-sdk
+Version: 1.1.1
+Summary: Python SDK for SAP Business Data Cloud
+Home-page: https://www.sap.com
+Author: SAP SE
+License: SAP DEVELOPER LICENSE AGREEMENT
+Keywords: SAP SAPBusinessDataCloud SAPBDC SAPBDCConnect
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Programming Language :: Python :: 3
+Classifier: Intended Audience :: Developers
+Classifier: License :: Other/Proprietary License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: typing-extensions<=4.12.0
+Requires-Dist: urllib3<2.1
+Requires-Dist: pydantic<=2.10.6,>2.0
+Requires-Dist: argparse~=1.4.0
+Requires-Dist: python-dateutil<=2.9.0
+Requires-Dist: requests<=2.32.0
+Requires-Dist: cryptography>=41.0.3
+Requires-Dist: protobuf<=5.29.5
+Requires-Dist: grpcio-status>=1.62.3
+Requires-Dist: PyJWT>=2.10.0
+Provides-Extra: test
+Requires-Dist: pytest>=4.6.7; extra == "test"
+Requires-Dist: pytest-cov>=2.8.1; extra == "test"
+Requires-Dist: pytest-randomly==3.15.0; extra == "test"
+
+# SAP Business Data Cloud SDK
+
+# Table of Contents
+
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Usage](#usage)
+    - [Creating a Databricks Client](#create-a-client)
+    - [Create or Update Share](#create-or-update-share)
+    - [Create or Update Share CSN](#create-or-update-share-csn)
+    - [Publish a Data Product](#publish-a-data-product)
+    - [Unpublish a Data Product](#unpublish-a-data-product)
+
+## Introduction
+
+With this SDK you can perform Business Data Cloud Connect operations such as:
+
+* Create or update shares
+* Create or update shares [CSN](https://sap.github.io/csn-interop-specification/)
+* Publish or unpublish Data Products
+
+[Open Resource Discovery](https://open-resource-discovery.github.io/specification/) (ORD) is a protocol that allows applications and services to self-describe their resources and capabilities.
+It facilitates cross consumption of resources and capabilities between different systems through a common standard interface.
+
+[Delta Sharing](https://delta.io/sharing/) (DS) is an open protocol for secure sharing of Delta tables.
+SAP Business Data Cloud support Delta Sharing and allows user data sets, represented as *shares*, to be shared securely.
+
+This document focus on describing how SAP Business Data Cloud SDK should be used to publish *shares* and [ORD Data Products](https://open-resource-discovery.github.io/specification/details/articles/data-product) for downstream consumption within SAP Business Data Cloud.
+
+## Installation
+
+To install this SDK use the following pip command:
+
+```
+pip install sap-bdc-connect-sdk
+```
+
+## Usage
+
+### Create a client
+
+```python
+from bdc_connect_sdk.auth import BdcConnectClient
+from bdc_connect_sdk.auth import DatabricksClient
+
+databricks_client = DatabricksClient(dbutils)
+bdc_connect_client = BdcConnectClient(databricks_client)
+```
+
+- `DatabricksClient` receives `dbutils` as a parameter, which is a Databricks utility that can be used inside the Databricks notebooks
+- `BdcConnectClient` receives the `DatabricksClient` as a parameter to get information from the Databricks environment (e.g. secrets, api_token, workspace_url_base)
+
+### Create or update share
+
+A share is a mechanism for distributing and accessing data across different systems. Creating or updating a share involves including specific attributes, such as `@openResourceDiscoveryV1`, in the request body, aligning with the [Open Resource Discovery](https://open-resource-discovery.github.io/specification/) protocol. This procedure ensures that the share is properly structured and described according to specified standards, facilitating effective data sharing and management.
+
+```python
+from bdc_connect_sdk.auth import BdcConnectClient
+from bdc_connect_sdk.auth import DatabricksClient
+import json
+
+with BdcConnectClient(DatabricksClient(dbutils)) as bdc_connect_client:
+    share_name = "<share-name>"
+
+    try:
+        share_body = {
+            "type": "REMOTE_SHARE",
+            "provider": {
+                "type": "FEDERATION",
+                "name": "databricks"
+            },
+            "@openResourceDiscoveryV1": {
+                "title": "<data-product-title>",
+                "shortDescription": "<data-product-short-description>",
+                "description": "<data-product-description>"
+            }
+        }
+
+        share_request_body = json.dumps(share_body)
+
+        catalog_response = bdc_connect_client.create_or_update_share(
+            share_name,
+            share_request_body
+        )
+    except Exception as ex:
+        print(f"Exception when creating or updating share(name={share_name}): {ex}\n")
+```
+
+### Create or update share CSN
+
+The [CSN](https://sap.github.io/csn-interop-specification/) serves as a standardized format for configuring and describing shares within a network. To create or update the CSN for a share, it's advised to prepare the CSN content in a separate file and include this content in the request body. This approach ensures accuracy and compliance with the CSN interoperability specifications, facilitating consistent and effective share configuration across systems.
+
+> **Note:** The CSN schema, can be efficiently generated using a dedicated script `generate_csn_template` available in `csn_generator` file. This script automates the creation of CSN content for Databricks environments based on a Databricks share.
+
+```python
+from bdc_connect_sdk.auth import BdcConnectClient
+from bdc_connect_sdk.auth import DatabricksClient
+from bdc_connect_sdk.utils import csn_generator
+import json
+
+with BdcConnectClient(DatabricksClient(dbutils)) as bdc_connect_client:
+    share_name = "<share-name>"
+
+    try:
+        csn_schema = csn_generator.generate_csn_template(share_name)
+        csn_schema_string = json.dumps(csn_schema)
+
+        csn_response = bdc_connect_client.create_or_update_share_csn(
+            share_name,
+            csn_schema_string
+        )
+    except Exception as ex:
+        print(f"Exception when creating or updating CSN for share(name={share_name}): {ex}\n")
+```
+
+If the generated CSN needs to be modified for any reason, it can be written to a file for editing, for example.
+
+```python
+from bdc_connect_sdk.utils import csn_generator
+import json
+
+share_name = "<share-name>"
+csn_schema = csn_generator.generate_csn_template(share_name)
+
+file_path = f"csn_{share_name}.json"
+with open(file_path, "w") as csn_file:
+    csn_file.write(json.dumps(csn_schema, indent=2))
+
+# change the file
+
+with open(file_path, "r") as csn_file:
+    changed_csn_schema = csn_file.read()
+
+csn_schema = changed_csn_schema
+```
+
+
+### Publish a Data Product
+
+A Data Product is an abstraction that represents a type of data or data set within a system, facilitating easier management and sharing across different platforms. It bundles resources or API endpoints to enable efficient data access and utilization by integrated systems. Publishing a Data Product allows these systems to access and consume the data, ensuring seamless communication and resource sharing.
+
+```python
+from bdc_connect_sdk.auth import BdcConnectClient
+from bdc_connect_sdk.auth import DatabricksClient
+
+with BdcConnectClient(DatabricksClient(dbutils)) as bdc_connect_client:
+    share_name = "<share-name>"
+
+    try:
+        publish_response = bdc_connect_client.publish_data_product(
+            share_name,
+        )
+    except Exception as ex:
+        print(f"Exception when publishing data product for share(name={share_name}): {ex}\n")
+```
+
+### Unpublish a Data Product
+
+Unpublishing a Data Product involves withdrawing access to the data, typically when it has been sufficiently consumed or is no longer desired to be shared. This action helps maintain control over data accessibility and ensures that sharing aligns with security and usage policies. By unpublishing, the system can effectively manage the lifecycle of data and its availability to other integrated platforms.
+
+```python
+from bdc_connect_sdk.auth import BdcConnectClient
+from bdc_connect_sdk.auth import DatabricksClient
+
+with BdcConnectClient(DatabricksClient(dbutils)) as bdc_connect_client:
+    share_name = "<share-name>"
+
+    try:
+        unpublish_response = bdc_connect_client.delete_share(
+            share_name,
+        )
+    except Exception as ex:
+        print(f"Exception when unpublishing data product for share(name={share_name}): {ex}\n")
+```
+
