@@ -1,0 +1,2 @@
+# SPDX-FileCopyrightText: Copyright (c) 2025 Mike Coats
+# SPDX-License-Identifier: MIT

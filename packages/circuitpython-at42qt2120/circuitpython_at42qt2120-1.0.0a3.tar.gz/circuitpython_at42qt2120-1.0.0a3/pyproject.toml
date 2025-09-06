@@ -1,0 +1,45 @@
+# SPDX-FileCopyrightText: Copyright (c) 2025 Mike Coats
+# SPDX-License-Identifier: MIT
+
+[build-system]
+requires = [
+    "setuptools",
+    "wheel",
+    "setuptools-scm",
+]
+
+[project]
+name = "circuitpython-at42qt2120"
+description = "A CircuitPython module for the AT42QT2120 capacitive touch sensor IC, (mostly) compatible with Adafruit's MPR121 library."
+version = "1.0.0.alpha.3"
+readme = "README.md"
+authors = [
+    {name = "Mike Coats", email = "i.am@mikecoats.com"}
+]
+urls = {Homepage = "https://github.com/MikeCoats/CircuitPython_AT42QT2120"}
+keywords = [
+    "adafruit",
+    "blinka",
+    "circuitpython",
+    "micropython",
+    "capacitive",
+    "touch",
+    "at42qt2120",
+]
+license = {text = "MIT"}
+classifiers = [
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Embedded Systems",
+    "Topic :: System :: Hardware",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
+dynamic = ["dependencies", "optional-dependencies"]
+
+[tool.setuptools]
+py-modules = ["at42qt2120"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+optional-dependencies = {optional = {file = ["optional_requirements.txt", "mkdocs/requirements.txt"]}}
