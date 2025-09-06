@@ -1,0 +1,24 @@
+[CDF-25676] 🤨Remove upper bound packaging (#1913)
+
+# Description
+
+This upper bound was to make `poetry` happy. It is unnecessarily strict
+leading to compatibility issues with other packages such as
+`cognite-neat`, so I am removing it.
+
+
+## Changelog
+
+- [x] Patch
+- [ ] Skip
+
+## cdf
+
+### Fixed
+
+- Removed upper bound on third-party dependency `packaging`. This makes
+toolkit compatible with other applications.
+
+## templates
+
+No changes.
