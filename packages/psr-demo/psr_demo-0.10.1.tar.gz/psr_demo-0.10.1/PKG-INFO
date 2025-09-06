@@ -1,0 +1,39 @@
+Metadata-Version: 2.4
+Name: psr-demo
+Version: 0.10.1
+Summary: Demo project for python-semantic-release
+Keywords: semantic version,semantic release,ci/cd,convetional commits,python-semantic-release
+Author: fleetingbytes
+Author-email: fleetingbytes <7075397+fleetingbytes@users.noreply.github.com>
+License-Expression: BSD-2-Clause
+Classifier: Development Status :: 7 - Inactive
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Unix Shell
+Classifier: Topic :: Software Development :: Version Control :: Git
+Requires-Python: >=3.11
+Project-URL: Changelog, http://github.com/fleetingbytes/psr-demo/blob/master/CHANGELOG.md
+Project-URL: Documentation, http://github.com/fleetingbytes/psr-demo/blob/master/README.md
+Project-URL: Homepage, http://github.com/fleetingbytes/psr-demo
+Project-URL: Issues, http://github.com/fleetingbytes/psr-demo/issues
+Project-URL: Repository, http://github.com/fleetingbytes/psr-demo.git
+Description-Content-Type: text/markdown
+
+# Python Semantic Release Demo
+
+Project showcasing a possible setup to utilize [python-semamtic-release][psr] (PSR) with [uv][uv] and [ruff][ruff].
+
+To build this has cost me more time than anticipated. Before I started with this demo,
+I already had a profound understanding of the semantic version [specification][semver], of [conventional commits][conv],
+and some experience with CI/CD ppelines.
+From there it took me 30 hours to read through PSR's documentation, understand their uv project setup guide and to create this pipeline.
+
+This pipeline is not quite what I would want to use everywhere, but it will do for simple projects.
+Now it is time to create an app which would create this pipeline in a freshly initiated project.
+I shall call it [ci-starter][ci-starter]. Hopefully, the pipelines produced by the ci-starter will evolve into something more sophisticated.
+
+[psr]: https://python-semantic-release.readthedocs.io/en/latest/index.html
+[uv]: https://docs.astral.sh/uv
+[ruff]: https://docs.astral.sh/ruff
+[semver]: https://semver.org
+[ci-starter]: https://github.com/fleetingbytes/ci-starter

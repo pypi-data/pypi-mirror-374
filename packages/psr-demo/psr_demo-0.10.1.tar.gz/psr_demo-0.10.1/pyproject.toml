@@ -1,0 +1,41 @@
+[project]
+name = "psr-demo"
+version = "0.10.1"
+description = "Demo project for python-semantic-release"
+readme = "README.md"
+authors = [
+    { name = "fleetingbytes", email = "7075397+fleetingbytes@users.noreply.github.com" }
+]
+requires-python = ">=3.11"
+dependencies = []
+license = "BSD-2-Clause"
+keywords = ["semantic version", "semantic release", "ci/cd", "convetional commits", "python-semantic-release"]
+classifiers = [
+    "Development Status :: 7 - Inactive",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Unix Shell",
+    "Topic :: Software Development :: Version Control :: Git",
+]
+
+[project.urls]
+Homepage = "http://github.com/fleetingbytes/psr-demo"
+Documentation = "http://github.com/fleetingbytes/psr-demo/blob/master/README.md"
+Repository = "http://github.com/fleetingbytes/psr-demo.git"
+Issues = "http://github.com/fleetingbytes/psr-demo/issues"
+Changelog = "http://github.com/fleetingbytes/psr-demo/blob/master/CHANGELOG.md"
+
+[project.scripts]
+psr-demo = "psr_demo:main"
+
+[build-system]
+requires = ["uv_build>=0.8.3,<0.9.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+lint = [
+    "ruff>=0.12.10",
+]
+test = [
+    "pytest>=8.4.1",
+]
