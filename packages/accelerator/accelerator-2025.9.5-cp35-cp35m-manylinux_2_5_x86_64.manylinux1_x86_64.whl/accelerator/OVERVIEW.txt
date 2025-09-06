@@ -1,0 +1,162 @@
+This is a short overview of how this works, intended primarily for those
+who work on the code. More user focused documentation is available in
+separate repos.
+
+Processes
+=========
+
+There are a few different processes involved in a running system:
+main server
+	python version specific runner (runner.py)
+		when running a job this forks to create the actual job processes
+	maybe more runners (one per py\d line in the conf)
+	urd-server
+	board-server
+	short lived worker pools when loading metadata about jobs.
+build-script (asks the server to run jobs)
+
+Communication between the build-script and the server is over http (by
+default over a unix socket). You can find the interesting parts of the
+code in build.py and server.py.
+
+Communication between the server and the runners is over anonymous sockets
+(from socketpair()), each packet is a length prefix followed by pickled
+data. All the communications code is in runner.py.
+
+Communication between the runner and the main job process is a single json
+object written back over a pipe. Job setup is partly loaded from setup.json
+in the job dir and partly inherited from the parent process (normal fork
+behaviour).
+
+Communication between the main job process and the analysis processes (the
+parallell part) is over a mp.LockFreeQueue object (provides similar
+functionality to multiprocessing.Queue, but without locks that can give you
+problems when killing processes).
+
+Yes, this has more variation than there is any reason for. Rewriting it is
+probably not useful though, all the communication methods work.
+
+
+setup.json
+==========
+
+The job parameters are all in setup.json in the job dir, which contains
+mostly a normalized version of the same things the runner sends to the
+server to dispatch the job. The valid contents are specified by the
+{options, datasets, jobids} variables in the method source. There is also
+some meta info about the method.
+
+There is also a short version of the profiling information for completed
+jobs.
+
+
+Identification of jobs for reuse
+================================
+
+When a job is requested a matching job is first searched for. A job with
+the same parameters is valid assuming the source code for the method has
+not been changed since it was run, or if the new code uses
+equivalent_hashes to indicate that it is compatible with the old code. This
+code (in control.py, database.py, dependency.py, deptree.py, methods.py,
+workspace.py) is much harder to follow than there is any reason for.
+database.Database.match_exact is called from dependency.initialise_jobs
+which is called from control.initialise_jobs which is called from the
+submit portion of server.py.
+
+The data about method versions and compatibility comes from the runners,
+the setup.json files are loaded directly by the server (using a worker
+pool).
+
+
+Datasets
+========
+
+Datasets are our main data storage system, suitable for data you stream
+through. (Other data is normally stored in pickles.) Each column is stored
+separately in one file per slice (except for small columns, where all
+slices are in one file). Each column has a single type, one of the types in
+dsutil._type2iter (which is a few more than you see at the top of the
+file). Most of these types are handled through _dsutil, a C extension.
+
+Each job can contain any number of datasets. On disk each dataset is a
+pickle with metainfo and usually a directory with all the column files
+(unless the dataset has inherited all columns from other datasets, or
+the files were small enough to be merged into a single file replacing the
+directory).
+
+Look in dataset.py for more details.
+
+
+List of files
+=============
+
+Under shell/, for the "ax" command
+	__init__.py
+		entry point for the "ax" command, some of the simpler commands
+	parser.py
+		command line parsing, job resolution (":urdlist:", "method", ...)
+	*.py
+		individual command implementations
+
+Other things that also get started by the "ax" command
+	board.py
+	build.py ("ax run")
+	server.py
+	urd.py
+
+Bookeeping around jobs
+	control.py
+	database.py
+	dependency.py
+	deptree.py
+	methods.py
+	workspace.py
+
+Datasets and ds/jobchaining
+	dataset.py
+	dsutil.py
+
+Launching of jobs, forking magic
+	dispatch.py
+	launch.py
+	mp.py
+	runner.py
+
+Other
+	extras.py
+		dumping ground for a lot of useful utility functions
+	job.py
+		Job, CurrentJob, JobWithFile
+	statmsg.py
+		sending and recieving of status-tree messages (the ^T stuff)
+	subjobs.py
+		running jobs from within other jobs
+	iowrapper.py
+		all (print) output goes through pipes to this
+
+Not so interesting files
+	autoflush.py
+	blob.py
+	colourwrapper.py
+		handling for colouring (or not) command output (usable in methods too)
+	compat.py
+		py2/py3 compat
+	configfile.py
+	error.py
+	g.py
+	setupfile.py
+	unixhttp.py
+	web.py
+	workarounds.py
+
+board
+	Directory with HTML templates for board.
+
+examples
+	Directory with the files for "ax init --examples"
+
+standard_methods
+	Directory with the bundled standard methods.
+
+test_methods
+	Directory with the bundled test methods.
