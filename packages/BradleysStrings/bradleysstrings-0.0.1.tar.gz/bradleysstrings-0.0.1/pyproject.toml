@@ -1,0 +1,24 @@
+[project]
+name = "BradleysStrings"
+version = "0.0.1"
+authors = [
+  { name="Bradley Hu", email="bradleyhu0707@gmail.com" },
+  { name="Jayden Yin", email="technodragon555@gmail.com"}
+]
+description = "Morer stuff for dealing with strings!"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python",
+    "Operating System :: OS Independent",
+]
+license = "GPL-3.0"
+license-files = ["LICENSE"]
+
+[project.urls]
+Homepage = "https://github.com/bradley-dev777/BradleysStrings-python/"
+Issues = "https://github.com/bradley-dev777/BradleysStrings-python/issues"
+
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
