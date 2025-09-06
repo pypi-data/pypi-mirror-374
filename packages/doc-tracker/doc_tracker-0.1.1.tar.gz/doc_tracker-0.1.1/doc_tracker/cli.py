@@ -1,0 +1,105 @@
+import argparse
+import sys
+import os
+import subprocess
+from pathlib import Path
+from .merger import DocumentMerger
+from .watcher import watch
+
+def start_background(config_path=None, base_path=None):
+    """Start doc-tracker in background"""
+    pid_file = Path("doc-tracker.pid")
+    log_file = Path("doc-tracker.log")
+    
+    if pid_file.exists():
+        print("⚠️  doc-tracker may already be running (found doc-tracker.pid)")
+        return
+    
+    # Build command
+    cmd = [sys.executable, "-m", "doc_tracker.cli", "watch"]
+    if config_path:
+        cmd.extend(["-c", config_path])
+    if base_path:
+        cmd.extend(["-b", base_path])
+    
+    # Start background process
+    with open(log_file, 'w') as f:
+        process = subprocess.Popen(cmd, stdout=f, stderr=subprocess.STDOUT)
+    
+    # Save PID
+    with open(pid_file, 'w') as f:
+        f.write(str(process.pid))
+    
+    print(f"✅ doc-tracker started in background (PID: {process.pid})")
+    print(f"📝 Logs: tail -f {log_file}")
+    print(f"🛑 Stop: doc-tracker stop")
+
+def stop_background():
+    """Stop background doc-tracker process"""
+    pid_file = Path("doc-tracker.pid")
+    
+    if not pid_file.exists():
+        print("⚠️  No doc-tracker process found")
+        return
+    
+    try:
+        with open(pid_file, 'r') as f:
+            pid = int(f.read().strip())
+        
+        os.kill(pid, 9)  # SIGKILL
+        pid_file.unlink()
+        print("✅ doc-tracker stopped")
+    except (ValueError, ProcessLookupError, FileNotFoundError):
+        pid_file.unlink(missing_ok=True)
+        print("⚠️  Process not found, cleaned up pid file")
+
+def main():
+    parser = argparse.ArgumentParser(
+        prog='doc-tracker',
+        description='Track and merge documentation files into a single file'
+    )
+    
+    parser.add_argument(
+        'command',
+        nargs='?',
+        default='watch',
+        choices=['aggregate', 'watch', 'start', 'stop'],
+        help='Command to run: watch (default), aggregate (once), start (background), stop'
+    )
+    
+    parser.add_argument(
+        '-c', '--config',
+        help='Path to config.yaml file (default: ./config.yaml)',
+        default=None
+    )
+    
+    parser.add_argument(
+        '-b', '--base',
+        help='Base directory for relative paths (default: current directory)',
+        default=None
+    )
+    
+    args = parser.parse_args()
+    
+    try:
+        if args.command == 'aggregate':
+            merger = DocumentMerger(config_path=args.config, base_path=args.base)
+            merger.aggregate_documents()
+        elif args.command == 'watch':
+            watch(config_path=args.config, base_path=args.base)
+        elif args.command == 'start':
+            start_background(args.config, args.base)
+        elif args.command == 'stop':
+            stop_background()
+    except FileNotFoundError as e:
+        print(f"❌ Error: {e}", file=sys.stderr)
+        sys.exit(1)
+    except KeyboardInterrupt:
+        print("\n\n👋 Stopped by user")
+        sys.exit(0)
+    except Exception as e:
+        print(f"❌ Unexpected error: {e}", file=sys.stderr)
+        sys.exit(1)
+
+if __name__ == '__main__':
+    main()
