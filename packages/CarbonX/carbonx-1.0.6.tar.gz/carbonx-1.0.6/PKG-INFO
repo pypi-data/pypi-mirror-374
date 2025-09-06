@@ -1,0 +1,84 @@
+Metadata-Version: 2.4
+Name: CarbonX
+Version: 1.0.6
+Summary: Process Design Tool for Gas-Phase Synthesis of Nanomaterials and Carbon Nanotubes
+Home-page: https://github.com/yourusername/CarbonX
+Author: Hossein Rahbar
+Author-email: rahbar.hosein@example.com
+Project-URL: Bug Reports, https://github.com/yourusername/CarbonX/issues
+Project-URL: Source, https://github.com/yourusername/CarbonX
+Project-URL: Documentation, https://CarbonX.readthedocs.io
+Keywords: carbon nanotube synthesis simulation sectional-model
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Cython
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS
+Requires-Python: >=3.8,<3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: numpy<2.0.0,>=1.24.0
+Requires-Dist: scipy<1.14.0,>=1.10.0
+Requires-Dist: matplotlib>=3.5.0
+Requires-Dist: pandas<2.1.0,>=1.5.0
+Requires-Dist: cantera>=2.6.0
+Requires-Dist: Cython>=0.29.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=3.0.0; extra == "dev"
+Requires-Dist: black>=22.0.0; extra == "dev"
+Requires-Dist: flake8>=4.0.0; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx>=4.0.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=1.0.0; extra == "docs"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+CarbonX is a specialized Python package designed to model the gas-phase synthesis of nanoparticles in flame-assisted chemical vapor deposition (FCCVD) reactors. It supports the simulation of the formation and evolution of a wide range of nanoparticle species, including:
+
+Carbon nanotubes (CNTs)
+Graphene layers
+Carbide and amorphous carbon structures
+Metallic nanoparticles such as Nickel (Ni) [DOI: 10.1021/acs.jpcc.2c07776] and Iron (Fe) [DOI: 10.1016/j.jaerosci.2025.106543]
+The package is primarily intended for plug-flow reactor environments, enabling the prediction of nanoparticle dynamics such as surface growth, coagulation, and agglomerationâ€”mechanisms critical to controlling the morphology of carbon-based nanostructures and metallic nanoparticles.
+
+Key Features:
+
+Modular architecture for flexible kinetic and transport modeling
+Time- and space-resolved simulation of particle dynamics
+Extendable framework to accommodate custom nanoparticle types or reactor designs
+Research-oriented design â€” ideal for both academic and industrial applications
+
+License
+Copyright (c) 2025 Hossein Rahbar. All rights reserved.
+
+You may install and use this package for personal or internal business purposes only.  
+
+Redistribution, modification, reverse engineering, or resale of this package, 
+in whole or in part, is prohibited without prior written permission 
+from the copyright holder.  
+
+This package is provided "as is," without warranty of any kind.  
+
+For licensing inquiries, please contact: rahbar.hosein@gmail.com
+"""
