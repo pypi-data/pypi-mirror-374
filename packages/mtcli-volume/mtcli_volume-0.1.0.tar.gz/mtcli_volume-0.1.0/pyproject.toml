@@ -1,0 +1,37 @@
+[project]
+name = "mtcli-volume"
+version = "0.1.0"
+description = "Plugin mtcli que exibe o volume profile"
+authors = [
+    {name = "Valmir França da Silva",email = "vfranca3@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10,<3.14.0"
+dependencies = [
+    "mtcli (>=1.19.4,<2.0.0)"
+]
+
+[project.urls]
+homepage = "https://github.com/vfranca/mtcli-volume"
+documentation = "https://mtcli-volume.readthedocs.io/pt-br/latest"
+repository = "https://github.com/vfranca/mtcli-volume"
+issues = "https://github.com/vfranca/mtcli-volume/issues"
+
+[project.entry-points."mtcli.plugins"]
+volume = "mtcli_volume.plugin:volume"
+
+
+[build-system]
+requires = ["setuptools>=42"]
+build-backend = "setuptools.build_meta"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4.2"
+pytest-cov = "^6.2.1"
+black = "^25.1.0"
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.6.1"
+
+[tool.pytest.ini_options]
+addopts = "--cov=mtcli_volume --cov-report=html -ra -q"
