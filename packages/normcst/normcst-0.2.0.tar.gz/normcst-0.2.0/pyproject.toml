@@ -1,0 +1,24 @@
+[project]
+name = "normcst"
+version = "0.2.0"
+authors = [{ name = "Andreas Rappold", email = "not_evil@rappold1.at" }]
+description = "Tools for LibCST related to normalization."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = ["libcst"]
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+"Homepage" = "https://gitlab.com/notEvil/normcst"
+"Bug Tracker" = "https://gitlab.com/notEvil/normcst/-/issues"
+
+[project.optional-dependencies]
+black = ["black"]
+test = ["black", "pytest"]
+all = ["black", "pytest"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
