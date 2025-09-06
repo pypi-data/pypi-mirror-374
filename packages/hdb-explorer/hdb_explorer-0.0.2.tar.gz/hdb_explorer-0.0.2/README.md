@@ -1,0 +1,33 @@
+Simple HANA Db Explorer
+=======================
+
+A simple SAP HANA Database Explorer.
+
+# How to install?
+**Tip**: It's always best to create an environment and install the package there.
+
+Install the wrapper library, execute the below command:
+```bash
+pip install hdb_explorer
+```
+# How to use?
+Run the following from terminal
+```bash
+$ hdb_explorer
+```
+or
+```bash
+C:> hdb_explorer
+```
+## Screenshots:
+![image](./add_sys.png)
+
+![image](./connected.png)
+
+![image](./sql.png)
+
+# Found an issue/ Have a suggestion?
+**IMP**: This package is for educational use and is not meant to replace other libraries. \
+**IMP**: This is still in development stage!
+
+If something is not working or you have ideas for improvements, please feel free to open an issue.
