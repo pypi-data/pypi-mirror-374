@@ -1,0 +1,106 @@
+# llm-usage-tracker
+
+A drop-in token and cost tracker for popular LLM libraries with caching awareness. Automatically tracks usage across multiple LLM providers by monkey-patching their API calls.
+
+## Features
+
+- **Zero-config tracking**: Just import and start tracking
+- **Multi-provider support**: OpenAI, LiteLLM, Google Gemini
+- **Cost calculation**: Automatic cost computation based on current pricing
+- **Session management**: Track usage across different sessions
+- **Caching awareness**: Handles cached responses appropriately
+
+## Supported Libraries
+
+- OpenAI v1 (client + module-level)
+- OpenAI v0 (legacy `ChatCompletion.create`)
+- LiteLLM (optional)
+- Google `google-generativeai` (optional)
+
+## Installation
+
+```bash
+pip install llm-usage-tracker
+
+# With optional dependencies:
+pip install llm-usage-tracker[litellm]  # For LiteLLM support
+pip install llm-usage-tracker[gemini]   # For Google Gemini support
+pip install llm-usage-tracker[all]      # All optional dependencies
+```
+
+## Quick Start
+
+```python
+from llm_usage_tracker import setup_patch, print_usage_costs
+
+# Enable tracking
+setup_patch()
+
+# Your existing OpenAI/LiteLLM/Gemini code works unchanged
+import openai
+client = openai.OpenAI()
+response = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[{"role": "user", "content": "Hello!"}]
+)
+
+# Print usage summary
+print_usage_costs(OPENAI_DEFAULT)
+```
+
+## Usage with Sessions
+
+```python
+from llm_usage_tracker import UsageSession, OPENAI_DEFAULT
+
+with UsageSession(OPENAI_DEFAULT, label="my-session") as session:
+    # Your LLM calls here
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": "Analyze this data"}]
+    )
+
+# Session results automatically saved
+print(f"Session cost: ${session.result['grand_total_usd']:.4f}")
+```
+
+## Advanced Features
+
+### Per-Agent Cost Tracking
+```python
+from llm_usage_tracker import setup_patch, set_scope, print_usage_costs_by_scope, OPENAI_DEFAULT
+
+setup_patch()
+
+# Track costs per agent/component
+set_scope("agent:researcher")
+# ... LLM calls for research agent
+
+set_scope("agent:writer")
+# ... LLM calls for writer agent
+
+# See breakdown by scope
+print_usage_costs_by_scope(OPENAI_DEFAULT)
+```
+
+### CrewAI Integration
+```python
+from llm_usage_tracker.decorators import setup_agent_logging, setup_tool_logging
+from llm_usage_tracker.trace_log import TraceLogger
+
+# Automatic logging for CrewAI agents and tools
+setup_agent_logging("Research Agent", tracer)(MyAgent)
+setup_tool_logging("Web Search", tracer)(MyTool)
+```
+
+## Use Cases
+
+- **Multi-Agent Systems**: Track costs per agent in CrewAI/AutoGen workflows
+- **Production Monitoring**: Monitor LLM costs in production applications
+- **Development**: Understand token usage during development
+- **Cost Optimization**: Identify expensive operations
+- **Billing/Reporting**: Generate detailed usage reports
+
+## License
+
+MIT
