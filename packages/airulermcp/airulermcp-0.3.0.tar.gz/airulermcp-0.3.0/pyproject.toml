@@ -1,0 +1,103 @@
+[project]
+name = "airulermcp"
+version = "0.3.0"
+description = "MCP server for distributing AI rules from GitLab repositories to IDEs"
+readme = "README.md"
+requires-python = ">=3.13"
+license = {text = "MIT"}
+authors = [
+    {name = "Lenny", email = "rusts-talus-9g@icloud.com"}
+]
+maintainers = [
+    {name = "Lenny", email = "rusts-talus-9g@icloud.com"}
+]
+keywords = ["mcp", "model-context-protocol", "gitlab", "ai", "tools", "ide"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development",
+]
+dependencies = [
+    "fastmcp>=2.0.0",
+    "httpx>=0.27.0",
+    "typer>=0.12.0",
+    "pydantic>=2.8.0",
+    "pydantic-settings>=2.4.0",
+    "structlog>=24.1.0",
+    "pyyaml>=6.0.0",
+    "orjson>=3.11.3",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.17.1",
+    "pytest>=8.4.1",
+    "ruff>=0.12.11",
+    "types-pyyaml>=6.0.12.20250822",
+]
+
+[project.urls]
+Homepage = "https://github.com/junqed/aimcp"
+Documentation = "https://github.com/junqed/aimcp#readme"
+Repository = "https://github.com/junqed/aimcp"
+Issues = "https://github.com/junqed/aimcp/issues"
+
+[project.scripts]
+aimcp = "aimcp.__main__:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/aimcp"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+
+[tool.ruff.lint]
+select = [
+    "E", "W", "F", "I", "B", "C4", "UP", "ASYNC", "A", "DTZ", "EXE",
+    "FA", "ISC", "ICN", "LOG", "G", "PIE", "T20", "PYI", "PT", "Q",
+    "RET", "SIM", "PTH", "TD", "FIX", "PL", "TRY", "FLY", "FAST", "PERF",
+    "FURB", "RUF", "S"
+]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.ruff.lint.isort]
+case-sensitive = true
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+lines-after-imports = 2
+split-on-trailing-comma = false
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+
+[tool.pytest.ini_options]
+addopts = [
+    "--strict",
+    "--disable-pytest-warning",
+]
+testpaths = ["tests"]
