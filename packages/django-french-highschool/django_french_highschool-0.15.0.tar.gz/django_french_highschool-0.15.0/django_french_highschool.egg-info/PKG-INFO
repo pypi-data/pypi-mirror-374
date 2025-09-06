@@ -1,0 +1,66 @@
+Metadata-Version: 2.1
+Name: django-french-highschool
+Version: 0.15.0
+Summary: French high school database with UAI, department and region
+Home-page: https://github.com/briefmnews/django-french-highschool
+Author: Brief.me
+Author-email: tech@brief.me
+License: MIT
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 4.2
+Classifier: Framework :: Django :: 5.0
+Classifier: Framework :: Django :: 5.1
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: Django>=4.2
+
+# django-french-highschool
+French high school database with UAI, department and region
+
+## Installation
+Install with pip:
+```
+pip install django-french-highschool
+```
+
+
+## Setup
+In order to make `django-french-highschool` works, you need to follow the steps below:
+
+### Settings
+First, you need to add the following configuration to your settings:
+```python
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    ...,
+    'french_highschool',
+    ...
+]
+```
+
+
+### Migrations
+Next, you need to run the migrations in order to update your database schema:
+```
+python manage.py migrate
+```
+
+
+### Fixtures
+This app comes with existing data from french high schools. To load the data in the database run:
+```
+python manage.py loaddata high_school
+```
