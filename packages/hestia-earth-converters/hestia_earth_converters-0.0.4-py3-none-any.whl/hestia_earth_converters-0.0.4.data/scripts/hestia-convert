@@ -1,0 +1,92 @@
+#!python
+
+import os
+import argparse
+import importlib
+
+parser = argparse.ArgumentParser('Convert files between HESTIA format and other formats.')
+# parser.add_argument("--extra-mapping-file", required=False, help="Path to custom mapping file")
+parser.add_argument('--input-file', type=str,
+                    help='Input file')
+parser.add_argument('--output-folder', type=str, required=True,
+                    help='Output files folder')
+parser.add_argument('--input-format', type=str, required=True,
+                    choices=['HESTIA'],
+                    help='Input file format')
+parser.add_argument('--output-format', type=str, required=True,
+                    choices=['SimaPro'],
+                    help='Output file format')
+parser.add_argument('--mapping-files-directory', type=str, default='hestia-flowmaps',
+                    help='Folder containing the mapping files in .csv format')
+parser.add_argument('--verbore', action='store_true',
+                    help='Enables verbose mode.')
+parser.add_argument('--debug-file', action='store_true',
+                    help='Outputs conversion logs to debug file.')
+parser.add_argument('--filter-by-name', type=str, nargs='+', default=[],
+                    help='Optional list of names to filter results on. Must be in quotes. Can be used multiple times.')
+
+# HESTIA specific arguments
+parser.add_argument('--hestia-impact-id', type=str,
+                    help='Run conversion from HESTIA ImpactAssessment.')
+
+# SimaPro specific arguments
+parser.add_argument('--simapro-output-process-type', default='System',
+                    help='The type of SimaPro process to generate.')
+
+args = parser.parse_args()
+
+
+def _load_hestia_impact(id: str):
+    from hestia_earth.converters.base.pydantic_models.hestia.hestia_file_tools import load_hestia_model_from_id
+    return load_hestia_model_from_id(id)
+
+
+def _load_impacts_from_zip_file(filepath: str):
+    if args.input_format == 'HESTIA':
+        from hestia_earth.converters.base.pydantic_models.hestia.hestia_file_tools import (
+            extract_impact_assessments_from_zip_file
+        )
+        return extract_impact_assessments_from_zip_file(filepath)
+    raise Exception(f"Loading ZIP file not supported for format: {args.input_format}")
+
+
+def _load_data_from_hestia():
+    if args.hestia_impact_id:
+        return [_load_hestia_impact(args.hestia_impact_id)]
+    if args.input_file.endswith('.zip'):
+        return _load_impacts_from_zip_file(args.input_file)
+
+
+def _download_flowmaps_if_required():
+    folder = args.mapping_files_directory
+    if not os.path.exists(folder):
+        print('Flowmaps directory not found, downloading latest avaiable')
+        from hestia_earth.converters.base.flowmaps import download_flowmaps
+        download_flowmaps(folder)
+
+
+def main():
+    converter_namespace = next((v for v in [
+        args.input_format.lower(),
+        args.output_format.lower(),
+    ] if v != 'hestia'), None)
+    try:
+        converter = importlib.import_module(
+            f"hestia_earth.converters.{converter_namespace}.{args.input_format.lower()}_to_{args.output_format.lower()}.convert"
+        ).convert
+    except ModuleNotFoundError:
+        raise Exception(f"Please install 'hestia-converters[{converter_namespace}]' first.")
+
+    _download_flowmaps_if_required()
+
+    if args.input_format == 'HESTIA':
+        data = _load_data_from_hestia()
+
+    if not data:
+        raise Exception(f"Could not load data from {args.input_format} format.")
+
+    converter(data, **vars(args))
+
+
+if __name__ == "__main__":
+    main()
