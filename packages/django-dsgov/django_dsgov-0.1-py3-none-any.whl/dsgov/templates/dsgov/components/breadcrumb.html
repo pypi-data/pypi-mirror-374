@@ -1,0 +1,53 @@
+{% extends "dsgov/base.html" %}
+{% load br_components %}
+{% load static %}
+
+{% block content %}
+    <nav class="br-breadcrumb" aria-label="Breadcrumbs">
+        <ol class="crumb-list" role="list">
+            {% if items %}
+                <!-- Primeiro item (Home) - Apenas ícone -->
+                {% with items.0 as home %}
+                    <li class="crumb home">
+                        <a class="br-button circle" href="{{ home.0 }}">
+                            <span class="sr-only">{{ home.1 }}</span>
+                            <i class="fas fa-home"></i>
+                        </a>
+                    </li>
+                {% endwith %}
+                <!-- Demais ancestrais (começando do segundo item) -->
+                {% for url, title in items|slice:"1:" %}
+                    <li class="crumb">
+                        <i class="icon fas fa-chevron-right"></i>
+                        <a href="{{ url }}">{{ title }}</a>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <!-- Breadcrumb estático de exemplo -->
+                <li class="crumb home">
+                    <a class="br-button circle" href="javascript:void(0)">
+                        <span class="sr-only">Página inicial</span>
+                        <i class="fas fa-home"></i>
+                    </a>
+                </li>
+                <li class="crumb">
+                    <i class="icon fas fa-chevron-right"></i>
+                    <a href="javascript:void(0)">Página Ancestral 01</a>
+                </li>
+                <li class="crumb">
+                    <i class="icon fas fa-chevron-right"></i>
+                    <a href="javascript:void(0)">Página Ancestral 02</a>
+                </li>
+                <li class="crumb">
+                    <i class="icon fas fa-chevron-right"></i>
+                    <a href="javascript:void(0)">Página Ancestral 03</a>
+                </li>
+            {% endif %}
+            <!-- Página atual -->
+            <li class="crumb" data-active="active">
+                <i class="icon fas fa-chevron-right"></i>
+                <span tabindex="0" aria-current="page">{{ current_title|default:"Página atual" }}</span>
+            </li>
+        </ol>
+    </nav>
+{% endblock %}

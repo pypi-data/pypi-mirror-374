@@ -1,0 +1,23 @@
+{% extends "dsgov/base.html" %}
+{% load br_components %}
+{% load static %}
+
+{% block content %}
+    <div class="br-list" role="list">
+        <div class="header">
+            <div class="title">{{ title }}</div>
+        </div>
+        <span class="br-divider"></span>
+        {% for item in items %}
+            <div class="br-item" role="listitem">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <i class="{{ item.icon }}" aria-hidden="true"></i>
+                    </div>
+                    <div class="col">{{ item.content }}</div>
+                    <div class="col-auto">{{ item.meta }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

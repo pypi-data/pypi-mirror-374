@@ -1,0 +1,23 @@
+{% extends "dsgov/base.html" %}
+{% load br_components %}
+{% load static %}
+
+{% block content %}
+    <div class="br-card hover" style="cursor: pointer;">
+        <div class="card-content">
+            <div class="d-flex align-items-center">
+                {% if icon_class %}
+                    <i class="fas {{ icon_class }} {{ icon_extra_class }}" style="{{ icon_style }}"></i>
+                {% endif %}
+                <div>
+                    <h4 class="{{ title_class }}" style="{{ title_style }}">
+                        {{ title }}
+                    </h4>
+                    <p class="{{ text_class }}" style="{{ text_style }}">
+                        {{ text }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
