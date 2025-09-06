@@ -1,0 +1,539 @@
+# ampy-proto — Canonical Schemas (Open Source)
+
+**Status:** Draft v1 (2025-09-06)  
+**Audience:** Implementers across Go, Python, and C++  
+**Goal:** Be the *single, versioned, language‑agnostic contract* for every data artifact and event in the AmpyFin ecosystem—so any ingestion source, research tool, or execution subsystem can be swapped without changing downstream logic.
+
+This README is **LLM‑ready**: it provides unambiguous goals, rules, and richly annotated **examples** (payload shapes) without prescribing implementation details or repository layout. Another model (or engineer) can implement Protobuf/IDL files, code generation, tests, and packaging in Go, Python, and C++ using only this document and the project background.
+
+---
+
+## 0) Project Background (Context)
+
+AmpyFin aims to build a self‑learning, modular trading system, with subsystems for trading operations, training, testing, and logging. Data ingestion may come from multiple interchangeable sources (e.g., DataBento C++ ingestion, Tiingo Go client, an improved open‑source `yfinance` Go client). The system must also normalize currencies (USD, EUR, JPY, KRW, etc.) via real‑time FX rates. To enable safe modularity and cross‑language interoperability, **ampy‑proto** defines canonical message schemas as the single source of truth.
+
+**Stack expectations:** Protobuf + Buf; codegen targets for Go, Python, and C++.  
+**Artifact:** Generated libraries/packages consumed by producers and consumers across the stack.
+
+---
+
+## 1) Problem Statement → What We’re Solving
+
+- **Schema drift** across teams and tools (ad‑hoc JSON, divergent field names, ambiguous semantics).
+- **Cross‑language friction** between high‑throughput ingestion (Go/C++) and ML/backtesting (Python).
+- **Financial precision** errors from binary floating‑point usage and inconsistent scales.
+- **Clock confusion**: mixing local times, missing distinctions between when events happen vs when we observed/processed them.
+- **Swap‑ability**: changing data providers or execution venues shouldn’t break downstream consumers.
+- **Reproducibility**: backtests and replays must be fully determined by message content and declared rules.
+
+---
+
+## 2) Success Criteria (Definition of Success)
+
+1. **Canonical Contracts:** All domains share a single set of stable, versioned Protobuf interfaces.
+2. **Zero Ad‑hoc Glue:** Any producer/consumer written in Go, C++, or Python interoperates without custom adapters.
+3. **Precision Guarantees:** Prices and monetary values use explicit scaled‑decimal semantics; currency is explicit.
+4. **Time Discipline:** All timestamps are UTC, with clear roles for `event_time`, `ingest_time`, and `as_of`.
+5. **Safe Evolution:** Clear compatibility policy (additive, deprecation, and v2 upgrade playbook) prevents accidental breakage.
+6. **Golden Samples:** Round‑trip tests across Go/Python/C++ verify parity—no silent coercions or precision loss.
+7. **Deterministic Views:** Adjustment policy, identity keys, and lineage metadata ensure byte‑for‑byte reproducibility.
+
+---
+
+## 3) Scope (What ampy‑proto Covers)
+
+**Domains (each its own versioned contract):**
+- `bars.v1`, `ticks.v1`, `fundamentals.v1`, `news.v1`, `fx.v1`, `corporate_actions.v1`, `universe.v1`, `signals.v1`, `orders.v1`, `fills.v1`, `positions.v1`, `metrics.v1`
+- A **common** dictionary used everywhere (decimal/money, currency codes, security identity, metadata).
+
+**Non‑Goals:** No business logic, storage engines, transport wiring, orchestration, UI, or vendor SDKs. Contracts only.
+
+---
+
+## 4) Global Conventions (Applies to Every Domain)
+
+1) **Time**
+- All times are **UTC**.
+- Distinguish:
+  - `event_time`: when the market/source says it happened
+  - `ingest_time`: when our system received it
+  - `as_of`: the logical timestamp used by downstream consumers/views
+- Backtests must be reproducible solely from payload content; avoid implicit timezone logic.
+
+2) **Precision**
+- Prices, rates, and money amounts use **scaled decimal** semantics (e.g., `scaled=123456`, `scale=4` → `12.3456`).
+- Define **allowed scales** per domain (e.g., FX 6–8 dp; equities 4–6 dp).
+
+3) **Currency**
+- Monetary values include **ISO‑4217** `currency_code` (USD, EUR, JPY, KRW, etc.).
+- Currency‑agnostic quantities (e.g., shares) must not carry currency codes.
+
+4) **Identity**
+- Do not rely on “ticker only.” Use **SecurityId** (e.g., `symbol`, `mic`, optional `figi`/`isin`).
+
+5) **Optional vs Missing**
+- Missing is **not** zero. When unknown is possible, mark fields optional and document defaulting behavior.
+
+6) **Lineage & Meta**
+- Every event includes **meta**: `run_id`, `source` (producer name), `producer` (instance id), `schema_version`, optional `checksum`.
+- Enables traceability, dedupe, and deterministic replays.
+
+7) **Batches**
+- High‑volume domains (bars, ticks, fills) support **batch messages** for efficient transport.
+- Document ordering (e.g., “sorted by `event_time` ascending” within batch).
+
+8) **Adjustments**
+- Bars/fundamentals declare whether values are **adjusted** and include an **adjustment_policy_id** (“raw”, “split_only”, “split_dividend”).
+
+9) **Compatibility**
+- **Never** change meaning or type of existing fields within a version (e.g., v1).
+- Additive changes must be optional with clear defaults. Breaking changes require a new major (e.g., `bars.v2`) and migration notes.
+
+---
+
+## 5) Interface Catalog (Purpose, Constraints, Producers/Consumers, and Examples)
+
+> All examples are **illustrative payloads** (no IDL). Include typical and edge‑case values to guide validation and conversions.
+
+### 5.1 Bars (`bars.v1`)
+
+**Purpose** — Aggregated OHLCV bars for any interval (1s, 1m, 5m, 1h, 1d).  
+**Produced by** — yfinance‑go, tiingo‑go, databento‑cpp (via aggregation), backfill jobs.  
+**Consumed by** — Warehouse writers, feature pipelines, backtester, model server.  
+**Required fields** — `security`, `start` (inclusive), `end` (exclusive), `open/high/low/close` (scaled decimals), `volume`, `adjusted`, `event_time` (bar close), `meta`.  
+**Constraints** — `start < end`; `open ≤ high`, `low ≤ close`, `low ≤ open/close ≤ high`; `volume ≥ 0` (if unknown, omit or use explicit “unknown” policy—not zero).
+
+**Typical example (1‑minute, adjusted)**
+```json
+{
+ "security": {"symbol":"AAPL","mic":"XNAS","figi":"","isin":""},
+ "start":"2025-09-05T19:30:00Z",
+ "end":"2025-09-05T19:31:00Z",
+ "open":{"scaled":1923450,"scale":4},
+ "high":{"scaled":1925600,"scale":4},
+ "low":{"scaled":1922200,"scale":4},
+ "close":{"scaled":1924100,"scale":4},
+ "vwap":{"scaled":1924105,"scale":4},
+ "volume":184230,
+ "trade_count":1432,
+ "adjusted":true,
+ "adjustment_policy_id":"split_dividend",
+ "event_time":"2025-09-05T19:31:00Z",
+ "ingest_time":"2025-09-05T19:31:01Z",
+ "as_of":"2025-09-05T19:31:01Z",
+ "meta":{"run_id":"run_abc123","source":"yfinance-go","producer":"ingest-1","schema_version":"ampy.bars.v1:1.0.0"}
+}
+```
+
+**Edge example (holiday/no trades)**
+```json
+{
+ "security":{"symbol":"7203","mic":"XTKS"},
+ "start":"2025-05-03T00:00:00Z",
+ "end":"2025-05-04T00:00:00Z",
+ "open":null,"high":null,"low":null,"close":null,
+ "volume":0,
+ "adjusted":false,
+ "adjustment_policy_id":"raw",
+ "event_time":"2025-05-04T00:00:00Z",
+ "ingest_time":"2025-05-04T00:00:00Z",
+ "meta":{"run_id":"backfill_gw9","source":"tiingo-go","producer":"batch-2","schema_version":"ampy.bars.v1:1.0.0"}
+}
+```
+
+---
+
+### 5.2 Ticks (`ticks.v1`)
+
+**Purpose** — Trade and quote updates for real‑time/HFT‑adjacent workflows.  
+**Produced by** — databento‑cpp, broker streams; optionally consolidated feeds.  
+**Consumed by** — Real‑time features, micro‑bar aggregators, OMS risk checks.
+
+**Trade tick example**
+```json
+{
+ "security":{"symbol":"MSFT","mic":"XNAS"},
+ "type":"TRADE",
+ "price":{"scaled":4275150,"scale":4},
+ "size":100,
+ "venue":"XNAS",
+ "event_time":"2025-09-05T19:30:12.451234Z",
+ "ingest_time":"2025-09-05T19:30:12.462100Z",
+ "meta":{"run_id":"live_0912","source":"databento-cpp","producer":"tick-ingest-3","schema_version":"ampy.ticks.v1:1.0.0"}
+}
+```
+
+**Quote tick example (NBBO‑like)**
+```json
+{
+ "security":{"symbol":"MSFT","mic":"XNAS"},
+ "type":"QUOTE",
+ "bid":{"scaled":4275000,"scale":4},
+ "bid_size":200,
+ "ask":{"scaled":4275300,"scale":4},
+ "ask_size":300,
+ "venue":"XNMS",
+ "event_time":"2025-09-05T19:30:12.451500Z",
+ "ingest_time":"2025-09-05T19:30:12.462300Z",
+ "meta":{"run_id":"live_0912","source":"databento-cpp","producer":"tick-ingest-3","schema_version":"ampy.ticks.v1:1.0.0"}
+}
+```
+
+**Edge cases** — Out‑of‑order `event_time`, crossed/locked markets, zero sizes, missing venue.
+
+---
+
+### 5.3 Fundamentals (`fundamentals.v1`)
+
+**Purpose** — Normalized statement items (IS, BS, CF) and ratios with period bounds.  
+**Produced by** — yfinance‑go, tiingo‑go, vendor pipelines.  
+**Consumed by** — Valuation, factor builders, research.
+
+**Snapshot example (quarterly)**
+```json
+{
+ "security":{"symbol":"AAPL","mic":"XNAS"},
+ "lines":[
+   {"key":"revenue","value":{"scaled":119870000000000,"scale":2},"currency_code":"USD","period_start":"2025-03-30T00:00:00Z","period_end":"2025-06-29T00:00:00Z"},
+   {"key":"net_income","value":{"scaled":2386000000000,"scale":2},"currency_code":"USD","period_start":"2025-03-30T00:00:00Z","period_end":"2025-06-29T00:00:00Z"},
+   {"key":"eps_basic","value":{"scaled":1525,"scale":2},"currency_code":"USD","period_start":"2025-03-30T00:00:00Z","period_end":"2025-06-29T00:00:00Z"}
+ ],
+ "source":"tiingo",
+ "as_of":"2025-08-01T00:00:00Z",
+ "meta":{"run_id":"fund_082","source":"tiingo-go","producer":"fund-ingest-1","schema_version":"ampy.fundamentals.v1:1.0.0"}
+}
+```
+
+**Edge cases** — Mixed currencies, restatements, negative EPS, missing line items.
+
+---
+
+### 5.4 News (`news.v1`)
+
+**Purpose** — Headlines/bodies with stable IDs and optional pre‑NLP sentiment.  
+**Produced by** — MarketBeat, RSS, vendor APIs.  
+**Consumed by** — Sentiment features, event filters, guardrails.
+
+**Item example (dedupe‑friendly id)**
+```json
+{
+ "id":"marketbeat:2025-09-05:amzn-headline-8b12c6",
+ "source":"marketbeat",
+ "url":"https://.../amzn-raises-guidance",
+ "headline":"Amazon Raises FY Guidance; Shares Tick Higher",
+ "body":"Amazon announced...",
+ "tickers":["AMZN","QQQ"],
+ "sentiment_score_bp":240,
+ "published_at":"2025-09-05T13:05:11Z",
+ "ingest_time":"2025-09-05T13:05:15Z",
+ "meta":{"run_id":"news_live_37","source":"marketbeat-go","producer":"news-2","schema_version":"ampy.news.v1:1.0.0"}
+}
+```
+
+**Edge cases** — Paywalled URLs, duplicate stories, retractions/updates.
+
+---
+
+### 5.5 FX (`fx.v1`)
+
+**Purpose** — Real‑time FX rates for normalization and cross‑market analysis.  
+**Produced by** — fxrates‑go (with provider fallbacks).  
+**Consumed by** — Fundamentals normalization, PnL in base currency, valuation.
+
+**Rate example**
+```json
+{
+ "pair":{"base":"USD","quote":"JPY"},
+ "bid":{"scaled":147230000,"scale":6},
+ "ask":{"scaled":147238000,"scale":6},
+ "mid":{"scaled":147234000,"scale":6},
+ "as_of":"2025-09-05T19:30:00Z",
+ "meta":{"run_id":"fx_145","source":"fxrates-go","producer":"fx-1","schema_version":"ampy.fx.v1:1.0.0"}
+}
+```
+
+**Edge cases** — Stale feeds, one‑sided markets, provider switching.
+
+---
+
+### 5.6 Corporate Actions (`corporate_actions.v1`)
+
+**Purpose** — Splits, dividends, spin‑offs; downstream adjustments and backtests.
+
+**Split example**
+```json
+{
+ "security":{"symbol":"TSLA","mic":"XNAS"},
+ "ratio_numerator":3,
+ "ratio_denominator":1,
+ "ex_date":"2025-08-15T00:00:00Z",
+ "meta":{"run_id":"ca_77","source":"corp-actions-go","producer":"ca-1","schema_version":"ampy.corporate_actions.v1:1.0.0"}
+}
+```
+
+**Dividend example**
+```json
+{
+ "security":{"symbol":"KO","mic":"XNYS"},
+ "cash_amount":{"amount":{"scaled":460,"scale":2},"currency_code":"USD"},
+ "ex_date":"2025-06-14T00:00:00Z",
+ "pay_date":"2025-07-01T00:00:00Z",
+ "meta":{"run_id":"ca_77","source":"corp-actions-go","producer":"ca-1","schema_version":"ampy.corporate_actions.v1:1.0.0"}
+}
+```
+
+---
+
+### 5.7 Universe (`universe.v1`)
+
+**Purpose** — Reproducible lists of tradable constituents (e.g., NASDAQ‑100), with rules.
+
+**Universe snapshot example**
+```json
+{
+ "universe_id":"nasdaq100_2025w36",
+ "constituents":[
+   {"symbol":"AAPL","mic":"XNAS"},
+   {"symbol":"MSFT","mic":"XNAS"},
+   {"symbol":"NVDA","mic":"XNAS"}
+ ],
+ "as_of":"2025-09-01T00:00:00Z",
+ "ruleset":"index=NASDAQ100; country=US; min_price=5; min_dollar_vol=1e6",
+ "meta":{"run_id":"univ_991","source":"symbol-master","producer":"universe-1","schema_version":"ampy.universe.v1:1.0.0"}
+}
+```
+
+**Edge cases** — Symbol changes, delistings, mid‑period adds/removals.
+
+---
+
+### 5.8 Signals (`signals.v1`)
+
+**Purpose** — Model/agent outputs as **scores** (continuous), **weights**, or explicit **actions**.  
+**Produced by** — Model servers, ensemble, rule engines.  
+**Consumed by** — OMS, backtester, dashboards.
+
+**Alpha score example (normalized in [-1,1])**
+```json
+{
+ "security":{"symbol":"NVDA","mic":"XNAS"},
+ "type":"ALPHA",
+ "score":{"scaled":-3450,"scale":4},
+ "model_id":"hyper@2025-09-05",
+ "horizon":"5d",
+ "generated_at":"2025-09-05T19:31:03Z",
+ "expires_at":"2025-09-12T19:31:03Z",
+ "meta":{"run_id":"live_0912","source":"ampy-model-server","producer":"mdl-1","schema_version":"ampy.signals.v1:1.0.0"}
+}
+```
+
+**Explicit action example**
+```json
+{
+ "security":{"symbol":"SPY","mic":"ARCX"},
+ "type":"ACTION",
+ "action":"BUY",
+ "model_id":"prag@2025-09-05",
+ "horizon":"1d",
+ "generated_at":"2025-09-05T19:31:03Z",
+ "expires_at":"2025-09-06T20:00:00Z",
+ "meta":{"run_id":"live_0912","source":"ampy-ensemble","producer":"ens-1","schema_version":"ampy.signals.v1:1.0.0"}
+}
+```
+
+**Edge cases** — Conflicting signals, expirations, score saturation.
+
+---
+
+### 5.9 Orders (`orders.v1`), Fills (`fills.v1`), Positions (`positions.v1`)
+
+**Purpose** — Execution flow from intent → outcome → state.
+
+**Order request example (limit)**
+```json
+{
+ "account_id":"ALPACA-LIVE-01",
+ "client_order_id":"co_20250905_001",
+ "security":{"symbol":"AAPL","mic":"XNAS"},
+ "side":"BUY",
+ "order_type":"LIMIT",
+ "tif":"DAY",
+ "quantity":{"scaled":1000000,"scale":2},
+ "limit_price":{"scaled":1919900,"scale":4},
+ "venue":"ALPACA",
+ "strategy_tag":"hyper",
+ "created_at":"2025-09-05T19:31:05Z",
+ "meta":{"run_id":"live_trading_44","source":"ampy-oms","producer":"oms-2","schema_version":"ampy.orders.v1:1.0.0"}
+}
+```
+
+**Fill event example (partial)**
+```json
+{
+ "account_id":"ALPACA-LIVE-01",
+ "client_order_id":"co_20250905_001",
+ "broker_order_id":"brk_778899",
+ "security":{"symbol":"AAPL","mic":"XNAS"},
+ "price":{"scaled":1920000,"scale":4},
+ "quantity":{"scaled":150000,"scale":2},
+ "venue":"ALPACA",
+ "event_time":"2025-09-05T19:31:06Z",
+ "meta":{"run_id":"live_trading_44","source":"broker-alpaca","producer":"alp-1","schema_version":"ampy.fills.v1:1.0.0"}
+}
+```
+
+**Position snapshot example**
+```json
+{
+ "account_id":"ALPACA-LIVE-01",
+ "security":{"symbol":"AAPL","mic":"XNAS"},
+ "quantity":{"scaled":985000,"scale":2},
+ "avg_price":{"scaled":1917500,"scale":4},
+ "unrealized_pnl":{"scaled":2450000,"scale":2},
+ "realized_pnl":{"scaled":-320000,"scale":2},
+ "as_of":"2025-09-05T19:35:00Z",
+ "meta":{"run_id":"live_trading_44","source":"ampy-position-pnl","producer":"pnl-1","schema_version":"ampy.positions.v1:1.0.0"}
+}
+```
+
+**Edge cases** — Cancels/replaces, rejections, fractional shares (scale), currency‑mismatched fills.
+
+---
+
+### 5.10 Metrics (`metrics.v1`)
+
+**Purpose** — Uniform operational metrics and counters for observability.  
+**Produced by** — Every service.  
+**Consumed by** — Dashboards, alerts, SLOs.
+
+**Metric example**
+```json
+{
+ "name":"oms.order_rejects",
+ "labels":{"broker":"alpaca","env":"prod","reason":"risk_check"},
+ "value":1.0,
+ "at":"2025-09-05T19:31:05Z"
+}
+```
+
+---
+
+## 6) Architecture (How These Contracts Are Used)
+
+- **Canonical IDL:** Protobuf messages define the contracts for each domain and a shared **common** package (decimal/money types, currency enums, SecurityId, Meta).
+- **Codegen Targets:** Go, Python, C++ generated packages; producers/consumers import these packages directly.
+- **Transport Agnostic:** The same message shapes are used whether events flow via pub/sub streams (Kafka, NATS, Redis streams, etc.) or RPC calls; transports must not alter semantics.
+- **Streaming (preferred):** High‑volume domains (ticks, bars, fills) use **pub/sub** topics mirroring domain names:
+  - `bars.v1.{mic}.{symbol}`
+  - `ticks.v1.trade.{symbol}` / `ticks.v1.quote.{symbol}`
+  - `news.v1.raw`, `fx.v1.rates`
+  - `signals.v1.{model_id}`
+  - `orders.v1.requests`, `fills.v1.events`, `positions.v1.snapshots`
+  - `metrics.v1.{service}`
+- **RPC (thin):** Minimal request/response for low‑volume actions (e.g., submit order, fetch universe). Use the **same** payloads to avoid RPC‑only schemas.
+- **Batching & Ordering:** Batch wrappers permitted for throughput; ordering is documented per domain (e.g., sorted by `event_time`).
+
+---
+
+## 7) Versioning & Change Management (Playbook)
+
+- **Additive changes:** Optional fields with explicit defaults; update examples showing absence/presence.
+- **Breaking changes:** Create a new major contract (`*.v2`) with a migration note (before/after examples, field mapping, overlap window).
+- **Deprecation:** Mark fields as deprecated in docs; never repurpose meanings.
+- **Enum growth:** Append only; never renumber. Include `*_UNSPECIFIED` to handle unknowns.
+
+**Change‑review checklist**
+1. Does the change alter semantics or type of any existing field? If yes → **new major** (v2).
+2. Are typical + sparse + edge examples updated?
+3. Do golden samples round‑trip across Go/Python/C++?
+4. Are time/precision/currency rules unchanged and consistent?
+
+---
+
+## 8) Validation & Testing (What “Good” Looks Like)
+
+- **Golden Samples:** ≥3 per domain (typical, sparse/minimal, edge/large).
+- **Cross‑Language Round‑Trip:** Serialize in Go, deserialize in Python/C++; values (including decimals & timestamps) compare equal.
+- **Precision Tests:** Boundary scales (0, 4, 6, 8 dp), large magnitudes, negatives; documented arithmetic expectations.
+- **Time Tests:** DST independence; `event_time ≤ ingest_time`; `start < end` for bars.
+- **Throughput Tests:** Batching guidance (payloads < target size); chunking rules.
+- **Dedupe Tests:** Same news `id` re‑emitted → consumers are idempotent per spec.
+- **Adjustment Tests:** Policy‑driven bar recomputation matches expected before/after pairs.
+
+---
+
+## 9) Operational Guidance (Producers/Consumers)
+
+- **Lineage:** Always set `meta.run_id`, `meta.source`, `meta.producer`.
+- **Idempotency:** Prefer stable IDs (news `id`, orders `client_order_id`). Document dedupe rules (e.g., hashing headline+published_at).
+- **Localization:** No local times or localized number formats inside payloads.
+- **Privacy/PII:** Prohibited in these messages.
+- **Documentation:** Maintain a **field dictionary** per domain (field → description → required? → example → constraints). Treat it as the user‑facing contract.
+
+---
+
+## 10) Acceptance Criteria (Definition of Done for ampy‑proto v1)
+
+1. All domains above have finalized field dictionaries and **three worked examples** each (typical, sparse/minimal, edge).
+2. Global rules (time, precision, currency, identity, meta, batches, adjustments) are documented with examples.
+3. Compatibility policy is published with concrete “add field” and “v2 migration” example scenarios.
+4. Golden samples exist and round‑trip across Go, Python, and C++ in a dry‑run env.
+5. An integration note explains how producers/consumers map to topics and which domains they must support.
+
+---
+
+## 11) Quick Cross‑Domain Example Flow (Narrative)
+
+1) **yfinance‑go** emits **bars.v1** (adjusted) for `AAPL@XNAS` in 1‑minute intervals with UTC times and `meta.source="yfinance-go"`.  
+2) **ampy‑features** consumes bars and computes features; **ampy‑model‑server** emits **signals.v1** (ALPHA scores with `model_id="hyper@..."`).  
+3) **ampy‑ensemble** transforms multiple signals into final **ACTION** signals.  
+4) **ampy‑oms** converts actions into **orders.v1**; **broker‑alpaca** emits **fills.v1** as executions occur.  
+5) **ampy‑position‑pnl** updates **positions.v1** snapshots; **metrics.v1** tracks operational counters.
+
+Throughout, every participant speaks **ampy‑proto** contracts, enabling modularity and safe evolution.
+
+---
+
+## 12) Usage Examples (How Other Modules Use ampy‑proto)
+
+- **Producers (e.g., yfinance‑go, databento‑cpp):** Construct domain messages (e.g., `bars.v1.Bar`), include `meta`, and publish to the corresponding stream topic.
+- **Consumers (e.g., Python feature/ML pipelines):** Deserialize domain messages directly from streams or storage; rely on the common decimal/money types for arithmetic.
+- **Backtests:** Load archived domain events; verify `as_of` and `adjustment_policy_id` ensure deterministic reproducibility.
+- **Observability:** Emit `metrics.v1` counters/gauges using the same time/label semantics across services.
+
+> Note: This module defines contracts only; transports, stores, and frameworks are outside scope but should adopt these payloads as‑is.
+
+---
+
+## 13) Implementation Notes for the LLM/Engineer (No Commands Here)
+
+- Define a **common** package for shared types: `Decimal`, `Money`, `CurrencyCode`, `SecurityId`, `Meta`, and batch wrappers.
+- Define one Protobuf package per domain listed in **Scope** using the shapes implied by the examples above.
+- Configure **Buf** for linting, breaking‑change checks, and multi‑language codegen (Go, Python, C++).
+- Produce **golden samples** (JSON or text‑proto) for typical, sparse, and edge cases—per domain.
+- Ensure **unit tests** verify cross‑language round‑trip and precision invariants.
+- Publish **generated libraries** and a brief integration note for producers/consumers.
+- No API keys are required for this project; it is purely schema/IDL and codegen.
+
+---
+
+## 14) FAQ
+
+**Q: Why scaled decimals instead of floats?**  
+A: To avoid binary floating‑point rounding errors in P&L, rates, and prices. Scales are explicit and consistent.
+
+**Q: Why UTC everywhere?**  
+A: To avoid DST and locale issues; reproducibility requires time discipline.
+
+**Q: Can we evolve enums freely?**  
+A: Append‑only; never renumber existing values. Include `*_UNSPECIFIED` to handle unknowns.
+
+**Q: Do we mandate a transport?**  
+A: No—contracts are transport‑agnostic. Streaming is recommended for high‑volume domains.
+
+---
+
+## 15) License & Governance (Placeholder)
+
+- License: Apache‑2.0 (recommended for broad adoption; confirm before release).
+- Governance: Standard PR review with schema compatibility checks enforced by Buf.
