@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tkinter-videoplayer"
+version = "1.0.0"
+description = "A simple video player widget for Tkinter."
+authors = [
+    { name = "cmdr2", email = "dev@cmdr2.org" }
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.7"
+dependencies = [
+    "tkinter",
+    "opencv-python",
+    "Pillow"
+]
+
+[project.urls]
+Homepage = "https://github.com/cmdr2/tkinter-videoplayer"
+Repository = "https://github.com/cmdr2/tkinter-videoplayer"
+
+[tool.setuptools]
+packages = ["tkinter_videoplayer"]
+include-package-data = true
