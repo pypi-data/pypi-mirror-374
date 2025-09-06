@@ -1,0 +1,12 @@
+[project]
+name = "examples"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "python-dotenv>=1.1.1",
+    "openai-agents-mcp>=0.0.8",
+    "openai-agents>=0.2.11",
+    "mcp-agent>=0.1.15",  # Transitive dependency of openai-agents
+]
