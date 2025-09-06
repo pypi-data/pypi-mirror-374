@@ -1,0 +1,159 @@
+[build-system]
+requires = ['setuptools >= 61.0.0']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'fsqc'
+description = 'Quality control scripts for FastSurfer and FreeSurfer structural MRI data'
+license = {file = 'LICENSE'}
+requires-python = '>=3.9'
+authors = [
+    {name = 'Kersten Diers', email = 'kersten.diers@dzne.de'},
+    {name = 'Martin Reuter', email = 'martin.reuter@dzne.de'}
+]
+maintainers = [
+    {name = 'Kersten Diers', email = 'kersten.diers@dzne.de'},
+    {name = 'Martin Reuter', email = 'martin.reuter@dzne.de'}
+]
+keywords = [
+    'FastSurfer',
+    'FreeSurfer',
+    'Quality control',
+    'Quality assurance',
+]
+classifiers = [
+    'Operating System :: Unix',
+    'Operating System :: MacOS',
+    'Programming Language :: Python :: 3 :: Only',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Natural Language :: English',
+    'License :: OSI Approved :: MIT License',
+    'Intended Audience :: Science/Research',
+]
+dynamic = ["version", "readme", "dependencies"]
+
+[project.optional-dependencies]
+build = [
+    'build',
+    'twine',
+]
+doc = [
+    'furo!=2023.8.17',
+    'matplotlib',
+    'memory-profiler',
+    'numpydoc',
+    'sphinx!=7.2.*',
+    'sphinxcontrib-bibtex',
+    'sphinx-copybutton',
+    'sphinx-design',
+    'sphinx-gallery',
+    'sphinx-issues',
+    'pypandoc',
+    'nbsphinx',
+    'IPython', # For syntax highlighting in notebooks
+    'ipykernel',
+]
+style = [
+    'bibclean',
+    'codespell',
+    'pydocstyle[toml]',
+    'ruff',
+]
+test = [
+    'pytest',
+    'pytest-cov',
+    'pytest-timeout',
+]
+all = [
+    'fsqc[build]',
+    'fsqc[doc]',
+    'fsqc[style]',
+]
+full = [
+    'fsqc[all]',
+]
+
+[project.urls]
+homepage = 'https://github.com/Deep-MI/fsqc'
+documentation = 'https://github.com/Deep-MI/fsqc'
+source = 'https://github.com/Deep-MI/fsqc'
+tracker = 'https://github.com/Deep-MI/fsqc/issues'
+
+[project.scripts]
+run_fsqc = 'fsqc.cli:main'
+fsqc-sys_info = 'fsqc.commands.sys_info:run'
+
+[tool.setuptools.dynamic]
+version = {file = 'VERSION'}
+readme = {file = 'DESCRIPTION.md', content-type = "text/markdown"}
+dependencies = {file = 'requirements.txt'}
+
+#[tool.setuptools] ### probably not needed
+#include-package-data = false
+
+[tool.setuptools.packages.find]
+include = ['fsqc', 'fsqc.cli', 'fsqc.commands', 'fsqc.utils']
+exclude = ['docker', 'singularity']
+
+[tool.pydocstyle]
+convention = 'numpy'
+ignore-decorators = '(copy_doc|property|.*setter|.*getter|pyqtSlot|Slot)'
+match = '^(?!setup|__init__|test_).*\.py'
+match-dir = '^fsqc.*'
+add_ignore = 'D100,D104,D107'
+
+[tool.ruff]
+line-length = 88
+extend-exclude = [
+    ".github",
+    "doc",
+    "docker",
+    "setup.py",
+    "singularity",
+]
+ignore = ["E501"] # line too long (should be enforced soon)
+
+
+[tool.ruff.lint]
+# https://docs.astral.sh/ruff/linter/#rule-selection
+select = [
+    "E",   # pycodestyle
+    "F",   # Pyflakes
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "I",   # isort
+    # "SIM", # flake8-simplify
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.pytest.ini_options]
+minversion = '6.0'
+filterwarnings = []
+addopts = [
+    "--import-mode=importlib",
+    "--junit-xml=junit-results.xml",
+    "--durations=20",
+    "--verbose",
+]
+
+[tool.coverage.run]
+branch = true
+cover_pylib = false
+omit = [
+    '**/__init__.py',
+    '**/fsqc/_version.py',
+    '**/fsqc/commands/*',
+    '**/tests/**',
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    'pragma: no cover',
+    'if __name__ == .__main__.:',
+]
+precision = 2
