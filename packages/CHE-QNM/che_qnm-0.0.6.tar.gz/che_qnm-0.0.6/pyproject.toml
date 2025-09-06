@@ -1,0 +1,22 @@
+[project]
+name = "CHE_QNM"
+version = "0.0.6"
+authors = [
+  { name="Stef J.B. Husken", email="stef.husken@student.kuleuven.be" },
+]
+description = "Package to solve QNMs using HeunC_functions"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["CHE_QNM"]
+
+[tool.setuptools.package-data]
+CHE_QNM = ["data/*.txt"]
