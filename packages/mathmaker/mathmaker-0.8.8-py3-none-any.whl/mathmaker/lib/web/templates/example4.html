@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcul mental : passage de la ceinture blanche</title>
+    <script src="https://cdn.jsdelivr.net/npm/fireworks-js@2.x/dist/index.umd.js"></script>
+    <style>
+        :root {
+            /* Parameters */
+            --font-size-multiplicator: 1.2;
+            --note-font-size-multiplicator: 0.75; /* Note is details in a question */
+
+            /* Question mark */
+            --question-mark-color: #c5000b;
+            --question-mark-weight: bold;
+
+            /* Counter */
+            --counter-background-color: #3771c8;
+            --counter-text-color: #fff;
+            --counter-font-weight: bold;
+
+            /* Answer input */
+            --answer-input-background-color: #c3e4f8;
+
+            /* Answer box */
+            --answer-box-width: 10rem;
+
+            /* Form buttons */
+            --button-background-color: #fff;
+            --button-text-color: #000;
+
+            /* Calculated parameters */
+            --font-size: calc(1.2rem * var(--font-size-multiplicator));
+            --width-multiplicator: calc((var(--font-size-multiplicator) + 1) / 2);
+            --counter-text-size: calc(var(--font-size-multiplicator) * 1rem);
+            --counter-bullet-size: calc(1.6 * var(--counter-text-size));
+            --answer-input-width: calc(4rem * var(--width-multiplicator));
+            --note-font-size: calc(var(--note-font-size-multiplicator) * var(--font-size));
+        }
+
+        body {
+            font-family: Ubuntu, Arial, Helvetica, sans-serif;
+        }
+
+        header {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            h1 {
+                flex: 1;
+            }
+        }
+
+        .container {
+            width: clamp(320px, 90vw, 800px);
+            margin: 0 auto; /* Centrage */
+        }
+
+        #score-box {
+            border: 1px solid #000;
+            padding: 0.5rem;
+        }
+
+        #score {
+            display: inline-block;
+            min-width: calc(3rem * var(--width-multiplicator));
+        }
+
+        .question-mark {
+            color: var(--question-mark-color);
+            font-weight: var(--question-mark-weight);
+        }
+
+        section.list {
+            ol {
+                list-style: none;
+                counter-reset: exercice;
+                padding-left: 0;
+
+                li {
+                    counter-increment: exercice;
+                    border-top: 1px solid black;
+                    font-size: var(--font-size);
+
+                    &:last-of-type {
+                        border-bottom: 1px solid black;
+                    }
+
+                    display: grid;
+                    grid-template-columns: auto 1fr var(--answer-box-width); /* Compteur + Question + Réponse (largeur fixe) */
+                    gap: 0.5rem 1rem; /* row-gap column-gap */
+                    align-items: center;
+
+                    &:before {
+                        content: counter(exercice);
+                        background: var(--counter-background-color);
+                        color: var(--counter-text-color);
+                        font-size: var(--counter-text-size);
+                        font-weight: var(--counter-font-weight);
+                        border-radius: 50%;
+                        width: var(--counter-bullet-size);
+                        height: var(--counter-bullet-size);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-shrink: 0;
+                        align-self: center;
+                    }
+
+                    .question {
+                        grid-column: 2;
+                        align-self: center;
+                    }
+
+                    .answer-box {
+                        grid-column: 3;
+                        align-self: center;
+                        border-left: 1px solid black;
+                        width: var(--answer-box-width); /* Largeur fixe pour assurer l'alignement */
+                        box-sizing: border-box;
+                        padding: 1rem;
+                    }
+
+                    .note {
+                        display: block;
+                        font-size: var(--note-font-size);
+                        font-style: italic;
+                    }
+
+                    input.answer {
+                        display: inline-block;
+                        padding: 0.5rem;
+                        font-size: var(--font-size);
+                        width: var(--answer-input-width);
+                        background-color: var(--answer-input-background-color);
+                        border: 1px solid black;
+                    }
+                }
+            }
+
+            .buttons {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 2rem;
+            }
+
+            input[type="reset"],
+            input[type="submit"],
+            button#toggle-solutions {
+                padding: 0.5rem 1rem;
+                border: 1px solid #000;
+                background-color: var(--button-background-color);
+                color: var(--button-text-color);
+                cursor: pointer;
+                font-size: var(--font-size);
+            }
+        }
+
+        section#solutions {
+            .answer-box {
+                color: green;
+            }
+        }
+
+        input.answer {
+            text-align: center;
+            padding: 0.2rem;
+        }
+
+        .answer.success + .validation-icon::after {
+            content: " ✓";
+            color: green;
+        }
+
+        .answer.fail + .validation-icon::after {
+            content: " ❌";
+            color: red;
+        }
+
+        .fireworks-container {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            transition: background-color 1.5s ease-in-out;
+        }
+
+        .fireworks-container.fireworks-active {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        @media screen and (max-width: 768px) {
+            header {
+                flex-direction: column;
+            }
+
+            section.list {
+                ol {
+                    li {
+                        grid-template-columns: auto 1fr; /* Compteur + reste */
+                        grid-template-rows: auto auto;   /* Question + answer */
+                        padding: 0.5rem 0;
+
+                        .question {
+                            grid-row: 1;
+                            grid-column: 2;
+                            /*padding: 1rem;*/
+                            text-align: left;
+                        }
+
+                        div.answer-box {
+                            grid-row: 2;
+                            grid-column: 2;
+                            border: none;
+                            padding: 0;
+                            width: auto;
+                            text-align: left;
+                        }
+                    }
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="container">
+        <h1>Calcul mental : passage de la ceinture blanche</h1>
+        <div id="score-box">
+            Score : <span id="score"></span>
+        </div>
+    </header>
+    <main class="container">
+        <section class="questions list">
+            <form>
+                <ol>
+                    <li>
+                        <div class="question">
+                            <label for="q1">
+                                8 × 6 = <span class="question-mark">?</span>
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q1" type="text" data-accepted="[48]">
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <label for="q2">
+                                <span class="question-mark">?</span> × <span class="question-mark">?</span> = 24
+                                <span class="note">(dans les tables de multiplication, de 2 à 9)</span>
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q2" type="text" data-accepted='["6*4","4*6","8*3","3*8"]'>
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <label for="q3">
+                                <span class="question-mark">?</span> × <span class="question-mark">?</span> = 54
+                                <span class="note">(dans les tables de multiplication, de 2 à 9)</span>
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q3" type="text" data-accepted='["9*6","6*9"]'>
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <label for="q4">
+                                3 × 7 = <span class="question-mark">?</span>
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q4" type="text" data-accepted="[21]">
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <label for="q5">
+                                7 × <span class="question-mark">?</span> = 42
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q5" type="text" data-accepted="[6]">
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <label for="q6">
+                                7 × 9 = <span class="question-mark">?</span>
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q6" type="text" data-accepted="[63]">
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <label for="q7">
+                                <span class="question-mark">?</span> × 3 = 15
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q7" type="text" data-accepted="[5]">
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <label for="q8">
+                                <span class="question-mark">?</span> × <span class="question-mark">?</span> = 81
+                                <span class="note">(dans les tables de multiplication, de 2 à 9)</span>
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q8" type="text" data-accepted='["9*9"]'>
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <label for="q9">
+                                7 × 7 = <span class="question-mark">?</span>
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q9" type="text" data-accepted="[49]">
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <label for="q10">
+                                <span class="question-mark">?</span> × 2 = 16
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q10" type="text" data-accepted="[8]">
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <label for="q11">
+                                7 × <span class="question-mark">?</span> = 28
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q11" type="text" data-accepted="[4]">
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <label for="q12">
+                                8 × 9 = <span class="question-mark">?</span>
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q12" type="text" data-accepted="[72]">
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <label for="q13">
+                                <span class="question-mark">?</span> × <span class="question-mark">?</span> = 56
+                                <span class="note">(dans les tables de multiplication, de 2 à 9)</span>
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q13" type="text" data-accepted='["7*8","8*7"]'>
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <label for="q14">
+                                9 × 3 = <span class="question-mark">?</span>
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q14" type="text" data-accepted="[27]">
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <label for="q15">
+                                7 × 5 = <span class="question-mark">?</span>
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q15" type="text" data-accepted="[35]">
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <label for="q16">
+                                6 × 6 = <span class="question-mark">?</span>
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q16" type="text" data-accepted="[36]">
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <label for="q17">
+                                <span class="question-mark">?</span> × <span class="question-mark">?</span> = 64
+                                <span class="note">(dans les tables de multiplication, de 2 à 9)</span>
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q17" type="text" data-accepted='["8*8"]'>
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <label for="q18">
+                                <span class="question-mark">?</span> × <span class="question-mark">?</span> = 24
+                                <span class="note">(dans les tables de multiplication, de 2 à 9)</span>
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q18" type="text" data-accepted='["3*8","8*3","4*6","6*4"]'>
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <label for="q19">
+                                5 × <span class="question-mark">?</span> = 15
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q19" type="text" data-accepted="[3]">
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <label for="q20">
+                                <span class="question-mark">?</span> × 5 = 45
+                            </label>
+                        </div>
+                        <div class="answer-box">
+                            <input class="answer" id="q20" type="text" data-accepted="[9]">
+                            <span class="validation-icon"></span>
+                        </div>
+                    </li>
+                </ol>
+                <div class="buttons">
+                    <input type="reset" value="Tout effacer">
+                    <button type="button" id="toggle-solutions">Afficher les réponses</button>
+                    <input type="submit" id="validate" value="Valider">
+                </div>
+
+            </form>
+        </section>
+        <section id="solutions" class="list" hidden>
+            <h2>Réponses (ceinture blanche)</h2>
+            <ol>
+                <li>
+                    <div class="question">
+                        8 × 6 = <span class="question-mark">?</span>
+                    </div>
+                    <div class="answer-box">48</div>
+                </li>
+                <li>
+                    <div class="question">
+                        <span class="question-mark">?</span> × <span class="question-mark">?</span> = 24
+                        <span class="note">(dans les tables de multiplication, de 2 à 9)</span>
+                    </div>
+                    <div class="answer-box">4 × 6 ou 3 × 8</div>
+                </li>
+                <li>
+                    <div class="question">
+                        <span class="question-mark">?</span> × <span class="question-mark">?</span> = 54
+                        <span class="note">(dans les tables de multiplication, de 2 à 9)</span>
+                    </div>
+                    <div class="answer-box">6 × 9</div>
+                </li>
+                <li>
+                    <div class="question">
+                        3 × 7 = <span class="question-mark">?</span>
+                    </div>
+                    <div class="answer-box">21</div>
+                </li>
+                <li>
+                    <div class="question">
+                        7 × <span class="question-mark">?</span> = 42
+                    </div>
+                    <div class="answer-box">6</div>
+                </li>
+                <li>
+                    <div class="question">
+                        7 × 9 = <span class="question-mark">?</span>
+                    </div>
+                    <div class="answer-box">63</div>
+                </li>
+                <li>
+                    <div class="question">
+                        <span class="question-mark">?</span> × 3 = 15
+                    </div>
+                    <div class="answer-box">5</div>
+                </li>
+                <li>
+                    <div class="question">
+                        <span class="question-mark">?</span> × <span class="question-mark">?</span> = 81
+                        <span class="note">(dans les tables de multiplication, de 2 à 9)</span>
+                    </div>
+                    <div class="answer-box">9 × 9</div>
+                </li>
+                <li>
+                    <div class="question">
+                        7 × 7 = <span class="question-mark">?</span>
+                    </div>
+                    <div class="answer-box">49</div>
+                </li>
+                <li>
+                    <div class="question">
+                        <span class="question-mark">?</span> × 2 = 16
+                    </div>
+                    <div class="answer-box">8</div>
+                </li>
+                <li>
+                    <div class="question">
+                        7 × <span class="question-mark">?</span> = 28
+                    </div>
+                    <div class="answer-box">4</div>
+                </li>
+                <li>
+                    <div class="question">
+                        8 × 9 = <span class="question-mark">?</span>
+                    </div>
+                    <div class="answer-box">72</div>
+                </li>
+                <li>
+                    <div class="question">
+                        <span class="question-mark">?</span> × <span class="question-mark">?</span> = 56
+                        <span class="note">(dans les tables de multiplication, de 2 à 9)</span>
+                    </div>
+                    <div class="answer-box">7 × 8</div>
+                </li>
+                <li>
+                    <div class="question">
+                        9 × 3 = <span class="question-mark">?</span>
+                    </div>
+                    <div class="answer-box">27</div>
+                </li>
+                <li>
+                    <div class="question">
+                        7 × 5 = <span class="question-mark">?</span>
+                    </div>
+                    <div class="answer-box">35</div>
+                </li>
+                <li>
+                    <div class="question">
+                        6 × 6 = <span class="question-mark">?</span>
+                    </div>
+                    <div class="answer-box">36</div>
+                </li>
+                <li>
+                    <div class="question">
+                        <span class="question-mark">?</span> × <span class="question-mark">?</span> = 64
+                        <span class="note">(dans les tables de multiplication, de 2 à 9)</span>
+                    </div>
+                    <div class="answer-box">8 × 8</div>
+                </li>
+                <li>
+                    <div class="question">
+                        <span class="question-mark">?</span> × <span class="question-mark">?</span> = 24
+                        <span class="note">(dans les tables de multiplication, de 2 à 9)</span>
+                    </div>
+                    <div class="answer-box">3 × 8 ou 4 × 6</div>
+                </li>
+                <li>
+                    <div class="question">
+                        5 × <span class="question-mark">?</span> = 15
+                    </div>
+                    <div class="answer-box">3</div>
+                </li>
+                <li>
+                    <div class="question">
+                        <span class="question-mark">?</span> × 5 = 45
+                    </div>
+                    <div class="answer-box">9</div>
+                </li>
+            </ol>
+        </section>
+    </main>
+    <div class="fireworks-container"
+         style="z-index: -1; background-size: cover; background-position: 50% 50%; background-repeat: no-repeat;"></div>
+    <script>
+        const solutionsSection = document.getElementById('solutions');
+        const toggleButton = document.getElementById('toggle-solutions');
+
+        const toggleSolutions = function () {
+            if (solutionsSection.hasAttribute('hidden')) {
+                solutionsSection.removeAttribute('hidden');
+                toggleButton.innerHTML = 'Cacher les réponses';
+            } else {
+                solutionsSection.setAttribute('hidden', '');
+                toggleButton.innerHTML = 'Afficher les réponses';
+            }
+        }
+
+        document.getElementById('toggle-solutions').addEventListener('click', function () {
+            toggleSolutions();
+        });
+
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            validateAnswers();
+        });
+
+        const fireworksContainer = document.querySelector('.fireworks-container')
+        const fireworks = new Fireworks.default(fireworksContainer)
+
+        const startFireworks = function () {
+            fireworksContainer.classList.add('fireworks-active');
+            fireworksContainer.style.zIndex = 1;
+            fireworks.start();
+        }
+
+        const validateAnswers = function () {
+            const answers = document.querySelectorAll('input[type="text"].answer');
+            let score = 0;
+            let errors = 0;
+            answers.forEach(answer => {
+                const accepted = JSON.parse(answer.dataset.accepted).map(String);
+                const answerValue = answer.value.replace(/\s/g, '');
+                if (accepted.includes(answerValue)) {
+                    answer.classList.remove('fail');
+                    answer.classList.add('success');
+                    score++;
+                } else {
+                    answer.classList.remove('success');
+                    answer.classList.add('fail');
+                    errors++;
+                }
+            });
+
+            document.getElementById('score').textContent = score;
+            if (errors === 0) {
+                startFireworks();
+            }
+        }
+
+        document.querySelector('.fireworks-container').addEventListener('click', function(event) {
+            fireworksContainer.classList.remove('fireworks-active');
+
+            fireworksContainer.addEventListener('transitionend', (e) => {
+                fireworks.stop();
+                fireworksContainer.style.zIndex = -1;
+
+            }, {once: true})
+        });
+
+        document.querySelector('input[type=reset]').addEventListener('click', function () {
+            document.querySelectorAll('input.answer').forEach(answer => {
+                answer.classList.remove('fail', 'success');
+            });
+            document.getElementById('score').textContent = '';
+        })
+    </script>
+</body>
+</html>
