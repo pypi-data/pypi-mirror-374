@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>causara</title>
+  <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #333;
+      --accent-color: #DF6F65;
+      --background-color: #f0f2f5;
+      --container-bg: #fff;
+      --font-family: 'Wix Madefor Display', sans-serif;
+      --border-radius: 12px;
+      --transition: 0.3s ease;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--background-color);
+      font-family: var(--font-family);
+      font-size: 0.9vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      width: 700px;
+      background: var(--container-bg);
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      padding: 2rem 3rem;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 2rem;
+      font-size: 1.4vw;
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+    .controls button,
+    .controls select {
+      flex: 1;
+      font-size: 0.9vw;
+      padding: 0.75rem 1rem;
+      border-radius: 5px;
+      box-sizing: border-box;
+      transition: background-color var(--transition);
+    }
+    .controls button {
+      background: var(--accent-color);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+    }
+    .controls button:hover {
+      background: #c75b54;
+    }
+    .controls select {
+      border: 1px solid #ccc;
+      /* Remove native appearance for consistent height */
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      /* Add custom arrow using an inline SVG */
+      background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'><polygon points='0,0 10,0 5,7' fill='%23333'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 10px 7px;
+    }
+    .dropzone {
+      border: 2px dashed #aaa;
+      border-radius: var(--border-radius);
+      padding: 3rem;
+      min-height: 150px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      background: var(--container-bg);
+      color: #555;
+      font-size: 1.0vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color var(--transition);
+      margin-bottom: 25px;
+    }
+    .dropzone:hover {
+      background-color: #f9fafb;
+      /* Border color remains unchanged on hover */
+    }
+    .dropzone p {
+      margin: 0;
+    }
+    *:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(223, 111, 101, 0.5);
+    }
+    #onlineModel {
+      margin-left: 50px;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const dropdown = document.getElementById('onlineModel');
+      dropdown.addEventListener('change', function() {
+        const selectedModel = dropdown.value;
+        if (selectedModel) {
+          pywebview.api.load_online_model(selectedModel)
+            .then(response => alert(response))
+            .catch(error => console.error('Error loading model:', error));
+        }
+      });
+    });
+    function openModelFile() {
+      pywebview.api.load_model_with_file_dialog()
+        .then(response => {
+          if (response) {
+            alert(response);
+          }
+        });
+    }
+    function handleDragOver(event) {
+      event.preventDefault();
+    }
+    function handleFileDrop(event) {
+      event.preventDefault();
+      const file = event.dataTransfer.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64DataUrl = e.target.result;
+        pywebview.api.load_local_model(file.name, base64DataUrl)
+          .then(response => {
+            if (response) {
+              alert(response);
+            }
+          });
+      };
+      reader.readAsDataURL(file);
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Select a Causara Model</h1>
+    <div class="controls">
+      <button onclick="openModelFile()" id="loadLocal">Load model from file</button>
+      <select id="onlineModel">
+        <option value="">-- select online model --</option>
+      </select>
+    </div>
+    <div class="dropzone" ondragover="handleDragOver(event)" ondrop="handleFileDrop(event)">
+      <p>Drag & Drop your *.causara_model file here</p>
+    </div>
+  </div>
+</body>
+</html>

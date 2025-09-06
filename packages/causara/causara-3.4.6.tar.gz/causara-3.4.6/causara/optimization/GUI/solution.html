@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>causara</title>
+    <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        *:focus {
+            outline: none;
+        }
+
+        body {
+            margin: 0;
+            position: relative;
+            height: 100vh;
+            font-size: 0.95vw;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        textarea:focus {
+          outline: none;
+        }
+
+        .summary {
+            position: absolute;
+            left: 3%;
+            top: 6%;
+            width: 16%;
+            height: 7%;
+            background-color: #DF6F65;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2px;
+            box-sizing: border-box;
+            border-radius: 12px;
+            font-size: 1.3vw;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .summary:hover {
+            background-color: #db564b;
+            cursor: pointer;
+        }
+
+        .solutions {
+            position: absolute;
+            left: 20%;
+            top: 2%;
+            width: 70%;
+            height: 18%;
+            overflow-y: hidden;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            font-family: 'Wix Madefor Display', sans-serif;
+        }
+        .solution {
+            flex: 0 0 auto;
+            background-color: #ffffff;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 6px;
+            padding-bottom: 12px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-left: 14px;
+            margin-right: 8px;
+        }
+        .solution-button, .choose-button {
+            background-color: white;
+            border: none;
+            padding: 10px 15px;
+            padding-left: 20px;
+            padding-right: 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1vw;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-family: 'Wix Madefor Display', sans-serif;
+        }
+        .solution-button .arrow-icon {
+            width: 18px;
+            height: 18px;
+            margin-left: 15px;
+            margin-top: 1px;
+            transition: transform 0.3s;
+        }
+        .solution-button:hover .arrow-icon {
+            transform: translateX(5px);
+        }
+        .choose-button {
+            font-size: 0.9vw;
+            background-color: #f5e4e1;
+            font-weight: normal;
+        }
+        .choose-button:hover {
+            background-color: #edbca8;
+        }
+
+        .buttons {
+            position: absolute;
+            left: 93%;
+            top: 4%;
+            width: 4%;
+            height: 7%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2px;
+            box-sizing: border-box;
+            border-radius: 2px;
+        }
+        .back-button {
+            position: absolute;
+            border-radius: 999px;
+            right: 0;
+            background-color: #f0f2f5;
+            box-shadow: 0 0px 0px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: right;
+            padding: 2px;
+            margin-left: 15px;
+            border: none;
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background-color: lightgray;
+        }
+        .back-button img {
+            width: 37px;
+            height: 37px;
+        }
+
+        .chart, .current-metrics, .create-new-metric, .ask {
+            position: absolute;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart {
+            left: 2%;
+            top: 22%;
+            width: 33%;
+            height: 36%;
+            background-color: white;
+        }
+        .chart img {
+            margin: 0;
+            width: 99%;
+            height: 99%; /* Maintains aspect ratio */
+            display: block; /* Removes any unwanted inline spacing */
+            margin: 0 auto; /* Centers the image horizontally */
+        }
+
+        .create-new-metric {
+            left: 2%;
+            top: 66%;
+            width: 33%;
+            height: 24%;
+        }
+        .create-new-metric textarea {
+            margin-top: 1%;
+            margin-left: 3.5%;
+            width: 90%;
+            height: 56%;
+            margin-bottom: 10px;
+            font-family: 'Wix Madefor Display', sans-serif;
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 0.95vw;
+        }
+        .create-new-metric button {
+            font-size: 0.95vw;
+            background: #DF6F65;
+            color: #fff;
+            border-radius: 4px;
+            padding: 12px 40px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+            margin-left: 3.5%;
+        }
+        .create-new-metric button:hover {
+            background: #db564b;
+        }
+
+        .current-metrics {
+            left: 40%;
+            top: 22%;
+            width: 20%;
+            height: 68%;
+            overflow-y: auto;
+        }
+        .current-metrics ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+        .current-metrics ul li {
+            display: flex;
+            align-items: center; /* Vertically centers the items */
+            justify-content: space-between; /* Adds space between the items */
+            margin-bottom: -20px; /* Reduced space between list items */
+            margin-right: -5px;
+        }
+        .current-metrics ul li p {
+            display: flex;
+            width: 70%;
+            margin-left: 1.6vh;
+            height: 2.4vh;
+            padding: 8px;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            font-size: 0.95vw;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .current-metrics ul li img {
+            width: 2.4vh;
+            height: 2.4vh;
+            float: right;
+            padding: 8px;
+            cursor: pointer;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 1vh;
+        }
+        .current-metrics ul li img:hover {
+            background-color: lightgray;
+        }
+
+        .ask {
+            left: 65%;
+            top: 22%;
+            width: 30%;
+            height: 68%;
+        }
+        .AI-text, .user-text {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin: 15px 0; /* Increased from 5px to 15px for more vertical space */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            word-wrap: break-word;
+            position: relative;
+            font-size: 0.95vw;
+            color: #444;
+        }
+        .AI-text {
+            background-color: #f5e4e1; /* Light red */
+            align-self: flex-start;
+            margin-right: auto;
+        }
+        .user-text {
+            background-color: #bfdce3; /* Light blue */
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        .AI-text::after {
+            left: -10px;
+            top: 10px;
+            border-width: 5px 10px 5px 0;
+            border-color: transparent #e6f4ea transparent transparent;
+        }
+        .user-text::after {
+            right: -10px;
+            top: 10px;
+            border-width: 5px 0 5px 10px;
+            border-color: transparent transparent transparent #e3f2fd;
+        }
+        #chat {
+            width: 88%;
+            height: 72%;
+            overflow-y: auto;
+            padding-left: 7%;
+            padding-right: 7%;
+        }
+        .chat-textarea {
+            margin-top: 6%;
+            margin-left: 3%;
+            width: 89%;
+            height: 15%;
+            margin-bottom: 10px;
+            font-size: 0.95vw;
+            font-family: 'Wix Madefor Display', sans-serif;
+            border-radius: 8px;
+            padding: 0.75rem;
+        }
+
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
+        }
+        #spinner {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 9998;
+        }
+
+    </style>
+
+    <script>
+
+        function callNewMetric() {
+            window.pywebview.api.create_new_metric();
+        }
+
+        function delete_user_metric(hash_to_delete) {
+            window.pywebview.api.delete_user_metric(hash_to_delete);
+        }
+
+        function back_to_load_p() {
+            window.pywebview.api.start_load_p_form();
+        }
+
+        function openSolution(idx) {
+            window.pywebview.api.openSolution(idx);
+        }
+
+        function chooseSolution(idx) {
+            window.pywebview.api.chooseSolution(idx);
+        }
+
+        function send() {
+            window.pywebview.api.ask();
+        }
+
+        function callOpenSummary() {
+            window.pywebview.api.openSummary();
+        }
+
+        function showSpinner() {
+            document.getElementById('spinner').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function hideSpinner() {
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="summary" onclick="callOpenSummary()">
+            Summary Report
+        </div>
+
+        <div class="solutions">
+
+        </div>
+
+        <div class="buttons">
+            <button class="back-button" onclick="back_to_load_p()"><img src="Images/back.svg" alt="Back"></button>
+        </div>
+
+        <div class="chart">
+            <img id="progress-image" src="Temp/progress.svg" alt="Progress Image">
+        </div>
+
+        <div class="create-new-metric">
+            <textarea id="new-metric_textfield" spellcheck="false" placeholder="Prompt for creating a new metric or solution representation"></textarea>
+            <button onclick="callNewMetric()">Create new metric</button>
+        </div>
+
+        <div class="current-metrics">
+            <h2 style="width: 100%; text-align: center; margin-left: 0; margin-bottom: 15px; font-size: 0.95vw; color: #3b3a38;">Current metrics</h2>
+            <ul>
+
+            </ul>
+        </div>
+
+        <div class="ask">
+            <div id="chat">
+                <h2 style="width: 100%; text-align: center; margin-left: 0; margin-bottom: 15px; font-size: 1.3vw; color: #3b3a38;">Chat</h2>
+                <p class="AI-text">Ask me anything about the solutions, metrics, the model or recommendations</p>
+            </div>
+            <textarea class="chat-textarea" spellcheck="false" placeholder="Question" id="user_question_textarea"
+                      onkeydown="if (event.key === 'Enter' && !event.shiftKey) { send(); event.preventDefault(); }"></textarea>
+        </div>
+
+    </div>
+
+    <div id="overlay"></div>
+    <div id="spinner">
+        <div class="loader"></div>
+    </div>
+
+</body>
+</html>

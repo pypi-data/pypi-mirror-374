@@ -1,0 +1,32 @@
+torch
+bcrypt
+numpy<2
+scipy
+gurobipy
+pandas
+openpyxl
+reportlab
+psutil
+sympy
+tqdm
+pywebview
+rdkit
+matplotlib
+folium
+orjson
+pyyaml
+pyomo
+pyscipopt
+highspy
+numba
+
+[:sys_platform != "linux" and sys_platform != "darwin"]
+cefpython3
+
+[:sys_platform == "linux"]
+qtpy
+PyQt5
+PyQtWebEngine
+
+[:sys_platform == "win32"]
+pywin32
