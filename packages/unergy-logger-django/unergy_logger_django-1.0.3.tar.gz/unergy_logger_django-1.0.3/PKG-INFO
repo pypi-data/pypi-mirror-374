@@ -1,0 +1,151 @@
+Metadata-Version: 2.4
+Name: unergy-logger-django
+Version: 1.0.3
+Summary: A Django app for advanced logging capabilities
+Author-email: Dmoreno2903 <diegomoreno2903@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2025 Juan Diego Aguirre Moreno
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/Dmoreno2903/django-logger
+Project-URL: Repository, https://github.com/Dmoreno2903/django-logger.git
+Project-URL: Issues, https://github.com/Dmoreno2903/django-logger/issues
+Keywords: django,logging,audit,tracking
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 4.2
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10.13
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: Django>=4.2.5
+Dynamic: license-file
+
+# Django Logger
+
+Un módulo de Django para auditoría y seguimiento de cambios en modelos, diseñado específicamente para trabajar con sistemas de autenticación externos.
+
+## Características
+
+- Registro detallado de cambios en modelos (Create, Update, Delete)
+- Compatibilidad con sistemas de autenticación externos
+- Almacenamiento de información del usuario externo (username, email, is_staff)
+- Sistema de auditoría con niveles de importancia (LOW, MEDIUM, HIGH, CRITICAL)
+- Seguimiento detallado de cambios en campos específicos
+- Registro de metadatos adicionales (IP, user agent, timestamp)
+
+## Instalación
+
+```bash
+pip install django-logger-unergy
+```
+
+## Configuración
+
+1. Agregar 'django_logger' a INSTALLED_APPS en settings.py:
+
+```python
+INSTALLED_APPS = [
+    ...
+    'django_logger',
+]
+```
+
+2. Ejecutar las migraciones:
+
+```bash
+pythn manage.py makemigrations
+python manage.py migrate django_logger
+```
+
+## Uso
+
+### Decorador para Modelos
+
+```python
+from django_logger.decorators import auditable
+
+@auditable(
+    tracked_fields=['campo1', 'campo2'],
+    audit_creates=True,
+    audit_updates=True,
+    audit_deletes=True,
+    level=AuditLevel.MEDIUM
+)
+class MiModelo(models.Model):
+    campo1 = models.CharField(max_length=100)
+    campo2 = models.IntegerField()
+```
+
+### Configuración del Usuario Externo
+
+El módulo está diseñado para trabajar con el usuario actual del sistema de autenticación externo. Los datos del usuario se obtienen automáticamente del middleware de autenticación.
+
+### Consulta de Auditoría
+
+Los logs de auditoría se pueden consultar a través del admin de Django o directamente mediante el modelo:
+
+```python
+from django_logger.models import AuditLog
+
+# Consultar cambios de un objeto específico
+logs = AuditLog.objects.filter(
+    content_type__model='mimodelo',
+    object_id=objeto_id
+)
+
+# Consultar cambios por usuario
+logs = AuditLog.objects.filter(username='usuario_externo')
+```
+
+### Niveles de Auditoría
+
+- LOW: Cambios de bajo impacto
+- MEDIUM: Cambios significativos en datos
+- HIGH: Cambios importantes en configuraciones
+- CRITICAL: Cambios críticos del sistema
+
+## Campos Registrados
+
+Cada registro de auditoría incluye:
+
+- Información del objeto modificado (modelo y ID)
+- Tipo de acción (CREATE, UPDATE, DELETE)
+- Nivel de importancia
+- Usuario que realizó la acción (username, email, is_staff)
+- Cambios realizados (valores anteriores y nuevos)
+- Información de la sesión (IP, user agent)
+- Timestamp del cambio
+
+## Contribución
+
+Las contribuciones son bienvenidas. Por favor, abre un issue para discutir los cambios propuestos.
+
+## Licencia
+
+MIT License - ver archivo LICENSE para más detalles.
