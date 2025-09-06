@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jyutping2characters"
+version = "0.1.0"
+description = "Convert Jyutping romanization to Traditional Chinese characters"
+license = "MIT"
+authors = [
+    {name = "James Zheng", email = "endernoke@gmail.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Text Processing :: Linguistic",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Natural Language :: Chinese (Traditional)",
+    "Topic :: Utilities"
+]
+keywords = ["jyutping", "cantonese", "chinese", "transcription", "translation", "backtranslation", "romanization", "nlp", "linguistics"]
+requires-python = ">=3.8"
+dependencies = [
+    "appdirs>=1.4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/endernoke/jyutping2characters"
+Issues = "https://github.com/endernoke/jyutping2characters/issues"
+Repository = "https://github.com/endernoke/jyutping2characters.git"
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.scripts]
+jyutping2characters = "jyutping2characters.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["jyutping2characters*"]
+exclude = ["tests/*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.md", "*.yaml"]
+
+[tool.setuptools.dynamic]
+readme = {file = "README.md"}
