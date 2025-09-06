@@ -1,0 +1,25 @@
+# Include the README file
+include README.md
+
+# Include the license file
+include LICENSE
+
+# Include requirements files
+include requirements.txt
+include requirements-dev.txt
+
+# Include version file
+include JaaS_API/version.py
+
+# Include package data
+recursive-include JaaS_API *.py
+
+# Exclude test files from distribution
+recursive-exclude tests *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * .DS_Store
+recursive-exclude * .git*
+recursive-exclude * .pytest_cache
+recursive-exclude * .coverage
+recursive-exclude * htmlcov
