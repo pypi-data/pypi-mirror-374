@@ -1,0 +1,92 @@
+[build-system]
+requires = [
+    "setuptools>=70",
+    "setuptools_scm>=8.1",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "swak"
+dynamic = ["version"]
+requires-python = ">=3.12"
+dependencies = [
+  "pandas>=2.2",
+  "pyarrow>=17.0",
+  "polars>=1.24",
+  "pyyaml>=6.0",
+  "tomli-w>=1.1",
+  "tqdm>=4.6"
+]
+authors = [{name = "yedivanseven", email = "yedivanseven@outlook.de"}]
+description = "Swiss army knife for functional data-science projects."
+readme = "README.md"
+keywords = [
+    "functional",
+    "tools",
+    "utilities",
+    "helpers",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Utilities",
+    "License :: OSI Approved :: MIT License",
+]
+
+[project.urls]
+Documentation = "https://yedivanseven.github.io/swak/"
+Repository = "https://github.com/yedivanseven/swak.git"
+Issues = "https://github.com/yedivanseven/swak/issues"
+Changelog = "https://github.com/yedivanseven/swak/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+cloud = [
+    "google-cloud-bigquery>=3.25",
+    "google-cloud-storage>=2.18",
+    "pandas-gbq>=0.23",
+    "boto3>=1.37.9"
+]
+
+[tool.setuptools.packages]
+find = {exclude = ["Notebooks"]}
+
+[tool.setuptools_scm]
+version_file = "version.env"
+version_file_template = "SETUPTOOLS_SCM_PRETEND_VERSION={version}"
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint]
+ignore = ["PLR", "A005"]
+select = [
+    "A",
+    "F",
+    "E",
+    "W",
+    "N",
+    "T",
+    "UP",
+    "YTT",
+    "ASYNC",
+    "C4",
+    "T100",
+    "EXE",
+    "ISC",
+    "ICN",
+    "PIE",
+    "PYI",
+    "RSE",
+    "SLOT",
+    "SIM",
+    "INT",
+    "PTH",
+    "PL",
+    "NPY",
+    "PERF",
+    "FURB"
+]
