@@ -1,0 +1,77 @@
+SamsPrettyPrint
+==================================================
+Many useful functions to format text neatly.
+<!-- TOC -->
+* [Installation](#Installation)
+* [Use](#Use)
+* [Examples](#Examples)
+* [Authors](#Authors)
+<!-- TOC -->
+
+
+## Installation
+```bash
+pip install SamsPrettyPrint
+```
+
+## Use
+Import within python like so:
+```python
+from src.SamsPrettyPrint import print_title, print_table, print_dict, ex_df, ex_dict
+
+# Title
+print_title("Title")
+
+# Table
+print_table(
+    column_headers=ex_df.columns,
+    rows=[row for _, row in ex_df.iterrows()]
+)
+
+# Dictionary
+print_dict(
+    ex_dict,
+    key_title='Country',
+    value_title='Area (km^2)'
+)
+```
+
+
+The package provides a console script called spp.
+
+```bash
+spp "Title" -p % -f 3
+```
+
+| Option            | Description                            | Default |
+|-------------------|----------------------------------------|---------|
+| `-f`, `--format`  | Output level. Choices ['1', '3', '5']. | '3'     |
+| `-p`, `--prefix`  | Prefix printed before each line.       | '%'     |
+| `-v`, `--version` | Show the version of SamsPrettyPrint.   |         |
+
+
+
+
+
+### Examples
+```
+//==================================================\\
+||                     Example                      ||
+\\==================================================//
+
+------------------------------------------------ TITLE -------------------------------------------------
+Surname     Forename    Born         Years   Nationality   Known for                                    
+---------   ---------   ----------   -----   -----------   ---------------------------------------------
+Descartes   Rene        1596-03-31   53      French        ('Cartesian coordinates', 'cogito, ergo sum')
+Newton      Isaac       1643-01-04   84      British       ('Gravity', 'Calculus', 'Principia')         
+Euler       Leonhard    1707-04-15   76      Swiss         ('Graph theory', 'topology', 'exponential')  
+Gauss       Johann      1777-04-30   77      German        ('Normal distribution', 'Lens', 'Ceres')     
+Hilbert     David       1862-01-23   81      German        ('Hilbert space', 'Set theory')              
+Russell     Bertrand    1872-05-18   97      British       ('Paradoxes', 'Principia Mathematica')       
+Nash        John        1928-06-13   86      American      ('Game theory', 'Nash equilibrium')       
+```
+
+## Authors
+| Name          | Email                                                   |
+|---------------|---------------------------------------------------------|
+| Samuel Ward   | [samuelwarda1@gmail.com](mailto:samuelwarda1@gmail.com) |
