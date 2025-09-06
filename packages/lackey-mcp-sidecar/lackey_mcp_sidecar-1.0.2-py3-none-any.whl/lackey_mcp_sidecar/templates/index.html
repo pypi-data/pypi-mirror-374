@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lackey - Task Management</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;600&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link href="/static/css/main.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid main-container">
+        <div class="main-header">
+            <div class="logo-section">
+                <img src="/static/taskitty_white_check.png" alt="Taskitty" class="logo">
+                <div class="logo-text">
+                    <h1>Lackey</h1>
+                    <p class="lead">AI-Integrated Task Management</p>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-link" id="homeBtn" style="color: rgba(255,255,255,0.8); font-size: 1.5rem; text-decoration: none; border: none; outline: none;" title="Home">
+                    🏠
+                </button>
+                <button class="btn btn-link" id="reportsBtn" style="color: rgba(255,255,255,0.8); font-size: 1.5rem; text-decoration: none; border: none; outline: none;" title="Reports">
+                    📊
+                </button>
+                <div class="dropdown">
+                    <button class="btn btn-link dropdown-toggle" id="createBtn" data-bs-toggle="dropdown" aria-expanded="false" style="color: rgba(255,255,255,0.8); font-size: 1.5rem; text-decoration: none; border: none; outline: none;" title="Create">
+                        ✏️
+                    </button>
+                    <ul class="dropdown-menu" style="background: rgb(148, 146, 213) !important; background-color: rgb(148, 146, 213) !important; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
+                        <li><a class="dropdown-item" href="#" id="addProjectBtn" style="color: rgba(255,255,255,0.9) !important; font-size: 1rem !important; padding: 1rem 1.5rem !important;">📁 Create Project</a></li>
+                        <li><a class="dropdown-item" href="#" id="addTaskBtn" style="color: rgba(255,255,255,0.9) !important; font-size: 1rem !important; padding: 1rem 1.5rem !important;">📝 Create Task</a></li>
+                    </ul>
+                </div>
+                <div class="search-container" style="position: relative;">
+                    <input type="text" class="form-control" id="globalSearch" placeholder="Search tasks..." style="width: 300px; padding-right: 40px;">
+                    <button class="btn btn-link position-absolute" id="searchBtn" style="right: 5px; top: 50%; transform: translateY(-50%); padding: 0; color: rgba(255,255,255,0.7); text-decoration: none; border: none; outline: none;" title="Search">
+                        🔍
+                    </button>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="autoRefresh" checked>
+                    <label class="form-check-label" for="autoRefresh" style="font-size: 0.9rem;">Auto-refresh</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-wrapper">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-3">
+                        <select class="form-select project-dropdown" id="projectSelect" style="max-width: 400px;">
+                            <option value="">Select a project...</option>
+                        </select>
+                        <div id="projectId" style="display: none; white-space: nowrap;" class="text-muted small">
+                            <span class="d-flex align-items-center">
+                                <span id="projectIdValue" class="font-monospace" style="font-size: 1.25em;"></span>
+                                <button class="btn btn-sm ms-2 p-1 copy-btn" onclick="copyToClipboard(document.getElementById('projectIdValue').textContent)" title="Copy ID" style="font-size: 1.25em; border: none; background: none; color: inherit;">
+                                    ⧉
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="projectMeta" style="display: none;">
+                        <span id="projectDescription" class="me-3"></span>
+                        <span id="projectStatus" class="status-badge"></span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="task-graph-wrapper">
+                        <!-- Scrollable content layer -->
+                        <div id="tasks" class="task-graph">
+                            <div id="dashboardStats" class="dashboard-stats">
+                                <div class="dashboard-left">
+                                    <div class="connection-status">
+                                        <div class="connection-dot disconnected"></div>
+                                        <span>Connecting to workspace...</span>
+                                    </div>
+                                    
+                                    <div class="stats-grid">
+                                        <div class="stat-card">
+                                            <div class="stat-number" id="totalTasks">-</div>
+                                            <div class="stat-label">Total Tasks</div>
+                                            <div class="status-breakdown" id="statusBreakdown">
+                                                <div class="status-item">
+                                                    <div class="status-dot todo"></div>
+                                                    <span id="todoCount">-</span>
+                                                </div>
+                                                <div class="status-item">
+                                                    <div class="status-dot in-progress"></div>
+                                                    <span id="inProgressCount">-</span>
+                                                </div>
+                                                <div class="status-item">
+                                                    <div class="status-dot done"></div>
+                                                    <span id="doneCount">-</span>
+                                                </div>
+                                                <div class="status-item">
+                                                    <div class="status-dot blocked"></div>
+                                                    <span id="blockedCount">-</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="stat-card">
+                                            <div class="stat-number" id="activeProjects">-</div>
+                                            <div class="stat-label">Active Projects</div>
+                                            <div style="margin-top: 0.5rem; font-size: 0.8rem; opacity: 0.7;">
+                                                <span id="totalProjects">-</span> total projects
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="dashboard-right">
+                                    <div class="recent-activity" id="recentActivity" style="display: none;">
+                                        <h3>Recent Activity</h3>
+                                        <div id="activityList"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Arrow overlay layer - sits above scrollable content -->
+                        <div id="arrow-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10; overflow: hidden;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Create Project Modal -->
+    <div class="modal fade" id="createProjectModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
+                <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.3);">
+                    <h5 class="modal-title">📁 Create New Project</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: invert(1);"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createProjectForm">
+                        <!-- Required Fields -->
+                        <div class="mb-3">
+                            <label for="projectFriendlyName" class="form-label">Project Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="projectFriendlyName" required placeholder="Enter project name">
+                        </div>
+                        
+                        <!-- Optional Fields -->
+                        <div class="mb-3">
+                            <label for="projectDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="projectDescription" rows="3" placeholder="Describe the project's purpose and scope"></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="projectTags" class="form-label">Tags</label>
+                            <input type="text" class="form-control" id="projectTags" placeholder="Comma-separated tags">
+                            <div class="form-text">Separate multiple tags with commas</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="projectObjectives" class="form-label">Objectives</label>
+                            <div id="objectivesContainer">
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control objective-input" placeholder="Enter project objective">
+                                    <button class="btn btn-outline-light" type="button" onclick="removeObjective(this)">✕</button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-light btn-sm" onclick="addObjective()">+ Add Objective</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.3);">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="submitCreateProject()">Create Project</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Create Task Modal -->
+    <div class="modal fade" id="createTaskModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
+                <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.3);">
+                    <h5 class="modal-title">📝 Create New Task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: invert(1);"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createTaskForm">
+                        <!-- Required Fields -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="taskProjectId" class="form-label">Project <span class="text-danger">*</span></label>
+                                <select class="form-select" id="taskProjectId" required>
+                                    <option value="">Select a project...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="taskComplexity" class="form-label">Complexity</label>
+                                <select class="form-select" id="taskComplexity">
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="taskTitle" class="form-label">Title <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="taskTitle" required placeholder="Enter task title">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="taskObjective" class="form-label">Objective <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="taskObjective" rows="3" required placeholder="Describe what needs to be accomplished"></textarea>
+                        </div>
+                        
+                        <!-- Optional Fields -->
+                        <div class="mb-3">
+                            <label for="taskContext" class="form-label">Context</label>
+                            <textarea class="form-control" id="taskContext" rows="2" placeholder="Additional context or background information"></textarea>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="taskAssignedTo" class="form-label">Assigned To</label>
+                                <input type="text" class="form-control" id="taskAssignedTo" placeholder="Person or team responsible">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="taskTags" class="form-label">Tags</label>
+                                <input type="text" class="form-control" id="taskTags" placeholder="Comma-separated tags">
+                                <div class="form-text">Separate multiple tags with commas</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="taskDependencies" class="form-label">Dependencies</label>
+                            <input type="text" class="form-control" id="taskDependencies" placeholder="Task IDs this task depends on">
+                            <div class="form-text">Comma-separated task IDs</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="taskSteps" class="form-label">Steps</label>
+                            <div id="stepsContainer">
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control step-input" placeholder="Complete the task" value="Complete the task">
+                                    <button class="btn btn-outline-light" type="button" onclick="removeStep(this)">✕</button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-light btn-sm" onclick="addStep()">+ Add Step</button>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="taskSuccessCriteria" class="form-label">Success Criteria</label>
+                            <div id="criteriaContainer">
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control criteria-input" placeholder="Task completed successfully" value="Task completed successfully">
+                                    <button class="btn btn-outline-light" type="button" onclick="removeCriteria(this)">✕</button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-light btn-sm" onclick="addCriteria()">+ Add Criteria</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.3);">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="submitCreateTask()">Create Task</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Task Details Modal -->
+    <div class="modal fade" id="taskModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
+                <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.3);">
+                    <h5 class="modal-title" id="taskModalTitle">Task Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: invert(1);"></button>
+                </div>
+                <div class="modal-body" id="taskModalBody">
+                    Loading...
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <!-- Custom JavaScript Modules -->
+    <script src="/static/js/ui-utils.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/dashboard.js"></script>
+    <script src="/static/js/task-graph.js"></script>
+    <script src="/static/js/search.js"></script>
+    <script src="/static/js/projects.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
