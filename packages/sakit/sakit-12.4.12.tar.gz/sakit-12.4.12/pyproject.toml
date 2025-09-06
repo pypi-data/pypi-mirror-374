@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "sakit"
+version = "12.4.12"
+description = "Solana Agent Kit"
+authors = ["Bevan Hunt <bevan@bevanhunt.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/truemagic-coder/solana-agent-kit"
+keywords = ["ai", "openai", "ai agents", "agi"]
+classifiers = [
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+packages = [{ include = "sakit" }]
+
+[tool.poetry.dependencies]
+python = ">=3.12,<4.0"
+httpx = "^0.28.1"
+solana-agent = ">=30.0.0"
+boto3 = "^1.40.24"
+botocore = "^1.40.24"
+nemo-agent = "5.0.3"
+fastmcp = "^2.12.2"
+solana = "^0.36.9"
+solders = "^0.26.0"
+pynacl = "^1.5.0"
+based58 = "^0.1.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."solana_agent.plugins"]
+search_internet = "sakit.search_internet:get_plugin"
+mcp = "sakit.mcp:get_plugin"
+image_gen = "sakit.image_gen:get_plugin"
+nemo_agent = "sakit.nemo_agent:get_plugin"
+solana_transfer = "sakit.solana_transfer:get_plugin"
+solana_swap = "sakit.solana_swap:get_plugin"
+solana_balance = "sakit.solana_balance:get_plugin"
+solana_price = "sakit.solana_price:get_plugin"
+rugcheck = "sakit.rugcheck:get_plugin"
+privy_swap = "sakit.privy_swap:get_plugin"
+privy_transfer = "sakit.privy_transfer:get_plugin"
+privy_balance = "sakit.privy_balance:get_plugin"
+privy_wallet_address = "sakit.privy_wallet_address:get_plugin"
+sns_lookup = "sakit.sns_lookup:get_plugin"
