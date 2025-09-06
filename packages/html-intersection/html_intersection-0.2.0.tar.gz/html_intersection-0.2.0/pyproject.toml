@@ -1,0 +1,51 @@
+[build-system]
+requires = [
+  "setuptools>=68",
+  "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "html-intersection"
+version = "0.2.0"
+description = "Fix canonical links, FLAGS, and RO<->EN cross-references across mirrored HTML directories."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+  { name = "Andrei/Andreea Team" }
+]
+keywords = ["html", "seo", "canonical", "flags", "intersection", "sync", "ro", "en"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Text Processing :: Markup :: HTML",
+]
+
+dependencies = []
+
+[project.urls]
+Homepage = "https://pypi.org/project/html-intersection/"
+Repository = "https://example.com/"
+
+[project.scripts]
+html-intersection = "html_intersection.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["html_intersection*"]
+exclude = []
+
+
