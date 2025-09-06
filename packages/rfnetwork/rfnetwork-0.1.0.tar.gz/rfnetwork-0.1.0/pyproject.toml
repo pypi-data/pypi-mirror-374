@@ -1,0 +1,46 @@
+[build-system]
+requires      = ["setuptools >= 77.0.3", "wheel", "numpy >= 2.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rfnetwork"
+version = "0.1.0"
+description = "rf/microwave network simulation tool"
+readme = "README.md"
+authors = [{ name = "Rick Lyon", email = "rlyon14@gmail.com" }]
+license = "MIT"
+license-files = ["LICENSE.txt"]
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["rf", "microwave", "network", "noise"]
+dependencies = [
+    "numpy>=2.0.0", "matplotlib", "scipy", "np-struct>=0.0.2", "mpl-markers", "pyside6"
+]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+dev = [
+    "flake8", 
+    "pytest", 
+    "parameterized", 
+    "ipykernel", 
+    "schemdraw",
+]
+
+docs = [
+    "sphinx",
+    "sphinx-rtd-theme==3.0.2",
+    "sphinx-autodoc-typehints==3.2.0",
+    "sphinx-gallery==0.19.0"
+]
+
+[tool.setuptools.packages.find]
+include = ["rfnetwork"]
+
+[tool.setuptools]
+include-package-data = true
+
+[project.urls]
+repository = "https://github.com/ricklyon/rfnetwork"
