@@ -1,0 +1,11 @@
+{% extends "dsgov/base.html" %}
+{% load br_components %}
+{% load static %}
+
+{% block content %}
+    <div class="d-flex align-items-center">
+        <span class="br-tag {{ extra_classes }} {{ density }}" aria-describedby="{{ aria_describedby }}">
+            <span id="{{ aria_describedby }}">{{ label }}</span>
+        </span>
+    </div>
+{% endblock %}

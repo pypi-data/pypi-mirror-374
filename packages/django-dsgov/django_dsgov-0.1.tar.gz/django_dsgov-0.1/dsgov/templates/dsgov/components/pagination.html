@@ -1,0 +1,47 @@
+{% extends "dsgov/base.html" %}
+{% load br_components %}
+{% load static %}
+
+{% block content %}
+    <nav class="br-pagination" aria-label="paginação" data-total="10" data-current="1">
+        <ul>
+            <li>
+                <button class="br-button circle" type="button" data-previous-page="data-previous-page" aria-label="Voltar página">
+                    <i class="fas fa-angle-left" aria-hidden="true"></i>
+                </button>
+            </li>
+            <li>
+                <a class="page active" href="javascript:void(0)" aria-label=" página 1">1</a>
+            </li>
+            <li>
+                <a class="page" href="javascript:void(0)" aria-label=" página 2">2</a>
+            </li>
+            <li>
+                <a class="page" href="javascript:void(0)" aria-label=" página 3">3</a>
+            </li>
+            <li>
+                <a class="page" href="javascript:void(0)" aria-label=" página 4">4</a>
+            </li>
+            <li class="pagination-ellipsis">
+                <button class="br-button circle" type="button" data-toggle="dropdown" aria-label="Abrir ou fechar a lista de paginação">
+                    <i class="fas fa-ellipsis-h" aria-hidden="true"></i>
+                </button>
+                <div class="br-list" role="menu">
+                    <a class="br-item" href="javascript:void(0)" aria-label=" página 5" role="menuitem">5</a>
+                    <a class="br-item" href="javascript:void(0)" aria-label=" página 6" role="menuitem">6</a>
+                    <a class="br-item" href="javascript:void(0)" aria-label=" página 7" role="menuitem">7</a>
+                    <a class="br-item" href="javascript:void(0)" aria-label=" página 8" role="menuitem">8</a>
+                    <a class="br-item" href="javascript:void(0)" aria-label=" página 9" role="menuitem">9</a>
+                </div>
+            </li>
+            <li>
+                <a class="page" href="javascript:void(0)" aria-label=" página 10">10</a>
+            </li>
+            <li>
+                <button class="br-button circle" type="button" data-next-page="data-next-page" aria-label="Página seguinte">
+                    <i class="fas fa-angle-right" aria-hidden="true"></i>
+                </button>
+            </li>
+        </ul>
+    </nav>
+{% endblock %}
