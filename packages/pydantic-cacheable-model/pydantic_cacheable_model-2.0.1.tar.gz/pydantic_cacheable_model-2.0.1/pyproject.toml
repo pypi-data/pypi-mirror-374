@@ -1,0 +1,17 @@
+[project]
+name = "pydantic-cacheable-model"
+version = "2.0.1"
+description = "Small Pydantic helpers for cacheable models"
+readme = "README.md"
+authors = [
+    { name = "J.I. Cruz", email = "ji@jicruz.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "pydantic>=2.11.7",
+    "typing_extensions>=4.6; python_version < \"3.11\"",
+]
+
+[build-system]
+requires = ["uv_build>=0.8.13,<0.9.0"]
+build-backend = "uv_build"
