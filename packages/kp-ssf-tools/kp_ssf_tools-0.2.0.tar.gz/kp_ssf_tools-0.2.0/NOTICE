@@ -1,0 +1,49 @@
+SSF Tools - Forensic Analysis Toolkit
+Copyright 2025 KirkpatrickPrice, LLC
+
+This product includes software developed by KirkpatrickPrice, LLC.
+
+=========================================================================
+Third Party Components
+=========================================================================
+
+The following third party components are distributed with this software:
+
+---------------------------------------------------------------------------
+detect-secrets
+---------------------------------------------------------------------------
+Copyright Yelp, Inc.
+Licensed under the Apache License, Version 2.0
+Source: https://github.com/Yelp/detect-secrets
+Integration: Imported as Python dependency
+
+---------------------------------------------------------------------------
+Volatility 3 Framework
+---------------------------------------------------------------------------
+Copyright 2019 Volatility Foundation
+Licensed under the Volatility Software License 1.0 (VSL)
+Source: https://github.com/volatilityfoundation/volatility3
+License: https://www.volatilityfoundation.org/license/vsl-v1.0
+Integration: Called as external executable via subprocess (not imported)
+
+IMPORTANT NOTICE: SSF_Tools executes Volatility3 as an external command-line
+tool using subprocess.run(). Volatility3 is not imported as a Python library
+or linked with SSF_Tools code. Users must install Volatility3 separately.
+
+=========================================================================
+Additional Dependencies
+=========================================================================
+
+This software also includes various Python packages distributed via PyPI,
+each under their respective licenses. Key dependencies include:
+
+- rich (MIT License)
+- click (BSD-3-Clause License)
+- pydantic (MIT License)
+- pandas (BSD-3-Clause License)
+- httpx (BSD-3-Clause License)
+
+For a complete list of dependencies and their licenses, see pyproject.toml
+and run: pip-licenses --from=mixed --format=plain
+
+=========================================================================

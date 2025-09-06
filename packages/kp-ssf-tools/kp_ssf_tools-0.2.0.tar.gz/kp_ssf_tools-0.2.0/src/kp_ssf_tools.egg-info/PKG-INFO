@@ -1,0 +1,179 @@
+Metadata-Version: 2.4
+Name: kp-ssf-tools
+Version: 0.2.0
+Summary: SSF Tools - Forensic Analysis Toolkit for cybersecurity professionals
+Author-email: KirkpatrickPrice <info@kirkpatrickprice.com>
+License-Expression: Apache-2.0
+Project-URL: Homepage, https://github.com/kirkpatrickprice/ssf-tools
+Project-URL: Repository, https://github.com/kirkpatrickprice/ssf-tools
+Project-URL: Issues, https://github.com/kirkpatrickprice/ssf-tools/issues
+Keywords: forensics,cybersecurity,volatility,memory-analysis
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Information Technology
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Security
+Classifier: Topic :: System :: Systems Administration
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+License-File: NOTICE
+Requires-Dist: rich>=13.0.0
+Requires-Dist: rich-click>=1.7.0
+Requires-Dist: click>=8.0.0
+Requires-Dist: pydantic>=2.11.7
+Requires-Dist: dependency-injector>=4.41.0
+Requires-Dist: httpx>=0.27.0
+Requires-Dist: platformdirs>=4.3.8
+Requires-Dist: puremagic>=1.30
+Requires-Dist: python-magic>=0.4.27
+Requires-Dist: python-magic-bin>=0.4.14; sys_platform == "win32"
+Requires-Dist: pyyaml>=6.0.2
+Requires-Dist: pygments>=2.19.2
+Requires-Dist: charset-normalizer>=3.4.3
+Requires-Dist: openpyxl>=3.1.5
+Requires-Dist: pandas>=2.3.2
+Requires-Dist: xlsxwriter>=3.2.5
+Requires-Dist: detect-secrets>=1.5.0
+Requires-Dist: volatility3[full]>=2.26.0
+Provides-Extra: docs
+Requires-Dist: mkdocs>=1.6.0; extra == "docs"
+Requires-Dist: mkdocs-material>=9.5.0; extra == "docs"
+Requires-Dist: mkdocstrings[python]>=0.26.0; extra == "docs"
+Requires-Dist: mkdocs-gen-files>=0.5.0; extra == "docs"
+Requires-Dist: mkdocs-literate-nav>=0.6.0; extra == "docs"
+Requires-Dist: mkdocs-section-index>=0.3.0; extra == "docs"
+Requires-Dist: mkdocs-autorefs>=1.0.0; extra == "docs"
+Requires-Dist: pymdown-extensions>=10.0.0; extra == "docs"
+Requires-Dist: mkdocs-git-revision-date-localized-plugin>=1.2.0; extra == "docs"
+Requires-Dist: mkdocs-mermaid2-plugin>=1.2.1; extra == "docs"
+Requires-Dist: kp-ssf-tools; extra == "docs"
+Dynamic: license-file
+
+# SSF Tools - Forensic Analysis Toolkit
+
+A forensic analysis toolkit for cybersecurity professionals performing PCI Secure Software Framework assessments and general forensic analysis.
+
+Full documentation on [ReadtheDocs]
+
+## Features
+
+- **Volatility Integration**: Automated memory analysis workflows using Volatility 3
+- **Rich CLI Interface**: Beautiful, user-friendly command-line interface with colored output
+- **Intelligent Process Matching**: Handles process name truncation and partial extension matching
+- **File Collision Management**: Smart handling of existing files with user-controlled resolution
+- **Cross-Platform Support**: Works on Windows, macOS, and Linux
+
+## Installation
+
+### Prerequisites
+
+1. **Python 3.13+** - Required for the SSF Tools CLI
+2. **Volatility 3** - Required for memory analysis (installed automatically)
+3. **Detect Secrets** -- Required for credential detection (installed automatically)
+
+### Install SSF Tools
+These instructions assume you'll use [PyPI's PIPX](https://pipx.pypa.io/latest/installation/) to manage the behind-the-scenese Python virtual environment.
+
+**On Windows**
+```powershell
+# Install PIPX (recommended)
+py -m pip install --user pipx
+pipx ensurepath
+
+# Restart your terminal
+
+# Install SSF Tools
+pipx install kp-ssf-tools
+```
+
+**On MacOS**
+```bash
+# Install PIPX
+brew install pipx
+pipx ensurepath
+
+# Restart your terminal
+
+# Install SSF Tools
+pipx install kp-ssf-tools
+```
+
+**On Linux**
+```bash
+# Install PIPX (use your distro's package manager)
+sudo apt update; sudo apt install pipx
+pipx ensurepath
+
+# Restart your terminal
+
+# Install SSF Tools
+pipx install kp-ssf-tools
+```
+
+## Usage
+
+### Volatility Memory Analysis
+
+The `volatility` sub-command automates extracting useful information from RAM images:
+
+```bash
+# Help page
+ssf_tools volatility --help
+
+# Basic usage
+ssf_tools volatility memory-dump.raw windows interesting-processes.txt
+```
+
+### Entropy Analysis
+
+The `analyze entropy` command will compute Shannon entropy using a sliding window over each file.  Results will be stored in `analyze-credentials-<timestamp>.xlsx`.
+
+```bash
+# Help page
+ssf_tools analyze entropy --help
+
+# Basic usage
+ssf_tools analyze entropy src/
+```
+
+### Credential Detection
+
+The `analyze credentials` command uses the `detect-secrets` package to identify API keys, credentials, Base64-encoded secrets and other potential secrets.  Results will be stored in `analyze-credentials-<timestamp>.xlsx`.
+
+```bash
+# Help page
+ssf_tools analyze credentials --help
+
+# Basic usage
+ssf_tools analyze credentials src/
+```
+
+## Development
+
+```bash
+# Install development dependencies
+uv sync --dev --extra docs
+
+# Run tests
+uv run pytest
+
+# Run linting
+uv run ruff check .
+
+# Format code
+uv run ruff format .
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
+
+## License
+
+MIT License - see LICENSE file for details.
