@@ -1,0 +1,105 @@
+Metadata-Version: 2.4
+Name: pyinkr
+Version: 0.2.0
+Summary: A tool for managing MKV files
+Keywords: terminal
+Author: xMohnad
+License-Expression: MIT
+Classifier: Environment :: Console
+Classifier: Development Status :: 4 - Beta
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Terminals
+Classifier: Topic :: Multimedia :: Video
+Classifier: Typing :: Typed
+Requires-Dist: pymkv2>=2.1.1
+Requires-Dist: textual>=2.1.2
+Requires-Dist: textual-fspicker>=0.4.1
+Requires-Python: >=3.9
+Project-URL: Discussions, https://github.com/xMohnad/Inkr/discussions
+Project-URL: Homepage, https://github.com/xMohnad/Inkr
+Project-URL: Issues, https://github.com/xMohnad/Inkr/issues
+Project-URL: Repository, https://github.com/xMohnad/Inkr
+Description-Content-Type: text/markdown
+
+# Inkr - MKV Editor
+
+Inkr is a simple tool for managing MKV files.
+
+## Installation
+
+### Prerequisites
+
+- **MKVToolNix**: Required for MKV operations. Install using your package manager:
+
+  | Platform | Command |
+  |----------|---------|
+  | **Arch Linux** | `sudo pacman -S mkvtoolnix-cli` |
+  | **Debian/Ubuntu** | `sudo apt install mkvtoolnix` |
+  | **macOS** (Homebrew) | `brew install mkvtoolnix` |
+  | **Termux** | `pkg install mkvtoolnix` |
+  | **Windows** | [Download installer](https://mkvtoolnix.download/downloads.html#windows) |
+
+### Install Inkr
+
+#### Recommended Method (using pipx)
+
+```bash
+pipx install pyinkr
+```
+
+*Why pipx?*
+
+- Isolates the application in its own environment
+- Prevents dependency conflicts
+- Easier to uninstall/update
+
+#### Alternative Method (using pip)
+
+```bash
+pip install pyinkr
+```
+
+> [!NOTE]
+> To run the application, use the `inkr` command.
+
+### For Developers
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/xMohnad/Inkr.git
+   cd Inkr
+   ```
+
+1. Set up development environment:
+
+   ```bash
+   make setup
+
+   # run application
+   make run
+   ```
+
+## Key Bindings
+
+Press `Ctrl+p` to open the command palette
+and view all available key bindings.
+
+## Dependencies
+
+- [Textual](https://textual.textualize.io/): A Python framework for building terminal-based user interfaces.
+- [pymkv2](https://github.com/GitBib/pymkv2): A Python wrapper for the MKVToolNix utilities.
+- [Textual-Fspicker](https://github.com/davep/textual-fspicker): A Textual widget library for picking things in the filesystem
+
+## Contributing
+
+Contributions are welcome! If you'd like to contribute, please fork the repository and submit a pull request. For major changes, please open an issue first to discuss the proposed changes.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
