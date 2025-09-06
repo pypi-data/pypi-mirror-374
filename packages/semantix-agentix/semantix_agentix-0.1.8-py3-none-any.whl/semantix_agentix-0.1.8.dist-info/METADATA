@@ -1,0 +1,23 @@
+Metadata-Version: 2.4
+Name: semantix_agentix
+Version: 0.1.8
+Summary: ML Flow interceptor for Semantix AI Governance
+Author: Artur Rodrigues
+Author-email: artur.rodrigues@semantix.ai
+License: MIT
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+License-File: LICENSE
+Requires-Dist: mlflow>=3.3.1
+Requires-Dist: psycopg2-binary>=2.9.10
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
