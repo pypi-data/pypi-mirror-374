@@ -1,0 +1,21 @@
+Metadata-Version: 2.4
+Name: cleands
+Version: 0.2.0
+Summary: Statistical modeling and machine learning framework
+Home-page: https://github.com/penny4nonsense/cleands
+Author: Jason Parker
+Author-email: Jason Parker <jasonparker693@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/penny4nonsense/cleands
+Project-URL: Issues, https://github.com/penny4nonsense/cleands/issues
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy<2.0,>=1.26.4
+Requires-Dist: scipy<2.0,>=1.13.1
+Requires-Dist: pandas<3.0,>=2.2.2
+Requires-Dist: cvxopt<2.0,>=1.3.2
+Dynamic: license-file
+
+# cleands
+CleanDS is a lightweight Python framework for statistical modeling and machine learning. It supports regression, classification, clustering, shrinkage, ensembles, distributions, and dimension reduction with a unified API, formula notation, and model selection tools.
