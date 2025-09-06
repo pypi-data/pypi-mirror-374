@@ -1,0 +1,110 @@
+[build-system]
+requires = ["setuptools>=51.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "phaserEM"
+version = "0.2"
+authors = [
+  {name = "Colin Gilgenbach", email = "hexane@mit.edu"}
+]
+description = "Weapon of choice for electron ptychographic reconstructions"
+readme = {file = "README.md", content-type = "text/markdown"}
+keywords = ["science", "atoms", "materials", "chemistry"]
+license = "MPL-2.0"
+license-files = ["LICENSE.txt"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Typing :: Typed",
+]
+
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.22,<2.6",  # tested on 1.26, 2.3
+    "scipy>=1.7.0,<1.19", # tested on 1.11, 1.16
+    "matplotlib~=3.8",
+    "h5py~=3.8",
+    "pyyaml>=5.3.1",
+    "click~=8.1.0",
+    "rich>=12.0.0,<15",
+    "tifffile>=2023.8.25",
+    "py-pane==0.11.3",
+    "typing_extensions~=4.7",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.2.4",
+    "pytest-cov>=3.0.0",
+    "coveragepy-lcov>=0.1.1",
+]
+cupy11 = [
+    "cupy-cuda11x>=12.0.0",
+    "pynvml>=11.0.0",
+]
+cupy12 = [
+    "cupy-cuda12x>=12.0.0",
+    "pynvml>=11.0.0",
+]
+jax = [
+    # 0.4.25 is last version supporting cuda 11.8, we need to support it.
+    # tested on 0.4.25, 0.5.x, 0.6.x, and 0.7.0
+    "jax>=0.4.25,<0.8",
+    "optax>=0.2.2",
+]
+web = [
+    "Quart>=0.20.0",
+    "backoff==2.2.1",
+    "requests>=2.31.0",
+]
+docs = [
+    "mkdocs==1.6.1",
+    "mkdocs-material==9.6.11",
+    "mkdocstrings[python]==0.29.1",
+    "markdown-include==0.8.1",
+    "mike==2.1.3",
+    "black>=25.1.0",
+]
+
+[project.urls]
+Repository = "https://github.com/hexane360/phaser.git"
+Documentation = "https://hexane360.github.io/phaser/dev"
+
+[project.scripts]
+phaser = "phaser.main:cli"
+
+[tool.setuptools.packages.find]
+include = ["phaser*"]
+
+[tool.setuptools.package-data]
+"phaser.web.dist" = ["*"]
+"phaser.web.templates" = ["*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "cuda: Run on CUDA backend",
+    "jax: Run on jax backend",
+    "cpu: Run on CPU backend",
+    "slow: mark a test as slow",
+
+    "expected_filename: Filename to load expected result from",
+]
+
+[tool.pyright]
+typeCheckingMode = "standard"
+exclude = [
+    "tests", "notebooks/", "examples", ".github",
+    "build", "venv", ".venv",
+    "**/node_modules", "**/__pycache__"
+]
+
+reportIncompatibleMethodOverride = "information"
