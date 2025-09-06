@@ -1,0 +1,282 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gpjax"
+dynamic = ["version"]
+description = 'Gaussian processes in JAX.'
+readme = "README.md"
+requires-python = ">=3.10, <=3.13"
+license = { text = "MIT" }
+keywords = ["gaussian-processes jax machine-learning bayesian"]
+authors = [{ name = "Thomas Pinder", email = "tompinder@live.co.uk" }]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "jax>=0.5.0",
+  "jaxlib>=0.5.0",
+  "optax>0.2.1",
+  "numpyro",
+  "jaxtyping>0.2.10",
+  "tqdm>4.66.2",
+  "beartype>0.16.1",
+  "flax>=0.10.0",
+  "numpy>=2.0.0",
+]
+
+[project.optional-dependencies]
+docs = [
+  "mkdocs>=1.5.3",
+  "mkdocs-material>=9.5.12",
+  "mkdocstrings[python]<0.28.0",
+  "mkdocs-jupyter>=0.24.3",
+  "mkdocs-gen-files>=0.5.0",
+  "mkdocs-literate-nav>=0.6.0",
+  "mkdocs-git-authors-plugin>=0.7.0",
+  "matplotlib>=3.7.1",
+  "seaborn>=0.12.2",
+  "networkx>=3.0",
+  "jupytext>=1.14.5",
+  "ipython>=8.11.0",
+  "ipykernel>=6.22.0",
+  "watermark>=2.3.1",
+  "blackjax>=0.9.6",
+  "ipywidgets>=8.0.5",
+  "pandas>=1.5.3",
+  "pymdown-extensions>=10.7.1",
+  "nbconvert>=7.16.2",
+  "markdown-katex>=202406.1035",
+  "scikit-learn>=1.5.1",
+]
+dev = [
+  "ruff>=0.6",
+  "pre-commit>=3.2.2",
+  "interrogate>=1.5.0",
+  "codespell>=2.2.4",
+  "pytest>=7.2.2",
+  "pytest-cov>=4.0.0",
+  "pytest-pretty>=1.1.1",
+  "pytest-xdist>=3.2.1",
+  "coverage>=7.2.2",
+  "absolufy-imports>=0.3.1",
+  "xdoctest>=1.1.1",
+  "mktestdocs>=0.2.1",
+  "isort",
+  "networkx",
+  "black",
+  "jupytext",
+  "pytest-beartype",
+  "autoflake",
+]
+
+[tool.uv]
+managed = true
+dev-dependencies = [
+  "ruff>=0.6",
+  "pre-commit>=3.2.2",
+  "interrogate>=1.5.0",
+  "codespell>=2.2.4",
+  "pytest>=7.2.2",
+  "pytest-cov>=4.0.0",
+  "pytest-pretty>=1.1.1",
+  "pytest-xdist>=3.2.1",
+  "coverage>=7.2.2",
+  "absolufy-imports>=0.3.1",
+  "xdoctest>=1.1.1",
+  "mktestdocs>=0.2.1",
+  "isort",
+  "networkx",
+  "black",
+  "jupytext",
+  "pytest-beartype",
+  "autoflake",
+  "poethepoet>=0.37.0",
+]
+
+
+[project.urls]
+Documentation = "https://docs.jaxgaussianprocesses.com/"
+Issues = "https://github.com/JaxGaussianProcesses/GPJax/issues"
+Source = "https://github.com/JaxGaussianProcesses/GPJax"
+
+[tool.hatch.version]
+path = "gpjax/__init__.py"
+
+[tool.poe.tasks]
+# Formatting tasks
+[tool.poe.tasks.format]
+sequence = [
+  { cmd = "black ./gpjax ./tests" },
+  { cmd = "jupytext --pipe black examples/*.py" },
+  { cmd = "isort ./gpjax ./tests" },
+  { cmd = "isort examples/*.py --treat-comment-as-code '# %%' --float-to-top" },
+  { cmd = "ruff format ./gpjax ./tests ./examples" }
+]
+help = "Format code using black, isort, and ruff"
+
+# Linting tasks
+[tool.poe.tasks.lint]
+sequence = [
+  { cmd = "black --check --diff ./gpjax ./tests" },
+  { cmd = "isort ./gpjax ./tests -c" },
+  { cmd = "isort examples/*.py -c --treat-comment-as-code '# %%' --float-to-top" },
+  { cmd = "ruff check --fix ./gpjax ./tests ./examples" }
+]
+help = "Check code formatting and style"
+
+# Testing tasks
+[tool.poe.tasks.test]
+cmd = "pytest . -v -n 8 --beartype-packages='gpjax'"
+help = "Run tests with pytest"
+
+[tool.poe.tasks.coverage]
+cmd = "pytest . -v --cov=./gpjax --cov-report=xml:./coverage.xml"
+help = "Run tests with coverage reporting"
+
+[tool.poe.tasks.docstrings]
+cmd = "xdoctest ./gpjax"
+help = "Test docstring examples"
+
+# Documentation tasks
+[tool.poe.tasks.docs-build]
+sequence = [
+  { cmd = "python docs/scripts/gen_examples.py --execute" },
+  { cmd = "mkdocs build" }
+]
+help = "Build documentation"
+
+[tool.poe.tasks.docs-serve]
+cmd = "mkdocs serve --dev-addr localhost:8000"
+help = "Serve documentation locally"
+
+[tool.poe.tasks.integration]
+cmd = "python tests/integration_tests.py"
+help = "Run integration tests"
+
+# Combined tasks
+[tool.poe.tasks.all-tests]
+sequence = ["lint", "docstrings", "test"]
+help = "Run all checks and tests"
+
+[tool.coverage.run]
+source_pkgs = ["gpjax", "tests"]
+branch = true
+parallel = true
+omit = ["gpjax/__init__.py"]
+
+[tool.coverage.paths]
+gpjax = ["gpjax", "*/gpjax/"]
+tests = ["tests", "*/gpjax/tests"]
+
+[tool.coverage.report]
+exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
+fail_under = 50
+precision = 1
+show_missing = true
+skip_covered = true
+
+[tool.black] # https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html#configuration-via-a-file
+line-length = 88
+target-version = ["py310"]
+
+[tool.pytest.ini_options] # https://docs.pytest.org/en/latest/reference/reference.html#ini-options-ref
+filterwarnings = ["error", "ignore::DeprecationWarning"]
+testpaths = ["gpjax"]
+xfail_strict = true
+
+[tool.ruff] # https://github.com/charliermarsh/ruff
+fix = true
+cache-dir = "~/.cache/ruff"
+exclude = ["docs/", "examples/"]
+line-length = 88
+src = ["gpjax", "tests"]
+target-version = "py310"
+
+[tool.ruff.lint]
+dummy-variable-rgx = "^_$"
+select = [
+  "F",
+  # pycodestyle
+  "E",
+  "W",
+  # flake8-2020
+  "YTT",
+  # flake8-bugbear
+  "B",
+  # flake8-quotes
+  "Q",
+  # pylint
+  "PLE",
+  "PLR",
+  "PLW",
+  # misc lints
+  "PIE",
+  # flake8-pyi
+  "PYI",
+  # tidy imports
+  "TID",
+  # implicit string concatenation
+  "ISC",
+]
+ignore = [
+  # calls in argument defaults
+  "B008",
+  # space before : (needed for how black formats slicing)
+  # "E203",  # not yet implemented
+  # module level import not at top of file
+  "E402",
+  # do not assign a lambda expression, use a def
+  "E731",
+  "E501",
+  "S303",
+  "S307",
+  "RET504",
+  "S101",
+  "F722",
+  'PLR2004',
+  "PLR0913",
+]
+unfixable = ["ERA001", "F401", "F841", "T201", "T203"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.lint.per-file-ignores]
+"gpjax/__init__.py" = ['I', 'F401', 'E402', 'D104']
+"gpjax/progress_bar.py" = ["TCH004"]
+"gpjax/scan.py" = ["PLR0913"]
+"gpjax/citation.py" = ["F811"]
+"tests/test_base/test_module.py" = ["PLR0915"]
+"tests/test_objectives.py" = ["PLR0913"]
+"docs/examples/barycentres.py" = ["PLR0913"]
+
+[tool.isort]
+profile = "black"
+combine_as_imports = true
+force_sort_within_sections = true
+force_grid_wrap = 2
+skip = 'examples'
+
+[tool.interrogate]
+ignore-init-method = true
+ignore-init-module = true
+fail-under = 64
+exclude = [
+  "setup.py",
+  "docs",
+  "tests",
+  "gpjax/__init__.py",
+  "gpjax/citation.py",
+]
+verbose = 2
+quiet = false
+color = true

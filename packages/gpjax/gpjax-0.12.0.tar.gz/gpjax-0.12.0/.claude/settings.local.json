@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(hatch run dev:test:*)",
+      "Bash(hatch run dev:python:*)",
+      "Bash(hatch run dev:lint:*)",
+      "Bash(hatch env:*)",
+      "Bash(hatch run dev:format:*)",
+      "Bash(hatch run docs:ipython:*)",
+      "Bash(timeout 30s hatch run docs:ipython examples/orthogonal_additive_kernel.py)",
+      "Bash(gtimeout:*)",
+      "mcp__fetch__imageFetch",
+      "Bash(hatch run:*)",
+      "Bash(mkdir:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "WebFetch(domain:flax.readthedocs.io)",
+      "WebSearch",
+      "WebFetch(domain:docs.jax.dev)",
+      "mcp__github__search_pull_requests",
+      "mcp__github__get_me",
+      "mcp__github__get_pull_request_status",
+      "mcp__github__list_workflows",
+      "mcp__github__list_workflow_runs",
+      "mcp__github__get_job_logs",
+      "Bash(uv run:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

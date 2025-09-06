@@ -1,0 +1,67 @@
+name: Build the documentation
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-docs:
+    concurrency: ci-${{ github.ref }}
+    name: Build docs (${{ matrix.python-version }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      matrix:
+        os: ["ubuntu-latest"]
+        python-version: ["3.11"]
+
+    steps:
+      # Grap the latest commit from the branch
+      - name: Checkout the branch
+        uses: actions/checkout@v3.5.2
+        with:
+          persist-credentials: false
+
+      # Create a virtual environment
+      - name: create Conda environment
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          python-version: ${{ matrix.python-version }}
+
+      # Install katex for math support
+      - name: Install NPM
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Install KaTeX
+        run: |
+          npm install katex
+
+      # Install uv
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+
+      - name: Build the documentation with MKDocs
+        run: |
+          conda install pandoc
+          uv sync --extra docs
+          uv run python docs/scripts/gen_examples.py --execute
+          uv run mkdocs build
+
+      - name: Deploy Page 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          branch: gh-pages
+          folder: site

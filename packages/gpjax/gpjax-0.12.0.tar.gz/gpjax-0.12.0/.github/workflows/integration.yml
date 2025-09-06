@@ -1,0 +1,38 @@
+name: Integration Tests
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  integration-tests:
+    name: Run Integration Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Select the Python versions to test against
+        os: ["ubuntu-latest", "macos-latest"]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+      fail-fast: true
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v3.5.2
+        with:
+          fetch-depth: 1
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Install uv
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+
+      # Run the unit tests and build the coverage report
+      - name: Run Integration Tests
+        run: |
+          uv sync --extra docs
+          uv run python tests/integration_tests.py
