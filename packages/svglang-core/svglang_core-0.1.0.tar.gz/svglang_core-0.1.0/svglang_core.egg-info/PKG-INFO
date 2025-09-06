@@ -1,0 +1,103 @@
+Metadata-Version: 2.4
+Name: svglang-core
+Version: 0.1.0
+Summary: SVG Domain Specific Language Compiler - Core Engine
+Author-email: Florian Scholz <scholzf@uni-bremen.de>
+License: MIT
+Project-URL: Homepage, https://github.com/SVGLang/svglang
+Project-URL: Repository, https://github.com/SVGLang/svglang
+Project-URL: Documentation, https://github.com/SVGLang/svglang#readme
+Project-URL: Issues, https://github.com/SVGLang/svglang/issues
+Keywords: svg,dsl,compiler,graphics
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Compilers
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: lark>=1.1.0
+Dynamic: license-file
+
+# SVGLang Core
+
+A domain-specific language (DSL) for generating SVG graphics with a focus on simplicity and expressiveness.
+
+## Installation
+
+```bash
+pip install svglang-core
+```
+
+## Quick Start
+
+```python
+from svglang import compile_svgl
+
+# Compile SVGLang code to SVG
+code = """
+canvas width 400 height 300 background "lightblue"
+
+let radius = 50
+let center_x = 200
+let center_y = 150
+
+circle radius radius at (center_x, center_y) fill "red"
+"""
+
+svg_output = compile_svgl(code)
+print(svg_output)
+```
+
+## Command Line Usage
+
+After installation, you can use the `svglang` command:
+
+```bash
+# Compile a .svgl file to SVG
+svglang my_drawing.svgl
+
+# Output to specific file
+svglang input.svgl --output output.svg
+```
+
+## Language Features
+
+- **Simple Syntax**: Clean, declarative syntax for SVG creation
+- **String Interpolation**: Use variables with `{variable}` syntax
+- **Canvas Properties**: Set dimensions, viewBox, and styling
+- **Shapes**: Rectangles, circles, ellipses, lines, polygons
+- **Animations**: Built-in animation support
+- **Gradients**: Linear and radial gradients
+- **Control Flow**: Loops, conditionals, and functions
+
+## Example
+
+```svgl
+canvas width 400 height 300 background "lightblue"
+
+let radius = 50
+let center_x = 200
+let center_y = 150
+
+circle radius radius at (center_x, center_y) fill "red"
+
+# Animation
+circle radius radius at (center_x, center_y) fill "red" animate {
+    x from 0 to 100 duration 2s repeat once direction normal
+}
+```
+
+## Documentation
+
+For complete language documentation and examples, visit: https://github.com/SVGLang/svglang
+
+## License
+
+MIT License - see LICENSE file for details.
