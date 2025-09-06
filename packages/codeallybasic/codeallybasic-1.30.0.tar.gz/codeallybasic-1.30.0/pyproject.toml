@@ -1,0 +1,56 @@
+[build-system]
+requires = ['setuptools', 'wheel']
+build-backend = "setuptools.build_meta"
+
+[project]
+name        = 'codeallybasic'
+dynamic     = ["version"]
+description = 'Humberto`s Basic Common Code'
+readme      = "README.md"
+authors     = [{name = 'Humberto A. Sanchez II', email = 'Humberto.A.Sanchez.II@gmail.com'}]
+maintainers = [{name = 'Humberto A. Sanchez II', email = 'Humberto.A.Sanchez.II@gmail.com'}]
+keywords    = ['pyut', 'python',]
+license     = 'AGPL-1.0-or-later'
+
+classifiers = [
+  "Programming Language :: Python",
+  "Intended Audience :: Developers",
+  "Operating System :: MacOS :: MacOS X",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    'Deprecated>=1.2.18',
+    'Pypubsub==4.0.3',
+]
+
+[project.optional-dependencies]
+test = [
+    "html-testRunner~=1.2.1",
+    "mypy== 1.14.1",
+    "mypy-extensions==1.1.0",
+    "typing_extensions==4.10.0",
+    "types-Deprecated==1.2.9.20240311",
+    "buildlackey==1.8.2",
+]
+
+deploy = [
+    "wheel==0.45.1",
+    "setuptools==75.7.0",
+    "twine==6.1.0",
+    "build==1.2.2.post1",
+    "pkginfo==1.12.1.2"
+]
+
+[project.urls]
+Repository = 'https://github.com/hasii2011/code-ally-basic'
+
+
+[tool.setuptools.packages.find]
+where = ['src']
+
+[tool.setuptools.package-data]
+codeallybasic = ['py.typed']
+
+[tool.setuptools.dynamic]
+version = {attr = 'codeallybasic.__version__'}
