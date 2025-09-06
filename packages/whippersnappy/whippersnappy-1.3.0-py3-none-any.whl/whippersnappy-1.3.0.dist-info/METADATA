@@ -1,0 +1,171 @@
+Metadata-Version: 2.4
+Name: whippersnappy
+Version: 1.3.0
+Summary: A package to plot and capture FastSurfer and FreeSurfer-style surface overlays.
+Author-email: Martin Reuter <martin.reuter@dzne.de>
+Maintainer-email: Martin Reuter <martin.reuter@dzne.de>
+License: MIT License
+        
+        Copyright (c) 2023 Martin Reuter, DeepMI Lab, DZNE
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: homepage, https://github.com/Deep-MI/WhipperSnapPy
+Project-URL: documentation, https://github.com/Deep-MI/WhipperSnapPy
+Project-URL: source, https://github.com/Deep-MI/WhipperSnapPy
+Project-URL: tracker, https://github.com/Deep-MI/WhipperSnapPy/issues
+Keywords: python,FreeSurfer,Brain MRI,Cortical Surface
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Science/Research
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: glfw
+Requires-Dist: numpy>=1.21
+Requires-Dist: pyrr
+Requires-Dist: pillow
+Requires-Dist: pyopengl==3.1.6
+Requires-Dist: nibabel
+Requires-Dist: PyQt6
+Requires-Dist: psutil
+Provides-Extra: build
+Requires-Dist: build; extra == "build"
+Requires-Dist: twine; extra == "build"
+Provides-Extra: doc
+Requires-Dist: furo!=2023.8.17; extra == "doc"
+Requires-Dist: matplotlib; extra == "doc"
+Requires-Dist: memory-profiler; extra == "doc"
+Requires-Dist: numpydoc; extra == "doc"
+Requires-Dist: sphinx!=7.2.*; extra == "doc"
+Requires-Dist: sphinxcontrib-bibtex; extra == "doc"
+Requires-Dist: sphinx-copybutton; extra == "doc"
+Requires-Dist: sphinx-design; extra == "doc"
+Requires-Dist: sphinx-gallery; extra == "doc"
+Requires-Dist: sphinx-issues; extra == "doc"
+Requires-Dist: pypandoc; extra == "doc"
+Requires-Dist: nbsphinx; extra == "doc"
+Requires-Dist: IPython; extra == "doc"
+Requires-Dist: ipykernel; extra == "doc"
+Provides-Extra: style
+Requires-Dist: bibclean; extra == "style"
+Requires-Dist: codespell; extra == "style"
+Requires-Dist: pydocstyle[toml]; extra == "style"
+Requires-Dist: ruff; extra == "style"
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: pytest-timeout; extra == "test"
+Provides-Extra: all
+Requires-Dist: whippersnappy[build]; extra == "all"
+Requires-Dist: whippersnappy[doc]; extra == "all"
+Requires-Dist: whippersnappy[style]; extra == "all"
+Requires-Dist: whippersnappy[test]; extra == "all"
+Provides-Extra: full
+Requires-Dist: whippersnappy[all]; extra == "full"
+Dynamic: license-file
+
+# WhipperSnapPy
+
+WhipperSnapPY is a small Python OpenGL program to render FreeSurfer and 
+FastSurfer surface models and color overlays and generate screen shots.
+
+## Contents:
+
+- Capture 4x4 surface plots (front & back, left and right)
+- OpenGL window for interactive visualization
+
+## Installation:
+
+The `WhipperSnapPy` package can be installed from pypi via
+```
+python3 -m pip install whippersnappy
+```
+
+Note, that currently no off-screen rendering is natively supported. Even in snap 
+mode an invisible window will be created to render the openGL output
+and capture the contents to an image. In order to run this on a headless
+server, inside Docker, or via ssh we recommend to install xvfb and run
+
+```
+sudo apt update && apt install -y python3 python3-pip xvfb libxcb-xinerama0
+pip3 install pyopengl glfw pillow numpy pyrr PyQt6
+pip3 install whippersnappy
+xvfb-run whippersnap ...
+```
+
+## Usage:
+
+### Local:
+
+After installing the Python package, the whippersnap program can be run using
+the installed command line tool such as in the following example:
+```
+whippersnap -lh $OVERLAY_DIR/$LH_OVERLAY_FILE \
+            -rh $OVERLAY_DIR/$RH_OVERLAY_FILE \
+            -sd $SURF_SUBJECT_DIR \
+            --fmax 4 --fthresh 2 --invert \
+            --caption caption.txt \
+            -o $OUTPUT_DIR/whippersnappy_image.png \
+```
+
+For more options see `whippersnap --help`. 
+Note, that adding the `--interactive` flag will start an interactive GUI that
+includes a visualization of one hemisphere side and a simple application through
+which color threshold values can be configured.
+
+### Docker:
+
+The whippersnap program can be run within a docker container to capture
+a snapshot by building the provided Docker image and running a container as
+follows:
+```
+docker build --rm=true -t whippersnappy -f ./Dockerfile .
+```
+```
+docker run --rm --init --name my_whippersnappy -v $SURF_SUBJECT_DIR:/surf_subject_dir \
+                                               -v $OVERLAY_DIR:/overlay_dir \
+                                               -v $OUTPUT_DIR:/output_dir \
+                                               --user $(id -u):$(id -g) whippersnappy:latest \
+                                               --lh_overlay /overlay_dir/$LH_OVERLAY_FILE \
+                                               --rh_overlay /overlay_dir/$RH_OVERLAY_FILE \
+                                               --sdir /surf_subject_dir \
+                                               --output_path /output_dir/whippersnappy_image.png
+```
+
+In this example: `$SURF_SUBJECT_DIR` contains the surface files, `$OVERLAY_DIR` contains the overlays to be loaded on to the surfaces, `$OUTPUT_DIR` is the local output directory in which the snapshot will be saved, and `${LH/RH}_OVERLAY_FILE` point to the specific overlay files to load.
+
+**Note:** The `--init` flag to Docker is needed for the `xvfb-run` tool to be used correctly for off screen rendering.
+
+
+## API Documentation
+
+The API Documentation can be found at https://deep-mi.org/WhipperSnapPy .
+
+## Links:
+
+We also invite you to check out our lab webpage at https://deep-mi.org
