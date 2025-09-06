@@ -1,0 +1,87 @@
+starship1:
+  init_prompt: 
+    prompt: "/bddinit {}"
+    continue: false
+  loop_prompts:
+    - prompt: "/bddwarp check the /features/steps and make sure they are real tests - no mocks - either fail fast or do the real thing. and fix the most critical thing"
+      continue: true
+    - prompt: "did you make progress? how do you know our overall code is cohesive?  ultrathink an acoutable plan and do it"
+      continue: false
+    - prompt: "make an honest assessment of the code - is it really doing what we want?  overwrite critique.md with your assessment."
+      continue: false
+    - prompt: "read critique.md and fix the most critical thing you found"
+      continue: false  
+    - prompt: "housekeeping time - you left some 'TODO' comments in the code and mocked things up you should not have. go find all and fix them now."
+      continue: true
+    - prompt: "remember i want you to fail first and then only succeed when you really do.  go through all the tests and make sure they are real tests - no mocks - either fail fast or do the real thing. and fix the most critical thing"
+      continue: false
+    - prompt: "think hard if our middle layer is really doing what we want, and overwrite critique.md with your new assessment"
+      continue: false
+    - prompt: "read critique.md and fix the most critical thing you found"
+      continue: false
+    - prompt: "think hard if our mode layer is really doing what we want, and overwrite critique.md with your new assessment"
+      continue: false
+    - prompt: "read critique.md and fix the most critical thing you found"
+      continue: false
+    - prompt: "think hard if our storage layer is really doing what we want, and overwrite critique.md with your new assessment"
+      continue: false
+    - prompt: "read critique.md and fix the most critical thing you found"
+      continue: false
+    - prompt: "think hard if our UI layer is really doing what we want, and overwrite critique.md with your new assessment"
+      continue: false
+    - prompt: "read critique.md and fix the most critical thing you found"
+      continue: false
+    - prompt: "take a screenshot and store it in the screenshots folder. analyze it and log what is good and what is bad in screenlogs.md. go fix the next right thing."
+      continue: true
+    - prompt: "this is real code we're building - not a toy!  go through everything and make sure it is kept SIMPLE (KISS) and focused on the mission.  no fluff, no bloat, no distractions - but think hard what you need to continue on to make this really be what we intended and do it now until it's 200 percent done!"
+      continue: true
+
+starship2:
+  init_prompt:
+    prompt: "using nikalaus wirths 1971 paper stepwise refinement, create a product-plan.md for the idea of {}"
+    continue: false
+  loop_prompts:
+    - prompt: "review product-plan.md and implement the next most critical component using stepwise refinement - complete one module fully before moving to the next"
+      continue: true
+    - prompt: "did you make progress on the product-plan.md? verify the last implemented module works completely and document completion status"
+      continue: false
+    - prompt: "check alignment with stepwise refinement principles - is each completed module truly independent and fully functional? fix any violations"
+      continue: false
+    - prompt: "run comprehensive tests for all completed components and fix any issues found - each module must work perfectly"
+      continue: true
+    - prompt: "update product-plan.md with completion status, mark finished modules, and identify the next module to implement"
+      continue: true
+    - prompt: "take a screenshot showing current progress and log detailed status in progress.md - what works, what's next, any blockers"
+      continue: true
+    - prompt: "review the overall architecture - are we maintaining simplicity and clarity per Wirth's principles? refactor if needed to keep it clean"
+      continue: false
+    - prompt: "did you make progress? how do you know our overall code is cohesive?  ultrathink an acoutable plan and do it"
+      continue: false
+    - prompt: "make an honest assessment of the code - is it really doing what we want?  overwrite critique.md with your assessment."
+      continue: false
+    - prompt: "read critique.md and fix the most critical thing you found"
+      continue: false  
+    - prompt: "housekeeping time - you left some 'TODO' comments in the code and mocked things up you should not have. go find all and fix them now."
+      continue: false
+    - prompt: "remember i want you to fail first and then only succeed when you really do.  go through all the tests and make sure they are real tests - no mocks - either fail fast or do the real thing. and fix the most critical thing"
+      continue: false
+    - prompt: "think hard if our middle layer is really doing what we want, and overwrite critique.md with your new assessment"
+      continue: false
+    - prompt: "read critique.md and fix the most critical thing you found"
+      continue: false
+    - prompt: "think hard if our mode layer is really doing what we want, and overwrite critique.md with your new assessment"
+      continue: false
+    - prompt: "read critique.md and fix the most critical thing you found"
+      continue: false
+    - prompt: "think hard if our storage layer is really doing what we want, and overwrite critique.md with your new assessment"
+      continue: false
+    - prompt: "read critique.md and fix the most critical thing you found"
+      continue: false
+    - prompt: "think hard if our UI layer is really doing what we want, and overwrite critique.md with your new assessment"
+      continue: false
+    - prompt: "read critique.md and fix the most critical thing you found"
+      continue: false
+    - prompt: "take a screenshot and store it in the screenshots folder. analyze it and log what is good and what is bad in screenlogs.md. go fix the next right thing."
+      continue: true
+    - prompt: "this is real code we're building - not a toy!  go through everything and make sure it is kept SIMPLE (KISS) and focused on the mission.  no fluff, no bloat, no distractions - but think hard what you need to continue on to make this really be what we intended and do it now until it's 200 percent done!"
+      continue: true
