@@ -1,0 +1,13 @@
+include README.md
+include LICENSE
+include requirements.txt
+include MANIFEST.in
+recursive-include ai_coder *.py
+recursive-include ai_coder/config *.yaml
+recursive-include ai_coder/prompts *.md
+recursive-include ai_coder/templates *.txt
+recursive-include config *.yaml
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * .DS_Store
+recursive-exclude * .git*
