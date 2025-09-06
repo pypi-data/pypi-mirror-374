@@ -1,0 +1,377 @@
+Metadata-Version: 2.1
+Name: dstklib
+Version: 2.0.0
+Requires-Python: <3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: spacy
+Requires-Dist: plotly
+Requires-Dist: scikit-learn
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: gensim
+Requires-Dist: fasttext
+Requires-Dist: kneed
+Requires-Dist: umap-learn
+
+# Distributional Semantics Toolkit
+
+This library is based on the book *Distributional Semantics* by Alessandro Lenci and Magnus Sahlgren. It attempts to incorporate some of the algorithms described in the book, commonly used in distributional semantics.
+
+## Table of Contents
+
+1. [Documentation](#documentation)
+2. [Installation](#installation)
+3. [Usage](#usage)
+5. [Contributing](#contributing)
+6. [License](#license)
+
+## Documentation
+
+You can find the (temporal) basic documentation [here](https://distributional-semantics-toolkit-30269b.gitlab.io/index.html).
+
+## Installation
+
+To install it just run the command:
+
+```bash
+pip install dstklib
+```
+
+DSTK requires python <3.12 to work.
+
+# Usage
+
+The library can be used in three modes:
+
+## Standalone mode
+
+In standalone mode you can use the methods individually. Just import the method you want to use from its repective module in the `dstk.modules` folder:
+
+```python
+from dstk.modules.text_processor import to_lower
+
+words = ["The", "Quick", "Brown", "Fox", "Jumps", "Over", "The", "Lazy", "Dog"]
+
+lower_tokens = to_lower(words=words)
+
+print(lower_tokens)
+
+# Output: ["the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"]
+```
+
+## Workflow mode
+
+If there is a specific workflow you use multiple times, you can automate it by using WorkflowBuilder. Just input the name of the methods (in the correct order) you want to use and their corresponding arguments as a list of dictionaries, along with the name of the module you are importing them from:
+
+```python
+from dstk.workflows.workflow_tools import WorkflowBuilder
+
+text = "The quick brown fox jumps over the lazy dog while the sun sets behind the hills."
+model = "my_spacy_model"
+
+TokenizerWorkflow = WorkflowBuilder(
+    name="TokenizerWorkflow",
+    module_name="tokenizer"
+    workflow=[
+        {"apply_model": {"model": model}},
+        {"get_tokens": {}},
+        {"remove_stop_words": {}}
+    ]
+)
+
+# Pass as an argument the input data:
+tokens = TokenizerWorkflow(input_data=text)
+
+print(tokens)
+
+# Output: [quick, brown, fox, jumps, lazy, dog, sun, sets, behind, hills]
+```
+
+You can also get specic results in the workflow or even all of them by using `return_methods` and `return all`:
+
+```python
+from dstk.workflows.workflow_tools import WorkflowBuilder
+
+text = "The quick brown fox jumps over the lazy dog while the sun sets behind the hills."
+model = "my_spacy_model"
+
+TokenizerWorkflow = WorkflowBuilder(
+    name="TokenizerWorkflow",
+    module_name="tokenizer"
+    workflow=[
+        {"apply_model": {"model": model}},
+        {"get_tokens": {}},
+        {"remove_stop_words": {}}
+    ]
+)
+
+model, filtered_tokens = TokenizerWorkflow(
+    input_data=text,
+    return_methods=["apply_model", "remove_stop_words"]
+)
+
+print(model)
+print(filtered_tokens)
+
+# Output: 
+# The quick brown fox jumps over the lazy dog while the sun sets behind the hills.
+# [quick, brown, fox, jumps, lazy, dog, sun, sets, behind, hills]
+```
+
+If you choose to return all of the results, the workflow will return a generator with a tuple containing the name of the method and its result:
+
+```python
+from dstk.workflows.workflow_tools import WorkflowBuilder
+
+text = "The quick brown fox jumps over the lazy dog while the sun sets behind the hills."
+model = "my_spacy_model"
+
+TokenizerWorkflow = WorkflowBuilder(
+    name="TokenizerWorkflow",
+    module_name="tokenizer"
+    workflow=[
+        {"apply_model": {"model": model}},
+        {"get_tokens": {}},
+        {"remove_stop_words": {}}
+    ]
+)
+
+result = TokenizerWorkflow(
+    input_data=text,
+    return_all=True
+)
+
+print(next(result))
+print(next(result))
+print(next(result))
+
+# Output: 
+# ("apply_model", The quick brown fox jumps over the lazy dog while the sun sets behind the hills.)
+# ("get_tokens", [The, quick, brown, fox, jumps, over, the, lazy, dog, while, the, sun, sets, behind, the, hills])
+# ("remove_stop_words", [quick, brown, fox, jumps, lazy, dog, sun, sets, behind, hills])
+```
+
+You can also make a workflow return a Wrapper class containing methods you might want to used multiple times. For example, if you wish to calculat the `cos_similarity` of different words in the same embeddings, you can do:
+
+```python
+from dstk.workflows.workflow_tools import WorkflowBuilder
+
+GeometricDistance = WorkflowBuilder(
+    name="GeometricDistance",
+    module_name="geometric_distance",
+    workflow=[
+        {"cos_similarity": {}}, # The methods should NOT have args
+    ],
+    wrapper=True
+)
+
+result = GeometricDistance(input_data=embeddings) # In this example 'embeddings' is a pandas DataFrame containing word embeddings
+
+print(result.cos_similarity(first_word="word1", second_word="word2"))
+print(result.cos_similarity(first_word="word3", second_word="word4"))
+
+# Output: 
+# 0.999999
+# 0.854456
+```
+
+### Templates
+
+Workflows can use templates. Templates are a way to enforce certain rules on the workflow, such as method invocation order or restricting certain methods after others have been called, in order to achieve type safety and minimize errors. To use them just import the template of your respective module and pass it during workflow definition:
+
+```python
+from dstk.workflows.workflow_tools import WorkflowBuilder
+from dstk.templates import TokenizerTemplate
+
+text = "The quick brown fox jumps over the lazy dog while the sun sets behind the hills."
+model = "my_spacy_model"
+
+TokenizerWorkflow = WorkflowBuilder(
+    name="TokenizerWorkflow",
+    module_name="tokenizer",
+    template=TokenizerTemplate,
+    workflow=[
+        {"get_tokens": {}},
+        {"apply_model": {"model": model}}, # Wrong order. 'apply_model' should go first
+        {"remove_stop_words": {}}
+    ]
+)
+
+tokens = TokenizerWorkflow(input_data=text)
+
+# Output: RuntimeError: The method on step select_model must be ['apply_model']. Instead, got method get_tokens
+```
+
+### Stage workflows
+
+Some common tasks in distributional semantics require the use of more than one module, such as text pre-processing (tokenization, text procesing and ngram extraction) or plotting embeddings (clustering and drawing the plot). Stage workflows exist to address that problem. They come with predefined templates about which modules should be used, their order and the methods that can be used (or not) after certain choices have been made. In order to use them just import the desired stage workflow and pass a StageWorkflow, which is a dictionary that includes the name of the modules to be used and its respective workflows:
+
+```python
+from dstk.workflows.workflow_tools import WorkflowBuilder
+
+text = "The quick brown fox jumps over the lazy dog while the sun sets behind the hills."
+model = "my_spacy_model"
+
+TextProcessorWorkflow = TextProcessing(
+    name="TextProcessorWorkflow",
+    workflows={
+        "tokenizer": [
+            {"apply_model": {"model": model}},
+            {"get_tokens": {}},
+            {"remove_stop_words": {"custom_stop_words": stops}},
+        ],
+        "ngrams": [
+            {"extract_ngrams": {"window_size": 3}}
+        ],
+        "text_processor": [
+            {"tokens_to_text": {"lemmatize": True}},
+            {"to_lower": {}},
+            {"join": {}}
+        ]
+        
+    }
+)
+
+tokens = TokenizerWorkflow(input_data=text)
+
+
+# Output: ['the quick brown', 'quick brown fox', 'brown fox jumps', 'fox jumps over', 'jumps over the', 'over the lazy', 'the lazy dog', 'lazy dog while', 'dog while the', 'while the sun', 'the sun set', 'sun set behind', 'set behind the', 'behind the hills']
+```
+
+Just like in the case of WorkflowBuilder, you can also return the result of specific modules or all of them. You just need to pass a list with the names of the modules you want to return to `return_modules` or `True` to `return_all`. In the last case, it will return a generator with tuples containing the name of the module and its respective result.
+
+## Models
+
+A model is just a set of workflows running one after another. If there are a lot of workflows that you constantly use, you can automate the process by using ModelBuilder. Just pass your workflows as a list:
+
+```python
+from dstk.workflows.workflow_tools import WorkflowBuilder
+from dstk.models.model_tools import ModelBuilder
+
+text = "The quick brown fox jumps over the lazy dog while the sun sets behind the hills."
+
+TokenizerWorkflow = WorkflowBuilder(
+    name="TokenizerWorkflow",
+    module_name="tokenizer",
+    workflow=[
+        {"apply_model": {"model": model}},
+        {"get_tokens": {}},
+        {"remove_stop_words": {}}
+    ]
+)
+
+TextWorkflow = WorkflowBuilder(
+    name="TextWorkflow",
+    module_name="text_processor",
+    workflow=[
+        {"tokens_to_text": {}}
+        {"to_lower": {}}
+    ]
+)
+
+CustomModel = ModelBuilder(
+    workflows=[
+        TokenizerWorkflow,
+        TextWorkflow
+    ]
+)
+
+# Pass as an argument your input data
+result = CustomModel(input_data=text)
+
+print(result)
+
+# Output: ["quick", "brown", "fox", "jumps", "lazy", "dog", "sun", "sets", "behind", "hills"]
+```
+
+Just like in the case of WorkflowBuilder and StageWorkflows, you can also return the result of specific workflows or all of them. You just need to pass a list with the names of the workflows (or hooks) you want to return to `return_workflows` or `True` to `return_all`. In the last case, it will return a generator with tuples containing the name of the workflows and its respective result.
+
+### Hooks
+
+You can add hooks (functions with custom logic) to a pipeline. You must only follow two rules: 
+
+1. The function must accept only one input and return one output
+2. The type of its input must be the same as the one returned from the previous workflow. Also, the type it returns must match the input of the next workflow.
+
+Following these rules you can insert your custom hooks this way:
+
+```python
+from dstk.workflows.workflow_tools import WorkflowBuilder
+from dstk.models.model_tools import ModelBuilder
+from dstk.hooks.hook_tools import Hook
+
+text = "The quick brown fox jumps over the lazy dog while the sun sets behind the hills."
+
+TokenizerWorkflow = WorkflowBuilder(
+    name="TokenizerWorkflow",
+    module_name="tokenizer",
+    workflow=[
+        {"apply_model": {"model": model}},
+        {"get_tokens": {}},
+        {"remove_stop_words": {}}
+    ]
+)
+
+TextWorkflow = WorkflowBuilder(
+    name="TextWorkflow",
+    module_name="text_processor",
+    workflow=[
+        {"tokens_to_text": {}}
+        {"to_lower": {}}
+    ]
+)
+
+def custom_hook(words): 
+    return [word + "_hook" for word in words]
+
+CustomHook = Hook(name="CustomHook", method=custom_hook)
+
+CustomModel = ModelBuilder(
+    workflows=[
+        TokenizerWorkflow,
+        TextWorkflow,
+        CustomHook
+    ]
+)
+
+result = CustomPipeline(input_data=text)
+
+print(result)
+
+# Output: ["quick_hook", "brown_hook", "fox_hook", "jumps_hook", "lazy_hook", "dog_hook", "sun_hook", "sets_hook", "behind_hook", "hills_hook"]
+```
+
+### Predefined Models
+
+DSTK has some models included that already cover most of the frequent tasks in distributional semantics:
+
+- *StandardModel*: This pipeline generates word embeddings using the standard model as defined by (Lenci & Sahlgren 97). It preprocesses the text by removing stop words, lowering the words and segmenting the text using a context window. The co-occurrence matrix is weighted with PPMI and reduced with truncated SVD.
+
+- *SGNSModel*:  This pipeline generates word embeddings using Skip-Gram with Negative Sampling (SGNS) as defined by (Lenci & Sahlgren 162). It preprocesses the text by extracting the sentences, removing stop words and lowering them. The embeddings are extracted by using word2vec to do SGNS. Returns an instance of PredictModels.
+
+In order to use them just do:
+
+```python
+from dstk.models.models import StandardModel
+
+text = "The quick brown fox jumps over the lazy dog while the sun sets behind the hills."
+
+result = StandardModel(text=text, model=model, n_components=13)
+
+print(result.cos_similarity(first_word="brown", second_word="fox")) # It returns a wrapper with the methods 'cos_similarity' and 'nearest_neighbors' included.
+
+# Output: 0.5858588775335568
+```
+
+# Contributing
+
+I welcome contributions to improve this toolkit. If you have ideas or fixes, feel free to fork the repository and submit a pull request. Here are some ways you can help:
+
+* Report bugs or issues.
+
+* Suggest new features or algorithms to add.
+
+# License
+
+This project is licensed under the GPL-3 License - see the [LICENSE](https://gitlab.com/CesarACabrera/distributional-semantics-toolkit/-/blob/master/LICENSE?ref_type=heads) file for details.
