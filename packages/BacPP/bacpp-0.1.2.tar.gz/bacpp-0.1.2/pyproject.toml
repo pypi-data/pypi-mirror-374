@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "BacPP"
+version = "0.1.2"
+description = "BacterialPloidyPredictor (BacPP):  A Machine Learning Tool for Bacterial Polyploidy Prediction from Genome Assemblies"
+authors = ["Zhenxiong Jiang <jiangz1@ufl.edu>"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "bacpp", from = "src" }]
+
+include = [
+  "src/bacpp/models/*.json",  # Always package models
+  "bacpp.yml",                # Conda environment file
+  "example/*",              # Include example data
+  "paper/*"                 # Include manuscript figures/data
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+numpy = "^1.24"
+pandas = "^2.0"
+matplotlib = "^3.8"
+plotly = "^6.0"
+xgboost = "^2.0"
+scikit-learn = "^1.5"
+
+[tool.poetry.scripts]
+bacpp = "bacpp.cli:main"
+
+[build-system]
+requires = ["poetry-core>=1.8"]
+build-backend = "poetry.core.masonry.api"
