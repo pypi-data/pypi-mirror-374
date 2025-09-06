@@ -1,0 +1,70 @@
+#cloud-config
+# Ensure user exists and is in the docker group
+users:
+  - name: '{{ remote_user }}'
+    groups: docker
+    sudo: ALL=(ALL) NOPASSWD:ALL
+
+# Update packages and install prerequisites
+package_update: true
+package_upgrade: true
+packages:
+  - curl
+  - git
+
+# Write application files, Docker Compose and Caddy files
+write_files:
+  - path: /home/{{ remote_user }}/docker-compose.yml
+    content: |
+{{ docker_compose_content | indent(6) }}
+  - path: /home/{{ remote_user }}/Caddyfile
+    content: |
+{{ caddyfile_content | indent(6) }}
+{% if dockerfile_content %}
+  - path: /home/{{ remote_user }}/Dockerfile
+    content: |
+{{ dockerfile_content | indent(6) }}
+{% endif %}
+{% if app_files %}
+{% for file_path, file_content in app_files.items() %}
+  - path: /home/{{ remote_user }}/{{ file_path }}
+    content: |
+{{ file_content | indent(6) }}
+{% endfor %}
+{% endif %}
+  - path: /home/{{ remote_user }}/build-and-run.sh
+    content: |
+      #!/bin/bash
+      set -e
+      cd /home/{{ remote_user }}
+      
+      # Install Docker if not already installed
+      if ! command -v docker &> /dev/null; then
+          curl -fsSL https://get.docker.com -o get-docker.sh
+          sh get-docker.sh
+          usermod -aG docker {{ remote_user }}
+      fi
+      
+      # Wait for Docker to be ready
+      sleep 10
+      
+      # Build Docker image if Dockerfile exists
+      {% if dockerfile_content %}
+      echo "Building Docker image..."
+      docker build -t {{ app_image }} .
+      {% endif %}
+      
+      # Start containers
+      echo "Starting containers..."
+      docker compose up -d
+      
+      echo "✅ Application deployed successfully!"
+    permissions: '0755'
+
+# Install Docker, set permissions, and run build script
+runcmd:
+  - curl -fsSL https://get.docker.com -o get-docker.sh
+  - sh get-docker.sh
+  - usermod -aG docker {{ remote_user }}
+  - chown -R {{ remote_user }}:{{ remote_user }} /home/{{ remote_user }}
+  - runuser -l {{ remote_user }} -c '/home/{{ remote_user }}/build-and-run.sh'
