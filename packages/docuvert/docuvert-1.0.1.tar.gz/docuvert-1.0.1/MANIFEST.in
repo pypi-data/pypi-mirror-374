@@ -1,0 +1,9 @@
+include README.md
+include requirements.txt
+include instructions.md
+include setup.sh
+recursive-include src/docuvert *.py
+recursive-exclude * __pycache__
+recursive-exclude * *.pyc
+recursive-exclude * *.pyo
+recursive-exclude * .DS_Store
