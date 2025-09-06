@@ -1,0 +1,26 @@
+Metadata-Version: 2.4
+Name: rayml
+Version: 0.2.6
+Summary: A high-performance Python ML package.
+Author-email: rayml <rayml@connt.io>
+License-Expression: GPL-3.0-or-later
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: POSIX :: Linux
+Requires-Python: <3.14,>=3.12
+License-File: LICENSE
+Requires-Dist: pandas<2.4.0,>=2.2.0
+Requires-Dist: numpy<2.4.0,>=2.1.2
+Requires-Dist: scikit-learn~=1.6.1
+Requires-Dist: gunicorn>=20.0.0
+Requires-Dist: xgboost~=3.0.1
+Requires-Dist: scipy~=1.15.2
+Requires-Dist: optuna<5.0.0,>=4.5.0
+Requires-Dist: dill<1.0.0,>=0.4.0
+Requires-Dist: lz4<5.0.0,>=4.4.4
+Requires-Dist: matplotlib<4.0.0,>=3.10.0
+Requires-Dist: seaborn<1.0.0,>=0.13.0
+Requires-Dist: cryptography>=45.0
+Requires-Dist: zstandard<1.0.0,>=0.23.0
+Requires-Dist: tqdm<5.0.0,>=4.67.1
+Dynamic: license-file
