@@ -1,0 +1,28 @@
+Metadata-Version: 2.2
+Name: zx_rpa
+Version: 1.0.5
+Summary: ZX_RPA - 机器人流程自动化工具库，提供统一、简洁的API接口
+Author: zang xin
+Author-email: zangxincz@gmail.com
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: loguru
+Requires-Dist: PyYAML
+Provides-Extra: qiniu
+Requires-Dist: qiniu; extra == "qiniu"
+Provides-Extra: mysql
+Requires-Dist: pymysql; extra == "mysql"
+Provides-Extra: browser
+Requires-Dist: DrissionPage; extra == "browser"
+Provides-Extra: all
+Requires-Dist: qiniu; extra == "all"
+Requires-Dist: pymysql; extra == "all"
+Requires-Dist: DrissionPage; extra == "all"
+Dynamic: author
+Dynamic: author-email
+Dynamic: description-content-type
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
