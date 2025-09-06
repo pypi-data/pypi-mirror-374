@@ -1,0 +1,74 @@
+# Sample Prompts for Testing prompt-to-task Tool
+
+This file contains example prompts to test the conversion tool.
+
+## JSON Generation Prompt
+
+Generate a JSON object representing a customer profile with the following information:
+
+Customer Name: {customer_name}
+Email: {email}
+Age: {age}
+City: {city}
+
+The output should be valid JSON with these required fields:
+- "name": customer's full name
+- "email": valid email address
+- "age": integer between 18 and 100
+- "city": customer's city
+- "id": unique customer ID (generate random)
+
+Example output:
+{
+    "id": "cust_12345",
+    "name": "John Smith",
+    "email": "john@example.com",
+    "age": 35,
+    "city": "New York"
+}
+
+## CSV Generation Prompt
+
+Generate a CSV report for sales data with the following columns:
+Date, Product, Quantity, Price, Total
+
+Input data:
+Products: {products}
+Date Range: {date_range}
+
+Requirements:
+- Include header row
+- Date format: YYYY-MM-DD
+- Price format: 2 decimal places
+- Calculate Total = Quantity * Price
+- Minimum 5 rows of data
+
+## List Generation Prompt
+
+Create a numbered list of action items for {project_name}:
+
+Project: {project_name}
+Priority: {priority}
+Due Date: {due_date}
+
+Requirements:
+- 5-10 action items
+- Each item should be specific and actionable
+- Include responsible person where applicable
+- Format: "1. Action item description"
+
+## Email Generation Prompt
+
+Compose a professional email for the following:
+
+To: {recipient}
+Subject: {subject}
+Purpose: {purpose}
+Tone: {tone}
+
+The email should:
+- Include proper greeting and closing
+- Be 50-200 words
+- Use {tone} tone throughout
+- Include clear call to action
+- Be professionally formatted

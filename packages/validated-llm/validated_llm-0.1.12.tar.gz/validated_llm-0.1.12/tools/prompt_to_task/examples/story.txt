@@ -1,0 +1,25 @@
+Transform the following story into a structured scene breakdown:
+
+Story: {story_text}
+
+For each scene, provide:
+1. Scene number
+2. Location/Setting
+3. Time of day
+4. Characters present
+5. Key actions or events
+6. Emotional tone
+7. Important dialogue snippets
+
+Output format should be:
+SCENE [number]: [title]
+Location: [setting]
+Time: [time of day]
+Characters: [list of characters]
+Action: [what happens]
+Tone: [emotional atmosphere]
+Key Dialogue: "[important quotes]"
+---
+
+Create between {min_scenes} and {max_scenes} scenes based on the story complexity.
+Ensure each scene advances the plot and maintains narrative continuity.
