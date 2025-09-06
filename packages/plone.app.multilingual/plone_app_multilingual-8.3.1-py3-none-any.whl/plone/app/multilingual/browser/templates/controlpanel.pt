@@ -1,0 +1,55 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      lang="en"
+      metal:use-macro="here/prefs_main_template/macros/master"
+      xml:lang="en"
+      i18n:domain="plone"
+>
+
+  <body>
+
+    <tal:main metal:fill-slot="prefs_configlet_main">
+
+      <header>
+        <a class="link-parent"
+           id="setup-link"
+           tal:attributes="
+             href string:$portal_url/@@overview-controlpanel;
+           "
+           i18n:translate=""
+        >
+        Site Setup
+        </a>
+
+        <h1 class="documentFirstHeading"
+            tal:content="view/label"
+        >View Title</h1>
+
+        <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+      Portal status message
+        </div>
+      </header>
+      <div id="content-core">
+        <div id="layout-contents">
+          <span tal:replace="structure view/contents"></span>
+        </div>
+        <div class="mt-4">
+          <p i18n:translate="">
+          The
+            <a tal:attributes="
+                 href string:${context/absolute_url}/multilingual-map;
+               "
+               i18n:name="url"
+               i18n:translate=""
+            >multilingual map view
+            </a>
+          allows you to view in a graphical manner the already translated items and its relations.
+          </p>
+        </div>
+      </div>
+
+    </tal:main>
+  </body>
+</html>

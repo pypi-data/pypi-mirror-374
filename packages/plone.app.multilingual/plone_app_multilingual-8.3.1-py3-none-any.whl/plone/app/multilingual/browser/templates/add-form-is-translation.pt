@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="row">
+    <div class="alert alert-info col-12"
+         role="alert"
+    >
+      <strong i18n:domain="plone"
+              i18n:translate=""
+      >
+                Info
+      </strong>
+      <tal:block i18n:domain="plone"
+                 i18n:translate="add-form-is-translation"
+      >
+                This object is going to be a translation to
+        <span tal:replace="python:view.language_name(view.language())"
+              i18n:name="language"
+        ></span>
+                from:
+      </tal:block>
+      <ul>
+        <li tal:repeat="origin view/origin">
+          <span tal:content="python:view.language_name(origin.Language)"></span>:
+          <a class="link-overlay"
+             href="#"
+             tal:attributes="
+               href origin/getURL;
+             "
+          >
+            <span tal:content="origin/Title"></span></a></li>
+      </ul>
+      <span i18n:domain="plone"
+            i18n:translate="create-object-without-translation"
+      >
+      If you want to create this object without being a translation press
+        <a class="link-overlay"
+           href="#"
+           tal:attributes="
+             href view/returnURL;
+           "
+           i18n:name="url"
+           i18n:translate=""
+        >here</a>
+      </span>
+    </div>
+  </div>
+</div>

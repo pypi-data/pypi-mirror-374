@@ -1,0 +1,94 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="plone"
+    >
+
+  <genericsetup:upgradeStep
+      title="Update css_registry to render styles for authenticated users only."
+      description=""
+      profile="plone.app.multilingual:default"
+      source="1"
+      destination="2"
+      handler=".upgrades.reimport_css_registry"
+      />
+
+  <genericsetup:upgradeStep
+      title="Migration for new LRF type"
+      description="Rename old language folders and copy content into new LRF. Migrate shared folder to portal root."
+      profile="plone.app.multilingual:default"
+      source="1"
+      destination="2"
+      handler="plone.app.multilingual.upgrades.migration_pam_1_to_2"
+      />
+
+  <genericsetup:registerProfile
+      name="to_3"
+      title="Update new registry key"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="plone.base.interfaces.IMigratingPloneSiteRoot"
+      directory="profiles/upgrades/to_3"
+      />
+
+  <genericsetup:upgradeStep
+      title="Add new registry entry"
+      profile="plone.app.multilingual:default"
+      source="2"
+      destination="3"
+      handler=".upgrades.upgrade_to_3"
+      />
+
+  <genericsetup:registerProfile
+      name="to_4"
+      title="Update bundle registration"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="plone.base.interfaces.IMigratingPloneSiteRoot"
+      directory="profiles/upgrades/to_4"
+      />
+
+  <genericsetup:upgradeStep
+      title="Update bundle registration"
+      profile="plone.app.multilingual:default"
+      source="3"
+      destination="4"
+      handler=".upgrades.upgrade_to_4"
+      />
+
+  <genericsetup:registerProfile
+      name="to_1000"
+      title="Update to 1000"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="plone.base.interfaces.IMigratingPloneSiteRoot"
+      directory="profiles/upgrades/to_1000"
+      />
+
+  <genericsetup:upgradeSteps
+      profile="plone.app.multilingual:default"
+      source="4"
+      destination="1000"
+      >
+
+    <genericsetup:upgradeDepends
+        title="Add icon expressions"
+        import_profile="plone.app.multilingual:to_1000"
+        />
+
+  </genericsetup:upgradeSteps>
+
+  <genericsetup:upgradeStep
+      title="Update old layouts"
+      profile="plone.app.multilingual:default"
+      source="1000"
+      destination="1001"
+      handler=".upgrades.update_old_layouts"
+      />
+
+  <genericsetup:upgradeStep
+      title="Fix Indonesian language"
+      profile="plone.app.multilingual:default"
+      source="1001"
+      destination="1002"
+      handler=".upgrades.fix_indonesian_language"
+      />
+
+</configure>
