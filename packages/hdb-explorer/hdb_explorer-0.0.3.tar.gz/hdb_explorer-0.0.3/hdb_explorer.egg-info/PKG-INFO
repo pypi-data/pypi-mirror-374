@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: hdb-explorer
+Version: 0.0.3
+Summary: A simple SAP HANA Database Explorer.
+Author: Praveen Nair
+Author-email: 
+License: MIT
+Project-URL: Source Repository, https://github.com/praveen-nair/hdb_explorer/
+Project-URL: Issues, https://github.com/praveen-nair/hdb_explorer/issues
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+Simple HANA Db Explorer
+=======================
+
+A simple SAP HANA Database Explorer.
+
+# How to install?
+**Tip**: It's always best to create an environment and install the package there.
+
+Install the wrapper library, execute the below command:
+```bash
+pip install hdb_explorer
+```
+# How to use?
+Run the following from terminal
+```bash
+$ hdb_explorer
+```
+or
+```bash
+C:> hdb_explorer
+```
+## Screenshots:
+![image](https://raw.githubusercontent.com/praveen-nair/hdb_explorer/refs/heads/main/add_sys.png)
+
+![image](https://raw.githubusercontent.com/praveen-nair/hdb_explorer/refs/heads/main/connected.png)
+
+![image](https://raw.githubusercontent.com/praveen-nair/hdb_explorer/refs/heads/main/sql.png)
+
+# Found an issue/ Have a suggestion?
+**IMP**: This package is for educational use and is not meant to replace other libraries. \
+**IMP**: This is still in development stage!
+
+If something is not working or you have ideas for improvements, please feel free to open an issue.
