@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "whitecircle_cli"
+version = "0.1.1"
+description = "White Circle CLI - thin wrapper over White Circle API"
+readme = "README.md"
+requires-python = ">=3.13.7"
+authors = [{name = "White Circle", email = "hi@whitecircle.ai"}]
+license = {text = "Apache-2.0"}
+keywords = ["cli", "whitecircle", "security", "policy"]
+dependencies = [
+  "click>=8.1",
+  "httpx>=0.27",
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.13",
+  "License :: OSI Approved :: Apache Software License",
+  "Environment :: Console",
+  "Topic :: Utilities",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.5.0",
+]
+
+[project.urls]
+Homepage = "https://whitecircle.ai"
+
+[project.scripts]
+wcircle = "whitecircle_cli.__main__:cli"
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+select = ["E", "F", "I", "UP", "B", "N", "S"]
+ignore = ["S101"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-q"
+python_files = ["tests.py", "test_*.py"]
