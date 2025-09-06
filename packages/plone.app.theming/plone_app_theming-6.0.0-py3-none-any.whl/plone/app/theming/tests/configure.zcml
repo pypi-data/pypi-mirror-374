@@ -1,0 +1,45 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    >
+
+  <include package="plone.app.theming" />
+
+  <plone:static
+      directory="resources"
+      type="theme"
+      />
+  <plone:static
+      directory="secondary-theme"
+      name="secondary-theme"
+      type="theme"
+      />
+  <plone:static
+      directory="another-theme"
+      name="another-theme"
+      type="theme"
+      />
+
+  <browser:page
+      name="header-disabled"
+      for="*"
+      template="notheme.pt"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      name="test-title"
+      for="*"
+      class=".browser.Title"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      name="test-public-title"
+      for="*"
+      class=".browser.Title"
+      permission="zope.Public"
+      />
+
+</configure>
