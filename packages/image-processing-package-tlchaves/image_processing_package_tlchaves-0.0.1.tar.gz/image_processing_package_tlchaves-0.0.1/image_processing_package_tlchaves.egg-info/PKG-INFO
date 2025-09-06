@@ -1,0 +1,54 @@
+Metadata-Version: 2.4
+Name: image_processing_package_tlchaves
+Version: 0.0.1
+Summary: Image Processing Package using Skimage
+Home-page: https://github.com/thierryLchaves/Desafios-Python-DIO/tree/main/IMAGE-PROCESSING-PACKAGE
+Author: Thierry Lucas chaves
+Author-email: thierry.lucaschaves@gmail.com
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: scikit-image>=0.16.1
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Image_processing
+
+Description. 
+The package image_processing is used to:
+	Processing :
+		- Histrogram matching
+		- Structual similarity
+		- Resize image
+	Utils:
+		- Read image
+		- Save image
+		- Plot image
+		- Plot result
+		- Plot hitogram
+
+
+## Installation
+
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install image_processing
+	Processing 
+	 
+```bash
+pip install image_processing
+	Processing 
+	``` 
+
+
+
+## Author
+Thierry Lucas Chaves
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
