@@ -1,0 +1,49 @@
+Metadata-Version: 2.1
+Name: nyt_recipe
+Version: 1.2.0
+Summary: Downloads recipes from the NYT Cooking website and converts them into an Apple Notes-compatible format
+Home-page: https://github.com/ianbrault/nyt_recipe
+License: MIT
+Author: Ian Brault
+Author-email: ian@brault.dev
+Requires-Python: >=3.9,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: beautifulsoup4 (>=4.12,<5.0)
+Requires-Dist: requests (>=2.31,<3.0)
+Project-URL: Repository, https://github.com/ianbrault/nyt_recipe
+Description-Content-Type: text/markdown
+
+![PyPi](https://img.shields.io/pypi/v/nyt_recipe) ![License](https://img.shields.io/pypi/l/MI)
+
+`nyt_recipe` is a Python 3 script that is used to download recipes from
+[NYT Cooking](https://cooking.nytimes.com/) and save them to a file in a format
+that can be easily imported by Apple Notes.
+
+## Installation
+
+`nyt_recipe` should be installed using `pip`:
+
+```bash
+$ python3 -m pip install nyt-recipe
+```
+
+## Usage
+
+Provide a URL or list of URLs to the script. The script will place the output
+files in the `recipes` directory inside the current user's home directory, or
+to the output directory specified by the `-o` argument.
+
+```bash
+$ nyt_recipe https://cooking.nytimes.com/recipes/1020044-vegetable-paella-with-chorizo
+Saved recipe "Vegetable Paella With Chorizo" to /Users/ianbrault/recipes/vegetable_paella_with_chorizo.html
+```
+
+Then import the note into Apple Notes: "File > Import to Notes..."
+
+![example recipe](screenshots/recipe.png)
+
