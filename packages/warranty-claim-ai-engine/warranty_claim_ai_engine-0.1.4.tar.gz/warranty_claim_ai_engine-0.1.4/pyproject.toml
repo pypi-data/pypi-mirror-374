@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "warranty-claim-ai-engine"
+version = "0.1.4"
+authors = [
+  { name="54g0", email="sagar8296d@gmail.com" },
+]
+description = "A GenAI-powered SDK to automate warranty claim processing."
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "langchain",
+    "langchain-google-genai",
+    "langchain-openai",
+    "langchain-community",
+    "langgraph",
+    "langchain_groq",
+    "langsmith",
+    "openai",
+    "google-generativeai",
+    "pandas",
+    "numpy",
+    "pillow",
+    "pytesseract",
+    "opencv-python",
+    "scikit-learn",
+    "faiss-cpu",
+    "sentence-transformers",
+    "plotly",
+    "python-dotenv",
+    "pydantic",
+    "typing-extensions",
+    "requests",
+    "groq",
+    "huggingface-hub",
+    "transformers",
+    "easyocr",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/54g0/Warranty-Claim-AI-Agent"
+
+[tool.setuptools.packages.find]
+where = ["src"]
