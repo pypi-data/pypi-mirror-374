@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "sheetrika"
+version = "0.1.4"
+description = ""
+authors = ["Dmitry Izosimov <izosimdima@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+google-api-python-client = "^2.177.0"
+pyyaml = "^6.0.2"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+sheetrika = "sheetrika.cli:main"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.format]
+quote-style = "single"
