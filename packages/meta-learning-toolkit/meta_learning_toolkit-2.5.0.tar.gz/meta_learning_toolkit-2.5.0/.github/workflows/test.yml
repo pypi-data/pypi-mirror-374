@@ -1,0 +1,233 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run tests weekly on Sunday at 00:00 UTC
+    - cron: '0 0 * * 0'
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.9', '3.10', '3.11', '3.12']
+        torch-version: ['2.0.1', '2.1.0', 'latest']
+        exclude:
+          # Reduce matrix size - test only critical combinations on Windows/macOS
+          - os: windows-latest
+            python-version: '3.9'
+          - os: windows-latest
+            torch-version: '2.0.1'
+          - os: macos-latest
+            python-version: '3.12'
+          - os: macos-latest
+            torch-version: '2.0.1'
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/pyproject.toml') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-${{ matrix.python-version }}-
+          ${{ runner.os }}-pip-
+
+    - name: Install PyTorch ${{ matrix.torch-version }}
+      run: |
+        if [ "${{ matrix.torch-version }}" = "latest" ]; then
+          pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+        else
+          pip install torch==${{ matrix.torch-version }} torchvision --index-url https://download.pytorch.org/whl/cpu
+        fi
+      shell: bash
+
+    - name: Install package with dependencies
+      run: |
+        pip install -e .[test,datasets,visualization]
+        pip install --upgrade pip
+
+    - name: Print environment info
+      run: |
+        python --version
+        pip list | grep -E "(torch|numpy|scipy|sklearn|pytest)"
+        python -c "import torch; print(f'PyTorch: {torch.__version__}')"
+        python -c "import sys; print(f'Platform: {sys.platform}')"
+
+    - name: Run linting (Ubuntu + Python 3.11 only)
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11' && matrix.torch-version == 'latest'
+      run: |
+        pip install ruff mypy
+        ruff check src/ tests/
+        ruff format --check src/ tests/
+        # mypy src/ --ignore-missing-imports
+
+    - name: Run unit tests
+      run: |
+        pytest tests/ -v --tb=short -m "unit" --maxfail=5
+      env:
+        PYTHONPATH: src
+
+    - name: Run integration tests (not slow)
+      run: |
+        pytest tests/ -v --tb=short -m "integration and not slow" --maxfail=3
+      env:
+        PYTHONPATH: src
+
+    - name: Run mathematical regression tests
+      run: |
+        pytest tests/ -v --tb=short -m "regression" --maxfail=1
+      env:
+        PYTHONPATH: src
+
+    - name: Test CLI functionality
+      run: |
+        # Test CLI is importable
+        python -c "from meta_learning.cli import main; print('✅ CLI import successful')"
+        
+        # Test help command
+        python -m meta_learning.cli --help
+      env:
+        PYTHONPATH: src
+
+    - name: Test core imports and functionality
+      run: |
+        python -c "
+        import meta_learning as ml
+        print(f'✅ Package version: {ml.__version__}')
+        print(f'✅ Available algorithms: {len(ml.ALGORITHMS_AVAILABLE)}')
+        
+        # Test core functions exist
+        assert hasattr(ml, 'ProtoHead'), 'ProtoHead missing'
+        assert hasattr(ml, 'make_episode'), 'make_episode missing'
+        print('✅ Core API verified')
+        "
+      env:
+        PYTHONPATH: src
+
+    - name: Test datasets (Ubuntu only - to avoid download issues)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        python -c "
+        import meta_learning as ml
+        from meta_learning.datasets import print_dataset_info
+        
+        # Test dataset info printing
+        for dataset in ['omniglot', 'miniimagenet', 'cifar_fs']:
+            print_dataset_info(dataset)
+        print('✅ Dataset info functions working')
+        "
+      env:
+        PYTHONPATH: src
+
+    - name: Generate coverage report (Ubuntu + Python 3.11 only)
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11' && matrix.torch-version == 'latest'
+      run: |
+        pytest tests/ --cov=src/meta_learning --cov-report=xml --cov-report=term-missing -m "not slow"
+      env:
+        PYTHONPATH: src
+
+    - name: Upload coverage to Codecov
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11' && matrix.torch-version == 'latest'
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+
+  slow-tests:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'schedule' || contains(github.event.head_commit.message, '[run-slow-tests]')
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+        pip install -e .[test,datasets,visualization]
+    
+    - name: Run slow integration tests
+      run: |
+        pytest tests/ -v --tb=short -m "slow" --maxfail=2
+      env:
+        PYTHONPATH: src
+
+  build-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install build dependencies
+      run: |
+        pip install build twine
+    
+    - name: Build package
+      run: |
+        python -m build
+    
+    - name: Check build artifacts
+      run: |
+        ls -la dist/
+        twine check dist/*
+    
+    - name: Test installation from wheel
+      run: |
+        pip install dist/*.whl
+        python -c "import meta_learning; print(f'✅ Installed version: {meta_learning.__version__}')"
+
+  docs-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install docs dependencies
+      run: |
+        pip install mkdocs mkdocs-material mkdocstrings[python]
+    
+    - name: Test docs build
+      run: |
+        mkdocs build --strict
+    
+    - name: Check for broken links in docs
+      run: |
+        # Basic check that all referenced files exist
+        python -c "
+        import os
+        docs_files = ['docs/index.md', 'docs/quickstart.md', 'mkdocs.yml']
+        for f in docs_files:
+            assert os.path.exists(f), f'Missing: {f}'
+        print('✅ Documentation files present')
+        "
