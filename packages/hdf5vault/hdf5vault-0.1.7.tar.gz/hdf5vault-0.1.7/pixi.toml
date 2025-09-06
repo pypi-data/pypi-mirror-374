@@ -1,0 +1,16 @@
+[workspace]
+authors = ["Daniel Roten <rotedani@fmi.ch>"]
+channels = ["conda-forge"]
+name = "HDF5Vault"
+platforms = ["osx-arm64"]
+version = "0.1.5"
+
+[tasks]
+
+[dependencies]
+hatch = ">=1.14.1,<2"
+h5py = ">=3.13.0,<4"
+mpi4py = ">=4.0.3,<5"
+python-blosc2 = ">=3.3.2,<4"
+twine = ">=6.1.0,<7"
+
