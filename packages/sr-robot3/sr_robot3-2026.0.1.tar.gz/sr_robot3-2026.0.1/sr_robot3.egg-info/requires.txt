@@ -1,0 +1,23 @@
+pyserial<4,>=3
+april_vision==3.0.0
+paho-mqtt<3,>=2
+pydantic<2,>=1.9.1
+
+[:python_version < "3.10"]
+typing-extensions
+
+[:python_version < "3.11"]
+tomli<3,>=2.0.1
+
+[dev]
+flake8
+isort
+mypy<2,>=1.7
+build
+types-pyserial
+pytest
+pytest-cov
+paho-mqtt<3,>=2
+
+[vision]
+opencv-python-headless<5,>=4.10
