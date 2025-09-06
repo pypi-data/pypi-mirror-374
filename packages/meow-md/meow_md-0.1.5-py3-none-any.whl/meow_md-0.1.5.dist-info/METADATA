@@ -1,0 +1,60 @@
+Metadata-Version: 2.4
+Name: meow-md
+Version: 0.1.5
+Summary: Markdown renderer with Rich
+Author-email: sailorfe <sailorf@proton.me>
+License-Expression: MIT
+Project-URL: Repository, https://codeberg.org/sailorfe/meow
+Keywords: markdown,cat
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.0
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: rich>=13.0
+Requires-Dist: pygments>=2.16
+Requires-Dist: markdown-it-py>=3.0
+Dynamic: license-file
+
+# meow
+> this is a test blockquote
+
+**meow** is a terminal markdown viewer written in python and inspired by [glow](https://github.com/charmbracelet/glow). it's just a `cat` with [Rich](https://github.com/Textualize/rich), though, no file browsing! (yet?)
+
+## features
+
+- uses `LS_COLORS`
+- syntax highlighting in fenced codeblocks
+- styled lists, headers, blockquotes, and **bold** and *italics*
+
+### gripes / future
+
+- [ ] make the checkboxes cuter! glow-style `[ ]` / `[-]` / `[x]`
+- [ ] tables...
+
+## installation
+
+install directly from [pypi](https://pypi.org/project/meow-md):
+
+```bash
+pip install --user meow-md  # if you use pip
+pipx install meow-md        # if you use pipx
+```
+
+or build from source:
+
+```bash
+git clone https://codeberg.org/sailorfe/meow.git
+cd meow
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+pip install -e .
+```
+
+## usage
+
+```bash
+meow README.md
+```
