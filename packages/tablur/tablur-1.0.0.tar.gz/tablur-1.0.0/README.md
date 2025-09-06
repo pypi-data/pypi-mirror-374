@@ -1,0 +1,93 @@
+# tablur
+
+a simple, callable python library for creating beautifully formatted tables with box-drawing characters.
+
+## features
+
+- **callable interface**: use `tablur()` directly as a function
+- create tables with box-drawing characters (╭─╮│├┼┤┴╰)
+- support for optional headers and footers
+- automatic column width calculation
+- two input formats: column-based and row-based
+- returns formatted strings (no automatic printing)
+- lightweight and blazingly fast
+
+## installation
+
+```bash
+pip install tablur
+```
+
+## usage
+
+### column-based format (default)
+
+```python
+from tablur import tablur
+
+# data is defined as a list of tuples where each tuple contains `(column_name, column_data)`
+data = [
+    ("Name", ["Alice", "Bob", "Charlie"]),
+    ("Age", [25, 30, 35]),
+    ("City", ["New York", "London", "Tokyo"]),
+    ("Salary", [50000, 60000, 70000]),
+]
+
+# using the `tablur` function
+table = tablur(
+    data,
+    header="Employee Directory",
+    footer="Total: 3 employees",
+    chars=["╭", "╮", "╰", "╯", "├", "┤", "┬", "┴", "┼", "─", "│"] # this is the default, make sure you use this format
+)
+print(table)
+```
+
+output:
+
+```
+╭───────────────────────────────────╮
+│        Employee Directory         │
+├─────────┬─────┬──────────┬────────┤
+│ Name    │ Age │ City     │ Salary │
+├─────────┼─────┼──────────┼────────┤
+│ Alice   │ 25  │ New York │ 50000  │
+│ Bob     │ 30  │ London   │ 60000  │
+│ Charlie │ 35  │ Tokyo    │ 70000  │
+├─────────┴─────┴──────────┴────────┤
+│        Total: 3 employees         │
+╰───────────────────────────────────╯
+```
+
+### row-based format
+
+```python
+from tablur import simple
+
+# data is just a list of rows, where each row is a list of values
+data = [
+    ["Alice", 25, "New York"],
+    ["Bob", 30, "London"],
+    ["Charlie", 35, "Tokyo"]
+]
+
+# with simple, you define the headers explicitly
+table = simple(data, headers=["Name", "Age", "City"])
+print(table)
+```
+
+output:
+
+```
+╭─────────┬─────┬──────────╮
+│ Name    │ Age │ City     │
+├─────────┼─────┼──────────┤
+│ Alice   │ 25  │ New York │
+│ Bob     │ 30  │ London   │
+│ Charlie │ 35  │ Tokyo    │
+╰─────────┴─────┴──────────╯
+```
+
+## license
+
+mit, you can do whatever you want with the code :D
