@@ -1,0 +1,37 @@
+Metadata-Version: 2.4
+Name: pywiner
+Version: 0.2.0
+Summary: A Python library for Windows automation and a native window framework.
+Home-page: https://github.com/RoVerify/pywiner
+Author: GuestRoblox Studios
+Author-email: maria.gomes23.1949@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Microsoft :: Windows
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: PyQt6
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# PyWiner
+
+A powerful Python library for interacting with the Windows operating system. PyWiner provides two main functionalities:
+1. **System Automation:** Control processes, run batch commands, and more.
+2. **GUI Framework:** Create native Windows applications with a simple class-based approach.
+
+## Installation
+
+Since PyWiner is currently under development, you can install it directly from your local project directory.
+
+First, navigate to the root directory of your project (where `setup.py` is located) in your terminal. Then, run the following command:
+
+```bash
+pip install .
