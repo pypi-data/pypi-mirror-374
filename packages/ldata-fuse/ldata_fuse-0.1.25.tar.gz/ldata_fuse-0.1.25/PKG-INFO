@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: ldata-fuse
+Version: 0.1.25
+Author-email: maximsmol <max@latch.bio>
+Requires-Python: ==3.11.*
+Requires-Dist: aiohttp>=3.10.5
+Requires-Dist: fuse-python>=1.0.5
+Requires-Dist: graphql-core>=3.2.3
+Requires-Dist: latch-data-validation>=0.1.9
+Requires-Dist: latch-o11y>=0.1.4
+Requires-Dist: opentelemetry-instrumentation-aiohttp-client>=0.40b0
+Requires-Dist: typing-extensions>=4.7.1
+Provides-Extra: daemonset
+Requires-Dist: kubernetes; extra == 'daemonset'
