@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: wt_blk_pybindings
+Version: 0.2.1
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+
+If further methods are desired, open an issue so that i can add them.
+
+
+# Dev
+Generate CI using  
+```shell
+ maturin generate-ci github -m python_bindings/Cargo.toml --platform linux windows macos > .github/workflows/pybindings_release.yml
+```
+Then remove any changes to name, deploy condition and targets unless desired.  
