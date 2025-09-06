@@ -1,0 +1,31 @@
+Metadata-Version: 2.4
+Name: physicar
+Version: 0.1.1
+Summary: Physicar Python SDK
+Home-page: https://github.com/physicar/physicar-python
+Author: AI Castle
+Author-email: dev@aicastle.com
+License: Apache-2.0
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# Physicar Python
+**Physicar Python Package**
+
+- homepage : https://aicastle.com
+- email : dev@aicastle.com
+
+## 설치
+```
+pip install physicar
+```
+
+## 사용법
+```python
+import physicar as pc
+```
