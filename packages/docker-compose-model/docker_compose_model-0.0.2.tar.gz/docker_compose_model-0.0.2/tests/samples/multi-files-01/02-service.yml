@@ -1,0 +1,54 @@
+---
+services:
+  data-model-migration:
+    annotations:
+      - nfo=Tuned analytics for SaaS customers
+    depends_on:
+      postgres:
+        condition: service_healthy
+      da:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 3G
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+      - "/dev/sda:/dev/xvda:rwm"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-pguser}:${POSTGRES_PASSWORD?}@${POSTGRES_HOST:-postgres}/${POSTGRES_DB:-pgdb}        
+    expose:
+      - '5000'
+    ports:
+      - "3000"
+      - "3000-3005"
+      - "8000:8000"
+      - "9090-9091:8080-8081"
+      - "49100:22"
+      - "8000-9000:80"
+      - "127.0.0.1:8001:8001"
+      - "127.0.0.1:5000-5010:5000-5010"
+      - "::1:6000:6000"
+      - "[::1]:6001:6001"
+      - "6060:6060/udp"
+      - host_ip: '192.168.1.5'
+        target: 5001
+        published: 50001
+        protocol: tcp
+        app_protocol: web
+      - 5002
+      - 5003:192.168.1.5:5003
+    image: my-service:4.5.6
+    labels:
+      - prometheus.port=5000
+      - prometheus.scrape=true
+    logging:
+      driver: json-file
+      options:
+        max-file: '5'
+        max-size: 10m
+    restart: always
+    volumes:
+      - ./volumes/data/:/mnt/data
+      - ./volumes/bundle/raven:/mnt/data/bundle
+      - /etc/ssh/ssh_pelico_app_id_rsa:/mnt/data/ssh_id_rsa

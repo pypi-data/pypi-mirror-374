@@ -1,0 +1,99 @@
+---
+services:
+  data-model-migration:
+    annotations:
+      - 'nfo=Performs the data-migration for the main product database: creates users and update schemas'
+    command: "alembic upgrade head"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-pguser}:${POSTGRES_PASSWORD?}@${POSTGRES_HOST:-postgres}:5432/${POSTGRES_DB:-pgdb}
+      POSTGRES_DB: ${POSTGRES_DB:-pgdb}
+      POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD?MUST SET A PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER:-pguser}
+    image: my/data-migration:1.2.3
+    logging:
+      driver: json-file
+      options:
+        max-file: '5'
+        max-size: 10m
+    restart: on-failure
+  postgres:
+    annotations:
+      - nfo=Main Product database
+    command: 'postgres   -c commit_delay=${POSTGRES_COMMIT_DELAY:-4000}   -c listen_addresses=''*''   -c log_statement=${POSTGRES_LOG_STATEMENT:-none}   -c
+      shared_buffers=${POSTGRES_SHARED_BUFFERS:-2GB}   -c work_mem=${POSTGRES_WORK_MEM:-16MB}   -c maintenance_work_mem=${POSTGRES_MAINTENANCE_WORK_MEM:-64MB}   -c
+      shared_preload_libraries=''pg_stat_statements''   -c synchronous_commit=${POSTGRES_SYNCHRONOUS_COMMIT:-off}   -c log_line_prefix=''%m
+      [%p] %q%u@%d ''
+
+      '
+    environment:
+      POSTGRES_COMMIT_DELAY: ${POSTGRES_COMMIT_DELAY:-4000}
+      POSTGRES_DB: ${POSTGRES_DB:-pgdb}
+      POSTGRES_LOG_STATEMENT: ${POSTGRES_LOG_STATEMENT:-none}
+      POSTGRES_MAINTENANCE_WORK_MEM: ${POSTGRES_MAINTENANCE_WORK_MEM:-64MB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD?MUST SET A PASSWORD}
+      POSTGRES_SHARED_BUFFERS: ${POSTGRES_SHARED_BUFFERS:-2GB}
+      POSTGRES_SYNCHRONOUS_COMMIT: ${POSTGRES_SYNCHRONOUS_COMMIT:-off}
+      POSTGRES_USER: ${POSTGRES_USER:-pguser}
+    expose:
+      - 5432
+    healthcheck:
+      interval: 5s
+      retries: 36
+      test:
+        - CMD
+        - pg_isready
+        - -U
+        - ${POSTGRES_USER:-pguser}
+        - -d
+        - ${POSTGRES_DB:-pgdb}
+    image: postgres:17.1
+    labels:
+      - traefik.enable=false
+    logging:
+      driver: json-file
+      options:
+        max-file: '5'
+        max-size: 10m
+    restart: always
+    shm_size: ${POSTGRES_SHARED_BUFFERS:-2GB}
+    volumes:
+      - postgresql-volume:/var/lib/postgresql/data
+  postgres-exporter:
+    annotations:
+      - nfo=Expose metrics of main product database to prometheus
+    depends_on:
+      postgres:
+        condition: service_started
+    environment:
+      DATA_SOURCE_NAME: postgresql://${POSTGRES_USER:-pguser}:${POSTGRES_PASSWORD?}@${POSTGRES_HOST:-postgres}:5432/${POSTGRES_DB:-pgdb}?sslmode=disable
+    expose:
+      - '9187'
+    healthcheck:
+      interval: 30s
+      retries: 5
+      test: wget -nv -t1 --spider 'http://localhost:9187/metrics'
+      timeout: 3s
+    image: prometheuscommunity/postgres-exporter:v0.17.1
+    labels:
+      - traefik.enable=false
+      - prometheus.port=9187
+      - prometheus.scrape=true
+    logging:
+      driver: json-file
+      options:
+        max-file: '5'
+        max-size: 10m
+    restart: on-failure
+volumes:
+  my-fancy-volume:
+  postgresql-volume:
+    external: false
+secrets:
+  my-secret:
+    file: db_password.txt
+  npm_token:
+    environment: NPM_TOKEN
