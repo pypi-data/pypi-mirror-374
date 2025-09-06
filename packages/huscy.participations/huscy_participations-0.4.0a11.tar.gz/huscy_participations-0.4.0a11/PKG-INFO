@@ -1,0 +1,32 @@
+Metadata-Version: 2.4
+Name: huscy.participations
+Version: 0.4.0a11
+Project-URL: Homepage, https://bitbucket.org/huscy/participations
+Author-email: Anne-Cathrin Brenner <anne-cathrin-brenner@posteo.de>, Stefan Bunde <stefanbunde+git@posteo.de>
+License-Expression: AGPL-3.0-or-later
+License-File: LICENSE
+Classifier: Development Status :: 3 - Alpha
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 4.2
+Classifier: Framework :: Django :: 5.1
+Classifier: Framework :: Django :: 5.2
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: huscy-bookings
+Requires-Dist: huscy-pseudonyms
+Provides-Extra: development
+Requires-Dist: psycopg2-binary; extra == 'development'
+Provides-Extra: testing
+Requires-Dist: tox; extra == 'testing'
+Requires-Dist: watchdog; extra == 'testing'
+Description-Content-Type: text/markdown
+
+# huscy.participations
