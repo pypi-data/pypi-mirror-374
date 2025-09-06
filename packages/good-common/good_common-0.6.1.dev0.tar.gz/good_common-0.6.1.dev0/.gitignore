@@ -1,0 +1,26 @@
+# python generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Compiled Cython extensions (keep .c files, exclude .so/.pyd)
+*.so
+*.pyd
+*.dll
+
+# venv
+.venv
+.DS_Store
+
+# Coverage reports
+.coverage
+.coverage.*
+htmlcov/
+*.cover
+.hypothesis/
+.pytest_cache/
+coverage.xml
+*.lcov
