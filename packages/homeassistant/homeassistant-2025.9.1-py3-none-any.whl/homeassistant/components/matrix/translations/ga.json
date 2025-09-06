@@ -1,0 +1,21 @@
+{
+    "services": {
+        "send_message": {
+            "fields": {
+                "data": {
+                    "description": "Faisn\u00e9is bhreise f\u00f3gra. Taca\u00edonn s\u00e9 le liosta \u00edomh\u00e1nna. Taca\u00edonn s\u00e9 le form\u00e1id teachtaireachta. Roghnach.",
+                    "name": "Sonra\u00ed"
+                },
+                "message": {
+                    "description": "An teachtaireacht at\u00e1 le seoladh.",
+                    "name": "Teachtaireacht"
+                },
+                "target": {
+                    "description": "Liosta seomra(\u00ed) le an teachtaireacht a sheoladh chucu.",
+                    "name": "Sprioc"
+                }
+            },
+            "name": "Seol teachtaireacht"
+        }
+    }
+}
