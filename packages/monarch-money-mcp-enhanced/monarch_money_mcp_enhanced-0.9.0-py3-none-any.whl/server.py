@@ -1,0 +1,250 @@
+#!/usr/bin/env python3
+"""Dynamic MonarchMoney MCP Server - Automatically exposes all MonarchMoney methods as MCP tools."""
+
+import os
+import asyncio
+import json
+import inspect
+from typing import Any, Dict, Optional, List
+from datetime import datetime, date
+from pathlib import Path
+
+from mcp.server import Server
+from mcp.server.stdio import stdio_server
+from mcp.server.models import InitializationOptions
+from mcp.types import ServerCapabilities
+from mcp.types import Tool, TextContent
+from monarchmoney import MonarchMoney, OptimizedMonarchMoney
+
+
+def convert_dates_to_strings(obj: Any) -> Any:
+    """Recursively convert all date/datetime objects to ISO format strings."""
+    if isinstance(obj, (date, datetime)):
+        return obj.isoformat()
+    elif isinstance(obj, dict):
+        return {key: convert_dates_to_strings(value) for key, value in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_dates_to_strings(item) for item in obj]
+    elif isinstance(obj, tuple):
+        return tuple(convert_dates_to_strings(item) for item in obj)
+    else:
+        return obj
+
+
+def get_method_schema(method) -> Dict[str, Any]:
+    """Generate JSON schema for a method's parameters."""
+    sig = inspect.signature(method)
+    properties = {}
+    required = []
+    
+    for name, param in sig.parameters.items():
+        if name == 'self':
+            continue
+            
+        prop = {"type": "string"}  # Default to string
+        
+        # Try to infer type from annotation
+        if param.annotation != inspect.Parameter.empty:
+            if param.annotation in [int, float]:
+                prop["type"] = "number"
+            elif param.annotation == bool:
+                prop["type"] = "boolean"
+            elif param.annotation == list:
+                prop["type"] = "array"
+            elif param.annotation == dict:
+                prop["type"] = "object"
+        
+        # Handle date parameters
+        if 'date' in name.lower():
+            prop["description"] = f"{name.replace('_', ' ').title()} in YYYY-MM-DD format"
+        else:
+            prop["description"] = f"{name.replace('_', ' ').title()}"
+        
+        properties[name] = prop
+        
+        # Required if no default value
+        if param.default == inspect.Parameter.empty:
+            required.append(name)
+    
+    return {
+        "type": "object",
+        "properties": properties,
+        "required": required,
+        "additionalProperties": False
+    }
+
+
+# Initialize the MCP server
+server = Server("monarch-money-mcp-enhanced")
+mm_client: Optional[OptimizedMonarchMoney] = None
+session_file = Path.home() / ".monarchmoney_session"
+
+# Change to a writable directory for session storage
+import tempfile
+temp_dir = Path(tempfile.gettempdir()) / "monarch-mcp"
+temp_dir.mkdir(exist_ok=True)
+os.chdir(temp_dir)
+
+
+async def initialize_client():
+    """Initialize the MonarchMoney client with authentication."""
+    global mm_client
+    
+    email = os.getenv("MONARCH_EMAIL")
+    password = os.getenv("MONARCH_PASSWORD")
+    mfa_secret = os.getenv("MONARCH_MFA_SECRET")
+    
+    if not email or not password:
+        raise ValueError("MONARCH_EMAIL and MONARCH_PASSWORD environment variables are required")
+    
+    # Use OptimizedMonarchMoney with performance optimizations enabled
+    mm_client = OptimizedMonarchMoney(
+        cache_enabled=True,
+        deduplicate_requests=True,
+        cache_ttl_overrides={
+            "GetAccounts": 600,  # Cache accounts for 10 minutes
+            "GetTransactions": 300,  # Cache transactions for 5 minutes
+            "GetCategories": 900,  # Cache categories for 15 minutes
+            "GetGoals": 600,  # Cache goals for 10 minutes
+            "GetBudget": 300,  # Cache budget for 5 minutes
+        }
+    )
+    
+    # Try to load existing session first
+    if session_file.exists() and not os.getenv("MONARCH_FORCE_LOGIN"):
+        try:
+            mm_client.load_session(str(session_file))
+            # Test if session is still valid
+            await mm_client.get_accounts()
+            # Loaded existing session successfully
+            return
+        except Exception:
+            # Existing session invalid, logging in fresh
+            pass
+    
+    # Login with credentials
+    if mfa_secret:
+        await mm_client.login(email, password, mfa_secret_key=mfa_secret)
+    else:
+        await mm_client.login(email, password)
+    
+    # Save session for future use
+    mm_client.save_session(str(session_file))
+    # Logged in and saved session
+
+
+@server.list_tools()
+async def list_tools() -> List[Tool]:
+    """Dynamically generate tools from all public MonarchMoney methods."""
+    if not mm_client:
+        await initialize_client()
+    
+    tools = []
+    
+    # Get all public methods from MonarchMoney class
+    for method_name in dir(MonarchMoney):
+        if method_name.startswith('_'):
+            continue
+            
+        method = getattr(MonarchMoney, method_name)
+        if not callable(method):
+            continue
+            
+        # Skip certain methods that aren't useful as tools
+        skip_methods = {
+            'load_session', 'save_session', 'delete_session', 'set_token', 
+            'set_timeout', 'multi_factor_authenticate', 'login', 'interactive_login'
+        }
+        if method_name in skip_methods:
+            continue
+        
+        # Generate description
+        docstring = inspect.getdoc(method) or f"Execute {method_name.replace('_', ' ')}"
+        description = docstring.split('\n')[0]  # Use first line of docstring
+        
+        # Generate schema
+        schema = get_method_schema(method)
+        
+        tools.append(Tool(
+            name=method_name,
+            description=description,
+            inputSchema=schema
+        ))
+    
+    return tools
+
+
+@server.call_tool()
+async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
+    """Dynamically execute any MonarchMoney method."""
+    if not mm_client:
+        return [TextContent(type="text", text="Error: MonarchMoney client not initialized")]
+    
+    try:
+        # Check if method exists
+        if not hasattr(mm_client, name):
+            return [TextContent(type="text", text=f"Error: Method '{name}' not found")]
+        
+        method = getattr(mm_client, name)
+        if not callable(method):
+            return [TextContent(type="text", text=f"Error: '{name}' is not callable")]
+        
+        # Convert date strings to date objects for date parameters
+        processed_args = {}
+        for key, value in arguments.items():
+            if isinstance(value, str) and 'date' in key.lower():
+                try:
+                    processed_args[key] = datetime.strptime(value, "%Y-%m-%d").date()
+                except ValueError:
+                    processed_args[key] = value
+            else:
+                processed_args[key] = value
+        
+        # Execute the method
+        if asyncio.iscoroutinefunction(method):
+            result = await method(**processed_args)
+        else:
+            result = method(**processed_args)
+        
+        # Convert dates to strings for serialization
+        result = convert_dates_to_strings(result)
+        
+        return [TextContent(type="text", text=json.dumps(result, indent=2, default=str))]
+    
+    except Exception as e:
+        return [TextContent(type="text", text=f"Error executing {name}: {str(e)}")]
+
+
+async def main():
+    """Main entry point for the server."""
+    # Initialize the MonarchMoney client
+    try:
+        await initialize_client()
+        # Initialized client with dynamic tools
+    except Exception as e:
+        # Failed to initialize MonarchMoney client - log to stderr for MCP debugging
+        import sys
+        print(f"Failed to initialize MonarchMoney client: {e}", file=sys.stderr)
+        return
+    
+    # Run the MCP server
+    async with stdio_server() as (read_stream, write_stream):
+        await server.run(
+            read_stream, 
+            write_stream,
+            InitializationOptions(
+                server_name="monarch-money-mcp-enhanced",
+                server_version="0.9.0",
+                capabilities=ServerCapabilities(
+                    tools={}
+                )
+            )
+        )
+
+
+def run():
+    """Entry point for the MCP server"""
+    asyncio.run(main())
+
+if __name__ == "__main__":
+    run()
