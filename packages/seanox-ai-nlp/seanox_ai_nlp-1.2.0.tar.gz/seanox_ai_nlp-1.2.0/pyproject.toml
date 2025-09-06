@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "seanox-ai-nlp"
+version = "1.2.0"
+description = "Lightweight NLP components for semantic processing of domain-specific content."
+readme = "README.md"
+license = {text = "Apache-2.0"}
+authors = [{name = "Seanox Software Solutions"}]
+requires-python = ">=3.9"
+keywords = [
+    "NLP", "semantic", "units", "domain-specific", "text processing", "information extraction"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Text Processing :: Linguistic",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Natural Language :: English",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent"
+]
+
+[project.urls]
+Homepage = "https://github.com/seanox/seanox-ai-nlp"
+Issues = "https://github.com/seanox/seanox-ai-nlp/issues"
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests"
+]

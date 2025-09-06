@@ -1,0 +1,31 @@
+1.2.0 20250906
+BF: synthetics: annotate, correction for empty values
+    No output of annotation for empty values, preventing empty entities.
+BF: Optimization Backward compatibility Python < 3.13.x
+CR: synthetics: Omission of the backslash to control whitespaces
+    The backslash (\) at the end of a line to control whitespace has been
+    omitted. Line breaks and surrounding spaces are collapsed into a single
+    space. Then use the whitespace control syntax of Jinja: e.g. {%- ... -%}.
+    https://jinja.palletsprojects.com/en/stable/templates/#whitespace-control
+CR: synthetics: Optimization of placeholder resolution
+    Improved recursive usage (placeholders use preceding placeholders)
+
+1.1.0 20250823
+BF: units Corrections/optimizations of categorization
+    The short RegEx was incorrectly prioritized instead of the qualified one.
+    e.g. mph (as m), was not correctly determined as length + time
+    or dB (as B), was incorrectly assigned to acoustics + it + storage
+BF: Documentation: Corrections/optimizations
+BF: Build: Corrections/optimizations in pyproject.toml/setup.py
+    - topic
+    - project name
+CR: units Renaming of the UNIT-VALUE label to MEASURE
+    MEASURE is more intuitive in spaCy/NLP than UNIT-VALUE.
+CR: units Added unit hl / hL for Hectoliters
+CR: units Separation of SI prefixes: Multiples / Submultiples
+    - Minimizes edge cases such as "das" (deca second)
+      which are theoretically possible but not relevant
+CR: synthetics: Added to generate semantic sentences
+
+1.0.0 20250808
+NT: Release is available
