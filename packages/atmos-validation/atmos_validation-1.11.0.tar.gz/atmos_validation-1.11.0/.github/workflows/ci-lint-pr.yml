@@ -1,0 +1,33 @@
+# Runs lint, style (black) and type checks
+name: Style
+on:
+  pull_request:
+  push:
+    branches: ['main']
+
+jobs:
+  test:
+    name: Run linting, style and type checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+    
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Check formatting
+        run: uv run ruff format atmos_validation --check
+
+      - name: Check linting
+        run: uv run ruff check atmos_validation
+
+      - name: Static type checking
+        run: uv run pyright atmos_validation

@@ -1,0 +1,15 @@
+  {
+    "python.languageServer": "Pylance",
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports.ruff": "explicit"
+        },
+        "editor.defaultFormatter": "charliermarsh.ruff",
+    },
+    "files.insertFinalNewline": true,
+    "python.testing.pytestArgs": ["atmos_validation"],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "autoDocstring.docstringFormat": "google-notypes"
+}
