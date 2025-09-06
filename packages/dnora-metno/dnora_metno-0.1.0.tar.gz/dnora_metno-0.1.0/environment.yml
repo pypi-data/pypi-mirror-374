@@ -1,0 +1,10 @@
+name: dnora-metno
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.9,<3.11
+  - numpy>=1.17
+  - pytest
+  - pip
+  - pip:
+    - dnora>=2.0.4
