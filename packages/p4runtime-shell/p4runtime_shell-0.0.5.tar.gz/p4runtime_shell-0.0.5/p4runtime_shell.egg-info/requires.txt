@@ -1,0 +1,10 @@
+jedi==0.17.2
+protobuf<3.21.0,>=3.15.0
+grpcio>=1.35.0
+p4runtime==1.4.1
+
+[:python_version < "3.7"]
+ipython==7.16.*,>=7.16.3
+
+[:python_version >= "3.7"]
+ipython==7.31.*,>=7.31.1
