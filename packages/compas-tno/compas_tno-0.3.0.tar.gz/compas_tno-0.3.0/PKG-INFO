@@ -1,0 +1,121 @@
+Metadata-Version: 2.4
+Name: compas_tno
+Version: 0.3.0
+Summary: This package performs masonry assessment by menans of NLP with Funicular Thrust Networks.
+Author-email: Ricardo Maia Avelino <maia@arch.ethz.ch>
+License: MIT License
+        
+        Block Research Group - ETH Zurich
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://blockresearchgroup.github.io/compas_tno
+Project-URL: Documentation, https://blockresearchgroup.github.io/compas_tno
+Project-URL: Repository, https://github.com/blockresearchgroup/compas_tno.git
+Project-URL: Changelog, https://github.com/blockresearchgroup/compas_tno/blob/main/CHANGELOG.md
+Classifier: Development Status :: 4 - Beta
+Classifier: Topic :: Scientific/Engineering
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: AUTHORS.md
+Requires-Dist: compas
+Requires-Dist: compas_tna
+Requires-Dist: cvxpy
+Provides-Extra: dev
+Requires-Dist: bump-my-version; extra == "dev"
+Requires-Dist: compas_invocations2; extra == "dev"
+Requires-Dist: compas_notebook; extra == "dev"
+Requires-Dist: compas_viewer; extra == "dev"
+Requires-Dist: invoke>=0.14; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: sphinx_compas2_theme; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Requires-Dist: wheel; extra == "dev"
+Dynamic: license-file
+
+# COMPAS TNO
+
+![build](https://github.com/BlockResearchGroup/compas_tno/workflows/build/badge.svg)
+[![GitHub - License](https://img.shields.io/github/license/compas-dev/compas.svg)](https://github.com/BlockResearchGroup/compas_tno/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/COMPAS.svg)](https://pypi.python.org/project/COMPAS)
+[![DOI](https://zenodo.org/badge/197799108.svg)](https://zenodo.org/badge/latestdoi/197799108)
+
+> **⚠️ IMPORTANT NOTE** ⚠️
+> 
+> As of Summer 2025 COMPAS TNO is being refactored to work with COMPAS 2.0 and better integrate with the COMPAS MASONRY environment. A Legacy version is available at secondary branches.
+> 
+> **⚠️ IMPORTANT NOTE** ⚠️
+
+**COMPAS TNO** is a Python package to find admissible thrust networks in masonry vaulted structures built in the [COMPAS](https://compas.dev/) framework.
+
+Based on [Ricardo Maia Avelino](https://ricardoavelino.github.io/)'s doctoral thesis at ETH Zurich, this Package enables finding multi-objective particular internal stress solutions in masonry vaults, as the ones presented below.
+
+![COMPAS TNO Objectives](./docs/_images/objectives.png)
+
+## Installation
+
+Stable releases can be installed from PyPI.
+
+```bash
+pip install compas_tno
+```
+
+To install the latest version for development, do:
+
+```bash
+git clone https://github.com/blockresearchgroup/compas_tno.git
+cd compas_tno
+pip install -e ".[dev]"
+```
+
+To install a version with support for IPOPT and Mosek
+
+```bash
+cd compas_tno
+conda env create -f environment.yml
+conda activate tno-dev
+```
+
+To get started with `compas_tno` have a look at [the documentation](https://github.com/blockresearchgroup/compas_tno).
+
+## Questions and Feedback
+
+For questions and feedback, have a look at the [COMPAS Forum](https://forum.compas-framework.org).
+
+## Issues
+
+If you run into problems, please file an issue on the [issue tracker](https://github.com/blockresearchgroup/compas_tno/issues). If we don't know it is broken, we can't fix it...
+
+## Contributing
+
+Guidelines for developers are under construction. However, we always accept contributions in the form of Pull Requests.
+
+## Citing
+
+If you use `compas_tno` for your research, cite one of our [papers](https://blockresearchgroup.github.io/compas_tno/latest/publications.html).
+
+## License
+
+`compas_tno` is licensed under the MIT License. See [LICENSE](https://github.com/blockresearchgroup/compas_tno/blob/main/LICENSE), for more information.
