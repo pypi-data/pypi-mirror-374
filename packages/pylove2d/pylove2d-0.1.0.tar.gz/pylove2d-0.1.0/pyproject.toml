@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=42","wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pylove2d"
+version = "0.1.0"
+description = "Python game framework inspired by LÖVE2D"
+authors = [
+    {name = "Your Name", email = "you@example.com"}
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.10"
+dependencies = [
+    "pygame-ce>=2.5.3",
+    "numpy>=1.24"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
