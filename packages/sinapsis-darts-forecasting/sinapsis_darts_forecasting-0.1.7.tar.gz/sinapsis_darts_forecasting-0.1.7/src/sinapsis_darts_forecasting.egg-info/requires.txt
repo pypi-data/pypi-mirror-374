@@ -1,0 +1,10 @@
+sinapsis>=0.1.1
+
+[all]
+sinapsis-darts-forecasting[darts,pandas]
+
+[darts]
+u8darts[all]>=0.31.0
+
+[pandas]
+pandas>=2.2.3
