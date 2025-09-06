@@ -1,0 +1,81 @@
+# CodeAS - Advanced AI Coding Assistant Configuration
+# Author: Ashok Kumar (https://ashokumar.in)
+# Version: 2.0.0
+
+ai:
+  api_url: "http://127.0.0.1:11434"
+  model: "codellama:latest"
+  timeout: 120
+  max_retries: 5
+  temperature: 0.1  # Lower for more focused code generation
+  retry_delay: 2
+  health_check_timeout: 10
+  connection_timeout: 15
+  max_tokens: 4000
+  max_context_length: 8000
+
+workspace:
+  directory: "."
+  history_dir: ".codeas-history"
+  max_history_files: 100
+  auto_save: true
+  backup_on_edit: true
+  backup_directory: ".codeas_backups"
+  ignore_patterns:
+    - "*.pyc"
+    - "__pycache__"
+    - ".git"
+    - "node_modules"
+    - ".DS_Store"
+    - "*.log"
+
+safety:
+  allowed_commands:
+    - "python"
+    - "python3"
+    - "node"
+    - "npm"
+    - "yarn"
+    - "pip"
+    - "pip3"
+    - "pytest"
+    - "jest"
+    - "mocha"
+    - "cargo"
+    - "go"
+    - "rustc"
+    - "black"
+    - "flake8"
+    - "eslint"
+    - "prettier"
+    - "mypy"
+    - "git status"
+    - "git diff"
+    - "git log"
+    - "git branch"
+  blocked_paths:
+    - "/etc"
+    - "/usr"
+    - "/var"
+    - "/sys"
+    - "/proc"
+    - "/dev"
+    - "~/.ssh"
+    - "~/.aws"
+    - "~/.config"
+  max_file_size: 10485760  # 10MB
+  enable_shell: true
+
+ui:
+  theme: "dark"
+  prompt: "ai-coder"
+  show_file_tree: true
+  syntax_highlighting: true
+  auto_complete: true
+  history_size: 1000
+
+project:
+  templates_dir: "templates"
+  default_license: "MIT"
+  auto_git_init: true
+  auto_requirements: true
