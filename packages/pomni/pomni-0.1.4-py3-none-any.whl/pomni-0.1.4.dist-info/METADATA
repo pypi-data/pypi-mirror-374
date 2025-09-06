@@ -1,0 +1,49 @@
+Metadata-Version: 2.3
+Name: pomni
+Version: 0.1.4
+Summary: JAX Code assistant
+Requires-Dist: dotenv>=0.9.9
+Requires-Dist: google-generativeai>=0.8.5
+Requires-Dist: huggingface-hub>=0.34.4
+Requires-Dist: ipykernel>=6.29.5
+Requires-Dist: jax>=0.7.0
+Requires-Dist: jupyter>=1.1.1
+Requires-Dist: keras>=3.10.0
+Requires-Dist: keras-hub>=0.19.0
+Requires-Dist: nbformat>=5.10.4
+Requires-Dist: pandas>=2.3.0
+Requires-Dist: patdb>=0.1.0
+Requires-Dist: pylsp-rope>=0.1.17
+Requires-Dist: requests>=2.32.3
+Requires-Dist: rich>=14.0.0
+Requires-Dist: sentencepiece>=0.2.0
+Requires-Dist: streamlit>=1.47.1
+Requires-Dist: textual>=5.3.0
+Requires-Dist: torch>=2.8.0
+Requires-Dist: vertexai>=1.71.1
+Requires-Dist: watchdog>=6.0.0
+Requires-Python: >=3.12, <3.13
+Description-Content-Type: text/markdown
+
+# Pomni
+
+Current Frontier LLMs are really bad at assisting with writing JAX code due to the sparse resources spread across multiple different platforms.
+
+Pomni is a finetune of a gemma model on JAX data, meant to run locally. It provides a TUI interface making it easy to integrate into existing terminal workflows.
+
+
+## Setup
+
+To use the finetuned pomni model, you can simply do:
+
+```bash
+pip install pomni
+pomni
+```
+
+to automatically download and run the model.
+
+
+## Screenshot
+
+![pomni_tui_ss](https://github.com/user-attachments/assets/ea15a878-4ce7-478d-b599-0702edb0cf70)
