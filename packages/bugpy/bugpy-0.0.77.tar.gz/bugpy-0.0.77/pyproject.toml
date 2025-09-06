@@ -1,0 +1,22 @@
+[project]
+name = "bugpy"
+version = "0.0.77"
+authors = [
+  { name="Laurence Still", email="lstill2@wisc.edu" },
+]
+description = "Internal package for BickLab data management and analysis"
+requires-python = ">=3.8"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dynamic = ["dependencies"]
+license = {file="LICENSE"}
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project.urls]
+Homepage = "https://git.doit.wisc.edu/insecteavesdropper/data-management/bugpy"
+Issues = "https://git.doit.wisc.edu/insecteavesdropper/data-management/bugpy/issues"
