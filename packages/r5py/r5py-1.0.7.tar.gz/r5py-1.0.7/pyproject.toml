@@ -1,0 +1,89 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=61.0.0", "wheel"]
+
+[project]
+name = "r5py"
+description = "Python wrapper for the R5 routing analysis engine"
+readme = "README.md"
+
+authors = [
+    { name = "Christoph Fink" },
+    { name = "Willem Klumpenhouwer" },
+    { name = "Marcus Sairava" },
+    { name = "Rafael Pereira" },
+    { name = "Henrikki Tenkanen" }
+]
+
+dependencies = [
+    "ConfigArgParse",
+    "filelock",
+    "geohexgrid",
+    "geopandas<1.1.0",
+    "joblib",
+    "jpype1",
+    "numpy",
+    "pandas>=2.1.0",
+    "psutil",
+    "pyproj",
+    "rasterio",
+    "requests",
+    "scikit-learn",
+    "shapely>=2.0",
+    "simplification",
+    "typing_extensions; python_version < '3.13'"
+]
+requires-python = ">=3.10"
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+keywords = ["accessibility", "transport", "routing", "research"]
+license = {text = "GPL-3.0-or-later or MIT"}
+
+dynamic = ["version"]
+
+[project.optional-dependencies]
+docs = ["contextily", "folium", "GitPython", "h3>=4.0.0b2", "jupyterlab_myst",
+        "mapclassify", "matplotlib", "myst-nb", "nbsphinx", "pybtex-apa7-style",
+        "r5py.sampledata.helsinki>=0.1.1", "r5py.sampledata.sao_paulo>=0.1.1",
+        "shapely", "sphinx", "sphinx-book-theme", "sphinx-design",
+        "sphinxcontrib-bibtex", "sphinxcontrib-images"]
+tests = ["pyarrow", "pytest", "pytest-cov", "pytest-lazy-fixtures",
+         "r5py.sampledata.helsinki>=1.0.3", "r5py.sampledata.sao_paulo>=0.1.1",
+         "typing-extensions"]
+
+
+[project.urls]
+Documentation = "https://r5py.readthedocs.org/"
+Repository = "https://github.com/r5py/r5py.git"
+"Change log" = "https://github.com/r5py/r5py/blob/main/CHANGELOG.md"
+"Bug tracker" = "https://github.com/r5py/r5py/issues"
+
+[tool.coverage.paths]
+equivalent_sources = [
+    "src/r5py/",
+    ".virtualenv/lib/python*/site-packages/r5py/",
+    "/opt/hostedtoolcache/Python/*/x64/lib/python*/site-packages/r5py/",
+    "/Library/Frameworks/Python.framework/Versions/*/lib/python*/site-packages/r5py/",
+    "C:/hostedtoolcache/windows/Python/*/x64/Lib/site-packages/r5py/"
+]
+
+[tool.jupytext.formats]
+"docs/notebooks/" = "ipynb"
+"docs/md/" = "md"
+
+[tool.pytest.ini_options]
+addopts = "-p no:faulthandler --cov=r5py --cov-report term-missing --cov-report xml --import-mode=importlib"
+filterwarnings = [
+    "error",
+    "ignore:Could not find R5 jar, trying to download it from upstream",
+    "ignore:Successfully downloaded r5-"
+]
+testpaths = ["tests"]
+
+[tool.setuptools.dynamic]
+version = {attr = "r5py.__version__"}
