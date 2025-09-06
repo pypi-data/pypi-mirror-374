@@ -1,0 +1,20 @@
+name: wbt
+channels:
+- conda-forge
+- nodefaults
+dependencies:
+- python >=3.11
+- pywbt >=0.2.4
+
+# Deps for examples
+- folium
+- geopandas >=1
+- ipykernel
+- ipywidgets
+- mapclassify
+- matplotlib-base
+- planetary-computer
+- pystac-client
+- rioxarray
+- seamless-3dep >=0.3.1
+- tiny-retriever >=0.1.2
