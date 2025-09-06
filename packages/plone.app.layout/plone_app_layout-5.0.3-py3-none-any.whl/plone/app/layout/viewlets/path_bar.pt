@@ -1,0 +1,26 @@
+
+<nav id="portal-breadcrumbs"
+     aria-label="breadcrumb"
+     tal:define="
+       breadcrumbs python:view.breadcrumbs;
+     "
+     i18n:attributes="aria-label"
+     i18n:domain="plone"
+>
+  <div class="container">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="${python:view.navigation_root_url}"
+           i18n:translate="tabs_home"
+        >Home</a></li>
+      <tal:loop tal:repeat="crumb breadcrumbs">
+        <li class="breadcrumb-item"
+            tal:condition="not: repeat/crumb/end"
+        ><a href="${python:crumb['absolute_url']}">${python:crumb['Title']}</a></li>
+        <li class="breadcrumb-item active"
+            aria-current="page"
+            tal:condition="repeat/crumb/end"
+        >${python:crumb['Title']}</li>
+      </tal:loop>
+    </ol>
+  </div>
+</nav>

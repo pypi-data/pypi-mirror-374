@@ -1,0 +1,7 @@
+<tal:feeds tal:repeat="link view/rsslinks">
+  <link href="${link/url}"
+        rel="alternate"
+        title="${link/title}"
+        type="application/rss+xml"
+  />
+</tal:feeds>
