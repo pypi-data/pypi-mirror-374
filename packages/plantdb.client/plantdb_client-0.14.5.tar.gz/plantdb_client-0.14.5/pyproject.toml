@@ -1,0 +1,65 @@
+[build-system]
+requires = ["setuptools >=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "plantdb.client"
+version = "0.14.5"
+dependencies = [
+    "plantdb.commons",
+    "requests",
+    "tqdm",
+    "urllib3"
+]
+description = "Client-side database library for the ROMI plant database ecosystem."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { 'text' = "LGPL-3.0-or-later" }   # to replace by "LGPL-3.0-or-later" only in next release, pending deprecation
+authors = [
+    { name = "Peter Hanappe", email = "peter.hanappe@sony.com" },
+    { name = "Timothée Wintz", email = "timothee@timwin.fr" },
+    { name = "Nabil Ait Taleb", email = "mohamednabil.aittaleb@sony.com" },
+    { name = "Arthur Luciani", email = "arthur.luciani@ens-lyon.fr" },
+]
+maintainers = [
+    { name = "Jonathan Legrand", email = "jonathan.legrand@ens-lyon.fr" }
+]
+keywords = [
+    "Robotics for Microfarms",
+    "ROMI",
+    "Plant Phenotyping",
+    "Scientific Database",
+    "Data Management",
+    "REST API",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Database",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Operating System :: OS Independent",
+    "Natural Language :: English",
+]
+
+[project.urls]
+homepage = "https://romi-project.eu/"
+documentation = "https://docs.romi-project.eu/plant_imager/"
+source = "https://github.com/romi/plantdb"
+issues = "https://github.com/romi/plantdb/issues"
+
+[project.scripts]
+fsdb_rest_api_sync = "plantdb.client.cli.fsdb_rest_api_sync:main"
+fsdb_sync = "plantdb.client.cli.fsdb_sync:main"
+sync_app = "plantdb.client.sync_app.app:main"
+
+[project.optional-dependencies]
+sync = [
+    "dash",
+    "dash-bootstrap-components",
+    "paramiko"
+]
+
+[tool.setuptools.package-data]
+"plantdb.client.sync_app" = ["assets/custom.css"]

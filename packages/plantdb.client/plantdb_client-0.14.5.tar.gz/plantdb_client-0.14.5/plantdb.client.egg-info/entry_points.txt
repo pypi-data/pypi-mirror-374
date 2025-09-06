@@ -1,0 +1,4 @@
+[console_scripts]
+fsdb_rest_api_sync = plantdb.client.cli.fsdb_rest_api_sync:main
+fsdb_sync = plantdb.client.cli.fsdb_sync:main
+sync_app = plantdb.client.sync_app.app:main
