@@ -1,0 +1,45 @@
+Metadata-Version: 2.3
+Name: panelforecast
+Version: 0.2.0
+Summary: A comprehensive library for panel data forecasting
+License: MIT
+Author: Kajaani Balabavan
+Author-email: kajaani.20@cse.mrt.ac.lk
+Requires-Python: >=3.9,<3.14
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Provides-Extra: all
+Provides-Extra: dev
+Provides-Extra: tuning
+Provides-Extra: viz
+Requires-Dist: numpy (>=1.21)
+Requires-Dist: pandas (>=1.3)
+Requires-Dist: scikit-learn (>=1.0)
+Requires-Dist: torch (>=1.0)
+Project-URL: Homepage, https://github.com/aaivu/panelforecast
+Project-URL: Repository, https://github.com/aaivu/panelforecast
+Description-Content-Type: text/markdown
+
+# PanelForecast 📈
+
+**panelforecast** is a PyTorch-based library for forecasting panel data using deep learning models like LSTM, BiLSTM, GRU, and Transformer models.
+
+## Features
+
+- Easy loading and preprocessing of panel datasets
+- Sequence generation for multi-entity time series
+- Modular model training and evaluation pipeline
+
