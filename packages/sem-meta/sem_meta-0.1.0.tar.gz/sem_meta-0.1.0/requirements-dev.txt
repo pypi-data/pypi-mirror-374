@@ -1,0 +1,22 @@
+# Production dependencies
+numpy>=1.19.0
+Pillow>=8.0.0
+PyMySQL>=1.0.0
+termcolor>=1.1.0
+matplotlib>=3.3.0
+opencv-python>=4.5.0
+pytesseract>=0.3.8
+
+# Development dependencies
+pytest>=6.0
+pytest-cov>=2.0
+black>=21.0
+flake8>=3.8
+mypy>=0.800
+
+# Build dependencies
+build>=0.7.0
+twine>=4.0.0
+setuptools>=45
+wheel
+setuptools_scm[toml]>=6.2
