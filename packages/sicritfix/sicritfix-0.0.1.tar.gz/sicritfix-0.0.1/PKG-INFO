@@ -1,0 +1,63 @@
+Metadata-Version: 2.3
+Name: sicritfix
+Version: 0.0.1
+Summary: Python package to detect and correct oscillatory artifacts in mass spectrometry mzML data.
+License: GPL-3.0-only
+Keywords: mass spectrometry,mzML,signal correction,fft,phase,oscillations
+Author: Maite Gómez del Rio Vinuesa
+Author-email: maite.gomezriovinuesa@gmail.com
+Maintainer: Maite Gómez del Rio Vinuesa
+Maintainer-email: maite.gomezriovinuesa@gmail.com
+Requires-Python: >=3.11
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: numpy (>=1.22,<2.0)
+Requires-Dist: pyopenms
+Requires-Dist: scipy (>=1.8,<2.0)
+Project-URL: Documentation, https://github.com/MaiteGomezRio/Oscillations_Corrector_Algorithm_SICRIT#readme
+Project-URL: Homepage, https://github.com/MaiteGomezRio/Oscillations_Corrector_Algorithm_SICRIT
+Project-URL: Repository, https://github.com/MaiteGomezRio/Oscillations_Corrector_Algorithm_SICRIT
+Description-Content-Type: text/markdown
+
+# Oscillations_Corrector_Algorithm_SICRIT
+SUPPRESSING SIGNAL ARTIFACTS IN CE-SICRIT-MS VIA OSCILLATION PROCESSING
+
+
+This repository contains an algorithm designed to **correct oscillations that appear in mass spectrometry (MS) spectra** after applying the **SICRIT ionization source**.
+
+The tool is implemented in Python and can be executed from the **command-line interface (CLI)** after installation.
+
+---
+
+## 🚀 Key Features
+
+- Automatic correction of oscillations in post-SICRIT MS data.
+- Ready to be used as a command-line tool.
+- Modular and extensible codebase.
+- Easy to integrate into analytical data processing pipelines.
+
+---
+
+## 📦 Installation
+
+### Optional: Using Conda environment
+
+```bash
+git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
+cd SICRIT_Oscillations_corrector_algorithm
+conda env create -f conda_env.yml
+conda activate oscilations_env
+
+### Execution- CLI usage
+sicritfix --input path/to/input_file.mzML --output path/to/output_folder/
+###For full CLI options: sicritfix --help
+
