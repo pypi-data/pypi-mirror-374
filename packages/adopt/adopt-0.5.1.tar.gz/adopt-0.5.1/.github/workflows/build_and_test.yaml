@@ -1,0 +1,30 @@
+# Build and install package and run tests
+
+name: Build, Test and Install
+
+on:
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/_build.yaml
+    with:
+      python-version: "3.11" # cannot be environment variable, limitation of workflow
+
+  check-tag:
+    needs: build
+    name: Check
+    uses: ./.github/workflows/_check_tag.yaml
+    with:
+      continue-on-error: true
+
+  test:
+    needs: build
+    name: Test
+    uses: ./.github/workflows/_test.yaml
+    secrets: inherit # inherit all secrets if required for testing

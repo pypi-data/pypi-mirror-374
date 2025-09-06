@@ -1,0 +1,60 @@
+on:
+  workflow_call:
+    inputs:
+      continue-on-error:
+        required: true
+        type: boolean
+
+jobs:
+  check-tag:
+    name: Check Tag
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ inputs.continue-on-error }}
+    steps:
+      - name: Retrieve wheel
+        uses: actions/download-artifact@v4
+        with:
+          name: wheel
+          path: dist/
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pkginfo
+
+      - name: Extract version
+        uses: jannekem/run-python-script-action@v1
+        with:
+          script: |
+            import sys
+            from pathlib import Path
+            from pkginfo import Wheel
+
+            whl_files = list(Path('dist/').glob('*.whl'))
+            whl_versions = [Wheel(str(whl)).version for whl in whl_files]
+
+            if not len(set(whl_versions)) == 1:
+                print('Error: All wheels must have the same version')
+                sys.exit(1)
+
+            with open('version.txt', 'w') as f:
+                f.write(whl_versions[0])
+
+      - name: Store version
+        run: |
+          echo "VERSION=$(cat version.txt)" >> $GITHUB_ENV
+
+      - uses: mukunku/tag-exists-action@v1.6.0
+        id: check-tag
+        with:
+          tag: ${{ env.VERSION }}
+
+      - name: Check if tag exists
+        run: exit 1
+        if: steps.check-tag.outputs.exists == 'true'
+
+      - name: Upload wheel
+        uses: actions/upload-artifact@v4
+        with:
+          name: version
+          path: version.txt
