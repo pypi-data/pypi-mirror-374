@@ -1,0 +1,142 @@
+<structure total_dirs="20" total_files="98" root_path="/Users/chaz/Documents/repos/github/sicksubroutine/bear-dereth">
+  <directory name="bear-dereth">
+    <file name=".copier-answers.yml" size="604" lines="20" />
+    <file name=".gitignore" size="3933" lines="217" />
+    <file name=".python_version" size="5" lines="1" />
+    <file name="CHANGELOG.md" size="276" lines="8" />
+    <file name="CLAUDE.md" size="11496" lines="232" />
+    <file name="directory_structure.xml" size="7138" lines="134" />
+    <file name="hatch_build.py" size="4758" lines="129" />
+    <file name="maskfile.md" size="2367" lines="121" />
+    <file name="noxfile.py" size="1549" lines="65" />
+    <file name="pyproject.toml" size="1992" lines="94" />
+    <file name="README.md" size="771" lines="32" />
+    <file name="SHANNON_CLAUDE.md" size="5589" lines="95" />
+    <file name="CLAUDE.md" size="11496" lines="232" />
+    <directory name=".claude">
+      <file name="settings.local.json" size="141" lines="10" />
+    </directory>
+    <directory name="src">
+      <directory name="bear_dereth">
+        <file name="__init__.py" size="269" lines="11" />
+        <file name="__main__.py" size="357" lines="14" />
+        <file name="config.py" size="1009" lines="32" />
+        <file name="py.typed" size="0" lines="0" />
+        <directory name="_internal">
+          <file name="__init__.py" size="0" lines="0" />
+          <file name="_info.py" size="6074" lines="196" />
+          <file name="_version.py" size="78" lines="3" />
+          <file name="_version.pyi" size="203" lines="6" />
+          <file name="cli.py" size="3032" lines="82" />
+          <file name="debug.py" size="3374" lines="111" />
+        </directory>
+        <directory name="constants">
+          <file name="__init__.py" size="77" lines="1" />
+          <file name="_common.py" size="669" lines="19" />
+          <file name="common_files.py" size="353" lines="8" />
+          <file name="common_paths.py" size="952" lines="27" />
+          <file name="exceptions.py" size="2775" lines="72" />
+          <file name="logger_protocol.py" size="1429" lines="52" />
+          <file name="typing_tools.py" size="4485" lines="123" />
+          <directory name="enums">
+            <file name="__init__.py" size="223" lines="11" />
+            <file name="exit_code.py" size="1707" lines="30" />
+            <file name="http_status_code.py" size="3383" lines="84" />
+            <file name="log_level.py" size="5657" lines="147" />
+            <file name="version_parts.py" size="783" lines="28" />
+          </directory>
+        </directory>
+        <directory name="models">
+          <file name="__init__.py" size="270" lines="12" />
+          <file name="general.py" size="259" lines="9" />
+          <file name="helpers.py" size="2264" lines="62" />
+          <file name="meta_path.py" size="4421" lines="90" />
+          <file name="type_fields.py" size="4632" lines="154" />
+          <directory name="responses">
+            <file name="__init__.py" size="170" lines="5" />
+            <file name="function_response.py" size="14992" lines="357" />
+          </directory>
+        </directory>
+        <directory name="tools">
+          <file name="__init__.py" size="75" lines="1" />
+          <directory name="cli">
+            <file name="__init__.py" size="462" lines="17" />
+            <file name="arg_helpers.py" size="2414" lines="63" />
+            <file name="commands.py" size="3548" lines="119" />
+            <directory name="shell">
+              <file name="__init__.py" size="31" lines="1" />
+              <file name="_base_command.py" size="3580" lines="109" />
+              <file name="_base_shell.py" size="16445" lines="438" />
+            </directory>
+          </directory>
+          <directory name="di">
+            <file name="__init__.py" size="618" lines="15" />
+            <file name="_container.py" size="8656" lines="232" />
+            <file name="_resources.py" size="2033" lines="69" />
+            <file name="_wiring.py" size="11809" lines="309" />
+            <file name="container.py" size="429" lines="15" />
+            <file name="wiring.py" size="374" lines="15" />
+          </directory>
+          <directory name="general">
+            <file name="__init__.py" size="0" lines="0" />
+            <file name="add_methods.py" size="4186" lines="98" />
+            <file name="async_helpers.py" size="4098" lines="115" />
+            <file name="counter_class.py" size="3549" lines="102" />
+            <file name="freezing.py" size="6511" lines="196" />
+            <file name="lru_cache.py" size="2676" lines="83" />
+            <file name="platform_utils.py" size="3460" lines="125" />
+            <file name="priority_queue.py" size="2614" lines="80" />
+            <file name="system_bools.py" size="1955" lines="74" />
+            <file name="textio_utility.py" size="3857" lines="143" />
+            <file name="typer_bridge.py" size="5701" lines="158" />
+            <file name="versioning.py" size="8647" lines="249" />
+          </directory>
+          <directory name="graphics">
+            <file name="__init__.py" size="49" lines="1" />
+            <file name="bear_gradient.py" size="4773" lines="131" />
+            <directory name="font">
+              <file name="__init__.py" size="347" lines="13" />
+              <file name="_raw_block_letters.py" size="7143" lines="463" />
+              <file name="_theme.py" size="1190" lines="31" />
+              <file name="_utils.py" size="8711" lines="232" />
+              <file name="block_font.py" size="4090" lines="193" />
+              <file name="glitch_font.py" size="2012" lines="63" />
+            </directory>
+          </directory>
+          <directory name="logger">
+            <file name="__init__.py" size="258" lines="6" />
+            <file name="config.py" size="4903" lines="147" />
+            <file name="record.py" size="899" lines="32" />
+            <file name="rich_printer.py" size="7542" lines="183" />
+            <file name="rich_printer.pyi" size="2460" lines="64" />
+            <file name="simple_logger.py" size="3992" lines="97" />
+            <directory name="handlers">
+              <file name="__init__.py" size="190" lines="6" />
+              <file name="console_handler.py" size="2575" lines="66" />
+              <file name="file_handler.py" size="4663" lines="105" />
+              <file name="queue_handler.py" size="1966" lines="51" />
+              <file name="queue_listener.py" size="4101" lines="114" />
+            </directory>
+            <directory name="protocols">
+              <file name="__init__.py" size="39" lines="1" />
+              <file name="handler.py" size="3208" lines="89" />
+              <file name="handler_manager.py" size="1399" lines="43" />
+              <file name="printer.py" size="1597" lines="45" />
+            </directory>
+          </directory>
+          <directory name="rich_enums">
+            <file name="__init__.py" size="436" lines="15" />
+            <file name="base_value.py" size="3000" lines="101" />
+            <file name="int_enum.py" size="2739" lines="92" />
+            <file name="str_enum.py" size="2441" lines="83" />
+            <file name="variable_enum.py" size="3368" lines="107" />
+          </directory>
+          <directory name="stringing">
+            <file name="__init__.py" size="44" lines="1" />
+            <file name="manipulation.py" size="549" lines="19" />
+          </directory>
+        </directory>
+      </directory>
+    </directory>
+  </directory>
+</structure>
