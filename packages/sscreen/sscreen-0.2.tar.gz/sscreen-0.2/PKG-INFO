@@ -1,0 +1,39 @@
+Metadata-Version: 2.4
+Name: sscreen
+Version: 0.2
+Summary: A modern PyQt6 GUI library
+Home-page: 
+Author: Sanki
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: PyQt6
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: requires-dist
+Dynamic: summary
+
+# SScreen (PyQt6)
+
+SScreen is a modern GUI library built on PyQt6.
+
+## Features
+- Window with custom icon
+- Buttons, Labels with styles
+- Basic animations (to be added)
+- Light/Dark theme support
+
+## Example
+```python
+from sscreen.window import SScreenWindow
+from sscreen.widgets import SButton, SLabel
+
+app = SScreenWindow(title='My PyQt6 SScreen')
+label = SLabel(app, text='Hello SScreen!')
+label.move(50,50)
+label.resize(200,30)
+app.run()
+```
