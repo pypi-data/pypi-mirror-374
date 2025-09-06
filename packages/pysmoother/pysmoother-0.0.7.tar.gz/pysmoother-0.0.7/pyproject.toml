@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pysmoother"
+version = "0.0.7"
+authors = [
+  { name="Shashank Sharma", email="shashboy@gmail.com" },
+]
+description = "Fit natural cubic polynomial splines, local regression and weighted smoothing splines to fit generalized additive models"
+readme = "README.md"
+requires-python = ">=3.0"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/shashboy/pysmoother"
+Issues = "https://github.com/shashboy/pysmoother"
+
+
