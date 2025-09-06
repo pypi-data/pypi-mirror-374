@@ -1,0 +1,45 @@
+{
+  "app": {
+    "name": "MyApp",
+    "version": "1.0.0",
+    "debug": false,
+    "environment": "production"
+  },
+  "database": {
+    "host": "localhost",
+    "port": 5432,
+    "name": "myapp", 
+    "user": "admin",
+    "password": "secret",
+    "pool_size": 10,
+    "timeout": 30
+  },
+  "api": {
+    "host": "0.0.0.0",
+    "port": 8000,
+    "workers": 4,
+    "cors_origins": [
+      "https://example.com",
+      "https://app.example.com"
+    ]
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "handlers": [
+      {"type": "console"},
+      {
+        "type": "file",
+        "filename": "app.log"
+      }
+    ]
+  },
+  "cache": {
+    "redis": {
+      "host": "localhost",
+      "port": 6379,
+      "db": 0,
+      "ttl": 3600
+    }
+  }
+}
