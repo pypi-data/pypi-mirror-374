@@ -1,0 +1,100 @@
+[project]
+name = "ria-toolkit-oss"
+version = "0.1.0"
+description = "An open-source version of the RIA Toolkit, including the fundamental tools to get started developing, testing, and deploying radio intelligence applications"
+license = { text = "AGPL-3.0-only" }
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "Qoherent Inc.", email = "info@qoherent.ai" },
+]
+maintainers = [
+    { name = "Michael Luciuk", email = "michael@qoherent.ai" },
+    { name = "Benjamin Chinnery", email = "ben@qoherent.ai" },
+    { name = "Ashkan Beigi", email = "ash@qoherent.ai" },
+]
+keywords = [
+    "radio",
+    "rf",
+    "sdr",
+    "software-defined radio",
+    "signal processing",
+    "wireless",
+    "machine learning",
+    "radio intelligence"
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3",
+  "Intended Audience :: Science/Research",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: GNU Affero General Public License v3",
+  "Natural Language :: English",
+  "Operating System :: POSIX :: Linux",
+  "Topic :: Education",
+  "Topic :: Scientific/Engineering",
+  "Topic :: Communications :: Ham Radio",
+  "Topic :: Software Development :: Libraries",
+  "Typing :: Typed"
+]
+dependencies = [
+  "numpy (==1.26.4)",  # Pinned at 1.26.4 for compatibility with Radioconda
+  "scipy (<1.16)",
+  "sigmf (>=1.2.10,<2.0.0)",
+  "quantiphy (>=2.20,<3.0)",
+  "plotly (>=6.3.0,<7.0.0)",
+  "h5py (>=3.14.0,<4.0.0)",
+  "pandas (>=2.3.2,<3.0.0)"
+]
+
+[tool.poetry]
+packages = [
+    { include = "ria_toolkit_oss", from = "src" }
+]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.0.0"
+tox = "^4.19.0"
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "^7.2.6"
+sphinx-rtd-theme = "^2.0.0"
+sphinx-autobuild = "^2024.2.4"
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.1.0"
+black = "^24.3.0"
+isort = "^5.13.2"
+pylint = "^3.2.6"  # pyreverse to automate the creation of UML diagrams
+
+[tool.poetry.urls]
+"Qoherent" = "https://qoherent.ai/"
+"Source" = "https://riahub.ai/qoherent/ria-toolkit-oss"
+"Issues Board" = "https://riahub.ai/qoherent/ria-toolkit-oss/issues"
+
+[tool.black]
+line-length = 119
+target-version = ["py310"]
+exclude = '''
+    /(
+          \.git
+        | \.github
+        | \.tox
+        | build
+        | dist
+        | docs
+        | venv
+        | \.venv
+        | env
+        | \.env
+        | \.idea
+        | \.vscode
+    )/
+'''
+
+[tool.isort]
+profile = "black"

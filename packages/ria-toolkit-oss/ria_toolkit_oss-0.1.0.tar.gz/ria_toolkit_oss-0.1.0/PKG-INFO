@@ -1,0 +1,253 @@
+Metadata-Version: 2.3
+Name: ria-toolkit-oss
+Version: 0.1.0
+Summary: An open-source version of the RIA Toolkit, including the fundamental tools to get started developing, testing, and deploying radio intelligence applications
+License: AGPL-3.0-only
+Keywords: radio,rf,sdr,software-defined radio,signal processing,wireless,machine learning,radio intelligence
+Author: Qoherent Inc.
+Author-email: info@qoherent.ai
+Maintainer: Michael Luciuk
+Maintainer-email: michael@qoherent.ai
+Requires-Python: >=3.10
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Topic :: Education
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Communications :: Ham Radio
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Typing :: Typed
+Requires-Dist: h5py (>=3.14.0,<4.0.0)
+Requires-Dist: numpy (==1.26.4)
+Requires-Dist: pandas (>=2.3.2,<3.0.0)
+Requires-Dist: plotly (>=6.3.0,<7.0.0)
+Requires-Dist: quantiphy (>=2.20,<3.0)
+Requires-Dist: scipy (<1.16)
+Requires-Dist: sigmf (>=1.2.10,<2.0.0)
+Project-URL: Issues Board, https://riahub.ai/qoherent/ria-toolkit-oss/issues
+Project-URL: Qoherent, https://qoherent.ai/
+Project-URL: Source, https://riahub.ai/qoherent/ria-toolkit-oss
+Description-Content-Type: text/markdown
+
+<h2 align="center">
+  <br>
+  <img src="./docs/images/ria_logo.svg" alt="RIA Toolkit OSS" style="width: 400px; height: auto;">
+</h2>
+
+<h3 align="center">RIA Toolkit OSS, By <a href="https://qoherent.ai/">Qoherent</a></h3>
+
+<h4 align="center">Let's build intelligent radios together 📡🚀</h4>
+
+<p align="center">
+  <!-- PyPI -->
+  <a href="https://pypi.org/project/ria-toolkit-oss">
+    <img src="https://img.shields.io/pypi/v/ria-toolkit-oss"/>
+  </a>
+  <!-- Conda-Forge -->
+  <a href="https://anaconda.org/conda-forge/ria-toolkit-oss">
+    <img src="https://img.shields.io/conda/vn/conda-forge/ria-toolkit-oss"/>
+  </a>
+  <!-- License -->
+  <a href="https://www.gnu.org/licenses/agpl-3.0">
+    <img src="https://img.shields.io/badge/License-AGPLv3-blue.svg" />
+  </a>
+  <!-- Docs -->
+  <a href="https://radiointelligence.io/">
+    <img src="https://img.shields.io/badge/docs-ria--core-blue"/>
+  </a>
+</p>
+
+# RIA Toolkit OSS
+
+RIA Toolkit OSS is the open-source version of the RIA Toolkit, providing the fundamental components to help engineers and researchers get started building, testing, and deploying radio intelligence applications.
+
+## 🌟 Key features
+
+- Core classes for loading, managing, and interacting with machine learning assets, including recordings, models, and datasets.
+
+- Fundamental recording augmentations and impairments for radio ML dataset preparation.
+
+- (Coming soon) A unified interface for interacting with software-defined radios, including [USRP](https://www.ettus.com/products/), [BladeRF](https://www.nuand.com/), [PlutoSDR](https://www.analog.com/en/resources/evaluation-hardware-and-software/evaluation-boards-kits/adalm-pluto.html), [RTL-SDR](https://www.rtl-sdr.com/), [HackRF](https://greatscottgadgets.com/hackrf/), and [thinkRF](https://thinkrf.com/).
+
+- (Coming soon) Basic model training and testing utilities.
+
+## 🚀 Want More RIA?
+
+- **[RIA Toolkit](https://riahub.ai/)**: The full, unthrottled set of tools for developing, testing, and deploying radio intelligence applications.
+
+- **[RIA Hub](https://riahub.ai/)**: Wield the RIA Hub Toolkit plus purpose-built automations directly in your browser, without the need to write code or setup infrastructure. Additionally, unlock access to Qoherent's rich IP library as well as community projects. 
+
+- **[RIA RAN](https://www.qoherent.ai/radiointelligenceapps-ran/)**: Radio intelligence solutions engineered to seamlessly integrate with existing RAN environments, including ORAN-compliant networks.
+
+## 🚀 Getting started
+
+The RIA Hub Toolkit OSS is available on [PyPI](https://pypi.org/project/ria/), [Conda Forge](https://anaconda.org/conda-forge/ria) and [RIA Hub](https://riahub.ai/qoherent/-/packages).
+
+- [ ] TODO: Update links once official listings are reserved
+
+### Installation from Conda Forge (recommended)
+
+While the RIA Toolkit OSS can be installed into any Conda environment, it is recommended to use RIA Toolkit OSS is within a [Radioconda](https://anaconda.org/ryanvolz/radioconda) environment, which provides pre-configured packages and libraries required for common SDR devices. Radioconda installation and setup instructions can be found in the project README: [`radioconda-installer`](https://github.com/radioconda/radioconda-installer).
+
+Install RIA Toolkit OSS into the base environment:
+
+```bash
+conda activate base
+conda install ria-toolkit-oss
+```
+
+(Coming soon) Install RIA Toolkit OSS from RIA Hub's Conda Package Registry.
+
+### Installation from PyPI / RIA Hub
+
+You can also install RIA Toolkit OSS in a standard Python virtual environment using Pip. Addition information on Python virtual environments can be found here: [W3Schools: Python Virtual Environment](https://www.w3schools.com/python/python_virtualenv.asp).
+
+1. Create and activate a Python virtual environment:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+<details>
+<summary><strong>Windows (Command Prompt)</strong></summary>
+
+```commandline
+python -m venv venv
+venv\Scripts\activate
+```
+
+</details>
+
+2. Install RIA Toolkit OSS with Pip:
+
+```bash
+pip install ria-toolkit-oss
+```
+
+RIA Toolkit OSS can also be installed from the RIA Hub Python Index. However, because RIA Hub does not yet support a proxy or cache for public packages, you need to use the `--no-deps` option with pip to skip automatic dependency installation, and then manually install each dependency afterward.
+
+```bash
+pip install --index-url https://riahub.ai/api/packages/qoherent/pypi/simple/ ria-toolkit-oss --no-deps
+```
+
+### Installation from source
+
+You can also install RIA Toolkit OSS directly from the source code:
+
+1. Clone the repository. For example:
+```bash
+git clone https://riahub.ai/qoherent/ria-toolkit-oss.git
+```
+
+2. Navigate into the project directory:
+```bash
+cd ria-toolkit-oss
+```
+
+3. Install the package:
+```bash
+pip install .
+```
+
+### Basic usage 
+
+Once the project is installed, you can import its modules, functions, and classes for use in your Python code. For example, you can use the following import statement to access the `Recording` object:
+```python
+from ria_toolkit_oss.datatypes import Recording
+```
+
+Additional usage information is provided in the project documentation.
+
+- [ ] TODO: Link project documentation URL is finalized.
+
+## 🐛 Issues
+
+Kindly report any issues to the project issues board on RIA Hub: [RIA Toolkit OSS Issues Board](https://riahub.qoherent.internal:3000/qoherent/utils/issues).
+
+## 🤝 Contribution
+
+Contributions are always welcome! Whether it's an enhancement, bug fix, or new usage example, your input is valuable. If you'd like to contribute to the project, please reach out to the project maintainers.
+
+If you have a larger project in mind, please [contact us](https://www.qoherent.ai/contact/) directly, we'd love to collaborate with you. 🚀
+
+## 🖊️ Authorship
+
+RIA Toolkit OSS is developed and maintained by [Qoherent](https://qoherent.ai/), with the invaluable support of many independent contributors.
+
+If you are doing research with RIA Toolkit OSS, please cite the project:
+
+```
+[1] Qoherent Inc., "Radio Intelligence Apps Toolkit OSS," 2025. [Online]. Available: https://riahub.ai/qoherent/ria-toolkit-oss
+```
+
+If you like what we're doing, don't forget to give the project a star! ⭐
+
+## 📄 License
+
+RIA Toolkit OSS is **free and open-source**, released under AGPLv3. 
+
+Alternative permissive and commercial licensing options are available upon request. Please [contact us](https://qoherent.ai/contact/) for further details.
+
+## 💻 Developer information
+
+This project adheres to [Qoherent's Coding Guidelines](https://github.com/qoherent/.github/blob/main/docs/CODING.md). We kindly ask you to review them before getting started.
+
+### Poetry
+
+To ensure a consistent development environment, this project uses [Poetry](https://python-poetry.org/) for dependency management. You can initialize a new Poetry environment by running `install` from anywhere within the project:
+```bash
+poetry install
+```
+
+Running `install` when a `poetry.lock` file is present resolves and installs all dependencies listed in `pyproject.toml`, but Poetry uses the exact versions listed in `poetry.lock` to ensure that the package versions are consistent for everyone working on your project. Please note that the project itself will be installed in editable mode when running `poetry install`.
+
+Unit tests can be run with the following command:
+```bash
+poetry run pytest
+```
+
+Source and wheels archives can be built with the following command:
+```bash
+poetry build
+```
+
+For more information on basic Poetry usage, start [here](https://python-poetry.org/docs/basic-usage/).
+
+### Sphinx
+
+Project documentation is auto-generated from project docstrings using [Sphinx](https://www.sphinx-doc.org/en/master/). Therefore, all importable components require comprehensive docstrings, complete with doctests demonstrating usage.
+
+It's recommended to use `sphinx-autobuild`, which eliminates the need to manually rebuild the docs after making changes:
+```bash
+poetry run sphinx-autobuild docs/source docs/build/html
+```
+
+When using `sphinx-autobuild`, the docs will automatically be served at http://127.0.0.1:8000.
+
+To build the project documentation manually, navigate to the `docs` directory and run the following commands:
+```bash
+poetry run make clean
+poetry run make html
+```
+
+Once the documentation is built, you can view it by opening `docs/build/html/index.html` in a web browser. Please note that this strategy requires manually rebuilding the documentation to view updates.
+
+For more information on basic Sphinx usage, start [here](https://sphinx-rtd-tutorial.redatatypeshedocs.io/en/latest/index.html).
+
+### tox
+
+This project uses [`tox`](https://tox.wiki/en/latest/index.html) to streamline testing and release. tox runs linting and formatting checks and tests
+the package across multiple version of Python.
+
+To run the tests, simply execute:
+```bash
+poetry run tox
+```
+
+For more information on basic tox usage, start [here](https://tox.wiki/en/latest/user_guide.html).
+
