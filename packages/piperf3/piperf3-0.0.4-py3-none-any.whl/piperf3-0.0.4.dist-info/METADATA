@@ -1,0 +1,41 @@
+Metadata-Version: 2.4
+Name: piperf3
+Version: 0.0.4
+Summary: A Python wrapper for iperf3 with configuration management, plotting, and CLI interface
+Author-email: Sam Welborn <swelborn@lbl.gov>
+License-File: LICENSE
+Requires-Python: >=3.12
+Requires-Dist: matplotlib>=3.10.6
+Requires-Dist: numpy>=2.3.2
+Requires-Dist: pandas>=2.3.2
+Requires-Dist: pydantic-settings>=2.10.1
+Requires-Dist: pydantic>=2.11.7
+Requires-Dist: python-dotenv>=1.1.1
+Requires-Dist: pyyaml>=6.0.2
+Requires-Dist: rich>=14.1.0
+Requires-Dist: seaborn>=0.12.0
+Requires-Dist: typer>=0.17.3
+Description-Content-Type: text/markdown
+
+# piperf3
+
+A mostly vibe-coded wrapper around `iperf3` for running, collecting, and plotting network performance tests. Very unstable, probably only works with `iperf v3.19`.
+
+## Requirements
+
+`iperf3` binary in path. You should be able to run `iperf3` from command line.
+
+## Installation
+
+```bash
+pip install piperf3
+```
+
+## CLI usage
+
+- `piperf3 client SERVER [OPTIONS]` — run a client test with `SERVER` (hostname/IP)
+- `piperf3 server [OPTIONS]` — run an iperf3 server
+
+## License
+
+MIT — see the `LICENSE` file.
