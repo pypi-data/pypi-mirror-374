@@ -1,0 +1,40 @@
+[build-system]
+requires = [
+    "setuptools",
+    "setuptools_scm",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+version_scheme = "guess-next-dev"
+local_scheme = "dirty-tag"
+write_to = "google_speech_pyplay/version.py"
+
+[project]
+name = "google_speech_pyplay"
+description = "Text-to-speech synthesis using the Google Translate TTS API and pygame."
+readme = { file = "README.md", content-type = "text/markdown" }
+license = { text = "GNU" }
+authors = [
+    { name = "Karim Aziiev", email = "karim.aziiev@gmail.com" }
+]
+dependencies = [
+  "appdirs>=1.4.0",
+  "requests>=2.6.0",
+  "web_cache>=1.1.0",
+  "pygame"
+]
+
+keywords = ["speech", "pygame", "audio", "synthesis", "voice", "google", "tts"]
+dynamic = ["version"]
+
+[tool.black]
+line-length = 88
+extend_exclude = 'google_speech_pyplay/version.py'
+[project.optional-dependencies]
+dev = [
+  "black",
+  "isort",
+  "pre-commit",
+]
