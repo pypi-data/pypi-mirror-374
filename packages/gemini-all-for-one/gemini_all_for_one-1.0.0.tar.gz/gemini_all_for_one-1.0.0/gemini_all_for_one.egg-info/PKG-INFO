@@ -1,0 +1,107 @@
+Metadata-Version: 2.4
+Name: gemini-all-for-one
+Version: 1.0.0
+Summary: A comprehensive AI image platform powered by Google's Gemini AI
+Home-page: https://github.com/ai-image-platform/gemini-all-for-one
+Author: AI Image Platform Team
+Author-email: support@ai-image-platform.com
+Project-URL: Bug Reports, https://github.com/ai-image-platform/gemini-all-for-one/issues
+Project-URL: Source, https://github.com/ai-image-platform/gemini-all-for-one
+Project-URL: Documentation, https://gemini-all-for-one.readthedocs.io/
+Keywords: ai artificial-intelligence image-generation image-analysis image-editing gemini google multimodal chat
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Multimedia :: Graphics :: Graphics Conversion
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: flask>=2.3.0
+Requires-Dist: google-genai>=1.33.0
+Requires-Dist: google-generativeai>=0.8.5
+Requires-Dist: pillow>=10.0.0
+Requires-Dist: requests>=2.31.0
+Requires-Dist: werkzeug>=2.3.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx>=6.0.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=1.2.0; extra == "docs"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+
+# Gemini All-for-One
+
+A comprehensive AI image platform powered by Google's Gemini AI. Provides image generation, analysis, editing, and multimodal chat capabilities.
+
+## Features
+
+- **High-Quality Image Generation**: Text-to-image generation with multiple artistic styles and aspect ratios
+- **Advanced Image Analysis**: Intelligent image understanding and detailed descriptions
+- **AI-Powered Image Editing**: Edit images while preserving the same object using text prompts
+- **Multimodal Chat**: Conversations with text and image support using Gemini AI
+- **Free Image Generation**: Alternative image generation via Pollinations.ai (no API key required)
+- **Serverless Ready**: Base64 I/O implementation perfect for serverless deployments
+
+## Quick Start
+
+```python
+from gemini_all_for_one import ImageGenerator, ImageAnalyzer, ImageEditor, GeminiChatClient
+
+# Generate images
+generator = ImageGenerator()
+result = generator.generate_image("A beautiful sunset over mountains")
+image_data = result['image_base64']
+
+# Analyze images  
+analyzer = ImageAnalyzer()
+analysis = analyzer.analyze_image(image_bytes)
+
+# Edit images (preserves same object)
+editor = ImageEditor()
+edited = editor.edit_image(image_bytes, "add sunglasses")
+
+# Multimodal chat
+chat = GeminiChatClient()
+response = chat.send_message("What's in this image?", image=image_bytes)
+```
+
+## Requirements
+
+- Python 3.8+
+- Google Gemini API key (get one at https://aistudio.google.com/app/apikey)
+- Set `GEMINI_API_KEY` environment variable
+
+## Installation
+
+```bash
+pip install gemini-all-for-one
+```
+
+## License
+
+MIT License - see LICENSE file for details.

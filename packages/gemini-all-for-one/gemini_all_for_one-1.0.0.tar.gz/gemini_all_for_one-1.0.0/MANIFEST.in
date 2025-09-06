@@ -1,0 +1,17 @@
+include README.md
+include LICENSE
+include requirements.txt
+recursive-include gemini_all_for_one/templates *.html
+recursive-include gemini_all_for_one/static *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+exclude .DS_Store
+exclude *.egg-info
+exclude build/
+exclude dist/
+exclude library_backup/
+exclude attached_assets/
+exclude .replit
+exclude replit.nix
+exclude replit.md
+exclude deployment-guide.md
