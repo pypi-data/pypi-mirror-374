@@ -1,0 +1,112 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kafkaboost"
+dynamic = ["version"]
+description = "Enhanced Apache Kafka library with priority-based message processing"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "KafkaBoost Team", email = "support@kafkaboost.com"},
+]
+maintainers = [
+    {name = "KafkaBoost Team", email = "support@kafkaboost.com"},
+]
+keywords = ["kafka", "priority", "messaging", "distributed", "streaming", "async"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Distributed Computing",
+    "Topic :: System :: Networking",
+]
+requires-python = ">=3.7"
+dependencies = [
+    "kafka-python>=2.0.0",
+    "boto3>=1.26.0",
+    "botocore>=1.29.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-asyncio>=0.18.0",
+    "black>=22.0",
+    "flake8>=4.0",
+    "mypy>=0.950",
+]
+test = [
+    "pytest>=6.0",
+    "pytest-asyncio>=0.18.0",
+    "pytest-cov>=3.0",
+]
+
+[project.scripts]
+kafkaboost-test = "kafkaboost.tests.test_priority_boost_kafka:main"
+
+[project.urls]
+Homepage = "https://github.com/your-org/kafkaboost"
+Documentation = "https://kafkaboost.readthedocs.io/"
+Repository = "https://github.com/your-org/kafkaboost"
+"Bug Tracker" = "https://github.com/your-org/kafkaboost/issues"
+
+[tool.setuptools]
+packages = ["kafkaboost"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+kafkaboost = ["*.json", "tests/*.json"]
+
+[tool.setuptools.dynamic]
+version = {attr = "kafkaboost.__version__"}
+
+[tool.black]
+line-length = 88
+target-version = ['py37']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+python_version = "3.7"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[tool.pytest.ini_options]
+testpaths = ["kafkaboost/tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+asyncio_mode = "auto"
