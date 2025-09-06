@@ -1,0 +1,15 @@
+include README.md
+include LICENSE
+recursive-include doc_tracker *.py
+
+# Exclude junk and non-package content
+global-exclude __pycache__
+global-exclude *.py[co]
+prune build
+prune dist
+prune demo_project
+prune docs
+prune tests
+prune .github
+prune doc_tracker.egg-info
+exclude config.yaml
