@@ -1,0 +1,38 @@
+Metadata-Version: 2.4
+Name: hqstage
+Version: 0.9.0.dev3
+Author-email: HQS Quantum Simulation GmbH <info@quantumsimulations.de>
+Maintainer-email: Sebastian Zanker <sebastian.zanker@quantumsimulations.de>
+License: HQS Terms of use
+Requires-Python: >=3.9
+License-File: LICENSE
+Requires-Dist: uv>=0.1.36
+Requires-Dist: click>=8.0
+Requires-Dist: diskcache
+Requires-Dist: platformdirs
+Requires-Dist: configparser
+Requires-Dist: tomli
+Requires-Dist: tomli-w
+Requires-Dist: pynacl
+Requires-Dist: py-machineid
+Requires-Dist: pydantic
+Requires-Dist: pypi-simple
+Requires-Dist: requests
+Requires-Dist: shellingham
+Requires-Dist: tqdm
+Requires-Dist: urllib3>=2.0
+Requires-Dist: semver
+Provides-Extra: tests
+Requires-Dist: coverage; extra == "tests"
+Requires-Dist: pytest; extra == "tests"
+Provides-Extra: dev
+Requires-Dist: bandit; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: types-requests; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx; extra == "docs"
+Requires-Dist: sphinx_rtd_theme; extra == "docs"
+Requires-Dist: nbsphinx; extra == "docs"
+Dynamic: license-file
