@@ -1,0 +1,77 @@
+Metadata-Version: 2.4
+Name: xneo
+Version: 0.1.0
+Summary: A lightweight CLI tool for executing and serving AI flows
+Home-page: https://github.com/neopilot-ai/xneo
+Author: NeoAI
+Author-email: NeoAI <info@khulnasoft.com>
+License: MIT
+Project-URL: Homepage, https://github.com/neopilot-ai/xneo
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# XNeo
+
+XNeo is a lightweight CLI tool for executing and serving AI flows, part of the NeoAI ecosystem.
+
+[![PyPI version](https://img.shields.io/pypi/v/xneo.svg)](https://pypi.org/project/xneo/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python Version](https://img.shields.io/pypi/pyversions/xneo.svg)](https://pypi.org/project/xneo/)
+
+## Features
+
+- Simple and intuitive API
+- Lightweight and dependency-free (for now)
+- Easy to extend with new functionality
+
+## Installation
+
+You can install XNeo using pip:
+
+```bash
+pip install xneo
+```
+
+## Quick Start
+
+```python
+import xneo
+
+# Execute an AI flow
+result = xneo.execute_flow('path/to/flow.json')
+print(result)
+```
+
+## Documentation
+
+For detailed documentation, please visit [GitHub Wiki](https://github.com/neopilot-ai/xneo/wiki).
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+NeoAI - [@NeoAI](https://github.com/neopilot-ai)
+
+Project Link: [https://github.com/neopilot-ai/xneo](https://github.com/neopilot-ai/xneo)
