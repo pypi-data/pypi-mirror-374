@@ -1,0 +1,10 @@
+Metadata-Version: 2.4
+Name: corva-otel-autoinstrumentation
+Version: 0.4.0
+Summary: OpenTelemetry autoinstrumentation for Python at corva.ai
+Project-URL: Homepage, https://github.com/corva-ai/otel/tree/main/python/autoinstrumentation
+Author-email: Radoslav Kirilov <radoslav.kirilov@corva.ai>, Ivaylo Papratilov <ivaylo.papratilov@corva.ai>
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.6
+Requires-Dist: opentelemetry-instrumentation
