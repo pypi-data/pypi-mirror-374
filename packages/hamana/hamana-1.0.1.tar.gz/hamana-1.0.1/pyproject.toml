@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling==1.26.3", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hamana"
+version = "1.0.1"
+description = "A python library for seamless data extraction, storage, and SQL-based analysis using pandas and SQLite."
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    { name = "Andrea Zanini", email= "" },
+]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Environment :: Web Environment",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Topic :: Database",
+    "Topic :: Scientific/Engineering :: Information Analysis"
+]
+dependencies = [
+    "pandas>=2.2.3",
+    "oracledb>=2.4.1",
+    "teradatasql>=20.0.0.31"
+]
+
+[project.urls]
+Homepage = "https://github.com/zazza123/hamana"
+Repository = "https://github.com/zazza123/hamana"
+Documentation = "https://zazza123.github.io/hamana"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib"
+]
+
+[tool.coverage.run]
+source = [
+    "src"
+]
+context = '${CONTEXT}'
+omit = [
+    "tests/init_tests.py",
+    "src/hamana/connector/db/interface.py"
+]
