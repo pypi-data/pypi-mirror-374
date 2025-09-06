@@ -1,0 +1,32 @@
+# AI Image Platform - Package Manifest
+# Specifies additional files to include in the package distribution
+
+# Include documentation and configuration files
+include README.md
+include LICENSE
+include requirements.txt
+include setup.py
+
+# Include template and static files
+recursive-include ai_image_platform/templates *.html
+recursive-include ai_image_platform/static *.css *.js *.png *.jpg *.ico
+
+# Include package configuration
+include ai_image_platform/__init__.py
+recursive-include ai_image_platform *.py
+
+# Exclude unnecessary files
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude __pycache__
+global-exclude .DS_Store
+global-exclude .git*
+global-exclude *.log
+global-exclude .env*
+
+# Include docs if they exist
+recursive-include docs *.rst *.md *.txt
+recursive-include docs *.png *.jpg *.gif
+
+# Include tests
+recursive-include tests *.py

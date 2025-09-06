@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Platform - API Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .nav a {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+        
+        h2 {
+            color: #333;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            color: #555;
+            font-size: 1.3em;
+            margin: 25px 0 15px 0;
+        }
+        
+        .endpoint {
+            background: white;
+            margin: 20px 0;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+        
+        .get { background: #28a745; }
+        .post { background: #007bff; }
+        .put { background: #ffc107; color: #333; }
+        .delete { background: #dc3545; }
+        
+        .url {
+            font-family: 'Courier New', monospace;
+            background: #f1f3f4;
+            padding: 8px 12px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        
+        .code-block {
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            position: relative;
+        }
+        
+        .code-block::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: -1px;
+            right: 10px;
+            background: #667eea;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 0 0 5px 5px;
+            font-size: 0.8em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+        
+        .badge.required {
+            background: #ffeaa7;
+            color: #d63031;
+        }
+        
+        .badge.optional {
+            background: #ddd;
+            color: #555;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2em;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .alert {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+        
+        .alert.info {
+            background: #d1ecf1;
+            border-color: #bee5eb;
+            color: #0c5460;
+        }
+        
+        .alert.warning {
+            background: #fff3cd;
+            border-color: #ffeaa7;
+            color: #856404;
+        }
+        
+        .alert.success {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .section {
+                padding: 20px 15px;
+            }
+            
+            .endpoint {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 AI Image Platform</h1>
+            <p class="subtitle">Comprehensive Python Library & API Documentation</p>
+            <div class="nav">
+                <a href="#overview">Overview</a>
+                <a href="#quickstart">Quick Start</a>
+                <a href="#endpoints">API Endpoints</a>
+                <a href="#python-usage">Python Library</a>
+                <a href="#examples">Examples</a>
+                <a href="#deployment">Deployment</a>
+            </div>
+        </header>
+
+        <div class="section" id="overview">
+            <h2>🌟 Platform Overview</h2>
+            <p>The AI Image Platform is a comprehensive Python library and RESTful API that provides advanced AI-powered image processing, generation, editing, and multimodal chat capabilities. Built for serverless deployment with Flask, it integrates multiple AI providers for maximum flexibility and performance.</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🤖</span>
+                    <h3>Multimodal Chat</h3>
+                    <p>Advanced chat with 6 Gemini AI models supporting both text and image inputs with conversation history.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🎨</span>
+                    <h3>Image Generation</h3>
+                    <p>High-quality text-to-image generation using Gemini AI and Pollinations.ai with multiple styles and aspect ratios.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🔍</span>
+                    <h3>Image Analysis</h3>
+                    <p>Intelligent image analysis, description, and understanding using advanced AI vision models.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">✨</span>
+                    <h3>Image Editing</h3>
+                    <p>AI-powered image editing, transformation, and multi-image composition with natural language prompts.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">☁️</span>
+                    <h3>Serverless Ready</h3>
+                    <p>Built for serverless deployment with Flask, supporting autoscale, VM, and scheduled deployment modes.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📚</span>
+                    <h3>Python Library</h3>
+                    <p>Clean, well-documented Python library with comprehensive classes and utility functions.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="quickstart">
+            <h2>🚀 Quick Start</h2>
+            
+            <h3>Installation</h3>
+            <div class="code-block" data-lang="bash">
+# Clone the repository
+git clone https://github.com/your-repo/ai-image-platform.git
+cd ai-image-platform
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Set environment variables
+export GEMINI_API_KEY="your_gemini_api_key_here"
+            </div>
+            
+            <h3>Running the Server</h3>
+            <div class="code-block" data-lang="bash">
+# Development server
+python main.py
+
+# Production server
+gunicorn --bind=0.0.0.0:5000 --reuse-port main:app
+            </div>
+            
+            <div class="alert info">
+                <strong>🔑 API Key Required:</strong> You need a Google Gemini API key to use most features. Get one from the <a href="https://aistudio.google.com/app/apikey">Google AI Studio</a>.
+            </div>
+        </div>
+
+        <div class="section" id="endpoints">
+            <h2>🌐 API Endpoints</h2>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="url">/api/health</span>
+                <h3>Health Check</h3>
+                <p>Monitor service status and API availability.</p>
+                
+                <h4>Response:</h4>
+                <div class="code-block" data-lang="json">
+{
+    "status": "healthy",
+    "message": "AI Image Platform API is running",
+    "services": {
+        "gemini": {
+            "status": "healthy",
+            "gemini_api": "available"
+        },
+        "pollinations": {
+            "status": "healthy",
+            "pollinations_api": "available"
+        }
+    }
+}
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="url">/api/chat</span>
+                <h3>Multimodal Chat</h3>
+                <p>Chat with AI models supporting text and image inputs.</p>
+                
+                <h4>Request Body:</h4>
+                <table>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>question</td>
+                        <td>string</td>
+                        <td><span class="badge required">Required</span></td>
+                        <td>Your question or message</td>
+                    </tr>
+                    <tr>
+                        <td>model</td>
+                        <td>string</td>
+                        <td><span class="badge optional">Optional</span></td>
+                        <td>Gemini model (default: gemini-2.5-flash-lite)</td>
+                    </tr>
+                    <tr>
+                        <td>image_data</td>
+                        <td>string</td>
+                        <td><span class="badge optional">Optional</span></td>
+                        <td>Base64 encoded image data</td>
+                    </tr>
+                </table>
+                
+                <h4>Available Models:</h4>
+                <ul>
+                    <li><strong>gemini-2.5-flash-lite</strong> - Fastest (default)</li>
+                    <li><strong>gemini-1.5-flash</strong> - High-speed lightweight</li>
+                    <li><strong>gemini-2.5-flash</strong> - Advanced with excellent speed</li>
+                    <li><strong>gemini-2.0-flash</strong> - Next-gen performance</li>
+                    <li><strong>gemini-2.5-pro</strong> - Performance and quality</li>
+                    <li><strong>gemini-1.5-flash-8b</strong> - 8B parameter lightweight</li>
+                </ul>
+                
+                <h4>Example Request:</h4>
+                <div class="code-block" data-lang="json">
+{
+    "question": "What's in this image?",
+    "model": "gemini-2.5-flash-lite",
+    "image_data": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ..."
+}
+                </div>
+                
+                <h4>Example Response:</h4>
+                <div class="code-block" data-lang="json">
+{
+    "status": "success",
+    "question": "What's in this image?",
+    "answer": "This image shows a beautiful sunset over mountains...",
+    "model_used": "gemini-2.5-flash-lite"
+}
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="url">/api/analyze-image</span>
+                <h3>Image Analysis</h3>
+                <p>Analyze images for detailed descriptions and understanding.</p>
+                
+                <h4>Request Body:</h4>
+                <table>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>image_data</td>
+                        <td>string</td>
+                        <td><span class="badge optional">Optional*</span></td>
+                        <td>Base64 encoded image data</td>
+                    </tr>
+                    <tr>
+                        <td>image_url</td>
+                        <td>string</td>
+                        <td><span class="badge optional">Optional*</span></td>
+                        <td>URL of image to analyze</td>
+                    </tr>
+                    <tr>
+                        <td>extract_masks</td>
+                        <td>boolean</td>
+                        <td><span class="badge optional">Optional</span></td>
+                        <td>Extract segmentation masks (default: false)</td>
+                    </tr>
+                </table>
+                <p><em>*Either image_data or image_url is required</em></p>
+                
+                <h4>Example Response:</h4>
+                <div class="code-block" data-lang="json">
+{
+    "status": "success",
+    "analysis": "This image contains a modern city skyline...",
+    "image_format": "JPEG",
+    "image_size": [1920, 1080],
+    "segmentation_masks": []
+}
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="url">/api/generate-image</span>
+                <h3>Gemini Image Generation</h3>
+                <p>Generate high-quality images from text using Gemini AI.</p>
+                
+                <h4>Request Body:</h4>
+                <table>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>prompt</td>
+                        <td>string</td>
+                        <td><span class="badge required">Required</span></td>
+                        <td>Text description of desired image</td>
+                    </tr>
+                    <tr>
+                        <td>style</td>
+                        <td>string</td>
+                        <td><span class="badge optional">Optional</span></td>
+                        <td>Artistic style (default: photorealistic)</td>
+                    </tr>
+                    <tr>
+                        <td>aspect_ratio</td>
+                        <td>string</td>
+                        <td><span class="badge optional">Optional</span></td>
+                        <td>Image aspect ratio (default: 1:1)</td>
+                    </tr>
+                </table>
+                
+                <h4>Available Styles:</h4>
+                <ul>
+                    <li><strong>photorealistic</strong> - Photorealistic and detailed (default)</li>
+                    <li><strong>cartoon</strong> - Cartoon style and animated</li>
+                    <li><strong>abstract</strong> - Abstract art style</li>
+                    <li><strong>impressionistic</strong> - Impressionist painting style</li>
+                    <li><strong>cyberpunk</strong> - Cyberpunk and futuristic art</li>
+                    <li><strong>anime</strong> - Anime and manga style</li>
+                    <li><strong>oil_painting</strong> - Oil painting technique</li>
+                    <li><strong>watercolor</strong> - Watercolor painting style</li>
+                    <li><strong>sketch</strong> - Pencil sketch style</li>
+                    <li><strong>digital_art</strong> - Digital art style</li>
+                </ul>
+                
+                <h4>Available Aspect Ratios:</h4>
+                <ul>
+                    <li><strong>1:1</strong> - Square format (default)</li>
+                    <li><strong>16:9</strong> - Landscape widescreen</li>
+                    <li><strong>9:16</strong> - Portrait vertical</li>
+                    <li><strong>4:3</strong> - Standard landscape</li>
+                    <li><strong>3:4</strong> - Standard portrait</li>
+                </ul>
+                
+                <h4>Example Response:</h4>
+                <div class="code-block" data-lang="json">
+{
+    "status": "success",
+    "image_base64": "iVBORw0KGgoAAAANSUhEUgAA...",
+    "response_text": "Generated a beautiful mountain landscape...",
+    "filename": "generated_image_20240905_143000_abc123.png",
+    "prompt": "A serene mountain landscape at sunset",
+    "style": "photorealistic",
+    "aspect_ratio": "16:9"
+}
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="url">/api/pollinations/generate-image</span>
+                <h3>Pollinations.ai Image Generation</h3>
+                <p>Generate high-quality images using Pollinations.ai Flux models (no API key required).</p>
+                
+                <h4>Request Body:</h4>
+                <table>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>prompt</td>
+                        <td>string</td>
+                        <td><span class="badge required">Required</span></td>
+                        <td>Text description of desired image</td>
+                    </tr>
+                    <tr>
+                        <td>width</td>
+                        <td>integer</td>
+                        <td><span class="badge optional">Optional</span></td>
+                        <td>Image width (default: 1024)</td>
+                    </tr>
+                    <tr>
+                        <td>height</td>
+                        <td>integer</td>
+                        <td><span class="badge optional">Optional</span></td>
+                        <td>Image height (default: 1024)</td>
+                    </tr>
+                    <tr>
+                        <td>model</td>
+                        <td>string</td>
+                        <td><span class="badge optional">Optional</span></td>
+                        <td>Model to use (default: flux)</td>
+                    </tr>
+                    <tr>
+                        <td>seed</td>
+                        <td>integer</td>
+                        <td><span class="badge optional">Optional</span></td>
+                        <td>Random seed for reproducible results</td>
+                    </tr>
+                    <tr>
+                        <td>enhance</td>
+                        <td>boolean</td>
+                        <td><span class="badge optional">Optional</span></td>
+                        <td>Auto-enhance prompt (default: true)</td>
+                    </tr>
+                </table>
+                
+                <h4>Available Models:</h4>
+                <ul>
+                    <li><strong>flux</strong> - Standard Flux model (default)</li>
+                    <li><strong>flux-realism</strong> - Photorealistic results</li>
+                    <li><strong>flux-anime</strong> - Anime/manga style</li>
+                    <li><strong>flux-3d</strong> - 3D rendered style</li>
+                    <li><strong>any-dark</strong> - Dark artistic style</li>
+                    <li><strong>flux-pro</strong> - Premium quality</li>
+                </ul>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="url">/api/edit-image</span>
+                <h3>Image Editing</h3>
+                <p>Edit and transform images using AI with natural language prompts.</p>
+                
+                <h4>Request Body:</h4>
+                <table>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>image_data</td>
+                        <td>string</td>
+                        <td><span class="badge required">Required</span></td>
+                        <td>Base64 encoded image data</td>
+                    </tr>
+                    <tr>
+                        <td>edit_prompt</td>
+                        <td>string</td>
+                        <td><span class="badge required">Required</span></td>
+                        <td>Description of desired edits</td>
+                    </tr>
+                    <tr>
+                        <td>style</td>
+                        <td>string</td>
+                        <td><span class="badge optional">Optional</span></td>
+                        <td>Target artistic style</td>
+                    </tr>
+                    <tr>
+                        <td>aspect_ratio</td>
+                        <td>string</td>
+                        <td><span class="badge optional">Optional</span></td>
+                        <td>Target aspect ratio</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="section" id="python-usage">
+            <h2>🐍 Python Library Usage</h2>
+            
+            <h3>Installation as Library</h3>
+            <div class="code-block" data-lang="python">
+# Import the library
+from ai_image_platform import (
+    GeminiChatClient, 
+    ImageAnalyzer, 
+    ImageGenerator,
+    ImageEditor,
+    PollinationsClient
+)
+
+# Or import specific functions
+from ai_image_platform.core.image_generation import generate_image_from_text
+from ai_image_platform.core.image_analysis import analyze_base64_image
+            </div>
+            
+            <h3>Chat Client Example</h3>
+            <div class="code-block" data-lang="python">
+# Initialize chat client
+chat_client = GeminiChatClient()
+
+# Text-only chat
+response = chat_client.ask_question(
+    "Explain quantum computing in simple terms",
+    selected_model="gemini-2.5-flash-lite"
+)
+print(response['answer'])
+
+# Multimodal chat with image
+with open('image.jpg', 'rb') as f:
+    image_data = base64.b64encode(f.read()).decode()
+
+response = chat_client.ask_question(
+    "What's in this image?",
+    selected_model="gemini-2.5-flash",
+    image_data=image_data
+)
+print(response['answer'])
+            </div>
+            
+            <h3>Image Generation Example</h3>
+            <div class="code-block" data-lang="python">
+# Using the class
+generator = ImageGenerator()
+result = generator.generate_image(
+    prompt_text="A majestic dragon in a mystical forest",
+    style="digital_art",
+    aspect_ratio="16:9"
+)
+
+if result['status'] == 'success':
+    # Save the generated image
+    image_data = base64.b64decode(result['image_base64'])
+    with open(result['filename'], 'wb') as f:
+        f.write(image_data)
+
+# Using convenience function
+result = generate_image_from_text(
+    "A peaceful zen garden with cherry blossoms",
+    style="watercolor",
+    aspect_ratio="4:3"
+)
+            </div>
+            
+            <h3>Pollinations Client Example</h3>
+            <div class="code-block" data-lang="python">
+# Initialize Pollinations client (no API key required)
+pollinations = PollinationsClient()
+
+# Generate image
+result = pollinations.generate_image(
+    prompt="A futuristic cityscape at night",
+    width=1024,
+    height=576,
+    model="flux-realism",
+    seed=12345
+)
+
+if result['status'] == 'success':
+    print(f"Generated: {result['filename']}")
+    # image_data is in result['image_base64']
+            </div>
+            
+            <h3>Image Analysis Example</h3>
+            <div class="code-block" data-lang="python">
+# Using the class
+analyzer = ImageAnalyzer()
+
+# Analyze from file
+with open('photo.jpg', 'rb') as f:
+    image_bytes = f.read()
+
+analysis = analyzer.analyze_image_bytes(
+    image_bytes, 
+    prompt="Describe this image in detail"
+)
+print(analysis)
+
+# Using convenience function for base64 image
+result = analyze_base64_image(
+    base64_image_data,
+    extract_masks=True
+)
+print(result['analysis'])
+            </div>
+            
+            <h3>Flask App Integration</h3>
+            <div class="code-block" data-lang="python">
+from ai_image_platform.api import create_app
+
+# Create Flask app
+app = create_app()
+
+# Custom configuration
+config = {
+    'SECRET_KEY': 'your-secret-key',
+    'MAX_CONTENT_LENGTH': 32 * 1024 * 1024  # 32MB
+}
+app = create_app(config)
+
+# Run the app
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
+            </div>
+        </div>
+
+        <div class="section" id="examples">
+            <h2>💡 Usage Examples</h2>
+            
+            <h3>JavaScript/Frontend Integration</h3>
+            <div class="code-block" data-lang="javascript">
+// Chat with image upload
+async function chatWithImage(question, imageFile, model = 'gemini-2.5-flash-lite') {
+    // Convert image to base64
+    const reader = new FileReader();
+    const imageData = await new Promise(resolve => {
+        reader.onload = e => resolve(e.target.result);
+        reader.readAsDataURL(imageFile);
+    });
+    
+    const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            question: question,
+            model: model,
+            image_data: imageData
+        })
+    });
+    
+    return await response.json();
+}
+
+// Generate image
+async function generateImage(prompt, style = 'photorealistic') {
+    const response = await fetch('/api/generate-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            prompt: prompt,
+            style: style,
+            aspect_ratio: '16:9'
+        })
+    });
+    
+    const result = await response.json();
+    
+    if (result.status === 'success') {
+        // Display image
+        const img = document.createElement('img');
+        img.src = 'data:image/png;base64,' + result.image_base64;
+        document.body.appendChild(img);
+    }
+    
+    return result;
+}
+            </div>
+            
+            <h3>Python Script Examples</h3>
+            <div class="code-block" data-lang="python">
+#!/usr/bin/env python3
+"""
+Example: Batch Image Analysis
+"""
+import os
+import glob
+from ai_image_platform import ImageAnalyzer
+
+def analyze_image_folder(folder_path):
+    analyzer = ImageAnalyzer()
+    
+    # Supported formats
+    image_extensions = ['*.jpg', '*.jpeg', '*.png', '*.bmp', '*.gif']
+    
+    for ext in image_extensions:
+        for image_path in glob.glob(os.path.join(folder_path, ext)):
+            print(f"Analyzing: {image_path}")
+            
+            with open(image_path, 'rb') as f:
+                image_bytes = f.read()
+            
+            try:
+                analysis = analyzer.analyze_image_bytes(image_bytes)
+                print(f"Analysis: {analysis[:200]}...\n")
+            except Exception as e:
+                print(f"Error: {e}\n")
+
+if __name__ == '__main__':
+    analyze_image_folder('./images')
+            </div>
+            
+            <h3>cURL Examples</h3>
+            <div class="code-block" data-lang="bash">
+# Health check
+curl -X GET http://localhost:5000/api/health
+
+# Chat request
+curl -X POST http://localhost:5000/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{
+    "question": "What is the capital of France?",
+    "model": "gemini-2.5-flash-lite"
+  }'
+
+# Generate image with Pollinations.ai
+curl -X POST http://localhost:5000/api/pollinations/generate-image \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "A beautiful sunset over the ocean",
+    "width": 1024,
+    "height": 576,
+    "model": "flux-realism"
+  }'
+
+# Analyze image from URL
+curl -X POST http://localhost:5000/api/analyze-image \
+  -H "Content-Type: application/json" \
+  -d '{
+    "image_url": "https://example.com/image.jpg"
+  }'
+            </div>
+        </div>
+
+        <div class="section" id="deployment">
+            <h2>🚀 Serverless Deployment</h2>
+            
+            <h3>Replit Deployment</h3>
+            <div class="alert info">
+                <strong>Autoscale Mode:</strong> Perfect for stateless image processing APIs that scale automatically based on demand.
+            </div>
+            
+            <div class="code-block" data-lang="json">
+{
+  "deployment_target": "autoscale",
+  "run": ["gunicorn", "--bind=0.0.0.0:5000", "--reuse-port", "main:app"],
+  "build": null
+}
+            </div>
+            
+            <h3>Environment Variables</h3>
+            <table>
+                <tr>
+                    <th>Variable</th>
+                    <th>Required</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>GEMINI_API_KEY</td>
+                    <td><span class="badge required">Required</span></td>
+                    <td>Google Gemini API key for AI features</td>
+                </tr>
+                <tr>
+                    <td>SECRET_KEY</td>
+                    <td><span class="badge optional">Optional</span></td>
+                    <td>Flask secret key (auto-generated if not set)</td>
+                </tr>
+            </table>
+            
+            <h3>Production Configuration</h3>
+            <div class="code-block" data-lang="python">
+# production_config.py
+import os
+
+class ProductionConfig:
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'production-secret-key'
+    GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
+    MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB
+    
+    # Logging configuration
+    LOGGING = {
+        'version': 1,
+        'handlers': {
+            'default': {
+                'class': 'logging.StreamHandler',
+                'formatter': 'default'
+            }
+        },
+        'formatters': {
+            'default': {
+                'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+            }
+        },
+        'root': {
+            'level': 'INFO',
+            'handlers': ['default']
+        }
+    }
+
+# main.py
+from ai_image_platform.api import create_app
+from production_config import ProductionConfig
+
+app = create_app(ProductionConfig.__dict__)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+            </div>
+            
+            <div class="alert warning">
+                <strong>⚠️ API Rate Limits:</strong> Be mindful of Google Gemini API rate limits and quotas in production. Implement appropriate error handling and retry logic.
+            </div>
+            
+            <div class="alert success">
+                <strong>✅ Serverless Benefits:</strong> The platform is designed for serverless deployment with no file system dependencies, using base64 for all image I/O operations.
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>🚀 <strong>AI Image Platform</strong> - Comprehensive Python Library & API</p>
+            <p>Built with ❤️ for serverless deployment • Powered by Gemini AI & Pollinations.ai</p>
+            <p><em>Version 1.0.0 • Last updated: September 2025</em></p>
+        </div>
+    </div>
+</body>
+</html>
