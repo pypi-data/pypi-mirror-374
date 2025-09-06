@@ -1,0 +1,105 @@
+Metadata-Version: 2.4
+Name: chalkdf
+Version: 0.1.dev1
+Summary: DataFrame utilities for Chalk AI, backed by libchalk
+Author-email: "Chalk AI, Inc." <opensource@chalk.ai>
+Project-URL: Homepage, https://chalk.ai
+Project-URL: Documentation, https://docs.chalk.ai
+Project-URL: Changelog, https://docs.chalk.ai/docs/changelog
+Requires-Python: <3.13,>=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: chalkpy>=2.83.2
+Requires-Dist: frozendict>=2.4.6
+Requires-Dist: pyarrow>=18.0.0
+Requires-Dist: ddtrace<3,>=2.6.4
+Provides-Extra: dev
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Requires-Dist: polars; extra == "dev"
+
+
+## Building from source
+
+### Prerequisites
+- Python 3.10 – 3.12
+- A C++20 toolchain (e.g. GCC 12+, Clang 15+)
+- CMake ≥ 3.30 and Ninja (or another generator)
+- `pip install build wheel`
+
+### Install from GAR
+
+If you want to install our pre-built chalkdf, it currently is only available on our internal google artifact registry. 
+This command will auth you to GAR for ~1hr and allow you to install it into a venv without having to compile libchalk locally.
+Note, this only works on macOS 15 and Linux with GLIBC >= 3.25.
+
+```
+TOKEN=$(gcloud auth application-default print-access-token)
+printf "machine us-python.pkg.dev\n  login oauth2accesstoken\n  password %s\n" "$TOKEN" >> ~/.netrc
+chmod 600 ~/.netrc
+uv pip install --extra-index-url=https://us-python.pkg.dev/chalk-infra/chalk-internal/simple chalkdf
+```
+
+### Steps
+
+1. **Build the C++ shared library**
+
+   ```bash
+   cd ../libchalk
+   cmake --preset=[ci-]?release-<linux|darwin> .
+   cmake --build --preset=[ci-]?release-<linux|darwin> .
+   ```
+
+2. **Copy the library into the Python package**
+
+Move the produced binary into `./_lib/` so that `setuptools` bundles it:
+
+    ```bash
+    cp ../libchalk/cmake-build-release/libchalk*.so ./_lib/
+    ```
+
+3. **Build the wheel**
+
+    ```bash
+    python -m build -w
+    ```
+
+   A platform‑specific wheel will appear in `dist/` containing the shared library.
+
+4. **Install and test**
+
+   ```bash
+   uv venv --python <version> test
+   source test/bin/activate
+   pip install dist/*.whl
+   pytest
+   ```
+
+### Editable install (development)
+
+```bash
+pip install -e .
+```
+
+The editable install expects the shared library to already be present in `chalkdf/_lib/` (copy or symlink it after every rebuild).
+
+## Benchmarks
+
+Run a simple Parquet read benchmark comparing ChalkDF vs Polars:
+
+```
+python benchmarks/bench_read_parquet.py --target-mb 8 --repeats 5 --warmup 1
+```
+
+- Use `--path` to point at an existing Parquet file; otherwise a ~N MiB file is generated at `benchmarks/data/generated.parquet`.
+- Output reports avg/p50/p90 and approximate MiB/s for each engine. Polars must be installed in your environment for the comparison.
+
+Run a simple Arrow RecordBatch roundtrip benchmark through DataFrame:
+
+```
+python benchmarks/bench_roundtrip_arrow.py --rows 100000 --repeats 5 --warmup 1
+```
+
+- Parameters: `--rows` controls generated row count; `--repeats` and `--warmup` control timing. 
+- Output reports avg/p50/p90 for the roundtrip and approximates the RecordBatch size.
