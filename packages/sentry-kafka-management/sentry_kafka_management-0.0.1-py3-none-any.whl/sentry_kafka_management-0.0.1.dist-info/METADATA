@@ -1,0 +1,21 @@
+Metadata-Version: 2.4
+Name: sentry_kafka_management
+Version: 0.0.1
+Summary: Libraries used by Sentry for kafka management
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: confluent-kafka>=2.8.0
+Requires-Dist: PyYAML
+Dynamic: license-file
+
+# sentry-kafka-management
+Libraries for managing our Kafka clusters/consumers, as well as Taskbroker.
+
+
+### Usage
+- `make install-dev` to install the development environment
+- `make tests` to run the unit tests
+- `make typecheck` to run Python type checking
+- `make lint` to lint the code base and apply auto generated changes
+- `make build` to build the wheels for the project and package the release
