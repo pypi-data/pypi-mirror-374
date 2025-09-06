@@ -1,0 +1,316 @@
+/* Django Pagination Widget - Modern Professional Design */
+
+/* ==========================================================================
+   CSS Custom Properties (Design Tokens)
+   ========================================================================== */
+
+/* Color Palette - Modern Professional */
+:root {
+    /* Primary Colors */
+    --pagination-primary-50: #f0f9ff;
+    --pagination-primary-100: #e0f2fe;
+    --pagination-primary-200: #bae6fd;
+    --pagination-primary-300: #7dd3fc;
+    --pagination-primary-400: #38bdf8;
+    --pagination-primary-500: #0ea5e9;
+    --pagination-primary-600: #0284c7;
+    --pagination-primary-700: #0369a1;
+    --pagination-primary-800: #075985;
+    --pagination-primary-900: #0c4a6e;
+
+    /* Neutral Colors */
+    --pagination-neutral-50: #fafafa;
+    --pagination-neutral-100: #f5f5f5;
+    --pagination-neutral-200: #e5e5e5;
+    --pagination-neutral-300: #d4d4d4;
+    --pagination-neutral-400: #a3a3a3;
+    --pagination-neutral-500: #737373;
+    --pagination-neutral-600: #525252;
+    --pagination-neutral-700: #404040;
+    --pagination-neutral-800: #262626;
+    --pagination-neutral-900: #171717;
+
+    /* Semantic Colors */
+    --pagination-success: #10b981;
+    --pagination-success-hover: #059669;
+    --pagination-error: #ef4444;
+    --pagination-warning: #f59e0b;
+
+    /* Component Colors */
+    --pagination-bg: var(--pagination-neutral-50);
+    --pagination-border: var(--pagination-neutral-200);
+    --pagination-border-hover: var(--pagination-neutral-300);
+    --pagination-text: var(--pagination-neutral-700);
+    --pagination-text-muted: var(--pagination-neutral-500);
+    --pagination-text-active: #ffffff;
+
+    /* Button Colors */
+    --pagination-btn-bg: #ffffff;
+    --pagination-btn-border: var(--pagination-neutral-300);
+    --pagination-btn-text: var(--pagination-neutral-700);
+    --pagination-btn-hover-bg: var(--pagination-primary-50);
+    --pagination-btn-hover-border: var(--pagination-primary-300);
+    --pagination-btn-hover-text: var(--pagination-primary-700);
+    --pagination-btn-active-bg: var(--pagination-primary-600);
+    --pagination-btn-active-border: var(--pagination-primary-600);
+    --pagination-btn-active-text: #ffffff;
+
+    /* Focus States */
+    --pagination-focus-ring: var(--pagination-primary-500);
+    --pagination-focus-ring-offset: 2px;
+
+    /* Shadows */
+    --pagination-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --pagination-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --pagination-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+    /* Typography */
+    --pagination-font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --pagination-font-size-xs: 0.75rem;
+    --pagination-font-size-sm: 0.875rem;
+    --pagination-font-size-base: 1rem;
+    --pagination-font-size-lg: 1.125rem;
+    --pagination-font-weight-normal: 400;
+    --pagination-font-weight-medium: 500;
+    --pagination-font-weight-semibold: 600;
+
+    /* Spacing */
+    --pagination-spacing-1: 0.25rem;
+    --pagination-spacing-2: 0.5rem;
+    --pagination-spacing-3: 0.75rem;
+    --pagination-spacing-4: 1rem;
+    --pagination-spacing-5: 1.25rem;
+    --pagination-spacing-6: 1.5rem;
+
+    /* Border Radius */
+    --pagination-radius-sm: 0.25rem;
+    --pagination-radius: 0.375rem;
+    --pagination-radius-md: 0.5rem;
+    --pagination-radius-lg: 0.75rem;
+
+    /* Transitions */
+    --pagination-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --pagination-transition-normal: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    --pagination-transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Button Specific */
+    --pagination-btn-size: 2.4rem;
+    --pagination-btn-size-tablet: 2rem;
+    --pagination-btn-size-mobile: 1.75rem;
+    --pagination-btn-gap: 0.375rem;
+    --pagination-btn-gap-mobile: 0.0625rem;
+    --pagination-btn-font-size: var(--pagination-font-size-sm);
+    --pagination-btn-font-size-mobile: var(--pagination-font-size-xs);
+    --pagination-btn-border-radius: var(--pagination-radius);
+    --pagination-btn-transition: var(--pagination-transition-fast);
+    --pagination-btn-shadow: var(--pagination-shadow-sm);
+    --pagination-btn-hover-shadow: var(--pagination-shadow);
+    --pagination-btn-active-shadow: var(--pagination-shadow);
+}
+
+/* ==========================================================================
+   Base Component Styles
+   ========================================================================== */
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: var(--pagination-spacing-6) 0;
+    flex-wrap: wrap;
+    gap: var(--pagination-spacing-4);
+    font-family: var(--pagination-font-family);
+}
+
+.pagination .step-links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--pagination-btn-gap);
+}
+
+.pagination span.current {
+    color: var(--pagination-text-muted);
+    font-size: var(--pagination-font-size-sm);
+    font-weight: var(--pagination-font-weight-medium);
+    margin-left: auto;
+    padding: var(--pagination-spacing-1) var(--pagination-spacing-2);
+    background: var(--pagination-bg);
+    border-radius: var(--pagination-btn-border-radius);
+    border: 1px solid var(--pagination-border);
+}
+
+/* ==========================================================================
+   Button Component - Cute & Beautiful Design
+   ========================================================================== */
+
+.page-change-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--pagination-btn-bg);
+    color: var(--pagination-btn-text);
+    border: 1px solid var(--pagination-btn-border);
+    padding: 0;
+    font-size: var(--pagination-btn-font-size);
+    font-weight: var(--pagination-font-weight-medium);
+    text-decoration: none;
+    border-radius: var(--pagination-btn-border-radius);
+    transition: var(--pagination-btn-transition);
+    width: var(--pagination-btn-size);
+    height: var(--pagination-btn-size);
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    line-height: 1;
+    font-family: var(--pagination-font-family);
+    flex-shrink: 0;
+    box-shadow: var(--pagination-btn-shadow);
+}
+
+.page-change-btn:hover {
+    background: var(--pagination-btn-hover-bg);
+    border-color: var(--pagination-btn-hover-border);
+    color: var(--pagination-btn-hover-text);
+    transform: translateY(-1px);
+    box-shadow: var(--pagination-btn-hover-shadow);
+}
+
+.page-change-btn:active {
+    transform: translateY(0);
+    box-shadow: var(--pagination-btn-active-shadow);
+}
+
+.page-change-btn:focus-visible {
+    outline: 2px solid var(--pagination-focus-ring);
+    outline-offset: var(--pagination-focus-ring-offset);
+}
+
+.page-change-btn.active {
+    background: var(--pagination-btn-active-bg);
+    border-color: var(--pagination-btn-active-border);
+    color: var(--pagination-btn-active-text);
+    font-weight: var(--pagination-font-weight-semibold);
+    box-shadow: var(--pagination-btn-active-shadow);
+}
+
+.page-change-btn.active:hover {
+    background: var(--pagination-primary-700);
+    border-color: var(--pagination-primary-700);
+    color: var(--pagination-btn-active-text);
+}
+
+/* ==========================================================================
+   Icon and Special Elements
+   ========================================================================== */
+
+.pagination-icon {
+    width: var(--pagination-spacing-4);
+    height: var(--pagination-spacing-4);
+    fill: currentColor;
+    flex-shrink: 0;
+    transition: transform var(--pagination-btn-transition);
+}
+
+.page-change-btn:hover .pagination-icon {
+    transform: scale(1.05);
+}
+
+.page-change-btn.ellipsis {
+    border: none;
+    background: transparent;
+    color: var(--pagination-text-muted);
+    cursor: default;
+    font-size: var(--pagination-font-size-lg);
+    line-height: 1;
+    pointer-events: none;
+    box-shadow: none;
+    font-weight: var(--pagination-font-weight-normal);
+}
+
+.page-change-btn.before-dots:hover,
+.page-change-btn.after-dots:hover {
+    background: transparent;
+    color: var(--pagination-text-muted);
+    box-shadow: none;
+    transform: none;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .pagination {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--pagination-spacing-3);
+    }
+
+    .pagination span.current {
+        margin-left: 0;
+        margin-top: 0;
+        order: -1;
+    }
+
+    .page-change-btn {
+        margin: 0;
+        padding: 0;
+        width: var(--pagination-btn-size-tablet);
+        height: var(--pagination-btn-size-tablet);
+        font-size: var(--pagination-font-size-sm);
+        flex-shrink: 0;
+    }
+
+    .pagination-icon {
+        width: var(--pagination-spacing-3);
+        height: var(--pagination-spacing-3);
+    }
+}
+
+@media (max-width: 480px) {
+    .pagination .step-links {
+        gap: var(--pagination-btn-gap-mobile);
+    }
+
+    .page-change-btn {
+        width: var(--pagination-btn-size-mobile);
+        height: var(--pagination-btn-size-mobile);
+        padding: 0;
+        font-size: var(--pagination-btn-font-size-mobile);
+        flex-shrink: 0;
+    }
+}
+
+/* ==========================================================================
+   Accessibility Enhancements
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .page-change-btn {
+        transition: none;
+    }
+
+    .page-change-btn:hover {
+        transform: none;
+    }
+
+    .pagination-icon {
+        transition: none;
+    }
+
+    .page-change-btn:hover .pagination-icon {
+        transform: none;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .page-change-btn {
+        border-width: 2px;
+    }
+
+    .page-change-btn.active {
+        border-width: 3px;
+    }
+}
