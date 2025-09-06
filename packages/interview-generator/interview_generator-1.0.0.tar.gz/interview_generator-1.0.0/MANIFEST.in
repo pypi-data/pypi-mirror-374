@@ -1,0 +1,31 @@
+# Include important files in the distribution
+include README.md
+include LICENSE
+include pyproject.toml
+include requirements.txt
+
+# Include configuration files
+recursive-include config *.json
+recursive-include config *.yaml
+recursive-include config *.yml
+
+# Include documentation
+recursive-include docs *.md
+recursive-include docs *.rst
+
+# Exclude development and test files
+recursive-exclude tests *
+recursive-exclude simpletest *
+exclude .gitignore
+exclude .pre-commit-config.yaml
+exclude pytest.ini
+exclude tox.ini
+exclude .coverage
+exclude coverage.xml
+
+# Exclude IDE and editor files
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * .DS_Store
+recursive-exclude * .vscode
+recursive-exclude * .idea

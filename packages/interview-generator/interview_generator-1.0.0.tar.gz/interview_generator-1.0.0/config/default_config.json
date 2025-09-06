@@ -1,0 +1,29 @@
+{
+  "llm_api_key": "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",
+  "llm_model": "gpt-3.5-turbo",
+  "question_categories": [
+    "comprehension",
+    "debugging",
+    "optimization",
+    "design",
+    "edge_cases"
+  ],
+  "difficulty_levels": [
+    "beginner",
+    "intermediate",
+    "advanced"
+  ],
+  "output_format": "json",
+  "max_questions_per_category": 5,
+  "exclude_patterns": [
+    "__pycache__",
+    ".git",
+    "*.pyc",
+    "*.pyo",
+    ".pytest_cache",
+    "node_modules"
+  ],
+  "include_docstrings": true,
+  "min_function_length": 3,
+  "max_complexity_threshold": 10
+}
