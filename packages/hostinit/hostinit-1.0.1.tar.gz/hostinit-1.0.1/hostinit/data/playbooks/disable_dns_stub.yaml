@@ -1,0 +1,71 @@
+---
+- name: Disable systemd-resolved stub and manage resolv.conf
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Ensure drop-in directory exists for systemd-resolved
+      ansible.builtin.file:
+        path: /etc/systemd/resolved.conf.d
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+    - name: Slurp current /etc/resolv.conf to capture 'search' line (if present)
+      ansible.builtin.slurp:
+        path: /etc/resolv.conf
+      register: resolv_slurp
+      ignore_errors: true
+    - name: Extract search domains from resolv.conf
+      ansible.builtin.set_fact:
+        search_from_resolv: >-
+          {% set content = resolv_slurp.content | default('', true) | b64decode %}
+          {% set matches = content | regex_findall('(?m)^\\s*search\\s+(.+)$') %}
+          {{ matches[0].split() if matches else [] }}
+    - name: Get domains from resolvectl (if available)
+      ansible.builtin.command: resolvectl domain
+      register: resolvectl_domain
+      changed_when: false
+      failed_when: false
+    - name: Extract search domains from resolvectl output
+      ansible.builtin.set_fact:
+        search_from_resolvectl: >-
+          {% set content = resolvectl_domain.stdout | default('') %}
+          {% set matches = content | regex_findall('(?m):\\s+(.+)$') %}
+          {{ matches[0].split() if matches else [] }}
+    - name: Merge and de-duplicate search domains
+      ansible.builtin.set_fact:
+        merged_search_domains: "{{ (search_from_resolv | from_yaml | default([])) | union(search_from_resolvectl | from_yaml | default([])) }}"
+    - name: Drop config to disable DNSStubListener
+      ansible.builtin.copy:
+        dest: /etc/systemd/resolved.conf.d/disable-stub-listener.conf
+        owner: root
+        group: root
+        mode: "0644"
+        content: |
+          [Resolve]
+          DNSStubListener=no
+      notify: Restart systemd-resolved
+    - name: Remove existing /etc/resolv.conf (often a symlink to stub)
+      ansible.builtin.file:
+        path: /etc/resolv.conf
+        state: absent
+    - name: Create new /etc/resolv.conf with search + nameservers
+      ansible.builtin.copy:
+        dest: /etc/resolv.conf
+        owner: root
+        group: root
+        mode: "0644"
+        content: |
+          {% set search_list = merged_search_domains | default([]) %}
+          {% if search_list and search_list | length > 0 -%}
+          search {{ search_list | join(' ') }}
+          {% endif %}
+          nameserver {{ dns_server }}
+      notify: Restart systemd-resolved
+
+  handlers:
+    - name: Restart systemd-resolved
+      ansible.builtin.systemd:
+        name: systemd-resolved
+        state: restarted
+        enabled: true

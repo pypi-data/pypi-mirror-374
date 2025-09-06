@@ -1,0 +1,15 @@
+---
+- name: Configure sysctl parameters
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Set vm.overcommit_memory and net.core.somaxconn
+      ansible.posix.sysctl:
+        name: "{{ item.key }}"
+        value: "{{ item.value }}"
+        sysctl_set: yes
+        state: present
+        reload: yes
+      with_dict:
+        vm.overcommit_memory: 1
+        net.core.somaxconn: 1024
