@@ -1,0 +1,27 @@
+Metadata-Version: 2.4
+Name: minienv
+Version: 0.1.2
+Summary: Docker service for LLM rollouts
+Author-email: David Heineman <david@davidheineman.com>
+Project-URL: Homepage, https://github.com/davidheineman/minienv
+Requires-Python: >=3.10
+Requires-Dist: rich
+Requires-Dist: openai
+Requires-Dist: pydantic
+Provides-Extra: dev
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: mypy<1.4,>=1.0; extra == "dev"
+Requires-Dist: black<24.0,>=23.1; extra == "dev"
+Requires-Dist: isort<5.14,>=5.12; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Requires-Dist: twine>=1.11.0; extra == "dev"
+Provides-Extra: beaker
+Requires-Dist: beaker-py>=2.0; extra == "beaker"
+Requires-Dist: GitPython<4.0,>=3.0; extra == "beaker"
+Provides-Extra: docker
+Requires-Dist: docker; extra == "docker"
+Provides-Extra: swebench
+Requires-Dist: mini-swe-agent; extra == "swebench"
+Requires-Dist: datasets; extra == "swebench"
+Provides-Extra: all
+Requires-Dist: minienv[beaker,dev,docker,swebench]; extra == "all"
