@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 1200px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "green", "id": "Versatility", "label": "Versatility", "mass": 4, "shape": "box"}, {"color": "green", "id": "Relational Learning Models", "label": "Relational Learning Models", "mass": 4, "shape": "box"}, {"color": "green", "id": "Broad knowledge representation", "label": "Broad knowledge representation", "mass": 4, "shape": "box"}, {"color": "green", "id": "NeuralNetwork", "label": "NeuralNetwork", "mass": 4, "shape": "box"}, {"color": "green", "id": "* Versatile machine intelligence", "label": "* Versatile machine intelligence", "mass": 4, "shape": "box"}, {"color": "green", "id": "Algorithm", "label": "Algorithm", "mass": 4, "shape": "box"}, {"color": "green", "id": "Ontologies with Logic Rules", "label": "Ontologies with Logic Rules", "mass": 4, "shape": "box"}, {"color": "green", "id": "Expert System", "label": "Expert System", "mass": 4, "shape": "box"}, {"color": "green", "id": "SupervisedLearning", "label": "SupervisedLearning", "mass": 4, "shape": "box"}, {"color": "green", "id": "Standards", "label": "Standards", "mass": 4, "shape": "box"}, {"color": "green", "id": "Reinforcement learning methods", "label": "Reinforcement learning methods", "mass": 4, "shape": "box"}, {"color": "green", "id": "Schema-Based Knowledge Bases", "label": "Schema-Based Knowledge Bases", "mass": 4, "shape": "box"}, {"color": "green", "id": "Learning", "label": "Learning", "mass": 4, "shape": "box"}, {"color": "green", "id": "Online supervised learning", "label": "Online supervised learning", "mass": 4, "shape": "box"}, {"color": "green", "id": "KnowledgeRepresentation", "label": "KnowledgeRepresentation", "mass": 4, "shape": "box"}, {"color": "green", "id": "Methods", "label": "Methods", "mass": 4, "shape": "box"}, {"color": "green", "id": "Evolving expert systems", "label": "Evolving expert systems", "mass": 4, "shape": "box"}, {"color": "green", "id": "Adaptive feature selection", "label": "Adaptive feature selection", "mass": 4, "shape": "box"}, {"color": "green", "id": "Artificial Intelligence", "label": "Artificial Intelligence", "mass": 4, "shape": "box"}, {"color": "green", "id": "Adaptive learning algorithms", "label": "Adaptive learning algorithms", "mass": 4, "shape": "box"}, {"color": "green", "id": "Human-level performance versatility", "label": "Human-level performance versatility", "mass": 4, "shape": "box"}, {"color": "green", "id": "General Intelligence", "label": "General Intelligence", "mass": 4, "shape": "box"}, {"color": "green", "id": "* Versatile algorithmic learning", "label": "* Versatile algorithmic learning", "mass": 4, "shape": "box"}, {"color": "green", "id": "Hierarchical Conceptual Graphs", "label": "Hierarchical Conceptual Graphs", "mass": 4, "shape": "box"}, {"color": "green", "id": "artificial general intelligence", "label": "artificial general intelligence", "mass": 4, "shape": "box"}, {"color": "green", "id": "Ontology", "label": "Ontology", "mass": 4, "shape": "box"}, {"color": "green", "id": "KnowledgeBase", "label": "KnowledgeBase", "mass": 4, "shape": "box"}, {"color": "green", "id": "* Human-level general cognition", "label": "* Human-level general cognition", "mass": 4, "shape": "box"}, {"color": "green", "id": "Feature Selection", "label": "Feature Selection", "mass": 4, "shape": "box"}, {"color": "green", "id": "* Adaptive decision-making autonomy", "label": "* Adaptive decision-making autonomy", "mass": 4, "shape": "box"}, {"color": "green", "id": "ConceptGraph", "label": "ConceptGraph", "mass": 4, "shape": "box"}, {"color": "green", "id": "General Cognition", "label": "General Cognition", "mass": 4, "shape": "box"}, {"color": "green", "id": "Autonomy", "label": "Autonomy", "mass": 4, "shape": "box"}, {"color": "green", "id": "Self-adjusting neural networks", "label": "Self-adjusting neural networks", "mass": 4, "shape": "box"}, {"color": "green", "id": "Semantic Web Standards", "label": "Semantic Web Standards", "mass": 4, "shape": "box"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "color": "blue", "from": "* Adaptive decision-making autonomy", "label": "is", "to": "Autonomy"}, {"arrows": "to", "color": "blue", "from": "* Human-level general cognition", "label": "is", "to": "General Cognition"}, {"arrows": "to", "color": "blue", "from": "* Versatile algorithmic learning", "label": "is", "to": "Learning"}, {"arrows": "to", "color": "blue", "from": "* Versatile machine intelligence", "label": "is", "to": "Artificial Intelligence"}, {"arrows": "to", "color": "blue", "from": "Adaptive feature selection", "label": "is", "to": "Feature Selection"}, {"arrows": "to", "color": "blue", "from": "Adaptive learning algorithms", "label": "is", "to": "Algorithm"}, {"arrows": "to", "color": "blue", "from": "Adaptive learning algorithms", "label": ":", "to": "Self-adjusting neural networks"}, {"arrows": "to", "color": "blue", "from": "Adaptive learning algorithms", "label": ":", "to": "Online supervised learning"}, {"arrows": "to", "color": "blue", "from": "Adaptive learning algorithms", "label": ":", "to": "Reinforcement learning methods"}, {"arrows": "to", "color": "blue", "from": "Adaptive learning algorithms", "label": ":", "to": "Evolving expert systems"}, {"arrows": "to", "color": "blue", "from": "Adaptive learning algorithms", "label": ":", "to": "Adaptive feature selection"}, {"arrows": "to", "color": "blue", "from": "Broad knowledge representation", "label": "is", "to": "KnowledgeRepresentation"}, {"arrows": "to", "color": "blue", "from": "Broad knowledge representation", "label": ":", "to": "Hierarchical Conceptual Graphs"}, {"arrows": "to", "color": "blue", "from": "Broad knowledge representation", "label": ":", "to": "Schema-Based Knowledge Bases"}, {"arrows": "to", "color": "blue", "from": "Broad knowledge representation", "label": ":", "to": "Ontologies with Logic Rules"}, {"arrows": "to", "color": "blue", "from": "Broad knowledge representation", "label": ":", "to": "Relational Learning Models"}, {"arrows": "to", "color": "blue", "from": "Broad knowledge representation", "label": ":", "to": "Semantic Web Standards"}, {"arrows": "to", "color": "blue", "from": "Evolving expert systems", "label": "is", "to": "Expert System"}, {"arrows": "to", "color": "blue", "from": "Hierarchical Conceptual Graphs", "label": "is", "to": "ConceptGraph"}, {"arrows": "to", "color": "blue", "from": "Human-level performance versatility", "label": "is", "to": "Versatility"}, {"arrows": "to", "color": "blue", "from": "Human-level performance versatility", "label": ":", "to": "* Human-level general cognition"}, {"arrows": "to", "color": "blue", "from": "Human-level performance versatility", "label": ":", "to": "* Versatile machine intelligence"}, {"arrows": "to", "color": "blue", "from": "Human-level performance versatility", "label": ":", "to": "* Adaptive decision-making autonomy"}, {"arrows": "to", "color": "blue", "from": "Human-level performance versatility", "label": ":", "to": "* Versatile algorithmic learning"}, {"arrows": "to", "color": "blue", "from": "Online supervised learning", "label": "is", "to": "SupervisedLearning"}, {"arrows": "to", "color": "blue", "from": "Ontologies with Logic Rules", "label": "is", "to": "Ontology"}, {"arrows": "to", "color": "blue", "from": "Reinforcement learning methods", "label": "is", "to": "Methods"}, {"arrows": "to", "color": "blue", "from": "Relational Learning Models", "label": "is", "to": "Learning"}, {"arrows": "to", "color": "blue", "from": "Schema-Based Knowledge Bases", "label": "is", "to": "KnowledgeBase"}, {"arrows": "to", "color": "blue", "from": "Self-adjusting neural networks", "label": "is", "to": "NeuralNetwork"}, {"arrows": "to", "color": "blue", "from": "Semantic Web Standards", "label": "is", "to": "Standards"}, {"arrows": "to", "color": "blue", "from": "artificial general intelligence", "label": "is", "to": "General Intelligence"}, {"arrows": "to", "color": "blue", "from": "artificial general intelligence", "label": ":", "to": "Broad knowledge representation"}, {"arrows": "to", "color": "blue", "from": "artificial general intelligence", "label": ":", "to": "Adaptive learning algorithms"}, {"arrows": "to", "color": "blue", "from": "artificial general intelligence", "label": ":", "to": "Human-level performance versatility"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
