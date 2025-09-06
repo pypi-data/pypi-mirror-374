@@ -1,0 +1,81 @@
+[build-system]
+requires = ["hatchling>=1.27.0", "hatch-vcs>=0.5.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "uio_api"
+description = "UIO generic API wrappers with pluggable auth, retries, and pagination profiles"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+authors = [{ name = "Øistein Søvik", email = "Oistein.Sovik.92@gmail.com" }]
+dependencies = [
+    "httpx>=0.28.1",
+    "loguru>=0.7.3",
+    "tomlkit>=0.13.2",
+    "platformdirs>=4.2.2",
+    "keyring>=25.2.1",
+    "ldap3>=2.9.1",
+]
+dynamic = ["version"]
+
+[project.urls]
+Source = "https://github.uio.no/IT-DIA/MREG-API-TEST"
+
+[project.optional-dependencies]
+dev = ["mypy>=1.17.1", "pytest>=8.4.2", "pytest-cov>=6.2.1", "ruff>=0.12.11"]
+build = [
+    "build>=1.3.0",
+    "hatch-vcs>=0.5.0",
+    "hatchling>=1.27.0",
+    "twine>=6.2.0",
+]
+
+[tool.hatch.version]
+source = "vcs" # derive version from Git tags (PEP 440 compliant)
+
+[tool.hatch.build.targets.wheel]
+packages = ["uio_api"] # top-level layout (no src/)
+
+[tool.hatch.build.targets.sdist]
+include = ["uio_api", "README.md", "LICENSE", "pyproject.toml"]
+
+# ---------- Hatch envs ----------
+[tool.hatch.envs.default]
+python = "3.12"
+installer = "uv"
+path = ".venv"
+
+[tool.hatch.envs.default.env]
+UV_VENV_WITH_PIP = "1"
+UV_PYTHON_PREFER_SYSTEM = "1"
+UV_PYTHON_DOWNLOADS = "never"
+
+[tool.hatch.envs.build]
+inherit = "default"
+features = ["build"]
+
+[tool.hatch.envs.build.scripts]
+dist = "python -m build"
+check = "twine check dist/*"
+upload-pypi = "twine upload -r pypi dist/*"
+upload-test = "twine upload -r testpypi dist/*"
+release = ["dist", "check", "upload-pypi"]
+
+[tool.hatch.envs.dev]
+inherit = "default"
+features = ["dev"]
+
+[tool.hatch.envs.dev.scripts]
+format = "ruff format ."
+lint = "ruff check --fix . && mypy ."
+test = "pytest -q"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unused_configs = true

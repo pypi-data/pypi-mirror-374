@@ -1,0 +1,99 @@
+Metadata-Version: 2.4
+Name: uio_api
+Version: 0.1.1
+Summary: UIO generic API wrappers with pluggable auth, retries, and pagination profiles
+Project-URL: Source, https://github.uio.no/IT-DIA/MREG-API-TEST
+Author-email: Øistein Søvik <Oistein.Sovik.92@gmail.com>
+License-Expression: MIT
+Requires-Python: >=3.12
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: keyring>=25.2.1
+Requires-Dist: ldap3>=2.9.1
+Requires-Dist: loguru>=0.7.3
+Requires-Dist: platformdirs>=4.2.2
+Requires-Dist: tomlkit>=0.13.2
+Provides-Extra: build
+Requires-Dist: build>=1.3.0; extra == 'build'
+Requires-Dist: hatch-vcs>=0.5.0; extra == 'build'
+Requires-Dist: hatchling>=1.27.0; extra == 'build'
+Requires-Dist: twine>=6.2.0; extra == 'build'
+Provides-Extra: dev
+Requires-Dist: mypy>=1.17.1; extra == 'dev'
+Requires-Dist: pytest-cov>=6.2.1; extra == 'dev'
+Requires-Dist: pytest>=8.4.2; extra == 'dev'
+Requires-Dist: ruff>=0.12.11; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# UIO API
+
+A Python library for interacting with UIO APIs, featuring built‑in authentication, robust retries, secure token storage, and pagination utilities.
+
+## Documentation Map
+
+- User Guide (usage, configuration, examples): `uio_api/README.md`
+- Developer Guide (architecture, internals, patterns): `uio_api/INTERNAL.md`
+
+## Features
+
+- **🔐 Authentication**: Interactive login, static tokens, or system accounts
+- **⚡ Retries**: Configurable retry strategy with exponential backoff
+- **🛡️ Secure Storage**: Keyring or TOML‑based token storage
+- **📄 Pagination**: DRF‑style pagination helpers and safeguards
+
+## Installation
+
+```bash
+pip install uio-api
+```
+
+## Quick Start
+
+```python
+from uio_api import mreg_client
+from uio_api.modules.mreg.endpoints import Endpoint
+
+with mreg_client() as m:
+    hosts = m.get_all(Endpoint.Hosts)
+    print(f"Found {len(hosts)} hosts")
+```
+
+For full usage, configuration, and advanced examples, see `uio_api/README.md`.
+
+## Token helpers
+
+You can store credentials/tokens via the client instances (URLs resolved automatically):
+
+```python
+from uio_api import mreg_client, nivlheim_client
+
+# MREG: add system user (uses MREG_URL from config)
+with mreg_client() as client:
+    client.add_system_user(username="svc", password="secret")
+
+# MREG: add token with knobs (uses MREG_URL from config)
+with mreg_client() as client:
+    client.add_token(
+        username="bob",
+        token="abc123",
+        scheme="Token",
+        timeout=60.0,
+        retry_attempts=5,
+        page_size=1000,
+    )
+
+# Nivlheim: add API key (uses https://nivlheim.uio.no default)
+with nivlheim_client() as client:
+    client.add_token(
+        username="svc",
+        token="apikey123",
+        scheme="APIKEY",
+    )
+
+# Or use explicit URLs
+with mreg_client() as client:
+    client.add_token(
+        username="bob",
+        token="abc123",
+        url="https://custom.mreg.uio.no"
+    )
+```
