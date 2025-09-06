@@ -1,0 +1,24 @@
+[build-system]
+requires = ["flit_core >=3.12"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "pegol"
+version = "0.2.0"
+description = "Fun interactive congratulation animation with hearts using curses."
+authors = [
+    { name="Pegol Reda Shokry", email="sosoreda481@gmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["fun", "animation", "hearts", "curses"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+
+[project.scripts]
+pegol = "pegol:main"
+
