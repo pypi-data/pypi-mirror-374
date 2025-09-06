@@ -1,0 +1,159 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "marcas_bot"
+version = "1.0.0"
+description = "MarcasBot - A modular AI assistant system with specialized agents for sales analysis, market research, and web search capabilities. Designed to work with any brand."
+authors = [
+    {name = "JP Alvarez", email = "jalvare@cafesoluble.com"},
+]
+readme = "README.md"
+license = {text = "Proprietary"}
+requires-python = ">=3.10"
+keywords = ["ai", "assistant", "sales", "market-research", "chatbot", "langchain", "multi-brand"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "License :: Other/Proprietary License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Office/Business",
+    "Topic :: Communications :: Chat",
+]
+
+dependencies = [
+    "fastapi==0.116.1",
+    "uvicorn==0.35.0",
+    "langchain==0.3.26",
+    "langchain-community==0.3.27",
+    "langchain-core==0.3.69",
+    "langchain-text-splitters==0.3.8",
+    "langgraph==0.5.3",
+    "langgraph-prebuilt==0.5.2",
+    "pydantic==2.11.7",
+    "python-dotenv==1.1.1",
+    "requests==2.32.4",
+    "databricks-sdk==0.59.0",
+    "databricks-ai-bridge==0.6.0",
+    "databricks-langchain==0.6.0",
+    "databricks-vectorsearch==0.57",
+    "numpy==1.26.4",
+    "pandas==2.3.1",
+    "polars==1.32.3",
+    "scikit-learn==1.7.1",
+    "gunicorn==23.0.0",
+    "python-multipart==0.0.9",
+    "langchain-openai==0.3.28",
+    "langchain-tavily==0.2.10",
+    "botbuilder-core==4.14.3",
+    "botbuilder-schema==4.14.3",
+    "botframework-connector==4.14.3",
+    "aiohttp>=3.9.0",
+    "PyJWT==2.8.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov",
+    "black",
+    "flake8",
+    "mypy",
+    "pre-commit",
+    "PyYAML",
+]
+ui = [
+    "streamlit",
+    "gradio",
+]
+test = [
+    "pytest>=7.0.0",
+    "pytest-asyncio",
+    "pytest-mock",
+    "PyYAML",
+]
+
+[project.scripts]
+marcas_bot-sales = "main.sales_bot:main"
+marcas_bot-market-study = "main.market_study_bot:main"
+marcas_bot-search = "main.search_bot:main"
+marcas_bot-research = "main.marcas_bot:main"
+marcas_bot-supervisor = "main.marcas_bot:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["marcas_bot*", "main*", "api*", "core*", "nodes*", "utils*", "tools*", "schemas*", "config*", "models*", "agents*"]
+exclude = ["tests*", "notebooks*", "data*", "build-artifacts*", "deploy*", "ui*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.md", "*.txt", "*.yaml", "*.yml", "*.json"]
+
+# Pytest configuration
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--tb=short",
+    "--strict-markers",
+]
+pythonpath = ["."]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+# Black code formatter
+[tool.black]
+line-length = 88
+target-version = ['py310', 'py311', 'py312']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | data
+    | notebooks
+)/
+'''
+
+# MyPy type checking
+[tool.mypy]
+python_version = "3.12.3"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false  # Relaxed for internal project
+ignore_missing_imports = true
+
+# Coverage.py
+[tool.coverage.run]
+source = [".", "main", "api", "core", "nodes", "utils", "tools", "schemas", "config"]
+omit = ["tests/*", "notebooks/*", "data/*", "setup.py", "ui/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+]
