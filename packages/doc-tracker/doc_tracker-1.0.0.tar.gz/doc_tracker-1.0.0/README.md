@@ -1,0 +1,55 @@
+# doc-tracker
+
+Track and merge multiple documentation files into a single output file.
+
+## Install
+
+```bash
+pip install doc-tracker
+```
+
+## Commands
+
+- `doc-tracker init <folder>`: Create a project folder with `config.yaml` and `master-doc.md`.
+- `doc-tracker watch`: Aggregate once and then watch for changes in the current folder.
+
+> Note: All generated files stay inside the init folder. No files are created elsewhere.
+
+## Quick Start
+
+```bash
+# 1) Initialize a project folder
+doc-tracker init mydocs
+
+# 2) Add your documents (use absolute paths) to mydocs/config.yaml
+#    Example config:
+#    output_file: master-doc.md
+#    tracked_documents:
+#      - /absolute/path/to/README.md
+#      - /absolute/path/to/docs/*.md
+
+# 3) Run the watcher inside the folder
+cd mydocs
+doc-tracker watch
+
+# Tip: If you run `doc-tracker watch` inside the project folder,
+# it uses the local `config.yaml` (even if the output file doesn't exist yet).
+# From the parent folder, it auto-detects the only subfolder that has
+# both `config.yaml` and the configured output file to avoid ambiguity.
+```
+
+## Output Format
+
+- Each document starts with a header box containing the path relative to the project folder, with `@` and two spaces on both sides. Example:
+
+```
+╭──────────────╮
+│  @docs/a.md  │
+╰──────────────╯
+```
+
+## Notes
+
+- `config.yaml` and the output file (e.g., `master-doc.md`) are always inside the project folder (same directory as `config.yaml`).
+- Even if你在父目录执行 `doc-tracker watch`，输出仍会写入项目文件夹内的 `output_file`，不会污染父目录。
+- Use absolute file paths in `tracked_documents`. The display in the merged output stays relative to the project folder.
