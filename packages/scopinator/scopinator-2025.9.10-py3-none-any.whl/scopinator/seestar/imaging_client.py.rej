@@ -1,0 +1,14 @@
+@@ -373,10 +373,10 @@
+                                 
+                                 if changed:
+                                     last_image = image
+                                     self.image = image  # Update current image
++                                    # Cache the raw image for plate solving
++                                    with self.cached_raw_image_lock:
++                                        self.cached_raw_image = image
+                                     self.status.is_sending_image = True
+                                     yield image
+                                     self.status.is_sending_image = False
+-
+-                                    # Cache the raw image for plate solving
+-                                    with self.cached_raw_image_lock:
