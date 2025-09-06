@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mi-herramienta"          # nombre único en PyPI
+version = "0.1.0"
+description = "Herramienta de pentesting"
+authors = [
+  { name="Kovax00", email="tuemail@ejemplo.com" }
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+dependencies = []
+
+[project.scripts]
+mi-herramienta = "mi_herramienta.main:main"
