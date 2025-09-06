@@ -1,0 +1,2 @@
+class ClientInternalError(Exception):
+    pass
