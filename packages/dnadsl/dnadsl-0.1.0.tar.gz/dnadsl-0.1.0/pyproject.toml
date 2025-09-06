@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dnadsl"
+description = "DNA: A domain-specific language (transcription between UTF-8 and binary) based on YAML."
+requires-python = ">=3.10"
+license = { text = "GNU GPLv3" }
+authors = [{ name = "Zhan Ziyuan", email = "ziyuanzhan@mail.nankai.edu.cn" }]
+maintainers = [
+    { name = "Zhan Ziyuan", email = "ziyuanzhan@mail.nankai.edu.cn" },
+]
+classifiers = [
+    "Environment :: Console",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Security :: Cryptography",
+]
+dynamic = ["version", "readme"]
+
+[project.urls]
+"Homepage" = "https://github.com/project-aico/dna"
+"Bug Tracker" = "https://github.com/project-aico/dna/issues"
+
+[project.scripts]
+dna = "dna.__main__:main"
+
+[tool.setuptools]
+packages = ["dna"]
+
+[tool.setuptools.dynamic]
+version = { attr = "dna.__version__" }
+readme = { file = ["README.md"], content-type = "text/markdown" }
