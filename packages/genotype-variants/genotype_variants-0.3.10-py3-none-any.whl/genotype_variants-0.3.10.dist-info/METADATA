@@ -1,0 +1,93 @@
+Metadata-Version: 2.4
+Name: genotype-variants
+Version: 0.3.10
+Summary: A tool for genotyping SNV, INDEL, and SV variants in genomic data.
+Author-email: Ronak Shah <rons.shah@gmail.com>
+License: Apache-2.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Healthcare Industry
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: Topic :: Scientific/Engineering :: Medical Science Apps.
+Requires-Python: >=3.9
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+License-File: AUTHORS.rst
+Requires-Dist: Click>=7.0
+Requires-Dist: click_log>=0.3.2
+Requires-Dist: pandas>=1.0.0
+Requires-Dist: xlrd>=1.2.0
+Provides-Extra: dev
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+Requires-Dist: isort>=5.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: tox>=4.0.0; extra == "dev"
+Requires-Dist: sphinx>=7.0.0; extra == "dev"
+Requires-Dist: sphinx-rtd-theme>=1.0.0; extra == "dev"
+Dynamic: license-file
+
+=================
+genotype_variants
+=================
+
+
+.. image:: https://img.shields.io/pypi/v/genotype_variants.svg
+        :target: https://pypi.python.org/pypi/genotype_variants
+
+.. image:: https://img.shields.io/github/workflow/status/msk-access/genotype_variants/validate   
+        :alt: GitHub Workflow Status
+
+.. image:: https://readthedocs.org/projects/genotype-variants/badge/?version=latest
+        :target: https://genotype-variants.readthedocs.io/en/latest/?badge=latest
+        :alt: Documentation Status
+
+
+
+
+Project to genotype SNV, INDELS and SV.
+
+
+* Free software: Apache Software License 2.0
+* Documentation: https://genotype-variants.readthedocs.io.
+
+
+Features
+--------
+
+Currently this module only supports genotyping and merging small variants (SNV and INDELS).
+
+For this we have the following command line submodule called **small_variants**. 
+
+Which have the following sub-commands:
+
+* **generate**: To run `GetBaseCountMultiSample <https://github.com/msk-access/GetBaseCountsMultiSample>`_ version 1.2.5 on given BAM files
+* **merge**: To merge MAF format files w.r.t counts generated from the `generate` command.
+* **all**: This will run both of the sub-commands above `generate` and `merge` togather.
+* **multiple-samples**: This will run sub-commands `all` for multiple samples in the provided metadata file
+
+**Please read the USAGE** (https://genotype-variants.readthedocs.io/en/latest/usage.html) **section of the documentation for more information**
+
+Requires GetBaseCountMultiSample v1.2.5 and above
+
+To Do
+-----
+
+* Tagging genotyped files for thresholds
+* Genotyping normal buffy coats
+* Genotype structural variants calls
+
+
+Credits
+-------
+
+This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+
+.. _Cookiecutter: https://github.com/audreyr/cookiecutter
+.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
