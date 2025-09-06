@@ -1,0 +1,13 @@
+sqlalchemy[asyncio]>=2.0
+lica[aiosqlalchemy]>=2.0
+tessdb-dao>=0.3
+pydantic
+email-validator
+geopy
+timezonefinder
+requests
+pytz
+pypubsub>=4.0
+
+[test]
+pytest>=6
