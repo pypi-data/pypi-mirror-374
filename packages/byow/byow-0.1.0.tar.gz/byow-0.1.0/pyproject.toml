@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "byow"                # pick a unique name if you’ll publish to PyPI
+version = "0.1.0"
+description = "A custom LLM utility package"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Your Name", email = "you@example.com" }]
+requires-python = ">=3.8"
+# Tell setuptools we’ll supply dependencies from elsewhere:
+dynamic = ["dependencies"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["byow*"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
