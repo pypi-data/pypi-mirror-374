@@ -1,0 +1,60 @@
+[tool.poetry]
+name = "pipeline-eds"
+version = "0.2.7"
+description = "The official API pipeline library for mulch-based projects. Key target: Emerson Ovation EDS REST API."
+authors = ["George Clayton Bennett <george.bennett@memphistn.gov>"]
+license = "BSD-3"
+readme = "README.md"
+packages = [
+    { include = "pipeline", from = "src" },
+	{ include = "workspaces", from = "." }
+] # This makes `pipeline` available as an importable top-level module
+homepage = "https://github.com/city-of-memphis-wastewater/pipeline"
+repository = "https://github.com/city-of-memphis-wastewater/pipeline"
+
+[tool.poetry.scripts]
+#time-manager = "pipeline.time_manager:main"
+#workspace-manager = "pipeline.workspace_manager:main" # included in init
+#collector = "pipeline.collector:main"
+#eds-client = "pipeline.api.eds:main"
+#rjn-client = "pipeline.api.rjn:main"
+pipeline = "pipeline.cli:app" # for installation of pipeline as a cli. Ex: pipeline trend M100FI -s June3 -f June17
+
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+]
+#addopts = "--cov=pipeline --cov-report=html" #  visually inspect coverage, e.g. before a release or PR.
+addopts = "-ra --cov=pipeline --cov-report=term-missing" # for development — fast and informative in terminal.
+testpaths = ["tests"]
+pythonpath = ["src", "."]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<4.0.0"
+requests = ">=2.32.3,<3.0.0"
+toml = ">=0.10.2,<0.11.0"
+pyyaml = ">=6.0.2,<7.0.0"
+certifi = ">=2025.1.31,<2026.0.0"
+schedule = ">=1.2.2,<2.0.0"
+fastapi = ">=0.115.12,<0.116.0"
+urllib3 = "^2.4.0"
+plotly = "^6.2.0"
+uvicorn = "^0.34.3"
+mulch = "^0.2.8"
+mysql-connector-python = "^9.3.0"
+pyodbc = "^5.2.0"
+tzdata = "^2025.2"
+pendulum = "^3.1.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4.1"
+pytest-cov = "^6.2.1"
+pygal = "^3.0.5"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."scripts"]
+controller = "pipeline.daemon.controller:main_cli"
