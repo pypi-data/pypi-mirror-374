@@ -1,0 +1,232 @@
+ADSONAI PYTHON SDK - PyPI UPDATE INSTRUCTIONS
+==============================================
+
+This file contains step-by-step instructions for updating and re-uploading your AdsonAI Python SDK to PyPI.
+
+PREREQUISITES
+-------------
+1. Ensure you have PyPI account credentials
+2. Install required tools: pip install build twine
+3. Have your PyPI API token ready
+
+STEP-BY-STEP UPDATE PROCESS
+---------------------------
+
+1. MAKE YOUR CHANGES
+   - Edit files in adsonai/ directory (client.py, exceptions.py, utils.py, etc.)
+   - Update examples/ directory if needed
+   - Add new features or fix bugs
+
+2. UPDATE VERSION NUMBER
+   - Open adsonai/__init__.py
+   - Change __version__ = '1.0.0' to new version (e.g., '1.0.1', '1.1.0', '2.0.0')
+   - Follow semantic versioning:
+     * 1.0.1 - Bug fixes (patch)
+     * 1.1.0 - New features (minor)
+     * 2.0.0 - Breaking changes (major)
+
+3. UPDATE CHANGELOG (Optional but recommended)
+   - Edit CHANGELOG.md
+   - Add new version section with changes made
+
+4. UPDATE DOCUMENTATION
+   - Update README.md if needed
+   - Update docstrings in code
+   - Update examples if API changed
+
+5. TEST YOUR CHANGES LOCALLY
+   cd adsonai-python-sdk
+   
+   # Install in development mode
+   pip install -e .
+   
+   # Test basic functionality
+   python -c "import adsonai; print(adsonai.__version__)"
+   
+   # Run your tests
+   python -m pytest tests/ (if you have tests)
+
+6. CLEAN PREVIOUS BUILDS
+   rm -rf build/
+   rm -rf dist/
+   rm -rf *.egg-info/
+
+7. BUILD THE NEW PACKAGE
+   python -m build
+   
+   # This creates:
+   # dist/adsonai-X.X.X.tar.gz
+   # dist/adsonai-X.X.X-py3-none-any.whl
+
+8. TEST ON TEST PyPI (RECOMMENDED)
+   # Upload to test repository first
+   python -m twine upload --repository testpypi dist/*
+   
+   # Test installation from test PyPI
+   pip install --index-url https://test.pypi.org/simple/ adsonai
+   
+   # Test that it works
+   python -c "from adsonai import AdsonAI; print('Test successful')"
+
+9. UPLOAD TO PRODUCTION PyPI
+   python -m twine upload dist/*
+   
+   # Enter your PyPI credentials when prompted
+   # Or use API token: twine upload --username __token__ --password YOUR_TOKEN dist/*
+
+10. VERIFY UPLOAD
+    # Wait a few minutes, then test
+    pip install --upgrade adsonai
+    python -c "import adsonai; print(f'Version: {adsonai.__version__}')"
+
+11. TAG THE RELEASE (Git)
+    git add .
+    git commit -m "Release version X.X.X"
+    git tag vX.X.X
+    git push origin main --tags
+
+COMMON ISSUES AND SOLUTIONS
+---------------------------
+
+ISSUE: "File already exists" error
+SOLUTION: You're trying to upload the same version. Update version number in __init__.py
+
+ISSUE: Authentication failed
+SOLUTION: 
+- Use API token instead of username/password
+- Get token from https://pypi.org/manage/account/token/
+- Use: twine upload --username __token__ --password YOUR_TOKEN dist/*
+
+ISSUE: Build fails
+SOLUTION:
+- Check that all required files exist (README.md, LICENSE, requirements.txt)
+- Verify adsonai/__init__.py has correct __version__
+- Clean build artifacts: rm -rf build/ dist/ *.egg-info/
+
+ISSUE: Import errors after installation
+SOLUTION:
+- Check that all Python files are in adsonai/ directory
+- Verify __init__.py imports are correct
+- Test locally with: pip install -e .
+
+QUICK REFERENCE COMMANDS
+------------------------
+
+# Full update process (after making changes):
+cd adsonai-python-sdk
+
+# 1. Update version in adsonai/__init__.py
+# 2. Clean and build
+rm -rf build/ dist/ *.egg-info/
+python -m build
+
+# 3. Upload to PyPI
+python -m twine upload dist/*
+
+# 4. Test installation
+pip install --upgrade adsonai
+
+HOTFIX PROCESS (for urgent bugs)
+---------------------------------
+1. Create hotfix branch: git checkout -b hotfix/v1.0.1
+2. Fix the bug
+3. Update version to patch number (e.g., 1.0.0 → 1.0.1)
+4. Build and upload: python -m build && twine upload dist/*
+5. Merge back: git checkout main && git merge hotfix/v1.0.1
+
+VERSION NUMBERING GUIDE
+-----------------------
+Format: MAJOR.MINOR.PATCH
+
+MAJOR (X.0.0): Breaking changes that require code changes in user applications
+- Removing functions/classes
+- Changing function signatures
+- Changing return types
+
+MINOR (1.X.0): New features that are backward compatible
+- Adding new functions/classes
+- Adding optional parameters
+- New functionality
+
+PATCH (1.0.X): Bug fixes and small improvements
+- Fixing bugs
+- Performance improvements
+- Documentation updates
+
+EXAMPLES:
+1.0.0 → 1.0.1 (bug fix)
+1.0.1 → 1.1.0 (new feature)
+1.1.0 → 2.0.0 (breaking change)
+
+FILES TO UPDATE FOR EACH RELEASE
+---------------------------------
+ALWAYS:
+- adsonai/__init__.py (__version__)
+
+OFTEN:
+- README.md (if API changed)
+- CHANGELOG.md (document changes)
+
+SOMETIMES:
+- setup.py (if dependencies changed)
+- requirements.txt (if dependencies changed)
+- examples/ (if usage patterns changed)
+
+NEVER CHANGE:
+- LICENSE (unless changing license terms)
+
+AUTOMATION TIP
+--------------
+Create a release script (release.sh):
+
+#!/bin/bash
+VERSION=$1
+if [ -z "$VERSION" ]; then
+    echo "Usage: ./release.sh 1.0.1"
+    exit 1
+fi
+
+# Update version
+sed -i "s/__version__ = '.*'/__version__ = '$VERSION'/" adsonai/__init__.py
+
+# Build and upload
+rm -rf build/ dist/ *.egg-info/
+python -m build
+python -m twine upload dist/*
+
+# Git tag
+git add .
+git commit -m "Release version $VERSION"
+git tag "v$VERSION"
+git push origin main --tags
+
+echo "Released version $VERSION to PyPI"
+
+Usage: ./release.sh 1.0.1
+
+SECURITY NOTES
+--------------
+- Never commit PyPI credentials to git
+- Use API tokens instead of passwords
+- Store tokens in environment variables or ~/.pypirc
+- Regularly rotate API tokens
+
+SUPPORT
+-------
+If you encounter issues:
+1. Check PyPI status: https://status.python.org/
+2. PyPI help: https://pypi.org/help/
+3. Twine documentation: https://twine.readthedocs.io/
+
+
+
+
+
+
+
+
+rm -rf build/ dist/ *.egg-info/
+python -m build
+TOKEN 
+
+pypi-AgEIcHlwaS5vcmcCJDdkYjMwYzY0LTVmMzMtNDcyNi1hMjU5LTI5MjgxZDgzYTAxYgACKlszLCJhYjU4MWQ4Yy1kMDdhLTRhYTUtYTk1Ni00YTk5MDQ0MTg3MWIiXQAABiBonnJT_1a22HObHWGOWsfzjcDJAyleIFv7NMKDGfNIqA
