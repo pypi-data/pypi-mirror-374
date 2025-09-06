@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "watchrunner"
+version = "0.1.1"
+description = "A Python file watcher that auto-restarts your script on change."
+authors = [{ name = "ahmed-assan", email = "ahmed2001365618@gmail.com" }]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
+dependencies = ["watchdog"]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+
+[project.scripts]
+watchrunner = "watchrunner.core:watch"
+
+[project.urls]
+Homepage = "https://github.com/ahmed2001365618/watchrunner"
+
