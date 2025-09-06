@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "mcp-feedback-hall": {
+      "command": "uvx",
+      "args": ["mcp-feedback-hall@latest"],
+      "timeout": 3600,
+      "env": {
+        "MCP_DESKTOP_MODE": "true",
+        "MCP_WEB_PORT": "9877"
+      },
+      "autoApprove": ["interactive_feedback"]
+    }
+  }
+}
+
