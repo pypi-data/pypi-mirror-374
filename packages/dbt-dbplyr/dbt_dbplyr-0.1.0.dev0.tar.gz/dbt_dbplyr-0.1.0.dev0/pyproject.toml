@@ -1,0 +1,145 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dbt-dbplyr"
+authors = [{ name = "Leon Head" }]
+dependencies = ["dbt-core>=1.5", "rpy2>=3", "click"]
+readme = "README.md"
+requires-python = ">=3.10"
+dynamic = ["version"]
+license-files = ["LICENSE"]
+classifiers = [
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Typing :: Typed",
+]
+
+[project.scripts]
+dbt-dbplyr = "dbt_dbplyr:main"
+
+[project.urls]
+Source = "https://github.com/leeroyaus/dbt-dbplyr"
+
+[project.optional-dependencies]
+dev = [
+    "hatch",
+    "ruff>=0.1.4",
+    "ipykernel",
+    "ipython",
+    "ipdb",
+    "pytest",
+    "pytest-mock",
+    "mypy",
+    "dbt-duckdb",
+    "pandas",
+    "rpy2",
+]
+doc = ["jupyter-book", "ghp-import"]
+
+[tool.hatch.version]
+path = "dbt_dbplyr/__init__.py"
+
+[tool.hatch.build]
+include = ["dbt_dbplyr"]
+
+[tool.hatch.envs.default]
+features = ["dev"]
+
+[tool.hatch.envs.doc]
+features = ["dev", "doc"]
+
+[tool.hatch.envs.default.scripts]
+linters = [
+    "ruff format --diff --check .",
+    "ruff check .",
+    "mypy dbt-dbplyr tests",
+]
+tests = ["python -m pytest tests"]
+
+[tool.hatch.envs.doc.scripts]
+clean = "rm -rf doc/_build"
+build = ["jupyter-book build doc/"]
+serve = "(cd doc/_build/html && python -m http.server)"
+publish = "ghp-import -n -p -f -o doc/_build/html"
+build-and-publish = ["clean", "build", "publish"]
+
+[tool.ruff]
+target-version = "py39"
+line-length = 88
+exclude = [".git", "build", "__pycache__", "demo_project"]
+
+[tool.ruff.lint]
+select = [
+    # flake8-bugbear
+    "B",
+    # flake8-comprehensions
+    "C4",
+    # pycodestyle-error
+    "E",
+    # pycodestyle-warning
+    "W",
+    # pyflakes
+    "F",
+    # flake8-tidy-imports
+    "TID",
+    "I",
+    "C90",
+    "UP",
+    "YTT",
+    "S",
+    "BLE",
+    "A",
+    "T10",
+    "ISC",
+    "ICN",
+    "INP",
+    "PIE",
+    "T20",
+    "PT",
+    "RET501",
+    "RET502",
+    "RET503",
+    "SLF",
+    "SIM",
+    "TCH",
+    "ARG",
+    "PTH",
+    "ERA",
+    "PD",
+    "PGH",
+    "RUF",
+]
+ignore = [
+    # Rule prefers implicitly concatenated strings over explicitly.
+    # We prefer explicitly concatenated strings.
+    "ISC003",
+    # Explicit conversion flags for strings
+    "RUF010",
+    "ISC001",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Allow assert statements in test files
+"tests/**/*.py" = ["S101"]
+
+[tool.mypy]
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+strict_equality = true
+extra_checks = true
+check_untyped_defs = true
+disallow_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = ["dbt.*", "pandas.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["tests.*", "demo_project.*"]
+disallow_untyped_defs = false
