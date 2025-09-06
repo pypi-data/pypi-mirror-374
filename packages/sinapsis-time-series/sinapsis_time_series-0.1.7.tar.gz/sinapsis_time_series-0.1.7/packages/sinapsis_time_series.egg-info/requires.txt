@@ -1,0 +1,9 @@
+sinapsis>=0.1.1
+
+[all]
+sinapsis-darts-forecasting[all]
+sinapsis-time-series[webapp-gradio]
+
+[webapp-gradio]
+matplotlib>=3.9.2
+sinapsis[webapp]>=0.2.7
