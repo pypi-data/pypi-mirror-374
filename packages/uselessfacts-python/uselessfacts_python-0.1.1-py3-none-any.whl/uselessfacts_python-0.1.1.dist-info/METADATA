@@ -1,0 +1,22 @@
+Metadata-Version: 2.4
+Name: uselessfacts-python
+Version: 0.1.1
+Summary: Getting useless facts.
+Maintainer: Cheesecake2960
+License-Expression: MIT
+Project-URL: Repository, https://github.com/Cheesecake2960/uselessfacts-python.git
+Project-URL: Issues, https://github.com/Cheesecake2960/uselessfacts-python/issues
+Keywords: facts,api
+Classifier: Programming Language :: Python
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+
+# uselessfacts-python
+Getting useless facts from `https://uselessfacts.jsph.pl/`.
+
+## How to use
+```python
+from uselessfacts_python import get_fact
+
+print(get_fact().text)
+```
