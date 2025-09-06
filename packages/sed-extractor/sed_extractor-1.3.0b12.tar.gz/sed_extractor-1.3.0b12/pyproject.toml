@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sed_extractor"
+version = "1.3.0b12"
+dependencies = [
+    "astropy==5.2.1",
+    "astropy-healpix==0.7",
+    "cdshealpix==0.6.3",
+    "contourpy==1.0.7",
+    "cycler==0.11.0",
+    "fonttools==4.38.0",
+    "healpy==1.16.2",
+    "kiwisolver==1.4.4",
+    "matplotlib==3.6.3",
+    "numpy==1.24.2",
+    "packaging==23.0",
+    "Pillow==9.4.0",
+    "pyerfa==2.0.0.1",
+    "pyparsing==3.0.9",
+    "python-dateutil==2.9.0.post0",
+    "PyYAML==6.0",
+    "regions==0.7",
+    "reproject==0.10.0",
+    "scipy==1.10.0",
+    "six==1.17.0",
+    "drizzlib==3.0.1"
+]
+authors = [
+    { name = "Deborah Paradis", email = "deborah.paradis@irap.omp.eu" },
+]
+maintainers = [
+     { name = "Loic Bertin", email = "loic.bertin@irap.omp.eu" },
+    { name = "Jean-Michel Glorian", email = "jean-michel.glorian@univ-tlse3.fr" }
+]
+description = "SED Extractor is a tool from the CADE project. It allows to extract a Spectral Energy Distribution from Healpix, WCS or mixture of Healpix and WCS files, in a specific region of the sky."
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+license = "GPL-3.0-or-later"
+license-files = ["LICEN[CS]E*"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sed_extractor"]

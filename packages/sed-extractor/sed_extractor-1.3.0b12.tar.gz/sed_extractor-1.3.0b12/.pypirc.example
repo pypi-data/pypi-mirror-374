@@ -1,0 +1,14 @@
+# this file is supposed to be there: ~/.pypirc
+
+[distutils]
+index-servers =
+    pypi
+    testpypi
+
+[pypi]
+repository = https://upload.pypi.org/legacy/
+username = __token__
+password = <PyPI token>
+
+[testpypi]
+repository = https://test.pypi.org/legacy/
