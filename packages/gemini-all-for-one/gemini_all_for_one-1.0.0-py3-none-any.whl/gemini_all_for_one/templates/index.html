@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Generation & Analysis Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            background: white;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .tab:hover {
+            background: #e9ecef;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 40px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            transform: none;
+            cursor: not-allowed;
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .generated-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            margin: 15px 0;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .download-btn {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            display: inline-block;
+            margin: 10px 5px 0 0;
+            font-weight: 500;
+        }
+        
+        .error {
+            color: #dc3545;
+            background: #f8d7da;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 5px solid #dc3545;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #667eea;
+            font-size: 18px;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 AI Image Platform</h1>
+            <p>Generate, Edit & Analyze Images with Advanced AI</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('generate')">🎨 Generate Images</button>
+            <button class="tab" onclick="showTab('edit')">✏️ Edit Images</button>
+            <button class="tab" onclick="showTab('analyze')">🔍 Analyze Images</button>
+            <button class="tab" onclick="showTab('chat')">💬 Chat with AI</button>
+        </div>
+        
+        <!-- Image Generation Tab -->
+        <div id="generate" class="tab-content active">
+            <form id="generateForm">
+                <div class="form-group">
+                    <label for="generatePrompt">Image Description:</label>
+                    <textarea id="generatePrompt" placeholder="Describe the image you want to generate..." rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="generateProvider">AI Provider:</label>
+                    <select id="generateProvider">
+                        <option value="pollinations">🚀 Pollinations AI - High Quality & Fast</option>
+                        <option value="gemini">💎 Gemini AI - Creative & Artistic</option>
+                    </select>
+                </div>
+                <div class="two-column">
+                    <div class="form-group">
+                        <label for="generateStyle">Art Style:</label>
+                        <select id="generateStyle">
+                            <option value="photorealistic">📷 Photorealistic</option>
+                            <option value="cartoon">🎭 Cartoon</option>
+                            <option value="abstract">🎨 Abstract Art</option>
+                            <option value="impressionistic">🖼️ Impressionist</option>
+                            <option value="cyberpunk">🌃 Cyberpunk</option>
+                            <option value="anime">👾 Anime</option>
+                            <option value="oil_painting">🎨 Oil Painting</option>
+                            <option value="watercolor">💧 Watercolor</option>
+                            <option value="sketch">✏️ Sketch</option>
+                            <option value="digital_art">💻 Digital Art</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="generateRatio">Aspect Ratio:</label>
+                        <select id="generateRatio">
+                            <option value="1:1">⬜ Square (1:1)</option>
+                            <option value="16:9">📺 Landscape (16:9)</option>
+                            <option value="9:16">📱 Portrait (9:16)</option>
+                            <option value="4:3">🖼️ Standard Landscape (4:3)</option>
+                            <option value="3:4">🖼️ Standard Portrait (3:4)</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Generate Image</button>
+            </form>
+            
+            <div id="generateLoading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>🎨 Creating your masterpiece...</p>
+            </div>
+            
+            <div id="generateResult" class="result" style="display: none;"></div>
+            <div id="generateError" class="error" style="display: none;"></div>
+        </div>
+        
+        <!-- Image Editing Tab -->
+        <div id="edit" class="tab-content">
+            <form id="editForm">
+                <div class="form-group">
+                    <label for="editImage">Upload Image to Edit:</label>
+                    <input type="file" id="editImage" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPrompt">Edit Instructions:</label>
+                    <textarea id="editPrompt" placeholder="Describe how you want to edit the image..." rows="3" required></textarea>
+                </div>
+                <div class="two-column">
+                    <div class="form-group">
+                        <label for="editStyle">Style:</label>
+                        <select id="editStyle">
+                            <option value="photorealistic">📷 Photorealistic</option>
+                            <option value="cartoon">🎭 Cartoon</option>
+                            <option value="abstract">🎨 Abstract Art</option>
+                            <option value="anime">👾 Anime</option>
+                            <option value="digital_art">💻 Digital Art</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editStrength">Edit Strength:</label>
+                        <select id="editStrength">
+                            <option value="0.3">Light</option>
+                            <option value="0.5">Medium</option>
+                            <option value="0.7" selected>Strong</option>
+                            <option value="0.9">Very Strong</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Edit Image</button>
+            </form>
+            
+            <div id="editLoading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>✏️ Editing your image...</p>
+            </div>
+            
+            <div id="editResult" class="result" style="display: none;"></div>
+            <div id="editError" class="error" style="display: none;"></div>
+        </div>
+        
+        <!-- Image Analysis Tab -->
+        <div id="analyze" class="tab-content">
+            <div class="form-group">
+                <label for="analyzeMethod">Analysis Method:</label>
+                <select id="analyzeMethod">
+                    <option value="upload">📁 Upload Image File</option>
+                    <option value="url">🌐 Image URL</option>
+                </select>
+            </div>
+            
+            <form id="analyzeForm">
+                <div class="form-group" id="uploadSection">
+                    <label for="analyzeImage">Upload Image to Analyze:</label>
+                    <input type="file" id="analyzeImage" accept="image/*">
+                </div>
+                
+                <div class="form-group" id="urlSection" style="display: none;">
+                    <label for="analyzeUrl">Image URL:</label>
+                    <input type="url" id="analyzeUrl" placeholder="https://example.com/image.jpg">
+                    <small style="color: #666; display: block; margin-top: 5px;">
+                        Enter the direct URL to an image (JPG, PNG, GIF, etc.)
+                    </small>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="extractMasks"> Extract object masks
+                    </label>
+                </div>
+                <button type="submit" class="btn">Analyze Image</button>
+            </form>
+            
+            <div id="analyzeLoading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>🔍 Analyzing your image...</p>
+            </div>
+            
+            <div id="analyzeResult" class="result" style="display: none;"></div>
+            <div id="analyzeError" class="error" style="display: none;"></div>
+        </div>
+        
+        <!-- Chat Tab -->
+        <div id="chat" class="tab-content">
+            <div class="form-group">
+                <label for="chatModel">AI Model:</label>
+                <select id="chatModel">
+                    <option value="gemini-2.5-flash-lite" selected>🚀 Gemini 2.5 Flash Lite (Fastest) - Most optimized for speed</option>
+                    <option value="gemini-1.5-flash">⚡ Gemini 1.5 Flash (Fastest) - High-speed, lightweight version</option>
+                    <option value="gemini-2.5-flash">⚡ Gemini 2.5 Flash (Faster) - Advanced model with excellent speed</option>
+                    <option value="gemini-2.0-flash">💨 Gemini 2.0 Flash (Fast) - Next-gen model with good performance</option>
+                    <option value="gemini-2.5-pro">🧠 Gemini 2.5 Pro (Fast) - Optimized for performance and quality</option>
+                    <option value="gemini-1.5-flash-8b">💨 Gemini 1.5 Flash 8B (Fast) - 8B parameter lightweight model</option>
+                </select>
+            </div>
+            
+            <div id="chatContainer" style="height: 400px; border: 2px solid #e9ecef; border-radius: 10px; padding: 20px; margin-bottom: 20px; overflow-y: auto; background: #f8f9fa;">
+                <div id="chatHistory"></div>
+            </div>
+            
+            <form id="chatForm">
+                <div class="form-group">
+                    <label for="chatImage">Upload Image (Optional):</label>
+                    <input type="file" id="chatImage" accept="image/*">
+                    <div id="chatImagePreview" style="margin-top: 10px; display: none;">
+                        <img id="previewImage" style="max-width: 200px; max-height: 200px; border-radius: 8px;">
+                        <button type="button" id="removeImage" style="margin-left: 10px; padding: 5px 10px; background: #dc3545; color: white; border: none; border-radius: 4px;">Remove</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="chatMessage">Your Message:</label>
+                    <textarea id="chatMessage" placeholder="Ask me anything or describe what you'd like to know about the uploaded image..." rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn">Send Message</button>
+            </form>
+            
+            <div id="chatLoading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>💬 AI is thinking...</p>
+            </div>
+            
+            <div id="chatError" class="error" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Ensure DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded - initializing chat functionality');
+            
+            // Tab switching functionality
+            window.showTab = function(tabName) {
+                try {
+                    // Hide all tab contents
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Remove active class from all tabs
+                    document.querySelectorAll('.tab').forEach(tab => {
+                        tab.classList.remove('active');
+                    });
+                    
+                    // Show selected tab content and mark tab as active
+                    document.getElementById(tabName).classList.add('active');
+                    event.target.classList.add('active');
+                } catch (error) {
+                    console.error('Tab switching error:', error);
+                }
+            };
+            
+            // Initialize event listeners
+            initializeEventListeners();
+            
+            // Initialize chat image upload preview
+            initializeChatImagePreview();
+        });
+        
+        // Initialize all event listeners
+        function initializeEventListeners() {
+            console.log('Initializing event listeners...');
+
+            // Image Generation Form
+            document.getElementById('generateForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const prompt = document.getElementById('generatePrompt').value;
+            const style = document.getElementById('generateStyle').value;
+            const aspect_ratio = document.getElementById('generateRatio').value;
+            const provider = document.getElementById('generateProvider').value;
+            const model = 'flux-pro'; // Always use highest quality
+            
+            showLoading('generate');
+            hideResults('generate');
+            
+            try {
+                let endpoint = '/api/generate-image';
+                let requestBody = { prompt, style, aspect_ratio };
+                
+                if (provider === 'pollinations') {
+                    endpoint = '/api/pollinations/generate-image';
+                    requestBody.model = model;
+                    requestBody.enhance = true; // Always enhance for high quality
+                }
+                
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestBody)
+                });
+                
+                const data = await response.json();
+                hideLoading('generate');
+                
+                if (data.status === 'success' && data.generated_image_base64) {
+                    const providerLabel = data.provider ? ` (${data.provider})` : '';
+                    const modelLabel = data.model ? ` - ${data.model}` : '';
+                    
+                    showResult('generate', `
+                        <h3>✨ Generated Image${providerLabel}${modelLabel}</h3>
+                        <img src="data:image/png;base64,${data.generated_image_base64}" class="generated-image" alt="Generated Image">
+                        <p><strong>Prompt:</strong> ${data.prompt}</p>
+                        ${data.generated_text ? `<p><strong>Description:</strong> ${data.generated_text}</p>` : ''}
+                        ${data.parameters ? `<p><strong>Quality:</strong> High resolution (${data.parameters.width}x${data.parameters.height})</p>` : ''}
+                        <a href="data:image/png;base64,${data.generated_image_base64}" download="${data.filename}" class="download-btn">📥 Download Image</a>
+                    `);
+                } else {
+                    showError('generate', data.error || 'Failed to generate image');
+                }
+            } catch (error) {
+                hideLoading('generate');
+                showError('generate', 'Connection error: ' + error.message);
+            }
+        });
+
+        // Image Editing Form
+        document.getElementById('editForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('editImage');
+            const prompt = document.getElementById('editPrompt').value;
+            const style = document.getElementById('editStyle').value;
+            const edit_strength = parseFloat(document.getElementById('editStrength').value);
+            
+            if (!fileInput.files[0]) {
+                showError('edit', 'Please select an image to edit');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const base64Image = e.target.result.split(',')[1];
+                
+                showLoading('edit');
+                hideResults('edit');
+                
+                try {
+                    const response = await fetch('/api/edit-image', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            prompt,
+                            image: base64Image,
+                            style,
+                            edit_strength
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    hideLoading('edit');
+                    
+                    if (data.status === 'success' && data.generated_image) {
+                        showResult('edit', `
+                            <h3>✏️ Edited Image</h3>
+                            <img src="data:image/png;base64,${data.generated_image}" class="generated-image" alt="Edited Image">
+                            <p><strong>Edit:</strong> ${data.prompt}</p>
+                            ${data.generated_text ? `<p><strong>Description:</strong> ${data.generated_text}</p>` : ''}
+                            <a href="data:image/png;base64,${data.generated_image}" download="edited_${data.saved_files[0]}" class="download-btn">📥 Download Edited Image</a>
+                        `);
+                    } else {
+                        showError('edit', data.error || 'Failed to edit image');
+                    }
+                } catch (error) {
+                    hideLoading('edit');
+                    showError('edit', error.message);
+                }
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        });
+
+        // Analysis method selection handling
+        document.getElementById('analyzeMethod').addEventListener('change', function() {
+            const method = this.value;
+            const uploadSection = document.getElementById('uploadSection');
+            const urlSection = document.getElementById('urlSection');
+            const analyzeImage = document.getElementById('analyzeImage');
+            const analyzeUrl = document.getElementById('analyzeUrl');
+            
+            if (method === 'upload') {
+                uploadSection.style.display = 'block';
+                urlSection.style.display = 'none';
+                analyzeImage.required = true;
+                analyzeUrl.required = false;
+            } else {
+                uploadSection.style.display = 'none';
+                urlSection.style.display = 'block';
+                analyzeImage.required = false;
+                analyzeUrl.required = true;
+            }
+        });
+
+        // Image Analysis Form - Updated to handle both upload and URL
+        document.getElementById('analyzeForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const method = document.getElementById('analyzeMethod').value;
+            const extractMasks = document.getElementById('extractMasks').checked;
+            
+            showLoading('analyze');
+            hideResults('analyze');
+            
+            try {
+                if (method === 'upload') {
+                    // Handle file upload analysis
+                    const fileInput = document.getElementById('analyzeImage');
+                    
+                    if (!fileInput.files[0]) {
+                        showError('analyze', 'Please select an image to analyze');
+                        hideLoading('analyze');
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = async function(e) {
+                        const base64Image = e.target.result.split(',')[1];
+                        
+                        try {
+                            const response = await fetch('/api/analyze-image', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    image: base64Image,
+                                    extract_masks: extractMasks
+                                })
+                            });
+                            
+                            const data = await response.json();
+                            hideLoading('analyze');
+                            
+                            if (data.status === 'success') {
+                                let resultHtml = `
+                                    <h3>🔍 Image Analysis (Upload)</h3>
+                                    <img src="${e.target.result}" class="generated-image" alt="Analyzed Image">
+                                    <p><strong>Analysis:</strong> ${data.analysis}</p>
+                                `;
+                                
+                                if (data.segmentation_masks && data.segmentation_masks.length > 0) {
+                                    resultHtml += '<h4>🎯 Detected Objects:</h4><ul>';
+                                    data.segmentation_masks.forEach(mask => {
+                                        resultHtml += `<li>${mask.label}</li>`;
+                                    });
+                                    resultHtml += '</ul>';
+                                }
+                                
+                                showResult('analyze', resultHtml);
+                            } else {
+                                showError('analyze', data.error || 'Failed to analyze image');
+                            }
+                        } catch (error) {
+                            hideLoading('analyze');
+                            showError('analyze', 'Upload analysis error: ' + error.message);
+                        }
+                    };
+                    reader.readAsDataURL(fileInput.files[0]);
+                    
+                } else if (method === 'url') {
+                    // Handle URL analysis
+                    const imageUrl = document.getElementById('analyzeUrl').value.trim();
+                    
+                    if (!imageUrl) {
+                        showError('analyze', 'Please enter an image URL');
+                        hideLoading('analyze');
+                        return;
+                    }
+                    
+                    const response = await fetch('/api/analyze-image', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            url: imageUrl,
+                            extract_masks: extractMasks
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    hideLoading('analyze');
+                    
+                    if (data.status === 'success') {
+                        let resultHtml = `
+                            <h3>🔍 Image Analysis (URL)</h3>
+                            <img src="${imageUrl}" class="generated-image" alt="Analyzed Image" style="max-width: 100%; height: auto;">
+                            <p><strong>Source URL:</strong> <a href="${imageUrl}" target="_blank">${imageUrl}</a></p>
+                            <p><strong>Analysis:</strong> ${data.analysis}</p>
+                        `;
+                        
+                        if (data.content_type) {
+                            resultHtml += `<p><strong>Image Type:</strong> ${data.content_type}</p>`;
+                        }
+                        
+                        if (data.segmentation_masks && data.segmentation_masks.length > 0) {
+                            resultHtml += '<h4>🎯 Detected Objects:</h4><ul>';
+                            data.segmentation_masks.forEach(mask => {
+                                resultHtml += `<li>${mask.label}</li>`;
+                            });
+                            resultHtml += '</ul>';
+                        }
+                        
+                        showResult('analyze', resultHtml);
+                    } else {
+                        showError('analyze', data.error || 'Failed to analyze URL image');
+                    }
+                }
+                
+            } catch (error) {
+                hideLoading('analyze');
+                showError('analyze', 'Analysis error: ' + error.message);
+            }
+            });
+
+            // Chat Form - Fixed with better error handling
+            const chatForm = document.getElementById('chatForm');
+            if (chatForm) {
+                console.log('Setting up chat form event listener');
+                chatForm.addEventListener('submit', handleChatSubmit);
+            } else {
+                console.error('Chat form not found!');
+            }
+        } // End of initializeEventListeners function
+        
+        // Handle chat form submission
+        async function handleChatSubmit(e) {
+            e.preventDefault();
+            console.log('Chat form submitted');
+            
+            try {
+                const messageInput = document.getElementById('chatMessage');
+                const modelSelect = document.getElementById('chatModel');
+                const imageInput = document.getElementById('chatImage');
+                
+                if (!messageInput || !modelSelect) {
+                    console.error('Chat elements not found');
+                    return;
+                }
+                
+                const message = messageInput.value.trim();
+                const model = modelSelect.value;
+                const imageFile = imageInput ? imageInput.files[0] : null;
+                
+                console.log('Sending message:', message, 'with model:', model, imageFile ? 'with image' : 'text only');
+                
+                if (!message) {
+                    showError('chat', 'Please enter a message');
+                    return;
+                }
+                
+                let imageData = null;
+                let displayMessage = message;
+                
+                // Process image if uploaded
+                if (imageFile) {
+                    try {
+                        const base64Image = await fileToBase64(imageFile);
+                        imageData = base64Image.split(',')[1]; // Remove data URL prefix
+                        displayMessage = message + ' [Image uploaded]';
+                    } catch (error) {
+                        showError('chat', 'Failed to process image: ' + error.message);
+                        return;
+                    }
+                }
+                
+                // Clear any previous errors
+                hideResults('chat');
+                
+                // Add user message to chat history
+                addMessageToChat('user', displayMessage, null, imageFile);
+                
+                // Clear inputs and show loading
+                messageInput.value = '';
+                if (imageInput) {
+                    imageInput.value = '';
+                    const previewDiv = document.getElementById('chatImagePreview');
+                    if (previewDiv) previewDiv.style.display = 'none';
+                }
+                showLoading('chat');
+                
+                console.log('Starting fetch request to /ask...');
+                
+                // Prepare request body
+                const requestBody = { 
+                    question: message,
+                    model: model
+                };
+                
+                if (imageData) {
+                    requestBody.image = imageData;
+                }
+                
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                }).catch(fetchError => {
+                    console.error('Fetch error:', fetchError);
+                    throw new Error(`Network error: ${fetchError.message}`);
+                });
+                
+                console.log('Fetch completed. Response status:', response.status);
+                console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+                
+                if (!response.ok) {
+                    const errorText = await response.text().catch(() => 'Unknown error');
+                    console.error('HTTP error response:', errorText);
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json().catch(jsonError => {
+                    console.error('JSON parsing error:', jsonError);
+                    throw new Error('Invalid JSON response from server');
+                });
+                console.log('Response data:', data);
+                hideLoading('chat');
+                
+                if (data && data.status === 'success' && data.answer) {
+                    // Add AI response to chat history
+                    addMessageToChat('ai', data.answer, data.model_used);
+                } else {
+                    const errorMsg = data?.error || 'No response received from AI';
+                    addMessageToChat('ai', `❌ Error: ${errorMsg}`, model);
+                }
+            } catch (error) {
+                console.error('Chat error details:', {
+                    message: error.message,
+                    stack: error.stack,
+                    name: error.name,
+                    error: error
+                });
+                hideLoading('chat');
+                const currentModel = model || document.getElementById('chatModel')?.value || 'unknown';
+                addMessageToChat('ai', `❌ Error: ${error.message}`, currentModel);
+            }
+        }
+
+        // Chat helper functions
+        function addMessageToChat(sender, message, model = null, imageFile = null) {
+            const chatHistory = document.getElementById('chatHistory');
+            const messageDiv = document.createElement('div');
+            messageDiv.style.marginBottom = '15px';
+            messageDiv.style.padding = '15px';
+            messageDiv.style.borderRadius = '10px';
+            
+            if (sender === 'user') {
+                messageDiv.style.background = '#667eea';
+                messageDiv.style.color = 'white';
+                messageDiv.style.marginLeft = '20%';
+                
+                let messageContent = `<strong>You:</strong><br>${message}`;
+                
+                // Add image preview if image was uploaded
+                if (imageFile) {
+                    const imageUrl = URL.createObjectURL(imageFile);
+                    messageContent += `<br><img src="${imageUrl}" style="max-width: 150px; max-height: 150px; margin-top: 10px; border-radius: 8px; border: 2px solid rgba(255,255,255,0.3);" alt="Uploaded image">`;
+                }
+                
+                messageDiv.innerHTML = messageContent;
+            } else {
+                messageDiv.style.background = 'white';
+                messageDiv.style.border = '1px solid #dee2e6';
+                messageDiv.style.marginRight = '20%';
+                const modelLabel = model ? ` (${model})` : '';
+                messageDiv.innerHTML = `<strong>AI${modelLabel}:</strong><br>${message.replace(/\n/g, '<br>')}`;
+            }
+            
+            chatHistory.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Helper functions
+        function showLoading(tab) {
+            const loadingElement = document.getElementById(`${tab}Loading`);
+            if (loadingElement) {
+                loadingElement.style.display = 'block';
+            }
+        }
+        
+        function hideLoading(tab) {
+            const loadingElement = document.getElementById(`${tab}Loading`);
+            if (loadingElement) {
+                loadingElement.style.display = 'none';
+            }
+        }
+        
+        function showResult(tab, html) {
+            const resultDiv = document.getElementById(`${tab}Result`);
+            if (resultDiv) {
+                resultDiv.innerHTML = html;
+                resultDiv.style.display = 'block';
+            }
+        }
+        
+        function showError(tab, message) {
+            const errorDiv = document.getElementById(`${tab}Error`);
+            if (errorDiv) {
+                errorDiv.innerHTML = `<strong>Error:</strong> ${message}`;
+                errorDiv.style.display = 'block';
+            }
+        }
+        
+        function hideResults(tab) {
+            const resultElement = document.getElementById(`${tab}Result`);
+            const errorElement = document.getElementById(`${tab}Error`);
+            
+            if (resultElement) {
+                resultElement.style.display = 'none';
+            }
+            if (errorElement) {
+                errorElement.style.display = 'none';
+            }
+        }
+        
+        // Image upload preview for chat
+        function initializeChatImagePreview() {
+            const imageInput = document.getElementById('chatImage');
+            const previewDiv = document.getElementById('chatImagePreview');
+            const previewImage = document.getElementById('previewImage');
+            const removeButton = document.getElementById('removeImage');
+            
+            if (imageInput && previewDiv && previewImage && removeButton) {
+                imageInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            previewImage.src = e.target.result;
+                            previewDiv.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        previewDiv.style.display = 'none';
+                    }
+                });
+                
+                removeButton.addEventListener('click', function() {
+                    imageInput.value = '';
+                    previewDiv.style.display = 'none';
+                });
+            }
+        }
+        
+        // Helper function to convert file to base64
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        }
+    </script>
+</body>
+</html>
