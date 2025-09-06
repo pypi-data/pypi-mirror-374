@@ -1,0 +1,108 @@
+/* Animations - Keyframes, transitions, and hover effects */
+
+/* Pulse Border Animation for In-Progress Tasks */
+@keyframes pulse-border {
+    0% {
+        border-color: #17a2b8;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(23, 162, 184, 0.4);
+    }
+    50% {
+        border-color: #20c997;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 0 4px rgba(23, 162, 184, 0.2);
+    }
+    100% {
+        border-color: #17a2b8;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(23, 162, 184, 0.4);
+    }
+}
+
+/* Copy Feedback Animation - Pulsing Green Border */
+@keyframes copy-border-pulse {
+    0% {
+        border-color: var(--border-color, rgba(255, 255, 255, 0.2));
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        border-color: #4ade80;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 0 4px rgba(74, 222, 128, 0.3);
+    }
+    100% {
+        border-color: var(--border-color, rgba(255, 255, 255, 0.2));
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* Pulse Left Border Animation for Search Results */
+@keyframes pulse-left-border {
+    0% {
+        border-left-color: #17a2b8;
+    }
+    50% {
+        border-left-color: #20c997;
+    }
+    100% {
+        border-left-color: #17a2b8;
+    }
+}
+
+/* Pulse Dot Animation for Status Indicators */
+@keyframes pulse-dot {
+    0% {
+        background-color: #17a2b8;
+        opacity: 1;
+    }
+    50% {
+        background-color: #20c997;
+        opacity: 0.8;
+    }
+    100% {
+        background-color: #17a2b8;
+        opacity: 1;
+    }
+}
+
+/* Hover Transitions */
+.task-node,
+.task-item,
+.project-item,
+.stat-card,
+.btn-primary,
+.copy-btn {
+    transition: all 0.3s ease;
+}
+
+.search-result-item,
+.activity-item {
+    transition: background 0.2s ease;
+}
+
+/* Scale Animations */
+.copy-btn:hover {
+    transform: scale(1.1);
+}
+
+.copy-btn:active {
+    transform: scale(0.95);
+}
+
+/* Copy Feedback Animation Class */
+.id-copied {
+    animation: copy-border-pulse 1s ease-out;
+}
+
+.task-node:hover {
+    transform: scale(1.05);
+}
+
+.task-item:hover,
+.project-item:hover {
+    transform: translateY(-2px);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
