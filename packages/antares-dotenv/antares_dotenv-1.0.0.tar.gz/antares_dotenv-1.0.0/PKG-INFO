@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: antares-dotenv
+Version: 1.0.0
+Summary: A minimal utility to load environment variables with automatic type casting.
+License: MIT
+Author: Antares Mugisho
+Author-email: antaresmugisho@gmail.com
+Requires-Python: >=3.11,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: python-dotenv (>=1.1.0,<2.0.0)
+Description-Content-Type: text/markdown
+
+# My Dotenv
+
+A minimal utility to load environment variables with automatic type casting (bool, list, int, float, JSON).
+
+__For personnal use__
