@@ -1,0 +1,42 @@
+Metadata-Version: 2.3
+Name: volkit
+Version: 0.1.1
+Summary: Volatility Modelling Toolkit
+License: BSD-3-Clause
+Keywords: gaussian mixture,implied,volatility
+Author: Thijs van den Berg
+Author-email: thijs@sitmo.com
+Requires-Python: >=3.9,<3.13
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Provides-Extra: docs
+Requires-Dist: furo (>=2024.8) ; extra == "docs"
+Requires-Dist: matplotlib (>=3.8) ; extra == "docs"
+Requires-Dist: matplotlib-inline (>=0.1.7) ; extra == "docs"
+Requires-Dist: myst-nb (>=1.1) ; extra == "docs"
+Requires-Dist: numpy
+Requires-Dist: pandas (>=2.3,<3.0) ; extra == "docs"
+Requires-Dist: scipy
+Requires-Dist: sphinx (>=7) ; extra == "docs"
+Requires-Dist: sphinx-autodoc-typehints (>=2.2) ; extra == "docs"
+Requires-Dist: sphinx-copybutton (>=0.5.2) ; extra == "docs"
+Project-URL: Homepage, https://github.com/sitmo/volkit
+Project-URL: Repository, https://github.com/sitmo/volkit
+Description-Content-Type: text/markdown
+
+# volkit
+
+[![CI](https://github.com/sitmo/volkit/actions/workflows/tests.yml/badge.svg)](https://github.com/sitmo/volkit/actions/workflows/tests.yml)
+[![Coverage](https://codecov.io/gh/sitmo/volkit/branch/main/graph/badge.svg)](https://codecov.io/gh/sitmo/volkit)
+[![Docs](https://readthedocs.org/projects/volkit/badge/?version=latest)](https://volkit.readthedocs.io/en/latest/)
+[![License](https://img.shields.io/pypi/l/volkit.svg)](https://github.com/sitmo/volkit/blob/main/LICENSE)
+[![Python versions](https://img.shields.io/pypi/pyversions/volkit.svg)](https://pypi.org/project/volkit/)
+[![PyPI version](https://img.shields.io/pypi/v/volkit.svg)](https://pypi.org/project/volkit/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+A powerfull lightweight toolkit for option pricing, implied volatility, and Greeks.
+
