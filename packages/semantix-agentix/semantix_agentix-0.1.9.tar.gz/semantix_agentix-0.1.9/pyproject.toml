@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools >= 77.0.3", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "semantix-agentix"
+version = "0.1.9"
+description = "A Python library for AI governance and experiment tracking that integrates with MLflow"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Artur Rodrigues", email = "artur.rodrigues@semantix.ai"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "mlflow>=3.3.1",
+    "psycopg2-binary>=2.9.10"
+]
