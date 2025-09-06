@@ -1,0 +1,9 @@
+[console_scripts]
+vulntrain-dataset-generation=vulntrain.datasets.create_dataset:main
+vulntrain-train-cwe-classification=vulntrain.trainers.cwe_guesser_patches:main
+vulntrain-train-description-generation=vulntrain.trainers.generation_description:main
+vulntrain-train-severity-classification=vulntrain.trainers.classify_severity:main
+vulntrain-train-severity-cnvd-classification=vulntrain.trainers.classify_severity_cnvd:main
+vulntrain-validate-severity-classification=vulntrain.validators.severity:main
+vulntrain-validate-text-generation=vulntrain.validators.summarize:main
+
