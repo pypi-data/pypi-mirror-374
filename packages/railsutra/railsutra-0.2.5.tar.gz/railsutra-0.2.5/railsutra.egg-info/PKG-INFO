@@ -1,0 +1,160 @@
+Metadata-Version: 2.4
+Name: railsutra
+Version: 0.2.5
+Summary: Pandas integrated Indian Railways Information Provider
+Author-email: Avinash Gupta <avinash12231@gmail.com>
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: bs4
+Requires-Dist: pandas
+Requires-Dist: numpy
+
+# RailSutra
+
+---
+**Railsutra** is a lightweight Python package that provides Indian Railways information using **pandas**. It fetches data from the **National Train Enquiry System (NTES)** which allows you to make necessary railway related queries easily.  
+
+## Features
+
+- Get trains running between two stations directly as Pandas DataFrame.  
+- Flexible station matching when searching for trains.  
+- Fully compatible with pandas for easy data analysis.  
+
+---
+
+## Installation
+
+Install via pip:
+
+```bash
+pip install railsutra
+```
+---
+
+## Functions
+
+#### **1. get_stn_name(stn_code: str) -> str**
+Get the full station name for a given station code.
+
+```python
+from railsutra import *
+station = get_stn_name(stn_code='LKO') # lower-case allowed
+print(station)
+```
+```terminal
+LUCKNOW JN.
+```
+
+---
+
+#### **2. get_trains_btw_stns(from_stn: str, to_stn: str, flex_stn:bool = False) -> pandas.DataFrame**
+Fetch all trains running between two stations. Returns a pandas DataFrame with train details.
+
+- **from_stn** : From station code.
+- **to_stn** : To station code.
+- **flex_stn** *(optional)* : Set **True** to allow flexible station matching.
+
+```python
+import pandas as pd
+from railsutra import *
+
+# following to be done for full DataFrame view.
+pd.set_option('display.max_rows',None)
+pd.set_option('display.max_columns',None)
+pd.set_option('display.width',None)
+
+dtf = get_trains_btw_stns('GKP','LJN',flex_stn=True)
+print(dtf)
+```
+```terminal
+  train_no      train_name service_days    train_type src_time   src_station src_code dest_time dest_station dest_code duration             classes
+0    12203  GARIB RATH EXP  Mon,Tue,Fri    Garib Rath    00:45  Gorakhpur Jn      GKP     05:55  Lucknow Jn.       LKO    05:10                  3E
+1    15114    CPR GTNR EXP        Daily  Mail Express    01:20  Gorakhpur Jn      GKP     06:35  Gomti Nagar      GTNR    05:15  1A,2A,3A,3E,SL,GEN
+
+```
+---
+
+#### **3. get_live_stn(stn_code: str) -> pandas.DataFrame**
+Get live arrivals and departures for a station. Returns a **Pandas DataFrame** showing train number, train name, arrival time, departure time, platform, and delay info (if available).
+
+- **stn_code** : Station Code.
+```python
+from railsutra import get_live_stn
+import pandas as pd
+
+# following to be done for full DataFrame view.
+pd.set_option('display.max_rows',None)
+pd.set_option('display.max_columns',None)
+pd.set_option('display.width',None)
+
+dtf = get_live_stn(stn_code='cnb')
+print(dtf.head(3))
+```
+```terminal
+  train_no         train_name   src  dest sch_arr exp_arr arr_delay sch_dep exp_dep dep_delay pf
+0    55346  KSJ-LJN PASSENGER   KSJ   LJN   22:05   22:06         1   22:10   22:10       NaN  9
+1    15658    BRAHMAPUTRA EXP   KYQ   DLI   21:30   22:17        47   21:35   22:18        43  2
+2    12397      MAHABODHI EXP  GAYA  NDLS   22:05   22:18        13   22:10   22:19         9  2
+```
+---
+#### **4. get_train_name(train_no: str) -> str**
+Returns the name of the train.
+```python
+from railsutra import get_train_name
+train_name = get_train_name(train_no=13010)
+print(train_name)
+```
+```terminal
+DOON EXPRESS
+```
+---
+#### **5. get_train_live_status(train_no, date: str, run_df: bool = False) -> dict**
+Fetches and returns the status of the train in dictionary format.
+
+- **train_no** : 5 digit train number.
+- **date** : Date for which status is required *(dd-mm-yyyy)*.
+- **run_df** : set **True** if you want a **Pandas DataFrame** showing the whole running.
+
+##### 1. Getting status of the train.
+```python
+from railsutra import get_train_live_status
+import pandas as pd
+
+status_dict = get_train_live_status(train_no=12231,date="04-09-2025",run_df=True)
+print(status_dict['status']) # for status
+```
+```terminal
+Train has reached destination CHANDIGARH (CDG) at 10:13 05-Sep-2025.
+```
+##### 2. Whole running DataFrame.
+```python
+from railsutra import get_train_live_status
+import pandas as pd
+
+pd.set_option('display.max_rows',None)
+pd.set_option('display.max_columns',None)
+pd.set_option('display.width',None)
+
+status_dict = get_train_live_status(train_no=15031,date="04-09-2025",run_df=True)
+print(status_dict['running']) # for whole running DataFrame
+```
+```terminal
+        stn_name sch_arr      sch_dep exp_arr_time exp_arr_dt arr_delay exp_dep_time exp_dep_dt dep_delay
+0   GORAKHPUR JN  Source        05:45       Source        NaN       NaN        05:45     04 Sep       NaN
+1       SAHJANWA   06:08        06:10        06:09     04 Sep         1        06:11     04 Sep         1
+2     KHALILABAD   06:25        06:27        06:28     04 Sep         3        06:35     04 Sep         8
+3          BASTI   06:48        06:50        07:02     04 Sep        14        07:05     04 Sep        15
+4        BABHNAN   07:15        07:17        07:28     04 Sep        13        07:31     04 Sep        14
+5    MANKAPUR JN   07:44        07:46        08:00     04 Sep        16        08:02     04 Sep        16
+6       GONDA JN   08:20        08:23        08:46     04 Sep        26        08:54     04 Sep        31
+7    COLONELGANJ   08:48        08:50        09:23     04 Sep        35        09:25     04 Sep        35
+8   BARABANKI JN   10:08        10:10        10:34     04 Sep        26        10:36     04 Sep        26
+9   BADSHAHNAGAR   10:44        10:46        11:09     04 Sep        25        11:12     04 Sep        26
+10    LUCKNOW NE   11:25  Destination        11:34     04 Sep         9  Destination        NaN       NaN
+```
+---
+
+## Notes
+- RailSutra uses **NTES - National Train Enquiry System** data. Schedules and status directly gets updated.
+- This package uses Internet Connectivity for fetching data, in absence of which will always return **Empty DataFrames**.
