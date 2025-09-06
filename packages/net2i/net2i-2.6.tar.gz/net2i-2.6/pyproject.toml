@@ -1,0 +1,26 @@
+[project]
+name = "net2i"
+version = "2.6"
+authors = [
+  { name = "Omesh Fernando", email = "omeshf@gmail.com" },
+  
+]
+description = "NeT2i (Network to Image) converts network traffic data into RGB images suitable for CNN-based anomaly detection."
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Security",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Development Status :: 4 - Beta"
+]
+license =  "MIT" 
+license-files = ["LICENSE*"]
+
+[project.urls]
+Homepage = "https://github.com/omeshF/NeT2I"
+Issues = "https://github.com/omeshF/NeT2I/issues"
+Documentation = "https://github.com/omeshF/NeT2I#readme"
