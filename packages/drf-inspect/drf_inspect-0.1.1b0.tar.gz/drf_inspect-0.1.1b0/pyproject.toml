@@ -1,0 +1,52 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["drf_inspect"]
+
+[tool.hatch.version]
+path = 'drf_inspect/__init__.py'
+
+[project]
+name = "drf-inspect"
+dynamic = ["version"]
+description = "django rest framework inspection helpers"
+authors = [
+    { name = "Andrei Samofalov", email = "andrei.e.samofalov@gmail.com" },
+]
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+
+dependencies = [
+    "django==4.2.16",
+    "djangorestframework==3.15.2",
+    "pydantic>=2.11.7",
+]
+
+[tool.ruff]
+exclude = [
+    "**/.*",
+]
+force-exclude = true
+line-length = 120
+target-version = 'py312'
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "T20"]
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+no-lines-before = ["local-folder"]

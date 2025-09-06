@@ -1,0 +1,22 @@
+name: Publish to PyPI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get uv binary
+        run: |
+          docker create --name uv ghcr.io/astral-sh/uv:0.8.13
+          docker cp uv:/uv /usr/local/bin/uv
+          docker rm uv
+          uv --version
+
+      - run: uv build
+      - run: uv publish --token ${{ secrets.PYPI_TOKEN }}
