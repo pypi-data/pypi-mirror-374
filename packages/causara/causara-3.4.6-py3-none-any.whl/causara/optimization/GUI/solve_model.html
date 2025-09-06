@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>causara</title>
+
+    <style>
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 94vh;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            font-size: 0.95vw;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        h1 {
+            font-family: 'Wix Madefor Display', sans-serif;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            font-size: 1.4vw;
+            color: #333;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            left: 50px;
+        }
+
+        #progress-image {
+            position: absolute;
+            left: 5%;
+            top: 20%;
+            width: 60%;
+            height: 60%;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding-bottom: 30px;
+            background-color: white;
+        }
+
+        .card-container {
+            position: absolute;
+            left: 70%;
+            width: 20%;
+            max-width: 500px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 3%;
+        }
+
+        .card-container h1 {
+            margin-top: 0;
+            font-size: 1.2vw;
+            margin-bottom: 1rem;
+            color: #333;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.95vw;
+            color: #444;
+        }
+
+        .result-row .label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #e6e6e6;
+            margin: 10px 0;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .interrupt-button {
+            background-color: #DF6F65;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 0.95vw;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        .interrupt-button:hover {
+            background-color: #db564b;
+        }
+
+        .stop-button {
+            float: left;
+            font-size: 0.95vw;
+            background: #DF6F65;
+            color: #fff;
+            border-radius: 4px;
+            padding: 12px 50px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+            margin-left: 200px;
+        }
+        .stop-button:hover {
+            background: #db564b;
+        }
+
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
+        }
+        #spinner {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+    </style>
+
+
+    <script>
+
+        function reloadImage() {
+            const image = document.getElementById('progress-image');
+            const timestamp = new Date().getTime(); // Add a unique query parameter to force reload
+            image.src = `Temp/progress.svg?t=${timestamp}`;
+        }
+
+        // Function to call Python's adjust_metrics every second
+        async function callAdjustMetrics() {
+            try {
+                await pywebview.api.adjust_metrics();
+            } catch (error) {
+                console.error('Error calling adjust_metrics:', error);
+            }
+        }
+
+        async function callInterrupt() {
+            try {
+                await pywebview.api.interrupt();
+            } catch (error) {
+                console.error('Error calling back_to_load_p_form:', error);
+            }
+        }
+
+        // Set interval to reload the image and call adjust_metrics every second
+        setInterval(() => {
+            reloadImage();
+            callAdjustMetrics();
+        }, 1000);
+
+    </script>
+
+</head>
+<body>
+
+    <img id="progress-image" src="Temp/progress.svg" alt="Progress Image">
+
+    <div class="card-container">
+        <h1 style="word-spacing: 0.2em;">Live Dashboard</h1>
+
+        <div class="result-row">
+            <div class="label">Objective value</div>
+            <div class="value" id="objective-value">0</div>
+        </div>
+        <div class="divider"></div>
+
+        <div class="result-row">
+            <div class="label">Feasible solution found</div>
+            <div class="value" id="feasible-value">No</div>
+        </div>
+        <div class="divider"></div>
+
+        <div class="result-row">
+            <div class="label">Time limit (in s)</div>
+            <div class="value" id="totaltime-value">0</div>
+        </div>
+        <div class="divider"></div>
+
+        <div class="result-row">
+            <div class="label">Time so far (in s)</div>
+            <div class="value" id="remainingtime-value">0</div>
+        </div>
+
+        <div class="button-container">
+          <button class="interrupt-button" onclick="callInterrupt()">Interrupt</button>
+        </div>
+
+    </div>
+
+</body>
+</html>
