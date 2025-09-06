@@ -1,0 +1,79 @@
+Metadata-Version: 2.4
+Name: vg_management
+Version: 0.1.0
+Summary: The Python script & library for managing web service stack
+Author-email: swettoth0812 <tan@vnguru.com>
+License-Expression: Apache-2.0
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: cryptography==41.0.7
+Requires-Dist: dnspython==2.4.2
+Requires-Dist: jinja2==3.1.2
+Requires-Dist: markupsafe==2.1.3
+Requires-Dist: netifaces==0.11.0
+Requires-Dist: pip==23.3.1
+Requires-Dist: pyopenssl==23.3.0
+Requires-Dist: pyyaml==6.0.1
+Requires-Dist: setuptools==69.0.2
+Dynamic: license-file
+
+# VG_MANAGEMENT - The Python script & library for managing web service stack
+
+
+VG_MANAGEMENT is a python library and also collection of scripts. It helps automate the basic tasks when you're working with web service stack or provide a python library to integrate with other system and flow. Currently, the library only works with the LAMP stack.
+
+<!--This is one of the tool we built to help you manage your web service stack. You can find more information at the [documentation site](DOCUMENTATION_LINK)-->
+
+VG_MANAGEMENT is maintained and published by [VNGuru](https://vnguru.com/).
+
+---
+
+## Notices
+
+**Python >=3.10 is required for this project**.
+
+---
+
+## Getting Started
+
+Assuming you have a supported version of Python installed, we recommended using python virtual environment:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+Then, you can install vg_management from PyPI with:
+
+```bash
+python -m pip install vg_management
+```
+
+## Using VG_MANAGEMENT
+After installing vg_management package, you can use it as a script or import it as a library in your python code.
+
+### As a Script
+You can run the script directly from the command line, here is the list of commands:
+
+```bash
+vg_delete_user --help
+vg_new_user --help
+vg_backup_virtualhost --help
+vg_new_vpn_user --help
+vg_manage_secondary --help
+vg_replication_agent --help
+```
+
+### As a Library
+You can import the library in your python code:
+
+```python
+import vg_management
+import sys
+# Use the library functions
+config = vg_management.new_user.WebConfiguration()
+parsed_config = vg_management.new_user.parse_command_line(config)
+vg_management.new_user.new_user(parsed_config, messages_file=sys.stdout))
+
+```

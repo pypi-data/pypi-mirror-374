@@ -1,0 +1,7 @@
+[console_scripts]
+vg_backup_virtualhost = libexec.backup_virtualhost:main
+vg_delete_user = libexec.delete_user:main
+vg_manage_secondary = libexec.manage_secondary:main
+vg_new_user = libexec.new_user:main
+vg_new_vpn_user = libexec.new_vpn_user:main
+vg_replication_agent = libexec.replication_agent:main
