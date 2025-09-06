@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyinitlib"
+version = "0.0.1"
+description = "Une petite bibliothèque exemple nommée pyinitlib qui sert à initaliser vos application consoles en Python 3.X ."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name="Ton Nom", email="you@example.com" }]
+dependencies = []
