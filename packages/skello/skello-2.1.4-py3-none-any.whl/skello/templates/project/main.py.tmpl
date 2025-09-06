@@ -1,0 +1,39 @@
+"""
+Main entry point for $project_name.
+
+This module contains the main functionality of the application.
+"""
+
+import sys
+from pathlib import Path
+
+
+def main():
+    """
+    Main function - entry point of the application.
+    
+    Add your main application logic here.
+    """
+    print("Hello from $project_name!")
+    print("🚀 Project structure created successfully!")
+    
+    # Example: Print current working directory
+    print(f"📁 Working directory: {Path.cwd()}")
+
+
+def cli():
+    """
+    Command line interface entry point.
+    """
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n👋 Goodbye!")
+        sys.exit(0)
+    except Exception as e:
+        print(f"❌ Error: {e}")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    cli()
