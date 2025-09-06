@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>470</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QLabel" name="Description">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>40</y>
+     <width>431</width>
+     <height>381</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Génère un document Word à partir d’un modèle.
+
+Paths :
+Chemin du template(colonne : Template_Path)
+Chemin de la sauvegarde(colonne : Output_Name)
+
+Replacements : 
+Liste de balises et valeurs à remplacer dans le document (colonnes : Target et Value)
+
+Tables :
+Insére la data table reçu sous forme de tableaux aux emplacements balisés (la balise remplacée est le nom de la table dans le edit domain)
+
+Sortie : 
+Chemin du fichier Word généré.</string>
+   </property>
+   <property name="textFormat">
+    <enum>Qt::AutoText</enum>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
