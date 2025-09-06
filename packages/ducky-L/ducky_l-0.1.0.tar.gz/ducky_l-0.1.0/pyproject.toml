@@ -1,0 +1,14 @@
+[project]
+name = "ducky-l"
+version = "0.1.0"
+description = "Lenguaje en español para programar divertido y fácil"
+authors = [
+    { name="José Pato", email="tu-email@ejemplo.com" }
+]
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["español", "educativo", "patos", "lenguaje"]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
