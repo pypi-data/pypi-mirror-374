@@ -1,0 +1,136 @@
+MIT License
+
+Copyright (c) 2024 Vanox Tech
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+
+This software incorporates and distributes the following third-party packages.
+Each package is subject to its own license terms:
+
+================================================================================
+PYPANDOC
+================================================================================
+MIT License
+Copyright (c) 2014-2024 pypandoc contributors
+https://github.com/pypandoc/pypandoc
+
+================================================================================
+PANDAS
+================================================================================
+BSD 3-Clause License
+Copyright (c) 2008-2024, PyData Development Team
+https://pandas.pydata.org/
+
+================================================================================
+OPENPYXL
+================================================================================
+MIT License
+Copyright (c) 2010 openpyxl contributors
+https://openpyxl.readthedocs.io/
+
+================================================================================
+PYTHON-DOCX
+================================================================================
+MIT License
+Copyright (c) 2013 Steve Canny, https://github.com/scanny
+https://github.com/python-openxml/python-docx
+
+================================================================================
+PYTHON-PPTX
+================================================================================
+MIT License
+Copyright (c) 2013 Steve Canny, https://github.com/scanny
+https://github.com/python-openxml/python-pptx
+
+================================================================================
+PYMUPDF (FITZ)
+================================================================================
+GNU Affero General Public License v3.0
+Copyright (c) 2017-2024 Artifex Software, Inc.
+https://github.com/pymupdf/PyMuPDF
+
+Note: PyMuPDF is dual-licensed under AGPL v3 and a commercial license.
+For commercial use, please refer to: https://mupdf.com/licensing.html
+
+================================================================================
+PDFPLUMBER
+================================================================================
+MIT License
+Copyright (c) 2024 Jeremy Singer-Vine
+https://github.com/jsvine/pdfplumber
+
+================================================================================
+PDF2DOCX
+================================================================================
+MIT License
+Copyright (c) 2020-2024 pdf2docx contributors
+https://github.com/pymupdf/pdf2docx
+
+================================================================================
+REPORTLAB
+================================================================================
+BSD License
+Copyright (c) 2000-2024, ReportLab Inc.
+https://www.reportlab.com/
+
+================================================================================
+TABULATE
+================================================================================
+MIT License
+Copyright (c) 2011-2024 Sergey Astanin and contributors
+https://github.com/astanin/python-tabulate
+
+================================================================================
+JINJA2
+================================================================================
+BSD 3-Clause License
+Copyright (c) 2007-2024 the Pallets team
+https://palletsprojects.com/p/jinja/
+
+================================================================================
+XLRD
+================================================================================
+BSD License
+Copyright (c) 2005-2024 Stephen John Machin, Lingfo Pty Ltd
+https://github.com/python-excel/xlrd
+
+================================================================================
+
+IMPORTANT LICENSING NOTES:
+
+1. PyMuPDF (AGPL v3): This package is licensed under the GNU Affero General 
+   Public License v3.0, which is a copyleft license. If you distribute this 
+   software or run it as a service, you must provide the source code to users.
+   For commercial applications, consider purchasing a commercial license from 
+   Artifex Software.
+
+2. Most other dependencies are MIT or BSD licensed, which are permissive licenses.
+
+3. This software may optionally use LibreOffice or Pandoc for legacy format 
+   conversions, which are separately licensed.
+
+4. Image format conversions may require ImageMagick, which has its own license.
+
+For the most current license information of dependencies, please refer to their 
+respective repositories and documentation.
+
+Full license texts for all dependencies can be found in their respective 
+package installations or online repositories.
