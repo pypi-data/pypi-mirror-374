@@ -1,0 +1,61 @@
+Metadata-Version: 2.4
+Name: setch-py
+Version: 1.0.3
+Summary: A utility for retrieving system information on Linux
+Project-URL: Source, https://github.com/mentiferous/setch.git
+Author: mentiferous
+License-Expression: GPL-3.0-or-later
+License-File: LICENSE
+Keywords: linux,setch,utility
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Programming Language :: Python :: 3.15
+Classifier: Topic :: Utilities
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+
+# setch
+
+[![PyPI - Version](https://img.shields.io/pypi/v/setch-py?style=social)](https://pypi.org/project/setch-py/)
+[![PyPI - License](https://img.shields.io/pypi/l/setch-py?style=social)](https://github.com/mentiferous/setch/blob/main/LICENSE)
+
+![banner](https://raw.githubusercontent.com/mentiferous/setch/refs/heads/main/assets/images/banner.svg)
+
+## Installation
+
+### Prerequisites
+
+- Python >= 3.10
+- [pipx](https://pipx.pypa.io/stable/installation/#on-linux)
+
+```sh
+pipx install setch-py
+```
+
+## Usage
+
+```sh
+setch
+```
+
+## Uninstall
+
+```sh
+pipx uninstall setch-py
+```
+
+## License
+
+[GNU General Public License v3.0 or later](https://github.com/mentiferous/setch/blob/main/LICENSE)
