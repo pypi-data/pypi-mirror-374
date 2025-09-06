@@ -1,0 +1,9 @@
+[console_scripts]
+rrspecex = specex.rrspecex:rrspecex
+specex = specex.cubex:specex
+specex-cube-anim = specex.plot:plot_cube_slice_animation
+specex-cubestack = specex.stack:cube_stack
+specex-cutout = specex.cube:cutout_main
+specex-plot = specex.plot:plot_spectra
+specex-smooth = specex.cube:smoothing_main
+specex-zeropointinfo = specex.zeropoints:main

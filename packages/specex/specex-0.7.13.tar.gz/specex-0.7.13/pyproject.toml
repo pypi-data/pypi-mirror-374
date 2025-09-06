@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+write_to = "src/specex/_version.py"
+
+[project]
+name = "specex"
+version = "0.7.13"
+description = "Extract spectra from fits cubes"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {file = "LICENSE"}
+keywords = ["spectroscopy", "spectra", "spectrum", "spectral cubes"]
+authors = [
+ {name = "Maurizio D'Addona"},
+ {email = "mauritiusdadd@gmail.com"}
+]
+maintainers = [
+ {name = "Maurizio D'Addona"},
+ {email = "mauritiusdadd@gmail.com"}
+]
+classifiers = [
+        # How mature is this project? Common values are
+        #   3 - Alpha
+        #   4 - Beta
+        #   5 - Production/Stable
+        "Development Status :: 3 - Alpha",
+        # Indicate who your project is intended for
+        "Intended Audience :: Science/Research",
+        "Topic :: Multimedia :: Graphics :: Graphics Conversion",
+        # Specify the Python versions you support here. In particular, ensure
+        # that you indicate whether you support Python 2, Python 3 or both.
+        "Programming Language :: Python :: 3",
+]
+
+dependencies = [
+    "numpy",
+    "scipy",
+    "astropy",
+    "matplotlib",
+]
+
+[project.optional-dependencies]
+animations = ["imageio"]
+regions = ["regions"]
+advanced = ["reproject"]
+redrock = ["numba", "sqlalchemy", "healpy", "requests", "fitsio", "photutils", "h5py"]
+all = ["specex[animations,regions,redrock,advanced]"]
+test = ["coverage"]
+
+[project.urls]
+documentation = "https://python-specex.readthedocs.io/en/latest"
+repository = "https://github.com/mauritiusdadd/python-specex"
+
+[project.scripts]
+specex = "specex.cubex:specex"
+rrspecex = "specex.rrspecex:rrspecex"
+specex-zeropointinfo = "specex.zeropoints:main"
+specex-cubestack = "specex.stack:cube_stack"
+specex-cutout = "specex.cube:cutout_main"
+specex-smooth = "specex.cube:smoothing_main"
+specex-plot = "specex.plot:plot_spectra"
+specex-cube-anim = "specex.plot:plot_cube_slice_animation"
