@@ -1,0 +1,84 @@
+Metadata-Version: 2.4
+Name: atsphinx-typst
+Version: 0.0.4
+Summary: Generate Typst sources and PDF from Sphinx document.
+Project-URL: Home, https://github.com/atsphinx/typst
+Project-URL: Documentation, https://atsphinx.github.io/typst
+Author-email: Kazuya Takei <myself@attakei.net>
+License-Expression: Apache-2.0
+License-File: LICENSE
+Classifier: Development Status :: 3 - Alpha
+Classifier: Framework :: Sphinx
+Classifier: Framework :: Sphinx :: Extension
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Documentation
+Classifier: Topic :: Documentation :: Sphinx
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Documentation
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Text Processing
+Classifier: Topic :: Text Processing :: Markup
+Classifier: Topic :: Text Processing :: Markup :: reStructuredText
+Requires-Python: >=3.10
+Requires-Dist: anytree>=2.12.1
+Requires-Dist: sphinx>=8.1
+Requires-Dist: tomli>=2.2.1; python_version < '3.11'
+Provides-Extra: pdf
+Requires-Dist: typst>=0.13.2; extra == 'pdf'
+Description-Content-Type: text/x-rst
+
+==============
+atsphinx-typst
+==============
+
+Faster PDF generator from Sphinx document using Typst.
+
+Features
+========
+
+* Provide ``typst`` and ``typstpdf`` builder
+  to generate Typst document (and PDF) from doctree.
+* TODO: Provide utility directives and roles for Typst syntax.
+
+Getting started
+===============
+
+.. code:: console
+
+   pip install atsphinx-typst
+   # If you also want to build PDF, install with extra 'pdf'
+   pip install 'atsphinx-typst[pdf]'
+
+You can run ``typst`` and ``typstpdf`` builder without set it into extensions.
+
+.. code:: console
+
+    # To generate Typst document.
+    make typst
+    # To generate Typst document and PDF from document.
+    make typstpdf
+
+Milestones
+==========
+
+v0.1 (for working)
+------------------
+
+* Supports core directives and roles.
+* ✅ Supports generating PDF using ``typst`` python project.
+* ✅ Gnerate PDF file of this project's project.
+
+v1.0 (for stable)
+-----------------
+
+* Use for PDF of sphinx-revealjs's documentation.
+* Publish my private tech ZINE.
