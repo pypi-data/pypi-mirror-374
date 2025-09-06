@@ -1,0 +1,141 @@
+---
+title: KiCad Library Manager (KiLM)
+description: Professional command-line tool for managing KiCad libraries across projects and workstations with cross-platform support and team collaboration.
+template: splash
+hero:
+  title: KiCad Library Manager (KiLM)
+  tagline: Professional KiCad library management with cross-platform support and seamless team collaboration.
+  image:
+    file: ../../assets/KiCad-Logo.webp
+    alt: KiCad logo
+  actions:
+    - text: Get Started
+      link: /guides/getting-started/
+      icon: right-arrow
+      variant: primary
+    - text: View on GitHub
+      link: https://github.com/barisgit/KiLM
+      icon: github
+      variant: minimal
+features:
+  - icon: tabler:library
+    title: Unified Library Management
+    details: Manage symbols, footprints, and 3D models from a single professional CLI tool.
+  - icon: tabler:device-desktop
+    title: Cross-Platform Support
+    details: Works seamlessly on Windows, macOS, and Linux with automatic KiCad detection.
+  - icon: tabler:rocket
+    title: Reliable & Fast
+    details: Built for reliability with comprehensive error handling and quick library operations.
+  - icon: tabler:settings
+    title: Professional Standards
+    details: Clean code, proper configuration management, and comprehensive backup system.
+  - icon: tabler:cloud-download
+    title: Team Collaboration
+    details: Share libraries via Git with consistent metadata and environment setup.
+  - icon: tabler:terminal-2
+    title: Modern CLI Design
+    details: Intuitive commands with comprehensive help, dry-run modes, and clear feedback.
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+import BadgeData from "../../components/BadgeData.astro";
+
+<BadgeData />
+
+<div class="pointer-events-none absolute inset-x-0 -top-6 h-48 -z-10 blur-3xl opacity-40 aurora-bg"></div>
+
+<h2 class="mt-10 mb-4 text-[1.6rem] sm:text-2xl font-semibold tracking-tight">
+  <span class="bg-gradient-to-r from-sky-400 via-violet-300 to-amber-300 bg-clip-text text-transparent pr-4">Quickstart</span>
+  <span class="align-middle text-xs px-2 py-0.5 rounded-full border border-white/10 text-white/70 bg-white/5">~1 min</span>
+  
+</h2>
+
+```bash
+# Install with pipx (recommended - isolated environment)
+pipx install kilm
+
+# Alternative: using uv (fastest)
+uv pip install kilm
+
+# Verify installation
+kilm --version
+
+# Check KiCad detection
+kilm status
+
+# Initialize library in your project
+kilm init --name my-library --description "My KiCad components"
+
+# Set up KiCad configuration
+kilm setup
+```
+
+<p class="mt-4 text-white/80">
+  New to KiLM? Start with the <a href="/guides/getting-started/">Getting Started</a> guide for a complete walkthrough, then explore <a href="/guides/configuration/">Configuration</a> options.
+</p>
+
+<ul class="mt-2 text-white/80">
+  <li><a href="/guides/installation/">Installation Methods</a> - pipx, uv, pip, and development setup</li>
+  <li><a href="/guides/getting-started/">Getting Started</a> - creator and consumer workflows</li>
+  <li><a href="/guides/configuration/">Configuration</a> - KiLM and KiCad integration</li>
+  <li><a href="/community/development/">Development Setup</a> - contribute with type safety</li>
+</ul>
+
+<h2 class="mt-12 mb-4 text-[1.6rem] sm:text-2xl font-semibold tracking-tight">
+  <span class="bg-gradient-to-r from-sky-400 via-violet-300 to-amber-300 bg-clip-text text-transparent">Learn</span>
+</h2>
+
+<CardGrid>
+  <Card title="Creator & Consumer Workflows" link="/guides/getting-started/">
+    Learn how to set up shared libraries and use them across teams with Git integration.
+    <a class="card-cta" href="/guides/getting-started/">Learn workflows <span aria-hidden="true" class="arrow">→</span></a>
+  </Card>
+  <Card title="Development & Contributing" link="/community/development/">
+    Quality standards, modern Python development practices, and contribution guidelines.
+    <a class="card-cta" href="/community/development/">Contribute <span aria-hidden="true" class="arrow">→</span></a>
+  </Card>
+  <Card title="Complete CLI Reference" link="/reference/cli/">
+    Every command with detailed options, examples, and cross-platform usage.
+    <a class="card-cta" href="/reference/cli/">Browse commands <span aria-hidden="true" class="arrow">→</span></a>
+  </Card>
+  <Card title="Configuration Management" link="/guides/configuration/">
+    KiLM and KiCad configuration files, backup systems, and environment variables.
+    <a class="card-cta" href="/guides/configuration/">Configure setup <span aria-hidden="true" class="arrow">→</span></a>
+  </Card>
+</CardGrid>
+
+<h2 class="mt-12 mb-4 text-[1.6rem] sm:text-2xl font-semibold tracking-tight">
+  <span class="bg-gradient-to-r from-sky-400 via-violet-300 to-amber-300 bg-clip-text text-transparent">Extend</span>
+</h2>
+
+<CardGrid>
+  <Card
+    title="Add External Libraries"
+    link="/reference/cli/add-3d/"
+    icon="add-document"
+  >
+    Integrate third-party symbol, footprint, and 3D model libraries.
+    <a class="card-cta" href="/reference/cli/add-3d/">Add 3D libs <span aria-hidden="true" class="arrow">→</span></a>
+  </Card>
+  <Card
+    title="Create Project Templates"
+    link="/reference/cli/template/"
+    icon="document"
+  >
+    Standardize designs with reusable project templates.
+    <a class="card-cta" href="/reference/cli/template/">Create template <span aria-hidden="true" class="arrow">→</span></a>
+  </Card>
+  <Card
+    title="Set Environment Variables"
+    link="/reference/cli/config/"
+    icon="document"
+  >
+    Configure KiCad environment variables directly through KiLM.
+    <a class="card-cta" href="/reference/cli/config/">Set env vars <span aria-hidden="true" class="arrow">→</span></a>
+  </Card>
+  <Card title="Manage Pinned Libraries" link="/reference/cli/pin/" icon="setting">
+    Keep your favorite libraries readily accessible within KiCad.
+    <a class="card-cta" href="/reference/cli/pin/">Manage pins <span aria-hidden="true" class="arrow">→</span></a>
+  </Card>
+</CardGrid>
