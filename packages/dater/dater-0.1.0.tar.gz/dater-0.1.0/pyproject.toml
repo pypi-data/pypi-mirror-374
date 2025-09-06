@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.setuptools.package-data]
+"dater" = ["py.typed"]
+
+[project]
+name = "dater"
+description = "Dater? I hardly know 'er!"
+readme = "README.md"
+authors = [
+    { name = "Robin van der Noord", email = "robinvandernoord@gmail.com" }
+]
+requires-python = ">=3.13"
+dynamic = ["version"]
+
+dependencies = [
+    # versions pinned at major to prevent accidentally updating into breaking changes
+    "ewok < 1", # for async log reading
+]
+
+[project.urls]
+Documentation = "https://github.com/educationwarehouse/dater#readme"
+Issues = "https://github.com/educationwarehouse/dater/issues"
+Source = "https://github.com/educationwarehouse/dater"
+
+[tool.semantic_release]
+branch = "master"
+version_variable = "src/dater/__about__.py:__version__"
+change_log = "CHANGELOG.md"
+upload_to_repository = false
+upload_to_release = false
+build_command = "hatch build"
+
+[tool.hatch.version]
+path = "src/dater/__about__.py"
+
+[project.scripts]
+dater = "dater:main"
+
