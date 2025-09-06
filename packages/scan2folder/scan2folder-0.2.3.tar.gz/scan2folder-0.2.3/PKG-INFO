@@ -1,0 +1,102 @@
+Metadata-Version: 2.3
+Name: scan2folder
+Version: 0.2.3
+Summary: Scan tool for HP MF Printers
+Keywords: scan button,scan tool,HP MFP,sane
+Author: Alfredo Cubitos
+Requires-Dist: pyqt6
+Requires-Dist: python-sane
+Requires-Dist: bs4
+Requires-Dist: lxml
+Requires-Dist: pillow
+Requires-Dist: wand
+Requires-Dist: pytesseract
+Requires-Dist: numpy
+Requires-Python: >=3.13
+Project-URL: Homepage, https://github.com/AlfredoCubitos/Scan2Folder
+Description-Content-Type: text/markdown
+
+# Scan2Folder
+
+## Enabling the Scan-to-Folder button on HP MFP printers
+
+This is a **PytQt6** desktop app for rapidly scanning documents by using the Scan-to-Folder button on HP Multi Function Printers (MFP)
+especially CM Devices.
+
+This app uses the **Sane** backend to get all parameters needed.
+
+It also provides image enhancement features.
+
+>*Note: in this version only the first scanner is used*
+
+**NEW:**    Config profiles
+> If you want scan document with different page sizes it may usefull to save each configuration into a seperate profile
+
+OCR processing and PDF-Document creation or from local images.
+> The *Scan2Folder*-Button has a new function.  
+> By pressing the button it opens a file dialog where you can select your image files  
+> you want to procees.  
+> *Note:* the filenames must be numbered like this `<filename>_[1..n].png`
+
+OCR processing and PDF-Document creation from your scanns.
+
+After you finished scanning, you can start an OCR-Process
+The OCR-Process will do the following steps:
+
+1. Deskew each page
+2. Crop the image
+3. Check text orientation
+4. Start ocr
+5. Create searchable PDF
+
+You can define the crop size in the configuration dialog
+
+>*Note: In this version A4 page size for 300dpi is predifned.*
+If you want to change this, you can do it in ocrtools.py
+
+### Usage
+
+1. Ensure that your scanner is reachable
+2. Start the app
+3. Select a *ScanMode*
+4. Select a path where you want to store your images
+5. Enter an image prefix name. All the scanned images will enumerated automatically.
+6. Choose a scan resolution
+7. Press the *Start Service* button
+
+If the scanner is reachable the LED turns on green and you can use the scan-to-folder button on your device.
+
+### Image enhancement
+
+On clicking the `Config/Calibrate` menu opens a window where you can scan a preview image.
+
+>*Note: the scan button is only enabled when the service is running.*
+
+>*Only flatbed scanning is supported*
+
+
+### Installation
+
+Install packages needed with:
+
+>`sudo pip3 install -r deps/dependency.txt`
+
+#### For OCR
+
+Install tesseract-ocr 4 with your language **and**  with Orientation & Script detection
+
+
+### Features
+
+* creates PDF from local images
+* spec file for creating stand alone binaries
+* Image name is cleared when stopped a scan session
+* Image name has now auto complete, to avoid overwrite existing files
+
+### Issues
+
+* The script is tested only with a HP CM1312 device
+* Only one (the first) scanner is usable
+* If the LED does not turn green after the device is switched on, may be your device is not supported
+* If the LED does not turn green and the button keeps yellow, the scanner is locked by another device/thread
+
