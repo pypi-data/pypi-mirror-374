@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lateflat"
+version = "0.1.3"
+description = "A command-line tool to flatten LaTeX projects into a single root directory for easy submission."
+readme = "README.md"
+requires-python = ">=3.7"
+keywords = ["latex", "project flattening", "file organization"]
+authors = [{ name = "Nkzono99", email = "j-nakazono@stu.kobe-u.ac.jp" }]
+maintainers = [{ name = "Nkzono99", email = "j-nakazono@stu.kobe-u.ac.jp" }]
+license = { file = "LICENSE" }
+dependencies = []
+
+classifiers = [
+    "License :: OSI Approved :: Apache Software License",
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Text Processing :: Markup :: LaTeX",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Repository = "https://github.com/Nkzono99/lateflat"
+
+[project.scripts]
+lateflat = "lateflat.lateflat:main"
