@@ -1,0 +1,156 @@
+Metadata-Version: 2.4
+Name: teraflopai-data
+Version: 0.1.1
+Summary: A petabyte scale data processing framework for AI models using Ray.
+Author-email: Teraflop AI <enrico@teraflop.ai>
+Classifier: Typing :: Typed
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: daft[lance,ray]>=0.5.22
+Requires-Dist: loguru>=0.7.3
+Requires-Dist: ray[data]>=2.47.1
+Requires-Dist: transformers<4.54.0
+Provides-Extra: text
+Requires-Dist: warcio>=1.7.5; extra == "text"
+Requires-Dist: trafilatura>=2.0.0; extra == "text"
+Requires-Dist: chonkie>=1.1.0; extra == "text"
+Requires-Dist: sentence-transformers>=5.0.0; extra == "text"
+Requires-Dist: vllm>=0.9.2; extra == "text"
+Provides-Extra: audio
+Requires-Dist: silero-vad>=5.1.2; extra == "audio"
+Provides-Extra: video
+Requires-Dist: av>=15.1.0; extra == "video"
+Requires-Dist: scenedetect>=0.6.6; extra == "video"
+Provides-Extra: image
+Requires-Dist: imagehash>=4.3.2; extra == "image"
+Requires-Dist: pillow-simd>=9.5.0.post2; extra == "image"
+Requires-Dist: vllm>=0.9.2; extra == "image"
+Provides-Extra: all
+Requires-Dist: teraflopai-data[audio,image,text,video]; extra == "all"
+Dynamic: license-file
+
+# teraflopai-data
+
+A petabyte scale data processing framework for AI models using Daft + Ray.
+
+## Installation
+```python
+pip install teraflopai-data
+```
+
+## Community
+
+
+## Examples
+
+### Pipeline
+```python
+import daft
+
+from teraflopai_data.components.text.embedding import SentenceTransformersEmbed
+from teraflopai_data.components.text.fineweb_edu import FinewebEduClassifier
+from teraflopai_data.pipeline import Pipeline
+
+df = daft.from_pydict(
+    {
+        "text": [
+            "My mother told me",
+            "Someday I will buy",
+            "Galleys with good oars",
+            "Sail to distant shores",
+        ],
+    }
+)
+
+classifier = FinewebEduClassifier(
+    input_column="text",
+    batch_size=4,
+    concurrency=1,
+    num_cpus=6,
+    num_gpus=1,
+)
+
+embedder = SentenceTransformersEmbed(
+    input_column="text",
+    model_name="all-MiniLM-L6-v2",
+    batch_size=4,
+    concurrency=1,
+    num_cpus=6,
+    num_gpus=1,
+)
+
+pipeline = Pipeline(
+    ops=[classifier, embedder],
+)
+
+df = pipeline(df)
+df.show()
+```
+
+### Text
+```python
+import daft
+
+from teraflopai_data.components.text.fineweb_edu import FinewebEduClassifier
+
+df = daft.from_pydict(
+    {
+        "text": [
+            "My mother told me",
+            "Someday I will buy",
+            "Galleys with good oars",
+            "Sail to distant shores",
+        ],
+    }
+)
+
+classifier = FinewebEduClassifier(
+    input_column="text",
+    batch_size=4,
+    concurrency=1,
+    num_cpus=6,
+    num_gpus=1,
+)
+df = classifier(df)
+df.show()
+```
+
+### Image
+```python
+import daft
+from daft import col
+
+from teraflopai_data.components.image.image_hashing import ImageHasher
+
+df = daft.from_pydict(
+    {
+        "urls": [
+            "https://live.staticflickr.com/65535/53671838774_03ba68d203_o.jpg",
+            "https://live.staticflickr.com/65535/53671700073_2c9441422e_o.jpg",
+            "https://live.staticflickr.com/65535/53670606332_1ea5f2ce68_o.jpg",
+            "https://live.staticflickr.com/65535/53671838039_b97411a441_o.jpg",
+            "https://live.staticflickr.com/65535/53671698613_0230f8af3c_o.jpg",
+        ],
+    }
+)
+
+hasher = ImageHasher(
+    input_column="image",
+    hashing_algorithm="wavelet",
+    concurrency=1,
+    num_cpus=6,
+)
+
+df = df.with_column("image_bytes", col("urls").url.download(on_error="null"))
+df = df.with_column("image", col("image_bytes").image.decode())
+df = hasher(df)
+df = df.drop_duplicates("image_hash")
+df.show()
+```
