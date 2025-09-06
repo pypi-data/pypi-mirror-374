@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gemDP"
+version = "0.0.4"
+authors = [
+  { name="UniversalShift" },
+]
+description = "Gem is a Python library that makes Minecraft Datapack/Resourcepack creation process easier"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = { text = "MIT" }
+
+[project.urls]
+Homepage = "https://github.com/UniversalShift/GemDP"
+Issues = "https://github.com/UniversalShift/GemDP/issues"
