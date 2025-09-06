@@ -1,0 +1,47 @@
+Metadata-Version: 2.2
+Name: wxswutilsapi
+Version: 0.1.69
+Summary: python 工具库
+Author: liudaiyi
+Author-email: 121274222@qq.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: requires-python
+Dynamic: summary
+
+#wxapi
+
+1.创建文件 $HOME/.pypirc
+
+
+[distutils]
+index-servers = 
+    pypi
+
+[pypi]
+username = __token__
+password = your-api-token
+
+
+#在终端或命令行中执行以下命令来安装 wheel
+pip install wheel
+
+#运行打包命令
+python setup.py sdist bdist_wheel
+
+#发送命令
+twine upload dist/*
+
+#升级包
+pip install --upgrade wxswutilsapi
+
+pip install wxswutilsapi --upgrade --index-url https://pypi.org/simple
+
