@@ -1,0 +1,217 @@
+# 🏢 Microsoft Dynamics 365 Business Central MCP Server
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![PyPI version](https://img.shields.io/pypi/v/mcp-business-central.svg)](https://pypi.org/project/mcp-business-central/)
+[![Python Support](https://img.shields.io/pypi/pyversions/mcp-business-central.svg)](https://pypi.org/project/mcp-business-central/)
+
+A MCP Server for Microsoft Dynamics 365 Business Central with OAuth2 authentication and API v2.0 endpoints. Built by [Dmitry Katson](https://github.com/DmitryKatson), Microsoft AI & Business Central MVP, enabling AI agents to seamlessly interact with Business Central data.
+
+> Please note that this project is actively maintained and may receive updates to enhance functionality and compatibility.
+
+## �� Table of Contents
+
+1. [🎯 Overview](#overview)
+2. [🛠️ Currently Supported Tools](#currently-supported-tools)
+3. [🔌 Installation & Getting Started](#installation--getting-started)
+4. [⚙️ Configuration](#configuration)
+5. [❓ Troubleshooting](#troubleshooting)
+6. [📚 Additional Resources](#additional-resources)
+7. [👨‍💻 Author](#author)
+8. [📄 License](#license)
+
+## 🎯 Overview
+
+### ✨ Example Prompts: Your Business Central Assistant
+
+Your AI assistant can seamlessly interact with your Business Central environment using these advanced tools. Try asking questions like:
+
+- "List all open purchase orders for the last month"
+- "Which customers have not placed an order in the past 90 days?"
+- "Show me the top 5 selling items by revenue this quarter"
+- "What are the outstanding vendor invoices over $10,000?"
+- "Find all sales orders awaiting shipment"
+- "Which items are below their reorder point?"
+- "Get the approval status of all posted purchase invoices"
+
+Everything exposed by your Business Central APIs—whether standard or custom—is accessible through this MCP server.
+
+### 📊 Key Capabilities
+
+- **🔐 OAuth2 Authentication**: Secure Azure AD integration with Business Central
+- **🏢 Auto Company Discovery**: Automatic company detection and switching
+- **📊 Full CRUD Operations**: Complete entity management capabilities
+- **🔍 Schema Discovery**: Dynamic field and relationship exploration
+- **⚡ API v2.0**: Latest Business Central OData endpoints
+- **🧩 Clean Architecture**: Professional, scalable, and maintainable design
+
+## 🛠️ Currently Supported Tools
+
+| Tool Name | Description | Input Parameters |
+|-----------|-------------|------------------|
+| `list_companies` | Discover all available companies in your BC environment | None |
+| `set_active_company` | Set the active company for subsequent operations | `company_id` (string): UUID of the company |
+| `get_active_company` | Get information about the currently active company | None |
+| `list_resources` | List all available Business Central resources/entities | None |
+| `get_odata_metadata` | Smart metadata search - find entities, properties, relationships by search term | `search` (string): Search term<br/>`search_type` (string): Type filter<br/>`include_properties` (bool): Include properties<br/>`include_relationships` (bool): Include relationships |
+| `get_resource_schema` | Get detailed schema and field information for an entity | `resource` (string): Entity name<br/>`company_id` (string, optional): Company UUID |
+| `list_records` | List entity records with advanced filtering, sorting, and pagination | `resource` (string): Entity name<br/>`filter` (string, optional): OData filter<br/>`orderby` (string, optional): Sort order<br/>`select` (string, optional): Field selection<br/>`expand` (string, optional): Related entities<br/>`top` (int, optional): Record limit<br/>`skip` (int, optional): Records to skip |
+
+## 🔌 Installation & Getting Started
+
+The Business Central MCP Server supports installation across multiple clients. Choose your preferred client below for streamlined setup.
+
+### ▶️ Getting Started
+
+Follow these steps to get your Business Central MCP Server up and running:
+
+1. **📦 Install Python & Package**
+   - Ensure [Python 3.8+](#prerequisites) is installed on your system
+   - Install the MCP server: [see installation commands](#install-mcp-business-central)
+   - Verify installation works: [verification steps](#verify-installation)
+
+2. **🔐 Set up Azure Authentication**
+   - Create Azure AD app registration: [detailed Azure setup](#azure-ad-setup)
+   - Configure Business Central API permissions
+   - Generate client secret and note required values
+
+3. **🔧 Add to Your MCP Client**
+   - Configure your preferred client: [client configuration table](#client-configuration)
+
+4. **🚀 Test the Connection**
+   - **Restart your MCP client completely** for changes to take effect
+   - Try example prompts:
+     - "Show me all customers from Business Central"
+     - "List available Business Central entities"
+     - "What companies are available in my Business Central environment?"
+   - Explore common Business Central entities like customers, vendors, items, and sales orders
+
+💡 **Tip**: Once connected, you can ask about any Business Central entity or use natural language to query your business data!
+
+Need help? Check our [troubleshooting section](#troubleshooting) for common issues and solutions.
+
+### 📦 Installation
+
+#### Prerequisites
+
+**Python 3.8+ Required** - The MCP server requires Python to be installed on your system.
+
+| Operating System | Installation Method |
+|------------------|---------------------|
+| **Windows** | <details><summary>Python Installation Steps</summary><br/>1. Download Python from [python.org](https://www.python.org/downloads/windows/)<br/>2. **Important**: Check "Add Python to PATH" during installation<br/>3. Verify installation:<br/><pre>python --version<br/>pip --version</pre>4. If `pip` is not recognized, try:<br/><pre>python -m pip --version</pre></details> |
+| **macOS** | <details><summary>Python Installation Steps</summary><br/>**Option 1 - Official Python:**<br/>Download from [python.org](https://www.python.org/downloads/mac-osx/)<br/><br/>**Option 2 - Homebrew:**<br/><pre>brew install python</pre>**Option 3 - Built-in (macOS 12.3+):**<br/>Python 3 is pre-installed</details> |
+| **Linux** | <details><summary>Python Installation Steps</summary><br/>**Ubuntu/Debian:**<br/><pre>sudo apt update<br/>sudo apt install python3 python3-pip</pre>**CentOS/RHEL/Fedora:**<br/><pre>sudo yum install python3 python3-pip</pre>**Arch Linux:**<br/><pre>sudo pacman -S python python-pip</pre></details> |
+
+#### Install MCP Business Central
+
+Once Python is installed, install the MCP server:
+
+```bash
+# Windows
+pip install mcp-business-central
+# or if pip is not in PATH:
+python -m pip install mcp-business-central
+
+# macOS/Linux  
+pip3 install mcp-business-central
+# or
+python3 -m pip install mcp-business-central
+```
+
+#### Verify Installation
+
+```bash
+# Windows
+python -m mcp_business_central --help
+
+# macOS/Linux
+python3 -m mcp_business_central --help
+```
+
+## ⚙️ Configuration
+
+### 🔐 Azure AD Setup
+
+1. **Create Azure AD App Registration**
+   - Navigate to Azure Portal → Azure Active Directory → App registrations
+   - Click "New registration"
+   - Provide a meaningful name (e.g., "Business Central MCP Server")
+
+2. **Configure API Permissions**
+   - Go to "API permissions"
+   - Add permission → Microsoft APIs → Dynamics 365 Business Central
+   - Select `Financials.ReadWrite.All` (Application permission)
+   - Grant admin consent for your organization
+
+3. **Create Client Secret**
+   - Go to "Certificates & secrets"
+   - Click "New client secret"
+   - Copy the secret value (you won't see it again!)
+
+4. **Note Required Values**
+   - Application (client) ID
+   - Directory (tenant) ID
+   - Client secret value
+
+### 🔧 Client Configuration
+
+| Client | Configuration | MCP Guide |
+|--------|---------------|-----------|
+| **Claude Desktop** | <details><summary>View Configuration</summary><br/>**Location:**<br/>• macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`<br/>• Windows: `%APPDATA%\Claude\claude_desktop_config.json`<br/><br/>**macOS:**<br/><pre>{<br/>  "mcpServers": {<br/>    "businesscentral": {<br/>      "command": "python3",<br/>      "args": ["-m", "mcp_business_central"],<br/>      "env": {<br/>        "BC_TENANT_ID": "your-tenant-id",<br/>        "BC_CLIENT_ID": "your-client-id",<br/>        "BC_CLIENT_SECRET": "your-client-secret",<br/>        "BC_ENVIRONMENT": "production"<br/>      }<br/>    }<br/>  }<br/>}</pre><br/>**Windows:**<br/><pre>{<br/>  "mcpServers": {<br/>    "businesscentral": {<br/>      "command": "python",<br/>      "args": ["-m", "mcp_business_central"],<br/>      "env": {<br/>        "BC_TENANT_ID": "your-tenant-id",<br/>        "BC_CLIENT_ID": "your-client-id",<br/>        "BC_CLIENT_SECRET": "your-client-secret",<br/>        "BC_ENVIRONMENT": "production"<br/>      }<br/>    }<br/>  }<br/>}</pre></details> | [Claude Desktop MCP Guide](https://modelcontextprotocol.io/quickstart/user) |
+| **VS Code** | <details><summary>View Configuration</summary><br/>Install the MCP extension and add to your MCP configuration:<br/><pre>{<br/>  "businesscentral": {<br/>    "command": "python3",<br/>    "args": ["-m", "mcp_business_central"],<br/>    "env": {<br/>      "BC_TENANT_ID": "your-tenant-id",<br/>      "BC_CLIENT_ID": "your-client-id",<br/>      "BC_CLIENT_SECRET": "your-client-secret",<br/>      "BC_ENVIRONMENT": "production"<br/>    }<br/>  }<br/>}</pre></details> | [VS Code MCP Official Guide](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) |
+| **Cursor IDE** | <details><summary>View Configuration</summary><br/>Add to your Cursor MCP settings:<br/><pre>{<br/>  "businesscentral": {<br/>    "command": "python3",<br/>    "args": ["-m", "mcp_business_central"],<br/>    "env": {<br/>      "BC_TENANT_ID": "your-tenant-id",<br/>      "BC_CLIENT_ID": "your-client-id",<br/>      "BC_CLIENT_SECRET": "your-client-secret",<br/>      "BC_ENVIRONMENT": "production"<br/>    }<br/>  }<br/>}</pre></details> | [Cursor MCP Official Guide](https://docs.cursor.com/context/model-context-protocol) |
+| **Windsurf** | <details><summary>View Configuration</summary><br/>Add to your Windsurf MCP configuration:<br/><pre>{<br/>  "businesscentral": {<br/>    "command": "python3",<br/>    "args": ["-m", "mcp_business_central"],<br/>    "env": {<br/>      "BC_TENANT_ID": "your-tenant-id",<br/>      "BC_CLIENT_ID": "your-client-id",<br/>      "BC_CLIENT_SECRET": "your-client-secret",<br/>      "BC_ENVIRONMENT": "production"<br/>    }<br/>  }<br/>}</pre></details> | [Windsurf MCP Guide](https://docs.windsurf.com/windsurf/cascade/mcp) |
+
+## ❓ Troubleshooting
+
+### 💻 System Prompt
+
+For optimal tool usage, add this system prompt to encourage your AI assistant to use Business Central tools:
+
+```markdown
+## Business Central Integration
+
+You have access to MCP tools for Microsoft Dynamics 365 Business Central. These tools allow you to:
+- Query customer, vendor, and item data
+- Access financial information and sales orders
+- Explore entity schemas and relationships
+- Manage company contexts
+
+When handling questions about business data, ERP operations, or financial information, use these Business Central tools to provide accurate, real-time information from the user's Business Central environment.
+```
+
+### ⚠️ Common Issues
+
+| Issue | Possible Solution |
+|-------|-------------------|
+| **"pip is not recognized" (Windows)** | • Python not installed or not in PATH<br/>• Reinstall Python with "Add to PATH" checked<br/>• Use `python -m pip` instead of `pip`<br/>• Restart command prompt after Python installation |
+| **"python: command not found"** | • Python not installed<br/>• On macOS/Linux, try `python3` instead of `python`<br/>• Install Python from official website or package manager |
+| **Authentication Errors** | • Verify Azure AD app permissions<br/>• Check tenant/client ID and secret<br/>• Ensure admin consent is granted<br/>• Confirm `Financials.ReadWrite.All` permission |
+| **API Access Issues** | • Confirm Business Central environment access<br/>• Verify correct entity names (case-sensitive)<br/>• Use `list_resources` to see available entities<br/>• Check environment parameter (`production` vs `sandbox`) |
+| **Connection Timeouts** | • Verify network connectivity to Business Central<br/>• Check if Business Central service is online<br/>• Increase timeout settings if needed |
+| **Empty Results** | • Use `get_resource_schema` to check available fields<br/>• Verify filter syntax (OData v4.0)<br/>• Check company selection with `get_active_company` |
+| **Tool Not Appearing** | • Restart your MCP client completely<br/>• Verify Python installation and package<br/>• Check environment variables are set correctly |
+
+### 🆘 Getting Support
+
+- [Create an issue](https://github.com/DmitryKatson/mcp-business-central/issues)
+- [Join discussions](https://github.com/DmitryKatson/mcp-business-central/discussions)
+- [Contact the author](https://katson.com)
+
+## 📚 Additional Resources
+
+- [Microsoft Dynamics 365 Business Central Documentation](https://learn.microsoft.com/dynamics365/business-central/)
+- [Business Central Web API Reference](https://learn.microsoft.com/dynamics365/business-central/dev-itpro/api-reference/v2.0/)
+- [Model Context Protocol Specification](https://modelcontextprotocol.io)
+- [Azure AD App Registration Guide](https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/administration/automation-apis-using-s2s-authentication?wt.mc_id=DX-MVP-5003099)
+
+## 👨‍💻 Author
+
+**Dmitry Katson** - [GitHub](https://github.com/DmitryKatson) | [Website](https://katson.com)
+
+🏆 Microsoft AI & Business Central MVP  
+🏆 Contribution Hero 2024  
+🌐 Creator of [CentralQ.ai](https://centralq.ai) - AI search for Business Central community
+
+## 📄 License
+
+MIT License - Copyright (c) 2025 Dmitry Katson
