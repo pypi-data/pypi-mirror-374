@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "arithematic-mr.sagar"         # name on PyPI (pip install)
+version = "0.0.5"
+authors = [
+  { name="Mr. Sagar", email="sagartallapogu711@gmail.com" },
+]
+description = "A simple arithmetic package example"
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
