@@ -1,0 +1,88 @@
+Metadata-Version: 2.4
+Name: py-imouse-xp
+Version: 1.0.1
+Summary: Python client library for iMouse device automation and control
+Author: Jing Chen
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/eonminion/py-imouse-xp
+Project-URL: Repository, https://github.com/eonminion/py-imouse-xp
+Project-URL: Issues, https://github.com/eonminion/py-imouse-xp/issues
+Keywords: imouse,device,automation,control,mouse,keyboard
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Hardware
+Classifier: Topic :: System :: Networking
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: annotated-types>=0.7.0
+Requires-Dist: certifi>=2025.7.9
+Requires-Dist: charset-normalizer>=3.4.2
+Requires-Dist: colorlog>=6.9.0
+Requires-Dist: idna>=3.10
+Requires-Dist: pydantic>=2.10.6
+Requires-Dist: pydantic-core>=2.27.2
+Requires-Dist: requests>=2.32.4
+Requires-Dist: typing-extensions>=4.13.2
+Requires-Dist: urllib3>=2.2.3
+Requires-Dist: websocket-client>=1.8.0
+Dynamic: license-file
+
+# py-imouse-xp
+
+Python client library for iMouse device automation and control.
+
+## Installation
+
+```bash
+pip install py-imouse-xp
+```
+
+## Quick Start
+
+### Using the Legacy API
+
+```python
+import imouse
+
+# Create a legacy API instance
+client = imouse.legacy(host="localhost", port=9911, mode="websocket")
+
+# Use the client for device control
+```
+
+### Using the New API
+
+```python
+import imouse
+
+# Create a new API instance
+client = imouse.api(host="localhost", port=9911, mode="websocket")
+
+# Use the client for device control
+```
+
+## Features
+
+- Device automation and control
+- Mouse and keyboard simulation
+- Image processing capabilities
+- WebSocket and HTTP communication modes
+- Legacy API compatibility
+
+## Requirements
+
+- Python 3.8+
+- See requirements for full dependency list
+
+## License
+
+MIT License

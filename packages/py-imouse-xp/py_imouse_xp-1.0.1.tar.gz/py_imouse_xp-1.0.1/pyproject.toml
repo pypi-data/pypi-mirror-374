@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "py-imouse-xp"
+version = "1.0.1"
+description = "Python client library for iMouse device automation and control"
+readme = "README.md"
+license = "MIT"
+authors = [
+    {name = "Jing Chen"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Hardware",
+    "Topic :: System :: Networking"
+]
+requires-python = ">=3.8"
+dependencies = [
+    "annotated-types>=0.7.0",
+    "certifi>=2025.7.9",
+    "charset-normalizer>=3.4.2",
+    "colorlog>=6.9.0",
+    "idna>=3.10",
+    "pydantic>=2.10.6",
+    "pydantic-core>=2.27.2",
+    "requests>=2.32.4",
+    "typing-extensions>=4.13.2",
+    "urllib3>=2.2.3",
+    "websocket-client>=1.8.0"
+]
+keywords = ["imouse", "device", "automation", "control", "mouse", "keyboard"]
+
+[project.urls]
+Homepage = "https://github.com/eonminion/py-imouse-xp"
+Repository = "https://github.com/eonminion/py-imouse-xp"
+Issues = "https://github.com/eonminion/py-imouse-xp/issues"
+
+[tool.setuptools.packages.find]
+include = ["imouse*"]
+
+[tool.setuptools.package-data]
+imouse = ["py.typed"]
