@@ -1,0 +1,50 @@
+[project]
+name = "ksrpc"
+authors = [
+    { name = "wukan", email = "wu-kan@163.com" },
+]
+description = "Keep Simple RPC"
+readme = "README.md"
+requires-python = ">=3.6"
+keywords = ["rpc"]
+license = { file = "LICENSE" }
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python"
+]
+dependencies = [
+    'loguru',
+    'revolving_asyncio',
+    'pandas',
+    'pydantic',
+    'websockets',
+    'IPy',
+    'fakeredis',
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+client = [
+    "httpx",
+]
+server = [
+    'aioredis',
+    'fakeredis',
+    'fastapi',
+    'python-multipart',
+    'uvicorn[standard]',
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "ksrpc/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["ksrpc"]
+include-package-data = true
+
+[tool.hatch.build.targets.sdist]
+include = ["ksrpc*"]
