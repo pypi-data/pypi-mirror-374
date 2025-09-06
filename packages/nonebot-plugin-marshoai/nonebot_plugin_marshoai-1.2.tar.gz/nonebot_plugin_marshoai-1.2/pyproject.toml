@@ -1,0 +1,92 @@
+[project]
+name = "nonebot-plugin-marshoai"
+dynamic = []
+description = "Nonebot2插件，调用Azure OpenAI等AI服务实现猫娘聊天"
+readme = "README.md"
+requires-python = "<4.0,>=3.10"
+authors = [
+    { name = "Asankilp", email = "asankilp@outlook.com" },
+    { name = "LiteyukiStudio", email = "support@liteyuki.icu" },
+]
+dependencies = [
+    "nonebot2>=2.4.0",
+    "nonebot-plugin-alconna>=0.57.1",
+    "nonebot-plugin-localstore>=0.7.1",
+    "zhDatetime>=2.0.0",
+    "aiohttp>=3.9",
+    "httpx>=0.27.0",
+    "ruamel.yaml>=0.18.6",
+    "pyyaml>=6.0.2",
+    "psutil>=6.1.0",
+    "beautifulsoup4>=4.12.3",
+    "pydantic>=2.10.3",
+    "litedoc>=0.1.0.dev20241214103915",
+    "newspaper3k>=0.2.8",
+    "lxml[html_clean]>=5.3.0",
+    "aiofiles>=24.1.0",
+    "sumy>=0.11.0",
+    "azure-ai-inference>=1.0.0b6",
+    "watchdog>=6.0.0",
+    "nonebot-plugin-apscheduler>=0.5.0",
+    "openai>=1.58.1",
+    "nonebot-plugin-argot>=0.1.7",
+    "mcp[cli]>=1.9.0",
+]
+version = "1.2"
+
+[project.license]
+text = "MIT, Mulan PSL v2"
+
+[project.urls]
+Homepage = "https://marsho.liteyuki.org/"
+
+[tool.nonebot]
+plugins = [
+    "nonebot_plugin_marshoai",
+]
+adapters = [
+    { name = "OneBot V11", module_name = "nonebot.adapters.onebot.v11" },
+]
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.version]
+source = "scm"
+tag_filter = "v*"
+tag_regex = "^v(?:\\D*)?(?P<version>([1-9][0-9]*!)?(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))*((a|b|c|rc)(0|[1-9][0-9]*))?(\\.post(0|[1-9][0-9]*))?(\\.dev(0|[1-9][0-9]*))?$)$"
+fallback_version = "0.1.0"
+
+[tool.pdm.build]
+includes = []
+
+[tool.isort]
+profile = "black"
+
+[tool.ruff.lint]
+ignore = [
+    "E402",
+    "F405",
+]
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[dependency-groups]
+dev = [
+    "nb-cli>=1.4.2",
+    "pytest>=8.3.4",
+    "pre-commit>=4.0.1",
+    "nonebot-adapter-onebot>=2.4.6",
+    "mypy>=1.13.0",
+    "black>=24.10.0",
+    "litedoc>=0.1.0.dev20240906203154",
+    "viztracer>=1.0.0",
+    "types-aiofiles",
+]
+test = [
+    "nonebug>=0.4.3",
+]
