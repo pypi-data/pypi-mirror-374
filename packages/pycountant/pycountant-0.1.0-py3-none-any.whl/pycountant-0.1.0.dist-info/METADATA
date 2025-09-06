@@ -1,0 +1,21 @@
+Metadata-Version: 2.4
+Name: pycountant
+Version: 0.1.0
+Summary: Python package for accountants.
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: pycountry>=24.6.1
+Requires-Dist: pydantic>=2.11.7
+Requires-Dist: pydantic-extra-types>=2.10.5
+Dynamic: license-file
+
+# pycountant
+Python package for accountants.
+
+## Installation
+
+```bash
+uv add pycountant
+```
