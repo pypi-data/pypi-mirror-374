@@ -1,0 +1,16 @@
+[solana_agent.plugins]
+image_gen=sakit.image_gen:get_plugin
+mcp=sakit.mcp:get_plugin
+nemo_agent=sakit.nemo_agent:get_plugin
+privy_balance=sakit.privy_balance:get_plugin
+privy_swap=sakit.privy_swap:get_plugin
+privy_transfer=sakit.privy_transfer:get_plugin
+privy_wallet_address=sakit.privy_wallet_address:get_plugin
+rugcheck=sakit.rugcheck:get_plugin
+search_internet=sakit.search_internet:get_plugin
+sns_lookup=sakit.sns_lookup:get_plugin
+solana_balance=sakit.solana_balance:get_plugin
+solana_price=sakit.solana_price:get_plugin
+solana_swap=sakit.solana_swap:get_plugin
+solana_transfer=sakit.solana_transfer:get_plugin
+
