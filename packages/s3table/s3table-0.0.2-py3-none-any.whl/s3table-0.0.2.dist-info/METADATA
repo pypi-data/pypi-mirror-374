@@ -1,0 +1,24 @@
+Metadata-Version: 2.3
+Name: s3table
+Version: 0.0.2
+Summary: A Python package for managing Iceberg tables in AWS S3 in any regions
+License: Apache-2.0
+Author: Danh Phan
+Author-email: danh.phan.mq@gmail.com
+Requires-Python: >=3.9,<3.14
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: boto3 (>=1.28.0)
+Requires-Dist: click (>=7.1.1,<9.0.0)
+Requires-Dist: fsspec (>=2023.1.0)
+Requires-Dist: pyiceberg (>=0.5.0,<1.0)
+Requires-Dist: requests (>=2.20.0,<3.0.0)
+Requires-Dist: rich (>=10.11.0,<14.0.0)
+Description-Content-Type: text/markdown
+
+# s3table
