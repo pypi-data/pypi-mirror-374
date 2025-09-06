@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=77.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reposmith-tol"
+version = "0.2.7"
+description = "Portable project bootstrapper (venv, gitignore, license, vscode, etc.)"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{ name = "TamerOnLine" }]
+keywords = ["bootstrap", "venv", "gitignore", "license", "vscode", "scaffold", "cli"]
+
+license = "MIT"
+license-files = ["LICENSE"]
+
+
+
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Build Tools",
+  "Topic :: Utilities",
+]
+
+[project.urls]
+Homepage = "https://github.com/liebemama/RepoSmith"
+Repository = "https://github.com/liebemama/RepoSmith"
+Issues = "https://github.com/liebemama/RepoSmith/issues"
+Sponsor = "https://github.com/sponsors/liebemama"
+Support = "https://github.com/liebemama/RepoSmith/discussions"
+
+
+[project.scripts]
+reposmith = "reposmith.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["reposmith*"]
