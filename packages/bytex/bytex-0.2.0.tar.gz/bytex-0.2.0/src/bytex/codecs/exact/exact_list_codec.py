@@ -1,0 +1,46 @@
+from dataclasses import dataclass
+from typing import Generic, Sequence, TypeVar
+
+from bytex.bits import BitBuffer, Bits
+from bytex.codecs.base_codec import BaseCodec
+from bytex.codecs.base_list_codec import BaseListCodec
+from bytex.endianness import Endianness
+from bytex.errors import ValidationError
+
+T = TypeVar("T")
+
+
+@dataclass(frozen=True)
+class ExactListCodec(BaseListCodec[Sequence[T]], Generic[T]):
+    item_codec: BaseCodec[T]
+    length: int
+
+    def get_inner_codec(self) -> BaseCodec:
+        return self.item_codec
+
+    def serialize(self, value: Sequence[T], endianness: Endianness) -> Bits:
+        self.validate(value)
+
+        bits = []
+
+        for item in value:
+            bits.extend(self.item_codec.serialize(item, endianness=endianness))
+
+        return bits
+
+    def deserialize(self, bit_buffer: BitBuffer, endianness: Endianness) -> Sequence[T]:
+        return [
+            self.item_codec.deserialize(bit_buffer, endianness=endianness)
+            for _ in range(self.length)
+        ]
+
+    def validate(self, value: Sequence[T]) -> None:
+        if not isinstance(value, Sequence):
+            raise ValidationError(
+                f"{self.__class__.__name__} expects a sequence of items."
+            )
+
+        if len(value) != self.length:
+            raise ValidationError(
+                f"Invalid value, a {self.__class__.__name__}'s value must be of length `length` - {self.length} items"
+            )
