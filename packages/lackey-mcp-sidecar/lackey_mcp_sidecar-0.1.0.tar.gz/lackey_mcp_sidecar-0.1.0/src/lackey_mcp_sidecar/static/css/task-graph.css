@@ -1,0 +1,161 @@
+/* Task Graph - Task nodes, dependency arrows, and graph interactions */
+
+.task-graph-wrapper {
+    position: relative;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+}
+
+.task-graph {
+    position: relative;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 20px;
+    min-height: 400px;
+}
+
+/* When showing project tasks (with absolutely positioned nodes), enable horizontal scrolling only */
+.task-graph.project-view {
+    overflow-x: auto;
+    overflow-y: visible;
+}
+
+/* When showing dashboard or reports, allow natural expansion */
+.task-graph.dashboard-view,
+.task-graph.reports-view {
+    overflow: visible;
+}
+
+/* Task Nodes */
+.task-node {
+    position: absolute;
+    width: 200px;
+    min-height: 100px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+    z-index: 15;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.task-node:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.05);
+    z-index: 20;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Task Node Status Colors */
+.task-node.status-todo { border-color: #ffc107; }
+.task-node.status-in-progress { 
+    border-color: #17a2b8;
+    animation: pulse-border 2s ease-in-out infinite;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(23, 162, 184, 0.4);
+}
+.task-node.status-done { border-color: #28a745; }
+.task-node.status-blocked { border-color: #dc3545; }
+
+.task-node.status-in-progress:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.05);
+    z-index: 20;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 0 2px rgba(23, 162, 184, 0.3);
+}
+
+/* Task Node Content */
+.task-node-title {
+    font-weight: 600;
+    margin-bottom: 5px;
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.task-node-meta {
+    font-size: 0.7rem;
+    opacity: 0.8;
+}
+
+/* Dependencies and Arrows */
+.dependency-line {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.dependency-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 1;
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+.dependency-arrow {
+    stroke: rgba(255, 255, 255, 0.6);
+    stroke-width: 2;
+    fill: none;
+    marker-end: url(#arrowhead);
+}
+
+/* Search Results */
+.search-container {
+    position: relative;
+    z-index: 100000;
+}
+
+.search-results {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 99999;
+    backdrop-filter: blur(10px);
+    width: 300px;
+}
+
+.search-result-item {
+    padding: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 3px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.search-result-item.status-todo { border-left-color: #ffc107; }
+.search-result-item.status-in-progress { 
+    border-left-color: #17a2b8;
+    animation: pulse-left-border 2s ease-in-out infinite;
+}
+.search-result-item.status-done { border-left-color: #28a745; }
+.search-result-item.status-blocked { border-left-color: #dc3545; }
+
+.search-result-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.search-result-meta {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}

@@ -1,0 +1,33 @@
+[project]
+name = "lackey-mcp-sidecar"
+version = "0.1.0"
+description = "FastAPI web interface for Lackey task management via MCP"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+authors = [{name = "Lackey Community"}]
+dependencies = [
+    "fastapi==0.104.1",
+    "uvicorn[standard]==0.24.0",
+    "pydantic==2.5.0",
+    "networkx",
+    "PyYAML",
+    "jinja2",
+    "watchdog"
+]
+
+[project.urls]
+"Source" = "https://github.com/lackey-project/lackey-sidecar"
+
+[project.scripts]
+"lackey-sidecar" = "lackey_mcp_sidecar.main:main"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"lackey_mcp_sidecar" = ["templates/*", "static/**/*"]
