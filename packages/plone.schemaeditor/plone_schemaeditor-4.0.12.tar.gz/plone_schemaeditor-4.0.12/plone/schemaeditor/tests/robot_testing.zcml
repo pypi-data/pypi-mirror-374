@@ -1,0 +1,22 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:gs="http://namespaces.zope.org/genericsetup"
+    i18n_domain="plone"
+    >
+
+  <include package="plone.schemaeditor" />
+
+  <utility
+      factory=".fixtures.CountriesVocabulary"
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      name="plone.schemaeditor.test.Countries"
+      />
+
+  <utility
+      factory=".fixtures.CategoriesVocabulary"
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      name="plone.schemaeditor.test.Categories"
+      />
+
+</configure>
