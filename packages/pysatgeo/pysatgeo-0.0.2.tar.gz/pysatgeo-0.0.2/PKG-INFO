@@ -1,0 +1,51 @@
+Metadata-Version: 2.4
+Name: pysatgeo
+Version: 0.0.2
+Summary: Python package for satellite and geospatial processing functions for raster and vector data
+Author-email: Joao Pereira <joaopmpereira93@gmail.com>
+License: MIT License
+Project-URL: Homepage, https://github.com/JPPereira93/pysatgeo
+Keywords: pysatgeo,geospatial,remote-sensing,satellite,gis
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: geopandas
+Requires-Dist: rasterio
+Requires-Dist: rioxarray
+Requires-Dist: xarray
+Requires-Dist: scikit-learn
+Requires-Dist: matplotlib
+Requires-Dist: mapclassify
+Requires-Dist: scipy
+Requires-Dist: shapely
+Requires-Dist: requests
+Requires-Dist: gdal
+Dynamic: license-file
+
+# pysatgeo
+
+
+[![image](https://img.shields.io/pypi/v/pysatgeo.svg)](https://pypi.python.org/pypi/pysatgeo)
+[![image](https://img.shields.io/conda/vn/conda-forge/pysatgeo.svg)](https://anaconda.org/conda-forge/pysatgeo)
+
+
+**Python package for satellite processing functions for raster and also vector**
+
+
+-   Free software: MIT License
+-   Documentation: https://JPPereira93.github.io/pysatgeo
+    
+
+## Features
+
+-   TODO
