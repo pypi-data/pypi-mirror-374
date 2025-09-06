@@ -1,0 +1,4 @@
+include README.md CHANGELOG.md LICENSE
+include pytest_snap/py.typed
+prune bench
+prune tests
