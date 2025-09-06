@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mdk-mugen"
+version = "0.1.4"
+dependencies = [
+    "mtl-mugen>=0.1.4"
+]
+
+[tool.hatch.build.targets.wheel]
+include = ["mdk", "mdk-stubs"]
+
+[tool.hatch.build.targets.wheel.sources]
+"mdk-stubs" = "mdk"
+
+[tool.hatch.build.targets.sdist]
+include = ["mdk", "mdk-stubs"]
+
+[tool.hatch.build.targets.sdist.sources]
+"mdk-stubs" = "mdk"
