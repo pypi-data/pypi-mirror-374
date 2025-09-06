@@ -1,0 +1,13 @@
+{
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.pytestArgs": [
+    "--maxfail=1",
+    "--disable-warnings",
+    "-q",
+    "tests"
+],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
+}

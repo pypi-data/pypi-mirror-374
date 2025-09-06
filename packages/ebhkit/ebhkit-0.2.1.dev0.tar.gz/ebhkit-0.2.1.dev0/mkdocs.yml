@@ -1,0 +1,37 @@
+site_name: hkit
+site_description: "Documentation for the hkit package"
+site_url: "https://example.com"   # بعداً آدرس پروژه‌ت رو بگذار یا حذفش کن
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - content.code.copy
+    - content.tooltips
+    - search.highlight
+
+nav:
+  - Home: index.md
+  - API:
+      - Basics: api.md
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          # چون src-layout داری:
+          paths: ["src"]
+          options:
+            # نمایش امضا و نوع‌ها
+            show_signature: true
+            separate_signature: true
+            show_source: true
+            docstring_style: google   # یا "numpy" اگر NumPy-style می‌نویسی
+            docstring_options:
+              ignore_init_summary: false
+            merge_init_into_class: true
+            heading_level: 2
+            # فیلتر اعضا (دلخواه):
+            filters: ["!^_"]  # اعضای خصوصی را پنهان کن
