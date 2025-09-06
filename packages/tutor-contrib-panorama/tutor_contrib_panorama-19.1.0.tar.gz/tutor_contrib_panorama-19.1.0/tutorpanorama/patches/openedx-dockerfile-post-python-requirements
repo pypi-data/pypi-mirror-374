@@ -1,0 +1,3 @@
+{% if PANORAMA_MFE_ENABLED %}
+RUN pip install 'panorama-openedx-backend=={{ PANORAMA_OPENEDX_BACKEND_VERSION }}'
+{% endif %}

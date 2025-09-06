@@ -1,0 +1,70 @@
+---
+# Job to initialize and to run Panorama do-commands from Tutor CLI.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: panorama-job
+  labels:
+    app.kubernetes.io/component: job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: panorama-elt
+          image: {{ PANORAMA_DOCKER_IMAGE }}
+          {% if PANORAMA_K8S_JOB_MEMORY_REQUEST or PANORAMA_K8S_JOB_MEMORY_LIMIT %}
+          resources:
+            {% if PANORAMA_K8S_JOB_MEMORY_REQUEST %}
+            requests:
+              memory: {{ PANORAMA_K8S_JOB_MEMORY_REQUEST }}
+            {% endif %}
+            {% if PANORAMA_K8S_JOB_MEMORY_LIMIT %}
+            limits:
+              memory: {{ PANORAMA_K8S_JOB_MEMORY_LIMIT }}
+            {% endif %}
+          {% endif %}
+          volumeMounts:
+            - mountPath: /config/
+              name: config
+      volumes:
+        - name: config
+          configMap:
+            name: panorama-elt-config
+
+{% if PANORAMA_MODE != 'DEMO' %}
+---
+# Cronjob. Will query the db and upload to the datalake periodically
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: panorama-elt
+  labels:
+    app.kubernetes.io/name: panorama-elt
+spec:
+  schedule: {{ PANORAMA_CRONTAB }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: panorama-elt
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: panorama-elt
+              image: {{ PANORAMA_DOCKER_IMAGE }}
+              volumeMounts:
+                - mountPath: /config/
+                  name: config
+              command:
+                - /bin/sh
+                - -c
+                - python /panorama-elt/panorama.py --settings /config/panorama_openedx_settings.yaml {% if PANORAMA_DEBUG %}--debug {% endif %}extract-and-load --all
+          volumes:
+            - name: config
+              configMap:
+                name: panorama-elt-config
+{% else %}
+# Panorama in DEMO mode, skipping K8s jobs.
+{% endif %}

@@ -1,0 +1,4 @@
+panorama-job:
+    image: {{ PANORAMA_DOCKER_IMAGE }}
+    volumes:
+        - ../plugins/panorama/apps/panorama-elt/panorama_openedx_settings.yaml:/config/panorama_openedx_settings.yaml:ro
