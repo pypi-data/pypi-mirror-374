@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <ul>
+  {% for page in category %}
+    <li><a href="{{ baseurl }}{{ page.url }}">{{ page.name }}</a></li>
+  {% endfor %}
+  </ul>
+  <hr>
+{% endblock %}
