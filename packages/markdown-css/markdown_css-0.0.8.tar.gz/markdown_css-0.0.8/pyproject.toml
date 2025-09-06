@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "markdown-css"
+version = "0.0.8"
+description = "Markdown-css is a command tool to convert css style to markdown inline-style"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "sanyuesha", email = "wecatch.me@gmail.com"}
+]
+maintainers = [
+    {name = "sanyuesha", email = "wecatch.me@gmail.com"}
+]
+keywords = ["markdown-css", "markdown", "css"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Text Processing :: Markup",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.6"
+dependencies = [
+    "docopt>=0.6.2",
+    "cssutils>=2.6.0",
+    "pyquery>=2.0.0",
+    "Pygments>=2.15.0",
+]
+
+[project.urls]
+Homepage = "http://github.com/wecatch/markdown-css"
+Repository = "http://github.com/wecatch/markdown-css"
+Issues = "http://github.com/wecatch/markdown-css/issues"
+
+[project.scripts]
+markdown-css = "markdown_css.bin.markdown_css:main"
+
+[tool.setuptools.packages.find]
+include = ["markdown_css*"]
+
+[tool.setuptools.package-data]
+markdown_css = ["themes/*.css", "themes/*.html"]
