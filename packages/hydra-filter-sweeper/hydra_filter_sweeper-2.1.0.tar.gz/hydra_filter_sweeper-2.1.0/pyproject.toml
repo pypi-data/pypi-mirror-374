@@ -1,0 +1,98 @@
+[project]
+name = "hydra-filter-sweeper"
+version = "2.1.0"
+description = "A Hydra plugin to extend the basic sweeper with customizable filters."
+authors = [{ name = "Simon Rampp", email = "simon.rampp@tum.de" }]
+requires-python = "~=3.9"
+readme = "README.md"
+license = "MIT"
+keywords = ["hydra", "plugin", "sweeper", "filter"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+dependencies = ["hydra-core>=1.3.2,<2", "evalidate>=2.0.3,<3"]
+
+[project.urls]
+Repository = "https://github.com/autrainer/hydra-filter-sweeper"
+
+[dependency-groups]
+dev = [
+    "codespell>=2.4.1",
+    "mypy==1.16.0",
+    "pre-commit==4.2.0",
+    "pytest>=8.3.5",
+    "pytest-cov>=6.1.1",
+    "ruff==0.11.8",
+    "tomli>=2.2.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.sdist]
+include = ["hydra_filter_sweeper", "hydra_plugins"]
+
+[tool.hatch.build.targets.wheel]
+include = ["hydra_filter_sweeper", "hydra_plugins"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py39"
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint]
+select = [
+    "F",
+    "E",
+    "W",
+    "I",
+    "N",
+    "Q",
+    "ANN",
+    "BLE",
+    "B",
+    "C4",
+    "ISC",
+    "ICN",
+    "LOG",
+    "G",
+    "PYI",
+    "PT",
+    "RET",
+    "SIM",
+    "TC",
+    "ERA",
+]
+ignore = ["E741", "N812", "N806", "N802", "ANN401"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["hydra_filter_sweeper", "hydra_plugins"]
+force-sort-within-sections = true
+lines-after-imports = 2
+
+
+[tool.pytest.ini_options]
+addopts = "--cov --cov-report term-missing"
+testpaths = "tests"
+filterwarnings = [
+    "error",
+    "ignore:.*Future Hydra versions will no longer change working directory at job runtime by default.*:UserWarning",
+    "ignore:.*Proactor event loop does not implement add_reader family of methods required for zmq.*:RuntimeWarning",
+    "ignore:.*pkg_resources is deprecated*",
+]
+
+[tool.codespell]
+skip = "uv.lock"
+
+[tool.mypy]
+files = ["hydra_filter_sweeper", "hydra_plugins", "tests"]
+explicit_package_bases = true
+ignore_missing_imports = true
