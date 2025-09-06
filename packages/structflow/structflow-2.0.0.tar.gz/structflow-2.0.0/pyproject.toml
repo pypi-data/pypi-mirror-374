@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "structflow"
+version = "2.0.0"
+description = "A Python library for programmatic HTML generation with type safety and a clean API"
+authors = ["Pedro José Mora Gallegos <pedrojosemoragallegos@outlook.de>"]
+readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/pedrojosemoragallegos/structflow"
+repository = "https://github.com/pedrojosemoragallegos/structflow"
+documentation = "https://structflow.readthedocs.io"
+keywords = ["html", "generation", "web", "markup", "template", "type-safe"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Markup :: HTML",
+    "Topic :: Software Development :: Code Generators",
+    "Typing :: Typed",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10, <3.14"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 88
+select = ["E", "F", "W", "C90"]
+ignore = ["E501"]
+
+[tool.ruff.lint]
+extend-select = ["I", "D205", "D415"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
