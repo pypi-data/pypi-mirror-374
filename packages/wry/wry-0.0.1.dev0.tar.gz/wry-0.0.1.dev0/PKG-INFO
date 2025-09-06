@@ -1,0 +1,43 @@
+Metadata-Version: 2.4
+Name: wry
+Version: 0.0.1.dev0
+Summary: A DRY approach to building type-safe CLI applications with Pydantic and Click
+Author-email: Tyler House <26489166+tahouse@users.noreply.github.com>
+License: MIT
+Project-URL: Homepage, https://github.com/tahouse/wry
+Project-URL: Repository, https://github.com/tahouse/wry
+Project-URL: Issues, https://github.com/tahouse/wry/issues
+Project-URL: Documentation, https://github.com/tahouse/wry#readme
+Keywords: cli,pydantic,click,dry,configuration,type-safe
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: System Shells
+Classifier: Topic :: Utilities
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: click>=8.0
+Requires-Dist: pydantic>=2.0
+Requires-Dist: annotated-types>=0.5.0
+Requires-Dist: pydantic-core>=2.0
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: pytest-xdist; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Requires-Dist: setuptools-scm>=8.0; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: safety; extra == "dev"
+Requires-Dist: bandit[toml]; extra == "dev"
+Provides-Extra: test
+Requires-Dist: pytest>=6.0; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: pytest-xdist; extra == "test"
