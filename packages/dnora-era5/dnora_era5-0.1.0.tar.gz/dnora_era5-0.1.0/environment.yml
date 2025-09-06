@@ -1,0 +1,9 @@
+name: dnora-era5
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.9,<3.11
+  - pytest
+  - cdsapi>=0.7.6
+  - pip:
+    - dnora
