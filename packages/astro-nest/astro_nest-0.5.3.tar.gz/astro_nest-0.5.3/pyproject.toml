@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "astro-nest"
+version = "0.5.3"
+authors = [
+  { name="Tristan Boin", email="tristan.boin@gmail.com" },
+]
+description = "A python package that provides neural networks to estimate ages of stars/star populations."
+readme = "readme.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["NEST"]
+
+[project.urls]
+Homepage = "https://star-age.github.io/NEST-docs/"
+
+[tool.setuptools.package-data]
+NEST = ["NEST.py","models/**/*","domain.pkl","tutorial.ipynb"]
