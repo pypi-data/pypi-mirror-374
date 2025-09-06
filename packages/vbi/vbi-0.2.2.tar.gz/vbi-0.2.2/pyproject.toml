@@ -1,0 +1,121 @@
+[build-system]
+requires = [
+    "hatchling",
+    "setuptools", 
+    "wheel",
+    "swig>=4.0",
+    "setuptools>=45"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vbi"
+dynamic = ["version"]
+description = "Virtual brain inference."
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+    { name = "Abolfazl Ziaeemehr", email = "a.ziaeemehr@gmail.com" },
+    { name = "Meysam Hashemi", email = "meysam.hashemi@gmail.com" },
+    { name = "Marmaduke Woodman", email = "marmaduke.woodman@gmail.com" }
+]
+readme = "README.md"
+dependencies = [
+    "wheel",
+    "numpy",
+    "scipy",
+    "numba",
+    "h5py",
+    "pandas",
+    "networkx",
+    "nbconvert",
+    "matplotlib",
+    "setuptools-scm",
+    "tqdm",
+    "parameterized",
+    "scikit-learn",
+    "pycatch22",
+    "pytest",
+    "swig",
+    "rich"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+homepage = "https://ziaeemehr.github.io/vbi_paper/"
+repository = "https://github.com/Ziaeemehr/vbi_paper"
+
+[tool.hatch.version]
+path = "vbi/_version.py"
+include-package-data = true
+
+[tool.setuptools.package-data]
+vbi = [
+    "models/pytorch/data/*", 
+    "models/cpp/_src/*",
+]
+"vbi.tests" = ["*"]  # Include all files in tests/
+
+[project.optional-dependencies]
+# Light version - CPU simulation only (numba + C++ models)
+# No additional deps needed, uses core dependencies
+light = []
+
+# Light with GPU - adds CuPy for GPU acceleration 
+light-gpu = ["cupy"]
+
+# Inference CPU - adds PyTorch and SBI for parameter inference (CPU only)
+inference = [
+    "sbi",
+    "torch",
+]
+
+# Inference GPU - PyTorch with CUDA + SBI for GPU-accelerated inference
+inference-gpu = [
+    "sbi",
+    "torch",
+    "cupy",
+]
+
+# Development tools
+dev = []
+
+# Documentation building
+docs = [
+    "sphinx",
+    "numpydoc",
+    "nbformat",
+    "nbsphinx",
+    "cloud_sptheme",
+    "sphinx_bootstrap_theme",
+]
+
+# All dependencies (torch, cupy, sbi, dev tools, docs, notebooks)
+all = [
+    "sbi",
+    "torch",
+    "cupy",
+    "sphinx",
+    "numpydoc",
+    "nbformat",
+    "nbsphinx",
+    "cloud_sptheme",
+    "sphinx_bootstrap_theme",
+    # "ipywidgets",
+]
+
+# Legacy compatibility
+cu = ["cupy"]
+
+[tool.pytest.ini_options]
+markers = [
+    "short: marks tests as short/fast (deselect with '-m \"not short\"')",
+    "long: marks tests as long/slow (deselect with '-m \"not long\"')", 
+    "fast: alias for short tests",
+    "slow: alias for long tests"
+]
