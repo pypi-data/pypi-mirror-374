@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crewai-mcp-server"
+version = "0.1.0"
+description = "MCP server for CrewAI documentation"
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "mcp>=0.1.0",
+    "httpx",
+    "beautifulsoup4",
+    "markdown",
+    "asyncio"
+]
+
+[project.scripts]
+crewai-mcp-server = "crewai_mcp_server.server:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
