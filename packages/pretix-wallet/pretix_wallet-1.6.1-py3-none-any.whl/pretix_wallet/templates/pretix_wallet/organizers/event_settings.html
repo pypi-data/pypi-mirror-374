@@ -1,0 +1,24 @@
+{% extends "pretixcontrol/base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+{% load formset_tags %}
+{% block title %}Wallet settings{% endblock %}
+{% block content %}
+<h1>
+    Wallet settings
+</h1>
+
+<form action="" method="post" class="form-horizontal">
+    {% csrf_token %}
+    {% bootstrap_form_errors form %}
+    <fieldset>
+        <legend>{% trans "General" %}</legend>
+        {% bootstrap_field form.wallet_create_for_orders layout="control" %}
+    </fieldset>
+    <div class="form-group submit-group">
+        <button type="submit" class="btn btn-primary btn-save">
+            {% trans "Save" %}
+        </button>
+    </div>
+</form>
+{% endblock %}
