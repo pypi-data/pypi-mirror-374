@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+        name="Plone Site"
+        i18n:domain="plone"
+>
+
+  <property name="icon_expr">string:contenttype/plone</property>
+
+  <property name="immediate_view">document_view</property>
+  <property name="default_view">document_view</property>
+  <property name="view_methods">
+    <element value="document_view" />
+    <element value="album_view" />
+    <element value="event_listing" />
+    <element value="full_view" />
+    <element value="listing_view" />
+    <element value="summary_view" />
+    <element value="tabular_view" />
+  </property>
+</object>
