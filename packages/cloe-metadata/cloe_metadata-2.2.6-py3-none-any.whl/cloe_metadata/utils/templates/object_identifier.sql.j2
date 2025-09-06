@@ -1,0 +1,7 @@
+{% if connection.system_type in ["Azure Synapse Analytics", "Azure SQL Server", "SQL Server >=2016"] -%}
+[{{ schema_obj.name }}].[{{ table_obj.name }}]
+{%- elif connection.system_type in ["Snowflake"] -%}
+"{{ schema_obj.name }}"."{{ table_obj.name }}"
+{%- else -%}
+{{ schema_obj.name }}.{{ table_obj.name }}
+{%- endif -%}
