@@ -1,0 +1,1 @@
+from fasttext.FastText import _FastText as FastText
