@@ -1,0 +1,33 @@
+[project]
+name = "tinyurl-mcp"
+version = "1.0.0"
+description = "MCP Server for tinyurl.com"
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+requires-python = ">=3.13"
+authors = [
+    { name = "Vimal Paliwal", email = "vimalpaliwal.me@gmail.com" }
+]
+dependencies = [
+    "dateparser>=1.2.2",
+    "httpx>=0.28.1",
+    "loguru>=0.7.3",
+    "mcp[cli]>=1.13.1",
+    "pydantic>=2.11.7",
+]
+keywords = ["tinyurl", "mcp", "url shortener"]
+
+[project.scripts]
+tinyurl-mcp = "tinyurl_mcp.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.format]
+quote-style = "double"
+docstring-code-format = true
