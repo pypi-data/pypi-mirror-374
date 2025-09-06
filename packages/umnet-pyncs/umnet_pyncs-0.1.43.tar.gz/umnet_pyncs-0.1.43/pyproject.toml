@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "umnet-pyncs"
+version = "0.1.43"
+description = "custom python module for NCS helpers"
+authors = ["Nick Grundler <grundler@umich.edu>", "Amy Liebowitz <amylieb@umich.edu>"]
+readme = "README.md"
+include = [ "umnet_pyncs/state/templates/*.textfsm" ]
+
+
+[tool.poetry.dependencies]
+python = "^3.7"
+multiprocessing-logging = "^0.3.3"
+ntc-templates = "^3.0.0"
+netaddr = "^0.8.0"
+importlib-metadata = { version = "6.0.0", python = "<3.8"}
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

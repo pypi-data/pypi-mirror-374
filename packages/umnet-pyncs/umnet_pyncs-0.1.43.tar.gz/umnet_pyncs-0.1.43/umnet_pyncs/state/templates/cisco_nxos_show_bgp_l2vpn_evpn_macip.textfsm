@@ -1,0 +1,7 @@
+Value Required MAC_ADDRESS (\w{4}.\w{4}.\w{4})
+Value Required IP (\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})
+Value Required VTEP_IP (\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})
+
+Start
+ ^BGP routing table entry for \[2\]:\[0\]:\[0\]:\[48\]:\[${MAC_ADDRESS}\]:\[(32|0)\]:\[(${IP}|0\.0\.0\.0)\]
+ ^    \d{1,3}.\d{1,3}.\d{1,3}.\d{1,3} \(metric \d+\) from ${VTEP_IP} -> Record
