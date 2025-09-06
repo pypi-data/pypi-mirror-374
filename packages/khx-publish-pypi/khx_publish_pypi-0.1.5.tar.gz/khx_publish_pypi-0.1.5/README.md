@@ -1,0 +1,111 @@
+
+## khx_publish_p### CLI Commands### Quick Start
+```bash
+# 1) Configure tokens (interactive)
+khx-publish-pypi setup-tokens
+
+# Or configure non-interactively
+khx-publish-pypi setup-tokens --test-token YOUR_TEST_TOKEN --prod-token YOUR_PROD_TOKEN
+
+# 2) Update tokens later (interactive)
+khx-publish-pypi update-tokens
+
+# 3) Run the guided flow
+khx-publish-pypi init
+```h-pypi --version` — show CLI version
+- `khx-publish-pypi check` — run interactive pre-publish checks
+- `khx-publish-pypi bump [patch|minor|major]` — bump `__version__`
+- `khx-publish-pypi setup-tokens` — securely configure API tokens (interactive)
+- `khx-publish-pypi update-tokens` — interactively update existing API tokens
+- `khx-publish-pypi init` — guided flow: checks → tokens → bump → build → publish
+- `khx-publish-pypi publish-test` — publish to Test PyPI
+- `khx-publish-pypi publish-prod` — publish to PyPInteractive, friendly CLI to check, build, and publish Python packages to TestPyPI and PyPI — with beautiful output and guardrails. ✨
+
+Why use it?
+- Fast pre-publish checks (name/version/structure)
+- Guided token setup using your OS keyring
+- Smart suggestions when uploads fail (version conflicts, auth, etc.)
+- One command to run checks → build → publish
+
+### Installation
+- From source (editable):
+```bash
+pip install -e .
+```
+
+### CLI Commands
+- `khx-publish-pypi --version` — show CLI version
+- `khx-publish-pypi check` — run interactive pre-publish checks
+- `khx-publish-pypi bump [patch|minor|major]` — bump `__version__`
+- `khx-publish-pypi setup-tokens` — securely configure API tokens (interactive)
+- `khx-publish-pypi update-tokens --test-token TOKEN --prod-token TOKEN` — update tokens (non-interactive)
+- `khx-publish-pypi init` — guided flow: checks → tokens → bump → build → publish
+- `khx-publish-pypi publish-test` — publish to TestPyPI
+- `khx-publish-pypi publish-prod` — publish to PyPI
+
+### Quick Start
+```bash
+# 1) Configure tokens (interactive)
+khx-publish-pypi setup-tokens
+
+# Or configure non-interactively
+khx-publish-pypi setup-tokens --test-token YOUR_TEST_TOKEN --prod-token YOUR_PROD_TOKEN
+
+# 2) Update tokens later
+khx-publish-pypi update-tokens --test-token NEW_TEST_TOKEN
+
+# 3) Run the guided flow
+khx-publish-pypi init
+```
+
+The init flow will:
+1) Run checks and show a friendly report
+2) Let you configure tokens (or confirm existing)
+3) Optionally bump the package version
+4) Build distributions in `dist/`
+5) Publish to TestPyPI, PyPI, or both
+
+### Version Management
+```bash
+khx-publish-pypi bump patch  # 0.1.0 -> 0.1.1
+khx-publish-pypi bump minor  # 0.1.1 -> 0.2.0
+khx-publish-pypi bump major  # 0.2.0 -> 1.0.0
+```
+
+### Programmatic Version
+```python
+from khx_publish_pypi import __version__
+print(__version__)
+```
+
+### Token Storage
+Tokens are stored via your system keyring under:
+- TestPyPI: `khx-publish-testpypi`
+- PyPI: `khx-publish-pypi`
+
+**Important**: PyPI API tokens require the username to be `__token__` for authentication.
+
+You can also provide `TESTPYPI_TOKEN` or `PYPI_TOKEN` as environment variables.
+
+#### Token Management
+- **Initial setup**: `khx-publish-pypi setup-tokens` (interactive)
+- **Update tokens**: `khx-publish-pypi update-tokens` (interactive)
+- **Non-interactive setup**: `khx-publish-pypi setup-tokens --test-token YOUR_TOKEN --prod-token YOUR_TOKEN`
+
+### Troubleshooting Uploads
+If an upload fails, the CLI analyzes the error and suggests fixes. Common issues:
+- Version exists (400): bump version → `khx-publish-pypi bump patch`
+- Auth issues (403): reconfigure → `khx-publish-pypi setup-tokens`
+- Invalid dists: rebuild → `python -m build`, then retry
+
+### CI/CD
+- Run `khx-publish-pypi check` in CI to validate before release
+- Use `python -m build` to create artifacts, then upload with Twine
+
+### Roadmap
+- JSON output option for CI
+- Wizard mode refinements
+- Custom repository support
+
+### License
+MIT © ABUELTAYEF Khader
