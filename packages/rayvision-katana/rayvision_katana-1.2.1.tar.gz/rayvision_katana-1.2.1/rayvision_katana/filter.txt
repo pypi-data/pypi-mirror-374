@@ -1,0 +1,46 @@
+#model:
+    {Alembic_In} : {abcAsset}
+    {ScenegraphXml_In} : {asset}
+    {WitScenegraphXmlOp} : {asset}
+    {WitAlembicIn} : {abcAsset}
+    {DlOpenVDB} : {file.filename}
+
+#image:
+    #arnold
+        {ArnoldShadingNode} : {parameters.filename.value}   &&  {nodeType}=={image}
+        {Material} : {shaders.arnoldSurfaceParams.filename.value}
+    #redshift
+        {Material} : {shaders.RedshiftLightParams.tex0.value}
+        {Material} : {shaders.RedshiftEnvironmentParams.tex0.value}
+        {RedshiftShadingNode} : {parameters.tex0.value}
+    #renderman
+        {PrmanShadingNode} : {PrmanShadingNode}
+        {Material} : {shaders.prmanLightParams.lightColorMap.value}
+
+#klf&liveGroup:
+    {LookFileMaterialsIn} : {lookfile}
+    {LookFileAssign} : {args.lookfile.asset.value}
+    {LiveGroup} : {source}  &&  {disable}=={1.0}
+    {Material} : {__lookFileMaterial.material.reference.asset}
+#hair:
+    {ArnoldXGen} : {xgen_file}
+    {ArnoldYeti} : {filename}
+    {RedshiftXgen} : {xgen_filename}
+
+#procy:
+    {ArnoldStandin} : {filename}
+    {RedshiftProxy} : {filename}
+
+#VDB:
+    {ArnoldOpenVDBVolume} : {filename}
+    {ArnoldOpenVDBSurface} : {filename}
+    {RedshiftOpenVDBVolume} : {filename}
+    {PrmanVolume} : {args.filename.value}
+
+#USD:
+    {UsdIn} : {fileName}
+    {ArnoldUsd} : {fileName}
+    {ArnoldIn} : {filename}
+
+#OCIO:
+    {RootNode} : {OCIO}
