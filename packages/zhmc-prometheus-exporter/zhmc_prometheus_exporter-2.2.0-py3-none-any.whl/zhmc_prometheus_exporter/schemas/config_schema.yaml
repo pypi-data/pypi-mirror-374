@@ -1,0 +1,136 @@
+# This is a JSON Schema in YAML format.
+
+$schema: http://json-schema.org/draft-07/schema
+title: HMC credentials schema
+description: JSON schema for the Z HMC Prometheus Exporter config file
+type: object
+required: []
+additionalProperties: false
+properties:
+  version:
+    description: "Version of the config file format"
+    type: integer
+  hmcs:
+    description: The set of redundant HMCs
+    type: array
+    default: []
+    items:
+      type: object
+      required:
+        - host
+        - userid
+        - password
+      additionalProperties: false
+      properties:
+        host:
+          description: "Hostname or IP address of HMC"
+          type: string
+        userid:
+          description: "Userid used by the exporter to log on to the HMC"
+          type: string
+        password:
+          description: "Password of the HCM userid"
+          type: string
+        verify_cert:
+          description: "Controls whether and how the HMC certificate is verified. For details, see doc section 'HMC certificate'"
+          type: [boolean, string]
+        retry_timeout:
+          description: "The HMC retry and timeout configuration"
+          type: object
+          additionalProperties: false
+          properties:
+            connect_timeout:
+              description: "The connect timeout in seconds. Default: 10"
+              type: integer
+            connect_retries:
+              description: "The maximum number of connect retries. Default: 2"
+              type: integer
+            read_timeout:
+              description: "The read timeout in seconds. Default: 900"
+              type: integer
+            read_retries:
+              description: "The maximum number of read retries. Default: 2"
+              type: integer
+            operation_timeout:
+              description: "The HMC operation timeout in seconds. Default: 3600"
+              type: integer
+            status_timeout:
+              description: "The HMC status change timeout in seconds. Default: 60"
+              type: integer
+  metrics:
+    description: "Deprecated: The HMC host and credentials"
+    type: object
+    required:
+      - hmc
+      - userid
+      - password
+    additionalProperties: false
+    properties:
+      hmc:
+        description: "Deprecated: Hostname or IP address of HMC"
+        type: string
+      userid:
+        description: "Deprecated: Userid used by the exporter to log on to the HMC"
+        type: string
+      password:
+        description: "Deprecated: Password of the HCM userid"
+        type: string
+      verify_cert:
+        description: "Deprecated: Controls whether and how the HMC certificate is verified. For details, see doc section 'HMC certificate'"
+        type: [boolean, string]
+  prometheus:
+    description: Communication with Prometheus
+    type: object
+    additionalProperties: false
+    properties:
+      port:
+        description: "Port for exporting."
+        type: integer
+      server_cert_file:
+        description: "Path name of server certificate file. Enables the use of HTTPS."
+        type: string
+      server_key_file:
+        description: "Path name of private key file."
+        type: string
+      ca_cert_file:
+        description: "Path name of CA certificates file for validating the client certificate. Enables mutual TLS by requiring a client certificate to be presented."
+        type: string
+  extra_labels:
+    description: "Additional Prometheus labels to be added to all metrics"
+    type: array
+    default: []
+    items:
+      type: object
+      required:
+        - name
+        - value
+      additionalProperties: false
+      properties:
+        name:
+          description: "Label name"
+          type: string
+        value:
+          description: "Label value, as a Jinja2 expression using certain variables"
+          type: string
+  cpcs:
+    description: "List of CPCs for which metrics should be exported. Optional, defaults to all managed CPCs."
+    type: [array, "null"]
+    default: null
+    items:
+      description: "CPC name"
+      type: string
+  metric_groups:
+    description: Export control for the HMC and resource metric groups
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^[a-z0-9\\-]+$":
+        description: "Key: Name of the HMC or resource metric group"
+        type: object
+        required:
+          - export
+        additionalProperties: false
+        properties:
+          export:
+            description: "Indicates whether the metric group should be exported to Prometheus"
+            type: boolean

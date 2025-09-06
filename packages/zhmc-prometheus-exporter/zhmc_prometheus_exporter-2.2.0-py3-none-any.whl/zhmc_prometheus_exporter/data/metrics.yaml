@@ -1,0 +1,1783 @@
+# Sample metric definition file for the Z HMC Prometheus Exporter.
+# Defines all metrics up to HMC version 2.15.0 (z15), except for ensemble/zBX
+# related metrics which are not supported by the Z HMC Prometheus Exporter.
+
+metric_groups:
+
+  # Available for CPCs in classic mode
+
+  cpc-usage-overview:
+    cpc_mode: classic
+    type: metric
+    resource_class: cpc
+    prefix: cpc
+    labels:
+      - name: cpc
+        value: "resource_obj.name"
+
+  logical-partition-usage:
+    cpc_mode: classic
+    type: metric
+    resource_class: logical-partition
+    prefix: partition
+    labels:
+      - name: cpc
+        value: "resource_obj.manager.parent.name"
+      - name: partition
+        value: "resource_obj.name"
+
+  channel-usage:
+    cpc_mode: classic
+    type: metric
+    resource_class: cpc
+    prefix: channel
+    labels:
+      - name: cpc
+        value: "resource_obj.name"
+      - name: channel_css_chpid
+        value: "metric_values['channel-name']"  # format: 'CSS.CHPID'
+
+  crypto-usage:
+    cpc_mode: classic
+    type: metric
+    resource_class: cpc
+    prefix: crypto_adapter
+    if: "hmc_version>='2.12.0'"
+    labels:
+      - name: cpc
+        value: "resource_obj.name"
+      - name: adapter_pchid
+        value: "metric_values['channel-id']"
+
+  flash-memory-usage:
+    cpc_mode: classic
+    type: metric
+    resource_class: cpc
+    prefix: flash_memory_adapter
+    if: "hmc_version>='2.12.0'"
+    labels:
+      - name: cpc
+        value: "resource_obj.name"
+      - name: adapter_pchid
+        value: "metric_values['channel-id']"
+
+  roce-usage:
+    cpc_mode: classic
+    type: metric
+    resource_class: cpc
+    prefix: roce_adapter
+    if: "hmc_version>='2.12.1'"
+    labels:
+      - name: cpc
+        value: "resource_obj.name"
+      - name: adapter_pchid
+        value: "metric_values['channel-id']"
+
+  logical-partition-resource:
+    cpc_mode: classic
+    type: resource
+    resource_class: logical-partition
+    prefix: partition
+    labels:
+      - name: cpc
+        value: "resource_obj.manager.parent.name"
+      - name: partition
+        value: "resource_obj.name"
+
+  # Available for CPCs in DPM mode
+
+  dpm-system-usage-overview:
+    cpc_mode: dpm
+    type: metric
+    resource_class: cpc
+    prefix: cpc
+    if: "hmc_version>='2.13.1'"
+    labels:
+      - name: cpc
+        value: "resource_obj.name"
+
+  partition-usage:
+    cpc_mode: dpm
+    type: metric
+    resource_class: partition
+    prefix: partition
+    if: "hmc_version>='2.13.1'"
+    labels:
+      - name: cpc
+        value: "resource_obj.manager.parent.name"
+      - name: partition
+        value: "resource_obj.name"
+
+  adapter-usage:
+    cpc_mode: dpm
+    type: metric
+    resource_class: adapter
+    prefix: adapter
+    if: "hmc_version>='2.13.1'"
+    labels:
+      - name: cpc
+        value: "resource_obj.manager.parent.name"
+      - name: adapter
+        value: "resource_obj.name"
+
+  network-physical-adapter-port:
+    cpc_mode: dpm
+    type: metric
+    resource_class: adapter
+    prefix: port
+    if: "hmc_version>='2.13.1'"
+    labels:
+      - name: cpc
+        value: "resource_obj.manager.parent.name"
+      - name: adapter
+        value: "resource_obj.name"
+      - name: port
+        value: "metric_values['network-port-id']"
+
+  partition-attached-network-interface:
+    cpc_mode: dpm
+    type: metric
+    resource_class: nic
+    prefix: nic
+    if: "hmc_version>='2.13.1'"
+    labels:
+      - name: cpc
+        value: "resource_obj.manager.parent.manager.parent.name"
+      - name: partition
+        value: "resource_obj.manager.parent.name"
+      - name: nic
+        value: "resource_obj.name"
+      - name: adapter
+        value: "adapter_name(resource_obj)"
+      - name: port
+        value: "adapter_port(resource_obj)"
+
+  partition-resource:
+    cpc_mode: dpm
+    type: resource
+    resource_class: partition
+    prefix: partition
+    if: "hmc_version>='2.13.1'"
+    labels:
+      - name: cpc
+        value: "resource_obj.manager.parent.name"
+      - name: partition
+        value: "resource_obj.name"
+
+  storagegroup-resource:
+    cpc_mode: dpm
+    type: resource
+    resource_class: storage-group
+    prefix: storagegroup
+    if: "hmc_version>='2.14.1'"
+    labels:
+      - name: cpc
+        value: "uri2resource(resource_obj.properties['cpc-uri']).name"
+      - name: storagegroup
+        value: "resource_obj.name"
+
+  storagevolume-resource:
+    cpc_mode: dpm
+    type: resource
+    resource_class: storage-volume
+    prefix: storagevolume
+    if: "hmc_version>='2.14.1'"
+    labels:
+      - name: cpc
+        value: "uri2resource(resource_obj.manager.parent.properties['cpc-uri']).name"
+      - name: storagegroup
+        value: "resource_obj.manager.parent.name"
+      - name: storagevolume
+        value: "resource_obj.name"
+
+  adapter-resource:
+    cpc_mode: dpm
+    type: resource
+    resource_class: adapter
+    prefix: adapter
+    if: "hmc_version>='2.13.1'"
+    labels:
+      - name: cpc
+        value: "resource_obj.manager.parent.name"
+      - name: adapter
+        value: "resource_obj.name"
+
+  # Available for CPCs in any mode
+
+  zcpc-environmentals-and-power:
+    cpc_mode: any
+    type: metric
+    resource_class: cpc
+    prefix: cpc
+    labels:
+      - name: cpc
+        value: "resource_obj.name"
+
+  zcpc-processor-usage:
+    cpc_mode: any
+    type: metric
+    resource_class: cpc
+    prefix: processor
+    labels:
+      - name: cpc
+        value: "resource_obj.name"
+      - name: processor
+        value: "metric_values['processor-name']"
+      - name: type
+        value: "metric_values['processor-type']"
+
+  environmental-power-status:
+    cpc_mode: any
+    type: metric
+    resource_class: cpc
+    prefix: cpc
+    if: "hmc_version>='2.15.0'"
+    labels:
+      - name: cpc
+        value: "resource_obj.name"
+
+  cpc-resource:
+    cpc_mode: any
+    type: resource
+    resource_class: cpc
+    prefix: cpc
+    labels:
+      - name: cpc
+        value: "resource_obj.name"
+
+metrics:
+
+  # Available for CPCs in classic mode
+
+  cpc-usage-overview:
+    cpc-processor-usage:
+      percent: true
+      exporter_name: processor_usage_ratio
+      exporter_desc: Usage ratio across all processors of the CPC
+    all-shared-processor-usage:
+      percent: true
+      exporter_name: shared_processor_usage_ratio
+      exporter_desc: Usage ratio across all shared processors of the CPC
+    all-dedicated-processor-usage:
+      percent: true
+      exporter_name: dedicated_processor_usage_ratio
+      exporter_desc: Usage ratio across all dedicated processors of the CPC
+    cp-all-processor-usage:
+      percent: true
+      exporter_name: cp_processor_usage_ratio
+      exporter_desc: Usage ratio across all CP processors of the CPC
+    cp-shared-processor-usage:
+      percent: true
+      exporter_name: cp_shared_processor_usage_ratio
+      exporter_desc: Usage ratio across all shared CP processors of the CPC
+    cp-dedicated-processor-usage:
+      percent: true
+      exporter_name: cp_dedicated_processor_usage_ratio
+      exporter_desc: Usage ratio across all dedicated CP processors of the CPC
+    ifl-all-processor-usage:
+      percent: true
+      exporter_name: ifl_processor_usage_ratio
+      exporter_desc: Usage ratio across all IFL processors of the CPC
+    ifl-shared-processor-usage:
+      percent: true
+      exporter_name: ifl_shared_processor_usage_ratio
+      exporter_desc: Usage ratio across all shared IFL processors of the CPC
+    ifl-dedicated-processor-usage:
+      percent: true
+      exporter_name: ifl_dedicated_processor_usage_ratio
+      exporter_desc: Usage ratio across all dedicated IFL processors of the CPC
+    icf-all-processor-usage:
+      percent: true
+      exporter_name: icf_processor_usage_ratio
+      exporter_desc: Usage ratio across all ICF processors of the CPC
+    icf-shared-processor-usage:
+      percent: true
+      exporter_name: icf_shared_processor_usage_ratio
+      exporter_desc: Usage ratio across all shared ICF processors of the CPC
+    icf-dedicated-processor-usage:
+      percent: true
+      exporter_name: icf_dedicated_processor_usage_ratio
+      exporter_desc: Usage ratio across all dedicated ICF processors of the CPC
+    iip-all-processor-usage:
+      percent: true
+      exporter_name: iip_processor_usage_ratio
+      exporter_desc: Usage ratio across all zIIP processors of the CPC
+    iip-shared-processor-usage:
+      percent: true
+      exporter_name: iip_shared_processor_usage_ratio
+      exporter_desc: Usage ratio across all shared zIIP processors of the CPC
+    iip-dedicated-processor-usage:
+      percent: true
+      exporter_name: iip_dedicated_processor_usage_ratio
+      exporter_desc: Usage ratio across all dedicated zIIP processors of the CPC
+    aap-shared-processor-usage:
+      percent: true
+      exporter_name: aap_shared_processor_usage_ratio
+      exporter_desc: Usage ratio across all shared zAAP processors of the CPC
+    aap-dedicated-processor-usage:
+      percent: true
+      exporter_name: aap_dedicated_processor_usage_ratio
+      exporter_desc: Usage ratio across all dedicated zAAP processors of the CPC
+    # aap-all-processor-usage does not seem to exist
+    cbp-all-processor-usage:
+      # only returned between SE versions 2.14.0+MCLs and 2.15.0 (no conditional export needed)
+      percent: true
+      exporter_name: cbp_processor_usage_ratio
+      exporter_desc: Usage ratio across all CBP processors of the CPC
+    cbp-shared-processor-usage:
+      # only returned between SE versions 2.14.0+MCLs and 2.15.0 (no conditional export needed)
+      percent: true
+      exporter_name: cbp_shared_processor_usage_ratio
+      exporter_desc: Usage ratio across all shared CBP processors of the CPC
+    cbp-dedicated-processor-usage:
+      # only returned between SE versions 2.14.0+MCLs and 2.15.0 (no conditional export needed)
+      percent: true
+      exporter_name: cbp_dedicated_processor_usage_ratio
+      exporter_desc: Usage ratio across all dedicated CBP processors of the CPC
+    channel-usage:
+      percent: true
+      exporter_name: channel_usage_ratio
+      exporter_desc: Usage ratio across all channels of the CPC
+    power-consumption-watts:
+      percent: false
+      exporter_name: power_watt
+      exporter_desc: Power consumption of the CPC
+    temperature-celsius:
+      percent: false
+      exporter_name: ambient_temperature_celsius
+      exporter_desc: Ambient temperature of the CPC
+
+  logical-partition-usage:
+    processor-usage:
+      percent: true
+      exporter_name: processor_usage_ratio
+      exporter_desc: Usage ratio across all processors of the partition
+    cp-processor-usage:
+      percent: true
+      exporter_name: cp_processor_usage_ratio
+      exporter_desc: Usage ratio across all CP processors of the partition
+    ifl-processor-usage:
+      percent: true
+      exporter_name: ifl_processor_usage_ratio
+      exporter_desc: Usage ratio across all IFL processors of the partition
+    icf-processor-usage:
+      percent: true
+      exporter_name: icf_processor_usage_ratio
+      exporter_desc: Usage ratio across all ICF processors of the partition
+    iip-processor-usage:
+      percent: true
+      exporter_name: iip_processor_usage_ratio
+      exporter_desc: Usage ratio across all IIP processors of the partition
+    cbp-processor-usage:
+      # only returned between SE versions 2.14.0+MCLs and 2.15.0 (no conditional export needed)
+      percent: true
+      exporter_name: cbp_processor_usage_ratio
+      exporter_desc: Usage ratio across all CBP processors of the partition
+    zvm-paging-rate:
+      percent: false
+      exporter_name: zvm_paging_rate_pages_per_second
+      exporter_desc: z/VM paging rate in pages/sec
+    power-consumption-watts:
+      if: "'environmental-metrics' in se_features"
+      percent: false
+      exporter_name: power_watt
+      exporter_desc: Power consumption of the partition
+
+  channel-usage:
+    channel-usage:
+      percent: true
+      exporter_name: usage_ratio
+      exporter_desc: Usage ratio of the channel
+    channel-name:
+      percent: false
+      exporter_name: null  # Ignored (used for identification in channel-usage)
+      exporter_desc: null
+    shared-channel:
+      percent: false
+      exporter_name: null  # Ignored (used for identification in channel-usage)
+      exporter_desc: null
+    logical-partition-name:
+      percent: false
+      exporter_name: null  # Ignored (used for identification in channel-usage)
+      exporter_desc: null
+
+  crypto-usage:
+    adapter-usage:
+      percent: true
+      exporter_name: usage_ratio
+      exporter_desc: Usage ratio of the crypto adapter
+    channel-id:
+      percent: false
+      exporter_name: null  # Ignored (used for identification in adapter-usage)
+      exporter_desc: null
+    crypto-id:
+      percent: false
+      exporter_name: null  # Ignored (used for identification in adapter-usage)
+      exporter_desc: null
+
+  flash-memory-usage:
+    adapter-usage:
+      percent: true
+      exporter_name: usage_ratio
+      exporter_desc: Usage ratio of the flash memory adapter
+    channel-id:
+      percent: false
+      exporter_name: null  # Ignored (used for identification in adapter-usage)
+      exporter_desc: null
+
+  roce-usage:
+    adapter-usage:
+      percent: true
+      exporter_name: usage_ratio
+      exporter_desc: Usage ratio of the RoCE adapter
+
+  logical-partition-resource:  # can be in dictionary or list format
+    - properties_expression: "0"
+      exporter_name: description
+      exporter_desc: "Description of the partition (in 'value' label)"
+      labels:
+        - name: value
+          value: "resource_obj.properties['description']"
+    - properties_expression: "0"
+      exporter_name: partition_number
+      exporter_desc: Partition number as a hex string, empty string if LPAR is inactive
+      labels:
+        - name: value
+          value: "resource_obj.properties['partition-number']"
+    - properties_expression: "0"
+      if: "'last-used-load-parameter' in resource_obj.properties"  # Added in HMC 2.14.0
+      exporter_name: last_used_load_parameter
+      exporter_desc: Last used load parameter, empty string if not set
+      labels:
+        - name: value
+          value: "resource_obj.properties['last-used-load-parameter']"
+    - properties_expression: "0"
+      if: "'last-used-load-address' in resource_obj.properties"  # Added in HMC 2.14.0
+      exporter_name: last_used_load_address
+      exporter_desc: Last used load address as a hex string, 00000 if not available
+      labels:
+        - name: value
+          value: "resource_obj.properties['last-used-load-address']"
+    - properties_expression: "0"
+      exporter_name: sysplex_name
+      exporter_desc: Sysplex name for z/OS and CFCC, empty string otherwise
+      labels:
+        - name: value
+          value: "resource_obj.properties['sysplex-name'] or ''"  # HMC returns None for otherwise
+    - property_name: defined-capacity
+      exporter_name: defined_capacity_msu_per_hour
+      exporter_desc: Defined capacity expressed in terms of Millions of Service Units (MSU)s per hour
+    - property_name: workload-manager-enabled
+      exporter_name: workload_manager_is_enabled
+      exporter_desc: Boolean indicating whether the z/OS Workload Manager is allowed to change processing weight related properties of the partition (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - property_name: processor-usage
+      if: "'processor-usage' in resource_obj.properties"  # Added in HMC 2.15.0
+      exporter_name: processor_mode_int
+      exporter_desc: Allocation mode for processors to the active partition as an integer (0=shared, 1=dedicated)
+      valuemap:
+        shared: 0
+        dedicated: 1
+    - property_name: number-general-purpose-processors
+      if: "'number-general-purpose-processors' in resource_obj.properties"  # Added in HMC 2.15.0
+      exporter_name: cp_processor_count
+      exporter_desc: Number of CP processors currently allocated to the active partition
+    - property_name: number-reserved-general-purpose-processors
+      if: "'number-reserved-general-purpose-processors' in resource_obj.properties"  # Added in HMC 2.15.0
+      exporter_name: cp_reserved_processor_count
+      exporter_desc: Number of CP processors reserved for the active partition (this is the maximum when increasing the number)
+    - property_name: initial-processing-weight
+      exporter_name: cp_initial_processing_weight
+      exporter_desc: Initial CP processing weight for the active partition in shared mode (1..999)
+    - property_name: minimum-processing-weight
+      exporter_name: cp_minimum_processing_weight
+      exporter_desc: Minimum CP processing weight for the active partition in shared mode (1..999)
+    - property_name: maximum-processing-weight
+      exporter_name: cp_maximum_processing_weight
+      exporter_desc: Maximum CP processing weight for the active partition in shared mode (1..999)
+    - property_name: current-processing-weight
+      exporter_name: cp_current_processing_weight
+      exporter_desc: Current CP processing weight for the active partition in shared mode (1..999)
+    - properties_expression: "properties['absolute-processing-capping'].type == 'processors'"
+      exporter_name: cp_processor_count_is_capped
+      exporter_desc: Boolean indicating whether absolute capping is enabled for CP processors (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - properties_expression: "properties['absolute-processing-capping'].value if properties['absolute-processing-capping'].type == 'processors' else 0"
+      exporter_name: cp_processor_count_cap
+      exporter_desc: Maximum number of CP processors that can be used if absolute capping is enabled, else 0
+    - property_name: initial-processing-weight-capped
+      exporter_name: cp_initial_processing_weight_is_capped
+      exporter_desc: Boolean indicating whether the initial CP processing weight is capped (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - property_name: current-processing-weight-capped
+      exporter_name: cp_current_processing_weight_is_capped
+      exporter_desc: Boolean indicating whether the current CP processing weight is capped (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - property_name: number-ifl-processors
+      if: "'number-ifl-processors' in resource_obj.properties"  # Added in SE 2.15.0
+      exporter_name: ifl_processor_count
+      exporter_desc: Number of IFL processors currently allocated to the active partition
+    - property_name: number-reserved-ifl-processors
+      if: "'number-reserved-ifl-processors' in resource_obj.properties"  # Added in SE 2.15.0
+      exporter_name: ifl_reserved_processor_count
+      exporter_desc: Number of IFL processors reserved for the active partition (this is the maximum when increasing the number)
+    - property_name: initial-ifl-processing-weight
+      exporter_name: ifl_initial_processing_weight
+      exporter_desc: Initial IFL processing weight for the active partition in shared mode (1..999)
+    - property_name: minimum-ifl-processing-weight
+      exporter_name: ifl_minimum_processing_weight
+      exporter_desc: Minimum IFL processing weight for the active partition in shared mode (1..999)
+    - property_name: maximum-ifl-processing-weight
+      exporter_name: ifl_maximum_processing_weight
+      exporter_desc: Maximum IFL processing weight for the active partition in shared mode (1..999)
+    - property_name: current-ifl-processing-weight
+      exporter_name: ifl_current_processing_weight
+      exporter_desc: Current IFL processing weight for the active partition in shared mode (1..999)
+    - properties_expression: "properties['absolute-ifl-capping'].type == 'processors'"
+      exporter_name: ifl_processor_count_is_capped
+      exporter_desc: Boolean indicating whether absolute capping is enabled for IFL processors (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - properties_expression: "properties['absolute-ifl-capping'].value if properties['absolute-ifl-capping'].type == 'processors' else 0"
+      exporter_name: ifl_processor_count_cap
+      exporter_desc: Maximum number of IFL processors that can be used if absolute capping is enabled, else 0
+    - property_name: initial-ifl-processing-weight-capped
+      exporter_name: ifl_initial_processing_weight_is_capped
+      exporter_desc: Boolean indicating whether the initial IFL processing weight is capped (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - property_name: current-ifl-processing-weight-capped
+      exporter_name: ifl_current_processing_weight_is_capped
+      exporter_desc: Boolean indicating whether the current IFL processing weight is capped (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - property_name: number-icf-processors
+      if: "'number-ifc-processors' in resource_obj.properties"  # Added in SE 2.15.0
+      exporter_name: icf_processor_count
+      exporter_desc: Number of ICF processors currently allocated to the active partition
+    - property_name: number-reserved-icf-processors
+      if: "'number-reserved-ifc-processors' in resource_obj.properties"  # Added in SE 2.15.0
+      exporter_name: icf_reserved_processor_count
+      exporter_desc: Number of ICF processors reserved for the active partition (this is the maximum when increasing the number)
+    - property_name: initial-cf-processing-weight
+      exporter_name: icf_initial_processing_weight
+      exporter_desc: Initial ICF processing weight for the active partition in shared mode (1..999)
+    - property_name: minimum-cf-processing-weight
+      exporter_name: icf_minimum_processing_weight
+      exporter_desc: Minimum ICF processing weight for the active partition in shared mode (1..999)
+    - property_name: maximum-cf-processing-weight
+      exporter_name: icf_maximum_processing_weight
+      exporter_desc: Maximum ICF processing weight for the active partition in shared mode (1..999)
+    - property_name: current-cf-processing-weight
+      exporter_name: icf_current_processing_weight
+      exporter_desc: Current ICF processing weight for the active partition in shared mode (1..999)
+    - properties_expression: "properties['absolute-cf-capping'].type == 'processors'"
+      exporter_name: icf_processor_count_is_capped
+      exporter_desc: Boolean indicating whether absolute capping is enabled for ICF processors (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - properties_expression: "properties['absolute-cf-capping'].value if properties['absolute-cf-capping'].type == 'processors' else 0"
+      exporter_name: icf_processor_count_cap
+      exporter_desc: Maximum number of ICF processors that can be used if absolute capping is enabled, else 0
+    - property_name: initial-cf-processing-weight-capped
+      exporter_name: icf_initial_processing_weight_is_capped
+      exporter_desc: Boolean indicating whether the initial ICF processing weight is capped (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - property_name: current-cf-processing-weight-capped
+      exporter_name: icf_current_processing_weight_is_capped
+      exporter_desc: Boolean indicating whether the current ICF processing weight is capped (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - property_name: number-ziip-processors
+      if: "'number-ziip-processors' in resource_obj.properties"  # Added in SE 2.15.0
+      exporter_name: iip_processor_count
+      exporter_desc: Number of zIIP processors currently allocated to the active partition
+    - property_name: number-reserved-ziip-processors
+      if: "'number-reserved-ziip-processors' in resource_obj.properties"  # Added in SE 2.15.0
+      exporter_name: iip_reserved_processor_count
+      exporter_desc: Number of zIIP processors reserved for the active partition (this is the maximum when increasing the number)
+    - property_name: initial-ziip-processing-weight
+      exporter_name: iip_initial_processing_weight
+      exporter_desc: Initial zIIP processing weight for the active partition in shared mode (1..999)
+    - property_name: minimum-ziip-processing-weight
+      exporter_name: iip_minimum_processing_weight
+      exporter_desc: Minimum zIIP processing weight for the active partition in shared mode (1..999)
+    - property_name: maximum-ziip-processing-weight
+      exporter_name: iip_maximum_processing_weight
+      exporter_desc: Maximum zIIP processing weight for the active partition in shared mode (1..999)
+    - property_name: current-ziip-processing-weight
+      exporter_name: iip_current_processing_weight
+      exporter_desc: Current zIIP processing weight for the active partition in shared mode (1..999)
+    - properties_expression: "properties['absolute-ziip-capping'].type == 'processors'"
+      exporter_name: iip_processor_count_is_capped
+      exporter_desc: Boolean indicating whether absolute capping is enabled for zIIP processors (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - properties_expression: "properties['absolute-ziip-capping'].value if properties['absolute-ziip-capping'].type == 'processors' else 0"
+      exporter_name: iip_processor_count_cap
+      exporter_desc: Maximum number of zIIP processors that can be used if absolute capping is enabled, else 0
+    - property_name: initial-ziip-processing-weight-capped
+      exporter_name: iip_initial_processing_weight_is_capped
+      exporter_desc: Boolean indicating whether the initial zIIP processing weight is capped (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - property_name: current-ziip-processing-weight-capped
+      exporter_name: iip_current_processing_weight_is_capped
+      exporter_desc: Boolean indicating whether the current zIIP processing weight is capped (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    # Note: number-...-processors/cores properties do not exist in 2.15 for AAP processors
+    - property_name: initial-aap-processing-weight
+      exporter_name: aap_initial_processing_weight
+      exporter_desc: Initial zAAP processing weight for the active partition in shared mode (1..999)
+    - property_name: minimum-aap-processing-weight
+      exporter_name: aap_minimum_processing_weight
+      exporter_desc: Minimum zAAP processing weight for the active partition in shared mode (1..999)
+    - property_name: maximum-aap-processing-weight
+      exporter_name: aap_maximum_processing_weight
+      exporter_desc: Maximum zAAP processing weight for the active partition in shared mode (1..999)
+    - property_name: current-aap-processing-weight
+      exporter_name: aap_current_processing_weight
+      exporter_desc: Current zAAP processing weight for the active partition in shared mode (1..999)
+    - properties_expression: "properties['absolute-aap-capping'].type == 'processors'"
+      exporter_name: aap_processor_count_is_capped
+      exporter_desc: Boolean indicating whether absolute capping is enabled for zAAP processors (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - properties_expression: "properties['absolute-aap-capping'].value if properties['absolute-aap-capping'].type == 'processors' else 0"
+      exporter_name: aap_processor_count_cap
+      exporter_desc: Maximum number of zAAP processors that can be used if absolute capping is enabled, else 0
+    - property_name: initial-aap-processing-weight-capped
+      exporter_name: aap_initial_processing_weight_is_capped
+      exporter_desc: Boolean indicating whether the initial zAAP processing weight is capped (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - property_name: current-aap-processing-weight-capped
+      exporter_name: aap_current_processing_weight_is_capped
+      exporter_desc: Boolean indicating whether the current zAAP processing weight is capped (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    # Note: number-...-processors/cores properties do not exist in 2.15 for CBP processors
+    - property_name: initial-cbp-processing-weight
+      if: "'initial-cbp-processing-weight' in resource_obj.properties"  # Between SE versions 2.14.0+MCLs and 2.15.0
+      exporter_name: cbp_initial_processing_weight
+      exporter_desc: Initial CBP processing weight for the active partition in shared mode (1..999)
+    - property_name: minimum-cbp-processing-weight
+      if: "'minimum-cbp-processing-weight' in resource_obj.properties"  # Between SE versions 2.14.0+MCLs and 2.15.0
+      exporter_name: cbp_minimum_processing_weight
+      exporter_desc: Minimum CBP processing weight for the active partition in shared mode (1..999)
+    - property_name: maximum-cbp-processing-weight
+      if: "'maximum-cbp-processing-weight' in resource_obj.properties"  # Between SE versions 2.14.0+MCLs and 2.15.0
+      exporter_name: cbp_maximum_processing_weight
+      exporter_desc: Maximum CBP processing weight for the active partition in shared mode (1..999)
+    - property_name: current-cbp-processing-weight
+      if: "'current-cbp-processing-weight' in resource_obj.properties"  # Between SE versions 2.14.0+MCLs and 2.15.0
+      exporter_name: cbp_current_processing_weight
+      exporter_desc: Current CBP processing weight for the active partition in shared mode (1..999)
+    - properties_expression: "properties['absolute-cbp-capping'].type == 'processors'"
+      if: "'absolute-cbp-capping' in resource_obj.properties"  # Between SE versions 2.14.0+MCLs and 2.15.0
+      exporter_name: cbp_processor_count_is_capped
+      exporter_desc: Boolean indicating whether absolute capping is enabled for CBP processors (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - properties_expression: "properties['absolute-cbp-capping'].value if properties['absolute-cbp-capping'].type == 'processors' else 0"
+      if: "'absolute-cbp-capping' in resource_obj.properties"  # Between SE versions 2.14.0+MCLs and 2.15.0
+      exporter_name: cbp_processor_count_cap
+      exporter_desc: Maximum number of CBP processors that can be used if absolute capping is enabled, else 0
+    - property_name: initial-cbp-processing-weight-capped
+      if: "'initial-cbp-processing-weight-capped' in resource_obj.properties"  # Between SE versions 2.14.0+MCLs and 2.15.0
+      exporter_name: cbp_initial_processing_weight_is_capped
+      exporter_desc: Boolean indicating whether the initial CBP processing weight is capped (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - property_name: current-cbp-processing-weight-capped
+      if: "'current-cbp-processing-weight-capped' in resource_obj.properties"  # Between SE versions 2.14.0+MCLs and 2.15.0
+      exporter_name: cbp_current_processing_weight_is_capped
+      exporter_desc: Boolean indicating whether the current CBP processing weight is capped (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - properties_expression: "properties['storage-central-allocation']|map(attribute='initial')|map('replace',None,0)|map('int')|sum"
+      exporter_name: initial_central_memory_mib
+      exporter_desc: Amount of central memory initially allocated to the active partition in MiB (segments with unavailable values are counted as 0)
+    - properties_expression: "properties['storage-central-allocation']|map(attribute='current')|map('replace',None,0)|map('int')|sum"
+      exporter_name: current_central_memory_mib
+      exporter_desc: Amount of central memory currently allocated to the active partition in MiB (segments with unavailable values are counted as 0)
+    - properties_expression: "properties['storage-central-allocation']|map(attribute='maximum')|map('replace',None,0)|map('int')|sum"
+      exporter_name: maximum_central_memory_mib
+      exporter_desc: Maximum amount of central memory to which the operating system running in the active partition can increase in MiB (segments with unavailable values are counted as 0)
+    - properties_expression: "properties['storage-expanded-allocation']|map(attribute='initial')|map('replace',None,0)|map('int')|sum"
+      exporter_name: initial_expanded_memory_mib
+      exporter_desc: Amount of expanded memory initially allocated to the active partition in MiB (segments with unavailable values are counted as 0)
+    - properties_expression: "properties['storage-expanded-allocation']|map(attribute='current')|map('replace',None,0)|map('int')|sum"
+      exporter_name: current_expanded_memory_mib
+      exporter_desc: Amount of expanded memory currently allocated to the active partition in MiB (segments with unavailable values are counted as 0)
+    - properties_expression: "properties['storage-expanded-allocation']|map(attribute='maximum')|map('replace',None,0)|map('int')|sum"
+      exporter_name: maximum_expanded_memory_mib
+      exporter_desc: Maximum amount of expanded memory to which the operating system running in the active partition can increase in MiB (segments with unavailable values are counted as 0)
+    - property_name: initial-vfm-storage
+      exporter_name: initial_vfm_memory_gib
+      exporter_desc: Initial amount of IBM Virtual Flash Memory (VFM) to be allocated at partition activation, in GiB
+    - property_name: maximum-vfm-storage
+      exporter_name: maximum_vfm_memory_gib
+      exporter_desc: Maximum amount of IBM Virtual Flash Memory (VFM) that can be allocated to the active partition, in GiB
+    - property_name: current-vfm-storage
+      exporter_name: current_vfm_memory_gib
+      exporter_desc: Current amount of IBM Virtual Flash Memory (VFM) that is allocated to the active partition, in GiB
+    - properties_expression: "{'operating': 0, 'not-operating': 1, 'not-activated': 2, 'exceptions': 10}.get(properties.status, 99)"
+      exporter_name: lpar_status_int  # Must be different from partition status_int due to different values
+      exporter_desc: "LPAR status as integer (0=operating, 1=not-operating, 2=not-activated, 10=exceptions, 99=unsupported value)"
+      labels:
+        - name: value
+          value: "resource_obj.properties['status']"
+    - property_name: has-unacceptable-status
+      exporter_name: has_unacceptable_status
+      exporter_desc: Boolean indicating whether the partition has an unacceptable status (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+
+  # Available for CPCs in DPM mode
+
+  dpm-system-usage-overview:
+    processor-usage:
+      percent: true
+      exporter_name: processor_usage_ratio
+      exporter_desc: Usage ratio across all processors of the CPC
+    all-shared-processor-usage:
+      percent: true
+      exporter_name: shared_processor_usage_ratio
+      exporter_desc: Usage ratio across all shared processors of the CPC
+    cp-all-processor-usage:
+      percent: true
+      exporter_name: cp_processor_usage_ratio
+      exporter_desc: Usage ratio across all CP processors of the CPC
+    cp-shared-processor-usage:
+      percent: true
+      exporter_name: cp_shared_processor_usage_ratio
+      exporter_desc: Usage ratio across all shared CP processors of the CPC
+    ifl-all-processor-usage:
+      percent: true
+      exporter_name: ifl_processor_usage_ratio
+      exporter_desc: Usage ratio across all IFL processors of the CPC
+    ifl-shared-processor-usage:
+      percent: true
+      exporter_name: ifl_shared_processor_usage_ratio
+      exporter_desc: Usage ratio across all shared IFL processors of the CPC
+    network-usage:
+      percent: true
+      exporter_name: network_adapter_usage_ratio
+      exporter_desc: Usage ratio across all network adapters of the CPC
+    storage-usage:
+      percent: true
+      exporter_name: storage_adapter_usage_ratio
+      exporter_desc: Usage ratio across all storage adapters of the CPC
+    accelerator-usage:
+      percent: true
+      exporter_name: accelerator_adapter_usage_ratio
+      exporter_desc: Usage ratio across all accelerator adapters of the CPC
+    crypto-usage:
+      percent: true
+      exporter_name: crypto_adapter_usage_ratio
+      exporter_desc: Usage ratio across all crypto adapters of the CPC
+    power-consumption-watts:
+      percent: false
+      exporter_name: power_watt
+      exporter_desc: Power consumption of the CPC
+    temperature-celsius:
+      percent: false
+      exporter_name: ambient_temperature_celsius
+      exporter_desc: Ambient temperature of the CPC
+
+  partition-usage:
+    processor-usage:
+      percent: true
+      exporter_name: processor_usage_ratio
+      exporter_desc: Usage ratio across all processors of the partition
+    network-usage:
+      percent: true
+      exporter_name: network_adapter_usage_ratio
+      exporter_desc: Usage ratio of all network adapters of the partition
+    storage-usage:
+      percent: true
+      exporter_name: storage_adapter_usage_ratio
+      exporter_desc: Usage ratio of all storage adapters of the partition
+    accelerator-usage:
+      percent: true
+      exporter_name: accelerator_adapter_usage_ratio
+      exporter_desc: Usage ratio of all accelerator adapters of the partition
+    crypto-usage:
+      percent: true
+      exporter_name: crypto_adapter_usage_ratio
+      exporter_desc: Usage ratio of all crypto adapters of the partition
+
+  adapter-usage:
+    adapter-usage:
+      percent: true
+      exporter_name: usage_ratio
+      exporter_desc: Usage ratio of the adapter
+
+  network-physical-adapter-port:
+    network-port-id:
+      # type: info
+      percent: false
+      exporter_name: null  # Ignored (identifies the port, used in label)
+      exporter_desc: null
+    bytes-sent:
+      metric_type: counter
+      percent: false
+      exporter_name: bytes_sent_count
+      exporter_desc: Number of Bytes in unicast packets that were sent
+    bytes-received:
+      metric_type: counter
+      percent: false
+      exporter_name: bytes_received_count
+      exporter_desc: Number of Bytes in unicast packets that were received
+    packets-sent:
+      metric_type: counter
+      percent: false
+      exporter_name: packets_sent_count
+      exporter_desc: Number of unicast packets that were sent
+    packets-received:
+      metric_type: counter
+      percent: false
+      exporter_name: packets_received_count
+      exporter_desc: Number of unicast packets that were received
+    packets-sent-dropped:
+      metric_type: counter
+      percent: false
+      exporter_name: packets_sent_dropped_count
+      exporter_desc: Number of sent packets that were dropped (resource shortage)
+    packets-received-dropped:
+      metric_type: counter
+      percent: false
+      exporter_name: packets_received_dropped_count
+      exporter_desc: Number of received packets that were dropped (resource shortage)
+    packets-sent-discarded:
+      metric_type: counter
+      percent: false
+      exporter_name: packets_sent_discarded_count
+      exporter_desc: Number of sent packets that were discarded (malformed)
+    packets-received-discarded:
+      metric_type: counter
+      percent: false
+      exporter_name: packets_received_discarded_count
+      exporter_desc: Number of received packets that were discarded (malformed)
+    multicast-packets-sent:
+      metric_type: counter
+      percent: false
+      exporter_name: multicast_packets_sent_count
+      exporter_desc: Number of multicast packets sent
+    multicast-packets-received:
+      metric_type: counter
+      percent: false
+      exporter_name: multicast_packets_received_count
+      exporter_desc: Number of multicast packets received
+    broadcast-packets-sent:
+      metric_type: counter
+      percent: false
+      exporter_name: broadcast_packets_sent_count
+      exporter_desc: Number of broadcast packets sent
+    broadcast-packets-received:
+      metric_type: counter
+      percent: false
+      exporter_name: broadcast_packets_received_count
+      exporter_desc: Number of broadcast packets received
+    interval-bytes-sent:
+      percent: false
+      exporter_name: data_sent_bytes
+      exporter_desc: Amount of data sent over the collection interval
+    interval-bytes-received:
+      percent: false
+      exporter_name: data_received_bytes
+      exporter_desc: Amount of data received over the collection interval
+    bytes-per-second-sent:
+      percent: false
+      exporter_name: data_rate_sent_bytes_per_second
+      exporter_desc: Data rate sent over the collection interval
+    bytes-per-second-received:
+      percent: false
+      exporter_name: data_rate_received_bytes_per_second
+      exporter_desc: Data rate received over the collection interval
+    utilization:
+      percent: true
+      exporter_name: bandwidth_usage_ratio
+      exporter_desc: Bandwidth usage ratio of the port
+    mac-address:
+      # type: info
+      percent: false
+      exporter_name: null # mac_address
+      exporter_desc: null # MAC address of the port, or 'N/A'
+    flags:
+      # type: info
+      percent: false
+      exporter_name: null  # Ignored (can be detected from metric values)
+      exporter_desc: null
+
+  partition-attached-network-interface:
+    partition-id:  # the OID, i.e. /api/partitions/{partition-id}
+      # type: info
+      percent: false
+      exporter_name: null  # Ignored (identifies the partition, used in label)
+      exporter_desc: null
+    bytes-sent:
+      metric_type: counter
+      percent: false
+      exporter_name: bytes_sent_count
+      exporter_desc: Number of Bytes in unicast packets that were sent
+    bytes-received:
+      metric_type: counter
+      percent: false
+      exporter_name: bytes_received_count
+      exporter_desc: Number of Bytes in unicast packets that were received
+    packets-sent:
+      metric_type: counter
+      percent: false
+      exporter_name: packets_sent_count
+      exporter_desc: Number of unicast packets that were sent
+    packets-received:
+      metric_type: counter
+      percent: false
+      exporter_name: packets_received_count
+      exporter_desc: Number of unicast packets that were received
+    packets-sent-dropped:
+      metric_type: counter
+      percent: false
+      exporter_name: packets_sent_dropped_count
+      exporter_desc: Number of sent packets that were dropped (resource shortage)
+    packets-received-dropped:
+      metric_type: counter
+      percent: false
+      exporter_name: packets_received_dropped_count
+      exporter_desc: Number of received packets that were dropped (resource shortage)
+    packets-sent-discarded:
+      metric_type: counter
+      percent: false
+      exporter_name: packets_sent_discarded_count
+      exporter_desc: Number of sent packets that were discarded (malformed)
+    packets-received-discarded:
+      metric_type: counter
+      percent: false
+      exporter_name: packets_received_discarded_count
+      exporter_desc: Number of received packets that were discarded (malformed)
+    multicast-packets-sent:
+      metric_type: counter
+      percent: false
+      exporter_name: multicast_packets_sent_count
+      exporter_desc: Number of multicast packets sent
+    multicast-packets-received:
+      metric_type: counter
+      percent: false
+      exporter_name: multicast_packets_received_count
+      exporter_desc: Number of multicast packets received
+    broadcast-packets-sent:
+      metric_type: counter
+      percent: false
+      exporter_name: broadcast_packets_sent_count
+      exporter_desc: Number of broadcast packets sent
+    broadcast-packets-received:
+      metric_type: counter
+      percent: false
+      exporter_name: broadcast_packets_received_count
+      exporter_desc: Number of broadcast packets received
+    interval-bytes-sent:
+      percent: false
+      exporter_name: data_sent_bytes
+      exporter_desc: Amount of data sent over the collection interval
+    interval-bytes-received:
+      percent: false
+      exporter_name: data_received_bytes
+      exporter_desc: Amount of data received over the collection interval
+    bytes-per-second-sent:
+      percent: false
+      exporter_name: data_rate_sent_bytes_per_second
+      exporter_desc: Data rate sent over the collection interval
+    bytes-per-second-received:
+      percent: false
+      exporter_name: data_rate_received_bytes_per_second
+      exporter_desc: Data rate received over the collection interval
+    flags:
+      # type: info
+      percent: false
+      exporter_name: null  # Ignored (can be detected from metric values)
+      exporter_desc: null
+
+  partition-resource:  # can be in dictionary or list format
+    - properties_expression: "0"
+      exporter_name: description
+      exporter_desc: "Description of the partition (in 'value' label)"
+      labels:
+        - name: value
+          value: "resource_obj.properties['description']"
+    - property_name: processor-mode
+      exporter_name: processor_mode_int
+      exporter_desc: Allocation mode for processors to the active partition as an integer (0=shared, 1=dedicated)
+      valuemap:
+        shared: 0
+        dedicated: 1
+    - property_name: threads-per-processor
+      exporter_name: threads_per_processor_ratio
+      exporter_desc: Number of threads per allocated processor the operating system running in the partition is configured to use
+    - property_name: cp-processors
+      exporter_name: cp_processor_count
+      exporter_desc: Number of CP processors allocated to the active partition
+    - property_name: initial-cp-processing-weight
+      exporter_name: cp_initial_processing_weight
+      exporter_desc: Initial CP processing weight for the active partition in shared mode (1..999)
+    - property_name: minimum-cp-processing-weight
+      exporter_name: cp_minimum_processing_weight
+      exporter_desc: Minimum CP processing weight for the active partition in shared mode (1..999)
+    - property_name: maximum-cp-processing-weight
+      exporter_name: cp_maximum_processing_weight
+      exporter_desc: Maximum CP processing weight for the active partition in shared mode (1..999)
+    - property_name: current-cp-processing-weight
+      exporter_name: cp_current_processing_weight
+      exporter_desc: Current CP processing weight for the active partition in shared mode (1..999)
+    - properties_expression: "properties['cp-absolute-processor-capping']"
+      exporter_name: cp_processor_count_is_capped
+      exporter_desc: Boolean indicating whether absolute capping is enabled for CP processors (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - properties_expression: "properties['cp-absolute-processor-capping-value'] if properties['cp-absolute-processor-capping'] else 0"
+      exporter_name: cp_processor_count_cap
+      exporter_desc: Maximum number of CP processors that can be used if absolute capping is enabled, else 0
+    - property_name: cp-processing-weight-capped
+      exporter_name: cp_initial_processing_weight_is_capped
+      exporter_desc: Boolean indicating whether the initial CP processing weight is capped (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - property_name: ifl-processors
+      exporter_name: ifl_processor_count
+      exporter_desc: Number of IFL processors allocated to the active partition
+    - property_name: initial-ifl-processing-weight
+      exporter_name: ifl_initial_processing_weight
+      exporter_desc: Initial IFL processing weight for the active partition in shared mode (1..999)
+    - property_name: minimum-ifl-processing-weight
+      exporter_name: ifl_minimum_processing_weight
+      exporter_desc: Minimum IFL processing weight for the active partition in shared mode (1..999)
+    - property_name: maximum-ifl-processing-weight
+      exporter_name: ifl_maximum_processing_weight
+      exporter_desc: Maximum IFL processing weight for the active partition in shared mode (1..999)
+    - property_name: current-ifl-processing-weight
+      exporter_name: ifl_current_processing_weight
+      exporter_desc: Current IFL processing weight for the active partition in shared mode (1..999)
+    - properties_expression: "properties['ifl-absolute-processor-capping']"
+      exporter_name: ifl_processor_count_is_capped
+      exporter_desc: Boolean indicating whether absolute capping is enabled for IFL processors (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - properties_expression: "properties['ifl-absolute-processor-capping-value'] if properties['ifl-absolute-processor-capping'] else 0"
+      exporter_name: ifl_processor_count_cap
+      exporter_desc: Maximum number of IFL processors that can be used if absolute capping is enabled, else 0
+    - property_name: ifl-processing-weight-capped
+      exporter_name: ifl_initial_processing_weight_is_capped
+      exporter_desc: Boolean indicating whether the initial IFL processing weight is capped (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - property_name: initial-memory
+      exporter_name: initial_memory_mib
+      exporter_desc: Initial amount of memory allocated to the partition when it becomes active, in MiB
+    - property_name: reserved-memory
+      exporter_name: reserved_memory_mib
+      exporter_desc: Amount of reserved memory (maximum memory minus initial memory), in MiB
+    - property_name: maximum-memory
+      exporter_name: maximum_memory_mib
+      exporter_desc: Maximum amount of memory to which the operating system running in the partition can increase the memory allocation, in MiB
+    - properties_expression: "{'active': 0, 'degraded': 1, 'paused': 10, 'stopped': 11, 'starting': 12, 'stopping': 13, 'reservation-error': 20, 'terminated': 21, 'communications-not-active': 22, 'status-check': 23}.get(properties.status, 99)"
+      exporter_name: status_int
+      exporter_desc: "Partition status as integer (0=active, 1=degraded, 10=paused, 11=stopped, 12=starting, 13=stopping, 20=reservation-error, 21=terminated, 22=communications-not-active, 23=status-check, 99=unsupported value)"
+      labels:
+        - name: value
+          value: "resource_obj.properties['status']"
+    - property_name: has-unacceptable-status
+      exporter_name: has_unacceptable_status
+      exporter_desc: Boolean indicating whether the partition has an unacceptable status (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - properties_expression: "0"
+      if: "'storage-group-uris' in resource_obj.properties"  # Added in HMC 2.15.0
+      exporter_name: storage_group_uris
+      exporter_desc: "URIs of storage groups attached to the partition, as a comma-separated list"
+      labels:
+        - name: value
+          value: "resource_obj.properties['storage-group-uris'] | join(',')"
+    - properties_expression: "0"
+      if: "'storage-group-uris' in resource_obj.properties"  # Added in HMC 2.15.0
+      exporter_name: storage_groups
+      exporter_desc: "Storage groups attached to the partition, as a comma-separated list"
+      labels:
+        - name: value
+          value: "uris2resources(resource_obj.properties['storage-group-uris']) | map(attribute='name') | join(',')"
+
+  storagegroup-resource:  # can be in dictionary or list format
+    - properties_expression: "{'fcp': 0, 'fc': 1, 'nvme': 2}.get(properties.type, 99)"  # No change notification, but never changes
+      exporter_name: type_int
+      exporter_desc: "Storage group type as integer (0=fcp, 1=fc, 2=nvme, 99=unsupported value)"
+      labels:
+        - name: value
+          value: "resource_obj.properties['type']"
+    - properties_expression: "{'complete': 0, 'pending': 1, 'pending-with-mismatches': 2, 'checking-migration': 3, 'incomplete': 4}.get(properties['fulfillment-state'], 99)"
+      exporter_name: fulfillment_state_int
+      exporter_desc: "Storage group fulfillment state as integer (0=complete, 1=pending, 2=pending-with-mismatches, 3=checking-migration, 4=incomplete, 99=unsupported value)"
+      labels:
+        - name: value
+          value: "resource_obj.properties['fulfillment-state']"
+    - property_name: shared
+      exporter_name: shared
+      exporter_desc: Boolean indicating whether the storage group is shared (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+    - property_name: max-partitions
+      if: "'max-partitions' in resource_obj.properties"  # Only for FCP-type storage groups
+      exporter_name: max_partitions
+      exporter_desc: Maximum number of partitions a storage group can be attached to
+
+  storagevolume-resource:  # can be in dictionary or list format
+    - properties_expression: "{'complete': 0, 'configuration-error': 1, 'deleting': 2, 'incomplete': 3, 'overprovisioned': 4, 'pending': 5, 'pending-with-mismatches': 6}.get(properties['fulfillment-state'], 99)"
+      exporter_name: fulfillment_state_int
+      exporter_desc: "Storage volume fulfillment state as integer (0=complete, 1=configuration-error, 2=deleting, 3=incomplete, 4=overprovisioned, 5=pending, 6=pending-with-mismatches, 99=unsupported value)"
+      labels:
+        - name: value
+          value: "resource_obj.properties['fulfillment-state']"
+    - properties_expression: "{'boot': 0, 'data': 1, 'not-applicable': 2}.get(properties.usage, 99)"
+      exporter_name: usage_int
+      exporter_desc: "Usage of volume as integer (0=boot, 1=data, 2=not-applicable, 99=unsupported value)"
+      labels:
+        - name: value
+          value: "resource_obj.properties.usage"
+    - property_name: size
+      exporter_name: size_gib
+      exporter_desc: "Size of volume in GiB (0 for ECKD alias volumes)"
+    - property_name: cylinders
+      if: "'cylinders' in resource_obj.properties"  # Only for FC-type storage groups
+      exporter_name: cylinders
+      exporter_desc: "Size of ECKD volume in cylinders (0 for ECKD alias volumes)"
+
+  adapter-resource:  # can be in dictionary or list format
+    - properties_expression: "{'active': 0, 'not-active': 1, 'not-detected': 2, 'exceptions': 3, 'service': 4}.get(properties['status'], 99)"
+      exporter_name: status_int
+      exporter_desc: "Adapter status as integer (0=active, 1=not-active, 2=not-detected, 3=exceptions, 4=service, 99=unsupported value)"
+      labels:
+        - name: value
+          value: "resource_obj.properties['status']"
+    - properties_expression: "{'operating': 0, 'no-power': 1, 'service': 2, 'stopped': 3, 'not-defined': 4, 'definition-error': 5, 'suspended': 6, 'check-stopped': 7, 'wrap-block': 8, 'permanent-error': 9, 'loss-of-signal': 10, 'loss-of-synchronization': 11, 'not-operational-link': 12, 'sequence-time-out': 13, 'sequence-not-permitted': 14, 'terminal-condition': 15, 'offline-signal-received': 16, 'fabric-login-sequence-failure': 17, 'port-login-sequence-failure': 18, 'state-change-registration-failure': 19, 'invalid-attachment-failure': 20, 'test-mode': 21, 'bit-error-threshold-exceeded': 22, 'ifcc-threshold-exceeded': 23, 'io-supressed': 24}.get(properties['physical-channel-status'], 99)"
+      exporter_name: physical_channel_status_int
+      exporter_desc: "Usage of volume as integer (0=operating, 1=no-power, 2=service, 3=stopped, 4=not-defined, 5=definition-error, 6=suspended, 7=check-stopped, 8=wrap-block, 9=permanent-error, 10=loss-of-signal, 11=loss-of-synchronization, 12=not-operational-link, 13=sequence-time-out, 14=sequence-not-permitted, 15=terminal-condition, 16=offline-signal-received, 17=fabric-login-sequence-failure, 18=port-login-sequence-failure, 19=state-change-registration-failure, 20=invalid-attachment-failure, 21=test-mode, 22=bit-error-threshold-exceeded, 23=ifcc-threshold-exceeded, 24=io-supressed, 99=unsupported value)"
+      labels:
+        - name: value
+          value: "resource_obj.properties['physical-channel-status']"
+
+  # Available for CPCs in any mode
+
+  zcpc-environmentals-and-power:
+    temperature-celsius:
+      percent: false
+      exporter_name: null  # Ignored (duplicate of ambient_temperature_celsius)
+      exporter_desc: null
+    humidity:
+      percent: false
+      exporter_name: humidity_percent
+      exporter_desc: Relative humidity
+    dew-point-celsius:
+      percent: false
+      exporter_name: dew_point_celsius
+      exporter_desc: Dew point
+    power-consumption-watts:
+      percent: false
+      exporter_name: null  # Ignored (duplicate of power_watt)
+      exporter_desc: null
+    heat-load:
+      percent: false
+      exporter_name: heat_load_total_btu_per_hour
+      exporter_desc: Total heat load of the CPC
+    heat-load-forced-air:
+      percent: false
+      exporter_name: heat_load_forced_air_btu_per_hour
+      exporter_desc: Heat load of the CPC covered by forced-air
+    heat-load-water:
+      percent: false
+      exporter_name: heat_load_water_btu_per_hour
+      exporter_desc: Heat load of the CPC covered by water
+    exhaust-temperature-celsius:
+      percent: false
+      exporter_name: exhaust_temperature_celsius
+      exporter_desc: Exhaust temperature of the CPC
+    total-partition-power-consumption-watts:
+      if: "'environmental-metrics' in se_features"  # and only in classic mode (no need to put that into condition)
+      percent: false
+      exporter_name: total_partition_power_watt
+      exporter_desc: Total power consumption of all partitions of the CPC (CPU, memory, I/O adapters)
+    total-infrastructure-power-consumption-watts:
+      if: "'environmental-metrics' in se_features"
+      percent: false
+      exporter_name: total_infrastructure_power_watt
+      exporter_desc: Total power consumption of all infrastructure components of the CPC (TOR switches, SE/HMAs, PDUs)
+    total-unassigned-power-consumption-watts:
+      if: "'environmental-metrics' in se_features"
+      percent: false
+      exporter_name: total_unassigned_power_watt
+      exporter_desc: Total power consumption of all unassigned components of the CPC (CPU, memory, I/O adapters)
+
+  environmental-power-status:
+    linecord-one-power-phase-A:
+      percent: false
+      exporter_name: power_cord1_phase_a_watt
+      exporter_desc: Power in Phase A of line cord 1 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-one-name']"
+        - name: cordid
+          value: "1"
+        - name: phase
+          value: "'A'"
+    linecord-one-power-phase-B:
+      percent: false
+      exporter_name: power_cord1_phase_b_watt
+      exporter_desc: Power in Phase B of line cord 1 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-one-name']"
+        - name: cordid
+          value: "1"
+        - name: phase
+          value: "'B'"
+    linecord-one-power-phase-C:
+      percent: false
+      exporter_name: power_cord1_phase_c_watt
+      exporter_desc: Power in Phase C of line cord 1 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-one-name']"
+        - name: cordid
+          value: "1"
+        - name: phase
+          value: "'C'"
+    linecord-one-name:
+      exporter_name: null  # Ignored (used as a label)
+      exporter_desc: null
+    linecord-two-power-phase-A:
+      percent: false
+      exporter_name: power_cord2_phase_a_watt
+      exporter_desc: Power in Phase A of line cord 2 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-two-name']"
+        - name: cordid
+          value: "2"
+        - name: phase
+          value: "'A'"
+    linecord-two-power-phase-B:
+      percent: false
+      exporter_name: power_cord2_phase_b_watt
+      exporter_desc: Power in Phase B of line cord 2 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-two-name']"
+        - name: cordid
+          value: "2"
+        - name: phase
+          value: "'B'"
+    linecord-two-power-phase-C:
+      percent: false
+      exporter_name: power_cord2_phase_c_watt
+      exporter_desc: Power in Phase C of line cord 2 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-two-name']"
+        - name: cordid
+          value: "2"
+        - name: phase
+          value: "'C'"
+    linecord-two-name:
+      exporter_name: null  # Ignored (used as a label)
+      exporter_desc: null
+    linecord-three-power-phase-A:
+      percent: false
+      exporter_name: power_cord3_phase_a_watt
+      exporter_desc: Power in Phase A of line cord 3 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-three-name']"
+        - name: cordid
+          value: "3"
+        - name: phase
+          value: "'A'"
+    linecord-three-power-phase-B:
+      percent: false
+      exporter_name: power_cord3_phase_b_watt
+      exporter_desc: Power in Phase B of line cord 3 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-three-name']"
+        - name: cordid
+          value: "3"
+        - name: phase
+          value: "'B'"
+    linecord-three-power-phase-C:
+      percent: false
+      exporter_name: power_cord3_phase_c_watt
+      exporter_desc: Power in Phase C of line cord 3 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-three-name']"
+        - name: cordid
+          value: "3"
+        - name: phase
+          value: "'C'"
+    linecord-three-name:
+      exporter_name: null  # Ignored (used as a label)
+      exporter_desc: null
+    linecord-four-power-phase-A:
+      percent: false
+      exporter_name: power_cord4_phase_a_watt
+      exporter_desc: Power in Phase A of line cord 4 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-four-name']"
+        - name: cordid
+          value: "4"
+        - name: phase
+          value: "'A'"
+    linecord-four-power-phase-B:
+      percent: false
+      exporter_name: power_cord4_phase_b_watt
+      exporter_desc: Power in Phase B of line cord 4 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-four-name']"
+        - name: cordid
+          value: "4"
+        - name: phase
+          value: "'B'"
+    linecord-four-power-phase-C:
+      percent: false
+      exporter_name: power_cord4_phase_c_watt
+      exporter_desc: Power in Phase C of line cord 4 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-four-name']"
+        - name: cordid
+          value: "4"
+        - name: phase
+          value: "'C'"
+    linecord-four-name:
+      exporter_name: null  # Ignored (used as a label)
+      exporter_desc: null
+    linecord-five-power-phase-A:
+      percent: false
+      exporter_name: power_cord5_phase_a_watt
+      exporter_desc: Power in Phase A of line cord 5 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-five-name']"
+        - name: cordid
+          value: "5"
+        - name: phase
+          value: "'A'"
+    linecord-five-power-phase-B:
+      percent: false
+      exporter_name: power_cord5_phase_b_watt
+      exporter_desc: Power in Phase B of line cord 5 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-five-name']"
+        - name: cordid
+          value: "5"
+        - name: phase
+          value: "'B'"
+    linecord-five-power-phase-C:
+      percent: false
+      exporter_name: power_cord5_phase_c_watt
+      exporter_desc: Power in Phase C of line cord 5 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-five-name']"
+        - name: cordid
+          value: "5"
+        - name: phase
+          value: "'C'"
+    linecord-five-name:
+      exporter_name: null  # Ignored (used as a label)
+      exporter_desc: null
+    linecord-six-power-phase-A:
+      percent: false
+      exporter_name: power_cord6_phase_a_watt
+      exporter_desc: Power in Phase A of line cord 6 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-six-name']"
+        - name: cordid
+          value: "6"
+        - name: phase
+          value: "'A'"
+    linecord-six-power-phase-B:
+      percent: false
+      exporter_name: power_cord6_phase_b_watt
+      exporter_desc: Power in Phase B of line cord 6 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-six-name']"
+        - name: cordid
+          value: "6"
+        - name: phase
+          value: "'B'"
+    linecord-six-power-phase-C:
+      percent: false
+      exporter_name: power_cord6_phase_c_watt
+      exporter_desc: Power in Phase C of line cord 6 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-six-name']"
+        - name: cordid
+          value: "6"
+        - name: phase
+          value: "'C'"
+    linecord-six-name:
+      exporter_name: null  # Ignored (used as a label)
+      exporter_desc: null
+    linecord-seven-power-phase-A:
+      percent: false
+      exporter_name: power_cord7_phase_a_watt
+      exporter_desc: Power in Phase A of line cord 7 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-seven-name']"
+        - name: cordid
+          value: "7"
+        - name: phase
+          value: "'A'"
+    linecord-seven-power-phase-B:
+      percent: false
+      exporter_name: power_cord7_phase_b_watt
+      exporter_desc: Power in Phase B of line cord 7 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-seven-name']"
+        - name: cordid
+          value: "7"
+        - name: phase
+          value: "'B'"
+    linecord-seven-power-phase-C:
+      percent: false
+      exporter_name: power_cord7_phase_c_watt
+      exporter_desc: Power in Phase C of line cord 7 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-seven-name']"
+        - name: cordid
+          value: "7"
+        - name: phase
+          value: "'C'"
+    linecord-seven-name:
+      exporter_name: null  # Ignored (used as a label)
+      exporter_desc: null
+    linecord-eight-power-phase-A:
+      percent: false
+      exporter_name: power_cord8_phase_a_watt
+      exporter_desc: Power in Phase A of line cord 8 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-eight-name']"
+        - name: cordid
+          value: "8"
+        - name: phase
+          value: "'A'"
+    linecord-eight-power-phase-B:
+      percent: false
+      exporter_name: power_cord8_phase_b_watt
+      exporter_desc: Power in Phase B of line cord 8 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-eight-name']"
+        - name: cordid
+          value: "8"
+        - name: phase
+          value: "'B'"
+    linecord-eight-power-phase-C:
+      percent: false
+      exporter_name: power_cord8_phase_c_watt
+      exporter_desc: Power in Phase C of line cord 8 - 0 if not available
+      labels:
+        - name: cord
+          value: "metric_values['linecord-eight-name']"
+        - name: cordid
+          value: "8"
+        - name: phase
+          value: "'C'"
+    linecord-eight-name:
+      exporter_name: null  # Ignored (used as a label)
+      exporter_desc: null
+
+  zcpc-processor-usage:
+    processor-name:
+      # type: info
+      percent: false
+      exporter_name: null  # Ignored (used as label)
+      exporter_desc: null
+    processor-type:
+      # type: info
+      percent: false
+      exporter_name: null  # Ignored (used as label, also included in processor-name)
+      exporter_desc: null
+    processor-usage:
+      percent: true
+      exporter_name: usage_ratio
+      exporter_desc: Usage ratio of the processor
+    smt-usage:
+      percent: false
+      exporter_name: smt_mode_percent
+      exporter_desc: Percentage of time the processor was in SMT mode - -1 if not supported
+    thread-0-usage:
+      percent: true
+      exporter_name: smt_thread0_usage_ratio
+      exporter_desc: Usage ratio of thread 0 of the processor when in SMT mode - -1 if not supported
+    thread-1-usage:
+      percent: true
+      exporter_name: smt_thread1_usage_ratio
+      exporter_desc: Usage ratio of thread 1 of the processor when in SMT mode - -1 if not supported
+
+  cpc-resource:  # can be in dictionary or list format
+    - property_name: processor-count-general-purpose
+      exporter_name: cp_processor_count
+      exporter_desc: Number of active CP processors
+    - property_name: processor-count-ifl
+      exporter_name: ifl_processor_count
+      exporter_desc: Number of active IFL processors
+    - property_name: processor-count-icf
+      exporter_name: icf_processor_count
+      exporter_desc: Number of active ICF processors
+    - property_name: processor-count-iip
+      exporter_name: iip_processor_count
+      exporter_desc: Number of active zIIP processors
+    - property_name: processor-count-aap
+      exporter_name: aap_processor_count
+      exporter_desc: Number of active zAAP processors
+    - property_name: processor-count-cbp
+      if: "'processor-count-cbp' in resource_obj.properties"  # Between SE versions 2.14.0+MCLs and 2.15.0
+      exporter_name: cbp_processor_count
+      exporter_desc: Number of active CBP processors
+    - property_name: processor-count-service-assist
+      exporter_name: sap_processor_count
+      exporter_desc: Number of active SAP processors
+    - property_name: processor-count-defective
+      exporter_name: defective_processor_count
+      exporter_desc: Number of defective processors of all processor types
+    - property_name: processor-count-spare
+      exporter_name: spare_processor_count
+      exporter_desc: Number of spare processors of all processor types
+    - property_name: storage-total-installed
+      if: "se_version>='2.13.1'"
+      exporter_name: total_memory_mib
+      exporter_desc: Total amount of installed memory, in MiB
+    - property_name: storage-hardware-system-area
+      if: "se_version>='2.13.1'"
+      exporter_name: hsa_memory_mib
+      exporter_desc: Amount of memory reserved for the base hardware system area (HSA), in MiB
+    - property_name: storage-customer
+      if: "se_version>='2.13.1'"
+      exporter_name: partition_memory_mib
+      exporter_desc: Amount of memory for use by partitions, in MiB
+    - property_name: storage-customer-central
+      if: "se_version>='2.13.1'"
+      exporter_name: partition_central_memory_mib
+      exporter_desc: Amount of memory allocated as central storage across the active partitions, in MiB
+    - property_name: storage-customer-expanded
+      if: "se_version>='2.13.1'"
+      exporter_name: partition_expanded_memory_mib
+      exporter_desc: Amount of memory allocated as expanded storage across the active partitions, in MiB
+    - property_name: storage-customer-available
+      if: "se_version>='2.13.1'"
+      exporter_name: available_memory_mib
+      exporter_desc: Amount of memory not allocated to active partitions, in MiB
+    - property_name: storage-vfm-increment-size
+      if: "se_version>='2.14.0'"
+      exporter_name: vfm_increment_gib
+      exporter_desc: Increment size of IBM Virtual Flash Memory (VFM), in GiB
+    - property_name: storage-vfm-total
+      if: "se_version>='2.14.0'"
+      exporter_name: total_vfm_gib
+      exporter_desc: Total amount of installed IBM Virtual Flash Memory (VFM), in GiB
+    - properties_expression: "{'active': 0, 'operating': 0, 'degraded': 1, 'service-required': 2, 'service': 10, 'exceptions': 11, 'not-communicating': 12, 'status-check': 13, 'not-operating': 14, 'no-powerstatus': 15}.get(properties.status, 99)"
+      exporter_name: status_int
+      exporter_desc: "Status as integer (0=active/=operating, 1=degraded, 2=service-required, 10=service, 11=exceptions, 12=not-communicating, 13=status-check, 14=not-operating, 15=no-power, 99=unsupported value)"
+      labels:
+        - name: value
+          value: "resource_obj.properties['status']"
+    - property_name: has-unacceptable-status
+      exporter_name: has_unacceptable_status
+      exporter_desc: Boolean indicating whether the CPC has an unacceptable status (0=false, 1=true)
+      labels:
+        - name: valuetype
+          value: "'bool'"
+
+# Properties that need to be fetched because they can change but have no property change notification
+fetch_properties:
+  cpc:
+    metric-groups:
+      - cpc-resource
+    properties:
+      - property_name: processor-count-aap
+      - property_name: processor-count-cbp
+        if: "hmc_version >= (2,14) and hmc_version <= (2,15)"
+      - property_name: processor-count-service-assist
+      - property_name: processor-count-defective
+      - property_name: processor-count-spare
+
+      - property_name: storage-total-installed
+        if: "hmc_version < (2,16)"
+      - property_name: storage-hardware-system-area
+      - property_name: storage-customer
+      - property_name: storage-customer-central
+      - property_name: storage-customer-expanded
+      - property_name: storage-customer-available
+      - property_name: storage-vfm-increment-size
+      - property_name: storage-vfm-total
+
+      - property_name: processor-count-general-purpose
+        if: "hmc_version < (2,16)"
+      - property_name: processor-count-ifl
+        if: "hmc_version < (2,16)"
+      - property_name: processor-count-icf
+        if: "hmc_version < (2,16)"
+      - property_name: processor-count-iip
+        if: "hmc_version < (2,16)"
+
+  logical-partition:
+    metric-groups:
+      - logical-partition-resource
+    properties:
+      - property_name: description
+      - property_name: defined-capacity
+      - property_name: workload-manager-enabled
+        if: "hmc_version < (2,16)"
+      - property_name: processor-usage
+        if: "hmc_version < (2,16)"
+
+      - property_name: number-general-purpose-processors
+        if: "hmc_version >= (2,15)"  # Actually SE 2.15.0
+      - property_name: number-reserved-general-purpose-processors
+        if: "hmc_version >= (2,15)"  # Actually SE 2.15.0
+      - property_name: absolute-processing-capping
+        if: "hmc_version < (2,16)"
+      - property_name: initial-processing-weight
+        if: "hmc_version < (2,16)"
+      - property_name: initial-processing-weight-capped
+        if: "hmc_version < (2,16)"
+      - property_name: minimum-processing-weight
+        if: "hmc_version < (2,16)"
+      - property_name: maximum-processing-weight
+        if: "hmc_version < (2,16)"
+      - property_name: current-processing-weight
+        if: "hmc_version < (2,16)"
+      - property_name: current-processing-weight-capped
+
+      - property_name: number-ifl-processors
+        if: "hmc_version >= (2,15)"  # Actually SE 2.15.0
+      - property_name: number-reserved-ifl-processors
+        if: "hmc_version >= (2,15)"  # Actually SE 2.15.0
+      - property_name: absolute-ifl-capping
+        if: "hmc_version < (2,16)"
+      - property_name: initial-ifl-processing-weight
+        if: "hmc_version < (2,16)"
+      - property_name: initial-ifl-processing-weight-capped
+        if: "hmc_version < (2,16)"
+      - property_name: minimum-ifl-processing-weight
+        if: "hmc_version < (2,16)"
+      - property_name: maximum-ifl-processing-weight
+        if: "hmc_version < (2,16)"
+      - property_name: current-ifl-processing-weight
+        if: "hmc_version < (2,16)"
+      - property_name: current-ifl-processing-weight-capped
+
+      - property_name: number-icf-processors
+        if: "hmc_version >= (2,15)"  # Actually SE 2.15.0
+      - property_name: number-reserved-icf-processors
+        if: "hmc_version >= (2,15)"  # Actually SE 2.15.0
+      - property_name: absolute-cf-capping
+        if: "hmc_version < (2,16)"
+      - property_name: initial-cf-processing-weight
+        if: "hmc_version < (2,16)"
+      - property_name: initial-cf-processing-weight-capped
+        if: "hmc_version < (2,16)"
+      - property_name: minimum-cf-processing-weight
+        if: "hmc_version < (2,16)"
+      - property_name: maximum-cf-processing-weight
+        if: "hmc_version < (2,16)"
+      - property_name: current-cf-processing-weight
+        if: "hmc_version < (2,16)"
+      - property_name: current-cf-processing-weight-capped
+
+      - property_name: number-ziip-processors
+        if: "hmc_version >= (2,15)"  # Actually SE 2.15.0
+      - property_name: number-reserved-ziip-processors
+        if: "hmc_version >= (2,15)"  # Actually SE 2.15.0
+      - property_name: absolute-ziip-capping
+        if: "hmc_version < (2,16)"
+      - property_name: initial-ziip-processing-weight
+        if: "hmc_version < (2,16)"
+      - property_name: minimum-ziip-processing-weight
+        if: "hmc_version < (2,16)"
+      - property_name: maximum-ziip-processing-weight
+        if: "hmc_version < (2,16)"
+      - property_name: current-ziip-processing-weight
+        if: "hmc_version < (2,16)"
+      - property_name: current-ziip-processing-weight-capped
+
+      - property_name: absolute-aap-capping
+      - property_name: initial-aap-processing-weight
+      - property_name: initial-aap-processing-weight-capped
+      - property_name: minimum-aap-processing-weight
+      - property_name: maximum-aap-processing-weight
+      - property_name: current-aap-processing-weight
+      - property_name: current-aap-processing-weight-capped
+
+      - property_name: absolute-cbp-capping
+        if: "hmc_version >= (2,14) and hmc_version <= (2,15)"
+      - property_name: initial-cbp-processing-weight
+        if: "hmc_version >= (2,14) and hmc_version <= (2,15)"
+      - property_name: initial-cbp-processing-weight-capped
+        if: "hmc_version >= (2,14) and hmc_version <= (2,15)"
+      - property_name: minimum-cbp-processing-weight
+        if: "hmc_version >= (2,14) and hmc_version <= (2,15)"
+      - property_name: maximum-cbp-processing-weight
+        if: "hmc_version >= (2,14) and hmc_version <= (2,15)"
+      - property_name: current-cbp-processing-weight
+        if: "hmc_version >= (2,14) and hmc_version <= (2,15)"
+      - property_name: current-cbp-processing-weight-capped
+        if: "hmc_version >= (2,14) and hmc_version <= (2,15)"
+
+      - property_name: storage-central-allocation
+      - property_name: storage-expanded-allocation
+
+      - property_name: initial-vfm-storage
+      - property_name: maximum-vfm-storage
+      - property_name: current-vfm-storage
