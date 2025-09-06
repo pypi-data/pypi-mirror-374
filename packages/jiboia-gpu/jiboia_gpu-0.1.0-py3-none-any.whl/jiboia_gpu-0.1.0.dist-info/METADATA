@@ -1,0 +1,70 @@
+Metadata-Version: 2.4
+Name: jiboia_gpu
+Version: 0.1.0
+Summary: jiboia_gpu is a python package for automatically normalizing DataFrames and optimizing types efficiently.
+Author-email: Lucas Muffato <lucasmuffato.eng@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2025 Lucas M.
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in
+        all copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+        THE SOFTWARE.
+        
+        USE OF THIS SOFTWARE IS AT YOUR OWN RISK. THE AUTHORS PROVIDE NO WARRANTIES,
+        AND ARE NOT LIABLE FOR ANY DAMAGES, DIRECT OR INDIRECT, ARISING FROM ITS USE.
+        
+Project-URL: Homepage, https://github.com/lmuffato/jiboia_gpu
+Project-URL: Bug_Tracker, https://github.com/lmuffato/jiboia_gpu/issues
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: cudf-cu12>=25.8
+Dynamic: license-file
+
+# Jiboia
+
+**jiboia-gpu** is a Python package to **normalize and optimize DataFrames automatically** efficiently using the Nvidia GPU in the RAPIDS ecosystem.
+
+Key features:
+- **String normalization**:
+  - Removes extra spaces.
+  - Strips leading and trailing spaces.
+  - Detects data pollution (e.g., columns that should be numeric but contain strings).
+- **Type conversion**:
+  - Numeric strings and floats ending in `.0` → integers (`int8`, `int16`, `int32`, …).
+  - Converts floats and integers to the most memory-efficient type.
+  - Converts strings in various date formats to `datetime` (`yyyy?mm?dd`, `dd?mm?yyyy`, `yyyymmd`, `dd?mm?yy`).
+  - Converts time strings (`hhmm UTC`, `hh:mm:ss`, `hh:mm:ss.s`) to `timedelta`.
+- **Null standardization** → converts different null representations to `pd.NA`.
+- **Automatic CSV detection**:
+  - Detects delimiter.
+  - Detects encoding.
+- **Memory optimization**:
+  - Provides memory usage information for DataFrames.
+  - Converts columns to the most compact types possible.
+
+---
+
+## Example Usage
+
+```python
+from jiboia-gpu import jiboia_gpu as jb
+
+pd.normalize_category("data_frame_cudf")
+
+```
