@@ -1,0 +1,50 @@
+[build-system]
+requires = [
+    "setuptools",
+]
+
+build-backend = "setuptools.build_meta"
+
+[project]
+authors = [
+    {name = "Rocky Bernstein",	email = "rocky@gnu.org"},
+]
+
+name = "trepan3k_mathics3"
+description = "trepan3k plugin to support Mathics3 debugging"
+dependencies = [
+    "Mathics3>=9.0.0",
+    "Mathics3-Module-trepan>=9.0.0",
+    "trepan3k>=1.4.1"
+    ]
+readme = "README.rst"
+license = "GPL-3.0-or-later"
+keywords = ["debugger"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Debuggers",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/Mathics3/trepan3k-mathics3-plugin"
+Downloads = "https://github.com/Mathics3/trepan3k-mathics3-plugin/releases"
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit",
+    "pytest",
+]
+
+# [project.scripts]
+# pydisasm = "xdis.bin.pydisasm:main"
+
+[tool.setuptools.dynamic]
+version = {attr = "trepan3k_mathics3.version.__version__"}
