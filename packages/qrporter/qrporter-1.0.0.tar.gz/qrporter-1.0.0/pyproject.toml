@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qrporter"
+version = "1.0.0"
+description = "Local Wi‑Fi QR file transfer"
+readme = { file = "README.md", content-type = "text/markdown" }
+license = { file = "LICENSE" }
+requires-python = ">=3.12"
+authors = [
+  { name = "Manikandan D", email = "manikandan@due.im" }
+]
+keywords = [
+  "qr", "qr-code", "file-transfer", "wifi", "lan", "local-network"
+]
+dependencies = [
+  "Flask>=3.1.2",
+  "PySide6>=6.6.1",
+  "qrcode>=8.2",
+  "Werkzeug>=3.1.3",
+  "Pillow>=11.0.0"
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Framework :: Flask",
+  "Operating System :: OS Independent",
+  "Topic :: Internet :: WWW/HTTP",
+  "Topic :: Communications :: File Sharing",
+  "Topic :: Software Development :: User Interfaces"
+]
+
+[project.urls]
+Homepage = "https://due.im/qrporter/"
+Repository = "https://github.com/manikandancode/qrporter"
+BugTracker = "https://github.com/manikandancode/qrporter/issues"
+
+[project.scripts]
+qrporter = "qrporter.gui:start_gui_app"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["qrporter*"]
+
+[tool.setuptools.package-data]
+qrporter = ["templates/*.html", "static/**/*", "static/assets/*", "static/*.css"]
