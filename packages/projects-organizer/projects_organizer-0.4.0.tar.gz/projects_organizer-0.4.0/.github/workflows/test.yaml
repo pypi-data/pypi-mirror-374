@@ -1,0 +1,43 @@
+name: test
+
+on:
+  pull_request:
+  workflow_call:
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup | Checkout Repository on Release Branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Install | uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install | Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: "pyproject.toml"
+
+      - name: Install | project
+        run: uv sync --locked --all-extras --dev
+
+      - name: Test | lint
+        run: uv run --locked ruff check --output-format=github
+
+      - name: Test | format
+        run: uv run --locked ruff format --check
+
+      - name: Test | basedpyright
+        run: uv run --locked basedpyright
+
+      - name: Test | pytest
+        run: uv run --locked pytest
