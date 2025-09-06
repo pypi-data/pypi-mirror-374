@@ -1,0 +1,70 @@
+Metadata-Version: 2.4
+Name: coinbase-agentkit-openai-agents-sdk
+Version: 0.7.0
+Summary: Coinbase AgentKit OpenAI Agents SDK extension
+Author-email: John Peterson <john.peterson@coinbase.com>
+License-Expression: Apache-2.0
+Keywords: agent,agents,ai,cdp,coinbase,crypto,openai,sdk
+Requires-Python: ~=3.10
+Requires-Dist: coinbase-agentkit<0.8,>=0.7.2
+Requires-Dist: nest-asyncio<2,>=1.6.0
+Requires-Dist: openai-agents<0.0.7,>=0.0.6
+Requires-Dist: pytest-asyncio<0.26,>=0.25.3
+Requires-Dist: python-dotenv<2,>=1.0.1
+Requires-Dist: setuptools<70,>=69.0.3
+Description-Content-Type: text/markdown
+
+# AgentKit OpenAI Agents SDK Extension
+
+OpenAI Agents SDK extension of AgentKit. Enables agentic workflows to interact with onchain actions.
+
+## Setup
+
+### Prerequisites
+
+- [CDP API Key](https://portal.cdp.coinbase.com/access/api)
+- [OpenAI API Key](https://platform.openai.com/docs/quickstart#create-and-export-an-api-key)
+
+### Installation
+
+```bash
+pip install coinbase-agentkit coinbase-agentkit-openai-agents-sdk
+```
+
+### Environment Setup
+
+Set the following environment variables:
+
+```bash
+export OPENAI_API_KEY=<your-openai-api-key>
+export CDP_API_KEY_ID=<your-cdp-api-key-id>
+export CDP_API_KEY_PRIVATE=<your-cdp-api-key-private>
+```
+
+## Usage
+
+### Basic Setup
+
+```python
+from coinbase_agentkit import AgentKit
+from coinbase_agentkit_openai_agents_sdk import get_openai_agents_sdk_tools
+from agents import Agent
+
+agentKit = AgentKit()
+
+tools = get_openai_agents_sdk_tools(agentKit)
+
+agent = Agent(
+    name="CDP Agent",
+    instructions="You are a helpful agent that can interact with the blockchain using AgentKit tools.",
+    tools=tools
+)
+```
+
+For AgentKit configuration options, see the [Coinbase Agentkit README](https://github.com/coinbase/agentkit/blob/master/python/coinbase-agentkit/README.md).
+
+For a full example, see the [chatbot example](https://github.com/coinbase/agentkit/blob/master/python/examples/openai-agents-sdk-smart-wallet-chatbot/chatbot.py).
+
+## Contributing
+
+See [CONTRIBUTING.md](https://github.com/coinbase/agentkit/blob/master/CONTRIBUTING.md) for detailed setup instructions and contribution guidelines.
