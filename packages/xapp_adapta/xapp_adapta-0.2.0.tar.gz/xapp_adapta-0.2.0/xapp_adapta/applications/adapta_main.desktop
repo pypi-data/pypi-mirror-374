@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=adapta_main
+Comment=XApp Python Application
+# Maybe it's just a PyPI module (so place inside the venv/bin)
+# Do you feel lucky, punk?
+# Big F for all files as args (thanx for ')
+Exec=bash -c '. "/home/jacko/adapta/activate" && "adapta_main" %F'
+Icon=com.github.jackokring.adapta_main
+# If you don't need debug terminal
+Terminal=true
+Type=Application
+Categories=Utility
+# And the mimetype
+MimeType=application/com.github.jackokring-adapta_main

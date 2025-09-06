@@ -1,0 +1,18 @@
+# ignore venv
+bin/
+include/
+lib/
+lib64
+# ignore hatch build .
+dist/
+# desktop fckupiles
+# *.desktop
+# sed backups for -i option inplace edits
+# giggle, giggle -ir bad -ri good ... --i[bak]
+#*.por
+#*.cppr
+#*.potr
+# language files made by build
+*.mo
+# nano, when open nvim don't want lose session
+*~

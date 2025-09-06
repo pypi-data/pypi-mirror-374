@@ -1,0 +1,83 @@
+[build-system]
+# build deps
+requires = ["hatchling", "hatch-cpp"]
+build-backend = "hatchling.build"
+
+[tool.metadata]
+#sed -nr "s/^domain = \"(.*)\"$/\1/p" < pyproject.toml
+# copies to $NAME/domain.txt for .py usage
+domain = "com.github.jackokring"
+
+[project]
+# don't use a minus sign ("-")
+name = "xapp_adapta"
+version = "0.2.0"
+authors = [
+  { name = "Simon Jackson", email = "jackokring@gmail.com" },
+  # no email stops showing author in about dialog
+  { name = "Linux Mint Team" },
+  { name = "GNOME Adwaita Team" },
+  { name = "All Di Nice" },
+]
+description = "Python XApp libAdapta Framework"
+readme = "xapp_adapta/README.md"
+requires-python = ">=3.12"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  # Lowest common denominator?
+  "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+]
+dependencies = [
+  # Runtime deps only 
+  "pygobject>=3.52.3",
+  "pycairo>=1.28.0",
+  "pygobject-stubs>=2.13.0",
+  #"autograd>=1.5",
+  #"numpy>=1.23.4"
+]
+
+[tool.hatch.build.hooks.hatch-cpp]
+verbose = true
+libraries = [
+  { name = "xapp_adapta/so", sources = [
+    "xapp_adapta/cpp/so.cpp",
+  ], include-dirs = [
+    "xapp_adapta/cpp",
+  ] },
+]
+
+[tool.hatch.build]
+include = []
+exclude = []
+# Maybe Windows/MacOS later (.local directory existance?)
+artifacts = [
+  "applications",
+  "icons",
+  "locale",
+  "mime",
+  "*.so",
+  "*.dll",
+  "*.dynlib",
+]
+only-packages = true
+
+[project.urls]
+"Homepage" = "https://github.com/jackokring/mint-python-adapta"
+"Bug Tracker" = "https://github.com/jackokring/mint-python-adapta/issues"
+
+[project.scripts]
+# maybe icon named after __file__ of entry point and not the entry point
+adapta_test = "xapp_adapta:test"
+adapta_main = "xapp_adapta:main"
+# multiple pathed on the venv?
+adapta_make_local = "xapp_adapta:make_local"
+adapta_remove_local = "xapp_adapta:remove_local"
+
+[tool.pyright]
+reportMissingModuleSource = false
+reportIncompatibleVariableOverride = false
+reportIncompatibleMethodOverride = false
+
+[tool.ruff]
+# Never enforce `E402` (top of file after gi introspection req).
+ignore = ["E402"]
