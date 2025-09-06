@@ -1,0 +1,32 @@
+[project]
+name = "toy-glacier-project"
+version = "0.1.0"
+description = "This is a toy CLI tool that allows a user to create a 'glacier' and then mimic accumulation & ablation by adding and subtracting mass from it via terminal commands."
+readme = "README.md"
+authors = [
+    { name = "Emma Marshall", email = "emarshall@rhg.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "click>=8.2.1",
+    "rich-click>=1.8.9",
+]
+
+[project.scripts]
+toy-glacier-project = "toy_glacier_project.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.8.11,<0.9.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+    "pytest-cov>=6.2.1",
+    "ruff>=0.12.11",
+]
+docs = [
+    "mkdocs-click>=0.9.0",
+    "mkdocs-material>=9.6.18",
+    "mkdocstrings-python>=1.18.2",
+]
