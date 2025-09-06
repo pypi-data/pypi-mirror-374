@@ -1,0 +1,203 @@
+server:
+  name: openapi-server
+tools:
+  - name: DescribeClusters
+    description: 查询集群列表
+    args:
+      - name: ClusterIds
+        description: "集群ID列表(为空时表示获取账号下所有集群)"
+        type: array
+        items:
+          description: ""
+          type: string
+        position: body
+      - name: ClusterType
+        description: 集群类型，例如：MANAGED_CLUSTER
+        type: string
+        position: body
+        enum:
+        - MANAGED_CLUSTER
+        - INDEPENDENT_CLUSTER
+      - name: Limit
+        description: 最大输出条数，默认20，最大为100
+        type: integer
+        position: body
+      - name: Offset
+        description: 偏移量,默认0
+        type: integer
+        position: body
+    requestTemplate:
+      url: /DescribeClusters
+      method: POST
+      headers:
+        - key: Content-Type
+          value: application/json
+    responseTemplate:
+      prependBody: "# API Response Information\n\nBelow is the response from an API call. To help you understand the data, I've provided:\n\n1. A detailed description of all fields in the response structure\n2. The complete API response\n\n## Response Structure\n\n> Content-Type: application/json\n\n- **Clusters**: 集群信息列表 (Type: array)\n  - **Clusters[].AutoUpgradeClusterLevel**: 自动变配集群等级，针对托管集群生效 (Type: boolean)\n  - **Clusters[].CdcId**: 本地专用集群Id (Type: string)\n  - **Clusters[].ClusterDescription**: 集群描述 (Type: string)\n  - **Clusters[].ClusterEtcdNodeNum**: 集群当前etcd数量 (Type: integer)\n  - **Clusters[].ClusterId**: 集群ID (Type: string)\n  - **Clusters[].ClusterLevel**: 集群等级，针对托管集群生效 (Type: string)\n  - **Clusters[].ClusterMaterNodeNum**: 集群当前master数量 (Type: integer)\n  - **Clusters[].ClusterName**: 集群名称 (Type: string)\n  - **Clusters[].ClusterNetworkSettings**: 集群网络相关的参数 (Type: object)\n    - **Clusters[].ClusterNetworkSettings.CiliumMode**: 集群Cilium Mode配置\r\n- clusterIP (Type: string)\n    - **Clusters[].ClusterNetworkSettings.ClusterCIDR**: 用于分配集群容器和服务 IP 的 CIDR，不得与 VPC CIDR 冲突，也不得与同 VPC 内其他集群 CIDR 冲突 (Type: string)\n    - **Clusters[].ClusterNetworkSettings.Cni**: 网络插件是否启用CNI(默认开启) (Type: boolean)\n    - **Clusters[].ClusterNetworkSettings.DataPlaneV2**: 是否启用了 DataPlaneV2（cilium替代kube-proxy） (Type: boolean)\n    - **Clusters[].ClusterNetworkSettings.IgnoreClusterCIDRConflict**: 是否忽略 ClusterCIDR 冲突错误, 默认不忽略 (Type: boolean)\n    - **Clusters[].ClusterNetworkSettings.IgnoreServiceCIDRConflict**: 是否忽略 ServiceCIDR 冲突错误, 仅在 VPC-CNI 模式生效，默认不忽略 (Type: boolean)\n    - **Clusters[].ClusterNetworkSettings.Ipv6ServiceCIDR**: 用于分配service的IP range，由系统自动分配 (Type: string)\n    - **Clusters[].ClusterNetworkSettings.Ipvs**: 是否启用IPVS(默认不开启) (Type: boolean)\n    - **Clusters[].ClusterNetworkSettings.IsDualStack**: 集群VPC-CNI模式是否为非双栈集群，默认false，非双栈。 (Type: boolean)\n    - **Clusters[].ClusterNetworkSettings.KubeProxyMode**: service的网络模式，当前参数只适用于ipvs+bpf模式 (Type: string)\n    - **Clusters[].ClusterNetworkSettings.MaxClusterServiceNum**: 集群最大的service数量(默认为256) (Type: integer)\n    - **Clusters[].ClusterNetworkSettings.MaxNodePodNum**: 集群中每个Node上最大的Pod数量(默认为256) (Type: integer)\n    - **Clusters[].ClusterNetworkSettings.ServiceCIDR**: 用于分配service的IP range，不得与 VPC CIDR 冲突，也不得与同 VPC 内其他集群 CIDR 冲突 (Type: string)\n    - **Clusters[].ClusterNetworkSettings.SubnetId**: 控制面子网信息，仅在以下场景返回。\n- 容器网络插件为CiliumOverlay。\n- 支持CDC的托管集群，且网络插件为VPC-CNI。 (Type: string)\n    - **Clusters[].ClusterNetworkSettings.Subnets**: 集群关联的容器子网 (Type: array)\n      - **Clusters[].ClusterNetworkSettings.Subnets[]**: Items of type string\n    - **Clusters[].ClusterNetworkSettings.VpcId**: 集群的VPCID（如果创建空集群，为必传值，否则自动设置为和集群的节点保持一致） (Type: string)\n  - **Clusters[].ClusterNodeNum**: 集群当前node数量 (Type: integer)\n  - **Clusters[].ClusterNodeNumWithoutAbnormal**: 集群当前node数量(不包含abnormal状态) (Type: integer)\n  - **Clusters[].ClusterOs**: 集群系统。centos7.2x86_64 或者 ubuntu16.04.1 LTSx86_64，默认取值为ubuntu16.04.1 LTSx86_64 (Type: string)\n  - **Clusters[].ClusterStatus**: 集群状态 (Trading 集群开通中,Creating 创建中,Running 运行中,Deleting 删除中,Idling 闲置中,Recovering 唤醒中,Scaling 规模调整中,Upgrading 升级中,WaittingForConnect 等待注册,Trading 集群开通中,Isolated 欠费隔离中,Pause 集群升级暂停,NodeUpgrading 节点升级中,RuntimeUpgrading 节点运行时升级中,MasterScaling Master扩缩容中,ClusterLevelUpgrading 调整规格中,ResourceIsolate 隔离中,ResourceIsolated 已隔离,ResourceReverse 冲正中,Abnormal 异常) (Type: string)\n  - **Clusters[].ClusterType**: 集群类型，托管集群：MANAGED_CLUSTER，独立集群：INDEPENDENT_CLUSTER。 (Type: string)\n  - **Clusters[].ClusterVersion**: 集群版本（默认值为1.10.5） (Type: string)\n  - **Clusters[].ContainerRuntime**: 集群运行环境docker或container (Type: string)\n  - **Clusters[].CreatedTime**: 创建时间 (Type: string)\n  - **Clusters[].DeletionProtection**: 删除保护开关 (Type: boolean)\n  - **Clusters[].EnableExternalNode**: 集群是否开启第三方节点支持 (Type: boolean)\n  - **Clusters[].ImageId**: 集群使用镜像id (Type: string)\n  - **Clusters[].OsCustomizeType**: OsCustomizeType 系统定制类型 (Type: string)\n  - **Clusters[].ProjectId**: 集群所属的项目ID (Type: integer)\n  - **Clusters[].Property**: 集群属性(包括集群不同属性的MAP，属性字段包括NodeNameType (lan-ip模式和hostname 模式，默认无lan-ip模式)) (Type: string)\n  - **Clusters[].QGPUShareEnable**: 是否开启QGPU共享 (Type: boolean)\n  - **Clusters[].RuntimeVersion**: 运行时版本 (Type: string)\n  - **Clusters[].TagSpecification**: 标签描述列表。 (Type: array)\n    - **Clusters[].TagSpecification[].ResourceType**: 标签绑定的资源类型，当前支持类型：\"cluster\" (Type: string)\n    - **Clusters[].TagSpecification[].Tags**: 标签对列表 (Type: array)\n      - **Clusters[].TagSpecification[].Tags[].Key**: 标签键 (Type: string)\n      - **Clusters[].TagSpecification[].Tags[].Value**: 标签值 (Type: string)\n- **TotalCount**: 集群总个数 (Type: integer)\n\n## Original Response\n\n"
+    outputSchema:
+      contentType: application/json
+      description: yunapi response
+      properties:
+        Clusters:
+          description: 集群信息列表
+          items:
+            description: 集群信息结构体
+            properties:
+              AutoUpgradeClusterLevel:
+                description: 自动变配集群等级，针对托管集群生效
+                type: boolean
+              CdcId:
+                description: 本地专用集群Id
+                type: string
+              ClusterDescription:
+                description: 集群描述
+                type: string
+              ClusterEtcdNodeNum:
+                description: 集群当前etcd数量
+                type: integer
+              ClusterId:
+                description: 集群ID
+                type: string
+              ClusterLevel:
+                description: 集群等级，针对托管集群生效
+                type: string
+              ClusterMaterNodeNum:
+                description: 集群当前master数量
+                type: integer
+              ClusterName:
+                description: 集群名称
+                type: string
+              ClusterNetworkSettings:
+                description: 集群网络相关的参数
+                properties:
+                  CiliumMode:
+                    description: "集群Cilium Mode配置\r\n- clusterIP"
+                    type: string
+                  ClusterCIDR:
+                    description: 用于分配集群容器和服务 IP 的 CIDR，不得与 VPC CIDR 冲突，也不得与同 VPC 内其他集群 CIDR 冲突
+                    type: string
+                  Cni:
+                    description: 网络插件是否启用CNI(默认开启)
+                    type: boolean
+                  DataPlaneV2:
+                    description: 是否启用了 DataPlaneV2（cilium替代kube-proxy）
+                    type: boolean
+                  IgnoreClusterCIDRConflict:
+                    description: 是否忽略 ClusterCIDR 冲突错误, 默认不忽略
+                    type: boolean
+                  IgnoreServiceCIDRConflict:
+                    description: 是否忽略 ServiceCIDR 冲突错误, 仅在 VPC-CNI 模式生效，默认不忽略
+                    type: boolean
+                  Ipv6ServiceCIDR:
+                    description: 用于分配service的IP range，由系统自动分配
+                    type: string
+                  Ipvs:
+                    description: 是否启用IPVS(默认不开启)
+                    type: boolean
+                  IsDualStack:
+                    description: 集群VPC-CNI模式是否为非双栈集群，默认false，非双栈。
+                    type: boolean
+                  KubeProxyMode:
+                    description: service的网络模式，当前参数只适用于ipvs+bpf模式
+                    type: string
+                  MaxClusterServiceNum:
+                    description: 集群最大的service数量(默认为256)
+                    type: integer
+                  MaxNodePodNum:
+                    description: 集群中每个Node上最大的Pod数量(默认为256)
+                    type: integer
+                  ServiceCIDR:
+                    description: 用于分配service的IP range，不得与 VPC CIDR 冲突，也不得与同 VPC 内其他集群 CIDR 冲突
+                    type: string
+                  SubnetId:
+                    description: |-
+                      控制面子网信息，仅在以下场景返回。
+                      - 容器网络插件为CiliumOverlay。
+                      - 支持CDC的托管集群，且网络插件为VPC-CNI。
+                    type: string
+                  Subnets:
+                    description: 集群关联的容器子网
+                    items:
+                      type: string
+                    type: array
+                  VpcId:
+                    description: 集群的VPCID（如果创建空集群，为必传值，否则自动设置为和集群的节点保持一致）
+                    type: string
+                type: object
+              ClusterNodeNum:
+                description: 集群当前node数量
+                type: integer
+              ClusterNodeNumWithoutAbnormal:
+                description: 集群当前node数量(不包含abnormal状态)
+                type: integer
+              ClusterOs:
+                description: 集群系统。centos7.2x86_64 或者 ubuntu16.04.1 LTSx86_64，默认取值为ubuntu16.04.1 LTSx86_64
+                type: string
+              ClusterStatus:
+                description: 集群状态 (Trading 集群开通中,Creating 创建中,Running 运行中,Deleting 删除中,Idling 闲置中,Recovering 唤醒中,Scaling 规模调整中,Upgrading 升级中,WaittingForConnect 等待注册,Trading 集群开通中,Isolated 欠费隔离中,Pause 集群升级暂停,NodeUpgrading 节点升级中,RuntimeUpgrading 节点运行时升级中,MasterScaling Master扩缩容中,ClusterLevelUpgrading 调整规格中,ResourceIsolate 隔离中,ResourceIsolated 已隔离,ResourceReverse 冲正中,Abnormal 异常)
+                type: string
+              ClusterType:
+                description: 集群类型，托管集群：MANAGED_CLUSTER，独立集群：INDEPENDENT_CLUSTER。
+                type: string
+              ClusterVersion:
+                description: 集群版本（默认值为1.10.5）
+                type: string
+              ContainerRuntime:
+                description: 集群运行环境docker或container
+                type: string
+              CreatedTime:
+                description: 创建时间
+                type: string
+              DeletionProtection:
+                description: 删除保护开关
+                type: boolean
+              EnableExternalNode:
+                description: 集群是否开启第三方节点支持
+                type: boolean
+              ImageId:
+                description: 集群使用镜像id
+                type: string
+              OsCustomizeType:
+                description: OsCustomizeType 系统定制类型
+                type: string
+              ProjectId:
+                description: 集群所属的项目ID
+                type: integer
+              Property:
+                description: 集群属性(包括集群不同属性的MAP，属性字段包括NodeNameType (lan-ip模式和hostname 模式，默认无lan-ip模式))
+                type: string
+              QGPUShareEnable:
+                description: 是否开启QGPU共享
+                type: boolean
+              RuntimeVersion:
+                description: 运行时版本
+                type: string
+              TagSpecification:
+                description: 标签描述列表。
+                items:
+                  description: 标签描述列表。通过指定该参数可以同时绑定标签到相应的资源实例，当前仅支持绑定标签到云主机实例。
+                  properties:
+                    ResourceType:
+                      description: 标签绑定的资源类型，当前支持类型："cluster"
+                      type: string
+                    Tags:
+                      description: 标签对列表
+                      items:
+                        description: 标签绑定的资源类型，当前支持类型："cluster"
+                        properties:
+                          Key:
+                            description: 标签键
+                            type: string
+                          Value:
+                            description: 标签值
+                            type: string
+                        type: object
+                      type: array
+                  type: object
+                type: array
+            type: object
+          type: array
+        TotalCount:
+          description: 集群总个数
+          type: integer
+      type: object

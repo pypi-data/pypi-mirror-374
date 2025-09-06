@@ -1,0 +1,13 @@
+# 这是一个格式错误的YAML文件
+name: InvalidFormat
+description: 这个文件有格式错误
+tools:
+  - name: BrokenTool
+    description: 损坏的工具
+    args:
+      - name: TestParam
+        type: string
+        # 这里故意缺少冒号来破坏YAML格式
+        description 缺少冒号的测试参数
+        required: true
+    # 缺少requestTemplate导致格式不完整

@@ -1,0 +1,81 @@
+name: ComplexParameterTest
+description: 测试复杂参数类型的McpAPI工具
+tools:
+  - name: ComplexParameterAPI
+    description: 复杂参数类型测试API
+    args:
+      - name: StringParam
+        type: string
+        description: 字符串参数
+        required: true
+        
+      - name: IntegerParam
+        type: integer
+        description: 整数参数
+        required: true
+        minimum: 1
+        maximum: 1000
+        
+      - name: BooleanParam
+        type: boolean
+        description: 布尔参数
+        required: false
+        default: false
+        
+      - name: ArrayParam
+        type: array
+        description: 数组参数
+        required: false
+        items:
+          type: string
+          
+      - name: NestedObject
+        type: object
+        description: 深度嵌套对象
+        required: true
+        properties:
+          Level1:
+            type: object
+            description: 第一层嵌套
+            required: true
+            properties:
+              Level2String:
+                type: string
+                description: 第二层字符串
+                required: true
+              Level2Object:
+                type: object
+                description: 第二层对象
+                required: false
+                properties:
+                  Level3Array:
+                    type: array
+                    description: 第三层数组
+                    required: false
+                    items:
+                      type: integer
+                  Level3Boolean:
+                    type: boolean
+                    description: 第三层布尔值
+                    required: false
+                    default: true
+          Level1Number:
+            type: integer
+            description: 第一层数字
+            required: false
+            default: 999
+            
+    requestTemplate:
+      url: "/test/complex-params"
+      method: POST
+      headers:
+        Content-Type: application/json
+      body:
+        Action: ComplexParameterAPI
+        Version: "2023-01-01"
+        Parameters:
+          StringParam: "{{StringParam}}"
+          IntegerParam: "{{IntegerParam}}"
+          BooleanParam: "{{BooleanParam}}"
+          ArrayParam: "{{ArrayParam}}"
+          NestedObject: "{{NestedObject}}"
