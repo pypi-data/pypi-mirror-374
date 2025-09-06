@@ -1,0 +1,19 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=61.0", "wheel"]
+
+[project]
+name = "wauo"
+description = "Python工具大全"
+version = "0.8.2"
+requires-python = ">=3.10"
+dependencies = ["requests","parsel", "fake_useragent", "loguru"]
+
+authors = [{ name = "WangTuo", email = "markadc@126.com" }]
+license = "MIT"
+readme = "README.md"
+urls = { Homepage = "https://github.com/markadc/wauo" }
+
+[tool.setuptools]
+packages = { find = { } }
+include-package-data = true
