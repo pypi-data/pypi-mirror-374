@@ -1,0 +1,68 @@
+Metadata-Version: 2.4
+Name: dbt-dbplyr
+Version: 0.1.0.dev0
+Project-URL: Source, https://github.com/leeroyaus/dbt-dbplyr
+Author: Leon Head
+License-File: LICENSE
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Typing :: Typed
+Requires-Python: >=3.10
+Requires-Dist: click
+Requires-Dist: dbt-core>=1.5
+Requires-Dist: rpy2>=3
+Provides-Extra: dev
+Requires-Dist: dbt-duckdb; extra == 'dev'
+Requires-Dist: hatch; extra == 'dev'
+Requires-Dist: ipdb; extra == 'dev'
+Requires-Dist: ipykernel; extra == 'dev'
+Requires-Dist: ipython; extra == 'dev'
+Requires-Dist: mypy; extra == 'dev'
+Requires-Dist: pandas; extra == 'dev'
+Requires-Dist: pytest; extra == 'dev'
+Requires-Dist: pytest-mock; extra == 'dev'
+Requires-Dist: rpy2; extra == 'dev'
+Requires-Dist: ruff>=0.1.4; extra == 'dev'
+Provides-Extra: doc
+Requires-Dist: ghp-import; extra == 'doc'
+Requires-Dist: jupyter-book; extra == 'doc'
+Description-Content-Type: text/markdown
+
+# dbt-plyr
+With dbt-plyr you can write your [dbt](https://www.getdbt.com/) models using [dbplyr](https://dbplyr.tidyverse.org/). You can find the full documentation [here](https://binste.github.io/dbt-plyr/intro.html).
+
+A simple dbt-plyr model looks like this:
+```python
+from dbt_ibis import depends_on, ref
+
+
+@depends_on(ref("stg_stores"))
+def model(stores):
+    return stores.filter(stores["country"] == "USA")
+```
+
+You can install `dbt-plyr` via pip or conda:
+```bash
+pip install dbt-plyr
+# or
+conda install -c conda-forge dbt-plyr
+```
+
+In addition, you'll need to install the relevant [`Ibis` backend](https://ibis-project.org/install) for your database.
+
+You can read about the advantages of combining dbt and Ibis in [this blog post](https://ibis-project.org/posts/dbt-plyr/).
+
+
+## Development
+```bash
+pip install -e '.[dev]'
+```
+
+You can run linters and tests with
+```bash
+hatch run linters
+hatch run tests
+```
