@@ -1,0 +1,63 @@
+[tool.poetry]
+name = "panelforecast"
+version = "0.1.7"
+description = "A comprehensive library for panel data forecasting"
+readme = "README.md"
+license = "MIT"
+
+authors = [
+    "Kajaani Balabavan <kajaani.20@cse.mrt.ac.lk>",
+    "Shabthana Johnson <shabthana.20@cse.mrt.ac.lk>",
+    "Sathurgini Uthayakumar <sathurgini.20@cse.mrt.ac.lk>",
+    "Uthayasanker Thayasivam <rtuthaya@cse.mrt.ac.lk>"
+]
+
+homepage = "https://github.com/aaivu/panelforecast"
+repository = "https://github.com/aaivu/panelforecast"
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
+packages = [
+    { include = "panelforecast" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.14"
+torch = ">=1.0"
+numpy = ">=1.21"
+pandas = ">=1.3"
+scikit-learn = ">=1.0"
+
+[tool.poetry.extras]
+all = ["dev", "tuning", "viz"]
+tuning = ["optuna", "statsmodels"]
+viz = ["matplotlib", "seaborn"]
+dev = ["pytest", "ruff", "mypy", "black", "jupyter"]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0"
+ruff = "^0.1.0"
+mypy = "^1.0"
+black = { extras = ["jupyter"], version = "^23.0" }
+pre-commit = "^3.0"
+jupyter = "^1.0"
+pytest-cov = "^4.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
