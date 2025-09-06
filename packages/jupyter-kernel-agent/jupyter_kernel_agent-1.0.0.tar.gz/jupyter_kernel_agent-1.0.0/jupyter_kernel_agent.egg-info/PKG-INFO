@@ -1,0 +1,149 @@
+Metadata-Version: 2.4
+Name: jupyter-kernel-agent
+Version: 1.0.0
+Summary: An agent to bring cluster kernel to local
+Author-email: Leo <leoustc@icloud.com>
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: ipykernel>=6.0
+Requires-Dist: jupyter_client>=8.0
+Requires-Dist: requests>=2.31
+Provides-Extra: agent
+Provides-Extra: server
+Requires-Dist: fastapi>=0.110; extra == "server"
+Requires-Dist: uvicorn>=0.23; extra == "server"
+Requires-Dist: pydantic>=2.0; extra == "server"
+Dynamic: license-file
+
+# Jupyter Kernel Agent
+
+[![PyPI version](https://badge.fury.io/py/remote-bash.svg)](https://badge.fury.io/py/remote-bash)  
+[![Python Version](https://img.shields.io/pypi/pyversions/remote-bash.svg)](https://pypi.org/project/remote-bash/)  
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+**Jupyter Kernel Agent** lets you run Jupyter code remotely by forwarding code to an HTTP endpoint and streaming results back in Jupyter’s native format.  
+Connect your Jupyter environment to clusters, GPU servers, or any backend that implements the Kernel Agent API.
+
+---
+
+## Features
+
+- 📡 Remote code execution over HTTP
+- 🔑 Bearer token authentication
+- 🖥️ Multiple backends (one kernel per endpoint)
+- 🔄 Built-in magics for session management:
+  - `%reset` — clear remote namespace / start new session
+  - `%shutdown` — shut down remote session
+  - `%welcome` — show kernel info
+  - `%reconnect` — reconnect after disconnect
+- 🛑 Disconnection handling: hold (default) or exit
+
+---
+
+## Installation
+
+```bash
+pip install jupyter-kernel-agent
+```
+
+This provides two CLI tools:
+- `agent-server` — run the FastAPI backend for code execution
+- `kernel_agent` — manage Jupyter kernelspecs (install/list/delete)
+
+---
+
+## Running the Server
+
+Start the server with an API key:
+
+```bash
+agent-server --host 0.0.0.0 --port 8000 --api_key SECRET123
+```
+
+Test with curl:
+
+```bash
+curl -sX POST http://127.0.0.1:8000/kernel \
+  -H "Authorization: Bearer SECRET123" \
+  -H "Content-Type: application/json" \
+  -d '{"action":"execute","session_id":"s1","code":"1+1","execution_count":1}'
+```
+
+Expected response:
+
+```json
+{"ok":true,"outputs":[{"type":"execute_result","data":{"text/plain":"2"},"execution_count":1,"metadata":{}}]}
+```
+
+---
+
+## Installing a Jupyter Kernel
+
+Install a kernel that connects to your server:
+
+```bash
+kernel_agent install \
+  --endpoint http://127.0.0.1:8000/kernel \
+  --name local \
+  --api_key SECRET123 --user
+```
+
+List installed kernels:
+
+```bash
+kernel_agent list
+```
+
+You should see your new kernel listed and available in Jupyter.
+
+---
+
+## System-wide Installation
+
+To install for all users (e.g., JupyterHub):
+
+```bash
+sudo kernel_agent install \
+  --endpoint http://127.0.0.1:8000/kernel \
+  --name cluster \
+  --api_key SECRET123 \
+  --sys-prefix
+```
+
+Or specify a custom prefix:
+
+```bash
+sudo kernel_agent install \
+  --endpoint http://127.0.0.1:8000/kernel \
+  --name cluster \
+  --api_key SECRET123 \
+  --prefix /usr/local
+```
+
+Verify with:
+
+```bash
+jupyter kernelspec list
+```
+
+---
+
+## Usage in Notebooks
+
+After installation, select your kernel (e.g., `local` or `cluster`) in Jupyter and run code as usual:
+
+```python
+1+1
+!uname -a
+%reset
+```
+
+Outputs will be returned from the remote server.
+
+---
+
+## License
+
+Apache-2.0
+

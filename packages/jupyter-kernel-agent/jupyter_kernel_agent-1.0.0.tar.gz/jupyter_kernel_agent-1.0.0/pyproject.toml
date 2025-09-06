@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jupyter-kernel-agent"
+version = "1.0.0"
+description = "An agent to bring cluster kernel to local"
+authors = [{ name = "Leo", email = "leoustc@icloud.com" }]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+  "ipykernel>=6.0",
+  "jupyter_client>=8.0",
+  "requests>=2.31",
+]
+
+[project.optional-dependencies]
+# Explicit "agent" extra (no additional deps, but allows pip install jupyter-kernel-agent[agent])
+agent = []
+server = [
+  "fastapi>=0.110",
+  "uvicorn>=0.23",
+  "pydantic>=2.0"
+]
+
+[project.scripts]
+kernel_agent = "kernel_agent.cli:main"
+agent_server = "server.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["kernel_agent*", "server*"]
