@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "impressum-helvetica"
+version = "0.1.1"
+description = ""
+authors = ["alho94 <alexander.horst.ah@gmail.com>"]
+readme = "README.md"
+packages = [{include = "impressum_helvetica", from = "."}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+playwright = "^1.55.0"
+pillow = "^11.3.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
