@@ -1,0 +1,68 @@
+Metadata-Version: 2.4
+Name: coinbase-agentkit-langchain
+Version: 0.7.0
+Summary: Coinbase AgentKit LangChain extension
+Author-email: John Peterson <john.peterson@coinbase.com>
+License-Expression: Apache-2.0
+Keywords: agent,agentkit,ai,cdp,coinbase,crypto,langchain,sdk
+Requires-Python: ~=3.10
+Requires-Dist: coinbase-agentkit<0.8,>=0.7.2
+Requires-Dist: langchain<0.4,>=0.3.4
+Requires-Dist: nest-asyncio<2,>=1.5.8
+Requires-Dist: python-dotenv<2,>=1.0.1
+Description-Content-Type: text/markdown
+
+# AgentKit LangChain Extension
+
+LangChain extension of AgentKit. Enables agentic workflows to interact with onchain actions.
+
+## Setup
+
+### Prerequisites
+
+- [CDP API Key](https://portal.cdp.coinbase.com/access/api)
+- [OpenAI API Key](https://platform.openai.com/docs/quickstart#create-and-export-an-api-key)
+
+### Installation
+
+```bash
+pip install coinbase-agentkit coinbase-agentkit-langchain
+```
+
+### Environment Setup
+
+Set the following environment variables:
+
+```bash
+export OPENAI_API_KEY=<your-openai-api-key>
+export CDP_API_KEY_ID=<your-cdp-api-key-id>
+export CDP_API_KEY_PRIVATE=<your-cdp-api-key-private>
+```
+
+## Usage
+
+### Basic Setup
+
+```python
+from coinbase_agentkit import AgentKit
+from coinbase_agentkit_langchain import get_langchain_tools
+
+agentKit = AgentKit()
+
+tools = get_langchain_tools(agentKit)
+
+llm = ChatOpenAI(model="gpt-4o-mini")
+
+agent = create_react_agent(
+    llm=llm,
+    tools=tools,
+)
+```
+
+For AgentKit configuration options, see the [Coinbase Agentkit README](https://github.com/coinbase/agentkit/blob/master/python/coinbase-agentkit/README.md).
+
+For a full example, see the [chatbot example](https://github.com/coinbase/agentkit/blob/main/python/examples/langchain-cdp-smart-wallet-chatbot/chatbot.py).
+
+## Contributing
+
+See [CONTRIBUTING.md](https://github.com/coinbase/agentkit/blob/master/CONTRIBUTING.md) for detailed setup instructions and contribution guidelines.
