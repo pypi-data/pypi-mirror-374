@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pypp-cli"
+version = "0.0.0"
+description = "The CLI tool for the Py++ project"
+authors = [
+    { name="Curtis Puetz", email="pypp.main@yahoo.com" }
+]
+readme = "readme.md"
+license = { text = "MIT" }
+requires-python = ">=3.13"
+urls = { "Homepage" = "https://github.com/curtispuetz/pypp-cli" }
+
+
+[project.scripts]
+pypp = "pypp_cli.cli:main_cli"
+
+[tool.hatch.build]
+include = [
+    "pypp_cli/cli.py",
+    "pypp_cli/data/**/*",
+    "pypp_cli/src/**/*"
+]
+
+
+[tool.ruff]
+lint.ignore = [
+    "E731", # assigning a lambda expression to a var
+    "E741", # ambiguous variable names (i.e. 'l', 'O', 'I')
+]
+lint.select = ["E", "F", "ARG"]
+line-length = 88
