@@ -1,0 +1,116 @@
+Metadata-Version: 2.4
+Name: mythic-lite
+Version: 0.1.1
+Summary: A lightweight, local AI chatbot system with text-to-speech capabilities
+Author-email: Hoang Le <lhqezio1010@gmail.com>
+Maintainer-email: Hoang Le <lhqezio1010@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/mythic-lite/mythic-lite
+Project-URL: Documentation, https://mythic-lite.readthedocs.io
+Project-URL: Repository, https://github.com/mythic-lite/mythic-lite.git
+Project-URL: Bug Tracker, https://github.com/mythic-lite/mythic-lite/issues
+Project-URL: Changelog, https://github.com/mythic-lite/mythic-lite/blob/main/CHANGELOG.md
+Keywords: ai,chatbot,llm,tts,asr,local,privacy,offline
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Communications :: Chat
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Multimedia :: Sound/Audio :: Speech
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: llama-cpp-python>=0.2.0
+Requires-Dist: piper-tts>=1.2.0
+Requires-Dist: numpy>=1.21.0
+Requires-Dist: PyAudio>=0.2.11
+Requires-Dist: colorama>=0.4.6
+Requires-Dist: rich>=13.7.0
+Requires-Dist: click>=8.1.7
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: typing-extensions>=4.8.0
+Requires-Dist: huggingface-hub>=0.19.0
+Requires-Dist: requests>=2.31.0
+Requires-Dist: vosk>=0.3.44
+Requires-Dist: windows-curses>=2.3.1; sys_platform == "win32"
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: isort>=5.12.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx>=6.0.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=1.2.0; extra == "docs"
+Requires-Dist: myst-parser>=1.0.0; extra == "docs"
+
+# Mythic-Lite
+
+## 🪄 What is Mythic? (the non-boring version)
+
+Mythic is my playground for weird AI ideas.  
+Think: Roblox clowns, cursed TikTok experiments, and NPCs with emotional damage.  
+
+Yes, it’s half-baked. But half-baked on purpose.  
+Runs locally, talks back, and might roast you if you let it.  
+
+Right now it’s roleplaying as a 19th-century mercenary who talks funny.
+
+## 🚀 Features
+
+- **Local AI Processing**: Run completely offline using local LLM models
+- **Text-to-Speech**: Natural voice synthesis with customizable voices
+- **Speech Recognition**: Lightweight offline ASR system using Vosk for voice input
+- **Conversation Memory**: Intelligent conversation management with automatic summarization
+- **Beautiful CLI Interface**: Modern, intuitive command-line interface with rich output
+- **Modular Architecture**: Separate workers for LLM, TTS, ASR, and summarization tasks
+- **Rich Logging**: Comprehensive logging with configurable output formats
+- **Environment Configuration**: Flexible configuration via environment variables
+- **Automated Setup**: One-click environment setup with virtual environment and dependencies
+
+## 🏗️ Architecture
+
+Mythic-Lite uses a modular architecture with specialized workers:
+
+- **Chatbot Orchestrator**: Coordinates all components and manages conversation flow
+- **LLM Worker**: Handles language model inference and text generation
+- **TTS Worker**: Manages text-to-speech synthesis
+- **ASR Worker**: Handles automatic speech recognition for voice input
+- **Summarization Worker**: Handles conversation summarization for memory management
+- **Conversation Worker**: Manages conversation state and memory
+
+## 📋 Requirements
+
+- Python 3.8+
+- Windows 10/11, Linux (Ubuntu 18.04+), or macOS 10.15+
+- At least 8GB RAM (16GB+ recommended)
+- Sufficient storage for model files (~4-8GB)
+- Audio input/output capabilities
+
+
+## 📁 Project Structure
+
+```
+mythic-lite/
+├── src/mythic_lite/          # Main package source code
+│   ├── core/                 # Core components (orchestrator, config, etc.)
+│   ├── workers/              # Specialized AI workers (LLM, TTS, ASR, etc.)
+│   ├── utils/                # Utilities (CLI, logging, etc.)
+│   └── scripts/              # Setup and utility scripts
+├── tests/                    # Test suite
+├── docs/                     # Documentation
+├── examples/                 # Usage examples
+├── scripts/                  # Installation and startup scripts
+├── pyproject.toml           # Modern Python packaging configuration
+├── requirements.txt          # Runtime dependencies
+├── requirements-dev.txt      # Development dependencies
+└── README.md                # This file
+```
