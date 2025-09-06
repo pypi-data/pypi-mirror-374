@@ -1,0 +1,54 @@
+[project]
+name = "pt_kmeans"
+authors = [{ name = "Ofer Hasson" }]
+description = "K-Means and Hierarchical K-Means implementation in PyTorch"
+readme = "README.md"
+requires-python = ">=3.11"
+keywords = [
+    "pytorch",
+    "kmeans",
+    "clustering",
+    "machine-learning",
+    "unsupervised-learning",
+    "hierarchical-clustering",
+]
+license = "Apache-2.0"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dynamic = ["dependencies", "version"]
+
+[project.urls]
+Homepage = "https://gitlab.com/hassonofer/pt_kmeans"
+Issues = "https://gitlab.com/hassonofer/pt_kmeans/-/issues"
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pt_kmeans*"]
+namespaces = false
+
+[tool.setuptools.dynamic]
+version = { attr = "pt_kmeans.version.__version__" }
+dependencies = { file = ["requirements/requirements.txt"] }
+
+
+[tool.black]
+line-length = 120
+exclude = '/(\.git|\.mypy_cache|\.venv|data)/'
+
+[tool.isort]
+line_length = 120
+force_single_line = true
+skip = ["data/", ".venv/"]
