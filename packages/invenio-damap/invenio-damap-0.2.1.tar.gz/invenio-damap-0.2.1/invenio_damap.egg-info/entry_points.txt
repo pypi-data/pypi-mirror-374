@@ -1,0 +1,18 @@
+[invenio_assets.webpack]
+invenio_damap = invenio_damap.webpack:theme
+
+[invenio_base.api_apps]
+invenio_damap = invenio_damap:InvenioDAMAP
+
+[invenio_base.api_blueprints]
+invenio_damap = invenio_damap.views:create_invenio_damap_api_blueprint
+
+[invenio_base.apps]
+invenio_damap = invenio_damap:InvenioDAMAP
+
+[invenio_base.blueprints]
+invenio_damap = invenio_damap.views:create_ui_blueprint
+
+[invenio_i18n.translations]
+invenio_damap = invenio_damap
+
