@@ -1,0 +1,32 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+version = "4.0.0"
+name = "polars-darwin-core"
+description = "Helpers for working with Darwin Core (DwC) CSVs using Polars."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0 OR MIT"
+authors = [{ name = "Corey Farwell", email = "coreyf@rwell.org" }]
+keywords = ["polars", "darwin-core", "biodiversity", "gbif", "csv"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = ["polars>=0.30"]
+
+[project.urls]
+Homepage = "https://github.com/frewsxcv/polars-darwin-core"
+
+[tool.mypy]
+strict = true
+python_version = "3.10"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/polars_darwin_core"]
+
+[dependency-groups]
+dev = ["twine>=6.1.0", "mypy==1.16.1", "hatchling>=1.27.0"]
