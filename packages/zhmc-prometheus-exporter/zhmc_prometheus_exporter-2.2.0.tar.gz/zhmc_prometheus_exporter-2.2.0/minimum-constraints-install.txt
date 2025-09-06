@@ -1,0 +1,65 @@
+# Pip constraints file for install dependencies.
+#
+# This file specifies constraints that match the minimum versions specified in
+# the requirement files for install. They are used for example when setting up
+# test environments with the minimum versions of any dependent packages.
+
+# Make sure that the package versions in minimum-constraints.txt are also
+# the minimum versions required in requirements.txt and dev-requirements.txt.
+
+
+# Base dependencies (must be consistent with base-requirements.txt)
+
+pip==25.0
+setuptools==70.0.0
+# Note on not specifying 'setuptools-scm[toml]': Extras cannot be in constraints files
+setuptools-scm==9.2.0
+wheel==0.41.3
+
+
+# Direct dependencies for install (must be consistent with requirements.txt)
+
+zhmcclient==1.23.1
+
+# TODO: Use official prometheus-client version (0.21.0 ?) once released.
+# prometheus-client==0.21.0
+urllib3==2.2.3; python_version == '3.8'
+urllib3==2.5.0; python_version >= '3.9'
+jsonschema==4.18.0
+six==1.16.0
+Jinja2==3.1.6
+ruamel.yaml==0.18.6
+
+
+# Indirect dependencies for install that are needed for some reason (must be consistent with requirements.txt)
+
+# PyYAML is also used by zhmcclient 1.17, yamlloader
+PyYAML==6.0.2
+
+pyrsistent==0.20.0
+
+
+# All other indirect dependencies for install that are not in requirements.txt
+
+attrs==22.2.0
+certifi==2024.07.04
+charset-normalizer==2.0.4
+decorator==4.0.11
+docopt==0.6.2
+# idna>3 requires using requests >=2.26.0
+idna==3.7
+immutable-views==0.6.0
+jsonschema-specifications==2023.03.6  # used by jsonschema>=4.18.0
+MarkupSafe==2.0.0
+nocasedict==1.0.2
+python-dateutil==2.8.2
+pytz==2019.1
+referencing==0.28.4  # used by jsonschema>=4.18.0
+requests==2.32.4
+rpds-py==0.7.1  # used by jsonschema>=4.18.0
+ruamel.yaml.clib==0.2.8
+stomp-py==8.1.1
+typing-extensions==4.12.2
+websocket-client==1.8.0
+yamlloader==0.5.5
+zipp==3.20.0

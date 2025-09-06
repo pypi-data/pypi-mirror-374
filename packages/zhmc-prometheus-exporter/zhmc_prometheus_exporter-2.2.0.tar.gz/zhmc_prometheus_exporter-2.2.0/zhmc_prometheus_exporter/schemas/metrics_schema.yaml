@@ -1,0 +1,225 @@
+# This is a JSON Schema in YAML format.
+
+$schema: http://json-schema.org/draft-07/schema
+title: Metric definition schema
+description: JSON schema for the metric definition file
+type: object
+required:
+  - metric_groups
+  - metrics
+additionalProperties: false
+properties:
+  metric_groups:
+    description: The HMC and resource metric groups and their mapping to Prometheus
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^[a-z0-9\\-]+$":
+        description: "Key: Name of the HMC or resource metric group"
+        type: object
+        required:
+          - cpc_mode
+          - type
+          - resource_class
+          - prefix
+        additionalProperties: false
+        properties:
+          cpc_mode:
+            description: "The operational mode of the CPC for which this metric group is supported."
+            type: string
+            enum: [classic, dpm, any]
+          type:
+            description: "The type of metric group: metric - an HMC metric group in which the metric values come from the HMC metric service; resource - an artificial metric group in which the metric values come from resource properties."
+            type: string
+            enum: [metric, resource]
+          resource_class:
+            description: "The resource class for the resources the metrics in the metric group are about."
+            type: string
+            enum: [cpc, adapter, logical-partition, partition, nic, storage-group, storage-volume]
+          prefix:
+            description: "<prefix> part of Prometheus metric name (format: zhmc_<prefix>_<metric_unit>)"
+            type: string
+          if:
+            description: "Condition for fetching the metric group from the HMC, as a Python expression using certain variables"
+            type: string
+            default: null
+          labels:
+            description: "Prometheus labels to be added to all metrics of this metric group"
+            type: array
+            default:
+              - name: resource
+                value: resource
+            items:
+              type: object
+              required:
+                - name
+                - value
+              additionalProperties: false
+              properties:
+                name:
+                  description: "Label name"
+                  type: string
+                value:
+                  description: "Label value, as a Jinja2 expression using certain variables"
+                  type: string
+  metrics:
+    description: The HMC metrics and their mapping to Prometheus
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^[a-z0-9\\-]+$":
+        description: "Key: Name of the HMC metric group"
+        oneOf:
+        - description: "Value: Mapping to Promentheus metrics in dictionary format (must be used for HMC metric values, can be used for HMC property based metrics)"
+          type: object
+          additionalProperties: false
+          patternProperties:
+            "^[a-zA-Z0-9\\-]+$":
+              description: "Key: Name of the HMC metric within its HMC metric group, or HMC resource property name"
+              type: object
+              required:
+                - exporter_name
+                - exporter_desc
+              additionalProperties: false
+              properties:
+                exporter_name:
+                  description: "<metric_unit> part of Prometheus metric name (format: zhmc_<prefix>_<metric_unit>); Null causes the metric not to be exported to Prometheus"
+                  type: [string, "null"]
+                  pattern: "^[a-zA-Z0-9_]+$"
+                exporter_desc:
+                  description: "HELP description of Prometheus metric"
+                  type: [string, "null"]
+                if:
+                  description: "Condition for exporting the metric, as a Python expression using certain variables"
+                  type: string
+                  default: true
+                metric_type:
+                  description: "The Prometheus metric type to be used for this metric."
+                  type: string
+                  enum: [gauge, counter]
+                  default: gauge
+                percent:
+                  description: "Indicates whether the original HMC value is represented as percentage with a value of 100 meaning 100%"
+                  type: boolean
+                  default: false
+                valuemap:
+                  description: "Defines how string values in the original HMC value are mapped into integer values exported by Prometheus"
+                  type: object
+                  additionalProperties: false
+                  patternProperties:
+                    "^[a-zA-Z0-9\\-]+$":
+                      description: "Key: String value in original HMC value. Value: Integer value exported by Prometheus"
+                      type: integer
+                labels:
+                  description: "Prometheus labels to be added to this metric"
+                  type: array
+                  default: []
+                  items:
+                    type: object
+                    required:
+                      - name
+                      - value
+                    additionalProperties: false
+                    properties:
+                      name:
+                        description: "Label name"
+                        type: string
+                      value:
+                        description: "Label value, as a Jinja2 expression using certain variables"
+                        type: string
+        - description: "Value: Mapping to Promentheus metrics in list format (can be used for HMC property based metrics)"
+          type: array
+          items:
+            type: object
+            required:
+              # One of property_name or properties_expression is required - checked at run time
+              - exporter_name
+              - exporter_desc
+            additionalProperties: false
+            properties:
+              property_name:
+                description: "Name of the HMC property on the resource to use as the metric value"
+                type: string
+              properties_expression:
+                description: "Metric value, as a Jinja2 expression using certain variables"
+                type: string
+              exporter_name:
+                description: "Local part of Prometheus metric name (format: zhmc_<prefix>_<exporter_name>); Null causes the metric not to be exported to Prometheus"
+                type: [string, "null"]
+                pattern: "^[a-zA-Z0-9_]+$"
+              exporter_desc:
+                description: "HELP description of Prometheus metric"
+                type: [string, "null"]
+              if:
+                description: "Condition for exporting the metric, as a Python expression using certain variables"
+                type: string
+                default: true
+              metric_type:
+                description: "The Prometheus metric type to be used for this metric."
+                type: string
+                enum: [gauge, counter]
+                default: gauge
+              percent:
+                description: "Indicates whether the original HMC value is represented as percentage with a value of 100 meaning 100%"
+                type: boolean
+                default: false
+              valuemap:
+                description: "Defines how string values in the original HMC value are mapped into integer values exported by Prometheus"
+                type: object
+                additionalProperties: false
+                patternProperties:
+                  "^[a-zA-Z0-9\\-]+$":
+                    description: "Key: String value in original HMC value. Value: Integer value exported by Prometheus"
+                    type: integer
+              labels:
+                description: "Prometheus labels to be added to this metric"
+                type: array
+                default: []
+                items:
+                  type: object
+                  required:
+                    - name
+                    - value
+                  additionalProperties: false
+                  properties:
+                    name:
+                      description: "Label name"
+                      type: string
+                      enum: [valuetype, value]
+                    value:
+                      description: "Label value. There are some keywords with special handling - see documentation for details"
+                      type: string
+  fetch_properties:
+    description: Properties that need to be fetched because they can change but have no property change notification
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^[a-z0-9\\-]+$":
+        description: "Key: Class of the HMC resource; Value: List of items for each HMC property that needs to be fetched"
+        type: object
+        required:
+          - metric-groups
+          - properties
+        additionalProperties: false
+        properties:
+          metric-groups:
+            description: "The resource metric groups this resource is used in"
+            type: array
+            items:
+              type: string
+          properties:
+            description: "The properties to be fetched"
+            type: array
+            items:
+              type: object
+              required:
+                - property_name
+              additionalProperties: false
+              properties:
+                property_name:
+                  description: "Name of the HMC property"
+                  type: string
+                if:
+                  description: "Condition for fetching the property, as a Python expression using certain variables"
+                  type: string
+                  default: true

@@ -1,0 +1,34 @@
+# User specific configuration files
+/myconfig/
+/hmccreds.yaml  # from the past - move to /myconfig
+
+# Make targets
+/*.done
+/done/*.done
+
+# Make build
+/build/
+/dist/
+/*.egg-info/
+/AUTHORS
+/ChangeLog
+/MANIFEST
+/MANIFEST.in
+
+# Make test
+__pycache__/
+/.pytest_cache/
+/htmlcov/
+/.coverage
+
+# Generated version file
+/zhmc_prometheus_exporter/_version_scm.py
+
+# Make build_doc
+/build_docs/
+
+# Other
+*.swp
+*.tmp
+.DS_Store
+/try/

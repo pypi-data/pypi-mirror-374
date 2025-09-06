@@ -1,0 +1,40 @@
+# Pip requirements file for install dependencies.
+
+# Note: The dependencies in this file will become the dependencies stated
+# in the Pypi package metadata.
+
+
+# Direct dependencies for install (must be consistent with minimum-constraints-install.txt)
+
+# zhmcclient @ git+https://github.com/zhmcclient/python-zhmcclient.git@master
+zhmcclient>=1.23.1
+
+# prometheus-client 0.19.0 added support for HTTPS/mTLS
+# prometheus-client 0.20.0 improved HTTPS/mTLS support
+# prometheus-client 0.20.0.post1 (on forked repo) adds the following PRs:
+# - Removed CBC ciphers to address CVE-2013-0169 (LUCKY13) (PR https://github.com/prometheus/client_python/pull/1051)
+# - Reject invalid HTTP methods and resources (PR https://github.com/prometheus/client_python/pull/1019)
+# For now, 0.20.0.post1 has been vendorized.
+# TODO: Use official prometheus-client version (0.21.0 ?) with these PRs once released.
+# prometheus-client>=0.21.0
+
+urllib3>=2.2.3; python_version == '3.8'
+urllib3>=2.5.0; python_version >= '3.9'
+jsonschema>=4.18.0
+Jinja2>=3.1.6
+ruamel.yaml>=0.18.6
+
+
+# Indirect dependencies for install that are needed for some reason (must be consistent with minimum-constraints-install.txt)
+
+# PyYAML is also used by zhmcclient 1.17, yamlloader
+# PyYAML 6.0 has wheel archives for Python 3.6 - 3.11
+# PyYAML versions without wheel archives fail install since Cython 3 was
+#   released, see https://github.com/yaml/pyyaml/issues/724.
+# PyYAML 6.0.2 provides wheel archives for Python 3.13 on Windows
+PyYAML>=6.0.2
+
+
+# pyrsistent is used by jsonschema 3.x (no longer by jsonschema 4.x)
+# pyrsistent 0.20.0 has official support for Python 3.12
+pyrsistent>=0.20.0
