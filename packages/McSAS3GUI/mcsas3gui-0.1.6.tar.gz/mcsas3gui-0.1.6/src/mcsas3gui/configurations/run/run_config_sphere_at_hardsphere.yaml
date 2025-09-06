@@ -1,0 +1,17 @@
+modelName: sphere@hardsphere
+nContrib: 300
+modelDType: default
+fitParameterLimits:
+  radius: [3.14, 314]
+staticParameters:
+  sld: 33.4
+  sld_solvent: 0
+  background: 0
+  structure_factor_mode: 1
+  radius_effective_mode: 1
+  volfraction: 0.4
+maxIter: 100000
+maxAccept: 1000
+convCrit: 1
+nRep: 10
+nCores: 5
