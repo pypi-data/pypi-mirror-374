@@ -1,0 +1,129 @@
+Metadata-Version: 2.4
+Name: lyceum-cli
+Version: 1.0.4
+Summary: Command-line interface for Lyceum Cloud Execution API
+Home-page: https://lyceum.technology
+Author: Lyceum Team
+Author-email: support@lyceum.technology
+Keywords: cloud computing,code execution,docker,ai,inference,batch processing
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development
+Classifier: Topic :: System :: Distributed Computing
+Classifier: Topic :: Utilities
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: typer[all]>=0.9.0
+Requires-Dist: rich>=13.0.0
+Requires-Dist: httpx>=0.24.0
+Requires-Dist: click>=8.0.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: python-dateutil>=2.8.0
+Requires-Dist: PyJWT>=2.8.0
+Requires-Dist: supabase>=2.0.0
+Requires-Dist: requests>=2.31.0
+Requires-Dist: attrs>=22.2.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Lyceum CLI
+
+Command-line interface for Lyceum Cloud Execution API - Execute code, run inference, and manage batch processing in the cloud.
+
+## Features
+
+- **Code Execution**: Run Python scripts and Docker containers on powerful cloud infrastructure
+- **AI Inference**: Synchronous and batch inference with various AI models
+- **Batch Processing**: OpenAI-compatible batch API for large-scale AI workloads
+- **Resource Management**: List available machine types and monitor running jobs
+- **S3 Storage**: Built-in file management with S3 backend
+
+## Installation
+
+```bash
+pip install lyceum-cli
+```
+
+## Quick Start
+
+1. **Login** with your API key:
+```bash
+lyceum login --api-key your-api-key-here
+```
+
+2. **Run Python code**:
+```bash
+lyceum run-python "print('Hello from the cloud!')"
+```
+
+3. **List available resources**:
+```bash
+lyceum machine-types
+```
+
+## Batch Processing
+
+Upload and process large batches of AI requests:
+
+```bash
+# Upload a JSONL file
+lyceum batch upload requests.jsonl
+
+# Create batch job
+lyceum batch create file_abc123 --endpoint /v1/chat/completions
+
+# Monitor progress
+lyceum batch get batch_xyz789
+
+# Download results
+lyceum batch download file_output123
+```
+
+## Command Structure
+
+### Legacy Commands (for compatibility)
+- `lyceum login` / `lyceum logout` / `lyceum status`
+- `lyceum run-python` / `lyceum run-docker`
+- `lyceum machine-types` / `lyceum list-jobs` / `lyceum abort`
+
+### New Modular Commands
+- `lyceum auth login` / `lyceum auth logout` / `lyceum auth status`
+- `lyceum python run` / `lyceum docker run`
+- `lyceum workloads list` / `lyceum workloads abort` / `lyceum workloads history`
+- `lyceum batch upload` / `lyceum batch create` / `lyceum batch list`
+- `lyceum resources machine-types`
+
+## Configuration
+
+Configuration is stored in `~/.lyceum/config.json`:
+
+```json
+{
+  "api_key": "your-api-key",
+  "base_url": "https://api.lyceum.technology"
+}
+```
+
+## Support
+
+- Documentation: https://docs.lyceum.technology
+- Support: support@lyceum.technology
+- Issues: https://github.com/lyceum/lyceum-cli/issues
