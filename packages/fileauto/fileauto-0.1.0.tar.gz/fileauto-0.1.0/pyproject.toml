@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["fileauto"]
+
+[project]
+name = "fileauto"
+version = "0.1.0"
+authors = [
+  { name="Houndadah Yao Dankgott Dersieger", email="houndadahmartin@email.com" },
+]
+description = "A Python tool to organize files into category folders automatically."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "colorama",
+    "pyfiglet",
+    "pyperclip"
+]
+
+[project.scripts]
+fileauto = "fileauto.fileauto:main"
+
+[project.urls]
+Homepage = "https://github.com/pypa/dankgott"
+Issues = "https://github.com/pypa/fileauto/issues"
+
