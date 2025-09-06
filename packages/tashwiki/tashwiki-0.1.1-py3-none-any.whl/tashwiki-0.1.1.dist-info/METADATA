@@ -1,0 +1,79 @@
+Metadata-Version: 2.3
+Name: tashwiki
+Version: 0.1.1
+Summary: Wiki-like static site generator
+License: MIT
+Keywords: wiki,git,markdown
+Author: Alexey Ryabov
+Author-email: alex@b00bl1k.ru
+Requires-Python: >=3.12,<4.0
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Text Processing :: Markup
+Classifier: Topic :: Text Processing :: Markup :: Markdown
+Requires-Dist: click (>=8.2.1,<9.0.0)
+Requires-Dist: jinja2 (>=3.1.6,<4.0.0)
+Requires-Dist: livereload (>=2.7.1,<3.0.0)
+Requires-Dist: markdown (>=3.8.2,<4.0.0)
+Requires-Dist: termcolor (>=3.1.0,<4.0.0)
+Project-URL: Issues, https://github.com/b00bl1k/tashwiki/issues
+Project-URL: Repository, https://github.com/b00bl1k/tashwiki
+Description-Content-Type: text/markdown
+
+# TashWiki
+
+TashWiki is a wiki-like static site generator. It can be used to make your own
+digital garden or simple personal wiki.
+
+## Features
+
+- Converts your Markdown notes into static HTML pages
+- Wiki-style links between pages
+- Simple and lightweight
+- Easy to deploy
+
+## Installation
+
+```bash
+pip install git+https://github.com/b00bl1k/tashwiki.git
+```
+
+## Usage
+
+```bash
+tashwiki build
+```
+
+This will take your source files from ./content and generate a static site
+into ./output.
+
+## Example
+
+Here is a minimal note:
+
+```markdown
+# Welcome to TashWiki
+
+This is my digital garden.
+
+See also [[Another note]].
+```
+
+## Roadmap
+
+- [x] Categories
+- [ ] Themes
+- [ ] Search
+
+## Status
+
+TashWiki is still in early development. Expect breaking changes.
+
+## License
+
+MIT
+
+## Credits
+
+- [[Rock icons created by Freepik - Flaticon]](https://www.flaticon.com/free-icons/rock)
+

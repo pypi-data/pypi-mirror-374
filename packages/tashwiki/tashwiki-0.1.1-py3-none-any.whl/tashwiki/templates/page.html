@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {{ page_content }}
+  <hr>
+  {% if categories %}
+    <p>[ {{ categories_page }}:
+    {% for category in categories %}
+      <a href="{{ baseurl }}{{ category.url }}">{{ category.name }}</a></li>{% if not loop.last %}, {% endif %}
+    {% endfor %}
+    ]</p>
+  {% endif %}
+{% endblock %}
