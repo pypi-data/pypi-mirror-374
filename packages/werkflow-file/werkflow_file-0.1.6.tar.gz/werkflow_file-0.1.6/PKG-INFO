@@ -1,0 +1,17 @@
+Metadata-Version: 2.4
+Name: werkflow-file
+Version: 0.1.6
+Summary: A module for working with Files.
+Author-email: Ada Lundhe <adalundhe@lundhe.audio>
+Keywords: pypi,cicd,python,werkflow,workflow,files
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: werkflow-core
+Requires-Dist: werkflow-shell
+Requires-Dist: werkflow-system
+Dynamic: license-file
