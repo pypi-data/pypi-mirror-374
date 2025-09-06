@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "thalas"
+version = "0.0.0"
+description = "Ray-based executor (factored from marin-community/marin)"
+requires-python = ">=3.10"
+
+[project.urls]
+Repository = "https://github.com/marin-community/thalas"
