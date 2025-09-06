@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyja"
+version = "0.1.1"
+description = "Run Python scripts with error messages translated into Japanese"
+authors = [{ name = "Your Name" }]
+dependencies = ["deepl"]
+
+[project.scripts]
+pyja = "pyja.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
