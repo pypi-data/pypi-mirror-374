@@ -1,0 +1,32 @@
+# Generated files
+__pycache__/
+build/
+dist/
+wheels/
+*.egg-info
+docs/build
+profile.html
+profile.json
+mprofile_*.dat
+lightning_logs
+*.log
+
+# Virtual environment
+.venv
+.pdm-python
+.mise.toml
+
+# IDE & OS
+.vscode
+.idea
+.DS_Store
+
+# Temporary files
+tmp*
+*.bak*
+
+# Data files
+*.zarr
+
+# Others
+.coverage

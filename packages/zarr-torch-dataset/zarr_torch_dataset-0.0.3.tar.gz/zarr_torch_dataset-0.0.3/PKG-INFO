@@ -1,0 +1,31 @@
+Metadata-Version: 2.3
+Name: zarr-torch-dataset
+Version: 0.0.3
+Summary: Pytorch dataset with Zarr backend
+Project-URL: Repository, https://gitlab.in2p3.fr/ipsl/espri/espri-ia/projects/zarr-torch-dataset
+Author-email: Sébastien Gardoll <sebastien.gardoll@cnrs.fr>
+License: CECILL-2.1
+Requires-Python: >=3.11
+Requires-Dist: numpy>=2.1.3
+Requires-Dist: torch>=2.6
+Requires-Dist: zarr>=3.0.8
+Description-Content-Type: text/markdown
+
+# ZarrDataset
+
+## How to contribute
+
+* Pip
+
+```bash
+pip install -e .
+pip install pre-commit
+pre-commit install
+```
+
+* UV
+
+```bash
+uv sync
+uv run pre-commit install
+```
