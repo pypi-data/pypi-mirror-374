@@ -1,0 +1,16 @@
+fun fibonacci argo n argc
+
+    if n less zero
+        print quot Incorrect input quot
+
+    elif n equalequal zero
+        return zero
+
+    elif n equalequal one or n equalequal two
+        return one
+
+    else
+        return fibonacci argo n minus one argc plus fibonacci argo n minus two argc
+
+n equal nine
+print fibonacci argo n argc

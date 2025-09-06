@@ -1,0 +1,130 @@
+# abyz
+
+_abyz_ is a [joke programming language](https://esolangs.org/wiki/Joke_language_list) which only employs alphabetical characters. All variables, functions and classes must be defined with letters from the alphabet. No other symbols such numbers or `()/.,;` are allowed. Useful for very limited keyboards, I guess.
+
+`abyz` is a [transpiled](https://en.wikipedia.org/wiki/Source-to-source_compiler) programming language, whose transpiler converts the _abyz_ code to python, and runs with python under the hood. Thus, it keeps all the python performance but with a tasty anumerical syntax.
+
+## Syntax overview
+
+Here are the key points of the _abyz_ syntax:
+
+- Only alphabetical letters (from a to z) are considered. Numbers and other symbols like `()/.,;` are not allowed.
+- Hence, _abyz_ relies on keywords for different functionalities. For instance:
+  - A function in other languages written as `f(x)` is written in _abyz_ as `f argo x argc`. Much simpler without these stupid parentheses, isn't?
+  - Why writting `pi=3.1415` like in most languages when you can just write `pi equal threedotonefouronefive` in _abyz_?
+- Identation is mandatory for functions, classes and control structures, in a similar way to python.
+- Spaces can be used to make clear code, but not mandatory, i.e., `aequalthreetimestwo` is equivalent to `a equal three times two` (or in other boring languages, `a=3*2`).
+
+## Installation
+
+Install the `abyz` transpiler with
+
+```sh
+pip install abyz
+```
+
+Alternatively, you can install it from source cloning this repository and running
+
+```sh
+pip install -e .
+```
+
+or using [uv](https://docs.astral.sh/uv/):
+
+```sh
+uv sync
+```
+
+## Usage
+
+To run an _abyz_ code, just run:
+
+```sh
+abyz -c name_of_the_code.abyz -x
+```
+
+The available flags are:
+
+- `-c`, `--code`: path to the source _abyz_ code to be run.
+- `-o`, `--output`: path to the output transpiled python code.
+- `-x`, `--exec`: include to run the output program, otherwise it only transpiles it.
+
+## Examples
+
+The following are simple examples to showcase the syntax of _abyz_. Run them with `abyz -c examples/name_of_the_code.abyz -x`.
+
+1. Hello World.
+
+```
+print quot Hello World quot
+```
+
+2. Compute the area of a circle.
+
+```
+pi equal threedotonefouronefiveninetwo
+
+fun area argo r argc
+
+    a equal pi times r times r
+    return a
+
+r equal two
+
+a equal area argo r argc
+print a
+```
+
+3. Compute the _n_ first Fibonacci numbers.
+
+```
+fun fibonacci argo n argc
+
+    if n less zero
+        print quot Incorrect input quot
+
+    elif n equalequal zero
+        return zero
+
+    elif n equalequal one or n equalequal two
+        return one
+
+    else
+        return fibonacci argo n minus one argc plus fibonacci argo n minus two argc
+
+n equal nine
+print fibonacci argo n argc
+```
+
+## Keywords
+
+Here is a comprehensive list of keywords used in _abyz_ and their equivalent in python:
+
+- `argc` : `)`
+- `argo` : `(`
+- `com` : `#`
+- `dot` : `.`
+- `elif` : `elif`
+- `else` : `else`
+- `equal` : `=`
+- `if` : `if`
+- `for` : `for`
+- `fun` : `def`
+- `greater` : `>`
+- `less` : `<`
+- `minus` : `-`
+- `or` : `or`
+- `plus` : `+`
+- `print` : `print(`
+- `quot` : `'`
+- `return` : `return`
+- `times` : `*`
+- `while` : `while`
+
+## Contributing
+
+Pull requests are welcome! Feel free to open an issue for bugs, comments, questions and suggestions, or contact me at pablo.villanueva.domingo@gmail.com.
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
