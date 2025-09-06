@@ -1,0 +1,7 @@
+include README.md
+include LICENSE
+include VERSION.md
+include CHANGELOG.md
+recursive-exclude traces *
+recursive-exclude snapshots *
+recursive-exclude viewer-output *

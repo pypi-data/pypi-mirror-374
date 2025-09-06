@@ -1,0 +1,68 @@
+registry_version: "1.0"
+assets:
+  # Stage 2 operations
+  - id: stage2_multiply
+    path: stage2_multiply.md
+    sha256: 8d03944279d27f00a72627c076878b4ec18a09564709f6e10d4daaecab3d6ee3
+    version: "1.0.0"
+    size_bytes: 621
+    last_modified: "2025-09-06T12:00:00Z"
+    
+  - id: stage2_elementwise
+    path: stage2_elementwise.md
+    sha256: 9aeb7ba5e1fdc3ce06b6aa99285c49439784510e44dcfa8a261fe4e2d1ea0fc4
+    version: "1.0.0"
+    size_bytes: 584
+    last_modified: "2025-09-06T12:00:00Z"
+    
+  # Combined lensing
+  - id: combined_lens
+    path: combined_lens.md
+    sha256: 7b765c4e67bbc33d485bb73c0906fe93dadd62f35bcf3b2fc144c0d58c102d64
+    version: "1.0.0"
+    size_bytes: 729
+    last_modified: "2025-09-06T12:00:00Z"
+    
+  # Station shift
+  - id: station_shift
+    path: station_shift.md
+    sha256: 9080df95e5ba6a4326cacdf58215a0d8cfbeccface7342682edcaf3fc2a9624b
+    version: "1.0.0"
+    size_bytes: 472
+    last_modified: "2025-09-06T12:00:00Z"
+    
+  # Station briefs
+  - id: station_brief.requirements
+    path: station_briefs/requirements.md
+    sha256: f0b2b94c865d79fb63c5978ae5b3d1ea75cb364171a1448abc03ff9cf3952bfb
+    version: "1.0.0"
+    size_bytes: 209
+    last_modified: "2025-09-06T12:00:00Z"
+    
+  - id: station_brief.objectives
+    path: station_briefs/objectives.md
+    sha256: 8155c911826bb1dba8eb996176c63bc35e446fac4ebc1c9dabc217bc271d58f6
+    version: "1.0.0"
+    size_bytes: 187
+    last_modified: "2025-09-06T12:00:00Z"
+    
+  - id: station_brief.verification
+    path: station_briefs/verification.md
+    sha256: 1475ef1c0751244f250cab63193579b4a79a4cdb9da86a80e822f3a7930ebb20
+    version: "1.0.0"
+    size_bytes: 157
+    last_modified: "2025-09-06T12:00:00Z"
+    
+  - id: station_brief.validation
+    path: station_briefs/validation.md
+    sha256: 2c2caf0375c07da193ae06296bb757a371c426e93b549a25a23cffec54f41469
+    version: "1.0.0"
+    size_bytes: 147
+    last_modified: "2025-09-06T12:00:00Z"
+    
+  - id: station_brief.evaluation
+    path: station_briefs/evaluation.md
+    sha256: ee3c80aa879d30ef51daad72c34588175e8b1672a112839656d20437ea738bef
+    version: "1.0.0"
+    size_bytes: 183
+    last_modified: "2025-09-06T12:00:00Z"
