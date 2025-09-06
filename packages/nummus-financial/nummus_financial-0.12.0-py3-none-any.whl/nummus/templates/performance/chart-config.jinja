@@ -1,0 +1,58 @@
+<div
+  id="performance-config"
+  hx-indicator="#performance-indicator"
+  hx-target="#performance-chart-data"
+  hx-swap-oob="{{ oob }}"
+>
+  <div class="flex justify-around gap-2">
+    {% for value, label in ctx.period_options.items() %}
+      {% set btn_class = "btn-tonal" if value == ctx.period else "btn-text" %}
+      <button
+        class="{{ btn_class }}"
+        hx-get="{{ url_for('performance.chart', period=value) }}"
+        hx-disabled-elt="this"
+      >
+        {{ label }}
+      </button>
+    {% endfor %}
+  </div>
+  <div class="my-1 flex items-center gap-2">
+    <div class="bg-primary h-6 w-6 rounded"></div>
+    Portfolio TWRR vs
+    <div class="bg-tertiary h-6 w-6 rounded"></div>
+    <label class="input-outlined">
+      <select
+        name="index"
+        autocomplete="off"
+        hx-get="{{ url_for("performance.chart") }}"
+        hx-disabled-elt="this"
+      >
+        {% for index in ctx.indices %}
+          <option
+            value="{{ index }}"
+            {% if index == ctx.index %}selected{% endif %}
+          >
+            {{ index }}
+          </option>
+        {% endfor %}
+      </select>
+      <icon>balance</icon>
+      <div>
+        <div>Index</div>
+      </div>
+    </label>
+  </div>
+  <details class="bg-surface-container-high mx-auto mb-2 max-w-2xl rounded-md">
+    <summary
+      class="bg-tertiary-container flex items-center gap-2 rounded-md p-2"
+    >
+      <icon>help</icon>
+      <span class="mr-auto">About {{ ctx.index }}</span>
+      <icon class="details-icon-open">keyboard_arrow_up</icon>
+      <icon class="details-icon-closed">keyboard_arrow_down</icon>
+    </summary>
+    <div class="prose mx-auto px-2">
+      <p>{{ ctx.index_description }}</p>
+    </div>
+  </details>
+</div>
