@@ -1,0 +1,112 @@
+[project]
+name = "SynopticPy"
+description = "Retrieve mesonet weather data as Polars DataFrames from Synoptic's Weather API."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [{ name = "Brian K. Blaylock", email = "blaylockbk@gmail.com" }]
+maintainers = [{ name = "Brian K. Blaylock", email = "blaylockbk@gmail.com" }]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Atmospheric Science",
+]
+keywords = ["weather", "meteorology", "mesonet", "atmosphere"]
+dependencies = [
+    "numpy>=2.3.2",
+    "polars[plot,style,timezone]>=1.33.0",
+    "requests>=2.32.5",
+    "toml>=0.10.2",
+]
+dynamic = ["version"]
+
+[project.urls]
+"Homepage" = "https://github.com/blaylockbk/SynopticPy"
+"Documentation" = "https://synopticpy.readthedocs.io/"
+"Repository" = "https://github.com/blaylockbk/SynopticPy"
+"Changelog" = "https://github.com/blaylockbk/SynopticPy/releases"
+"Bug Tracker" = "https://github.com/blaylockbk/SynopticPy/issues"
+
+[project.optional-dependencies]
+plot = [
+    "altair>=5.5.0",
+    "cartopy>=0.25.0",
+    "herbie-data>=2025.7.0",
+    "matplotlib>=3.10.6",
+    "seaborn>=0.13.2",
+]
+pandas = [
+    "pandas>=2.3.2",
+    "pyarrow>=21.0.0",
+]
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/synoptic/_version.py"
+
+[tool.hatch.build.targets.sdist]
+exclude = ["/.github", "/docs", "/11ty-site", "/metars", "/notebooks"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/synoptic"]
+
+[tool.ruff]
+extend-include = ["*.ipynb"]
+
+[tool.ruff.lint]
+extend-select = [
+    "UP", # pyupgrade
+    "D",  # pydocstyle
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.pytest.ini_options]
+minversion = "2.0"
+addopts = "-rsfEX -p pytester --strict-markers --verbosity=3 --cov=synoptic"
+log_level = "DEBUG"
+testpaths = ["tests"]
+xfail_strict = true
+markers = []
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.30.1",
+    "pytest>=8.4.2",
+    "pytest-cov>=6.2.1",
+    "ruff>=0.12.12",
+]
+docs = [
+    "autodocsumm>=0.2.14",
+    "esbonio>=0.16.5",
+    "ipython>=9.5.0",
+    "linkify-it-py>=2.0.3",
+    "myst-parser>=4.0.1",
+    "nbconvert>=7.16.6",
+    "nbsphinx>=0.9.7",
+    "pydata-sphinx-theme>=0.16.1",
+    "recommonmark>=0.7.1",
+    "sphinx>=8.1.3",
+    "sphinx-autosummary-accessors>=2025.3.1",
+    "sphinx-copybutton>=0.5.2",
+    "sphinx-design>=0.6.1",
+    "sphinx-markdown-tables>=0.0.17",
+    "sphinxcontrib-mermaid>=1.0.0",
+]
