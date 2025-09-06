@@ -1,0 +1,31 @@
+# Manifest file for vinormx package
+# Only include root-level files that should be in the source distribution
+
+include README.md
+include LICENSE
+include requirements.txt
+include MANIFEST.in
+
+# Exclude build artifacts and duplicate files
+exclude *.pyc
+exclude __pycache__/*
+exclude .git/*
+exclude .gitignore
+exclude *.egg-info/*
+exclude build/*
+exclude dist/*
+exclude old_vinormx.py
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+
+# Exclude duplicate package files from root (they're in vinormx/ subdirectory)
+exclude vinormx.py
+exclude test_vinormx.py
+exclude dict_module.py
+exclude mapping_module.py
+exclude regex_rule_module.py
+exclude config_module.py
+exclude __init__.py
+exclude dictionaries/*
+exclude RegexRule/*
+exclude Dict/*
