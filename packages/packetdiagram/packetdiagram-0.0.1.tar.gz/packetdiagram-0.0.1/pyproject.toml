@@ -1,0 +1,26 @@
+[project]
+name = "packetdiagram"
+version = "0.0.1"
+authors = [
+  { name="Joram Fillol-Carlini", email="joram.fillolcarlini@laposte.net" },
+]
+description = "A tool to generate packet diagrams and save them as png or svg."
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+keywords = ["diagram", "packet", "visualization"]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+dependencies = [
+  'pycairo >= 1.28.0',
+]
+
+[project.urls]
+Homepage = "https://github.com/JoramFC/packetdiagram"
+
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
