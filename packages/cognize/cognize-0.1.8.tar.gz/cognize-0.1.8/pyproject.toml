@@ -1,0 +1,50 @@
+[project]
+name = "cognize"
+version = "0.1.8"
+description = "Programmable cognition for Python systems."
+keywords = ["cognition", "epistemic", "rupture", "projection", "AI", "symbolic", "drift"]
+authors = [{ name = "Pulikanti Sashi Bharadwaj", email = "bharadwajpulikanti11@gmail.com" }]
+license = { text = "Apache-2.0" }
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.26"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Developers",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.optional-dependencies]
+viz = ["pandas>=2.2", "matplotlib>=3.8", "seaborn>=0.13"]
+dev = ["pytest>=7", "ruff>=0.4", "mypy>=1.8", "black>=23.12.1", "build>=1.0.3", "twine>=4.0.2"]
+all = [
+  "pandas>=2.2", "matplotlib>=3.8", "seaborn>=0.13",
+  "pytest>=7", "ruff>=0.4", "mypy>=1.8", "black>=23.12.1", "build>=1.0.3", "twine>=4.0.2"
+]
+
+[project.urls]
+Homepage = "https://github.com/heraclitus0/cognize"
+Source = "https://github.com/heraclitus0/cognize"
+Issues = "https://github.com/heraclitus0/cognize/issues"
+UserGuide = "https://github.com/heraclitus0/cognize/blob/main/docs/USER_GUIDE.md"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["cognize*"]
+exclude = ["tests*", "examples*", "docs*"]
+
+[tool.setuptools.package-data]
+"cognize" = ["py.typed"]
