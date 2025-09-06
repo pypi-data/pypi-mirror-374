@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "brs-xss"
+version = "1.0.4"
+description = "Context-aware async XSS scanner for CI"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "GPL-3.0-or-later" }
+authors = [ { name = "Brabus", email = "mail.easypro.tech@gmail.com" } ]
+keywords = ["security","xss","dast","sarif","playwright","bug-bounty","ci-cd","async","context-aware"]
+dependencies = [
+  "aiohttp>=3.8.0",
+  "typer>=0.9.0",
+  "rich>=13.0.0",
+  "pyyaml>=6.0",
+  "jinja2>=3.1.0",
+  "babel>=2.12.0",
+  "polib>=1.2.0",
+  "playwright>=1.40.0",
+  "beautifulsoup4>=4.12.3"
+]
+
+[project.scripts]
+brs-xss = "cli.main:app"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["brsxss*", "cli*"]
+
+
