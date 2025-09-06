@@ -1,0 +1,54 @@
+Metadata-Version: 2.4
+Name: CarbonX
+Version: 1.0.4
+Summary: Process Design Tool for Gas-Phase Synthesis of Nanomaterials and Carbon Nanotubes
+Home-page: https://github.com/yourusername/CarbonX
+Author: Hossein Rahbar
+Author-email: rahbar.hosein@example.com
+Project-URL: Bug Reports, https://github.com/yourusername/CarbonX/issues
+Project-URL: Source, https://github.com/yourusername/CarbonX
+Project-URL: Documentation, https://CarbonX.readthedocs.io
+Keywords: carbon nanotube synthesis simulation sectional-model
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Cython
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS
+Requires-Python: >=3.8,<3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: numpy<2.0.0,>=1.24.0
+Requires-Dist: scipy<1.14.0,>=1.10.0
+Requires-Dist: matplotlib>=3.5.0
+Requires-Dist: pandas<2.1.0,>=1.5.0
+Requires-Dist: cantera>=2.6.0
+Requires-Dist: Cython>=0.29.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=3.0.0; extra == "dev"
+Requires-Dist: black>=22.0.0; extra == "dev"
+Requires-Dist: flake8>=4.0.0; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx>=4.0.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=1.0.0; extra == "docs"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
