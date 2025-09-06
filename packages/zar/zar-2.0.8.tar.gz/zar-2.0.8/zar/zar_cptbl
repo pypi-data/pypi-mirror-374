@@ -1,0 +1,170 @@
+#! /bin/bash
+# -*- coding: utf-8 -*-
+#
+# Copy table between 2 Dbs
+#
+# This free software is released under GNU Affero GPL3
+# author: Antonio M. Vigliotti - antoniomaria.vigliotti@gmail.com
+# (C) 2015-2025 by SHS-AV s.r.l. - http://www.shs-av.com - info@shs-av.com
+#
+# Based on template 2.1.1
+[ $BASH_VERSINFO -lt 4 ] && echo "This script $0 requires bash 4.0+!" && exit 4
+READLINK=$(which readlink 2>/dev/null)
+export READLINK
+THIS=$(basename "$0")
+TDIR=$(readlink -f $(dirname $0))
+ME=$(readlink -e $0)
+if [[ -d $HOME/devel || -z $HOME_DEVEL || ! -d $HOME_DEVEL ]]; then
+  [[ -d $HOME/odoo/devel ]] && HOME_DEVEL="$HOME/odoo/devel" || HOME_DEVEL="$HOME/devel"
+fi
+PYPATH=""
+[[ $(basename $PWD) == "tests" && $(basename $PWD/../..) == "build" ]] && PYPATH="$(dirname $PWD)"
+[[ $(basename $PWD) == "tests" && $(basename $PWD/../..) == "build" && -d $PWD/../scripts ]] && PYPATH="$PYPATH $(readlink -f $PWD/../scripts)"
+x=$ME; while [[ $x != $HOME && $x != "/" && ! -d $x/lib && ! -d $x/bin && ! -d $x/pypi ]]; do x=$(dirname $x); done
+[[ -d $x/pypi ]] && PYPATH="$PYPATH $x/pypi"
+[[ -d $x/pypi/z0lib ]] && PYPATH="$PYPATH $x/pypi/z0lib"
+[[ -d $x/pypi/z0lib/z0lib ]] && PYPATH="$PYPATH $x/pypi/z0lib/z0lib"
+[[ -d $x/tools ]] && PYPATH="$PYPATH $x/tools"
+[[ -d $x/tools/z0lib ]] && PYPATH="$PYPATH $x/tools/z0lib"
+[[ -d $x/bin ]] && PYPATH="$PYPATH $x/bin"
+[[ -d $x/lib ]] && PYPATH="$PYPATH $x/lib"
+[[ -d $HOME_DEVEL/venv/bin ]] && PYPATH="$PYPATH $HOME_DEVEL/venv/bin"
+[[ -d $HOME_DEVEL/../tools ]] && PYPATH="$PYPATH $(readlink -f $HOME_DEVEL/../tools)"
+[[ $TRAVIS_DEBUG_MODE -ge 8 ]] && echo "PYPATH=$PYPATH"
+for d in $TDIR $PYPATH /etc; do
+  if [[ -e $d/z0librc ]]; then
+    . $d/z0librc
+    Z0LIBDIR=$(readlink -e $d)
+    break
+  fi
+done
+[[ -z "$Z0LIBDIR" ]] && echo "Library file z0librc not found in <$PYPATH>!" && exit 72
+[[ $TRAVIS_DEBUG_MODE -ge 8 ]] && echo "Z0LIBDIR=$Z0LIBDIR"
+ZARLIB=$(findpkg zarrc "$PYPATH")
+[[ -z "$ZARLIB" ]] && echo "Library file zarrc not found!" && exit 72
+. $ZARLIB
+[[ $TRAVIS_DEBUG_MODE -ge 8 ]] && echo "ZARLIB=$ZARLIB"
+TESTDIR=$(findpkg "" "$TDIR . .." "tests")
+[[ $TRAVIS_DEBUG_MODE -ge 8 ]] && echo "TESTDIR=$TESTDIR"
+RUNDIR=$(readlink -e $TESTDIR/..)
+[[ $TRAVIS_DEBUG_MODE -ge 8 ]] && echo "RUNDIR=$RUNDIR"
+
+# DIST_CONF=$(findpkg ".z0tools.conf" "$PYPATH")
+# TCONF="$HOME/.z0tools.conf"
+CFG_init "ALL"
+link_cfg_def
+link_cfg $DIST_CONF $TCONF
+[[ $TRAVIS_DEBUG_MODE -ge 8 ]] && echo "DIST_CONF=$DIST_CONF" && echo "TCONF=$TCONF"
+get_pypi_param ALL
+RED="\e[1;31m"
+CYAN="\e[1;36m"
+GREEN="\e[1;32m"
+CLR="\e[0m"
+
+__version__=2.0.8
+
+
+OPTOPTS=(h        d        f      l       n            p        s        t        U          V           v           w)
+OPTDEST=(opt_help opt_dst  opt_f  opt_log opt_dry_run  opt_port opt_src  opt_tbl  opt_user   opt_version opt_verbose opt_wep)
+OPTACTI=("+"      "="      "="    "="     1            "="      "="      "="      "="        "*>"        1           1)
+OPTDEFL=(0        ""       "id"   ""      0            ""       ""       ""       "postgres" ""          0           0)
+OPTMETA=("help"   "DBname" "name" "file"  "do nothing" "dbport" "DBname" "table"  "username" "version"   "verbose"   "")
+OPTHELP=("this help"\
+ "destination DB name"\
+ "field name to count (def id)"\
+ "log filename (def /var/log/bckdb.log)"\
+ "do nothing (dry-run)"\
+ "port (def 5432)"\
+ "source DB name"\
+ "table to copy"\
+ "username (def postgres)"\
+ "show version"\
+ "verbose mode"\
+ "wep destination table before import")
+OPTARGS=()
+
+
+parseoptargs "$@"
+if [ -z "$opt_src" -o -z "$opt_dst" -o -z "$opt_tbl" ]; then
+  opt_help=1
+fi
+if [ "$opt_version" ]
+then
+  echo "$__version__"
+  exit 0
+fi
+if [ $opt_help -gt 0 ]
+then
+  print_help "Copy table between DBs"\
+  "(C) 2015-2025 by zeroincombenze®\nhttp://wiki.zeroincombenze.org/en/Linux/dev\nAuthor: antoniomaria.vigliotti@gmail.com"
+  exit 0
+fi
+if [ -z "$opt_log" ]; then
+  publog="/var/log/zar/cptbl.log"
+else
+  publog=$opt_log
+fi
+FCONF=$TDIR/zar.conf
+CFG_init
+set_tlog_file "$publog"
+link_cfg $FCONF
+wlog "Starting copy $__version__ by $opt_user"
+
+PGDIR=$(findpkg "" "/var/lib" "postgresql  pgsql" "8.2 8.3 9.0 9.1 9.2 9.3 9.4")
+if [ -z "$PGDIR" ]; then
+  wlog "No postgres directory found!"
+  exit 1
+fi
+wlog "Found $PGDIR directory"
+DBCKDIR="$PGDIR/backups"
+if [ ! -d $DBCKDIR ]; then
+  mkdir -p $DBCKDIR
+fi
+wlog "Backup directory is $DBCKDIR"
+HOST_PRD=$(get_cfg_value 0 production_host)
+HOST_DEV=$(get_cfg_value 0 development_host)
+wlog "PRD=$HOST_PRD"
+wlog "DEV=$HOST_DEV"
+opt_tbl=${opt_tbl//./_}
+PID=$$
+tmpfn=./tmp$PID
+[[ -n $opt_port ]] && PSQL="psql -U$opt_user -p$opt_port" || PSQL="psql -U$opt_user"
+echo "Stats before copy ..."
+[[ "$opt_f" == "id" ]] && $PSQL -U$opt_user -Atec "select last_value from ${opt_tbl}_id_seq;" $opt_dst
+[[ "$opt_f" == "id" ]] && OLDNXT=$($PSQL -Atc "select last_value from ${opt_tbl}_id_seq;" $opt_dst)
+$PSQL -Atec "select max($opt_f) from $opt_tbl;" $opt_dst
+$PSQL -Atec "select count($opt_f) from $opt_tbl;" $opt_src
+CTRBEF=$($PSQL -Atc "select count($opt_f) from $opt_tbl;" $opt_src)
+echo "Copy data from source DB $opt_src"
+run_traced "$PG_DUMP $PG_DUMP_OPT -a --inserts --disable-triggers -Fp -f $tmpfn.sql -t $opt_tbl $opt_src"
+if [ $opt_wep -ne 0 ]; then
+  echo "Deleting table $opt_tbl from DB $opt_dst"
+  run_traced "$PSQL -Atec \"delete from $opt_tbl;\" $opt_dst"
+fi
+echo "Paste data into destination DB $opt_dst"
+run_traced "$PSQL -d $opt_dst -f $tmpfn.sql -o $tmpfn.log 2>$tmpfn.err"
+echo "Resulting stats ..."
+$PSQL -Atec "select max($opt_f) from $opt_tbl;" $opt_dst
+$PSQL -Atec "select count($opt_f) from $opt_tbl;" $opt_dst
+NXTID=$($PSQL -Atc "select max($opt_f) from $opt_tbl;" $opt_dst)
+# ((NXTID++))
+if [ $OLDNXT -gt $NXTID ]; then
+  NXTID=$OLDNXT
+fi
+[[ "$opt_f" == "id" ]] && $PSQL -Atec "select last_value from ${opt_tbl}_id_seq;" $opt_dst
+[[ "$opt_f" == "id" ]] && run_traced "$PSQL -d $opt_dst -c \"alter sequence ${opt_tbl}_id_seq restart $NXTID;\""
+echo "Currently stats after copy ..."
+[[ "$opt_f" == "id" ]] && $PSQL -Atec "select last_value from ${opt_tbl}_id_seq;" $opt_dst
+$PSQL -Atec "select max($opt_f) from $opt_tbl;" $opt_dst
+$PSQL -Atec "select count($opt_f) from $opt_tbl;" $opt_src
+CTRAFT=$($PSQL -Atc "select count($opt_f) from $opt_tbl;" $opt_src)
+((DIF=CTRAFT-CTRBEF))
+if [ $opt_wep -ne 0 ]; then
+  echo "$CTRAFT records replace $CTRBEF records"
+elif [ $DIF -eq 0 ]; then
+  echo "No new record inserted"
+else
+  echo "$DIF new records inserted"
+fi
+rm -f $tmpfn.*
+exit 0
