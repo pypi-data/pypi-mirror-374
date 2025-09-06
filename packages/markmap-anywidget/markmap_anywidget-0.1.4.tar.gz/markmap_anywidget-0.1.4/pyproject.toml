@@ -1,0 +1,51 @@
+[project]
+name = "markmap_anywidget"
+version = "v0.1.4"
+description = "anywidget to make interactive mindmaps from markdown using markmap in interactive computing environments"
+readme = "README.md"
+authors = [
+    { name = "Daniel Fahey", email = "daniel.fahey@proton.me" }
+]
+license = { text = "MIT" }
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: Jupyter",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Markup :: Markdown",
+]
+dependencies = [
+    "anywidget>=0.9.18",
+]
+
+[project.urls]
+Homepage = "https://github.com/daniel-fahey/markmap-anywidget"
+Repository = "https://github.com/daniel-fahey/markmap-anywidget"
+"Bug Tracker" = "https://github.com/daniel-fahey/markmap-anywidget/issues"
+
+[project.scripts]
+markmap_anywidget = "markmap_anywidget:main"
+
+[build-system]
+requires = ["uv_build>=0.8.6,<0.9.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+source-include = ["src/markmap_anywidget/static/**"]
+
+
+[dependency-groups]
+dev = [
+    "mypy>=1.17.1",
+    "pytest>=8.4.2",
+    "ruff>=0.12.12",
+]
