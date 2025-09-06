@@ -1,0 +1,123 @@
+# Raven SDK
+
+Async Kafka and HTTP producer SDK for AI logs with support for both streaming and batch processing.
+
+## Features
+
+- **Kafka Producer**: Async Kafka producer for streaming AI logs
+- **HTTP Producer**: Simple HTTP producer for batch AI log submissions
+- **Pydantic Models**: Type-safe AI log models with automatic JSON serialization
+- **UTC Timestamps**: Automatic UTC timestamp formatting with ISO-8601 standard
+
+## Installation
+
+```bash
+pip install raven-sdk
+```
+
+## Quick Start
+
+### Kafka Producer
+
+```python
+import asyncio
+from datetime import datetime
+from raven import AiLog, AiLogKafkaProducer
+
+async def main():
+    # Create producer
+    producer = AiLogKafkaProducer("localhost:9092", topic="ai-logs")
+    
+    # Start producer
+    await producer.start()
+    
+    try:
+        # Create AI log
+        log = AiLog(
+            modelId="gpt-4",
+            confidenceScore=0.95,
+            responseTimeMs=150,
+            timestamp=datetime.utcnow(),
+            numericFeatures={"temperature": 0.7},
+            categoricalFeatures={"type": "completion"}
+        )
+        
+        # Send logs
+        await producer.produce_ai_logs([log])
+        
+    finally:
+        await producer.stop()
+
+asyncio.run(main())
+```
+
+### HTTP Producer
+
+```python
+import asyncio
+from datetime import datetime
+from raven import AiLog, AiLogHttpProducer
+
+async def main():
+    # Create producer
+    producer = AiLogHttpProducer("https://api.example.com/logs")
+    
+    # Create AI log
+    log = AiLog(
+        modelId="gpt-4",
+        confidenceScore=0.95,
+        responseTimeMs=150,
+        timestamp=datetime.utcnow(),
+        numericFeatures={"temperature": 0.7},
+        categoricalFeatures={"type": "completion"}
+    )
+    
+    # Send logs (no start/stop needed)
+    await producer.produce_ai_logs([log])
+
+asyncio.run(main())
+```
+
+## API Reference
+
+### AiLog
+
+Pydantic model representing an AI log entry.
+
+**Fields:**
+- `modelId: str` - Identifier for the AI model
+- `confidenceScore: float` - Confidence score of the prediction
+- `responseTimeMs: int` - Response time in milliseconds
+- `timestamp: datetime` - UTC timestamp of the log
+- `numericFeatures: Dict[str, float]` - Numeric features
+- `categoricalFeatures: Dict[str, str]` - Categorical features
+
+### AiLogKafkaProducer
+
+Async Kafka producer for AI logs.
+
+**Methods:**
+- `__init__(kafka_bootstrap_servers: str, topic: str = "ai-logs")`
+- `async start()` - Start the producer
+- `async stop()` - Stop the producer
+- `async produce_ai_logs(logs: List[AiLog])` - Send batch of logs
+- `async produce_stream_logs(logs: AsyncIterable[AiLog])` - Send streaming logs
+
+### AiLogHttpProducer
+
+Simple HTTP producer for AI logs.
+
+**Methods:**
+- `__init__(endpoint_url: str, timeout: int = 30)`
+- `async produce_ai_logs(logs: List[AiLog])` - Send batch of logs via POST
+
+## Requirements
+
+- Python 3.8+
+- aiokafka>=0.8
+- pydantic>=2.0
+- aiohttp>=3.8
+
+## License
+
+MIT License

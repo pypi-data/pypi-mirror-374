@@ -1,0 +1,17 @@
+[project]
+name = "raven-sdk"
+version = "0.1.3"
+description = "Async Kafka and HTTP producer SDK for Raven AI logs"
+authors = [{ name = "Ivan Kazimirau", email = "ivan.g.kazimirov@gmail.com" }]
+dependencies = [
+    "aiokafka>=0.8",
+    "pydantic>=2.0",
+    "aiohttp>=3.8"
+]
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["kafka", "logging", "ai", "async", "producer"]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
