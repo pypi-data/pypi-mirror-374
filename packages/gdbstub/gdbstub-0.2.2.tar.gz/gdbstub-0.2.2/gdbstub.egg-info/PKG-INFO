@@ -1,0 +1,27 @@
+Metadata-Version: 2.4
+Name: gdbstub
+Version: 0.2.2
+Summary: Python type stubs for GDB's internal `_gdb` package.
+Home-page: https://github.com/AJMansfield/gdbstub
+Author: Anson Mansfield
+Author-email: amansfield@mantaro.com
+License: GPL-2.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Debuggers
+Classifier: Typing :: Stubs Only
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: summary
+
+# GDB Stubs
+
+This is a set of type stubs for GDB's internal `_gdb` C-language package, to aid with GDB python plugin development.
+
+https://sourceware.org/gdb/
