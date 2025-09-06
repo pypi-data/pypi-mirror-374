@@ -1,0 +1,6 @@
+[console_scripts]
+pipeline=pipeline.cli:app
+
+[scripts]
+controller=pipeline.daemon.controller:main_cli
+
