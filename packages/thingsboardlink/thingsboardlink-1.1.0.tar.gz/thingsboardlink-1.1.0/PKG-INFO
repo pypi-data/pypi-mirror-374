@@ -1,0 +1,76 @@
+Metadata-Version: 2.4
+Name: thingsboardlink
+Version: 1.1.0
+Summary: 一个专为 Python 开发者设计的高级 IoT 平台交互工具包 | A high-level IoT platform interaction toolkit designed for Python developers
+Author-email: Miraitowa-la <2056978412@qq.com>
+License: MIT
+Project-URL: Homepage, https://github.com/Miraitowa-la/ThingsBoardLink
+Project-URL: Repository, https://github.com/Miraitowa-la/ThingsBoardLink
+Project-URL: Issues, https://github.com/Miraitowa-la/ThingsBoardLink/issues
+Keywords: iot,thingsboard,rpc,python-sdk,telemetry,internet-of-things,api-client,sensor-data
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP :: HTTP Servers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Hardware :: Hardware Drivers
+Classifier: Topic :: System :: Networking
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: requests>=2.25.0
+Requires-Dist: urllib3>=1.26.0
+Requires-Dist: typing-extensions>=4.0.0
+Requires-Dist: python-dateutil>=2.8.0
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=2.10.0; extra == "dev"
+Requires-Dist: black>=21.0.0; extra == "dev"
+Requires-Dist: flake8>=3.8.0; extra == "dev"
+Requires-Dist: mypy>=0.800; extra == "dev"
+Requires-Dist: isort>=5.0.0; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx>=4.0.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=1.0.0; extra == "docs"
+Requires-Dist: myst-parser>=0.15.0; extra == "docs"
+Provides-Extra: validation
+Requires-Dist: pydantic>=1.8.0; extra == "validation"
+Dynamic: license-file
+
+# ThingsBoardLink
+
+<div align="center">
+
+[![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)](https://python.org)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+**A high-level IoT platform interaction toolkit designed for Python developers**
+
+[Chinese](README-zh_CN.md) | [Documentation]() | [Examples](#examples)
+
+</div>
+
+## Overview
+
+ThingsBoardLink is a powerful Python package designed to simplify integration with the ThingsBoard IoT platform. It encapsulates ThingsBoard's REST API, providing object-oriented interfaces that allow developers to easily manage devices, process telemetry data, control alarms, and other core functions.
+
+## Key Features
+
+- 🔐 **Authentication Management**: Automatic JWT token and session management
+- 📱 **Device Management**: Complete device CRUD operations and credential management
+- 📊 **Telemetry Data**: Data upload, querying, and historical data retrieval
+- ⚙️ **Attribute Management**: Client, server, and shared attribute operations
+- 🚨 **Alarm Management**: Alarm creation, querying, acknowledgment, and clearing
+- 🔄 **RPC Calls**: One-way and two-way remote procedure calls
+- 🔗 **Relationship Management**: Creation and management of entity relationships
+- 🛡️ **Error Handling**: Comprehensive exception handling and error messages
+- 📚 **Type Safety**: Complete TypeScript-style type hints
+- 🚀 **Easy to Use**: Clean API design and rich documentation
+
