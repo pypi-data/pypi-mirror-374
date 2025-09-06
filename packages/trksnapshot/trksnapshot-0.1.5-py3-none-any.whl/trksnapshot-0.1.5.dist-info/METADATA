@@ -1,0 +1,103 @@
+Metadata-Version: 2.4
+Name: trksnapshot
+Version: 0.1.5
+Summary: Tractometry Visualization Tool
+Author-email: Yixue Wendy Feng <yixuewendy.f@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2024, Yixue Feng
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Project-URL: Homepage, https://github.com/wendyfyx/trksnapshot
+Project-URL: Issues, https://github.com/wendyfyx/trksnapshot/issues
+Keywords: tractometry,tractography,diffusion MRI,white matter
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: matplotlib>=3.7.0
+Requires-Dist: dipy==1.9.0
+Requires-Dist: fury>=0.10.0
+Requires-Dist: opencv-python>4.9.0.80
+Requires-Dist: nilearn==0.11.1
+Requires-Dist: numpy==1.26.4
+Dynamic: license-file
+
+# trksnapshot
+
+## Installation
+ `pip install trksnapshot` ([project page]([https://pypi.org/project/trksnapshot))
+
+## Description
+**trksnapshot** is a CLI for creating bundle visualizations (created using FURY and DIPY). It supports  
+1. Visualizing 3D bundles in an interactive window with custom color options and camera view. These include per-bundle color and along-tract color using BUAN (for tractometry results).
+2. Plotting bundle with glass brain and pial surfaces.
+3. Saving custom camera settings to produce consistent plots.
+4. Saving snapshot images for publication-ready figures!
+
+All bundle visualizations in our recent work [*Microstructural mapping of neural pathways in Alzheimer's disease using macrostructure-informed normative tractometry*](https://doi.org/10.1002/alz.14371) were created with this script. Here's one of the figures:
+
+<img src="assets/atlas_bundles.jpg" alt="bundle_atlas" width="800">
+
+## Usage
+
+[**RECOMMENDED**] To visualization bundle(s) with default pial surfaces (in MNI space)
+```bash
+trksnapshot \
+      -i /path_to_tractogram/bundle*.trk \
+      -glass default_pial \
+      -show
+```
+You may also provide your own pial surface files
+```bash
+trksnapshot \
+      -i /path_to_tractogram/bundle*.trk \
+      -glass /path_to_surfaces/pial_left.nii /path_to_surfaces/pial_right.nii \
+      -show
+```
+
+To visualization bundle(s) with default glass brain (must be in MNI space)
+```bash
+trksnapshot \
+      -i /path_to_tractogram/bundle*.trk \
+      -glass default_glass \
+      -show
+```
+
+To visualization bundle with pial surfaces with BUAN output
+```bash
+trksnapshot \
+      -i /path_to_tractogram/bundle.trk \
+      -f /path_to_buan_results/pvals.npy \
+      -ctitle pvalues -auto -cbar /path_to_output_folder/cbar.png \
+      -glass /path_to_surfaces/pial_left.gii.gz /path_to_surfaces/pial_right.gii.gz
+      -show \
+      -o /path_to_output_folder/bundle.png
+```
+
+## Citations
+1. [Microstructural mapping of neural pathways in Alzheimer's disease using macrostructure-informed normative tractometry
+](https://doi.org/10.1002/alz.14371)
+2. [FURY: advanced scientific visualization](10.21105/joss.03384)
