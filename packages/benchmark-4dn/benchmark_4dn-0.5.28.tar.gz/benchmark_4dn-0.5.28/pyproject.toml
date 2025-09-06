@@ -1,0 +1,38 @@
+# The Github repo for this project is:
+# https://github.com/SooLee/Benchmark
+# IMPORTANT: use Python 2.7 or above for this package
+
+[tool.poetry]
+name = "Benchmark-4dn"
+version = "0.5.28"
+description = """Benchmark functions that returns total space, mem, cpu given \
+    input size and parameters for the CWL workflows"""
+authors = ["Alexander Veit <alexander_veit@hms.harvard.edu>", "Soo Lee <duplexa@gmail.com>"]
+license = "MIT"
+readme = 'README.md'
+repository = "https://github.com/4dn-dcic/Benchmark"
+keywords = ['benchmark', 'cwl', 'common workflow language',
+          'docker', 'tibanna', 'bioinformatics', '4dn']
+classifiers = [
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "Intended Audience :: Science/Research",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Topic :: Scientific/Engineering :: Bio-Informatics"
+]
+include = ["src/Benchmark/aws"]
+packages = [
+  { include="Benchmark", from="src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.5"
+
+[build-system]
+requires = ["poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
