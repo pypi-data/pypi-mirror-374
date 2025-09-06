@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sudarshan-engine"
+version = "1.0.0b5"
+dependencies = []
+description = "Python bindings for Sudarshan Engine"
+authors = [
+    { name = "Sudarshan Team" }
+]
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
