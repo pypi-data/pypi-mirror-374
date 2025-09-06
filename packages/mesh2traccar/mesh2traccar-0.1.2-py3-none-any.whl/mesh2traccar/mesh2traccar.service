@@ -1,0 +1,17 @@
+[Unit]
+Description=Mesh2Traccar Service
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/mesh2traccar
+Restart=always
+RestartSec=10
+User=mesh2traccar
+Group=mesh2traccar
+WorkingDirectory=/var/lib/mesh2traccar
+Environment=PYTHONUNBUFFERED=1
+StandardOutput=append:/var/log/mesh2traccar/mesh2traccar.log
+StandardError=append:/var/log/mesh2traccar/mesh2traccar.log
+
+[Install]
+WantedBy=multi-user.target
