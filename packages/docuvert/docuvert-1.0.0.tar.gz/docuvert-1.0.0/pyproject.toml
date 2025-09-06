@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "docuvert"
+version = "1.0.0"
+description = "Universal document converter with 200+ format combinations. Features PowerPoint to Obsidian Markdown with image extraction, format preservation, and navigation links. Supports PDF, DOCX, PPTX, MD, TEX, CSV, XLSX, TXT, HEIC, JPG, PNG, HTML, RTF, ODT."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Vanox Tech", email = "dev@vanoxtech.com"},
+]
+keywords = ["document converter", "pdf", "docx", "powerpoint", "obsidian", "markdown", "latex", "csv", "xlsx", "file conversion", "pandoc", "pptx", "image extraction"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: Text Processing",
+    "Topic :: Office/Business :: Office Suites",
+    "Topic :: Utilities",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "pypandoc",
+    "pandas",
+    "openpyxl",
+    "python-docx",
+    "python-pptx",
+    "PyMuPDF",
+    "pdfplumber",
+    "pdf2docx",
+    "reportlab",
+    "tabulate",
+    "Jinja2",
+]
+
+[project.urls]
+Homepage = "https://github.com/avanomme/docuvert"
+Repository = "https://github.com/avanomme/docuvert"
+
+[project.scripts]
+docuvert = "docuvert.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
