@@ -1,0 +1,89 @@
+Metadata-Version: 2.4
+Name: griffe-pydantic
+Version: 1.1.7
+Summary: Griffe extension for Pydantic.
+Author-Email: =?utf-8?q?Timoth=C3=A9e_Mazzucotelli?= <dev@pawamoy.fr>
+License-Expression: ISC
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Topic :: Documentation
+Classifier: Topic :: Software Development
+Classifier: Topic :: Utilities
+Classifier: Typing :: Typed
+Project-URL: Homepage, https://mkdocstrings.github.io/griffe-pydantic
+Project-URL: Documentation, https://mkdocstrings.github.io/griffe-pydantic
+Project-URL: Changelog, https://mkdocstrings.github.io/griffe-pydantic/changelog
+Project-URL: Repository, https://github.com/mkdocstrings/griffe-pydantic
+Project-URL: Issues, https://github.com/mkdocstrings/griffe-pydantic/issues
+Project-URL: Discussions, https://github.com/mkdocstrings/griffe-pydantic/discussions
+Project-URL: Gitter, https://gitter.im/mkdocstrings/griffe-pydantic
+Project-URL: Funding, https://github.com/sponsors/pawamoy
+Requires-Python: >=3.9
+Requires-Dist: griffe>=1.14
+Description-Content-Type: text/markdown
+
+# griffe-pydantic
+
+[![ci](https://github.com/mkdocstrings/griffe-pydantic/workflows/ci/badge.svg)](https://github.com/mkdocstrings/griffe-pydantic/actions?query=workflow%3Aci)
+[![documentation](https://img.shields.io/badge/docs-mkdocs-708FCC.svg?style=flat)](https://mkdocstrings.github.io/griffe-pydantic/)
+[![pypi version](https://img.shields.io/pypi/v/griffe-pydantic.svg)](https://pypi.org/project/griffe-pydantic/)
+[![gitter](https://img.shields.io/badge/matrix-chat-4DB798.svg?style=flat)](https://app.gitter.im/#/room/#griffe-pydantic:gitter.im)
+
+[Griffe](https://mkdocstrings.github.io/griffe/) extension for [Pydantic](https://github.com/pydantic/pydantic).
+
+## Installation
+
+```bash
+pip install griffe-pydantic
+```
+
+## Usage
+
+### Command-line
+
+```bash
+griffe dump mypackage -e griffe_pydantic
+```
+
+See [command-line usage in Griffe's documentation](https://mkdocstrings.github.io/griffe/extensions/#on-the-command-line).
+
+### Python
+
+```python
+import griffe
+
+griffe.load(
+    "mypackage",
+    extensions=griffe.load_extensions(
+        [{"griffe_pydantic": {"schema": True}}]
+    )
+)
+```
+
+See [programmatic usage in Griffe's documentation](https://mkdocstrings.github.io/griffe/extensions/#programmatically).
+
+### MkDocs
+
+```yaml title="mkdocs.yml"
+plugins:
+- mkdocstrings:
+    handlers:
+      python:
+        options:
+          extensions:
+          - griffe_pydantic:
+              schema: true
+```
+
+
+See [MkDocs usage in Griffe's documentation](https://mkdocstrings.github.io/griffe/extensions/#in-mkdocs).
