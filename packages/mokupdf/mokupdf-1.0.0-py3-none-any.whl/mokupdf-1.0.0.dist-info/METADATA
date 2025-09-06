@@ -1,0 +1,363 @@
+Metadata-Version: 2.1
+Name: mokupdf
+Version: 1.0.0
+Summary: MCP-compatible PDF reading server with intelligent file search and extraction
+Home-page: https://github.com/mokupdf/mokupdf
+Author: MokuPDF Team
+Author-email: MokuPDF Team <mokupdf@example.com>
+Maintainer-email: MokuPDF Team <mokupdf@example.com>
+License: MIT
+Project-URL: Homepage, https://github.com/mokupdf/mokupdf
+Project-URL: Documentation, https://github.com/mokupdf/mokupdf#readme
+Project-URL: Repository, https://github.com/mokupdf/mokupdf
+Project-URL: Issues, https://github.com/mokupdf/mokupdf/issues
+Keywords: pdf,mcp,model-context-protocol,ai,llm,claude,pdf-reader,text-extraction,image-extraction,smart-search
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Text Processing :: General
+Classifier: Topic :: Office/Business :: Office Suites
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: mcp>=1.2.0
+Requires-Dist: PyMuPDF>=1.23.0
+Requires-Dist: Pillow>=10.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+Requires-Dist: twine>=4.0.0; extra == "dev"
+Requires-Dist: build>=0.10.0; extra == "dev"
+Provides-Extra: ocr
+Requires-Dist: pytesseract>=0.3.10; extra == "ocr"
+
+# MokuPDF - MCP-Compatible PDF Reading Server
+
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-green.svg)](https://modelcontextprotocol.io/)
+
+MokuPDF is a lightweight, MCP (Model Context Protocol) compatible server that enables LLMs to read and process PDF files with full text and image extraction capabilities. It provides a clean JSON-RPC interface for PDF operations, making it easy to integrate PDF reading capabilities into AI applications.
+
+## 🚀 Features
+
+- **Full PDF Text Extraction**: Extract all text content from PDF files
+- **Image Extraction**: Extract and encode embedded images as base64 PNG
+- **Scanned PDF Support**: Automatically detects and renders image-based/scanned PDFs
+- **Smart File Search**: Find PDFs by partial names or keywords across common directories
+- **Optional OCR**: Extract text from scanned pages with pytesseract (optional dependency)
+- **Page-by-Page Reading**: Efficiently read large PDFs without memory issues
+- **Text Search**: Search for text within PDFs with regex support
+- **MCP Compatible**: Fully compatible with the Model Context Protocol
+- **CLI Support**: Command-line interface with configurable options
+- **Lightweight**: Minimal dependencies, fast startup
+
+## 📦 Installation
+
+### From Source
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/mokupdf.git
+cd mokupdf
+
+# Install the package
+pip install .
+
+# Or install in development mode
+pip install -e .
+```
+
+### Using pip (when published)
+
+```bash
+# Basic installation
+pip install mokupdf
+
+# With OCR support for scanned PDFs
+pip install mokupdf[ocr]
+```
+
+**Note**: For OCR functionality, you'll also need Tesseract installed on your system:
+- **Windows**: Download from [GitHub releases](https://github.com/UB-Mannheim/tesseract/wiki)
+- **Mac**: `brew install tesseract`
+- **Linux**: `sudo apt-get install tesseract-ocr`
+
+## 🎯 Quick Start
+
+### Running the Server
+
+```bash
+# Start with default settings (port 8000)
+mokupdf
+
+# Start with custom port
+mokupdf --port 8080
+
+# Enable verbose logging
+mokupdf --verbose
+
+# Set custom PDF directory
+mokupdf --base-dir ./documents
+```
+
+### Command Line Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--port` | Port to listen on | 8000 |
+| `--verbose` | Enable verbose logging | False |
+| `--base-dir` | Base directory for PDF files | Current directory |
+| `--max-file-size` | Maximum PDF file size in MB | 100 |
+| `--version` | Show version information | - |
+| `--help` | Show help message | - |
+
+## 🔧 MCP Configuration
+
+Add MokuPDF to your MCP configuration file:
+
+```json
+{
+  "mcpServers": {
+    "mokupdf": {
+      "command": "python",
+      "args": ["-m", "mokupdf", "--port", "8000"],
+      "name": "MokuPDF",
+      "description": "PDF reading server with text and image extraction",
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  }
+}
+```
+
+## 📚 Available MCP Tools
+
+### 1. open_pdf
+Open a PDF file for processing.
+
+```json
+{
+  "tool": "open_pdf",
+  "arguments": {
+    "file_path": "document.pdf"
+  }
+}
+```
+
+### 2. read_pdf
+Read PDF pages with text and images. Supports page ranges for efficient processing.
+
+```json
+{
+  "tool": "read_pdf",
+  "arguments": {
+    "file_path": "document.pdf",
+    "start_page": 1,
+    "end_page": 5,
+    "max_pages": 10
+  }
+}
+```
+
+**Response includes:**
+- Text content with `[IMAGE: ...]` placeholders
+- Base64-encoded images
+- Page information
+
+### 3. search_text
+Search for text within the current PDF.
+
+```json
+{
+  "tool": "search_text",
+  "arguments": {
+    "query": "introduction",
+    "case_sensitive": false
+  }
+}
+```
+
+### 4. get_page_text
+Extract text from a specific page.
+
+```json
+{
+  "tool": "get_page_text",
+  "arguments": {
+    "page_number": 1
+  }
+}
+```
+
+### 5. get_metadata
+Get metadata from the current PDF.
+
+```json
+{
+  "tool": "get_metadata",
+  "arguments": {}
+}
+```
+
+### 6. close_pdf
+Close the current PDF and free memory.
+
+```json
+{
+  "tool": "close_pdf",
+  "arguments": {}
+}
+```
+
+## 💻 Development
+
+### Project Structure
+
+```
+mokupdf/
+├── mokupdf/
+│   ├── __init__.py       # Package initialization
+│   ├── server.py         # Main server implementation
+│   └── __main__.py       # Module entry point
+├── setup.py              # Package setup script
+├── pyproject.toml        # Modern Python packaging
+├── requirements.txt      # Direct dependencies
+├── LICENSE              # MIT License
+└── README.md           # This file
+```
+
+### Running Tests
+
+```bash
+# Install development dependencies
+pip install -e ".[dev]"
+
+# Run tests
+pytest
+
+# Run with coverage
+pytest --cov=mokupdf
+```
+
+### Code Quality
+
+```bash
+# Format code
+black mokupdf/
+
+# Lint code
+flake8 mokupdf/
+```
+
+## 🔍 Example Usage
+
+### Python Script Example
+
+```python
+import json
+import subprocess
+
+# Start MokuPDF server
+process = subprocess.Popen(
+    ["mokupdf", "--port", "8000"],
+    stdin=subprocess.PIPE,
+    stdout=subprocess.PIPE,
+    text=True
+)
+
+# Send a request to open a PDF
+request = {
+    "jsonrpc": "2.0",
+    "method": "tools/call",
+    "params": {
+        "name": "open_pdf",
+        "arguments": {"file_path": "example.pdf"}
+    },
+    "id": 1
+}
+
+# Send request
+process.stdin.write(json.dumps(request) + "\n")
+process.stdin.flush()
+
+# Read response
+response = json.loads(process.stdout.readline())
+print(f"PDF opened: {response['result']}")
+```
+
+### Integration with LLMs
+
+MokuPDF is designed to work seamlessly with LLM applications through MCP. The `read_pdf` tool returns content in a format optimized for LLM consumption:
+
+1. Text is extracted with page markers
+2. Images are embedded as base64 PNG with placeholders in text
+3. Large PDFs can be read page-by-page to avoid context limits
+
+## 🛠️ Troubleshooting
+
+### Common Issues
+
+**Issue**: `ModuleNotFoundError: No module named 'mokupdf'`
+- **Solution**: Install the package with `pip install .`
+
+**Issue**: Port already in use
+- **Solution**: Use a different port with `--port 8081`
+
+**Issue**: PDF file not found
+- **Solution**: Check the base directory and ensure paths are relative to it
+
+**Issue**: Large PDF causes timeout
+- **Solution**: Use page-by-page reading with `start_page` and `end_page` parameters
+
+### Debug Mode
+
+Enable verbose logging for detailed information:
+
+```bash
+mokupdf --verbose
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📞 Support
+
+For issues, questions, or suggestions:
+- Open an issue on GitHub
+- Check the [Installation Instructions](INSTALL_INSTRUCTIONS.md) for detailed setup help
+- Enable verbose mode (`--verbose`) for debugging
+
+## 🙏 Acknowledgments
+
+- Built with [PyMuPDF](https://pymupdf.readthedocs.io/) for PDF processing
+- Designed for [Model Context Protocol](https://modelcontextprotocol.io/) compatibility
+- Inspired by the need for better PDF integration in AI applications
+
+---
+
+**Made with ❤️ for the AI community**
