@@ -1,0 +1,5 @@
+[console_scripts]
+export-distribution = plone.distribution.cli:export
+
+[z3c.autoinclude.plugin]
+target = plone
