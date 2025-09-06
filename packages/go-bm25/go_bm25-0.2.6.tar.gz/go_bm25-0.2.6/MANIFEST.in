@@ -1,0 +1,54 @@
+# Include README and license files
+include README.md
+include LICENSE
+include MANIFEST.in
+
+# Include Python source files
+include *.py
+recursive-include bm25 *.py
+
+# Include Go source files (for reference and development)
+include *.go
+recursive-include bm25 *.go
+
+# Include build and configuration files
+include go.mod
+include go.sum
+include Makefile
+include build_package.py
+include setup.py
+include pyproject.toml
+
+# Include example files
+recursive-include example *.go
+recursive-include example *.py
+
+# Include test files
+include *_test.go
+include *_test.py
+include go_vs_bm25s_benchmark.py
+include postgres_benchmark.go
+
+# Include documentation
+include *.md
+include TERM_ITERATION_README.md
+include README_POSTGRES.md
+include performance_comparison.md
+
+# Include database schema
+include database_schema.sql
+
+# Include requirements
+include requirements.txt
+
+# Exclude common unwanted files
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.pyd
+global-exclude __pycache__
+global-exclude .git*
+global-exclude .DS_Store
+global-exclude *.so
+global-exclude *.dll
+global-exclude *.dylib
+global-exclude temp_bench/
