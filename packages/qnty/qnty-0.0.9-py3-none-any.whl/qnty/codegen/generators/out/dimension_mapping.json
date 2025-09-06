@@ -1,0 +1,974 @@
+{
+  "absorbed_dose": {
+    "field": "Absorbed Radiation Dose",
+    "dimensions": {
+      "length": 2,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.16)",
+    "constant_name": "ABSORBED_DOSE"
+  },
+  "acceleration": {
+    "field": "Acceleration",
+    "dimensions": {
+      "length": 1,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.08)",
+    "constant_name": "ACCELERATION"
+  },
+  "activation_energy": {
+    "field": "Activation Energy",
+    "dimensions": {
+      "length": 2,
+      "amount": -1,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.01230769230769231)",
+    "constant_name": "ACTIVATION_ENERGY"
+  },
+  "amount_of_substance": {
+    "field": "Amount of Substance",
+    "dimensions": {
+      "amount": 1
+    },
+    "signature": "DimensionSignature(13)",
+    "constant_name": "AMOUNT_OF_SUBSTANCE"
+  },
+  "angle_plane": {
+    "field": "Angle, Plane",
+    "dimensions": {},
+    "signature": "DimensionSignature(BaseDimension.DIMENSIONLESS)",
+    "constant_name": "ANGLE_PLANE"
+  },
+  "angle_solid": {
+    "field": "Angle, Solid",
+    "dimensions": {},
+    "signature": "DimensionSignature(BaseDimension.DIMENSIONLESS)",
+    "constant_name": "ANGLE_SOLID"
+  },
+  "angular_acceleration": {
+    "field": "Angular Acceleration",
+    "dimensions": {
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.04)",
+    "constant_name": "ANGULAR_ACCELERATION"
+  },
+  "angular_momentum": {
+    "field": "Angular Momentum",
+    "dimensions": {
+      "mass": 1,
+      "length": 2,
+      "time": -1
+    },
+    "signature": "DimensionSignature(2.4000000000000004)",
+    "constant_name": "ANGULAR_MOMENTUM"
+  },
+  "area": {
+    "field": "Area",
+    "dimensions": {
+      "length": 2
+    },
+    "signature": "DimensionSignature(4)",
+    "constant_name": "AREA"
+  },
+  "area_per_unit_volume": {
+    "field": "Area per Unit Volume",
+    "dimensions": {
+      "length": -1
+    },
+    "signature": "DimensionSignature(0.5)",
+    "constant_name": "AREA_PER_UNIT_VOLUME"
+  },
+  "atomic_weight": {
+    "field": "Atomic Weight",
+    "dimensions": {
+      "mass": 1,
+      "amount": -1
+    },
+    "signature": "DimensionSignature(0.23076923076923078)",
+    "constant_name": "ATOMIC_WEIGHT"
+  },
+  "concentration": {
+    "field": "Concentration",
+    "dimensions": {
+      "mass": 1,
+      "length": -3
+    },
+    "signature": "DimensionSignature(0.375)",
+    "constant_name": "CONCENTRATION"
+  },
+  "dimensionless": {
+    "field": "Dimensionless",
+    "dimensions": {},
+    "signature": "DimensionSignature(BaseDimension.DIMENSIONLESS)",
+    "constant_name": "DIMENSIONLESS"
+  },
+  "percent": {
+    "field": "Percent",
+    "dimensions": {},
+    "signature": "DimensionSignature(BaseDimension.DIMENSIONLESS)",
+    "constant_name": "PERCENT"
+  },
+  "dynamic_fluidity": {
+    "field": "Dynamic Fluidity",
+    "dimensions": {
+      "time": 1,
+      "length": 1,
+      "mass": -1
+    },
+    "signature": "DimensionSignature(3.333333333333333)",
+    "constant_name": "DYNAMIC_FLUIDITY"
+  },
+  "electric_capacitance": {
+    "field": "Electric Capacitance",
+    "dimensions": {
+      "time": 4,
+      "current": 2,
+      "length": -2,
+      "mass": -1
+    },
+    "signature": "DimensionSignature(2552.083333333333)",
+    "constant_name": "ELECTRIC_CAPACITANCE"
+  },
+  "electric_charge": {
+    "field": "Electric Charge",
+    "dimensions": {
+      "time": 1,
+      "current": 1,
+      "amount": -1
+    },
+    "signature": "DimensionSignature(2.6923076923076925)",
+    "constant_name": "ELECTRIC_CHARGE"
+  },
+  "electric_current_intensity": {
+    "field": "Electric Current Intensity",
+    "dimensions": {
+      "current": 1
+    },
+    "signature": "DimensionSignature(7)",
+    "constant_name": "ELECTRIC_CURRENT_INTENSITY"
+  },
+  "electric_dipole_moment": {
+    "field": "Electric Dipole Moment",
+    "dimensions": {
+      "current": 1,
+      "length": 1,
+      "time": 1
+    },
+    "signature": "DimensionSignature(70)",
+    "constant_name": "ELECTRIC_DIPOLE_MOMENT"
+  },
+  "electric_field_strength": {
+    "field": "Electric Field Strength",
+    "dimensions": {
+      "mass": 1,
+      "length": 1,
+      "time": -3,
+      "current": -1
+    },
+    "signature": "DimensionSignature(0.006857142857142857)",
+    "constant_name": "ELECTRIC_FIELD_STRENGTH"
+  },
+  "electric_inductance": {
+    "field": "Electric Inductance",
+    "dimensions": {
+      "mass": 1,
+      "length": 2,
+      "time": -2,
+      "current": -2
+    },
+    "signature": "DimensionSignature(0.009795918367346938)",
+    "constant_name": "ELECTRIC_INDUCTANCE"
+  },
+  "electric_potential": {
+    "field": "Electric Potential",
+    "dimensions": {
+      "mass": 1,
+      "length": 2,
+      "time": -3,
+      "current": -1
+    },
+    "signature": "DimensionSignature(0.013714285714285714)",
+    "constant_name": "ELECTRIC_POTENTIAL"
+  },
+  "electric_resistance": {
+    "field": "Electric Resistance",
+    "dimensions": {
+      "mass": 1,
+      "length": 2,
+      "time": -3,
+      "current": -2
+    },
+    "signature": "DimensionSignature(0.0019591836734693877)",
+    "constant_name": "ELECTRIC_RESISTANCE"
+  },
+  "electrical_conductance": {
+    "field": "Electrical Conductance",
+    "dimensions": {
+      "time": 3,
+      "current": 2,
+      "mass": -1,
+      "length": -2
+    },
+    "signature": "DimensionSignature(510.41666666666663)",
+    "constant_name": "ELECTRICAL_CONDUCTANCE"
+  },
+  "electrical_permittivity": {
+    "field": "Electrical Permittivity",
+    "dimensions": {
+      "current": 2,
+      "time": 4,
+      "mass": -1,
+      "length": -3
+    },
+    "signature": "DimensionSignature(1276.0416666666665)",
+    "constant_name": "ELECTRICAL_PERMITTIVITY"
+  },
+  "electrical_resistivity": {
+    "field": "Electrical Resistivity",
+    "dimensions": {
+      "mass": 1,
+      "length": 3,
+      "time": -3,
+      "current": -2
+    },
+    "signature": "DimensionSignature(0.003918367346938775)",
+    "constant_name": "ELECTRICAL_RESISTIVITY"
+  },
+  "energy_flux": {
+    "field": "Energy Flux",
+    "dimensions": {
+      "mass": 1,
+      "time": -3
+    },
+    "signature": "DimensionSignature(0.024)",
+    "constant_name": "ENERGY_FLUX"
+  },
+  "energy_heat_work": {
+    "field": "Energy, Heat, Work",
+    "dimensions": {
+      "mass": 1,
+      "length": 2,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.48)",
+    "constant_name": "ENERGY_HEAT_WORK"
+  },
+  "energy_per_unit_area": {
+    "field": "Energy per Unit Area",
+    "dimensions": {
+      "mass": 1,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.12)",
+    "constant_name": "ENERGY_PER_UNIT_AREA"
+  },
+  "force": {
+    "field": "Force",
+    "dimensions": {
+      "mass": 1,
+      "length": 1,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.24)",
+    "constant_name": "FORCE"
+  },
+  "force_body": {
+    "field": "Force (Body)",
+    "dimensions": {
+      "mass": 1,
+      "length": -2,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.03)",
+    "constant_name": "FORCE_BODY"
+  },
+  "force_per_unit_mass": {
+    "field": "Force per Unit Mass",
+    "dimensions": {
+      "length": 1,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.08)",
+    "constant_name": "FORCE_PER_UNIT_MASS"
+  },
+  "frequency_voltage_ratio": {
+    "field": "Frequency Voltage Ratio",
+    "dimensions": {
+      "time": 3,
+      "current": 1,
+      "mass": -1,
+      "length": -2
+    },
+    "signature": "DimensionSignature(72.91666666666666)",
+    "constant_name": "FREQUENCY_VOLTAGE_RATIO"
+  },
+  "fuel_consumption": {
+    "field": "Fuel Consumption",
+    "dimensions": {
+      "length": -2
+    },
+    "signature": "DimensionSignature(0.25)",
+    "constant_name": "FUEL_CONSUMPTION"
+  },
+  "heat_of_combustion": {
+    "field": "Heat of Combustion",
+    "dimensions": {
+      "length": 2,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.16)",
+    "constant_name": "HEAT_OF_COMBUSTION"
+  },
+  "heat_of_fusion": {
+    "field": "Heat of Fusion",
+    "dimensions": {
+      "length": 2,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.16)",
+    "constant_name": "HEAT_OF_FUSION"
+  },
+  "heat_of_vaporization": {
+    "field": "Heat of Vaporization",
+    "dimensions": {
+      "length": 2,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.16)",
+    "constant_name": "HEAT_OF_VAPORIZATION"
+  },
+  "heat_transfer_coefficient": {
+    "field": "Heat Transfer Coefficient",
+    "dimensions": {
+      "mass": 1,
+      "time": -3,
+      "temp": -1
+    },
+    "signature": "DimensionSignature(0.002181818181818182)",
+    "constant_name": "HEAT_TRANSFER_COEFFICIENT"
+  },
+  "illuminance": {
+    "field": "Illuminance",
+    "dimensions": {
+      "luminous_intensity": 1,
+      "length": -2
+    },
+    "signature": "DimensionSignature(4.25)",
+    "constant_name": "ILLUMINANCE"
+  },
+  "kinetic_energy_of_turbulence": {
+    "field": "Kinetic Energy of Turbulence",
+    "dimensions": {
+      "length": 2,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.16)",
+    "constant_name": "KINETIC_ENERGY_OF_TURBULENCE"
+  },
+  "length": {
+    "field": "Length",
+    "dimensions": {
+      "length": 1
+    },
+    "signature": "DimensionSignature(2)",
+    "constant_name": "LENGTH"
+  },
+  "linear_mass_density": {
+    "field": "Linear Mass Density",
+    "dimensions": {
+      "mass": 1,
+      "length": -1
+    },
+    "signature": "DimensionSignature(1.5)",
+    "constant_name": "LINEAR_MASS_DENSITY"
+  },
+  "linear_momentum": {
+    "field": "Linear Momentum",
+    "dimensions": {
+      "mass": 1,
+      "length": 1,
+      "time": -1
+    },
+    "signature": "DimensionSignature(1.2000000000000002)",
+    "constant_name": "LINEAR_MOMENTUM"
+  },
+  "luminance_self": {
+    "field": "Luminance (self)",
+    "dimensions": {
+      "luminous_intensity": 1,
+      "length": -2
+    },
+    "signature": "DimensionSignature(4.25)",
+    "constant_name": "LUMINANCE_SELF"
+  },
+  "luminous_flux": {
+    "field": "Luminous Flux",
+    "dimensions": {
+      "luminous_intensity": 1
+    },
+    "signature": "DimensionSignature(17)",
+    "constant_name": "LUMINOUS_FLUX"
+  },
+  "luminous_intensity": {
+    "field": "Luminous Intensity",
+    "dimensions": {
+      "luminous_intensity": 1
+    },
+    "signature": "DimensionSignature(17)",
+    "constant_name": "LUMINOUS_INTENSITY"
+  },
+  "magnetic_field": {
+    "field": "Magnetic Field",
+    "dimensions": {
+      "current": 1,
+      "length": -1
+    },
+    "signature": "DimensionSignature(3.5)",
+    "constant_name": "MAGNETIC_FIELD"
+  },
+  "magnetic_flux": {
+    "field": "Magnetic Flux",
+    "dimensions": {
+      "mass": 1,
+      "length": 2,
+      "time": -2,
+      "current": -1
+    },
+    "signature": "DimensionSignature(0.06857142857142856)",
+    "constant_name": "MAGNETIC_FLUX"
+  },
+  "magnetic_induction_field_strength": {
+    "field": "Magnetic Induction Field Strength",
+    "dimensions": {
+      "mass": 1,
+      "time": -2,
+      "current": -1
+    },
+    "signature": "DimensionSignature(0.01714285714285714)",
+    "constant_name": "MAGNETIC_INDUCTION_FIELD_STRENGTH"
+  },
+  "magnetic_moment": {
+    "field": "Magnetic Moment",
+    "dimensions": {
+      "length": 2,
+      "current": 1
+    },
+    "signature": "DimensionSignature(28)",
+    "constant_name": "MAGNETIC_MOMENT"
+  },
+  "magnetic_permeability": {
+    "field": "Magnetic Permeability",
+    "dimensions": {
+      "mass": 1,
+      "length": 2,
+      "time": -2,
+      "current": -2
+    },
+    "signature": "DimensionSignature(0.009795918367346938)",
+    "constant_name": "MAGNETIC_PERMEABILITY"
+  },
+  "magnetomotive_force": {
+    "field": "Magnetomotive Force",
+    "dimensions": {
+      "current": 1
+    },
+    "signature": "DimensionSignature(7)",
+    "constant_name": "MAGNETOMOTIVE_FORCE"
+  },
+  "mass": {
+    "field": "Mass",
+    "dimensions": {
+      "mass": 1
+    },
+    "signature": "DimensionSignature(3)",
+    "constant_name": "MASS"
+  },
+  "mass_density": {
+    "field": "Mass Density",
+    "dimensions": {
+      "mass": 1,
+      "length": -3
+    },
+    "signature": "DimensionSignature(0.375)",
+    "constant_name": "MASS_DENSITY"
+  },
+  "mass_flow_rate": {
+    "field": "Mass Flow Rate",
+    "dimensions": {
+      "mass": 1,
+      "time": -1
+    },
+    "signature": "DimensionSignature(0.6000000000000001)",
+    "constant_name": "MASS_FLOW_RATE"
+  },
+  "mass_flux": {
+    "field": "Mass Flux",
+    "dimensions": {
+      "mass": 1,
+      "length": -2,
+      "time": -1
+    },
+    "signature": "DimensionSignature(0.15000000000000002)",
+    "constant_name": "MASS_FLUX"
+  },
+  "mass_fraction_of_i": {
+    "field": "Mass Fraction of \"i\"",
+    "dimensions": {},
+    "signature": "DimensionSignature(BaseDimension.DIMENSIONLESS)",
+    "constant_name": "MASS_FRACTION_OF_I"
+  },
+  "mass_transfer_coefficient": {
+    "field": "Mass Transfer Coefficient",
+    "dimensions": {
+      "mass": 1,
+      "length": -2,
+      "time": -1
+    },
+    "signature": "DimensionSignature(0.15000000000000002)",
+    "constant_name": "MASS_TRANSFER_COEFFICIENT"
+  },
+  "molality_of_solute_i": {
+    "field": "Molality of Solute \"i\"",
+    "dimensions": {
+      "amount": 1,
+      "mass": -1
+    },
+    "signature": "DimensionSignature(4.333333333333333)",
+    "constant_name": "MOLALITY_OF_SOLUTE_I"
+  },
+  "molar_concentration_by_mass": {
+    "field": "Molar Concentration by Mass",
+    "dimensions": {
+      "amount": 1
+    },
+    "signature": "DimensionSignature(13)",
+    "constant_name": "MOLAR_CONCENTRATION_BY_MASS"
+  },
+  "molar_flow_rate": {
+    "field": "Molar Flow Rate",
+    "dimensions": {
+      "amount": 1,
+      "time": -1
+    },
+    "signature": "DimensionSignature(2.6)",
+    "constant_name": "MOLAR_FLOW_RATE"
+  },
+  "molar_flux": {
+    "field": "Molar Flux",
+    "dimensions": {
+      "amount": 1,
+      "length": -2,
+      "time": -1
+    },
+    "signature": "DimensionSignature(0.65)",
+    "constant_name": "MOLAR_FLUX"
+  },
+  "molar_heat_capacity": {
+    "field": "Molar Heat Capacity",
+    "dimensions": {
+      "length": 2,
+      "amount": -1,
+      "time": -2,
+      "temp": -1
+    },
+    "signature": "DimensionSignature(0.001118881118881119)",
+    "constant_name": "MOLAR_HEAT_CAPACITY"
+  },
+  "molarity_of_i": {
+    "field": "Molarity of \"i\"",
+    "dimensions": {
+      "amount": 1,
+      "length": -3
+    },
+    "signature": "DimensionSignature(1.625)",
+    "constant_name": "MOLARITY_OF_I"
+  },
+  "mole_fraction_of_i": {
+    "field": "Mole Fraction of \"i\"",
+    "dimensions": {},
+    "signature": "DimensionSignature(BaseDimension.DIMENSIONLESS)",
+    "constant_name": "MOLE_FRACTION_OF_I"
+  },
+  "moment_of_inertia": {
+    "field": "Moment of Inertia",
+    "dimensions": {
+      "mass": 1,
+      "length": 2
+    },
+    "signature": "DimensionSignature(12)",
+    "constant_name": "MOMENT_OF_INERTIA"
+  },
+  "momentum_flow_rate": {
+    "field": "Momentum Flow Rate",
+    "dimensions": {
+      "mass": 1,
+      "length": 1,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.24)",
+    "constant_name": "MOMENTUM_FLOW_RATE"
+  },
+  "momentum_flux": {
+    "field": "Momentum Flux",
+    "dimensions": {
+      "mass": 1,
+      "length": -1,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.06)",
+    "constant_name": "MOMENTUM_FLUX"
+  },
+  "normality_of_solution": {
+    "field": "Normality of Solution",
+    "dimensions": {
+      "amount": 1,
+      "length": -3
+    },
+    "signature": "DimensionSignature(1.625)",
+    "constant_name": "NORMALITY_OF_SOLUTION"
+  },
+  "particle_density": {
+    "field": "Particle Density",
+    "dimensions": {
+      "length": -3
+    },
+    "signature": "DimensionSignature(0.125)",
+    "constant_name": "PARTICLE_DENSITY"
+  },
+  "permeability": {
+    "field": "Permeability",
+    "dimensions": {
+      "length": 2
+    },
+    "signature": "DimensionSignature(4)",
+    "constant_name": "PERMEABILITY"
+  },
+  "photon_emission_rate": {
+    "field": "Photon Emission Rate",
+    "dimensions": {
+      "length": -2,
+      "time": -1
+    },
+    "signature": "DimensionSignature(0.05)",
+    "constant_name": "PHOTON_EMISSION_RATE"
+  },
+  "power_per_unit_mass": {
+    "field": "Power per Unit Mass or Specific Power",
+    "dimensions": {
+      "length": 2,
+      "time": -3
+    },
+    "signature": "DimensionSignature(0.032)",
+    "constant_name": "POWER_PER_UNIT_MASS"
+  },
+  "power_per_unit_volume": {
+    "field": "Power per Unit Volume or Power Density",
+    "dimensions": {
+      "mass": 1,
+      "length": -1,
+      "time": -3
+    },
+    "signature": "DimensionSignature(0.012)",
+    "constant_name": "POWER_PER_UNIT_VOLUME"
+  },
+  "power_thermal_duty": {
+    "field": "Power, Thermal Duty",
+    "dimensions": {
+      "mass": 1,
+      "length": 2,
+      "time": -3
+    },
+    "signature": "DimensionSignature(0.096)",
+    "constant_name": "POWER_THERMAL_DUTY"
+  },
+  "pressure": {
+    "field": "Pressure",
+    "dimensions": {
+      "mass": 1,
+      "length": -1,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.06)",
+    "constant_name": "PRESSURE"
+  },
+  "radiation_dose_equivalent": {
+    "field": "Radiation Dose Equivalent",
+    "dimensions": {
+      "length": 2,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.16)",
+    "constant_name": "RADIATION_DOSE_EQUIVALENT"
+  },
+  "radiation_exposure": {
+    "field": "Radiation Exposure",
+    "dimensions": {
+      "current": 1,
+      "time": 1,
+      "mass": -1
+    },
+    "signature": "DimensionSignature(11.666666666666666)",
+    "constant_name": "RADIATION_EXPOSURE"
+  },
+  "radioactivity": {
+    "field": "Radioactivity",
+    "dimensions": {
+      "time": -1
+    },
+    "signature": "DimensionSignature(0.2)",
+    "constant_name": "RADIOACTIVITY"
+  },
+  "second_moment_of_area": {
+    "field": "Second Moment of Area",
+    "dimensions": {
+      "length": 4
+    },
+    "signature": "DimensionSignature(16)",
+    "constant_name": "SECOND_MOMENT_OF_AREA"
+  },
+  "second_radiation_constant_planck": {
+    "field": "Second Radiation Constant (Planck)",
+    "dimensions": {
+      "length": 1,
+      "temp": 1
+    },
+    "signature": "DimensionSignature(22)",
+    "constant_name": "SECOND_RADIATION_CONSTANT_PLANCK"
+  },
+  "specific_enthalpy": {
+    "field": "Specific Enthalpy",
+    "dimensions": {
+      "length": 2,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.16)",
+    "constant_name": "SPECIFIC_ENTHALPY"
+  },
+  "specific_gravity": {
+    "field": "Specific Gravity",
+    "dimensions": {},
+    "signature": "DimensionSignature(BaseDimension.DIMENSIONLESS)",
+    "constant_name": "SPECIFIC_GRAVITY"
+  },
+  "specific_heat_capacity_constant_pressure": {
+    "field": "Specific Heat Capacity (Constant Pressure)",
+    "dimensions": {
+      "length": 2,
+      "mass": 1,
+      "time": -2,
+      "temp": -1
+    },
+    "signature": "DimensionSignature(0.04363636363636363)",
+    "constant_name": "SPECIFIC_HEAT_CAPACITY_CONSTANT_PRESSURE"
+  },
+  "specific_length": {
+    "field": "Specific Length",
+    "dimensions": {
+      "length": 1,
+      "mass": -1
+    },
+    "signature": "DimensionSignature(0.6666666666666666)",
+    "constant_name": "SPECIFIC_LENGTH"
+  },
+  "specific_surface": {
+    "field": "Specific Surface",
+    "dimensions": {
+      "length": 2,
+      "mass": -1
+    },
+    "signature": "DimensionSignature(1.3333333333333333)",
+    "constant_name": "SPECIFIC_SURFACE"
+  },
+  "specific_volume": {
+    "field": "Specific Volume",
+    "dimensions": {
+      "length": 3,
+      "mass": -1
+    },
+    "signature": "DimensionSignature(2.6666666666666665)",
+    "constant_name": "SPECIFIC_VOLUME"
+  },
+  "stress": {
+    "field": "Stress",
+    "dimensions": {
+      "mass": 1,
+      "length": -1,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.06)",
+    "constant_name": "STRESS"
+  },
+  "surface_mass_density": {
+    "field": "Surface Mass Density",
+    "dimensions": {
+      "mass": 1,
+      "length": -2
+    },
+    "signature": "DimensionSignature(0.75)",
+    "constant_name": "SURFACE_MASS_DENSITY"
+  },
+  "surface_tension": {
+    "field": "Surface Tension",
+    "dimensions": {
+      "mass": 1,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.12)",
+    "constant_name": "SURFACE_TENSION"
+  },
+  "temperature": {
+    "field": "Temperature",
+    "dimensions": {
+      "temp": 1
+    },
+    "signature": "DimensionSignature(11)",
+    "constant_name": "TEMPERATURE"
+  },
+  "thermal_conductivity": {
+    "field": "Thermal Conductivity",
+    "dimensions": {
+      "mass": 1,
+      "length": 1,
+      "time": -3,
+      "temp": 1
+    },
+    "signature": "DimensionSignature(0.528)",
+    "constant_name": "THERMAL_CONDUCTIVITY"
+  },
+  "time": {
+    "field": "Time",
+    "dimensions": {
+      "time": 1
+    },
+    "signature": "DimensionSignature(5)",
+    "constant_name": "TIME"
+  },
+  "torque": {
+    "field": "Torque",
+    "dimensions": {
+      "mass": 1,
+      "length": 2,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.48)",
+    "constant_name": "TORQUE"
+  },
+  "turbulence_energy_dissipation_rate": {
+    "field": "Turbulence Energy Dissipation Rate",
+    "dimensions": {
+      "length": 2,
+      "time": -3
+    },
+    "signature": "DimensionSignature(0.032)",
+    "constant_name": "TURBULENCE_ENERGY_DISSIPATION_RATE"
+  },
+  "velocity_angular": {
+    "field": "Velocity, Angular",
+    "dimensions": {
+      "time": -1
+    },
+    "signature": "DimensionSignature(0.2)",
+    "constant_name": "VELOCITY_ANGULAR"
+  },
+  "velocity_linear": {
+    "field": "Velocity, Linear",
+    "dimensions": {
+      "length": 1,
+      "time": -1
+    },
+    "signature": "DimensionSignature(0.4)",
+    "constant_name": "VELOCITY_LINEAR"
+  },
+  "viscosity_dynamic": {
+    "field": "Viscosity, Dynamic",
+    "dimensions": {
+      "mass": 1,
+      "length": -1,
+      "time": -1
+    },
+    "signature": "DimensionSignature(0.30000000000000004)",
+    "constant_name": "VISCOSITY_DYNAMIC"
+  },
+  "viscosity_kinematic": {
+    "field": "Viscosity, Kinematic",
+    "dimensions": {
+      "length": 2,
+      "time": -1
+    },
+    "signature": "DimensionSignature(0.8)",
+    "constant_name": "VISCOSITY_KINEMATIC"
+  },
+  "volume": {
+    "field": "Volume",
+    "dimensions": {
+      "length": 3
+    },
+    "signature": "DimensionSignature(8)",
+    "constant_name": "VOLUME"
+  },
+  "volume_fraction_of_i": {
+    "field": "Volume Fraction of \"i\"",
+    "dimensions": {},
+    "signature": "DimensionSignature(BaseDimension.DIMENSIONLESS)",
+    "constant_name": "VOLUME_FRACTION_OF_I"
+  },
+  "volumetric_calorific_heating_value": {
+    "field": "Volumetric Calorific (Heating) Value",
+    "dimensions": {
+      "mass": 1,
+      "length": -1,
+      "time": -2
+    },
+    "signature": "DimensionSignature(0.06)",
+    "constant_name": "VOLUMETRIC_CALORIFIC_HEATING_VALUE"
+  },
+  "volumetric_coefficient_of_expansion": {
+    "field": "Volumetric Coefficient of Expansion",
+    "dimensions": {
+      "mass": 1,
+      "length": -3,
+      "temp": -1
+    },
+    "signature": "DimensionSignature(0.03409090909090909)",
+    "constant_name": "VOLUMETRIC_COEFFICIENT_OF_EXPANSION"
+  },
+  "volumetric_flow_rate": {
+    "field": "Volumetric Flow Rate",
+    "dimensions": {
+      "length": 3,
+      "time": -1
+    },
+    "signature": "DimensionSignature(1.6)",
+    "constant_name": "VOLUMETRIC_FLOW_RATE"
+  },
+  "volumetric_flux": {
+    "field": "Volumetric Flux",
+    "dimensions": {
+      "length": 1,
+      "time": -1
+    },
+    "signature": "DimensionSignature(0.4)",
+    "constant_name": "VOLUMETRIC_FLUX"
+  },
+  "volumetric_mass_flow_rate": {
+    "field": "Volumetric Mass Flow Rate",
+    "dimensions": {
+      "mass": 1,
+      "length": -3,
+      "time": -1
+    },
+    "signature": "DimensionSignature(0.07500000000000001)",
+    "constant_name": "VOLUMETRIC_MASS_FLOW_RATE"
+  },
+  "wavenumber": {
+    "field": "Wavenumber",
+    "dimensions": {
+      "length": -1
+    },
+    "signature": "DimensionSignature(0.5)",
+    "constant_name": "WAVENUMBER"
+  }
+}
