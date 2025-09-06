@@ -1,0 +1,8 @@
+{% if PANORAMA_MODE != 'DEMO' %}echo "Initializing Panorama..."
+python /panorama-elt/panorama.py --settings=/config/panorama_openedx_settings.yaml {% if PANORAMA_DEBUG %}--debug {% endif %}test-connections
+{% if PANORAMA_MODE == 'CUSTOM' %}
+python /panorama-elt/panorama.py --settings=/config/panorama_openedx_settings.yaml {% if PANORAMA_DEBUG %}--debug {% endif %}create-datalake-tables --all
+python /panorama-elt/panorama.py --settings=/config/panorama_openedx_settings.yaml {% if PANORAMA_DEBUG %}--debug {% endif %}create-table-views --all
+echo "Done initializing Panorama"
+{% else %}echo "Panorama in {{ PANORAMA_MODE }} mode, skipping table creation"{% endif %}
+{% else %}echo "Panorama in DEMO mode, skipping ELT initialization tasks"{% endif %}

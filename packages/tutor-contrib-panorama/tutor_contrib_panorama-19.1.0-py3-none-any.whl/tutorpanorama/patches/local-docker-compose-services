@@ -1,0 +1,28 @@
+{% if PANORAMA_MODE != 'DEMO' %}
+# Docker image for local installation
+panorama:
+    image: {{ PANORAMA_DOCKER_IMAGE }}
+    volumes:
+        - ../plugins/panorama/apps/panorama-elt/panorama_openedx_settings.yaml:/config/panorama_openedx_settings.yaml:ro
+        - ../plugins/panorama/apps/panorama-elt/crontab:/etc/cron.d/crontab:ro
+    command: bash -c "crontab /etc/cron.d/crontab && exec cron -f"
+    restart: unless-stopped
+
+{% if PANORAMA_MODE != 'FREE' %}
+panorama_logs:
+    image: {{ PANORAMA_LOGS_DOCKER_IMAGE }}
+    environment:
+        FLB_LOG_LEVEL: {{ PANORAMA_FLB_LOG_LEVEL }}
+        AWS_ACCESS_KEY_ID: {{ PANORAMA_AWS_ACCESS_KEY }}
+        AWS_SECRET_ACCESS_KEY: {{ PANORAMA_AWS_SECRET_ACCESS_KEY }}
+    volumes:
+        - ../plugins/panorama/apps/panorama-elt/fluent-bit-local.conf:/fluent-bit/etc/fluent-bit.conf:ro
+        - ../plugins/panorama/apps/panorama-elt/parsers.conf:/fluent-bit/etc/parsers.conf:ro
+        - ../../data/lms:/openedx/data
+    restart: unless-stopped
+{% else %}
+# Panorama in FREE mode, skipping fluentbit docker images
+{% endif %}
+{% else %}
+# Panorama in DEMO mode, skipping ELT and fluentbit docker images
+{% endif %}

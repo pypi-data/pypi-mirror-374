@@ -1,0 +1,6 @@
+{% if PANORAMA_MODE in ['SAAS', 'CUSTOM']  %}
+./manage.py lms makemigrations panorama_openedx_backend
+./manage.py lms migrate panorama_openedx_backend
+{% else %}
+echo "Panorama DEMO mode, skipping backend initialization tasks"
+{% endif %}
