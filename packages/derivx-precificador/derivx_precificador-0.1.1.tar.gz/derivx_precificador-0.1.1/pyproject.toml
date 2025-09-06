@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "derivx-precificador"
+dynamic = ["version"]
+description = "Precificador de derivativos em Python (MC/LSMC, PDE CN, FFT Heston, IR Black-76) com DSL declarativa."
+readme = { file = "README.md", content-type = "text/markdown" }
+authors = [{ name = "Walter C. Neto" }]
+license = { text = "MIT" }
+requires-python = ">=3.11"
+keywords = ["options", "derivatives", "pricing", "Monte Carlo", "LSMC", "PDE", "FFT", "Heston", "Black76", "DSL"]
+
+dependencies = [
+  "numpy>=1.26",
+  "scipy>=1.11",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7",
+  "pytest-cov>=4",
+  "matplotlib>=3.8",
+  "build>=1.2",
+  "twine>=5.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/walterCNeto/precificador"
+Repository = "https://github.com/walterCNeto/precificador"
+Issues = "https://github.com/walterCNeto/precificador/issues"
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["derivx*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "derivx._version.__version__" }
+
+[tool.pytest.ini_options]
+addopts = "-q"
+markers = [
+  "slow: testes mais demorados"
+]
