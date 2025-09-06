@@ -1,0 +1,23 @@
+[project]
+name = "chipy-chipy"
+version = "1.0.7"
+authors = [{name="ChipDev", email="skylertruitt6655@gmail.com"}]
+description = "A python module that isnt really that good yet, usually only used for file management"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Docs = "https://sites.google.com/view/chipy-docs/home"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
