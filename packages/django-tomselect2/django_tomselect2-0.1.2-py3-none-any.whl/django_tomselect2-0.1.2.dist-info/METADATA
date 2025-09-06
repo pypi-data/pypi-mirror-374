@@ -1,0 +1,91 @@
+Metadata-Version: 2.4
+Name: django-tomselect2
+Version: 0.1.2
+Summary: Django integration for Tom Select autocomplete widget
+Project-URL: Homepage, https://github.com/krystofbe/django-tomselect2
+Project-URL: Documentation, https://django-tomselect2.rtfd.io/
+Project-URL: Repository, https://github.com/krystofbe/django-tomselect2
+Project-URL: Changelog, https://github.com/krystofbe/django-tomselect2/releases
+Project-URL: Issue Tracker, https://github.com/krystofbe/django-tomselect2/issues
+Author-email: Krystof Beuermann <krystof@blackbox.ms>
+License-Expression: MIT
+License-File: LICENSE
+Keywords: Django,autocomplete,tom-select,typeahead
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 4.2
+Classifier: Framework :: Django :: 5.0
+Classifier: Framework :: Django :: 5.1
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Software Development
+Requires-Python: >=3.10
+Requires-Dist: django-appconf>=0.6.0
+Requires-Dist: django>=4.2
+Provides-Extra: dev
+Requires-Dist: django-stubs>=4.2; extra == 'dev'
+Requires-Dist: djlint>=1.36.4; extra == 'dev'
+Requires-Dist: playwright>=1.40; extra == 'dev'
+Requires-Dist: pre-commit>=3.6; extra == 'dev'
+Requires-Dist: pytest-cov>=4.0; extra == 'dev'
+Requires-Dist: pytest-django>=4.5; extra == 'dev'
+Requires-Dist: pytest-playwright>=0.4; extra == 'dev'
+Requires-Dist: pytest>=7.0; extra == 'dev'
+Requires-Dist: ruff>=0.6.0; extra == 'dev'
+Requires-Dist: twine>=4.0; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: myst-parser>=2.0; extra == 'docs'
+Requires-Dist: sphinx-autobuild>=2024.2; extra == 'docs'
+Requires-Dist: sphinx-rtd-theme>=2.0; extra == 'docs'
+Requires-Dist: sphinx>=7.0; extra == 'docs'
+Provides-Extra: example
+Requires-Dist: crispy-bootstrap5>=2024.2; extra == 'example'
+Requires-Dist: django-crispy-forms>=2.0; extra == 'example'
+Requires-Dist: redis>=5.0; extra == 'example'
+Provides-Extra: test
+Requires-Dist: playwright>=1.40; extra == 'test'
+Requires-Dist: pytest-cov>=4.0; extra == 'test'
+Requires-Dist: pytest-django>=4.5; extra == 'test'
+Requires-Dist: pytest-playwright>=0.4; extra == 'test'
+Requires-Dist: pytest>=7.0; extra == 'test'
+Description-Content-Type: text/x-rst
+
+|header|
+
+=================
+django-tomselect2
+=================
+
+|version| |coverage| |license|
+
+Custom autocomplete fields for `Django`_.
+
+.. note::
+   Special thanks to Johannes Maron (codingjoe) for his prior work on django-select2, which inspired this project.
+
+Documentation
+-------------
+
+Documentation available at https://django-tomselect2.readthedocs.io/.
+
+
+.. _Django: https://www.djangoproject.com/
+.. _TomSelect: https://tom-select.js.org/
+.. _autocomplete_fields: https://docs.djangoproject.com/en/stable/ref/contrib/admin/#django.contrib.admin.ModelAdmin.autocomplete_fields
+
+.. |header| image:: https://github.com/krystofbe/django-tomselect2/blob/main/docs/images/logo.png?raw=true
+.. |version| image:: https://img.shields.io/pypi/v/django-tomselect2.svg
+  :target: https://pypi.python.org/pypi/django-tomselect2/
+.. |coverage| image:: https://codecov.io/gh/krystofbe/django-tomselect2/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/krystofbe/django-tomselect2
+.. |license| image:: https://img.shields.io/badge/license-APL2-blue.svg
+  :target: https://raw.githubusercontent.com/krystofbe/django-tomselect2/master/LICENSE.txt
