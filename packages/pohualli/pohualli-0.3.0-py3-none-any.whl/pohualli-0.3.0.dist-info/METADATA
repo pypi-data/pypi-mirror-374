@@ -1,0 +1,329 @@
+Metadata-Version: 2.4
+Name: pohualli
+Version: 0.3.0
+Summary: Python port (in progress) of the Turbo Pascal Pohualli calendrical utility
+Author: Port Maintainers
+License: GNU GENERAL PUBLIC LICENSE
+        Version 3, 29 June 2007
+        
+        Copyright (C) 2025  muscariello
+        
+        Everyone is permitted to copy and distribute verbatim copies
+        of this license document, but changing it is not allowed.
+        
+        Preamble
+        
+        The GNU General Public License is a free, copyleft license for
+        software and other kinds of works.
+        
+        The licenses for most software and other practical works are designed
+        to take away your freedom to share and change the works. By contrast,
+        the GNU General Public License is intended to guarantee your freedom to
+        share and change all versions of a program--to make sure it remains free
+        software for all its users. We, the Free Software Foundation, use the
+        GNU General Public License for most of our software; it applies also to
+        any other work released this way by its authors. You can apply it to
+        your programs, too.
+        
+        When we speak of free software, we are referring to freedom, not
+        price. Our General Public Licenses are designed to make sure that you
+        have the freedom to distribute copies of free software (and charge for
+        them if you wish), that you receive source code or can get it if you
+        want it, that you can change the software or use pieces of it in new
+        free programs, and that you know you can do these things.
+        
+        To protect your rights, we need to prevent others from denying you
+        these rights or asking you to surrender the rights. Therefore, you have
+        certain responsibilities if you distribute copies of the software, or if
+        you modify it: responsibilities to respect the freedom of others.
+        
+        For example, if you distribute copies of such a program, whether
+        gratis or for a fee, you must pass on to the recipients the same
+        freedoms that you received. You must make sure that they, too, receive
+        or can get the source code. And you must show them these terms so they
+        know their rights.
+        
+        Developers that use the GNU GPL protect your rights with two steps:
+        (1) assert copyright on the software, and (2) offer you this License
+        giving you legal permission to copy, distribute and/or modify it.
+        
+        For the developers' and authors' protection, the GPL clearly explains
+        that there is no warranty for this free software. For both users' and
+        authors' sake, the GPL requires that modified versions be marked as
+        changed, so that their problems will not be attributed erroneously to
+        authors of previous versions.
+        
+        Some devices are designed to deny users access to install or run
+        modified versions of the software inside them, although the manufacturer
+        can do so. This is fundamentally incompatible with the aim of
+        protecting users' freedom to change the software. The systematic
+        pattern of such abuse occurs in the area of products for individuals to
+        use, which is precisely where it is most unacceptable. Therefore, we
+        have designed this version of the GPL to prohibit the practice for
+        those products. If such problems arise substantially in other domains,
+        we stand ready to extend this provision to those domains in future
+        versions of the GPL, as needed to protect the freedom of users.
+        
+        Finally, every program is threatened constantly by software patents.
+        States should not allow patents to restrict development and use of
+        software on general-purpose computers, but in those that do, we wish to
+        avoid the special danger that patents applied to a free program could
+        make it effectively proprietary. To prevent this, the GPL assures that
+        patents cannot be used to render the program non-free.
+        
+        The precise terms and conditions for copying, distribution and
+        modification follow.
+        
+        <... Full GPLv3 text omitted for brevity in this file snippet. Include the complete license text in your repository for compliance or retrieve from https://www.gnu.org/licenses/gpl-3.0.txt ...>
+        
+        END OF TERMS AND CONDITIONS
+        
+        For the full license text, see https://www.gnu.org/licenses/gpl-3.0.txt
+        
+        
+Project-URL: Homepage, https://github.com/muscariello/pohualli-python
+Project-URL: Documentation, https://muscariello.github.io/pohualli-python/
+Project-URL: Source, https://github.com/muscariello/pohualli-python
+Project-URL: Issues, https://github.com/muscariello/pohualli-python/issues
+Keywords: maya,aztec,calendar,mesoamerican,astronomy,long-count,tzolkin,haab
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering :: Astronomy
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: coverage>=7.6.0; extra == "dev"
+Requires-Dist: briefcase>=0.3.20; extra == "dev"
+Provides-Extra: web
+Requires-Dist: fastapi; extra == "web"
+Requires-Dist: uvicorn; extra == "web"
+Requires-Dist: jinja2; extra == "web"
+Requires-Dist: httpx; extra == "web"
+Provides-Extra: docs
+Requires-Dist: mkdocs>=1.6.0; extra == "docs"
+Requires-Dist: mkdocs-material>=9.5.0; extra == "docs"
+Requires-Dist: mkdocs-gen-files; extra == "docs"
+Requires-Dist: mkdocs-literate-nav; extra == "docs"
+Requires-Dist: mkdocs-section-index; extra == "docs"
+Dynamic: license-file
+
+# Pohualli (Python Port)
+
+[![CI](https://github.com/muscariello/pohualli-python/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/muscariello/pohualli-python/actions/workflows/ci.yml) [![Coverage](https://codecov.io/gh/muscariello/pohualli-python/branch/main/graph/badge.svg)](https://codecov.io/gh/muscariello/pohualli-python) [![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://muscariello.github.io/pohualli-python/) [![PyPI](https://img.shields.io/pypi/v/pohualli.svg)](https://pypi.org/project/pohualli/) [![Changelog](https://img.shields.io/badge/changelog-latest-orange)](CHANGELOG.md)
+
+Python reimplementation of the original Turbo Pascal Pohualli calendrical utility.
+
+## Highlights
+
+- Maya & Aztec core calculations (Tzolk'in, Haab, Long Count, Year Bearer)
+- 819‑day cycle, planetary synodic helpers, zodiac & moon heuristics
+- Correlation ("New Era") presets + on-the-fly overrides
+- Auto-derivation of correction offsets from partial constraints
+- Unified composite API & high-coverage test suite (≥90% per file)
+- FastAPI web UI + CLI + JSON output
+
+## Install
+
+### Option 1: PyPI (CLI & library)
+```
+pip install pohualli
+```
+Include web extras (FastAPI UI) if you want the local server:
+```
+pip install "pohualli[web]"
+```
+PyPI: https://pypi.org/project/pohualli/
+
+### Option 2: Desktop Bundle (macOS / Windows)
+Download the pre-built bundle artifacts (App on macOS, MSI or app dir on Windows) from the Desktop Bundles workflow or a Release.
+
+macOS first run (unsigned / ad‑hoc bundle):
+1. Move `Pohualli.app` to `/Applications` (optional but typical).
+2. Control‑click the app → Open → Open (this whitelists it in Gatekeeper).
+3. Browser opens automatically; if not, visit the printed `http://127.0.0.1:<port>`.
+
+Windows:
+1. Run the MSI or `Pohualli.exe` inside the unpacked directory.
+2. If SmartScreen warns, choose “More info” → “Run anyway”.
+3. Browser tab should appear automatically.
+
+Updates: replace the old bundle with the new one (no persistent user data yet).
+
+Latest release downloads: https://github.com/muscariello/pohualli-python/releases
+
+### Option 3: From Source (development)
+```
+git clone https://github.com/muscariello/pohualli-python.git
+cd pohualli-python
+pip install -e .[dev,web]
+```
+Then run CLI (`pohualli ...`) or web app (`uvicorn pohualli.webapp:app --reload`).
+
+## Structure
+```
+.
+├── CHANGELOG.md                     # Project changelog / release notes
+├── LICENSE                          # GPL-3.0-only license text
+├── README.md                        # Overview & usage (this file)
+├── docker-compose.yml               # Convenience orchestration for web app
+├── Dockerfile                       # Multi-arch container build definition
+├── mkdocs.yml                       # MkDocs Material documentation config
+├── pyproject.toml                   # Packaging & dependency metadata
+├── docs/                            # Documentation markdown sources (MkDocs)
+│   ├── index.md                     # Landing page
+│   ├── dev.md                       # Development & contributing notes
+│   ├── license.md                   # License blurb for docs site
+│   ├── concepts/                    # Conceptual explanations
+│   │   ├── calendars.md             # Calendar systems overview
+│   │   └── configuration.md         # Correlations & correction parameters
+│   └── usage/                       # How-to guides
+│       ├── quickstart.md            # Quick installation & first run
+│       ├── cli.md                   # CLI usage details
+│       ├── desktop.md               # Desktop bundles (Briefcase) guide
+│       └── python-api.md            # Python API examples
+├── pohualli/
+│   ├── __init__.py                  # Public API exports (compute_composite, etc.)
+│   ├── __main__.py                  # Module entry point (python -m pohualli / bundle)
+│   ├── autocorr.py                  # Derive correction offsets from constraints
+│   ├── aztec.py                     # Aztec (Tonalpohualli) name tables & helpers
+│   ├── calendar_dates.py            # Gregorian/Julian conversions & weekday calc
+│   ├── cli.py                       # Command line interface entry point
+│   ├── composite.py                 # High-level composite computation orchestrator
+│   ├── correlations.py              # Correlation (New Era) preset definitions
+│   ├── cycle819.py                  # 819‑day cycle station & direction colors
+│   ├── desktop_app.py               # Desktop launcher for packaged app (Briefcase)
+│   ├── maya.py                      # Core Maya calendar math (Tzolk'in / Haab / LC)
+│   ├── moon.py                      # Moon phase / anomaly heuristics
+│   ├── planets.py                   # Planetary synodic value helpers
+│   ├── templates/
+│   │   └── index.html               # Web UI Jinja2 template
+│   ├── types.py                     # Dataclasses & global correction state types
+│   ├── webapp.py                    # FastAPI application (async range jobs, endpoints)
+│   ├── yearbear.py                  # Year Bearer packing/unpacking utilities
+│   └── zodiac.py                    # Star & earth zodiac angle computations
+└── tests/                           # Pytest suite (broad branch coverage)
+  ├── test_async_range_job.py          # Async range job creation & polling
+  ├── test_async_cancel_partial.py     # Cancellation partial-results semantics
+  ├── test_autocorr*.py                # Auto-correction derivation & edge cases
+  ├── test_cli_direct.py               # Direct main() invocation basic paths
+  ├── test_cli_early_filters_paths.py  # Early filter continue branches (range)
+  ├── test_cli_more.py                 # JSON output & new-era/year bearer refs
+  ├── test_cli_no_subproc.py           # CLI coverage without subprocess fork
+  ├── test_cli_range_matrix.py         # Combinatorial filter matrix (range)
+  ├── test_cli_search_range*.py        # Range search modes (table/json-lines)
+  ├── test_cli_textual_branches.py     # Textual from-jdn output branches
+  ├── test_composite.py                # Composite object field consistency
+  ├── test_cycle_planets.py            # 819-cycle & planetary helpers
+  ├── test_desktop_app.py              # Desktop launcher behavior
+  ├── test_extra_cycles_yearbear_moon.py # Mixed composite cycle branches
+  ├── test_maya*.py                    # Maya calendar arithmetic & validation
+  ├── test_moon_zodiac.py              # Moon + zodiac computations
+  ├── test_web.py                      # Basic web endpoint checks
+  ├── test_web_extra.py                # Additional /api/convert / derive cases
+  ├── test_web_range_job_extra.py      # Range job edge cases & listing
+  ├── test_webapp_internal.py          # Internal helpers (_early_filters etc.)
+  ├── test_webapp_filters_matrix.py    # Each filter type in async jobs
+  ├── test_webapp_more.py              # Not-found, cancel-after-complete, culture
+  ├── test_webapp_additional.py        # Reversed ranges, invalid specs, limits
+  ├── test_yearbear_cli.py             # Year bearer & CLI integration
+  └── test_zodiac_extra.py             # Additional zodiac heuristic coverage
+```
+
+## Python Usage
+```python
+from pohualli import compute_composite
+result = compute_composite(2451545)
+print(result.tzolkin_name, result.long_count, result.star_zodiac_name)
+```
+
+## CLI Examples
+```
+# Basic human-readable conversion
+pohualli from-jdn 2451545
+
+# Year Bearer reference override
+pohualli from-jdn 2451545 --year-bearer-ref 0 0
+
+# JSON output (pretty with jq)
+pohualli from-jdn 2451545 --json | jq .long_count
+
+# Override New Era just for this invocation
+pohualli from-jdn 2451545 --new-era 584283 --json
+
+# Apply a named correlation preset globally
+pohualli apply-correlation gmt-584283
+
+# List available correlations
+pohualli list-correlations
+
+# Derive corrections from partial constraint (tzolkin only)
+pohualli derive-autocorr 2451545 --tzolkin "4 Ahau"
+
+# Derive with multiple constraints (tzolkin + haab + g)
+pohualli derive-autocorr 2451545 --tzolkin "4 Ahau" --haab "3 Pop" --g 5
+
+# Persist and restore configuration
+pohualli save-config config.json
+pohualli load-config config.json
+
+# Full JSON composite into a file
+pohualli from-jdn 2451545 --json > composite.json
+
+# Range search (scan inclusive JDN interval with filters)
+# Find first 5 dates in a span whose Tzolkin name is Imix and Haab month is Cumhu
+pohualli search-range 584283 584500 --tzolkin-name Imix --haab-month Cumhu --limit 5
+
+# Long Count pattern matching (use * as wildcard for a component)
+pohualli search-range 500000 600000 --long-count '9.*.*.*.*.*' --limit 3
+
+# Output JSON lines (machine processing)
+pohualli search-range 584283 584400 --tzolkin-value 4 --json-lines --limit 2
+
+# Select custom output fields
+pohualli search-range 584283 584400 --fields jdn,tzolkin_name,haab_month_name --limit 3
+
+# Switch to Aztec year-bearer derivation (subtracts 364 days in interval logic)
+pohualli from-jdn 2451545 --culture aztec --year-bearer-ref 0 0
+
+# Range search in Aztec mode
+pohualli search-range 584283 584400 --culture aztec --tzolkin-value 4 --limit 2
+```
+
+## Web App
+```
+uvicorn pohualli.webapp:app --reload
+```
+Open http://127.0.0.1:8000
+
+## Docker
+```
+docker build -t pohualli .
+docker run --rm -p 8000:8000 pohualli
+```
+Or use the published image:
+```
+docker run --rm -p 8000:8000 ghcr.io/muscariello/pohualli-python:latest
+```
+
+## Testing
+```
+pytest -q
+```
+
+## License
+GPL-3.0-only
+
+### Maya vs Aztec Year Bearer Note
+The computation of the Year Bearer differs: in Aztec (tonalpohualli) mode the interval between the target Haab position and the reference is reduced by 364 days before deriving the bearer, shifting the resulting Tzolkin pair relative to Maya convention. Use `--culture aztec` (CLI) or the Culture dropdown in the web UI to toggle. Default is Maya.
+
+## Reference
+Sołtysiak, A. & Lebeuf, A. (2011). Pohualli 1.01. A computer simulation of Mesoamerican calendar systems. 8(49), 165–168. [ResearchGate](https://www.researchgate.net/publication/270956742_2011_Pohualli_101_A_computer_simulation_of_Mesoamerican_calendar_systems)
