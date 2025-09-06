@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tg_bot_screen"
+version = "1.4.39"
+authors = [
+  { name="Neveix", email="i@neveix.ru" },
+]
+description = "Lib that helps with telegram bots"
+readme = "README.md"
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+license = {text = "MIT"}
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/Neveix/tg_bot_base"
+Issues = "https://github.com/Neveix/tg_bot_base/issues"
+
+[project.optional-dependencies]
+ptb = ["python-telegram-bot[job-queue]>=21.9"]
+
