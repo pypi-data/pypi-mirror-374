@@ -1,0 +1,99 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "skello"
+version = "2.1.4"
+authors = [
+    {name = "SnacktimePro", email = "no-reply@example.com"},
+]
+description = "The friendliest way to bootstrap modern Python projects — from zero to fully-structured, ready-to-code skeleton in seconds! 🚀"
+readme = {file = "README.md", content-type = "text/markdown"}
+license = {text = "MIT"}
+license-files = ["LICENSE"]
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Installation/Setup",
+    "Topic :: Utilities",
+]
+keywords = ["virtual-environment", "venv", "python", "project", "bootstrap", "skeleton", "automation", "development", "pip"]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0.0",
+    "black>=22.0.0",
+    "flake8>=4.0.0",
+    "mypy>=0.900",
+]
+
+[project.scripts]
+skello = "skello.core.cli:main"
+
+[tool.hatch.build.targets.wheel]
+sources = ["src"]
+only-include = ["src/skello"]
+
+[project.urls]
+"Homepage" = "https://github.com/SnacktimePro/skello"
+"Bug Reports" = "https://github.com/SnacktimePro/skello/issues"
+"Source" = "https://github.com/SnacktimePro/skello"
+"Documentation" = "https://github.com/SnacktimePro/skello#readme"
+
+[tool.black]
+line-length = 88
+target-version = ['py37', 'py38', 'py39', 'py310', 'py311', 'py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+python_version = "3.7"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--tb=short",
+    "--strict-markers",
+    "--disable-warnings",
+]

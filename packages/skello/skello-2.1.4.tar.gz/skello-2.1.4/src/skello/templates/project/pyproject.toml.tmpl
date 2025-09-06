@@ -1,0 +1,52 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "$project_name"
+version = "0.0.1"
+authors = [
+    {name = "Your Name", email = "your.email@example.com"},
+]
+description = "TODO: Add project description"
+$readme_section
+$license_section
+requires-python = ">=3.9"
+# keywords = ["your", "keywords", "here"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    # "Intended Audience :: Developers",  # Add appropriate audience
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+$dependency_section
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "black>=22.0",
+    "isort>=5.0",
+    "flake8>=4.0",
+]
+
+# Build configuration based on project structure
+$build_section
+
+[project.urls]
+Homepage = "https://github.com/YOUR_USERNAME/$project_name"
+Repository = "https://github.com/YOUR_USERNAME/$project_name"
+Issues = "https://github.com/YOUR_USERNAME/$project_name/issues"
+
+# Tests configurations
+$pytest_section
+
+# Tool configurations
+[tool.black]
+line-length = 88
+target-version = ['py39', 'py310', 'py311', 'py312']
+
+[tool.isort]
+profile = "black"
+line_length = 88
