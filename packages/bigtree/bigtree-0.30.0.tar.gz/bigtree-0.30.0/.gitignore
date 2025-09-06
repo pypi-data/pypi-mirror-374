@@ -1,0 +1,16 @@
+.coverage*
+.idea/
+*pytest_cache/
+*__pycache__*
+
+dist/
+*/build/
+*.DS_Store
+assets/docstr
+site/
+.cache
+.benchmarks
+
+tests/*.html
+tests/*.png
+docs/_static/playground-config.js

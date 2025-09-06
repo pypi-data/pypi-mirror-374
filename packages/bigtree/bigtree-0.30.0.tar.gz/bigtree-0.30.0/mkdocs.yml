@@ -1,0 +1,183 @@
+site_name: bigtree Documentation
+site_url: https://kayjan.github.io/bigtree
+repo_url: https://github.com/kayjan/bigtree
+repo_name: bigtree
+nav:
+  - Home:
+    - index.md
+    - home.md
+    - home/install.md
+    - Components:
+      - home/tree.md
+      - home/binarytree.md
+      - home/dag.md
+    - Community:
+      - home/community.md
+      - home/contributing.md
+      - home/convention.md
+    - Changes:
+      - home/benchmarks.md
+      - home/changelog.md
+  - Getting Started:
+    - Demonstration:
+      - gettingstarted/demo/tree.md
+      - gettingstarted/demo/binarytree.md
+      - gettingstarted/demo/dag.md
+      - gettingstarted/demo/Workflow Demonstration.ipynb
+    - Resources:
+      - gettingstarted/resources/articles.md
+      - gettingstarted/resources/glossary.md
+  - Playground:
+      - playground/index.md
+  - Code Documentation:
+    - 🌿 Node:
+        - bigtree/node/basenode.md
+        - bigtree/node/node.md
+        - bigtree/node/binarynode.md
+        - bigtree/node/dagnode.md
+    - 🌵 Binary Tree:
+        - bigtree/binarytree/construct.md
+    - 🌴 DAG:
+        - bigtree/dag/construct.md
+        - bigtree/dag/export.md
+        - bigtree/dag/parsing.md
+    - 🌲 Tree:
+      - bigtree/tree/construct.md
+      - bigtree/tree/export.md
+      - bigtree/tree/helper.md
+      - bigtree/tree/modify.md
+      - bigtree/tree/parsing.md
+      - bigtree/tree/search.md
+      - bigtree/tree/query.md
+    - 🔧 Utils:
+        - bigtree/utils/iterators.md
+        - bigtree/utils/plot.md
+    - 👷 Workflows:
+        - bigtree/workflows/app_todo.md
+        - bigtree/workflows/app_calendar.md
+  - Others:
+    - 💡 Tips and Tricks:
+      - Optimise:
+        - others/remove_checks.md
+      - Node:
+        - others/nodes.md
+        - others/work_with_classes.md
+      - Tree:
+        - others/list_dir.md
+        - others/weighted_trees.md
+        - others/custom_coordinates.md
+
+theme:
+  name: material
+  custom_dir: docs/overrides
+  favicon: _static/favicon.ico
+  logo: _static/favicon.svg
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      primary: teal
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: yellow
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.expand
+    - navigation.indexes
+    - navigation.sections
+    - content.code.copy
+    - content.code.annotate
+    - content.tooltips
+
+plugins:
+  - glightbox  # expand images
+  - mkdocs-jupyter:
+      ignore_h1_titles: True
+  - search
+  - include-markdown
+  - social:
+      cards_layout_options:
+        logo: docs/_static/favicon.svg
+  - mkdocstrings:
+      handlers:
+          python:
+            options:
+              show_bases: true
+              show_docstring_raises: true
+              show_source: false
+              show_root_heading: true
+              show_symbol_type_heading: true
+              show_symbol_type_toc: true
+              inherited_members: true
+              members_order: source
+              separate_signature: true
+              unwrap_annotated: true
+              filters:
+              - '!^_'
+              merge_init_into_class: true
+              docstring_section_style: table
+              signature_crossrefs: true
+  - termynal:
+      prompt_literal_start:
+        - "$"
+        - ">"
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/kayjan
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/in/kayjan
+    - icon: fontawesome/brands/medium
+      link: https://kayjanwong.medium.com
+  version:
+    provider: mike
+
+markdown_extensions:
+  - admonition             # !!! note
+  - attr_list              # default
+  - md_in_html             # default
+  - mdx_truly_sane_lists   # nested bullet points
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:    # code snippet highlight
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite  # code snippet highlight
+  - pymdownx.snippets      # code snippet highlight
+  - pymdownx.superfences:  # default
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+        - name: py
+          class: 'highlight'
+          format: !!python/object/apply:docs._static.playground.color_command_formatter
+            kwds:
+              init: |
+                from bigtree import *
+          validator: !!python/name:docs._static.playground.color_command_validator
+  - pymdownx.tabbed:       # code snippet with tabs
+      alternate_style: true
+
+extra_css:
+  - _static/custom.css
+  - _static/playground.css
+
+extra_javascript:
+  - _static/custom.js
+  - _static/playground-config.js
+  - _static/playground.js
+  - https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js

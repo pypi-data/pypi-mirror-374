@@ -1,0 +1,41 @@
+{% set name = "bigtree" %}
+
+package:
+  name: "{{ name|lower }}"
+  version: {{ environ.get('VERSION_NUMBER') }}
+
+source:
+  url: https://github.com/kayjan/{{ name }}/archive/refs/tags/{{ environ.get('VERSION_NUMBER') }}.tar.gz
+  sha256: {{ environ.get('SHA256') }}
+
+build:
+  number: 0
+  noarch: python
+  script: "{{ PYTHON }} -m pip install . -vv"
+
+requirements:
+  host:
+    - python >=3.8
+    - hatchling
+    - pip
+  run:
+    - python >=3.8
+
+test:
+  imports:
+    - bigtree
+  requires:
+    - pip
+    - pytest
+
+about:
+  home: https://github.com/kayjan/bigtree
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: Tree Implementation and Methods for Python, integrated with list, dictionary, pandas and polars DataFrame.
+  doc_url: https://bigtree.readthedocs.io/stable/
+
+extra:
+  recipe-maintainers:
+    - kayjan
