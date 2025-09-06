@@ -1,0 +1,8 @@
+name: dnora-noaa
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.9,<3.11
+  - pytest
+  - pip:
+    - dnora
