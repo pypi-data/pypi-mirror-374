@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>732</width>
+    <height>240</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Export markdown</string>
+  </property>
+  <widget class="QLabel" name="Description">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>40</y>
+     <width>651</width>
+     <height>141</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+    &lt;p align=&quot;justify&quot;&gt;
+    Ce widget exporte automatiquement, pour chaque ligne de la table d'entrée, le Markdown de la colonne &lt;code&gt;content&lt;/code&gt; en &lt;code&gt;.docx&lt;/code&gt;, &lt;code&gt;.pptx&lt;/code&gt; et &lt;code&gt;.pdf&lt;/code&gt;.
+    Les fichiers sont enregistrés au même chemin que celui indiqué dans la colonne &lt;code&gt;path&lt;/code&gt; (même base, extension modifiée).
+    &lt;/p&gt;
+    &lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
