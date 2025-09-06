@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: pto-transits
+Version: 0.1.8.0
+Summary: Planner for Transits Observations.
+License: GPL-3.0-or-later
+Author: Michal Steiner
+Author-email: Michal.Steiner@unige.ch
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: PyAstronomy
+Requires-Dist: astropy
+Requires-Dist: calplot
+Requires-Dist: colorlog
+Requires-Dist: dill
+Requires-Dist: expecto
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: pyvo
+Requires-Dist: seaborn
+Requires-Dist: specutils
+Requires-Dist: sympy
+Description-Content-Type: text/markdown
+
+# About PTO (Planner of Transit Observations):
+`PTO` is a code that allows the user to calculate transit windows and plot their visibility for given location. Currently, main focus of `PTO` is handling high-resolution observations of transits, but further extensions can be made.
+
+The main capabilities of `PTO` are:
+
+1. Load NASA Exoplanet archive table using TAP service
+2. Filter targets based on common characteristics
+3. Calculate positions of transit windows
+4. Calculate the visibility of each transit windows
+
+Please read the documentation at [https://pto.readthedocs.io/en/latest/](https://pto.readthedocs.io/en/latest/).
+
+The developement has been moved from GitHub to GitLab to [https://gitlab.unige.ch/spice_dune/pto](https://gitlab.unige.ch/spice_dune/pto). Please post any issues there. Both repositories are updated regularly.
+
+For any bug/ feature requests, please open an issue on the GitLab page [https://gitlab.unige.ch/spice_dune/pto](https://gitlab.unige.ch/spice_dune/pto).
+
+To get started, please read the notebook at [https://pto.readthedocs.io/en/latest/Get_started.html](https://pto.readthedocs.io/en/latest/Get_started.html).
+The tutorial will be merged in a single example notebook soon.
+
+A general outline of usage is shown below:
+
+Acknowledgements: This code is redesigned by Michal Steiner based on legacy transit planner written by: Romain Allart, Mara Attia, Daniel Bayliss, Vincent Bourrier.
