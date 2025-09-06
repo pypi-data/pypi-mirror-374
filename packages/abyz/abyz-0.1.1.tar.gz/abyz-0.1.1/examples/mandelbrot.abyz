@@ -1,0 +1,47 @@
+fun asciimap argo x argc
+    if x less zerodottwofive
+        return quotdotquot
+    elif x less zerodotfive
+        return quotxquot
+    elif x less zerodotsevenfive
+        return quotOquot
+    else
+        return quotCquot
+
+fun showarray argo array argc
+    for row in array
+        out equal quotquot
+        for el in row
+            out plusequal asciimap argo el argc
+        print out
+
+xa equal minus twodotzero
+xb equal onedotzero
+ya equal minus onedotfive
+yb equal onedotfive
+
+maxIt equal twofivefive
+
+imgx equal sixfour
+imgy equal threetwo
+
+array equal sbrao sbrac
+for j in range argo imgy argc
+    row equal sbrao sbrac
+    for i in range argo imgx argc
+        rowdotappend argo 0 argc
+    arraydotappend argo row argc
+
+for y in range argo imgy argc
+    zy equal y times argo yb minus ya argc slash argo imgy minus one argc plus ya
+    for x in range argo imgx argc
+        zx equal x times argo xb minus xa argc slash argo imgx minus one argc plus xa
+        z equal zx plus zy times onej
+        c equal z
+        for i in range argo maxIt argc
+            if absargozargc greater two
+                break
+            z equal z times z plus c
+        array sbrao y sbrac sbrao x sbrac equal i percent four times sixfour slash twofivesix
+
+showarray argo array argc
