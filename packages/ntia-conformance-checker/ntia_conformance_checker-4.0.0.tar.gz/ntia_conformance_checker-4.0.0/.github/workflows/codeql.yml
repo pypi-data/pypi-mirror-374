@@ -1,0 +1,38 @@
+name: "CodeQL"
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'python' ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@7e3036b9cd87fc26dd06747b7aa4b96c27aaef3a  # v2.20.3
+      with:
+        languages: ${{ matrix.language }}
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@7e3036b9cd87fc26dd06747b7aa4b96c27aaef3a  # v2.20.3
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@7e3036b9cd87fc26dd06747b7aa4b96c27aaef3a  # v2.20.3
+      with:
+        category: "/language:${{matrix.language}}"
