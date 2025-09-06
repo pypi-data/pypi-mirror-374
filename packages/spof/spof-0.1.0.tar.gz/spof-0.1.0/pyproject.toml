@@ -1,0 +1,9 @@
+[project]
+name = "spof"
+version = "0.1.0"
+description = "SPOF (Structured Prompt Output Framework) is an open-source Python framework for designing structured, maintainable, and type-safe prompts for Large Language Models (LLMs"
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "pydantic>=2.11.5",
+]
