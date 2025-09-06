@@ -1,0 +1,29 @@
+# GetUrlImportJobResponse
+
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**job** | [**DesignImportJob**](DesignImportJob.md) |  | 
+
+## Example
+
+```python
+from openapi_client.models.get_url_import_job_response import GetUrlImportJobResponse
+
+# TODO update the JSON string below
+json = "{}"
+# create an instance of GetUrlImportJobResponse from a JSON string
+get_url_import_job_response_instance = GetUrlImportJobResponse.from_json(json)
+# print the JSON string representation of the object
+print(GetUrlImportJobResponse.to_json())
+
+# convert the object into a dict
+get_url_import_job_response_dict = get_url_import_job_response_instance.to_dict()
+# create an instance of GetUrlImportJobResponse from a dict
+get_url_import_job_response_from_dict = GetUrlImportJobResponse.from_dict(get_url_import_job_response_dict)
+```
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

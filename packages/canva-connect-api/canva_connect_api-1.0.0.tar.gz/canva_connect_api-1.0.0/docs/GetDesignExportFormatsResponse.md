@@ -1,0 +1,30 @@
+# GetDesignExportFormatsResponse
+
+Successful response from a `getDesignExportFormats` request.
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**formats** | [**ExportFormatOptions**](ExportFormatOptions.md) |  | 
+
+## Example
+
+```python
+from openapi_client.models.get_design_export_formats_response import GetDesignExportFormatsResponse
+
+# TODO update the JSON string below
+json = "{}"
+# create an instance of GetDesignExportFormatsResponse from a JSON string
+get_design_export_formats_response_instance = GetDesignExportFormatsResponse.from_json(json)
+# print the JSON string representation of the object
+print(GetDesignExportFormatsResponse.to_json())
+
+# convert the object into a dict
+get_design_export_formats_response_dict = get_design_export_formats_response_instance.to_dict()
+# create an instance of GetDesignExportFormatsResponse from a dict
+get_design_export_formats_response_from_dict = GetDesignExportFormatsResponse.from_dict(get_design_export_formats_response_dict)
+```
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

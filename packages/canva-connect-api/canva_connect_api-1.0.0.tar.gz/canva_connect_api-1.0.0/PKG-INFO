@@ -1,0 +1,248 @@
+Metadata-Version: 2.4
+Name: canva-connect-api
+Version: 1.0.0
+Summary: Unofficial Python client for Canva Connect API
+Home-page: https://github.com/yourusername/canva-connect-api-python
+Author: Canva Connect API Contributors
+Author-email: Canva Connect API Contributors <contributors@example.com>
+License: MIT
+Project-URL: Homepage, https://github.com/yourusername/canva-connect-api-python
+Project-URL: Documentation, https://github.com/yourusername/canva-connect-api-python#readme
+Project-URL: Repository, https://github.com/yourusername/canva-connect-api-python
+Project-URL: Bug Tracker, https://github.com/yourusername/canva-connect-api-python/issues
+Project-URL: Changelog, https://github.com/yourusername/canva-connect-api-python/blob/main/CHANGELOG.md
+Project-URL: Canva Connect API Docs, https://www.canva.dev/docs/connect/
+Keywords: canva,connect,api,design,automation,graphics,templates
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Multimedia :: Graphics
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Office/Business
+Requires-Python: >= 3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: urllib3<3.0.0,>=2.1.0
+Requires-Dist: python-dateutil>=2.8.2
+Requires-Dist: pydantic>=2
+Requires-Dist: typing-extensions>=4.7.1
+Requires-Dist: lazy-imports<2,>=1
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# Canva Connect API Python Client
+
+[![PyPI version](https://badge.fury.io/py/canva-connect-api.svg)](https://badge.fury.io/py/canva-connect-api)
+[![Python Support](https://img.shields.io/pypi/pyversions/canva-connect-api.svg)](https://pypi.org/project/canva-connect-api/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+> **Note**: This is an **unofficial** Python client for the Canva Connect API. It is not officially endorsed or maintained by Canva.
+
+A comprehensive Python client library for the [Canva Connect API](https://www.canva.dev/docs/connect/), enabling developers to integrate Canva's powerful design capabilities into their applications.
+
+## 🚀 Features
+
+- **Complete API Coverage**: All Canva Connect API endpoints
+- **Type Safety**: Full type annotations with Pydantic v2
+- **Modern Python**: Supports Python 3.9+
+- **OAuth 2.0 + PKCE**: Secure authentication flow
+- **Auto-generated**: Based on official OpenAPI specification
+- **Production Ready**: Comprehensive error handling and retries
+
+## 📦 Installation
+
+```bash
+pip install canva-connect-api
+```
+
+## 🔧 Quick Start
+
+```python
+import openapi_client
+from openapi_client.api.design_api import DesignApi
+from openapi_client.api.autofill_api import AutofillApi
+
+# Configure API client
+configuration = openapi_client.Configuration(
+    host="https://api.canva.com/rest",
+    access_token="your_access_token_here"
+)
+
+# Create API instances
+with openapi_client.ApiClient(configuration) as api_client:
+    design_api = DesignApi(api_client)
+    autofill_api = AutofillApi(api_client)
+    
+    # List user's designs
+    designs = design_api.list_designs()
+    print(f"Found {len(designs.items)} designs")
+```
+
+## 🔑 Authentication
+
+Before using the API, you need to set up OAuth 2.0 authentication:
+
+1. **Create a Canva App** in the [Canva Developer Portal](https://www.canva.dev/)
+2. **Configure OAuth** settings and scopes
+3. **Implement OAuth flow** in your application
+
+```python
+from openapi_client.api.oauth_api import OauthApi
+
+# Step 1: Direct user to authorization URL
+auth_url = "https://www.canva.com/api/oauth/authorize"
+params = {
+    "code_challenge": "your_code_challenge",
+    "code_challenge_method": "S256", 
+    "scope": "design:read design:write asset:read",
+    "response_type": "code",
+    "client_id": "your_client_id"
+}
+
+# Step 2: Exchange code for tokens
+oauth_api = OauthApi(api_client)
+token_response = oauth_api.exchange_access_token(
+    # ... token exchange parameters
+)
+```
+
+## 🎆 Examples
+
+### Autofill Templates
+
+```python
+from openapi_client.api.autofill_api import AutofillApi
+from openapi_client.models.create_design_autofill_job_request import CreateDesignAutofillJobRequest
+
+# Autofill a brand template with data
+autofill_request = CreateDesignAutofillJobRequest(
+    brand_template_id="your_template_id",
+    data=DataTable(
+        rows=[DataTableRow(
+            cells=[
+                StringDataTableCell(value="Hello World"),
+                StringDataTableCell(value="Welcome Message"),
+                DatasetImageValue(url="https://example.com/image.jpg")
+            ]
+        )]
+    )
+)
+
+autofill_job = autofill_api.create_design_autofill_job(autofill_request)
+print(f"Job created: {autofill_job.job.id}")
+```
+
+### Upload and Manage Assets
+
+```python
+from openapi_client.api.asset_api import AssetApi
+
+# Upload an asset
+asset_api = AssetApi(api_client)
+upload_job = asset_api.create_asset_upload_job(
+    # ... upload parameters
+)
+
+# List user's assets
+assets = asset_api.list_assets()
+for asset in assets.items:
+    print(f"Asset: {asset.name} - {asset.id}")
+```
+
+### Export Designs
+
+```python
+from openapi_client.api.export_api import ExportApi
+from openapi_client.models.create_design_export_job_request import CreateDesignExportJobRequest
+
+# Export design as PNG
+export_api = ExportApi(api_client)
+export_request = CreateDesignExportJobRequest(
+    design_id="your_design_id",
+    format=ExportFormat(
+        type="png",
+        quality="high"
+    )
+)
+
+export_job = export_api.create_design_export_job(export_request)
+print(f"Export job: {export_job.job.id}")
+```
+
+## 📋 Available APIs
+
+All URIs are relative to `https://api.canva.com/rest`
+
+| API | Description |
+|-----|-------------|
+| **AppApi** | Manage Canva apps |
+| **AssetApi** | Upload and manage user assets |
+| **AutofillApi** | Automated template data population |
+| **BrandTemplateApi** | Access brand templates |
+| **CommentApi** | Comments and collaboration |
+| **ConnectApi** | API connectivity features |
+| **DesignApi** | Create and manage designs |
+| **DesignImportApi** | Import designs from files |
+| **ExportApi** | Export designs to various formats |
+| **FolderApi** | Organize designs and assets |
+| **OauthApi** | OAuth authentication |
+| **ResizeApi** | Resize existing designs |
+| **UserApi** | User profile and capabilities |
+
+## 🏗️ Requirements
+
+- Python 3.9+
+- urllib3 (>=2.1.0,<3.0.0)
+- python-dateutil (>=2.8.2)
+- pydantic (>=2)
+- typing-extensions (>=4.7.1)
+- lazy-imports (>=1,<2)
+
+## 📚 Documentation
+
+- [Canva Connect API Official Documentation](https://www.canva.dev/docs/connect/)
+- [API Reference Documentation](docs/)
+- [Examples and Guides](examples/)
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## ⚠️ Disclaimer
+
+This package is an unofficial Python client for the Canva Connect API. It is not officially endorsed or maintained by Canva. Canva® is a trademark of Canva Pty Ltd.
+
+The official Canva Connect API documentation can be found at: https://www.canva.dev/docs/connect/
+
+## 🆘 Support
+
+- 📖 [Documentation](https://github.com/yourusername/canva-connect-api-python#readme)
+- 🐛 [Bug Reports](https://github.com/yourusername/canva-connect-api-python/issues)
+- 💬 [Discussions](https://github.com/yourusername/canva-connect-api-python/discussions)
+
+## 📈 Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for a list of changes and version history.
+
+---
+
+**Generated from OpenAPI specification v2024-06-18 using OpenAPI Generator v7.15.0**
