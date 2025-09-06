@@ -1,0 +1,21 @@
+Metadata-Version: 2.4
+Name: pykofamsearch
+Version: 2025.9.5
+Summary: Fast implementation of KofamScan optimized for high-memory systems using PyHmmer
+Home-page: https://github.com/jolespin/pykofamsearch
+Author: Josh L. Espinoza
+Author-email: jol.espinoz@gmail.com
+License: MIT License
+License-File: LICENSE
+Requires-Dist: pyhmmer<0.11.0,>=0.10.12
+Requires-Dist: pandas
+Requires-Dist: tqdm
+Requires-Dist: requests
+Requires-Dist: biopython
+Dynamic: author
+Dynamic: author-email
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: summary
