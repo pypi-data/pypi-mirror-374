@@ -1,0 +1,51 @@
+[project]
+name = "pelfy"
+version = "1.0.3"
+authors = [
+  { name="Nicolas Kruse", email="nicolas.kruse@nonan.net" },
+]
+description = "Parser for ELF files written in python"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+[project.urls]
+Homepage = "https://github.com/Nonannet/pelfy"
+Issues = "https://github.com/Nonannet/pelfy/issues"
+documentation = "https://nonannet.github.io/pelfy/"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest", "flake8", "mypy"
+]
+doc_build = [
+  "sphinx",
+  "pydata_sphinx_theme",
+  "sphinx-autodoc-typehints",
+  "myst-parser"
+]
+
+[tool.mypy]
+files = ["src", "tests"]
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+check_untyped_defs = true
+no_implicit_optional = true
+show_error_codes = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = ["tests"]
+pythonpath = ["src"]
