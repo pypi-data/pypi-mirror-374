@@ -1,0 +1,84 @@
+[build-system]
+requires = ["setuptools >=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "plantdb.commons"
+version = "0.14.5"
+dependencies = [
+    "appdirs",
+    "bcrypt",
+    "colorlog",
+    "imagecodecs",
+    "imageio >=2.16.2",
+    "numpy",
+    "paramiko",  # Pure Python implementation of SSHv2 protocol
+    "pillow",
+    "plyfile",
+    "toml",
+    "tqdm",
+]
+description = "Core shared library for the ROMI plant database ecosystem."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { 'text' = "LGPL-3.0-or-later" }   # to replace by "LGPL-3.0-or-later" only in next release, pending deprecation
+authors = [
+    { name = "Peter Hanappe", email = "peter.hanappe@sony.com" },
+    { name = "Timothée Wintz", email = "timothee@timwin.fr" },
+    { name = "Nabil Ait Taleb", email = "mohamednabil.aittaleb@sony.com" },
+    { name = "Arthur Luciani", email = "arthur.luciani@ens-lyon.fr" },
+]
+maintainers = [
+    { name = "Jonathan Legrand", email = "jonathan.legrand@ens-lyon.fr" }
+]
+keywords = [
+    "Robotics for Microfarms",
+    "ROMI",
+    "Plant Phenotyping",
+    "Scientific Database",
+    "Data Management",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Database",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Operating System :: OS Independent",
+    "Natural Language :: English"
+]
+
+[project.urls]
+homepage = "https://romi-project.eu/"
+documentation = "https://docs.romi-project.eu/plant_imager/"
+source = "https://github.com/romi/plantdb"
+issues = "https://github.com/romi/plantdb/issues"
+
+[project.scripts]
+fsdb_check = "plantdb.commons.cli.fsdb_check:main"
+fsdb_import_file = "plantdb.commons.cli.fsdb_import_file:main"
+fsdb_import_folder = "plantdb.commons.cli.fsdb_import_folder:main"
+fsdb_import_images = "plantdb.commons.cli.fsdb_import_images:main"
+shared_fsdb = "plantdb.commons.cli.shared_fsdb:main"
+
+[project.optional-dependencies]
+doc = [
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocstrings[python]",
+    "pymdown-extensions",
+    "markdown-exec[ansi]",
+    "mkdocs-gen-files",
+    "mkdocs-literate-nav",
+    "mkdocs-section-index",
+]
+io = [
+    "networkx",
+    "tifffile",
+    "open3d >=0.9.0.0",
+]
+test = [
+    "nose2[coverage]",
+    "coverage[toml]",
+]

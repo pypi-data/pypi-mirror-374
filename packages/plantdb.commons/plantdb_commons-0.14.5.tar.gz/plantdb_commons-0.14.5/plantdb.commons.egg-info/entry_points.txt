@@ -1,0 +1,6 @@
+[console_scripts]
+fsdb_check = plantdb.commons.cli.fsdb_check:main
+fsdb_import_file = plantdb.commons.cli.fsdb_import_file:main
+fsdb_import_folder = plantdb.commons.cli.fsdb_import_folder:main
+fsdb_import_images = plantdb.commons.cli.fsdb_import_images:main
+shared_fsdb = plantdb.commons.cli.shared_fsdb:main
