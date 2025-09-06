@@ -1,0 +1,31 @@
+Metadata-Version: 2.4
+Name: carmapy
+Version: 0.5.1
+Summary: A python wrapper of the CARMA cloud aerosol model
+Author-email: Wolf Cukier <wcukier@uchicago.edu>
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Requires-Dist: importlib-metadata; python_version < "3.10"
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: pyfastchem
+Requires-Dist: f90nml
+Dynamic: license-file
+
+[![Documentation Status](https://readthedocs.org/projects/carmapy/badge/?version=latest)](https://carmapy.readthedocs.io/en/latest/?badge=latest)
+
+CARMApy is a python wrapper of the Community Aerosol and Radiation Model for Atmospheres (CARMA), originally developed by Turco et al. (1979) and Toon et al. (1979).  carmapy specifically wraps ExoCARMA, a version of CARMA developed by Gao et al. (2018) and Powell et al. (2018) to model clouds on exoplanets.  Note that this repository is in beta.
+
+Read the documentation (including install instructions) here: [https://carmapy.readthedocs.io](https://carmapy.readthedocs.io)
+
+## Roadmap
+- [x] 2D CARMApy
+    - [x] Finish Documentation
+- [x] Microphysical Process rates in output
+- [ ] Boundary Conditions
+- [x] Viscosity 
+- [x] Thermal Conductivity
+- [x] Vertical Winds
+- [ ] Benchmark CARMApy vs CARMA
