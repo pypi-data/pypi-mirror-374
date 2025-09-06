@@ -1,0 +1,49 @@
+Metadata-Version: 2.3
+Name: mlx3d
+Version: 0.0.1
+Summary: Differentiable 3D rendering and geometry ops on Apple Silicon with MLX
+License: MIT
+Keywords: 3D,graphics,renderer,differentiable,MLX,Apple Silicon,Metal
+Author: AmirHossein Razlighi
+Author-email: arazlighi@gmail.com
+Requires-Python: >=3.10,<3.13
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Multimedia :: Graphics
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Dist: mlx (>=0.10.0) ; platform_system == "Darwin" and platform_machine == "arm64"
+Requires-Dist: numpy (>=1.24)
+Requires-Dist: pillow (>=10.0)
+Requires-Dist: typing-extensions (>=4.8)
+Project-URL: Homepage, https://github.com/amirhossein-razlighi/mlx3D
+Project-URL: Repository, https://github.com/amirhossein-razlighi/mlx3D
+Description-Content-Type: text/markdown
+
+# Mlx3D : A library for working with 3D data using mlx
+<p align="center">
+  <img src="./Logo.jpeg" height="auto" width="50%" />
+</p>
+
+# Introduction
+Mlx3D provides efficient, fast and reusable components for 3D Computer Vision research with [MLX](https://github.com/ml-explore/mlx) (Machine learning research on Apple Silicon).
+
+# Development
+As we are in an **early stages of development**, we are looking for contributors to help us build this library. If you are interested in contributing, please feel free to file an issue and get started!
+
+# Roadmap
+- [x] Implement `Mesh` structure
+- [ ] Add support for texture loading
+- [ ] Implement `.mtl` file loader
+- [ ] Implement `.obj` file loader
+- [ ] Implement `.ply` file loader
+- [ ] Implement `SoftPhongShader`
+- [ ] Implement `HardPhongShader`
+- [ ] ... (new plans, be added!)
+
