@@ -1,0 +1,19 @@
+[project]
+name = "careful"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "jpt", email = "dev@jpt.sh" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "httpx>=0.28.1",
+    "pytest>=8.4.2",
+    "pytest-httpbin>=2.1.0",
+]
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
