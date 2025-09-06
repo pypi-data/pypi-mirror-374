@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lightning_parser_overlays"
+version = "0.3.50"
+authors = [
+  { name="Connor White", email="connor.sw.personal@gmail.com" },
+]
+description = "Connor's Lightning Parser Overlays (LPO) is an overlay generation utility for different sensors onto the Lightning Parser Lib (LPL)."
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+dependencies = [
+  "pyproj",
+  "pandas",
+  "plotly",
+  "kaleido",
+  "scipy",
+  "tqdm",
+  "numpy",
+  "imageio",
+  "process-managerial",
+  "remote-events",
+  "datashader",
+  "matplotlib",
+  "holoviews",
+  "geopandas",
+  "Deprecation",
+  "MetPy",
+  "goes2go"
+]
+
+[project.urls]
+Homepage = "https://github.com/CorniiDog/lightning_parser_overlays"
+Issues = "https://github.com/CorniiDog/lightning_parser_overlays/issues"
