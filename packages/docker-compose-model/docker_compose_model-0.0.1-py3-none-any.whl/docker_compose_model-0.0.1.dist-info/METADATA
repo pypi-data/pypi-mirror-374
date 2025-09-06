@@ -1,0 +1,29 @@
+Metadata-Version: 2.4
+Name: docker-compose-model
+Version: 0.0.1
+Summary: Expose docker compose structure to python with types
+Project-URL: Homepage, https://github.com/pierresouchay/docker-compose-model
+Project-URL: Issues, https://github.com/pierresouchay/docker-compose-model/issues
+Author-email: Pierre Souchay <pierre@souchay.net>
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9
+Requires-Dist: pydantic-yaml
+Provides-Extra: dev
+Requires-Dist: build; extra == 'dev'
+Requires-Dist: flake8~=7.2; extra == 'dev'
+Requires-Dist: isort~=6.0; extra == 'dev'
+Requires-Dist: mypy~=1.15.0; extra == 'dev'
+Requires-Dist: pylint~=3.3.6; extra == 'dev'
+Requires-Dist: pytest; extra == 'dev'
+Requires-Dist: pytest-cov; extra == 'dev'
+Requires-Dist: ruff~=0.11.4; extra == 'dev'
+Requires-Dist: twine; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# docker-compose-model
+
+Expose docker compose structure to python with types.
+
+The goal is to provide a simple lib to have nice tooling with docker compose ecosystem.
