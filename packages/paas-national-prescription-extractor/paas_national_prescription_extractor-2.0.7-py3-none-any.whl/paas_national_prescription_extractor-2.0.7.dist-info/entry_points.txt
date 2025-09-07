@@ -1,0 +1,4 @@
+[console_scripts]
+paas-demo = paas_extractor.demo:main
+paas-extractor = paas_extractor.cli:main
+paas-test = paas_extractor.test_suite:main
