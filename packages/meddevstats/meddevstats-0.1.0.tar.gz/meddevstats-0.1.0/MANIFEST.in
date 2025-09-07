@@ -1,0 +1,10 @@
+include LICENSE
+include README.md
+include CHANGELOG.md
+include pyproject.toml
+recursive-include meddevstats *.py
+recursive-exclude tests *
+recursive-exclude docs *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * .DS_Store
