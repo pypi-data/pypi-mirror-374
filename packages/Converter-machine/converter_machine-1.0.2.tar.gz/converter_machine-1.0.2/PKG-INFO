@@ -1,0 +1,164 @@
+Metadata-Version: 2.4
+Name: Converter_machine
+Version: 1.0.2
+Summary: A unit conversion library for time, mass, length, temperature, and more
+Home-page: https://github.com/AmirKimiaei/converter_machine
+Author: Amir M. Kimiaei
+Author-email: a.m.kimiaei84@email.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: summary
+
+```Markdown
+# Converter 📦
+
+**Cnverter_machine** is a lightweight and user-friendly Python library for converting between various units of measurement.  
+It supports conversions across multiple categories including:
+
+- ✅ Time (`s`, `min`, `h`, `day`, `week`, `month`, `year`)
+- ✅ Mass (`mg`, `g`, `kg`, `t`, `lb`)
+- ✅ Length (`mm`, `cm`, `dm`,`m`, `km`, `in`, `ft`, `yd`, `mi`)
+- ✅ Area (`mm^2`, `cm^2`, `dm^2`, `m^2`, `km^2`, `ha`, `mi^2`, `ft^2`, `in^2`, `yd^2`)
+- ✅ Volume (`mm^3`, `cm^3`, `dm^3`, `m^3`, `km^3`, `ft^3`, `in^3`, `yd^3`, `l`, `ml`, `cl`, `dl`)
+- ✅ Speed (`m/s`, `km/s`, `km/h`, `mph`, `fps`, `ips`, `Ma`, `c`)
+- ✅ Temperature (`C`, `F`, `K`)
+- ✅ Data (`b`, `B`, `KB`, `MB`, `GB`, `TB`, `PB`)
+
+---
+
+## 🔧 Installation
+
+```bash
+pip install converter
+```
+
+🚀 Usage
+```Python
+from converter import converter_mass
+
+print(converter_mass(1000, 'g', 'kg'))  # Output: 1.0
+
+from converter import converter_area
+
+print(converter_area(1, 'cm^2', 'm^2'))  # Output: 0.0001
+
+from converter import converter_data
+
+print(converter_data(8, 'b', 'B'))  # Output: 1.0
+```
+
+📋 Supported Units
+
+Length
+Meters (m)
+Kilometers (km)
+Centimeters (cm)
+Millimeters (mm)
+Nautical Miles (mi)
+Yards (yd)
+Feet (ft)
+Inches (in)
+
+Mass
+Kilograms (kg)
+Grams (g)
+Milligrams (mg)
+Pounds (lb)
+Tons (t)
+
+
+Volume
+Cubic millimeter (mm^3)
+Cubic centimeter (cm^3)
+Cubic decimeter (dm^3) 
+Cubic meter (m^3)
+Cubic yard (yd^3)
+Cubic inch (in^3)
+Cubic foot (ft^3)
+Liter (L)
+Milliliter (mL)
+Centiliter (cL)
+Deciliter (dL)
+
+Temperature
+Celsius (C)
+Fahrenheit (F)
+Kelvin (K)
+
+Area
+Square millimeter (mm^2)
+Square centimeter (cm^2)
+Square decimeter (dm^2)
+Square Meters (m^2)
+Square Kilometers (km^2)
+Hectares (ha)
+Square mile (mi^2)
+Square yard (yd^2)
+Square Feet (ft^2)
+Square Inches (in^2)
+
+Data
+Bit (b)
+Byte (B)
+Kilobyte (KB)
+Megabyte (MB)
+Gigabyte (GB)
+Terabyte (TB)
+Petabyte (PB)
+
+Speed
+Meter per second (m/s)
+Kilometer per second (km/s)
+Kilometer per hour (km/h)
+Mile per hour (mph)
+Foot per hour (fps)
+Inch per hour (ips)
+Mach (Ma)
+Lightspeed (c)
+ 
+Time
+Seconds (s)
+Minutes (min)
+Hours (h)
+Days (d)
+Weeks (wk)
+Years (yr)
+
+
+📚 Documentation
+Each converter function follows the same pattern:
+converter_<type>(value, from_unit, to_unit)
+
+Where <type> is one of:
+- mass, length, area, volume, time, temperature, speed, data
+
+All units are case-sensitive and lowercase,
+except for:
+- 'B' for byte
+- 'C', 'F', 'K' for temperature
+- 'Ma' for Mach (speed)
+
+⚠️ Note: Unit names are case-sensitive, meaning 'B' (Byte) is different from 'b' (bit), and 'C' (Celsius) is different from 'c' (speed of light).
+
+## ✅ Testing
+
+To run tests:
+
+```bash
+pytest tests/
+```
+⚠️ Error Handling
+If an invalid unit is passed, the function will raise a ValueError with a clear message.
+
+📄 License
+This project is licensed under the MIT License.
