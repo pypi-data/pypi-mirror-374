@@ -1,0 +1,15 @@
+[project]
+name = "edb-noumea"
+version = "0.1.0"
+description = "Un scraper pour la qualité des eaux de baignade à Nouméa."
+dependencies = [
+    "requests",
+    "beautifulsoup4",
+    "pandas",
+    "lxml",
+    "tabula-py",
+    "matplotlib",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
