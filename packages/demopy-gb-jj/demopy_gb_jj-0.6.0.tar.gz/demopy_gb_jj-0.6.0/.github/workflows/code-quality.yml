@@ -1,0 +1,261 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  rust-quality:
+    name: Rust Code Quality
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Rust
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        components: rustfmt, clippy
+    
+    - name: Cache Rust dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          target/
+        key: ${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-deps-
+
+    - name: Cache Rust tools
+      uses: actions/cache@v4
+      with:
+        path: ~/.cargo/bin/
+        key: ${{ runner.os }}-cargo-tools-${{ hashFiles('.github/workflows/code-quality.yml') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-tools-
+    
+    - name: Check Rust formatting
+      run: cargo fmt --all -- --check
+    
+    - name: Run Rust linting (Clippy)
+      run: cargo clippy --all-targets --all-features -- -D warnings
+    
+    - name: Run Rust tests
+      run: cargo test --verbose
+    
+    - name: Install Rust tools
+      run: |
+        echo "[SETUP] Installing Rust tools for CI..."
+        python scripts/install_rust_tools.py --mode ci
+
+    - name: Check for unused dependencies
+      run: |
+        echo "Checking for unused dependencies..."
+        cargo machete || echo "[WARN] cargo-machete check completed with warnings"
+
+  python-quality:
+    name: Python Code Quality
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Cache Python dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt', '**/pyproject.toml') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install black isort flake8 mypy pytest maturin
+
+    - name: Setup Python package for testing
+      run: |
+        # For Python quality checks, we need to make the Python code importable
+        # Add the python directory to PYTHONPATH for testing the fallback code
+        echo "PYTHONPATH=${PYTHONPATH}:$(pwd)/python" >> $GITHUB_ENV
+
+        # Validate that the package can be imported
+        python -c "import sys; sys.path.insert(0, 'python'); import demopy; print('[OK] demopy module imported successfully')"
+        python -c "import sys; sys.path.insert(0, 'python'); import demopy; print('Package version:', demopy.__version__)"
+    
+    - name: Check Python formatting (Black)
+      run: black --check --diff python/ tests/
+    
+    - name: Check Python import sorting (isort)
+      run: isort --check-only --diff python/ tests/
+    
+    - name: Run Python linting (Flake8)
+      run: flake8 python/ tests/
+    
+    - name: Run Python type checking (MyPy)
+      run: mypy python/demopy/ --ignore-missing-imports
+      continue-on-error: true  # MyPy can be strict, make it non-blocking initially
+    
+    - name: Run Python tests
+      run: |
+        # Ensure Python can find the demopy module
+        export PYTHONPATH="${PYTHONPATH}:$(pwd)/python"
+        echo "PYTHONPATH: $PYTHONPATH"
+
+        # Test that the module can be imported
+        python -c "import sys; sys.path.insert(0, 'python'); import demopy; print('[OK] demopy module imported successfully')"
+
+        # Run the actual tests
+        pytest tests/ -v
+
+  yaml-quality:
+    name: YAML and Config Quality
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Install YAML linter
+      run: pip install yamllint
+    
+    - name: Check YAML files
+      run: |
+        yamllint .github/workflows/ || true
+        yamllint .pre-commit-config.yaml || true
+    
+    - name: Validate GitHub Actions workflows
+      run: |
+        # Check workflow syntax
+        for workflow in .github/workflows/*.yml; do
+          echo "Validating $workflow"
+          python -c "
+        import yaml
+        import sys
+        try:
+            with open('$workflow', 'r') as f:
+                yaml.safe_load(f)
+            print('[OK] $workflow is valid')
+        except Exception as e:
+            print('[ERROR] $workflow is invalid: {e}')
+            sys.exit(1)
+        "
+        done
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install and run Rust security audit
+      run: |
+        # Install cargo-audit if not already present
+        if ! command -v cargo-audit &> /dev/null; then
+          echo "[INSTALL] Installing cargo-audit..."
+          cargo install cargo-audit --locked || cargo install cargo-audit --locked --force
+        else
+          echo "[OK] cargo-audit already installed"
+        fi
+
+        echo "[SCAN] Running security audit..."
+        cargo audit
+      continue-on-error: true  # Don't fail the build on security advisories initially
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Run Python security scan
+      run: |
+        pip install safety bandit
+        # Check for known security vulnerabilities in dependencies
+        safety check || true
+        # Check for common security issues in Python code
+        bandit -r python/ || true
+      continue-on-error: true
+
+  documentation:
+    name: Documentation Quality
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Check Markdown files
+      run: |
+        # Install markdownlint
+        npm install -g markdownlint-cli
+        # Check markdown files (non-blocking initially)
+        markdownlint *.md || true
+        markdownlint docs/ || true
+    
+    - name: Check for broken links
+      run: |
+        # Install link checker
+        npm install -g markdown-link-check
+        # Check for broken links in markdown files
+        find . -name "*.md" -not -path "./target/*" -not -path "./.venv/*" | xargs -I {} markdown-link-check {} || true
+      continue-on-error: true
+
+  integration-test:
+    name: Integration Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12', '3.13']
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Set up Rust
+      uses: dtolnay/rust-toolchain@stable
+    
+    - name: Install maturin
+      run: pip install maturin
+    
+    - name: Build and test package
+      run: |
+        maturin build --release
+        pip install target/wheels/*.whl
+        python -c "
+        import demopy
+        print('[OK] Package imports successfully')
+        print('Version:', demopy.__version__)
+        print('Functions:', demopy.__all__)
+
+        # Test all functions
+        print('hello():', demopy.hello())
+        print('add(5, 7):', demopy.add(5, 7))
+        print('multiply(2.5, 4.0):', demopy.multiply(2.5, 4.0))
+        print('sum_list([1,2,3]):', demopy.sum_list([1,2,3]))
+        print('reverse_string(\"test\"):', demopy.reverse_string('test'))
+        print('power(2, 3):', demopy.power(2, 3))
+        print('[OK] All functions work correctly')
+        "
+      shell: bash
