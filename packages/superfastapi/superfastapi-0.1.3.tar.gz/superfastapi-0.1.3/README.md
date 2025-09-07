@@ -1,0 +1,189 @@
+SuperFastAPI
+
+SuperFastAPI lets you define versioned API functions with a single, self‑contained code block: code, metadata, and inline tests live together in one decorated function. Mark functions as `external` to expose them as HTTP endpoints automatically. Generate lock files per API version to freeze exact function versions by hash, ensuring immutability across versions. Serve instantly with FastAPI, complete with routing, docs, auth, and robust error handling.
+
+Key ideas
+- Functions only: no classes required.
+- Inline metadata: version, external/internal, description, path, methods, auth, roles, tests.
+- Per-version lock files: one file per API version under `.superfastapi/locks/` pins each function to a specific version and code hash. No metadata in the lock.
+- Dynamic dependency resolution: functions call each other by name; the correct version is chosen based on the requested API version.
+- Inline tests: run automatically during `apikit lock` to ensure behavior before freezing a version.
+- Error handling: clean JSON errors for versioning, auth, resolution, validation, and internal failures.
+
+Quickstart
+1) Install: `pip install superfastapi`
+2) Define functions anywhere in your project:
+
+```python
+from superfastapi import api_function
+
+@api_function(version=1, external=True, description="Sum two numbers", methods=["POST"],
+              tests=[{"args": (1, 2), "kwargs": {}, "expected": 3}])
+def add(a: int, b: int) -> int:
+    return a + b
+
+@api_function(version=1, external=True, description="Do math", methods=["POST"])
+def domath(x: int, y: int) -> int:
+    # Will call the correct version of add() for the requested API version
+    return add(x, y)
+```
+
+3) Create a lock for v1: `apikit lock v1`
+4) Serve: `apikit serve` then hit `/v1/add` or `/v1/domath`.
+
+Versioning example
+- To change `add` behavior for v2: copy the whole decorated block, set `version=2` and adjust code. Run `apikit lock v2`. `/v2/domath` still uses `domath` v1 but now resolves `add` v2 automatically.
+
+Auth
+- Use decorator flags: `requires_auth=True, roles=["user"]`. Tokens are validated via JWT (HS256), secret from env `SUPERFASTAPI_SECRET`.
+
+HTTP Methods and Paths
+- Default path is `/v{X}/{function_name}` for external functions.
+- Override using `path="/custom/path"` (route becomes `/v{X}/custom/path`).
+- Configure methods via `methods=["GET"]` or `methods=["POST", "GET"]`.
+
+Lock files per API version (no metadata inside)
+- Each API version has its own lock file under `.superfastapi/locks/` at your project root, e.g. `.superfastapi/locks/v1.lock.json`.
+- Contents only include function versions and hashes:
+
+```json
+{
+  "functions": {
+    "add": {"version": 1, "hash": "..."},
+    "domath": {"version": 1, "hash": "..."}
+  }
+}
+```
+
+CLI
+- `apikit lock [vX] [--root .] [--lock-dir PATH]` — Verify immutability, run inline tests, and write `.superfastapi/locks/vX.lock.json`.
+- `apikit serve [--root .] [--lock-dir PATH] [--host 0.0.0.0 --port 8000]` — Serve only API versions that have a lock file present.
+- `apikit versions` — List versions that have lock files.
+- `apikit list [vX] [--verify]` — Show functions pinned in a lock; `--verify` checks code hashes.
+- `apikit prune [vX|--all] [--dry-run|--no-dry-run] [--force]` — Remove lock files for versions that fail verification.
+- `apikit bump <function> [--to vX] [--dry-run]` — Clone a function block and bump its version.
+- `apikit diff v1 v2 [--json]` — Show function and route changes between two versions.
+- `apikit changelog v1 v2` — Human-readable summary of changes.
+- `apikit preview vX` — Dev-only server for vX selection (no lock written).
+- `apikit client ts vX --out client.ts` / `apikit client py vX --out client.py` — Generate tiny clients.
+
+Notes
+- Hashing uses the full decorated source (including the decorator line). Moving files is fine; editing old versions is blocked.
+- Inline tests are simple dicts: `{"args": (...), "kwargs": {...}, "expected": value}`. Optional keys: `timeout`, `approx`, `rel_tol`, `abs_tol`. Set `SUPERFASTAPI_TEST_VERBOSE=1` for timing.
+- Selection rule: for API version vX, each function is pinned to the highest version ≤ X.
+
+Auth (simple)
+- Modes via `SUPERFASTAPI_AUTH_MODE=jwt|apikey|none`.
+  - JWT (default): HS256, secret `SUPERFASTAPI_SECRET`; roles enforced from decorator.
+  - API key: `SUPERFASTAPI_API_KEY_HEADER` (default `X-API-Key`) + `SUPERFASTAPI_API_KEY`.
+
+Validation & docs
+- Pydantic validates inputs/outputs from function annotations. GET reads query params; POST/PUT/PATCH reads JSON.
+- OpenAPI request examples are generated automatically from passing inline tests.
+
+Quality-of-life envs
+- `SUPERFASTAPI_CORS=open` (default) enables dev-friendly CORS.
+- `SUPERFASTAPI_GZIP=1` enables gzip.
+- `SUPERFASTAPI_RATE_LIMIT=60/min` (or `5/sec`, `100/3600`) enables simple in-memory rate limiting.
+- `SUPERFASTAPI_INCLUDE` / `SUPERFASTAPI_EXCLUDE` (comma-separated globs) control which files are scanned.
+
+**Decorator Reference**
+- `@api_function(`
+  - `version: int = 1`
+  - `external: bool = False` — expose as an HTTP endpoint when True
+  - `description: str = ""` — used in docs
+  - `path: str | None = None` — route path segment (default `/{function_name}`)
+  - `methods: list[str] = ["POST"]` — e.g., `["GET"]`, `["POST", "GET"]`
+  - `requires_auth: bool = False` — enforce auth per global mode (JWT/API key)
+  - `roles: list[str] = []` — JWT roles claim must overlap
+  - `tests: list[dict] = []` — inline tests executed on `apikit lock`
+`)`
+- Inline tests keys:
+  - `args`: tuple of positional args
+  - `kwargs`: dict of keyword args
+  - `expected`: expected return value
+  - Optional: `timeout` (seconds), `approx: true`, `rel_tol`, `abs_tol`
+- Request/response typing:
+  - Pydantic infers input schema from function signature. `GET` uses query params; `POST/PUT/PATCH` expects JSON body matching the arguments.
+  - The return annotation (if present) is used as the `response_model` for docs/validation.
+- Async functions are supported. Regular functions run in a thread executor.
+
+Example tests
+```python
+@api_function(
+    version=1,
+    external=True,
+    methods=["POST"],
+    tests=[
+        {"args": (1, 2), "kwargs": {}, "expected": 3},
+        {"args": (0.1, 0.2), "kwargs": {}, "expected": 0.3, "approx": True, "rel_tol": 1e-6},
+        {"args": (1, 2), "expected": 3, "timeout": 0.05},
+    ],
+)
+def add(a: float, b: float) -> float:
+    return a + b
+```
+
+**CI Recipe**
+- Goal: ensure all existing locks are valid (old versions unchanged) and all inline tests pass on every PR.
+- GitHub Actions example:
+
+```yaml
+name: superfastapi-verify
+
+on: [push, pull_request]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install SuperFastAPI
+        run: |
+          python -m pip install --upgrade pip
+          pip install superfastapi  # pin your version as needed
+      - name: Verify locks and inline tests
+        env:
+          SUPERFASTAPI_TEST_VERBOSE: '1'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -d .superfastapi/locks ]; then
+            echo "No locks directory; nothing to verify"; exit 0
+          fi
+          ok=0
+          for v in $(apikit versions); do
+            echo "Verifying $v"
+            out=$(apikit list "$v" --verify)
+            echo "$out"
+            echo "$out" | grep -q 'ok=True' || ok=1
+          done
+          if [ "$ok" -ne 0 ]; then
+            echo "Lock verification failed" >&2
+            exit 1
+          fi
+```
+
+- Optional: release workflow step to create a new lock (manual or on tag):
+
+```yaml
+  create-lock:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install superfastapi
+      - name: Write vNEXT lock (example)
+        run: |
+          apikit lock v2
+          git config user.name "ci"; git config user.email "ci@example"
+          git add .superfastapi/locks/v2.lock.json
+          git commit -m "Add lock v2" || echo "No changes"
+          git push || true
+```
