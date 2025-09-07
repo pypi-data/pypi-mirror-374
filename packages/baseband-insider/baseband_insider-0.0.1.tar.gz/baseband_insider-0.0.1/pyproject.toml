@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "baseband_insider"
+version = "0.0.1"
+description = "Temporary protocol helpers for building event streams"
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.ruff]
+extend = "../ruff.toml"
+
+[tool.setuptools]
+packages = ["baseband_insider"]
+
