@@ -1,0 +1,27 @@
+# Core builtin functions implemented in Generic language
+
+fun all(iterable) {
+    foreach (var item in iterable) {
+        if (!item) {
+            return false;
+        }
+    }
+    return true;
+}
+
+fun any(iterable) {
+    foreach (var item in iterable) {
+        if (item) {
+            return true;
+        }
+    }
+    return false;
+}
+
+gen enumerate(iterable) {
+    var index = 0;
+    foreach (var item in iterable) {
+        yield (index, item);
+        index = index + 1;
+    }
+}
