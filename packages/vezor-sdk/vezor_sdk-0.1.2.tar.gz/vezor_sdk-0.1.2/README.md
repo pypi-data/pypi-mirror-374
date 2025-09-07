@@ -1,0 +1,219 @@
+# Vezor SDK Python
+
+[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://python.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PyPI version](https://badge.fury.io/py/vezor-sdk.svg)](https://badge.fury.io/py/vezor-sdk)
+
+SDK oficial da Vezor para integração com APIs de comunicação e CRM. Este pacote Python fornece interfaces simples e intuitivas para trabalhar com a EvoAPI e Kommo CRM.
+
+## Instalação
+
+```bash
+pip install vezor-sdk
+```
+
+## Requisitos
+
+- Python 3.8 ou superior
+- requests >= 2.31.0
+
+## Módulos Disponíveis
+
+### VzrClient - Cliente Base
+Cliente genérico para APIs da Vezor com funcionalidades básicas de autenticação e requisições.
+
+### EvoApiClient - Integração EvoAPI
+Cliente especializado para integração com a EvoAPI, oferecendo métodos para gerenciar contatos, clientes e mensagens.
+
+### KommoApiClient - Integração Kommo CRM
+Cliente para integração com o Kommo CRM v4, permitindo gerenciar pipelines, status, tags e webhooks.
+
+## Uso
+
+### VzrClient - Cliente Base
+
+```python
+from vezor_sdk import VzrClient
+
+# Inicializar cliente
+client = VzrClient(
+    base_url="https://api.vezor.cloud",
+    api_key="sua_api_key_aqui"
+)
+
+# Teste de conexão
+response = client.ping()
+print(response)
+
+# Buscar dados de um recurso
+data = client.get_data("usuarios")
+print(data)
+```
+
+### EvoApiClient - Integração EvoAPI
+
+```python
+from vezor_sdk import EvoApiClient
+
+# Inicializar cliente EvoAPI
+evo_client = EvoApiClient(
+    base_url="https://evoapi.vezor.cloud",
+    instance="sua_instancia",
+    api_key="sua_api_key"
+)
+
+# Obter contatos
+contatos = evo_client.get_contacts()
+print(f"Total de contatos: {len(contatos)}")
+
+# Obter contatos e salvar em arquivo
+contatos = evo_client.get_contacts(save_path="contatos.json")
+
+# Obter clientes com filtros
+filtros = {"status": "ativo"}
+clientes = evo_client.get_clients(filters=filtros)
+
+# Obter todas as mensagens
+mensagens = evo_client.get_messages(save_path="mensagens.json")
+print(f"Total de mensagens: {len(mensagens)}")
+```
+
+### KommoApiClient - Integração Kommo CRM
+
+```python
+from vezor_sdk import KommoApiClient
+
+# Inicializar cliente Kommo
+kommo_client = KommoApiClient(
+    base_url="https://minhaempresa.kommo.com",
+    token="seu_token_oauth2"
+)
+
+# Obter pipelines
+pipelines = kommo_client.get_pipelines()
+for pipeline in pipelines:
+    print(f"Pipeline: {pipeline['name']} (ID: {pipeline['id']})")
+
+# Obter status de um pipeline
+statuses = kommo_client.get_pipeline_statuses(pipeline_id=12345)
+
+# Gerenciar tags
+tags = kommo_client.get_lead_tags()
+nova_tag = kommo_client.create_lead_tag("Nova Tag", "FF0000")
+
+# Gerenciar webhooks
+webhooks = kommo_client.get_webhooks()
+novo_webhook = kommo_client.create_webhook(
+    destination="https://meusite.com/webhook",
+    settings=["lead_add", "lead_update"]
+)
+```
+
+## Autenticação
+
+### VzrClient
+- **API Key**: Token Bearer para autenticação
+- **Base URL**: URL base da API Vezor
+
+### EvoApiClient
+- **API Key**: Chave de API específica da EvoAPI
+- **Instance**: ID da instância
+- **Base URL**: URL base da EvoAPI
+
+### KommoApiClient
+- **Token**: Token OAuth2 do Kommo
+- **Base URL**: URL da sua conta Kommo (ex: https://minhaempresa.kommo.com)
+
+## Exemplos Avançados
+
+### Processamento de Mensagens em Lote
+
+```python
+from vezor_sdk import EvoApiClient
+
+evo_client = EvoApiClient(
+    base_url="https://evoapi.vezor.cloud",
+    instance="minha_instancia",
+    api_key="minha_api_key"
+)
+
+# Obter mensagens com paginação personalizada
+mensagens = evo_client.get_messages(offset=5000)
+
+# Filtrar mensagens por tipo
+mensagens_texto = [msg for msg in mensagens if msg.get('type') == 'text']
+print(f"Mensagens de texto: {len(mensagens_texto)}")
+```
+
+### Gerenciamento Completo de Pipeline Kommo
+
+```python
+from vezor_sdk import KommoApiClient
+
+kommo_client = KommoApiClient(
+    base_url="https://minhaempresa.kommo.com",
+    token="meu_token"
+)
+
+# Obter informações completas do pipeline
+pipelines = kommo_client.get_pipelines()
+for pipeline in pipelines:
+    print(f"\n=== {pipeline['name']} ===")
+    statuses = kommo_client.get_pipeline_statuses(pipeline['id'])
+    for status in statuses:
+        print(f"  - {status['name']}: {status['color']}")
+```
+
+## Desenvolvimento
+
+### Instalação para Desenvolvimento
+
+```bash
+git clone https://github.com/vezor-group/vezor_sdk.git
+cd vezor_sdk
+pip install -e .
+```
+
+### Executando Testes
+
+```bash
+python -m pytest tests/
+```
+
+## Changelog
+
+Veja o [CHANGELOG.md](CHANGELOG.md) para histórico de versões e mudanças.
+
+## Contribuindo
+
+Contribuições são bem-vindas! Por favor, leia nossas diretrizes de contribuição antes de enviar pull requests.
+
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+## Licença
+
+Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+## Suporte
+
+- **Email**: admin.platform@vezor.com.br
+- **Documentação**: [GitHub Wiki](https://github.com/vezor-group/vezor_sdk/wiki)
+- **Issues**: [GitHub Issues](https://github.com/vezor-group/vezor_sdk/issues)
+
+**Sobre a Vezor Technology**
+
+Somos uma empresa de tecnologia comprometida com o **desenvolvimento democrático e acessível** de soluções inovadoras. Acreditamos que a tecnologia deve ser uma ferramenta de transformação social, capaz de resolver problemas reais e criar oportunidades equitativas para todos.
+
+Nossa missão é democratizar o acesso a tecnologias avançadas, desenvolvendo soluções que sejam **simples de usar**, **economicamente acessíveis** e **tecnicamente robustas**. Trabalhamos com **Inteligência Artificial**, **integrações de sistemas**, **plataformas web e mobile**, sempre priorizando a **inclusão digital** e o **impacto social positivo**.
+
+Apoiamos o desenvolvimento de **ecossistemas tecnológicos abertos** e **colaborativos**, onde desenvolvedores, empresas e comunidades possam crescer juntos. Nossas ferramentas e SDKs são criados para facilitar a adoção de tecnologias emergentes, reduzindo barreiras técnicas e econômicas.
+
+**Conheça nosso Manifesto:** [https://about.vezor.cloud/](https://about.vezor.cloud/)
+
+---
+
+**Desenvolvido pela equipe Vezor LABs**
