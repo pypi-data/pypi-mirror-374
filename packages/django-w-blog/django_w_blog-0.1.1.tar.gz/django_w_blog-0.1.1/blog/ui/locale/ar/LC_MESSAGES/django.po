@@ -1,0 +1,1031 @@
+# django-w-blog Arabic translations.
+# Copyright (C) 2025 Yousuf Abu Shanab
+# This file is distributed under the same license as the django-w-blog package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: django-w-blog 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-02 05:39+0000\n"
+"PO-Revision-Date: 2025-6-20 HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: Arabic\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: blog/apps/articles/models.py:25 blog/apps/users/models.py:27
+msgid "country"
+msgstr "الدولة"
+
+#: blog/apps/articles/models.py:26
+#, fuzzy
+#| msgid "country"
+msgid "Country"
+msgstr "الدولة"
+
+#: blog/apps/articles/models.py:32 blog/apps/blog/models.py:44
+#: blog/apps/users/models.py:39
+#, fuzzy
+#| msgid "Image"
+msgid "image"
+msgstr "صورة"
+
+#: blog/apps/articles/models.py:33
+msgid "Article image"
+msgstr "صورة المقال"
+
+#: blog/apps/articles/models.py:38 blog/apps/blog/models.py:50
+#, fuzzy
+#| msgid "Article headline"
+msgid "headline"
+msgstr "عنوان المقال"
+
+#: blog/apps/articles/models.py:39
+msgid "Article headline"
+msgstr "عنوان المقال"
+
+#: blog/apps/articles/models.py:43 blog/apps/blog/models.py:55
+#: blog/apps/home/models.py:67 blog/apps/home/models.py:92
+#, fuzzy
+#| msgid "Article content"
+msgid "content"
+msgstr "محتوى المقال"
+
+#: blog/apps/articles/models.py:44
+msgid "Article content"
+msgstr "محتوى المقال"
+
+#: blog/apps/articles/models.py:48
+#, fuzzy
+#| msgid "Breaking"
+msgid "is breaking"
+msgstr "عاجل"
+
+#: blog/apps/articles/models.py:49
+msgid "Designates if the Article is in breaking news"
+msgstr "يشير إلى ما إذا كان المقال خبرًا عاجلًا"
+
+#: blog/apps/articles/models.py:54 blog/apps/blog/models.py:61
+msgid "tags"
+msgstr "وسوم"
+
+#: blog/apps/articles/models.py:55 blog/cms/wagtail_hooks.py:23
+msgid "Tags"
+msgstr "وسوم"
+
+#: blog/apps/articles/models.py:60
+msgid "recommendations"
+msgstr "الاقتراحات"
+
+#: blog/apps/articles/models.py:61
+msgid "Similar articles"
+msgstr "مقالات ذات صلة"
+
+#: blog/apps/articles/models.py:66
+msgid "News Articles"
+msgstr "مقالات إخبارية"
+
+#: blog/apps/articles/models.py:105
+#, fuzzy
+#| msgid "News Articles"
+msgid "News article"
+msgstr "مقالات إخبارية"
+
+#: blog/apps/articles/models.py:106
+#, fuzzy
+#| msgid "News Articles"
+msgid "News articles"
+msgstr "مقالات إخبارية"
+
+#: blog/apps/blog/models.py:22 blog/apps/blog/models.py:30
+msgid "Blog index page"
+msgstr "المدونة"
+
+#: blog/apps/blog/models.py:45
+#, fuzzy
+#| msgid "Article image"
+msgid "Post image"
+msgstr "صورة المقال"
+
+#: blog/apps/blog/models.py:51
+#, fuzzy
+#| msgid "Article headline"
+msgid "Post headline"
+msgstr "عنوان المقال"
+
+#: blog/apps/blog/models.py:56
+#, fuzzy
+#| msgid "Article content"
+msgid "Post content"
+msgstr "محتوى المقال"
+
+#: blog/apps/blog/models.py:62
+msgid "Post tags"
+msgstr "وسوم المقال"
+
+#: blog/apps/blog/models.py:73
+msgid "Blog Posts"
+msgstr "مقالات المدونة"
+
+#: blog/apps/blog/models.py:95
+msgid "Blog post"
+msgstr "مقال المدونة"
+
+#: blog/apps/blog/models.py:96
+msgid "Blog posts"
+msgstr "مقالات المدونة"
+
+#: blog/apps/categories/models.py:21 blog/apps/categories/models.py:48
+#, fuzzy
+#| msgid "Category description"
+msgid "description"
+msgstr "وصف الفئة"
+
+#: blog/apps/categories/models.py:22
+#, fuzzy
+#| msgid "Category description"
+msgid "Page description"
+msgstr "وصف الفئة"
+
+#: blog/apps/categories/models.py:28 blog/apps/categories/models.py:38
+#, fuzzy
+#| msgid "Categories"
+msgid "Category index page"
+msgstr "الفئات"
+
+#: blog/apps/categories/models.py:39
+#, fuzzy
+#| msgid "Categories"
+msgid "Category index pages"
+msgstr "الفئات"
+
+#: blog/apps/categories/models.py:49
+msgid "Category description"
+msgstr "وصف الفئة"
+
+#: blog/apps/categories/models.py:53
+msgid "show owner"
+msgstr "عرض الكاتب"
+
+#: blog/apps/categories/models.py:54
+msgid "Wether to display the name of the owner of news article"
+msgstr "يحدد فيما إن كنت تريد عرض اسم الكاتب مع المقال"
+
+#: blog/apps/categories/models.py:65
+#, fuzzy
+#| msgid ""
+#| "Categories help organize articles into thematic or subject-related "
+#| "groupings, making it easier for users to explore and filter available "
+#| "articles."
+msgid ""
+"Categories help organize news article into thematic or subject-related "
+"groupings, making it easier for users to explore and filter available news "
+"article."
+msgstr ""
+"تساعد الفئات في تنظيم المقالات ضمن مجموعات موضوعية أو متعلقة بالموضوع، مما "
+"يسهل على المستخدمين استكشاف المقالات وفرزها."
+
+#: blog/apps/categories/models.py:85
+#, fuzzy
+#| msgid "Category"
+msgid "category"
+msgstr "الفئة"
+
+#: blog/apps/categories/models.py:86
+#, fuzzy
+#| msgid "Categories"
+msgid "categories"
+msgstr "الفئات"
+
+#: blog/apps/home/models.py:31
+#, fuzzy
+#| msgid "Home"
+msgid "Home page"
+msgstr "الرئيسية"
+
+#: blog/apps/home/models.py:32
+msgid "Home pages"
+msgstr "الصفحات الرئيسية"
+
+#: blog/apps/home/models.py:68 blog/apps/home/models.py:93
+#, fuzzy
+#| msgid "Article content"
+msgid "Page content"
+msgstr "محتوى المقال"
+
+#: blog/apps/home/models.py:73
+#, fuzzy
+#| msgid "About us"
+msgid "About us page"
+msgstr "من نحن"
+
+#: blog/apps/home/models.py:81
+#, fuzzy
+#| msgid "About us"
+msgid "About page"
+msgstr "من نحن"
+
+#: blog/apps/home/models.py:82
+#, fuzzy
+#| msgid "About us"
+msgid "About pages"
+msgstr "من نحن"
+
+#: blog/apps/home/models.py:98
+#, fuzzy
+#| msgid "Contact"
+msgid "Contact us page"
+msgstr "اتصل بنا"
+
+#: blog/apps/home/models.py:106
+#, fuzzy
+#| msgid "Contact"
+msgid "Contact page"
+msgstr "اتصل بنا"
+
+#: blog/apps/home/models.py:107
+#, fuzzy
+#| msgid "Contact"
+msgid "Contact pages"
+msgstr "اتصل بنا"
+
+#: blog/apps/links/models.py:25
+#, fuzzy
+#| msgid "articles"
+msgid "article"
+msgstr "مقالات"
+
+#: blog/apps/links/models.py:26
+#, fuzzy
+#| msgid "Saved articles"
+msgid "Related article"
+msgstr "المقالات المحفوظة"
+
+#: blog/apps/links/models.py:33 blog/apps/users/models.py:21
+msgid "slug"
+msgstr "رابط"
+
+#: blog/apps/links/models.py:34
+msgid "Link url"
+msgstr "رابط"
+
+#: blog/apps/links/models.py:39 blog/apps/links/models.py:44
+msgid "views"
+msgstr "المشاهدات"
+
+#: blog/apps/links/models.py:40 blog/apps/links/models.py:45
+#, fuzzy
+#| msgid "Article image"
+msgid "Article views"
+msgstr "صورة المقال"
+
+#: blog/apps/links/models.py:51
+#, fuzzy
+#| msgid "Linkedin"
+msgid "Link"
+msgstr "لينكدإن"
+
+#: blog/apps/links/models.py:52
+#, fuzzy
+#| msgid "Linkedin"
+msgid "Links"
+msgstr "لينكدإن"
+
+#: blog/apps/mixins.py:15 blog/apps/mixins.py:16
+#: blog/ui/templates/ui/articles/id.html:248
+#: blog/ui/templates/ui/blog/post.html:134
+msgid "Last update"
+msgstr "آخر تحديث"
+
+#: blog/apps/mixins.py:20 blog/apps/mixins.py:21
+msgid "Date created"
+msgstr "تاريخ الإنشاء"
+
+#: blog/apps/users/models.py:22
+msgid "Slug"
+msgstr "رابط قصير"
+
+#: blog/apps/users/models.py:28
+#, fuzzy
+#| msgid "User photo"
+msgid "User country"
+msgstr "صورة المستخدم"
+
+#: blog/apps/users/models.py:33
+msgid "phone number"
+msgstr "رقم الهاتف"
+
+#: blog/apps/users/models.py:34
+msgid "User phone number"
+msgstr "رقم هاتف المستخدم"
+
+#: blog/apps/users/models.py:41
+#, fuzzy
+#| msgid "Article image"
+msgid "Profile image"
+msgstr "صورة المقال"
+
+#: blog/apps/users/models.py:47
+msgid "bio"
+msgstr "معلومات عامة"
+
+#: blog/apps/users/models.py:48
+msgid "Tell us about yourself"
+msgstr "أخبرنا عن حولك"
+
+#: blog/cms/blocks.py:14
+msgid "Quote"
+msgstr "اقتباس"
+
+#: blog/cms/blocks.py:15
+msgid "Rich Text"
+msgstr "النص"
+
+#: blog/cms/blocks.py:21
+msgid "Video"
+msgstr "فيديو"
+
+#: blog/cms/blocks.py:22
+msgid "Image"
+msgstr "صورة"
+
+#: blog/cms/blocks.py:23
+msgid "Document"
+msgstr "مستند"
+
+#: blog/ui/templates/registration/base.html:4
+#: blog/ui/templates/registration/base.html:69
+#: blog/ui/templates/registration/base.html:76
+#: blog/ui/templates/registration/base.html:169
+#: blog/ui/templates/registration/base.html:196
+#: blog/ui/templates/registration/base.html:236
+#: blog/ui/templates/rest_framework/api.html:139
+#: blog/ui/templates/ui/base.html:313 blog/ui/templates/ui/base.html:320
+#: blog/ui/templates/ui/base.html:459 blog/ui/templates/ui/base.html:466
+#: blog/ui/templates/ui/base.html:909
+msgid "Profile"
+msgstr "الملف الشخصي"
+
+#: blog/ui/templates/registration/base.html:26
+#: blog/ui/templates/registration/base.html:34
+#: blog/ui/templates/registration/base.html:155
+#: blog/ui/templates/registration/base.html:159
+#: blog/ui/templates/registration/base.html:163
+#: blog/ui/templates/ui/base.html:129 blog/ui/templates/ui/base.html:137
+#: blog/ui/templates/ui/base.html:384 blog/ui/templates/ui/base.html:393
+msgid "Open drawer"
+msgstr "افتح القائمة"
+
+#: blog/ui/templates/registration/base.html:30 blog/ui/templates/ui/base.html:133
+#: blog/ui/templates/ui/base.html:388 blog/ui/templates/ui/base.html:688
+#: blog/ui/templates/ui/base.html:725
+#, fuzzy
+#| msgid "Close drawer"
+msgid "close sidebar"
+msgstr "أغلق القائمة"
+
+#: blog/ui/templates/registration/base.html:41
+#: blog/ui/templates/registration/base.html:57
+#: blog/ui/templates/registration/base.html:208
+#: blog/ui/templates/registration/logged_out.html:15
+#: blog/ui/templates/registration/logged_out.html:27
+#: blog/ui/templates/registration/login.html:15
+#: blog/ui/templates/registration/login.html:27
+#: blog/ui/templates/registration/password_reset_complete.html:15
+#: blog/ui/templates/registration/password_reset_complete.html:27
+#: blog/ui/templates/registration/password_reset_confirm.html:15
+#: blog/ui/templates/registration/password_reset_confirm.html:27
+#: blog/ui/templates/registration/password_reset_done.html:15
+#: blog/ui/templates/registration/password_reset_done.html:27
+#: blog/ui/templates/registration/password_reset_form.html:15
+#: blog/ui/templates/registration/password_reset_form.html:27
+#: blog/ui/templates/registration/signup.html:15
+#: blog/ui/templates/registration/signup.html:27
+#: blog/ui/templates/rest_framework/api.html:4
+#: blog/ui/templates/ui/articles/id.html:14
+#: blog/ui/templates/ui/articles/id.html:20
+#: blog/ui/templates/ui/articles/id.html:24
+#: blog/ui/templates/ui/articles/id.html:38
+#: blog/ui/templates/ui/articles/id.html:42 blog/ui/templates/ui/base.html:11
+#: blog/ui/templates/ui/base.html:104 blog/ui/templates/ui/base.html:121
+#: blog/ui/templates/ui/base.html:400 blog/ui/templates/ui/base.html:416
+#: blog/ui/templates/ui/base.html:639 blog/ui/templates/ui/base.html:645
+#: blog/ui/templates/ui/base.html:673 blog/ui/templates/ui/base.html:699
+#: blog/ui/templates/ui/base.html:714 blog/ui/templates/ui/blog/post.html:12
+#: blog/ui/templates/ui/blog/post.html:18 blog/ui/templates/ui/blog/post.html:22
+#: blog/ui/templates/ui/blog/post.html:33 blog/ui/templates/ui/blog/post.html:37
+msgid "Django blog"
+msgstr "النبأ اليقين"
+
+#: blog/ui/templates/registration/base.html:82
+#: blog/ui/templates/registration/base.html:89
+#: blog/ui/templates/registration/logged_out.html:40
+#: blog/ui/templates/registration/login.html:4
+#: blog/ui/templates/registration/login.html:34
+#: blog/ui/templates/registration/password_reset_complete.html:44
+#: blog/ui/templates/registration/password_reset_done.html:48
+#: blog/ui/templates/registration/signup.html:43
+#: blog/ui/templates/ui/base.html:354 blog/ui/templates/ui/base.html:361
+#: blog/ui/templates/ui/base.html:472 blog/ui/templates/ui/base.html:479
+#: blog/ui/templates/ui/base.html:929
+msgid "Log in"
+msgstr "تسجيل الدخول"
+
+#: blog/ui/templates/registration/base.html:94
+#: blog/ui/templates/registration/base.html:101
+#: blog/ui/templates/registration/logged_out.html:43
+#: blog/ui/templates/registration/login.html:62
+#: blog/ui/templates/registration/signup.html:4
+#: blog/ui/templates/registration/signup.html:34
+#: blog/ui/templates/ui/base.html:339 blog/ui/templates/ui/base.html:349
+#: blog/ui/templates/ui/base.html:484 blog/ui/templates/ui/base.html:494
+#: blog/ui/templates/ui/base.html:938
+msgid "Sign up"
+msgstr "إنشاء حساب"
+
+#: blog/ui/templates/registration/base.html:123
+#: blog/ui/templates/registration/base.html:131
+#: blog/ui/templates/registration/base.html:138
+#: blog/ui/templates/registration/base.html:145
+#: blog/ui/templates/ui/base.html:516 blog/ui/templates/ui/base.html:527
+#: blog/ui/templates/ui/base.html:534 blog/ui/templates/ui/base.html:541
+#: blog/ui/templates/ui/base.html:749 blog/ui/templates/ui/base.html:760
+#: blog/ui/templates/ui/search.html:6 blog/ui/templates/ui/search.html:12
+#: blog/ui/templates/ui/search.html:29
+msgid "Search"
+msgstr "بحث"
+
+#: blog/ui/templates/registration/base.html:186
+#: blog/ui/templates/registration/base.html:219
+msgid "Close drawer"
+msgstr "أغلق القائمة"
+
+#: blog/ui/templates/registration/base.html:215
+#: blog/ui/templates/registration/base.html:223
+#: blog/ui/templates/ui/articles/list.html:64
+#: blog/ui/templates/ui/articles/list.html:72
+#: blog/ui/templates/ui/articles/list.html:87 blog/ui/templates/ui/base.html:721
+#: blog/ui/templates/ui/base.html:729
+msgid "Close"
+msgstr "إغلاق"
+
+#: blog/ui/templates/registration/base.html:247
+#: blog/ui/templates/ui/base.html:157 blog/ui/templates/ui/base.html:167
+#: blog/ui/templates/ui/base.html:787
+msgid "Dashboard"
+msgstr "لوحة التحكم"
+
+#: blog/ui/templates/registration/base.html:263
+#: blog/ui/templates/registration/edit.html:4
+#: blog/ui/templates/registration/edit.html:9
+msgid "Settings"
+msgstr "الإعدادات"
+
+#: blog/ui/templates/registration/base.html:272
+msgid "Change Password"
+msgstr "تغيير كلمة المرور"
+
+#: blog/ui/templates/registration/base.html:284
+#: blog/ui/templates/registration/delete.html:4
+#: blog/ui/templates/registration/delete.html:8
+#: blog/ui/templates/registration/delete.html:14
+msgid "Delete account"
+msgstr "حذف الحساب"
+
+#: blog/ui/templates/registration/base.html:294
+#: blog/ui/templates/ui/base.html:325 blog/ui/templates/ui/base.html:333
+#: blog/ui/templates/ui/base.html:919
+msgid "Log out"
+msgstr "تسجيل الخروج"
+
+#: blog/ui/templates/registration/delete.html:18
+msgid "Are your sure that you want to delete your account?"
+msgstr "هل أنت متأكد أنك تريد حذف حسابك؟"
+
+#: blog/ui/templates/registration/delete.html:23
+msgid "This action is destructive!"
+msgstr "هذا الإجراء مدمر!"
+
+#: blog/ui/templates/registration/logged_out.html:4
+msgid "Logged out"
+msgstr "تم تسجيل الخروج"
+
+#: blog/ui/templates/registration/logged_out.html:34
+msgid "Logged Out"
+msgstr "تم تسجيل الخروج"
+
+#: blog/ui/templates/registration/logged_out.html:36
+msgid "Thanks for spending some quality time with us today."
+msgstr "شكرًا لقضاء بعض الوقت الثمين معنا اليوم."
+
+#: blog/ui/templates/registration/login.html:36
+msgid "Welcome, please login to continue."
+msgstr "مرحبًا، يرجى تسجيل الدخول للمتابعة."
+
+#: blog/ui/templates/registration/login.html:46
+msgid ""
+"Your account doesn't have access to this page. To proceed, please login with "
+"an account that has access. <!---->"
+msgstr ""
+"ليس لدى حسابك صلاحية الوصول إلى هذه الصفحة. للمتابعة، يرجى تسجيل الدخول "
+"بحساب لديه الصلاحية."
+
+#: blog/ui/templates/registration/login.html:68
+#: blog/ui/templates/registration/signup.html:49
+msgid "Forgot password?"
+msgstr "نسيت كلمة المرور؟"
+
+#: blog/ui/templates/registration/password_change_done.html:4
+msgid "Password Changed"
+msgstr "تم تغيير كلمة المرور"
+
+#: blog/ui/templates/registration/password_change_done.html:8
+#: blog/ui/templates/registration/password_change_form.html:8
+msgid "Password"
+msgstr "كلمة المرور"
+
+#: blog/ui/templates/registration/password_change_done.html:10
+#: blog/ui/templates/registration/password_change_form.html:9
+msgid "Change"
+msgstr "تغيير"
+
+#: blog/ui/templates/registration/password_change_done.html:12
+msgid "Done"
+msgstr "تم"
+
+#: blog/ui/templates/registration/password_change_done.html:19
+msgid "Congrats"
+msgstr "تهانينا"
+
+#: blog/ui/templates/registration/password_change_done.html:22
+msgid "Your password was changed."
+msgstr "تم تغيير كلمة المرور بنجاح."
+
+#: blog/ui/templates/registration/password_change_form.html:4
+msgid "Password Change"
+msgstr "تغيير كلمة المرور"
+
+#: blog/ui/templates/registration/password_change_form.html:16
+msgid "Change password"
+msgstr "تغيير كلمة المرور"
+
+#: blog/ui/templates/registration/password_change_form.html:20
+msgid ""
+"Please enter your old password, for security's sake, and then enter your new "
+"password twice so we can verify you typed it in correctly."
+msgstr ""
+"يرجى إدخال كلمة المرور القديمة حفاظًا على الأمان، ثم إدخال كلمة المرور "
+"الجديدة مرتين للتأكد من صحتها."
+
+#: blog/ui/templates/registration/password_reset_complete.html:4
+msgid "Password Reset"
+msgstr "إعادة تعيين كلمة المرور"
+
+#: blog/ui/templates/registration/password_reset_complete.html:35
+#: blog/ui/templates/registration/password_reset_confirm.html:4
+#: blog/ui/templates/registration/password_reset_confirm.html:35
+msgid "Password Reset Confirm"
+msgstr "تأكيد إعادة التعيين"
+
+#: blog/ui/templates/registration/password_reset_complete.html:39
+msgid "Your password has been set. You may go ahead and log in now."
+msgstr "تم تعيين كلمة المرور. يمكنك الآن تسجيل الدخول."
+
+#: blog/ui/templates/registration/password_reset_confirm.html:40
+msgid ""
+"Please enter your new password twice so we can verify you typed it in "
+"correctly."
+msgstr "يرجى إدخال كلمة المرور الجديدة مرتين للتأكد من صحتها."
+
+#: blog/ui/templates/registration/password_reset_confirm.html:47
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used. Please request a new password reset. <!---->"
+msgstr ""
+"رابط إعادة التعيين غير صالح، ربما لأنه استُخدم مسبقًا. يرجى طلب إعادة تعيين "
+"جديدة."
+
+#: blog/ui/templates/registration/password_reset_done.html:4
+#: blog/ui/templates/registration/password_reset_done.html:34
+msgid "Password Reset Done"
+msgstr "تمت إعادة التعيين"
+
+#: blog/ui/templates/registration/password_reset_done.html:37
+msgid ""
+"We've emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly."
+msgstr ""
+"أرسلنا لك تعليمات لإعادة تعيين كلمة المرور في حال وجود حساب مرتبط بالبريد "
+"الإلكتروني الذي أدخلته. ستصله قريبًا."
+
+#: blog/ui/templates/registration/password_reset_done.html:42
+msgid ""
+"If you don't receive an email, please make sure you've entered the address "
+"you registered with, and check your spam folder."
+msgstr ""
+"إذا لم تتلقَ البريد، فتأكد من إدخال العنوان المسجل وتحقق من مجلد الرسائل "
+"العشوائية."
+
+#: blog/ui/templates/registration/password_reset_email.html:6
+#, python-format
+msgid ""
+"You're receiving this email because you requested a password reset for your "
+"user account at %(site_name)s."
+msgstr ""
+"لقد تلقيت هذا البريد لأنك طلبت إعادة تعيين كلمة المرور لحسابك في "
+"%(site_name)s."
+
+#: blog/ui/templates/registration/password_reset_email.html:10
+msgid "Please go to the following page and choose a new password:"
+msgstr "يرجى الانتقال إلى الصفحة التالية واختيار كلمة مرور جديدة:"
+
+#: blog/ui/templates/registration/password_reset_email.html:16
+#, fuzzy
+#| msgid "Your username, in case you've forgotten:"
+msgid "Your username, in case you"
+msgstr "اسم المستخدم الخاص بك في حال نسيانه:"
+
+#: blog/ui/templates/registration/password_reset_email.html:18
+msgid "Thanks for using our site!"
+msgstr "شكرًا لاستخدامك موقعنا!"
+
+#: blog/ui/templates/registration/password_reset_email.html:20
+#, python-format
+msgid "The %(site_name)s team"
+msgstr "فريق %(site_name)s"
+
+#: blog/ui/templates/registration/password_reset_form.html:4
+#: blog/ui/templates/registration/password_reset_form.html:34
+#, fuzzy
+#| msgid "Reset Password"
+msgid "Reset password"
+msgstr "إعادة تعيين كلمة المرور"
+
+#: blog/ui/templates/registration/password_reset_form.html:37
+#, fuzzy
+#| msgid ""
+#| "Forgotten your password? Enter your email address below, and we'll email "
+#| "instructions for setting a new one."
+msgid ""
+"Forgotten your password? Enter your email address below, and we'll email "
+"instructions for setting a new one. <!---->"
+msgstr ""
+"نسيت كلمة المرور؟ أدخل بريدك الإلكتروني أدناه وسنرسل تعليمات لإعادة التعيين."
+
+#: blog/ui/templates/registration/profile.html:33
+msgid "Welcome to your Profile"
+msgstr "مرحبًا بك في ملفك الشخصي"
+
+#: blog/ui/templates/registration/signup.html:36
+msgid "Welcome, please signup to continue."
+msgstr "مرحبًا، يرجى إنشاء حساب للمتابعة."
+
+#: blog/ui/templates/rest_framework/api.html:24
+#: blog/ui/templates/rest_framework/api.html:32
+#, fuzzy
+#| msgid "Django blog"
+msgid "Django blog | API"
+msgstr "النبأ اليقين"
+
+#: blog/ui/templates/rest_framework/api.html:47
+#: blog/ui/templates/rest_framework/api.html:54
+#: blog/ui/templates/ui/base.html:143 blog/ui/templates/ui/base.html:150
+#: blog/ui/templates/ui/base.html:772
+msgid "Home"
+msgstr "الرئيسية"
+
+#: blog/ui/templates/rest_framework/api.html:59
+#: blog/ui/templates/rest_framework/api.html:66
+msgid "Pages"
+msgstr "الصفحات"
+
+#: blog/ui/templates/rest_framework/api.html:71
+#: blog/ui/templates/rest_framework/api.html:78
+#, fuzzy
+#| msgid "Image"
+msgid "Images"
+msgstr "صورة"
+
+#: blog/ui/templates/rest_framework/api.html:83
+#: blog/ui/templates/rest_framework/api.html:90
+#, fuzzy
+#| msgid "Document"
+msgid "Documents"
+msgstr "مستند"
+
+#: blog/ui/templates/rest_framework/api.html:95
+#: blog/ui/templates/rest_framework/api.html:102
+#: blog/ui/templates/ui/authors/id.html:36
+#: blog/ui/templates/ui/components/category.html:13
+msgid "Articles"
+msgstr "مقالات"
+
+#: blog/ui/templates/rest_framework/api.html:107
+#: blog/ui/templates/rest_framework/api.html:114
+#: blog/ui/templates/ui/base.html:176 blog/ui/templates/ui/base.html:183
+#: blog/ui/templates/ui/base.html:189 blog/ui/templates/ui/base.html:196
+#: blog/ui/templates/ui/base.html:806 blog/ui/templates/ui/base.html:816
+msgid "Categories"
+msgstr "الفئات"
+
+#: blog/ui/templates/rest_framework/api.html:119
+#: blog/ui/templates/rest_framework/api.html:126
+msgid "Users"
+msgstr "المستخدمون"
+
+#: blog/ui/templates/ui/articles/archive/day.html:11
+#: blog/ui/templates/ui/articles/archive/index.html:11
+#: blog/ui/templates/ui/articles/archive/month.html:11
+#: blog/ui/templates/ui/articles/archive/year.html:11
+#: blog/ui/templates/ui/articles/id.html:14
+#: blog/ui/templates/ui/articles/id.html:20
+#: blog/ui/templates/ui/articles/id.html:24
+#: blog/ui/templates/ui/articles/id.html:38
+#: blog/ui/templates/ui/articles/id.html:42 blog/ui/templates/ui/base.html:562
+msgid "News"
+msgstr "الأخبار"
+
+#: blog/ui/templates/ui/articles/archive/day.html:18
+#: blog/ui/templates/ui/articles/archive/day.html:28
+#: blog/ui/templates/ui/articles/archive/index.html:18
+#: blog/ui/templates/ui/articles/archive/index.html:28
+#: blog/ui/templates/ui/articles/archive/month.html:18
+#: blog/ui/templates/ui/articles/archive/month.html:28
+#: blog/ui/templates/ui/articles/archive/year.html:18
+#: blog/ui/templates/ui/articles/archive/year.html:28
+#: blog/ui/templates/ui/components/pagination.html:8
+#: blog/ui/templates/ui/components/pagination.html:15
+msgid "Previous"
+msgstr "السابق"
+
+#: blog/ui/templates/ui/articles/archive/day.html:36
+#: blog/ui/templates/ui/articles/archive/day.html:46
+#: blog/ui/templates/ui/articles/archive/index.html:36
+#: blog/ui/templates/ui/articles/archive/index.html:46
+#: blog/ui/templates/ui/articles/archive/month.html:36
+#: blog/ui/templates/ui/articles/archive/month.html:46
+#: blog/ui/templates/ui/articles/archive/year.html:36
+#: blog/ui/templates/ui/articles/archive/year.html:46
+#: blog/ui/templates/ui/components/pagination.html:53
+#: blog/ui/templates/ui/components/pagination.html:63
+msgid "Next"
+msgstr "التالي"
+
+#: blog/ui/templates/ui/articles/archive/day.html:65
+#: blog/ui/templates/ui/articles/archive/month.html:65
+#: blog/ui/templates/ui/articles/list.html:46
+#: blog/ui/templates/ui/authors/id.html:51
+#: blog/ui/templates/ui/blog/index.html:48
+#, fuzzy
+#| msgid "articles"
+msgid "No articles"
+msgstr "مقالات"
+
+#: blog/ui/templates/ui/articles/archive/day.html:66
+#: blog/ui/templates/ui/articles/archive/month.html:66
+msgid "No articles published on"
+msgstr "لم يتم نشر شيء"
+
+#: blog/ui/templates/ui/articles/archive/index.html:4
+#: blog/ui/templates/ui/articles/archive/index.html:11
+#: blog/ui/templates/ui/base.html:203 blog/ui/templates/ui/base.html:213
+#: blog/ui/templates/ui/base.html:827
+msgid "Archive"
+msgstr "الأرشيف"
+
+#: blog/ui/templates/ui/articles/archive/index.html:62
+#: blog/ui/templates/ui/articles/archive/year.html:65
+#: blog/ui/templates/ui/components/article-1.html:8
+#: blog/ui/templates/ui/components/article-2.html:8
+#: blog/ui/templates/ui/components/article.html:14
+msgid "Read"
+msgstr "اقرأ"
+
+#: blog/ui/templates/ui/articles/archive/index.html:76
+#: blog/ui/templates/ui/articles/archive/year.html:79
+msgid "None available"
+msgstr "لا توجد"
+
+#: blog/ui/templates/ui/articles/id.html:80
+#: blog/ui/templates/ui/components/article-1.html:57
+#: blog/ui/templates/ui/components/article-2.html:60
+#: blog/ui/templates/ui/components/article.html:74
+msgid "Category"
+msgstr "الفئة"
+
+#: blog/ui/templates/ui/articles/id.html:93
+#: blog/ui/templates/ui/articles/id.html:99
+#: blog/ui/templates/ui/articles/list.html:11 blog/ui/templates/ui/base.html:424
+#: blog/ui/templates/ui/base.html:434
+#: blog/ui/templates/ui/components/article-1.html:24
+#: blog/ui/templates/ui/components/article-1.html:26
+#: blog/ui/templates/ui/components/article-2.html:27
+#: blog/ui/templates/ui/components/article-2.html:29
+#: blog/ui/templates/ui/components/article.html:40
+#: blog/ui/templates/ui/components/article.html:43
+#: blog/ui/templates/ui/index.html:10 blog/ui/templates/ui/index.html:12
+msgid "Breaking"
+msgstr "عاجل"
+
+#: blog/ui/templates/ui/articles/id.html:155
+#: blog/ui/templates/ui/blog/post.html:86
+msgid "Translations"
+msgstr "الترجمات"
+
+#: blog/ui/templates/ui/articles/id.html:164 blog/ui/templates/ui/base.html:221
+#: blog/ui/templates/ui/base.html:230 blog/ui/templates/ui/base.html:239
+#: blog/ui/templates/ui/blog/post.html:95
+msgid "Language"
+msgstr "اللغة"
+
+#: blog/ui/templates/ui/articles/id.html:173
+#: blog/ui/templates/ui/blog/post.html:104
+msgid "Available in"
+msgstr "متاح في"
+
+#: blog/ui/templates/ui/articles/id.html:188
+#: blog/ui/templates/ui/blog/post.html:119
+msgid "None"
+msgstr "لا شيء"
+
+#: blog/ui/templates/ui/articles/id.html:196
+#: blog/ui/templates/ui/articles/id.html:212
+#: blog/ui/templates/ui/articles/id.html:307
+#, fuzzy
+#| msgid "Copy Link"
+msgid "Copy URL"
+msgstr "نسخ الرابط"
+
+#: blog/ui/templates/ui/articles/id.html:218
+#: blog/ui/templates/ui/articles/id.html:225
+msgid "Facebook"
+msgstr "فيسبوك"
+
+#: blog/ui/templates/ui/articles/id.html:236
+#: blog/ui/templates/ui/components/article-1.html:34
+#: blog/ui/templates/ui/components/article-2.html:37
+#: blog/ui/templates/ui/components/article.html:51
+msgid "Date published"
+msgstr "تاريخ النشر"
+
+#: blog/ui/templates/ui/articles/id.html:278
+msgid "More news from"
+msgstr "المزيد من أخبار"
+
+#: blog/ui/templates/ui/articles/id.html:300
+msgid "Copied"
+msgstr "تم النسخ"
+
+#: blog/ui/templates/ui/articles/list.html:4
+#: blog/ui/templates/ui/articles/list.html:15 blog/ui/templates/ui/index.html:42
+msgid "Latest News"
+msgstr "أحدث الأخبار"
+
+#: blog/ui/templates/ui/articles/list.html:21
+#: blog/ui/templates/ui/articles/list.html:29
+#: blog/ui/templates/ui/articles/list.html:60
+msgid "Filters"
+msgstr "تصفية"
+
+#: blog/ui/templates/ui/articles/list.html:47
+#: blog/ui/templates/ui/authors/id.html:52
+msgid "Published news articles will appear here"
+msgstr "المقالات المنشورة سوف تظهر هنا"
+
+#: blog/ui/templates/ui/authors/id.html:4
+msgid "Authors"
+msgstr "الكتّاب"
+
+#: blog/ui/templates/ui/base.html:15 blog/ui/templates/ui/base.html:24
+#: blog/ui/templates/ui/base.html:28 blog/ui/templates/ui/base.html:48
+#: blog/ui/templates/ui/base.html:52
+msgid "Django blog - Journalism with Certainty."
+msgstr "النبأ اليقين - صحافة باليقين"
+
+#: blog/ui/templates/ui/base.html:293 blog/ui/templates/ui/base.html:303
+msgid "Account"
+msgstr "الحساب"
+
+#: blog/ui/templates/ui/base.html:440 blog/ui/templates/ui/base.html:450
+msgid "Latest news"
+msgstr "أحدث الأخبار"
+
+#: blog/ui/templates/ui/base.html:560
+msgid "Services"
+msgstr "الخدمات"
+
+#: blog/ui/templates/ui/base.html:561
+msgid "Ads"
+msgstr "الإعلانات"
+
+#: blog/ui/templates/ui/base.html:565
+msgid "Company"
+msgstr "الشركة"
+
+#: blog/ui/templates/ui/base.html:571 blog/ui/templates/ui/base.html:578
+#: blog/ui/templates/ui/base.html:838 blog/ui/templates/ui/base.html:848
+#: blog/ui/templates/ui/blog/post.html:12 blog/ui/templates/ui/blog/post.html:18
+#: blog/ui/templates/ui/blog/post.html:22 blog/ui/templates/ui/blog/post.html:33
+#: blog/ui/templates/ui/blog/post.html:37
+msgid "Blog"
+msgstr "المدونة"
+
+#: blog/ui/templates/ui/base.html:584 blog/ui/templates/ui/base.html:591
+#: blog/ui/templates/ui/base.html:861 blog/ui/templates/ui/base.html:871
+msgid "About us"
+msgstr "من نحن"
+
+#: blog/ui/templates/ui/base.html:597 blog/ui/templates/ui/base.html:604
+#: blog/ui/templates/ui/base.html:884 blog/ui/templates/ui/base.html:894
+msgid "Contact us"
+msgstr "اتصل بنا"
+
+#: blog/ui/templates/ui/base.html:609
+msgid "Legal"
+msgstr "القانونية"
+
+#: blog/ui/templates/ui/base.html:611
+msgid "Terms of use"
+msgstr "شروط الاستخدام"
+
+#: blog/ui/templates/ui/base.html:614
+msgid "Privacy policy"
+msgstr "سياسة الخصوصية"
+
+#: blog/ui/templates/ui/base.html:617
+msgid "Cookie policy"
+msgstr "سياسة ملفات تعريف الارتباط"
+
+#: blog/ui/templates/ui/base.html:647
+msgid "Journalism with Certainty"
+msgstr "النبأ اليقين - صحافة باليقين"
+
+#: blog/ui/templates/ui/blog/index.html:32
+msgid "Learn more"
+msgstr "المزيد"
+
+#: blog/ui/templates/ui/blog/index.html:49
+#, fuzzy
+#| msgid "Saved articles"
+msgid "Published blog articles will appear here"
+msgstr "المقالات المحفوظة"
+
+#: blog/ui/templates/ui/components/form.html:28
+msgid "Submit"
+msgstr "إرسال"
+
+#: blog/ui/templates/ui/components/pagination.html:21
+#: blog/ui/templates/ui/components/pagination.html:24
+msgid "First"
+msgstr "الأول"
+
+#: blog/ui/templates/ui/components/pagination.html:31
+msgid "Current"
+msgstr "الحالي"
+
+#: blog/ui/templates/ui/components/pagination.html:34
+msgid "of"
+msgstr "من"
+
+#: blog/ui/templates/ui/components/pagination.html:41
+#: blog/ui/templates/ui/components/pagination.html:47
+msgid "Last"
+msgstr "الأخير"
+
+#: blog/ui/templates/ui/index.html:5
+msgid "Latest news around the world"
+msgstr "آخر الأخبار من العالم"
+
+#: blog/ui/templates/ui/index.html:26
+msgid "Trending now"
+msgstr "يتصدر الآن"
+
+#: blog/ui/templates/ui/search.html:33
+msgid "Go"
+msgstr "اذهب"
+
+#: blog/ui/templates/ui/search.html:40
+msgid "Search results"
+msgstr "نتائج البحث"
+
+#: blog/ui/templates/ui/search.html:49
+msgid "No results found"
+msgstr "لا توجد نتائج"
+
+#: blog/ui/views.py:39
+msgid "Your account was created successfully!"
+msgstr "تم إنشاء حسابك بنجاح"
+
+#: blog/ui/views.py:73
+msgid "Your account was updated successfully!"
+msgstr "تم تحديث حسابك بنجاح"
+
+#: blog/ui/views.py:97
+msgid "Your account was deleted successfully!"
+msgstr "تم حذف حسابك بنجاح"
