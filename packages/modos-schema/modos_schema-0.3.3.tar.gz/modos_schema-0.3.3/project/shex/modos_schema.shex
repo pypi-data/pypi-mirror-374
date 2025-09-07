@@ -1,0 +1,174 @@
+# metamodel_version: 1.7.0
+BASE <https://w3id.org/sdsc-ordes/modos-schema/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX linkml: <https://w3id.org/linkml/>
+PREFIX EDAM: <http://edamontology.org/>
+PREFIX schema1: <http://schema.org/>
+
+
+linkml:String xsd:string
+
+linkml:Integer xsd:integer
+
+linkml:Boolean xsd:boolean
+
+linkml:Float xsd:float
+
+linkml:Double xsd:double
+
+linkml:Decimal xsd:decimal
+
+linkml:Time xsd:time
+
+linkml:Date xsd:date
+
+linkml:Datetime xsd:dateTime
+
+linkml:DateOrDatetime linkml:DateOrDatetime
+
+linkml:Uriorcurie IRI
+
+linkml:Curie xsd:string
+
+linkml:Uri IRI
+
+linkml:Ncname xsd:string
+
+linkml:Objectidentifier IRI
+
+linkml:Nodeidentifier NONLITERAL
+
+linkml:Jsonpointer xsd:string
+
+linkml:Jsonpath xsd:string
+
+linkml:Sparqlpath xsd:string
+
+<AlignmentSet> CLOSED {
+    (  $<AlignmentSet_tes> (  &<DataEntity_tes> ;
+          rdf:type [ <DataEntity> ] ?
+       ) ;
+       rdf:type [ <AlignmentSet> ]
+    )
+}
+
+<Array> CLOSED {
+    (  $<Array_tes> (  &<DataEntity_tes> ;
+          rdf:type [ <DataEntity> ] ?
+       ) ;
+       rdf:type [ <Array> ]
+    )
+}
+
+<Assay> CLOSED {
+    (  $<Assay_tes> (  &<NamedThing_tes> ;
+          rdf:type [ schema1:Thing ] ? ;
+          <has_sample> @<Sample> * ;
+          <has_data> @<DataEntity> * ;
+          <omics_type> [ <http://purl.obolibrary.org/obo/NCIT_C84343> <http://purl.obolibrary.org/obo/NCIT_C153189>
+             <http://purl.obolibrary.org/obo/NCIT_C49019> <http://purl.obolibrary.org/obo/NCIT_C20085> ] + ;
+          <sample_processing> @linkml:Uriorcurie *
+       ) ;
+       rdf:type [ <Assay> ]
+    )
+}
+
+<DataEntity>  (
+    CLOSED {
+       (  $<DataEntity_tes> (  &<NamedThing_tes> ;
+             rdf:type [ schema1:Thing ] ? ;
+             <data_path> @linkml:String ;
+             <data_format> [ EDAM:format_3462 EDAM:format_1930 EDAM:format_3915 EDAM:format_1929 EDAM:format_3016 EDAM:format_3020
+                EDAM:format_3681 EDAM:format_3475 EDAM:format_3464 ] ;
+             <has_sample> @<Sample> * ;
+             <has_reference> @<ReferenceGenome> * ;
+             <data_checksum> @linkml:String ?
+          ) ;
+          rdf:type [ <DataEntity> ]
+       )
+    } OR @<AlignmentSet> OR @<Array> OR @<MassSpectrometryResults> OR @<VariantSet>
+)
+
+<MassSpectrometryResults> CLOSED {
+    (  $<MassSpectrometryResults_tes> (  &<DataEntity_tes> ;
+          rdf:type [ <DataEntity> ] ?
+       ) ;
+       rdf:type [ <MassSpectrometryResults> ]
+    )
+}
+
+<MODO> CLOSED {
+    (  $<MODO_tes> (  &<NamedThing_tes> ;
+          rdf:type [ schema1:Thing ] ? ;
+          <creation_date> @linkml:Datetime ;
+          <has_assay> @<Assay> * ;
+          <last_update_date> @linkml:Datetime ;
+          <source_uri> @linkml:Uri ?
+       ) ;
+       rdf:type [ <MODO> ]
+    )
+}
+
+<MODOCollection> CLOSED {
+    (  $<MODOCollection_tes> <entries> @<MODO> * ;
+       rdf:type [ <MODOCollection> ] ?
+    )
+}
+
+<NamedThing>  (
+    CLOSED {
+       (  $<NamedThing_tes> (  schema1:name @linkml:String ? ;
+             schema1:description @linkml:String ?
+          ) ;
+          rdf:type [ schema1:Thing ]
+       )
+    } OR @<Assay> OR @<DataEntity> OR @<MODO> OR @<ReferenceGenome> OR @<ReferenceSequence> OR @<Sample>
+)
+
+<ReferenceGenome> CLOSED {
+    (  $<ReferenceGenome_tes> (  &<NamedThing_tes> ;
+          rdf:type [ schema1:Thing ] ? ;
+          <data_path> @linkml:String ;
+          <has_sequence> @<ReferenceSequence> * ;
+          <taxon_id> @linkml:Uriorcurie * ;
+          <source_uri> @linkml:Uri ? ;
+          <version> @linkml:String ?
+       ) ;
+       rdf:type [ <ReferenceGenome> ]
+    )
+}
+
+<ReferenceSequence> CLOSED {
+    (  $<ReferenceSequence_tes> (  &<NamedThing_tes> ;
+          rdf:type [ schema1:Thing ] ? ;
+          <sequence_md5> @linkml:String ? ;
+          <source_uri> @linkml:Uri ? ;
+          <version> @linkml:String ?
+       ) ;
+       rdf:type [ <ReferenceSequence> ]
+    )
+}
+
+<Sample> CLOSED {
+    (  $<Sample_tes> (  &<NamedThing_tes> ;
+          rdf:type [ schema1:Thing ] ? ;
+          <cell_type> @linkml:Uriorcurie ? ;
+          <source_material> @linkml:Uriorcurie ? ;
+          <sex> [ <https://w3id.org/sdsc-ordes/modos-schema/Sex#Male> <https://w3id.org/sdsc-ordes/modos-schema/Sex#Female> ] ? ;
+          <taxon_id> @linkml:Uriorcurie * ;
+          <collector> @linkml:String * ;
+          <source_uri> @linkml:Uri ?
+       ) ;
+       rdf:type [ <Sample> ]
+    )
+}
+
+<VariantSet> CLOSED {
+    (  $<VariantSet_tes> (  &<DataEntity_tes> ;
+          rdf:type [ <DataEntity> ] ?
+       ) ;
+       rdf:type [ <VariantSet> ]
+    )
+}
+

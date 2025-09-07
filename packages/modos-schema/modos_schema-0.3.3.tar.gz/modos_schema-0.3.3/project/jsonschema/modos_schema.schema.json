@@ -1,0 +1,818 @@
+{
+    "$defs": {
+        "AlignmentSet": {
+            "additionalProperties": false,
+            "description": "A data entity consisting of genomic intervals aligned to a reference.",
+            "properties": {
+                "data_checksum": {
+                    "description": "The pre-computed BLAKE2b hash uniquely representing a file content.",
+                    "pattern": "^[0-9a-fA-F]{128}$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "data_format": {
+                    "$ref": "#/$defs/DataFormat",
+                    "description": "Data/file format associated with a data entity."
+                },
+                "data_path": {
+                    "description": "The path to access a resource, on a network or local filesystem. Can be a path relative to the root of the digital object, a URL, or an absolute path.",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "A human-readable description for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "has_reference": {
+                    "description": "Specifies the reference coordinate system used by an omics dataset.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "has_sample": {
+                    "description": "Biological sample included or described by a given thing.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "A unique identifier for a thing",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A human-readable name for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "data_path",
+                "data_format",
+                "id"
+            ],
+            "title": "AlignmentSet",
+            "type": "object"
+        },
+        "Array": {
+            "additionalProperties": false,
+            "description": "Data entity consisting of an N-dimensional array.",
+            "properties": {
+                "data_checksum": {
+                    "description": "The pre-computed BLAKE2b hash uniquely representing a file content.",
+                    "pattern": "^[0-9a-fA-F]{128}$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "data_format": {
+                    "$ref": "#/$defs/DataFormat",
+                    "description": "Data/file format associated with a data entity."
+                },
+                "data_path": {
+                    "description": "The path to access a resource, on a network or local filesystem. Can be a path relative to the root of the digital object, a URL, or an absolute path.",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "A human-readable description for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "has_reference": {
+                    "description": "Specifies the reference coordinate system used by an omics dataset.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "has_sample": {
+                    "description": "Biological sample included or described by a given thing.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "A unique identifier for a thing",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A human-readable name for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "data_path",
+                "data_format",
+                "id"
+            ],
+            "title": "Array",
+            "type": "object"
+        },
+        "Assay": {
+            "additionalProperties": false,
+            "description": "A coordinated set of actions designed to generate data from samples.",
+            "properties": {
+                "description": {
+                    "description": "A human-readable description for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "has_data": {
+                    "description": "Data entity included in a given collection.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "has_sample": {
+                    "description": "Biological sample included or described by a given thing.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "A unique identifier for a thing",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A human-readable name for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "omics_type": {
+                    "description": "The type of omics considered.",
+                    "items": {
+                        "$ref": "#/$defs/OmicsType"
+                    },
+                    "type": "array"
+                },
+                "sample_processing": {
+                    "description": "Codes describing sample processing, preparation or handling steps.\nThe order of the codes should reflect the order in which the steps were performed.\nShould be codes from [MSIO](https://bioregistry.io/registry/msio) or [OBI](https://obofoundry.org/ontology/obi.html)].\n",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "omics_type",
+                "id"
+            ],
+            "title": "Assay",
+            "type": "object"
+        },
+        "DataEntity": {
+            "additionalProperties": false,
+            "description": "An entity containing data.",
+            "properties": {
+                "data_checksum": {
+                    "description": "The pre-computed BLAKE2b hash uniquely representing a file content.",
+                    "pattern": "^[0-9a-fA-F]{128}$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "data_format": {
+                    "$ref": "#/$defs/DataFormat",
+                    "description": "Data/file format associated with a data entity."
+                },
+                "data_path": {
+                    "description": "The path to access a resource, on a network or local filesystem. Can be a path relative to the root of the digital object, a URL, or an absolute path.",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "A human-readable description for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "has_reference": {
+                    "description": "Specifies the reference coordinate system used by an omics dataset.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "has_sample": {
+                    "description": "Biological sample included or described by a given thing.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "A unique identifier for a thing",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A human-readable name for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "data_path",
+                "data_format",
+                "id"
+            ],
+            "title": "DataEntity",
+            "type": "object"
+        },
+        "DataFormat": {
+            "description": "",
+            "enum": [
+                "CRAM",
+                "FASTQ",
+                "Zarr",
+                "FASTA",
+                "VCF",
+                "BCF",
+                "mzTab",
+                "TSV",
+                "JSON"
+            ],
+            "title": "DataFormat",
+            "type": "string"
+        },
+        "MODO": {
+            "additionalProperties": false,
+            "description": "Represents the Multi-Omics Digital Object. It encapsulates omics and other datasets and their metadata.",
+            "properties": {
+                "creation_date": {
+                    "description": "The date on which something was created.",
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "A human-readable description for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "has_assay": {
+                    "description": "An assay that was performed as part of a given thing.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "A unique identifier for a thing",
+                    "type": "string"
+                },
+                "last_update_date": {
+                    "description": "The date on which the thing was last modified.",
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A human-readable name for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "source_uri": {
+                    "description": "The URI from which a resource or dataset was obtained or derived.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "creation_date",
+                "last_update_date",
+                "id"
+            ],
+            "title": "MODO",
+            "type": "object"
+        },
+        "MODOCollection": {
+            "additionalProperties": false,
+            "description": "A holder for Multi-Omics Digital Objects",
+            "properties": {
+                "entries": {
+                    "additionalProperties": {
+                        "$ref": "#/$defs/MODO__identifier_optional"
+                    },
+                    "type": [
+                        "object",
+                        "null"
+                    ]
+                }
+            },
+            "title": "MODOCollection",
+            "type": "object"
+        },
+        "MODO__identifier_optional": {
+            "additionalProperties": false,
+            "description": "Represents the Multi-Omics Digital Object. It encapsulates omics and other datasets and their metadata.",
+            "properties": {
+                "creation_date": {
+                    "description": "The date on which something was created.",
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "A human-readable description for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "has_assay": {
+                    "description": "An assay that was performed as part of a given thing.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "A unique identifier for a thing",
+                    "type": "string"
+                },
+                "last_update_date": {
+                    "description": "The date on which the thing was last modified.",
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A human-readable name for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "source_uri": {
+                    "description": "The URI from which a resource or dataset was obtained or derived.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "creation_date",
+                "last_update_date"
+            ],
+            "title": "MODO",
+            "type": "object"
+        },
+        "MassSpectrometryResults": {
+            "additionalProperties": false,
+            "description": "A data entity consisting of quantitative results from a mass spectrometry experiment.",
+            "properties": {
+                "data_checksum": {
+                    "description": "The pre-computed BLAKE2b hash uniquely representing a file content.",
+                    "pattern": "^[0-9a-fA-F]{128}$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "data_format": {
+                    "$ref": "#/$defs/DataFormat",
+                    "description": "Data/file format associated with a data entity."
+                },
+                "data_path": {
+                    "description": "The path to access a resource, on a network or local filesystem. Can be a path relative to the root of the digital object, a URL, or an absolute path.",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "A human-readable description for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "has_reference": {
+                    "description": "Specifies the reference coordinate system used by an omics dataset.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "has_sample": {
+                    "description": "Biological sample included or described by a given thing.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "A unique identifier for a thing",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A human-readable name for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "data_path",
+                "data_format",
+                "id"
+            ],
+            "title": "MassSpectrometryResults",
+            "type": "object"
+        },
+        "NamedThing": {
+            "additionalProperties": false,
+            "description": "A generic grouping for any identifiable entity",
+            "properties": {
+                "description": {
+                    "description": "A human-readable description for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "A unique identifier for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "name": {
+                    "description": "A human-readable name for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "title": "NamedThing",
+            "type": "object"
+        },
+        "OmicsType": {
+            "description": "",
+            "enum": [
+                "GENOMICS",
+                "TRANSCRIPTOMICS",
+                "METABOLOMICS",
+                "PROTEOMICS"
+            ],
+            "title": "OmicsType",
+            "type": "string"
+        },
+        "ReferenceGenome": {
+            "additionalProperties": false,
+            "description": "Reference assembly of a given genome, consisting of a collection of congiguous sequences (contigs).",
+            "properties": {
+                "data_path": {
+                    "description": "The path to access a resource, on a network or local filesystem. Can be a path relative to the root of the digital object, a URL, or an absolute path.",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "A human-readable description for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "has_sequence": {
+                    "description": "Denotes that a sequence belongs to a collection (e.g. a reference genome).",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "A unique identifier for a thing",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A human-readable name for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "source_uri": {
+                    "description": "The URI from which a resource or dataset was obtained or derived.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "taxon_id": {
+                    "description": "The NCBI taxon code from [ncbitaxon](https://obofoundry.org/ontology/ncbitaxon.html) describing the taxonomic range of a sample.\n",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "version": {
+                    "description": "A string specifying the release or version of a software or resource.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "data_path",
+                "id"
+            ],
+            "title": "ReferenceGenome",
+            "type": "object"
+        },
+        "ReferenceSequence": {
+            "additionalProperties": false,
+            "description": "A contiguous sequence of DNA part of a reference coordinate system (genome assembly).",
+            "properties": {
+                "description": {
+                    "description": "A human-readable description for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "A unique identifier for a thing",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A human-readable name for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sequence_md5": {
+                    "description": "The pre-computed hash uniquely representing a biological sequence. Calculated as the MD5 of the upper-case sequence excluding all whitespace characters (this is equivalent to SQ:M5 in SAM).",
+                    "pattern": "^[a-f0-9]{32}$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "source_uri": {
+                    "description": "The URI from which a resource or dataset was obtained or derived.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "version": {
+                    "description": "A string specifying the release or version of a software or resource.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "title": "ReferenceSequence",
+            "type": "object"
+        },
+        "Sample": {
+            "additionalProperties": false,
+            "description": "A biological sample used in assays. Examples include a whole organism, tissue or cell line.",
+            "properties": {
+                "cell_type": {
+                    "description": "The cell type of the sample, if applicable.\nShould be a cell type code URI from the cell ontology.\nSee: [https://bioregistry.io/registry/cl](https://bioregistry.io/registry/cl)\n",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "collector": {
+                    "description": "The organization responsible for collecting a given sample.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "description": {
+                    "description": "A human-readable description for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "A unique identifier for a thing",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A human-readable name for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sex": {
+                    "$ref": "#/$defs/Sex",
+                    "description": "The biological sex of a sample."
+                },
+                "source_material": {
+                    "description": "The biological source from which the sample was isolated (tissue, organ).\nShould be a code URI from the [UBERON](https://bioregistry.io/registry/uberon) ontology or [fairgenomes biospecimen types](https://raw.githubusercontent.com/fairgenomes/fairgenomes-semantic-model/refs/tags/v1.2/generated/ontology/fair-genomes-biospecimentypes.ttl).\n",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "source_uri": {
+                    "description": "The URI from which a resource or dataset was obtained or derived.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "taxon_id": {
+                    "description": "The NCBI taxon code from [ncbitaxon](https://obofoundry.org/ontology/ncbitaxon.html) describing the taxonomic range of a sample.\n",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "title": "Sample",
+            "type": "object"
+        },
+        "Sex": {
+            "description": "",
+            "enum": [
+                "Male",
+                "Female"
+            ],
+            "title": "Sex",
+            "type": "string"
+        },
+        "VariantSet": {
+            "additionalProperties": false,
+            "description": "A data entity consisting of genomic variants relative to a reference.",
+            "properties": {
+                "data_checksum": {
+                    "description": "The pre-computed BLAKE2b hash uniquely representing a file content.",
+                    "pattern": "^[0-9a-fA-F]{128}$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "data_format": {
+                    "$ref": "#/$defs/DataFormat",
+                    "description": "Data/file format associated with a data entity."
+                },
+                "data_path": {
+                    "description": "The path to access a resource, on a network or local filesystem. Can be a path relative to the root of the digital object, a URL, or an absolute path.",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "A human-readable description for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "has_reference": {
+                    "description": "Specifies the reference coordinate system used by an omics dataset.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "has_sample": {
+                    "description": "Biological sample included or described by a given thing.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "A unique identifier for a thing",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A human-readable name for a thing",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "data_path",
+                "data_format",
+                "id"
+            ],
+            "title": "VariantSet",
+            "type": "object"
+        }
+    },
+    "$id": "https://w3id.org/sdsc-ordes/modos-schema",
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "additionalProperties": true,
+    "description": "A holder for Multi-Omics Digital Objects",
+    "metamodel_version": "1.7.0",
+    "properties": {
+        "entries": {
+            "additionalProperties": {
+                "$ref": "#/$defs/MODO__identifier_optional"
+            },
+            "type": [
+                "object",
+                "null"
+            ]
+        }
+    },
+    "title": "modos-schema",
+    "type": "object",
+    "version": null
+}

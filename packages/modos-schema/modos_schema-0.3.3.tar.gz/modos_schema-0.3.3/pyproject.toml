@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "modos_schema"
+version = "0.3.3"
+description = "Metadata schema for the Multi-Omics Digital Object System"
+authors = ["Cyril Matthey-Doret"]
+license = "Apache-2.0"
+readme = "README.md"
+include = ["README.md", "src/modos_schema/schema", "project"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+linkml-runtime = "^1.9.1"
+
+[tool.poetry.group.dev.dependencies]
+linkml = "^1.9.1"
+
+[tool.poetry-dynamic-versioning]
+enable = false
+vcs = "git"
+style = "pep440"
+
+[tool.poetry.dev-dependencies]
+linkml = "^1.6"
+mkdocs-material = "^8.2.8"
+mkdocs-mermaid2-plugin = "^1.1.1"
+schemasheets = "^0.1.14"
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.poetry.extras]
+docs = ["linkml", "mkdocs-material"]

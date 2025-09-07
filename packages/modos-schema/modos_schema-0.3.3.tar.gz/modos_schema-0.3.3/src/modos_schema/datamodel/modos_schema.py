@@ -1,0 +1,709 @@
+# Auto generated from modos_schema.yaml by pythongen.py version: 0.0.1
+# Generation date: 2025-09-06T14:45:21
+# Schema: modos-schema
+#
+# id: https://w3id.org/sdsc-ordes/modos-schema
+# description: Metadata schema for the SMOC Multi-Omics Digital Object System
+# license: MIT
+
+import dataclasses
+import re
+from dataclasses import dataclass
+from datetime import (
+    date,
+    datetime,
+    time
+)
+from typing import (
+    Any,
+    ClassVar,
+    Dict,
+    List,
+    Optional,
+    Union
+)
+
+from jsonasobj2 import (
+    JsonObj,
+    as_dict
+)
+from linkml_runtime.linkml_model.meta import (
+    EnumDefinition,
+    PermissibleValue,
+    PvFormulaOptions
+)
+from linkml_runtime.utils.curienamespace import CurieNamespace
+from linkml_runtime.utils.enumerations import EnumDefinitionImpl
+from linkml_runtime.utils.formatutils import (
+    camelcase,
+    sfx,
+    underscore
+)
+from linkml_runtime.utils.metamodelcore import (
+    bnode,
+    empty_dict,
+    empty_list
+)
+from linkml_runtime.utils.slot import Slot
+from linkml_runtime.utils.yamlutils import (
+    YAMLRoot,
+    extended_float,
+    extended_int,
+    extended_str
+)
+from rdflib import (
+    Namespace,
+    URIRef
+)
+
+from linkml_runtime.linkml_model.types import Datetime, String, Uri, Uriorcurie
+from linkml_runtime.utils.metamodelcore import URI, URIorCURIE, XSDDateTime
+
+metamodel_version = "1.7.0"
+version = None
+
+# Namespaces
+CL = CurieNamespace('CL', 'https://bioregistry.io/reference/cl:/')
+EDAM = CurieNamespace('EDAM', 'http://edamontology.org/')
+FG = CurieNamespace('FG', 'https://w3id.org/fair-genomes/ontology/')
+GENO = CurieNamespace('GENO', 'http://purl.obolibrary.org/obo/GENO_')
+NCIT = CurieNamespace('NCIT', 'http://purl.obolibrary.org/obo/NCIT_')
+UBERON = CurieNamespace('UBERON', 'http://purl.obolibrary.org/obo/UBERON_')
+BIOLINK = CurieNamespace('biolink', 'https://w3id.org/biolink/')
+BIOREGISTRY = CurieNamespace('bioregistry', 'https://bioregistry.io/registry/')
+BIOSCHEMAS = CurieNamespace('bioschemas', 'https://bioschemas.org/')
+EXAMPLE = CurieNamespace('example', 'https://example.org/')
+LINKML = CurieNamespace('linkml', 'https://w3id.org/linkml/')
+MODOS = CurieNamespace('modos', 'https://w3id.org/sdsc-ordes/modos-schema/')
+SCHEMA = CurieNamespace('schema', 'http://schema.org/')
+SPHN = CurieNamespace('sphn', 'https://biomedit.ch/rdf/sphn-schema/sphn#')
+DEFAULT_ = MODOS
+
+
+# Types
+
+# Class references
+class NamedThingId(URIorCURIE):
+    pass
+
+
+class MODOId(NamedThingId):
+    pass
+
+
+class AssayId(NamedThingId):
+    pass
+
+
+class SampleId(NamedThingId):
+    pass
+
+
+class DataEntityId(NamedThingId):
+    pass
+
+
+class ReferenceGenomeId(NamedThingId):
+    pass
+
+
+class ReferenceSequenceId(NamedThingId):
+    pass
+
+
+class AlignmentSetId(DataEntityId):
+    pass
+
+
+class VariantSetId(DataEntityId):
+    pass
+
+
+class MassSpectrometryResultsId(DataEntityId):
+    pass
+
+
+class ArrayId(DataEntityId):
+    pass
+
+
+@dataclass(repr=False)
+class NamedThing(YAMLRoot):
+    """
+    A generic grouping for any identifiable entity
+    """
+    _inherited_slots: ClassVar[list[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = SCHEMA["Thing"]
+    class_class_curie: ClassVar[str] = "schema:Thing"
+    class_name: ClassVar[str] = "NamedThing"
+    class_model_uri: ClassVar[URIRef] = MODOS.NamedThing
+
+    id: Union[str, NamedThingId] = None
+    name: Optional[str] = None
+    description: Optional[str] = None
+
+    def __post_init__(self, *_: str, **kwargs: Any):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, NamedThingId):
+            self.id = NamedThingId(self.id)
+
+        if self.name is not None and not isinstance(self.name, str):
+            self.name = str(self.name)
+
+        if self.description is not None and not isinstance(self.description, str):
+            self.description = str(self.description)
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass(repr=False)
+class MODO(NamedThing):
+    """
+    Represents the Multi-Omics Digital Object. It encapsulates omics and other datasets and their metadata.
+    """
+    _inherited_slots: ClassVar[list[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = MODOS["MODO"]
+    class_class_curie: ClassVar[str] = "modos:MODO"
+    class_name: ClassVar[str] = "MODO"
+    class_model_uri: ClassVar[URIRef] = MODOS.MODO
+
+    id: Union[str, MODOId] = None
+    creation_date: Union[str, XSDDateTime] = None
+    last_update_date: Union[str, XSDDateTime] = None
+    has_assay: Optional[Union[Union[str, AssayId], list[Union[str, AssayId]]]] = empty_list()
+    source_uri: Optional[Union[str, URI]] = None
+
+    def __post_init__(self, *_: str, **kwargs: Any):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, MODOId):
+            self.id = MODOId(self.id)
+
+        if self._is_empty(self.creation_date):
+            self.MissingRequiredField("creation_date")
+        if not isinstance(self.creation_date, XSDDateTime):
+            self.creation_date = XSDDateTime(self.creation_date)
+
+        if self._is_empty(self.last_update_date):
+            self.MissingRequiredField("last_update_date")
+        if not isinstance(self.last_update_date, XSDDateTime):
+            self.last_update_date = XSDDateTime(self.last_update_date)
+
+        if not isinstance(self.has_assay, list):
+            self.has_assay = [self.has_assay] if self.has_assay is not None else []
+        self.has_assay = [v if isinstance(v, AssayId) else AssayId(v) for v in self.has_assay]
+
+        if self.source_uri is not None and not isinstance(self.source_uri, URI):
+            self.source_uri = URI(self.source_uri)
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass(repr=False)
+class Assay(NamedThing):
+    """
+    A coordinated set of actions designed to generate data from samples.
+    """
+    _inherited_slots: ClassVar[list[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = MODOS["Assay"]
+    class_class_curie: ClassVar[str] = "modos:Assay"
+    class_name: ClassVar[str] = "Assay"
+    class_model_uri: ClassVar[URIRef] = MODOS.Assay
+
+    id: Union[str, AssayId] = None
+    omics_type: Union[Union[str, "OmicsType"], list[Union[str, "OmicsType"]]] = None
+    has_sample: Optional[Union[Union[str, SampleId], list[Union[str, SampleId]]]] = empty_list()
+    has_data: Optional[Union[Union[str, DataEntityId], list[Union[str, DataEntityId]]]] = empty_list()
+    sample_processing: Optional[Union[Union[str, URIorCURIE], list[Union[str, URIorCURIE]]]] = empty_list()
+
+    def __post_init__(self, *_: str, **kwargs: Any):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, AssayId):
+            self.id = AssayId(self.id)
+
+        if self._is_empty(self.omics_type):
+            self.MissingRequiredField("omics_type")
+        if not isinstance(self.omics_type, list):
+            self.omics_type = [self.omics_type] if self.omics_type is not None else []
+        self.omics_type = [v if isinstance(v, OmicsType) else OmicsType(v) for v in self.omics_type]
+
+        if not isinstance(self.has_sample, list):
+            self.has_sample = [self.has_sample] if self.has_sample is not None else []
+        self.has_sample = [v if isinstance(v, SampleId) else SampleId(v) for v in self.has_sample]
+
+        if not isinstance(self.has_data, list):
+            self.has_data = [self.has_data] if self.has_data is not None else []
+        self.has_data = [v if isinstance(v, DataEntityId) else DataEntityId(v) for v in self.has_data]
+
+        if not isinstance(self.sample_processing, list):
+            self.sample_processing = [self.sample_processing] if self.sample_processing is not None else []
+        self.sample_processing = [v if isinstance(v, URIorCURIE) else URIorCURIE(v) for v in self.sample_processing]
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass(repr=False)
+class Sample(NamedThing):
+    """
+    A biological sample used in assays. Examples include a whole organism, tissue or cell line.
+    """
+    _inherited_slots: ClassVar[list[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = MODOS["Sample"]
+    class_class_curie: ClassVar[str] = "modos:Sample"
+    class_name: ClassVar[str] = "Sample"
+    class_model_uri: ClassVar[URIRef] = MODOS.Sample
+
+    id: Union[str, SampleId] = None
+    cell_type: Optional[Union[str, URIorCURIE]] = None
+    source_material: Optional[Union[str, URIorCURIE]] = None
+    sex: Optional[Union[str, "Sex"]] = None
+    taxon_id: Optional[Union[Union[str, URIorCURIE], list[Union[str, URIorCURIE]]]] = empty_list()
+    collector: Optional[Union[str, list[str]]] = empty_list()
+    source_uri: Optional[Union[str, URI]] = None
+
+    def __post_init__(self, *_: str, **kwargs: Any):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, SampleId):
+            self.id = SampleId(self.id)
+
+        if self.cell_type is not None and not isinstance(self.cell_type, URIorCURIE):
+            self.cell_type = URIorCURIE(self.cell_type)
+
+        if self.source_material is not None and not isinstance(self.source_material, URIorCURIE):
+            self.source_material = URIorCURIE(self.source_material)
+
+        if self.sex is not None and not isinstance(self.sex, Sex):
+            self.sex = Sex(self.sex)
+
+        if not isinstance(self.taxon_id, list):
+            self.taxon_id = [self.taxon_id] if self.taxon_id is not None else []
+        self.taxon_id = [v if isinstance(v, URIorCURIE) else URIorCURIE(v) for v in self.taxon_id]
+
+        if not isinstance(self.collector, list):
+            self.collector = [self.collector] if self.collector is not None else []
+        self.collector = [v if isinstance(v, str) else str(v) for v in self.collector]
+
+        if self.source_uri is not None and not isinstance(self.source_uri, URI):
+            self.source_uri = URI(self.source_uri)
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass(repr=False)
+class DataEntity(NamedThing):
+    """
+    An entity containing data.
+    """
+    _inherited_slots: ClassVar[list[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = MODOS["DataEntity"]
+    class_class_curie: ClassVar[str] = "modos:DataEntity"
+    class_name: ClassVar[str] = "DataEntity"
+    class_model_uri: ClassVar[URIRef] = MODOS.DataEntity
+
+    id: Union[str, DataEntityId] = None
+    data_path: str = None
+    data_format: Union[str, "DataFormat"] = None
+    has_sample: Optional[Union[Union[str, SampleId], list[Union[str, SampleId]]]] = empty_list()
+    has_reference: Optional[Union[Union[str, ReferenceGenomeId], list[Union[str, ReferenceGenomeId]]]] = empty_list()
+    data_checksum: Optional[str] = None
+
+    def __post_init__(self, *_: str, **kwargs: Any):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, DataEntityId):
+            self.id = DataEntityId(self.id)
+
+        if self._is_empty(self.data_path):
+            self.MissingRequiredField("data_path")
+        if not isinstance(self.data_path, str):
+            self.data_path = str(self.data_path)
+
+        if self._is_empty(self.data_format):
+            self.MissingRequiredField("data_format")
+        if not isinstance(self.data_format, DataFormat):
+            self.data_format = DataFormat(self.data_format)
+
+        if not isinstance(self.has_sample, list):
+            self.has_sample = [self.has_sample] if self.has_sample is not None else []
+        self.has_sample = [v if isinstance(v, SampleId) else SampleId(v) for v in self.has_sample]
+
+        if not isinstance(self.has_reference, list):
+            self.has_reference = [self.has_reference] if self.has_reference is not None else []
+        self.has_reference = [v if isinstance(v, ReferenceGenomeId) else ReferenceGenomeId(v) for v in self.has_reference]
+
+        if self.data_checksum is not None and not isinstance(self.data_checksum, str):
+            self.data_checksum = str(self.data_checksum)
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass(repr=False)
+class ReferenceGenome(NamedThing):
+    """
+    Reference assembly of a given genome, consisting of a collection of congiguous sequences (contigs).
+    """
+    _inherited_slots: ClassVar[list[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = MODOS["ReferenceGenome"]
+    class_class_curie: ClassVar[str] = "modos:ReferenceGenome"
+    class_name: ClassVar[str] = "ReferenceGenome"
+    class_model_uri: ClassVar[URIRef] = MODOS.ReferenceGenome
+
+    id: Union[str, ReferenceGenomeId] = None
+    data_path: str = None
+    has_sequence: Optional[Union[Union[str, ReferenceSequenceId], list[Union[str, ReferenceSequenceId]]]] = empty_list()
+    taxon_id: Optional[Union[Union[str, URIorCURIE], list[Union[str, URIorCURIE]]]] = empty_list()
+    source_uri: Optional[Union[str, URI]] = None
+    version: Optional[str] = None
+
+    def __post_init__(self, *_: str, **kwargs: Any):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, ReferenceGenomeId):
+            self.id = ReferenceGenomeId(self.id)
+
+        if self._is_empty(self.data_path):
+            self.MissingRequiredField("data_path")
+        if not isinstance(self.data_path, str):
+            self.data_path = str(self.data_path)
+
+        if not isinstance(self.has_sequence, list):
+            self.has_sequence = [self.has_sequence] if self.has_sequence is not None else []
+        self.has_sequence = [v if isinstance(v, ReferenceSequenceId) else ReferenceSequenceId(v) for v in self.has_sequence]
+
+        if not isinstance(self.taxon_id, list):
+            self.taxon_id = [self.taxon_id] if self.taxon_id is not None else []
+        self.taxon_id = [v if isinstance(v, URIorCURIE) else URIorCURIE(v) for v in self.taxon_id]
+
+        if self.source_uri is not None and not isinstance(self.source_uri, URI):
+            self.source_uri = URI(self.source_uri)
+
+        if self.version is not None and not isinstance(self.version, str):
+            self.version = str(self.version)
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass(repr=False)
+class ReferenceSequence(NamedThing):
+    """
+    A contiguous sequence of DNA part of a reference coordinate system (genome assembly).
+    """
+    _inherited_slots: ClassVar[list[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = MODOS["ReferenceSequence"]
+    class_class_curie: ClassVar[str] = "modos:ReferenceSequence"
+    class_name: ClassVar[str] = "ReferenceSequence"
+    class_model_uri: ClassVar[URIRef] = MODOS.ReferenceSequence
+
+    id: Union[str, ReferenceSequenceId] = None
+    sequence_md5: Optional[str] = None
+    source_uri: Optional[Union[str, URI]] = None
+    version: Optional[str] = None
+
+    def __post_init__(self, *_: str, **kwargs: Any):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, ReferenceSequenceId):
+            self.id = ReferenceSequenceId(self.id)
+
+        if self.sequence_md5 is not None and not isinstance(self.sequence_md5, str):
+            self.sequence_md5 = str(self.sequence_md5)
+
+        if self.source_uri is not None and not isinstance(self.source_uri, URI):
+            self.source_uri = URI(self.source_uri)
+
+        if self.version is not None and not isinstance(self.version, str):
+            self.version = str(self.version)
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass(repr=False)
+class AlignmentSet(DataEntity):
+    """
+    A data entity consisting of genomic intervals aligned to a reference.
+    """
+    _inherited_slots: ClassVar[list[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = MODOS["AlignmentSet"]
+    class_class_curie: ClassVar[str] = "modos:AlignmentSet"
+    class_name: ClassVar[str] = "AlignmentSet"
+    class_model_uri: ClassVar[URIRef] = MODOS.AlignmentSet
+
+    id: Union[str, AlignmentSetId] = None
+    data_path: str = None
+    data_format: Union[str, "DataFormat"] = None
+
+    def __post_init__(self, *_: str, **kwargs: Any):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, AlignmentSetId):
+            self.id = AlignmentSetId(self.id)
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass(repr=False)
+class VariantSet(DataEntity):
+    """
+    A data entity consisting of genomic variants relative to a reference.
+    """
+    _inherited_slots: ClassVar[list[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = MODOS["VariantSet"]
+    class_class_curie: ClassVar[str] = "modos:VariantSet"
+    class_name: ClassVar[str] = "VariantSet"
+    class_model_uri: ClassVar[URIRef] = MODOS.VariantSet
+
+    id: Union[str, VariantSetId] = None
+    data_path: str = None
+    data_format: Union[str, "DataFormat"] = None
+
+    def __post_init__(self, *_: str, **kwargs: Any):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, VariantSetId):
+            self.id = VariantSetId(self.id)
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass(repr=False)
+class MassSpectrometryResults(DataEntity):
+    """
+    A data entity consisting of quantitative results from a mass spectrometry experiment.
+    """
+    _inherited_slots: ClassVar[list[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = MODOS["MassSpectrometryResults"]
+    class_class_curie: ClassVar[str] = "modos:MassSpectrometryResults"
+    class_name: ClassVar[str] = "MassSpectrometryResults"
+    class_model_uri: ClassVar[URIRef] = MODOS.MassSpectrometryResults
+
+    id: Union[str, MassSpectrometryResultsId] = None
+    data_path: str = None
+    data_format: Union[str, "DataFormat"] = None
+
+    def __post_init__(self, *_: str, **kwargs: Any):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, MassSpectrometryResultsId):
+            self.id = MassSpectrometryResultsId(self.id)
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass(repr=False)
+class Array(DataEntity):
+    """
+    Data entity consisting of an N-dimensional array.
+    """
+    _inherited_slots: ClassVar[list[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = MODOS["Array"]
+    class_class_curie: ClassVar[str] = "modos:Array"
+    class_name: ClassVar[str] = "Array"
+    class_model_uri: ClassVar[URIRef] = MODOS.Array
+
+    id: Union[str, ArrayId] = None
+    data_path: str = None
+    data_format: Union[str, "DataFormat"] = None
+
+    def __post_init__(self, *_: str, **kwargs: Any):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, ArrayId):
+            self.id = ArrayId(self.id)
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass(repr=False)
+class MODOCollection(YAMLRoot):
+    """
+    A holder for Multi-Omics Digital Objects
+    """
+    _inherited_slots: ClassVar[list[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = MODOS["MODOCollection"]
+    class_class_curie: ClassVar[str] = "modos:MODOCollection"
+    class_name: ClassVar[str] = "MODOCollection"
+    class_model_uri: ClassVar[URIRef] = MODOS.MODOCollection
+
+    entries: Optional[Union[dict[Union[str, MODOId], Union[dict, MODO]], list[Union[dict, MODO]]]] = empty_dict()
+
+    def __post_init__(self, *_: str, **kwargs: Any):
+        self._normalize_inlined_as_dict(slot_name="entries", slot_type=MODO, key_name="id", keyed=True)
+
+        super().__post_init__(**kwargs)
+
+
+# Enumerations
+class Sex(EnumDefinitionImpl):
+
+    Male = PermissibleValue(
+        text="Male",
+        description="The male sex.")
+    Female = PermissibleValue(
+        text="Female",
+        description="The female sex.")
+
+    _defn = EnumDefinition(
+        name="Sex",
+    )
+
+class OmicsType(EnumDefinitionImpl):
+
+    GENOMICS = PermissibleValue(
+        text="GENOMICS",
+        description="The study of the structure, function, expression, evolution, mapping and editing of genomes.",
+        meaning=NCIT["C84343"])
+    TRANSCRIPTOMICS = PermissibleValue(
+        text="TRANSCRIPTOMICS",
+        description="The study of the complete set of RNA transcripts that are produced by the genome.",
+        meaning=NCIT["C153189"])
+    METABOLOMICS = PermissibleValue(
+        text="METABOLOMICS",
+        description="The study of biological metabolic profiles.",
+        meaning=NCIT["C49019"])
+    PROTEOMICS = PermissibleValue(
+        text="PROTEOMICS",
+        description="The global analysis of cellular proteins.",
+        meaning=NCIT["C20085"])
+
+    _defn = EnumDefinition(
+        name="OmicsType",
+    )
+
+class DataFormat(EnumDefinitionImpl):
+
+    CRAM = PermissibleValue(
+        text="CRAM",
+        description="Referenced-based compression of alignment format.",
+        meaning=EDAM["format_3462"])
+    FASTQ = PermissibleValue(
+        text="FASTQ",
+        description="FASTQ short read format with sequence and any type of quality scores.",
+        meaning=EDAM["format_1930"])
+    Zarr = PermissibleValue(
+        text="Zarr",
+        description="Chunked, compressed N-dimensional arrays.",
+        meaning=EDAM["format_3915"])
+    FASTA = PermissibleValue(
+        text="FASTA",
+        description="FASTA sequence format including NCBI-style IDs.",
+        meaning=EDAM["format_1929"])
+    VCF = PermissibleValue(
+        text="VCF",
+        description="Variant call format for sequence variation.",
+        meaning=EDAM["format_3016"])
+    BCF = PermissibleValue(
+        text="BCF",
+        description="Binary call format, for efficient storage of sequence variation.",
+        meaning=EDAM["format_3020"])
+    mzTab = PermissibleValue(
+        text="mzTab",
+        description="tab-delimited format for mass spectrometry-based proteomics and metabolomics results.",
+        meaning=EDAM["format_3681"])
+    TSV = PermissibleValue(
+        text="TSV",
+        description="Tab-separated values format.",
+        meaning=EDAM["format_3475"])
+    JSON = PermissibleValue(
+        text="JSON",
+        description="JavaScript Object Notation format.",
+        meaning=EDAM["format_3464"])
+
+    _defn = EnumDefinition(
+        name="DataFormat",
+    )
+
+# Slots
+class slots:
+    pass
+
+slots.id = Slot(uri=SCHEMA.identifier, name="id", curie=SCHEMA.curie('identifier'),
+                   model_uri=MODOS.id, domain=None, range=URIRef)
+
+slots.name = Slot(uri=SCHEMA.name, name="name", curie=SCHEMA.curie('name'),
+                   model_uri=MODOS.name, domain=None, range=Optional[str])
+
+slots.description = Slot(uri=SCHEMA.description, name="description", curie=SCHEMA.curie('description'),
+                   model_uri=MODOS.description, domain=None, range=Optional[str])
+
+slots.has_part = Slot(uri=SCHEMA.hasPart, name="has_part", curie=SCHEMA.curie('hasPart'),
+                   model_uri=MODOS.has_part, domain=None, range=Optional[Union[str, list[str]]])
+
+slots.creation_date = Slot(uri=MODOS.creation_date, name="creation_date", curie=MODOS.curie('creation_date'),
+                   model_uri=MODOS.creation_date, domain=None, range=Union[str, XSDDateTime])
+
+slots.last_update_date = Slot(uri=MODOS.last_update_date, name="last_update_date", curie=MODOS.curie('last_update_date'),
+                   model_uri=MODOS.last_update_date, domain=None, range=Union[str, XSDDateTime])
+
+slots.omics_type = Slot(uri=MODOS.omics_type, name="omics_type", curie=MODOS.curie('omics_type'),
+                   model_uri=MODOS.omics_type, domain=None, range=Union[Union[str, "OmicsType"], list[Union[str, "OmicsType"]]])
+
+slots.has_assay = Slot(uri=MODOS.has_assay, name="has_assay", curie=MODOS.curie('has_assay'),
+                   model_uri=MODOS.has_assay, domain=None, range=Optional[Union[Union[str, AssayId], list[Union[str, AssayId]]]])
+
+slots.has_sample = Slot(uri=MODOS.has_sample, name="has_sample", curie=MODOS.curie('has_sample'),
+                   model_uri=MODOS.has_sample, domain=None, range=Optional[Union[Union[str, SampleId], list[Union[str, SampleId]]]])
+
+slots.has_data = Slot(uri=MODOS.has_data, name="has_data", curie=MODOS.curie('has_data'),
+                   model_uri=MODOS.has_data, domain=None, range=Optional[Union[Union[str, DataEntityId], list[Union[str, DataEntityId]]]])
+
+slots.sample_processing = Slot(uri=MODOS.sample_processing, name="sample_processing", curie=MODOS.curie('sample_processing'),
+                   model_uri=MODOS.sample_processing, domain=None, range=Optional[Union[Union[str, URIorCURIE], list[Union[str, URIorCURIE]]]])
+
+slots.has_sequence = Slot(uri=MODOS.has_sequence, name="has_sequence", curie=MODOS.curie('has_sequence'),
+                   model_uri=MODOS.has_sequence, domain=None, range=Optional[Union[Union[str, ReferenceSequenceId], list[Union[str, ReferenceSequenceId]]]])
+
+slots.has_reference = Slot(uri=MODOS.has_reference, name="has_reference", curie=MODOS.curie('has_reference'),
+                   model_uri=MODOS.has_reference, domain=None, range=Optional[Union[Union[str, ReferenceGenomeId], list[Union[str, ReferenceGenomeId]]]])
+
+slots.data_format = Slot(uri=MODOS.data_format, name="data_format", curie=MODOS.curie('data_format'),
+                   model_uri=MODOS.data_format, domain=None, range=Union[str, "DataFormat"])
+
+slots.taxon_id = Slot(uri=MODOS.taxon_id, name="taxon_id", curie=MODOS.curie('taxon_id'),
+                   model_uri=MODOS.taxon_id, domain=None, range=Optional[Union[Union[str, URIorCURIE], list[Union[str, URIorCURIE]]]])
+
+slots.collector = Slot(uri=MODOS.collector, name="collector", curie=MODOS.curie('collector'),
+                   model_uri=MODOS.collector, domain=None, range=Optional[Union[str, list[str]]])
+
+slots.data_path = Slot(uri=MODOS.data_path, name="data_path", curie=MODOS.curie('data_path'),
+                   model_uri=MODOS.data_path, domain=None, range=str)
+
+slots.sequence_md5 = Slot(uri=MODOS.sequence_md5, name="sequence_md5", curie=MODOS.curie('sequence_md5'),
+                   model_uri=MODOS.sequence_md5, domain=None, range=Optional[str],
+                   pattern=re.compile(r'^[a-f0-9]{32}$'))
+
+slots.source_uri = Slot(uri=MODOS.source_uri, name="source_uri", curie=MODOS.curie('source_uri'),
+                   model_uri=MODOS.source_uri, domain=None, range=Optional[Union[str, URI]])
+
+slots.version = Slot(uri=MODOS.version, name="version", curie=MODOS.curie('version'),
+                   model_uri=MODOS.version, domain=None, range=Optional[str])
+
+slots.cell_type = Slot(uri=MODOS.cell_type, name="cell_type", curie=MODOS.curie('cell_type'),
+                   model_uri=MODOS.cell_type, domain=None, range=Optional[Union[str, URIorCURIE]])
+
+slots.source_material = Slot(uri=MODOS.source_material, name="source_material", curie=MODOS.curie('source_material'),
+                   model_uri=MODOS.source_material, domain=None, range=Optional[Union[str, URIorCURIE]])
+
+slots.sex = Slot(uri=MODOS.sex, name="sex", curie=MODOS.curie('sex'),
+                   model_uri=MODOS.sex, domain=None, range=Optional[Union[str, "Sex"]])
+
+slots.data_checksum = Slot(uri=MODOS.data_checksum, name="data_checksum", curie=MODOS.curie('data_checksum'),
+                   model_uri=MODOS.data_checksum, domain=None, range=Optional[str],
+                   pattern=re.compile(r'^[0-9a-fA-F]{128}$'))
+
+slots.mODOCollection__entries = Slot(uri=MODOS.entries, name="mODOCollection__entries", curie=MODOS.curie('entries'),
+                   model_uri=MODOS.mODOCollection__entries, domain=None, range=Optional[Union[dict[Union[str, MODOId], Union[dict, MODO]], list[Union[dict, MODO]]]])

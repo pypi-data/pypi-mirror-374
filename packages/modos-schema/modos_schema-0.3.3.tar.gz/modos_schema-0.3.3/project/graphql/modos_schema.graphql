@@ -1,0 +1,157 @@
+# metamodel_version: 1.7.0
+enum DataFormat
+  {
+    CRAM
+    FASTQ
+    Zarr
+    FASTA
+    VCF
+    BCF
+    mzTab
+    TSV
+    JSON
+  }
+
+enum OmicsType
+  {
+    GENOMICS
+    TRANSCRIPTOMICS
+    METABOLOMICS
+    PROTEOMICS
+  }
+
+enum Sex
+  {
+    Male
+    Female
+  }
+
+type AlignmentSet
+  {
+    id: Uriorcurie!
+    name: String
+    description: String
+    dataPath: String!
+    dataFormat: DataFormat!
+    hasSample: [Sample]
+    hasReference: [ReferenceGenome]
+    dataChecksum: String
+  }
+
+type Array
+  {
+    id: Uriorcurie!
+    name: String
+    description: String
+    dataPath: String!
+    dataFormat: DataFormat!
+    hasSample: [Sample]
+    hasReference: [ReferenceGenome]
+    dataChecksum: String
+  }
+
+type Assay
+  {
+    id: Uriorcurie!
+    name: String
+    description: String
+    hasSample: [Sample]
+    hasData: [DataEntity]
+    omicsType: [OmicsType]!
+    sampleProcessing: [Uriorcurie]
+  }
+
+type DataEntity
+  {
+    id: Uriorcurie!
+    name: String
+    description: String
+    dataPath: String!
+    dataFormat: DataFormat!
+    hasSample: [Sample]
+    hasReference: [ReferenceGenome]
+    dataChecksum: String
+  }
+
+type MassSpectrometryResults
+  {
+    id: Uriorcurie!
+    name: String
+    description: String
+    dataPath: String!
+    dataFormat: DataFormat!
+    hasSample: [Sample]
+    hasReference: [ReferenceGenome]
+    dataChecksum: String
+  }
+
+type MODO
+  {
+    id: Uriorcurie!
+    name: String
+    description: String
+    creationDate: Datetime!
+    hasAssay: [Assay]
+    lastUpdateDate: Datetime!
+    sourceUri: Uri
+  }
+
+type MODOCollection
+  {
+    entries: [MODO]
+  }
+
+type NamedThing
+  {
+    id: Uriorcurie!
+    name: String
+    description: String
+  }
+
+type ReferenceGenome
+  {
+    id: Uriorcurie!
+    name: String
+    description: String
+    dataPath: String!
+    hasSequence: [ReferenceSequence]
+    taxonId: [Uriorcurie]
+    sourceUri: Uri
+    version: String
+  }
+
+type ReferenceSequence
+  {
+    id: Uriorcurie!
+    name: String
+    description: String
+    sequenceMd5: String
+    sourceUri: Uri
+    version: String
+  }
+
+type Sample
+  {
+    id: Uriorcurie!
+    name: String
+    description: String
+    cellType: Uriorcurie
+    sourceMaterial: Uriorcurie
+    sex: Sex
+    taxonId: [Uriorcurie]
+    collector: [String]
+    sourceUri: Uri
+  }
+
+type VariantSet
+  {
+    id: Uriorcurie!
+    name: String
+    description: String
+    dataPath: String!
+    dataFormat: DataFormat!
+    hasSample: [Sample]
+    hasReference: [ReferenceGenome]
+    dataChecksum: String
+  }
+
