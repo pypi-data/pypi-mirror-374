@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: web3py-ext
+Version: 2.1.0
+Summary: kaia-sdk
+Home-page: https://github.com/kaiachain/kaia-sdk
+Author: kaia Foundation
+Author-email: 
+License: MIT
+Keywords: kaia,klaytn,ethereum,role-based,multisig
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: eth-account ~=0.11.2
+Requires-Dist: web3 ~=6.3.0
+
+## Install
+Need to install [Python](https://www.python.org/downloads/) 3.7.2+ first
+
+Make example directory
+```shell
+> mkdir web3py-ext-examples & cd _$
+```
+Set python virtual environment (preferable but **optional**)
+```shell
+> python -m venv .venv
+> . ./.venv/bin/activate
+```
+Install
+```shell
+> pip install web3py-ext
+```
