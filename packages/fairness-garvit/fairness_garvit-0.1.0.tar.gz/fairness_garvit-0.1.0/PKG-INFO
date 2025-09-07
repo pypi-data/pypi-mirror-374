@@ -1,0 +1,23 @@
+Metadata-Version: 2.4
+Name: fairness-garvit
+Version: 0.1.0
+Summary: A fairness-aware machine learning package implementing fairness-constrained models.
+Author: Garvit Gupta
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: torch
+Requires-Dist: scikit-learn
+Requires-Dist: matplotlib
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+A fairness-aware ML algorithm package
