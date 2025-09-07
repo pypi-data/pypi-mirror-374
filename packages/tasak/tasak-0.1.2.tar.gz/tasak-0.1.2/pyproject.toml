@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tasak"
+version = "0.1.2"
+authors = [
+  { name="Jacek Jursza", email="okhan.pl@gmail.com" },
+]
+description = "Transform your AI coding assistant into a productivity powerhouse with custom tools and workflows"
+readme = "README.md"
+license = {file = 'LICENSE'}
+requires-python = ">=3.11"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Shells",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+]
+keywords = ["ai-agents", "claude-code", "cursor", "copilot", "developer-tools", "automation", "cli", "mcp"]
+
+dependencies = [
+    "PyYAML==6.0.1",
+    "requests",
+]
+
+[project.optional-dependencies]
+mcp = ["mcp>=1.13.1"]
+
+[project.scripts]
+tasak = "tasak.main:main"
+
+[project.urls]
+"Homepage" = "https://github.com/jacekjursza/tasak"
+"Bug Tracker" = "https://github.com/jacekjursza/tasak/issues"
