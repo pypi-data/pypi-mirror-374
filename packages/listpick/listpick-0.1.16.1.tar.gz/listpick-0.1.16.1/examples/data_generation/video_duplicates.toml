@@ -1,0 +1,50 @@
+#
+# video_duplicates.toml
+# Generate list of mp4 files along with their: sha1, duration, width, height, and size.
+# 
+# Author: GrimAndGreedy
+# License: MIT
+
+
+[environment]
+cwd="~/Videos/"
+
+[data]
+# files_command = "eza -1 --no-quotes | grep -E mp4$"
+
+commands = [
+  # """find . -iname '*.m4v' -or -iname '*.webm'""",
+  """eza -1 --no-quotes | grep -E mp4$""",
+  """du -hs {} | awk '{{ print $1 }}'""",
+
+  # """sha1sum {} | awk '{{print $1}}'""",
+
+  ## Duration, width, height methods
+  """mediainfo --Inform="Video;%Duration/String%" {}""",
+  """mediainfo --Inform="Video;%Width%" {}""",
+  """mediainfo --Inform="Video;%Height%" {}""",
+  """mediainfo --Inform="Video;%BitRate/String%" {}""",
+  """mediainfo --Inform="Video;%CodecID%" {}""",
+  """mediainfo --Inform="Video;%BitDepth%" {}""",
+
+  ## Alternate duration, width, height methods
+  # """ffprobe -show_entries format=duration -v quiet -of csv="p=0" -i {}""",
+  # """ffprobe -v error -select_streams v:0 -show_entries stream=width -of csv=s=x:p=0 {}""",
+  # """ffprobe -v error -select_streams v:0 -show_entries stream=height -of csv=s=x:p=0 {}""",
+]
+
+header = [
+  "File",
+  "Size",
+  # "sha1",
+  "Duration",
+  "Width",
+  "Height",
+  "Bit Rate",
+  "Codec",
+  "Bit Depth",
+]
+
+# run = [
+#   "mpv",
+# ]
