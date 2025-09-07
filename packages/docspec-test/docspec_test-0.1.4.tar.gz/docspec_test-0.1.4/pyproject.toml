@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "docspec_test"
+version = "0.1.4"
+description = "Pytest plugin for running docstring tests in Markdown blocks"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+authors = [
+  { name = "Alexandr Sukhryn" }
+]
+keywords = ["pytest", "plugin", "doctest", "docstring", "markdown"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Framework :: Pytest",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Testing"
+]
+dependencies = [
+  "pytest>=7.0.0"
+]
+
+[project.entry-points."pytest11"]
+docspec_test = "docspec_test.plugin"
+
+[project.scripts]
+docspec-test = "docspec_test.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/alexsukhrin/docspec_test"
+Source = "https://github.com/alexsukhrin/docspec_test"
+Tracker = "https://github.com/alexsukhrin/docspec_test/issues"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["docspec_test*"]
+
+[tool.black]
+line-length = 88
+target-version = ["py38", "py39", "py310", "py311", "py312", "py313"]
+extend-exclude = "/(venv|dist|build|\\.eggs)/"
+
+[tool.isort]
+profile = "black"
+line_length = 88
+py_version = 38
+skip = ["venv", "dist", "build", ".eggs"]
