@@ -1,0 +1,16 @@
+test:
+    uv run pytest
+
+lint:
+    uv run ruff check
+
+preview:
+    uv run mkdocs serve
+
+publish:
+    uv build
+    uv publish
+
+deploy:
+    uv run mkdocs build
+    netlify deploy --prod -s careful-docs -d site

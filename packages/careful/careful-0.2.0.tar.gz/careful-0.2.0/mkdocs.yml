@@ -1,0 +1,54 @@
+site_name: careful
+site_url: https://careful.jpt.sh/
+site_author: James Turk
+site_description: A library for making requests to unreliable sites with httpx.
+copyright: Copyright &copy; 2025 James Turk
+repo_url: https://codeberg.org/jpt/careful
+repo_name: careful
+#edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  logo: carefully-3681327.svg
+  palette:
+    - scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
+  features:
+    #- navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - content.tabs.link
+  # icon:
+  #   repo: 
+markdown_extensions:
+  - admonition
+  - def_list
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - toc:
+      permalink: true
+plugins:
+- search
+- mkdocstrings:
+watch:
+  - src
+nav:
+  - 'index.md'
+  - 'reference.md'
+  - 'changelog.md'
