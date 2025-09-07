@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: squid-ml
+Version: 0.1.1
+Summary: An easy-to-use, no boilerplate ML experiment tracker.
+Author-email: Aryan Bansal <aryanbansal1710@gmail.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/ar-bansal/squid-ml
+Requires-Python: >=3.8
+License-File: LICENSE
+Requires-Dist: mlflow>=2.15.0
+Requires-Dist: python-on-whales==0.78.0
+Provides-Extra: dev
+Requires-Dist: pytest>=6.2; extra == "dev"
+Dynamic: license-file
