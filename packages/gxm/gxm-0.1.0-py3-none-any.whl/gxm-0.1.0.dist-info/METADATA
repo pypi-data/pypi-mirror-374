@@ -1,0 +1,23 @@
+Metadata-Version: 2.4
+Name: gxm
+Version: 0.1.0
+Summary: Reinforcement Learning Environemts in JAX
+Author-email: huterguier <huterguier@gmail.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/huterguier/gxm
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: jax[cuda12]>=0.5.0
+Requires-Dist: gymnax>=0.0.9
+Requires-Dist: pgx>=2.6.0
+Provides-Extra: gymnasium
+Requires-Dist: gymnasium[all]; extra == "gymnasium"
+Provides-Extra: envpool
+Requires-Dist: envpool; extra == "envpool"
+Requires-Dist: numpy<2; extra == "envpool"
+
+<div align="center">
+    <img src="https://github.com/huterguier/gxm/blob/main/images/gxm.png" width="200">
+</div>
