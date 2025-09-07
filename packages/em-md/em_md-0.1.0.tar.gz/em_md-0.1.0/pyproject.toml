@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "em-md"
+version = "0.1.0"
+description = "Some markdown processing tools"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+  { name = "Your Name", email = "you@example.com" }
+]
+requires-python = ">=3.8"
+dynamic = ["dependencies"]
+
+[project.scripts]
+em-md-change-links = "em_md.local_links:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
