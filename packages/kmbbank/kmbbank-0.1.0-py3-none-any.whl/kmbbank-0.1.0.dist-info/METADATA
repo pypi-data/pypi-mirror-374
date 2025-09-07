@@ -1,0 +1,89 @@
+Metadata-Version: 2.4
+Name: kmbbank
+Version: 0.1.0
+Summary: Unofficial MB Bank client (repackaged as kmbbank).
+Home-page: https://github.com/thedtvn/MBBank
+Author: Lê Khang
+Author-email: Lê Khang <kmb247.com@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2025 The DT
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Project-URL: Homepage, https://kmb247.com
+Project-URL: Source, https://github.com/thedtvn/MBBank
+Project-URL: Issues, https://github.com/thedtvn/MBBank/issues
+Keywords: mbbank,banking,api,unofficial
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Internet :: WWW/HTTP
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+License-File: NOTICE.txt
+Requires-Dist: requests>=2.31.0
+Requires-Dist: aiohttp
+Requires-Dist: Pillow
+Requires-Dist: wasmtime
+Requires-Dist: mb-capcha-ocr>=0.1.5
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# MBBank API for Python
+A unofficially lightweight Python Api for the "Military Commercial Joint Stock Bank" personal account
+
+## Why we  have this lib ?
+
+Because I don't want to lose money on some api services like [casso.vn](https://casso.vn/) or [payos.vn](https://payos.vn/)
+when have freemium tier but with limit :>
+
+What you need that it use this lib to make your own code so you can use it free forever
+
+[Documentation & FAQ](http://mbbank.rtfd.io/)
+
+## Requires
+   - [onnx with cuda](https://onnxruntime.ai/getting-started) (optional if you want to use cuda gpu)
+
+   - python3
+ 
+## Install
+    pip install mbbank-lib
+   or Dev Ver
+   
+    pip install git+https://github.com/thedtvn/MBBank
+
+## Donate
+If you like this project and want to support it, you can do so by donating via the following methods:
+- **Momo**: 0961291206
+- **ZaloPay**: 0961291206
+- **Banking**:
+  - Techcombank - NGUYEN DUONG TUAN
+  - Account Nickname: THEDTVN
+  - Account Nuber: 9612912060
+
+## Extra Info
+- Payment QR Code Generator
+  - [vietqr.io](https://vietqr.io/)
+
+- [MBBank JS API](https://github.com/CookieGMVN/MBBank)
+
+- [MBBank OCR](https://github.com/thedtvn/mbbank-capcha-ocr)
