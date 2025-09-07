@@ -1,0 +1,537 @@
+{% extends "base.html" %}
+{% load static %}
+{% load fileMgmtTags %}
+
+{% block extra_css %}
+    <link href={% static "commons/css/sessionMgmt.css" %} rel="stylesheet" type="text/css">
+    <link href={% static "commons/css/commons.css" %} rel="stylesheet" type="text/css">
+    <link href={% static "commons/css/testResultsTreeView.css" %} rel="stylesheet" type="text/css">
+{% endblock extra_css%}
+
+{% block content %}
+
+<div class="container-fluid">
+  <!-- sticky-top second-nav -->
+  <div class="mainBodyDiv">
+  <nav class="navbar navbar-expand-sm topbar fixed-top secondNavbarStyle">
+      <div class="insertInlineBlock marginTop5px">
+        <!-- z-index:20 to display on top of table cells -->
+          <div class="dropdown insertInlineBlock" style='z-index:20;'>
+            <!-- <i class="fa-solid fa-binoculars text-black"></i>  -->
+            <a id='hidePlayPipelineDropdown' class="dropdown-toggle" data-toggle="dropdown" role='button' aria-haspopup=true aria-expanded=false>
+                Play Pipeline
+            </a>
+            <div id="insertPipelines"></div>
+          </div> 
+          &emsp;&emsp;
+
+          <div class="dropdown insertInlineBlock" style='z-index:20;'>
+              <!-- <i class="fa-solid fa-binoculars text-black"></i>  -->
+              <a class="dropdown-toggle" data-toggle="dropdown" role='button' aria-haspopup=true aria-expanded=false>
+                Select a Playbook
+              </a>
+
+              <ul class="dropdown-menu dropdownSizeMedium dropdownFontSize" id="selectPlaybook">
+                  <div id='insertPlaybookNames'></div>
+              </ul>
+          </div> 
+          &emsp;&emsp;
+
+          <div class="dropdown insertInlineBlock" >
+            <a class="dropdown-toggle" id="testParameters" data-bs-auto-close="false" data-bs-toggle="dropdown" role='button' aria-haspopup=true aria-expanded=false>
+                Run-Test Parameters
+            </a>
+
+            <div class="dropdown-menu testParameterDropdownSize">
+                <div class="marginTop10px flexRowInlineBlockLeft">
+                    <label for='sessionId' class="testParameterSessionIdLabel">Session Id (Optional): </label>&emsp; 
+                    <input type="text" class="form-control width300px" id="sessionId"/><br>
+                </div>
+                <br>
+
+                <div class="marginLeft20px">
+                    <input type="checkbox" id="runInDebugMode"/>&ensp;<label for="runInDebugMode" class="modalTextColor">debugMode</label>: Result folder will be tagged with _debugMode and this will not be tracked<br>
+                    <!-- <input type="checkbox" id="emailResults" />&ensp;<label class="modalTextColor">emailResults</label>: Email result summary when test is completed<br> -->
+                    <input type="checkbox" id="awsS3Upload" />&ensp;<label class="modalTextColor">awsS3</label>: Send results to AWS S3 bucket when test is completed<br>
+                    <input type="checkbox" id="jira" />&ensp;<label class="modalTextColor">jira</label>: Automatically open Jira bug defect upon encountering failures<br>
+                    <input type="checkbox" id="pauseOnFailure" />&ensp;<label  class="modalTextColor">pauseOnFailure</label>: Pause the test on each failure for debugging<br>
+                    <input type="checkbox" id="holdEnvsIfFailed" />&ensp;<label class="modalTextColor">holdEnvsIfFailed</label>: Continue to hold the env after a task completion if the task failed for debugging<br>
+                    <input type="checkbox" id="abortTestOnFailure" />&ensp;<label class="modalTextColor">abortTestOnFailure</label>: Abort the test immediately on the first failure<br>
+                    <input type="checkbox" id="includeLoopTestPassedResults" />&ensp;<label class="modalTextColor">includeLoopTestPassedResults</label>: Include loop test results. Default=False.<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Warning! Results will takes up storage space!<br><br>
+
+                    <span class="textBlack">Select test-config data file(s) to set script parameter values:</span>
+                    <div style="display:flex; flex-direction: row; justify-content: left; align-items: left">
+                        <div class="textBlack marginLeft20px" id="insertTestConfigs"></div>
+                    </div>
+                </div>
+                
+                <br>
+                <div class="marginLeft20px">
+                    <button type="submit" class="btn btn-sm btn-danger mt-2 ml-0 mb-3 testParameterSubmitButton" onclick="resetParams()">Reset</button>
+                    <button type="submit" class="btn btn-sm btn-primary mt-2 ml-3 mb-3 testParameterSubmitButton" onclick="closeTestParameters()">Done</button>
+                </div>
+          </div>
+        </div> 
+        &emsp;&emsp;
+
+        <!-- <a href="#" id="modifyTestcases">Modify Test-Configs&emsp;&emsp;</a> -->
+       
+        <!-- For saved/view pipelines to select and run -->
+        <a href="#" id="managePipelines" data-bs-toggle="modal" data-bs-target="#pipelineManagerModal">Save|View Pipelines&emsp;&emsp;</a>
+
+        <!-- <i class="fa-solid fa-play text-black"></i> -->
+        <a href="#" id="playNow">Play Now</a>&emsp;&emsp;
+
+        <!-- <i class="fa-regular fa-calendar-alt text-black"></i> -->
+        <!-- <a href="#" id="datetimePicker" size="24" class="textAlignCenter">Test Scheduler</a>&emsp;&emsp; -->
+        <a href="#" id="testScheduler" onclick="getCronScheduler()">Scheduler</a>
+        <span class="verticalAlignTop badge badge-danger badge-counter" id='insertJobSchedulerCount'></span>&emsp;&emsp;
+      </div>
+  </nav>
+
+  <!-- Removing dropdown option for total pipelines per page. Limiting to 25 for now because it takes time to render > 25 -->
+  <!--
+  <div class="row">
+        <div class="flexRowInlineBlockLeft">
+            Devices Per Page:&emsp;
+            <div class="dropdown">
+                <button class="btn btn-outline-primary  dropdown-toggle" type="button" id="setDevicesPerPageDropdown" data-toggle="dropdown" aria-expanded="false"></button> 
+
+                <ul class="dropdown-menu" aria-labelledby="setDevicesPerPageDropdown" id="setDevicesPerPage">
+                    <li class="paddingLeft20px textBlack">50</li>
+                    <li class="paddingLeft20px textBlack">75</li>
+                    <li class="paddingLeft20px textBlack">100</li>
+                </ul>
+            </div>&emsp;&emsp;
+            <div id="insertPagination"></div>
+        </div>
+  </div>
+  -->
+
+  <div class="row">
+        <div class="padding0" id="insertPagination"></div>
+  </div>
+
+  <div class="row marginTop0px">
+      <div class="insertInlineBlock paddingLeft2px">
+          <!-- <a class="textBlack" id="deletePipelinesButton" href="#">Delete-Selected</a>&emsp;  -->
+          <a class="textBlack" id="deletePipelinesId" data-bs-toggle="modal" data-bs-target="#deletePipelinesModal" href="#">Delete-Selected</a>&emsp;
+          <a class="textBlack" id="deleteAllPipelinesButton" data-bs-toggle="modal" data-bs-target="#deleteAllPipelinesModal" href="#">Delete-All-In-Domain&ensp;</a>&emsp;  
+          <a class="textBlack" href="#" onclick="archiveResults()">Archive Results</a>&emsp;
+          <input class="form-control filterStyle" type="search" id="filterPlaybook" onkeyup="filterPlaybook()" placeholder="Filter Playbook">
+          <input class="form-control filterStyle" type="search" id="filterSessionId" onkeyup="filterSessionId()" placeholder="Filter Pipeline">
+          <input class="form-control filterStyle" type="search" id="filterUser" onkeyup="filterUser()" placeholder="Filter User">
+          <!-- This brings up the websocketDemo page -->
+          <!-- <a href="{% url "websocketDemo" %}">websocket</a> -->
+      </div>
+  </div>
+
+  <div id="tableData"></div>
+
+</div>
+<br>
+
+<div id="pipelinesPerPage"></div>
+
+<div class="modal" id="testReportModalDiv" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable testModal">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <h6 class="modal-title" id="staticBackdropLabel">Test Report</h6>
+            </div>
+
+            <div class="modal-body" id="modalShowTestReport"></div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="testLogsModalDiv" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="modifyFile" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable testModal">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<div class="flexRowInlineBlockRight">
+					<h6 class="modal-title" id="editFile">Logs and Artifacts:&ensp;</h6>
+					<div id="currentOpenedFile" class="marginLeft20px" style="float:left; padding-top:7px;"></div>
+				</div>
+            </div>
+
+            <div class="modal-body marginTop5px">
+				<div class="row" id="modalShowTestLogs"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button> 
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="openFileModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="modifyFile" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:70%; height:750px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<div class="flexRowInlineBlockRight">
+					<h6 class="modal-title" id="editFile">Result File:&ensp;</h6>
+					<div id="currentOpenedFile" style="float:left; margin-left:20px; padding-top:3px;"></div>
+				</div>
+            </div>
+
+            <div class="modal-body" style="margin-top:2px">
+				<div class="row" id="insertFileContents"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="getTestcasesInternalModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+        aria-labelledby="getTestcasestModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable testModal">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <h6 class="modal-title">TestConfigure Testcase Params</h6>
+            </div>
+
+            <div class="modal-body">
+                <div id="insertTestcases"></div>
+                <br>
+                <div id="insertCurrentTestcase"></div>
+                <br>
+                <div id="insertTestcaseParams"></div>
+
+                <div class="dropdown insertInlineBlock"></div>
+                <br><br>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="closeGetTestcasesInternalModal()"">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="modal" id="createJobSchedulerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="createJobSchedulerModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable mediumModalSizeExtraWidth">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <!-- <h6 class="modal-title" id="insertPlaybookName">Task Scheduler</h6> -->
+                <h7 id="selectedPlaybookForScheduler"></h7>
+                <h7 id="jobSchedulerStatus"></h7>
+            </div>
+    
+            <div class="modal-body">
+                <!-- .---------------- minute (0 - 59)
+                     |  .------------- hour (0 - 23)
+                     |  |  .---------- day of month (1 - 31)
+                     |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+                     |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+                     |  |  |  |  |
+                     *  *  *  *  * 
+               -->
+
+               <div class="lineHeight25px">
+                    <span>Schedule a date time to run the Playbook</span>
+                    <div class="ml-4" id="insertSchedulerDatetimePicker"></div>
+               </div>
+
+                <div class="row mt-1">
+                    <div class="insertInlineBlock lineHeight5px">
+                        <label class="modalTextColor" for="removeJobAfterRunning">Remove the scheduled Playbook after execution:&ensp;</label>
+                        <input class="mt-2" type="checkbox" id="removeJobAfterRunning" />
+                        <br>Otherwise, the scheduled reservation will repeat
+                    </div>
+                </div>
+                <br>
+
+                <div class="flexRowInlineBlockLeft">
+                   Select a different user for running the playbook: &ensp;<div id="insertDomainUserSelection"></div>
+                </div>
+
+                <div class="mt-2">
+                    Add scheduling notes (100 characters allowed)<br>
+                    <textarea class="ml-3" id="playbookReservationNotesId" name="" cols="50" rows="2"></textarea>
+                </div>
+                <br>
+
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="saveScheduledPlaybook()">Add Playbook To Scheduler</button>&emsp;
+                <br>
+
+                <div class='row mt-2'>
+                    <div id="insertPlaybookSchedules"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="removeScheduledPlaybooksButton" class=" btn btn-sm btn-primary" onclick="removeScheduledJobsButton()">Remove Scheduled Playbooks</button>
+                    <button type="button" id="closePlaybookSchedulerModal" class="btn btn-danger">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="pipelineManagerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="pipelineManager" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable mediumModalSize">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <h6 class="modal-title" id="pipelineManager">Pipelines</h6>
+                <div id="showPipelineStatus"></div>
+            </div>
+
+            <div class="modal-body">
+                <div class='row'>
+                    <div class="flexRowInlineBlockLeft testParameterSessionIdLabel">
+                        <label for='pipelineNameId' class="marginLeft10px">New Pipeline: </label>&emsp; 
+                        <input type="text" class="form-control width300px" id="pipelineNameId"/>&emsp; 
+                        <button type="button" class=" btn btn-sm btn-primary" onclick="savePipeline()">Save</button><br>
+                    </div>
+                    <span style="padding-left:125px">** Pipeline name cannot have "/" (slash)</span>
+                </div>
+
+                <div class='row mt-4'>
+                    <div class='testParameterSessionIdLabel'>
+                        <div id="insertSelectedParameters"></div>
+                    </div>
+                </div>
+
+                <div class='row mt-4'>
+                    <div id="insertPipelineTableData"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class=" btn btn-sm btn-danger" onclick="deletePipeline()">Delete</button>
+                <button type="button" class="btn btn-primary" onclick="closePipelineModal()" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="showPlaybookModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="showPlaybook" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:70%; height:750px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <h6 class="modal-title" id="showPlaybookPath">Playbook:&ensp;</h6>
+                <div id="modifyPlaybookFileStatus" class="floatRight"></div>
+            </div>
+
+            <div class="modal-body">
+				<div id="insertPlaybookContents"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="modifyPlaybookInPipelineButton" onclick="modifyFilePlaybook()" class="btn btn-sm btn-danger floatRight margin5px">
+                    Modify Playbook File
+                </button>
+
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="closePlaybookText()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="showEnvModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="showEnv" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:70%; height:750px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<h6 class="modal-title" id="showEnv">Env:&ensp;</h6>
+                <div id="modifyEnvFileStatus" class="floatRight"></div>
+            </div>
+
+            <div class="modal-body">
+				<div id="insertEnvContents"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="modifyEnvInPipelineButton" onclick="modifyFileEnv()" class="btn btn-sm btn-danger floatRight margin5px">
+                    Modify Env File
+                </button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="closeEnvText()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="openShowTestcasesInProgressModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="openShowTestcasesInProgress" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:85%; height:750px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<h6 class="modal-title" id="openShowTestcasesInProgress">Playlist&ensp;</h6>
+
+                <div style="position:absolute; right:0; padding-right:20px; padding-top:10px">
+                    <div id="insertTestcasePath"></div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class='row'>
+                    <div class="flexRowInlineBlockLeft">
+                        <div id="insertTestcasesInProgress" style="padding-top:10px; overflow:auto; height:550px; width:50%"></div>&ensp;&ensp;&ensp; 
+                        <div id="insertInProgressTestcaseContents" style="pading-top:10px; overflow:auto; height:550px; width:50%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="closeTestcasesInProgressModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="deleteAllPipelinesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="deleteAllPipelines" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:30%; height:300px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<div class="fileRowInlineBlockRight">
+					<h6 class="modal-title" id="editFile">Delete All Pipelines&ensp;</h6>
+				</div>
+            </div>
+
+            <div class="modal-body" style="margin-top:2px">
+				<div class="row">&ensp;&ensp;Are you sure that you want to delete all the piplelines in the current domain?<br>&ensp;&ensp;Results will be permanently deleted!</div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" id="deleteAllPipelinesConfirmed" class="btn btn-outline-primary" data-dismiss="modal">Delete All Pipelines</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="showTestcasesForModifyingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="modifyTestcases" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable dropdownSize90Percent800px textBlack">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div class='row'>
+                    <div style="display:flex; flex-direction: row; justify-content: left; align-items: left">
+                        <h6 class="modal-title" id="insertViewingPlaybook"></h6>
+                    </div>
+        
+                    <div style="position:absolute; left:0; padding-left:20px; padding-top:10px">
+                        <div style="display:flex; flex-direction: row; justify-content: right; align-items: right">
+                            <div id="modifyTestcaseFileStatus"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+ 
+            <div class="modal-body"> 
+                <div style="position:absolute; left:0; padding-left:20px; padding-top:10px; height:500px; width:50%;">
+                    <div style="display:flex; flex-direction:row; justify-content:left; align-items:left">
+                       <div>
+                            <div><strong>Select a testcase to view/modify configurations</strong></div>
+                            <br>
+                            <div id="insertPlaybookPlaylist" style="overflow:auto; height:600px"></div>
+                        </div>
+                    </div>
+                </div>
+      
+                <div style="position:absolute; right:0; padding-right:20px; padding-top:10px; height:500px; width:50%;">
+                    <div id="testcaseFilePath"></div> 
+
+                    <div id="insertTestcaseContents" style="overflow:auto;"></div>
+                    <button id="modifyButton" onclick="modifyFileTestcase()" class="btn btn-sm btn-outline-primary floatRight marginRight10px">
+                        Save Testcase Changes
+                    </button><br><br>
+
+                    <div style="height:300px">
+                        <div style="display:flex; flex-direction: row; justify-content: left; align-items: left">
+                            <div id="insertTestConfigsDropdown"></div>&emsp;&emsp;
+                            <a href="#" class="marginTop10px" onclick="deleteTestConfig()">Delete TestConfig</a>&emsp;&emsp;
+                            <a href="#" class="marginTop10px" onclick="saveTestConfigChanges()">Save Changes</a>&emsp;&emsp;&emsp;&emsp;
+
+                            <div style="position:absolute; right:0; margin-right:35px;">
+                                <div class="col-xs-4">
+                                    <div class="input-group">
+                                        <button class="btn btn-outline-primary" type="button" id="button-addon2" onclick="createNewTestConfigs()">Create New</button>
+                                        <input id="NewTestConfigFileName" type="text" class="form-control input-sm fontSize12px" placeholder="TestConfig name" aria-label="TestConfigName aria-describedby="button-addon2">
+                                        <button id="saveTestConfigButton" class="btn btn-outline-primary" type="button" onclick="saveNewTestConfigs()">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div id="insertTestConfigFileContents" class="marginTop10px"></div>
+                    </div>
+                </div>
+            </div>
+  
+            <div class="modal-footer"
+         
+                <div style="display:flex; flex-direction: row; justify-content: right; align-items: right">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="closeShowModifyTestcasesModal()">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--
+    <textarea id='wsText' cols="80" rows="5"></textarea><br>
+    <input id='inputMessage' type='text' size="80"><br>
+    <button type="button" class="btn btn-primary" onclick="wsSubmitButton()">Submit</button>
+    -->
+    <!-- the wsPipelineRoom was passed in from sessionMgmt views -->
+    <!-- {{ wsPipelineRoom|json_script:"wsPipelineRoom" }} -->
+    
+</div>
+
+<div class="modal" id="deletePipelinesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="deletePipelinesModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:30%; height:300px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<div class="fileRowInlineBlockRight">
+					<h6 class="modal-title" id="editFile">Delete Pipeline Results&ensp;</h6>
+					<div id="currentOpenedFile" style="float:left; margin-left:20px; padding-top:3px;"></div>
+				</div>
+            </div>
+
+            <div class="modal-body" style="margin-top:2px">
+				<div class="row">&ensp;&ensp;Are you sure you want to delete the selected pipeline results?</div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" id="deletePipelinesButton" class="btn btn-danger" data-dismiss="modal">Delete Pipelines</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+    <script type="module" src="{% static 'commons/js/pipelines.js' %}"></script>
+{% endblock extra_js%}

@@ -1,0 +1,14 @@
+# Sample: Simple playbook
+
+stages:
+   Test:
+      enable: True
+      tasks:
+        - Layer3:
+            enable: True
+            env: DOMAIN=QA/Samples/demoEnv1
+            playlist:
+               - Modules/Demo/Testcases/L2L3_Testcases/bgp.yml
+               - Modules/Demo/Testcases/L2L3_Testcases/ospf.yml
+               - Modules/Demo/Testcases/L2L3_Testcases/isis.yml
+               - Modules/Demo/Testcases/vanillaPythonScript.py

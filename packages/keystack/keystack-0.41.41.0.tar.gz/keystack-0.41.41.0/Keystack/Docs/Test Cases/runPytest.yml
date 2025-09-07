@@ -1,0 +1,13 @@
+Title: Run PyTest Sample
+Description: Run any app using CLI command 
+objective: sample
+topology: L3
+requirements:
+   - List of requirements here
+
+# The CLI that you enter to run pytest
+cliCommands:
+   - pytest -v -s -x /opt/KeystackTests/Modules/Demo/PyTest/Demo
+
+
+

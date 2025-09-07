@@ -1,0 +1,106 @@
+Installation requirements:
+    - MUST BE a SUDO user
+    - docker
+    - Python >= 3.7
+    - Linux OS host server
+
+During the "setup" installation, you will be asked where to install Keystack folders and 
+the full path to the Python executable.
+By default, Keystack folders will be installed at the directory /opt. 
+
+If you don't know the full path to your Python executable, enter: which python3
+You will get something like this: /usr/local/bin/python3  <-- full path
+
+With internet connection:
+    1> pip install keystack
+
+    2> Then INSTALL Keystack docker container
+       Enter: keystack setup -docker
+      
+    3> To UPDATE existing Keystack installation:
+       1> pip install keystack -U
+       2> keystack upgrade -docker
+
+       To install a specific Keystack docker version
+          - Enter: keystack upgrade -docker -version <version>
+
+Without internet connection:
+    - Get an installation zip file from the Keystack maintainer
+    - Unzip
+    - cd to the folder
+    - Enter: python3 setupKeystack.py -setup -dockerBuildImagePath ./docker.tar
+
+    - To update existing Keystack installation:
+      Enter: python3 setupKeystack.py -update -dockerBuildImagePath ./docker.tar
+
+To test out the installation:
+    - Go on a web browser and enter: https://<host ip address>
+    - Login: admin
+    - Password: admin
+
+    On the Linux CLI and enter:
+        Most simplest way to run:     keystack run -playbook Samples/pythonSample -domain Communal
+        This does the same as above:  keystack run -playbook DOMAIN=Communal/Samples/pythonSample
+        Give your test a session Id:  keystack run -playbook Samples/pythonSample -domain Communal -sessionId myTest
+
+
+After the installation, you need to logout of Linux and relogin because the installation 
+created a new Keystack user-group and added you as the user to the Keystack group.
+You will not be able to enter the Keystack folders without logging out and relogin.
+
+New installation created folders:
+
+    /opt/KeystackTests
+        /Envs
+
+        /Playbooks
+
+        /Modules
+            /Demo
+
+        /Testcases
+        /Results
+        /ResultsArchive
+        /Reconfigs
+
+    /opt/KeystackSystem
+        keystackSystemSettings.env
+        .loginCredentials
+        /Logs
+
+
+Post Installation:
+------------------
+   There are a few ways to RUN Keystack:
+
+   - On the Keystack host server CLI
+   - Inside the Keystack container
+   - From the KeystackUI
+   - ReST API
+
+   The CLI command inside and outside of the container:
+        keystack run -playbook Samples/advance -domain Communal
+
+   To run from CLI in secured mode, user must get their api-key from the KeystackUI 
+   accountMgr and put it in the user's env variables
+
+   1> Log into Keystack UI: admin/admin
+   2> Create a new user
+   3> Get new user's API-Key
+
+   4> Enable cli-secured-mode:
+      Edit /opt/KeystackSystem/keystackSystemSettings.yml
+      cliSecuredMode: True
+
+
+
+
+
+
+
+
+
+
+
+
+

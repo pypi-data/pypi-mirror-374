@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link href={% static "commons/css/playbooks.css" %} rel="stylesheet" type="text/css">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container-fluid">
+    <div id='playbookPageAttributes' group={{selectedPlaybookGroupToView}} playbookGroup={{playbookGroup}}></div>
+
+    <div class="mainBodyDiv">
+        <nav class="navbar navbar-expand-sm topbar fixed-top secondNavbarStyle" id="playbookNavbar">
+            <div class="playbookNavbarInline">
+                <a href="#" data-toggle="modal" data-target="#createPlaybookModal" onclick="getPlaybookTemplate()">Create Playbook</a>&emsp;&emsp;
+                <a href="#" data-toggle="modal" data-target="#deletePlaybookModal">Delete Playbook</a>&emsp;&emsp;
+            </div>
+        </nav>
+
+        <div class="row">
+            <div class="insertInlineBlock paddingLeft2px marginTop5px">
+            <input class="col-2 form-control" type="search" id="searchForPlaybook" onkeyup="searchForPlaybook()" placeholder="Filter Playbook" title="Type in a name">&emsp;
+            </div>
+        </div>
+
+        <div class="row table-responsive"> 
+            <table class="tableFixHead2" id="playbookTable"> 
+                <thead>
+                <tr>
+                    <th scope="col">Delete</th>
+                    <th scope="col">View / Edit</th>
+                    <th scope="col">Playbooks</th>
+                </tr>
+                </thead>
+
+                <tbody class="scrollableDiv" id="tableData"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="createPlaybookModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+        aria-labelledby="createPlaybookContents" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable createPlaybookModalStyle">
+        <div class="modal-content">
+ 
+            <div class="modal-header">
+                <h6 class="modal-title modalHeaderTextColor">Create Playbook</h6>
+                <div id="createPlaybookStatus"></div>
+            </div>
+
+            <div class="row modal-body">
+                <textarea id="insertPlaybookTemplate" cols="123" rows="25"></textarea><br><br>
+            </div>
+
+            <div class="modal-footer">
+                <div class="insertInlineBlock">
+                    <input type="text" id="newPlaybook" class="form-control floatRight" placeholder="New playbook name" />
+                    <input type="text" id="playbookGroup" class="form-control floatRight" placeholder="Optional: Playbook Group: Could be nested by /using/slashes" />
+
+                    <button id="createPlaybookButton" class="btn btn-sm btn-primary floatRight margin5px"
+                        onclick="createPlaybook()">
+                            Create Playbook
+                    </button>
+
+                    <button type="submit" name="" value="" id="closeCreatePlaybookTextAreaId"
+                        onclick="closeCreatePlaybook()" class="btn btn-sm btn-danger floatRight margin5px" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="viewEditPlaybookModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable viewEditPlaybook">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <!-- <h5 class="modal-title" id="playbookContents">Playbook</h5> -->
+                <h6 class="modal-title" id="currentOpenedFile"></h6>
+                <div id="modifyPlaybookStatus"></div>
+            </div>
+
+            <div class="row modal-body" id="insertPlaybookFileContents"></div>
+
+            <div class="modal-footer">
+                <!-- Click this button calls modifyFile(). modifyFile() will getElementById('textarea') to get the text -->
+			    <button id="modifyPlaybookButton" onclick="modifyFile()" class="btn btn-sm btn-primary floatRight margin5px">
+                    Modify File
+                </button>
+
+                <button type="submit" name="" value="" id="textAreaButton" onclick="closeText()" class="btn btn-sm btn-danger floatRight margin5px" data-bs-dismiss="modal">
+                    Close
+                </button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="deletePlaybookModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="deletePlaybook" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:30%; height:300px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<h6 class="modal-title" id="editFile">Delete playbooks&ensp;</h6>
+				<div id="deletePlaybooksStatus"></div>
+            </div>
+
+            <div class="modal-body" style="margin-top:2px">
+				<div class="row">&ensp;&ensp;Are you sure that you want to delete playbooks?</div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="deletePlaybooks()">Delete</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="closeText()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+{% block extra_js %}
+    <script type="module" src="{% static 'commons/js/playbooks.js' %}"></script>
+{% endblock extra_js %}

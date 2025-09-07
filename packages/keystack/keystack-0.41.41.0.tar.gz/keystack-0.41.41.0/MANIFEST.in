@@ -1,0 +1,44 @@
+# 1> setup.py copies all required files to be packaged to folder Keystack
+# 2> This MANIFEST file will take what's in this local folder /PackageKeystack/Keystack folder for packaging
+
+global-exclude *__pycache__
+global-exclude *.pyc
+
+global-exclude *.backup*
+global-exclude dev_notes
+global-exclude *Unittest
+global-exclude *Releases
+global-exclude *BuildPackages
+global-exclude pipFreeze
+recursive-include Keystack *
+
+# These files were copied from setup.py
+#include Keystack/__init__.py
+#include Keystack/LICENSE
+#include Keystack/version
+#include Keystack/Src/keystackUtilities.py
+#include Keystack/Src/EnvMgmt.py
+#include Keystack/Src/PortGroupMgmt.py
+#include Keystack/Src/RedisMgr.py
+#include Keystack/Src/keystack.py
+#include Keystack/Src/LoggingAssistants.py
+#include Keystack/Src/commonLib.py
+#include Keystack/Src/parseParams.py
+#include Keystack/Src/globalVars.py
+#include Keystack/Src/db.py
+#include Keystack/Src/__init__.py
+#
+#recursive-include Keystack/Src/KeystackUI *
+#recursive-include Keystack/Src/Services *
+#recursive-include Keystack/Src/KeystackAssistants *
+#recursive-include Keystack/Src/RunTaskAssistants *
+#recursive-include Keystack/Setup *
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,33 @@
+---
+mwIp: 192.168.28.6_Bringup_Stage
+username: admin
+password: admin
+
+licenseServerIp: 192.168.28.6_Bringup_Stage
+licenseIpPort: 7443_Bringup_Stage
+
+# Legacy=vLM | Embeded=KCOS, External=ExternalKCOS
+licenseServerType: KCOS_Bringup_Stage
+
+licenseServerUser: admin
+licenseServerPassword: admin
+
+# Sometimes a LoadCore private build has no login.
+# In this case, set to False
+login: False_Bringup_Stage
+
+# Add LoadCore agents here and uncomment
+agents:
+  - 192.168.28.131_Bringup_Stage
+  - 192.168.28.132_Bringup_Stage
+
+# Optional: To verify for license availability.
+#   List all required LoadCore licenses when using this setup
+# requiredLicenses:                                                                  
+#     - VMP-WRLS-5GC-UE: 1 
+#     - WRLS-5GC-UPFLOW: 1 
+#     - WRLS-5GC-UPTPUT-10G: 1 
+#     - VMP-WRLS-5GC-INTERFACE: 13
+#     - VMP-WRLS-5GC-RATE: 1
+
+

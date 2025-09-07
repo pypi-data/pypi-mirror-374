@@ -1,0 +1,122 @@
+<!-- https://bootstrap-menu.com/detail-sidebar-nav-collapse.html -->
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link href={% static "commons/css/testResultsTreeView.css" %} rel="stylesheet" type="text/css">
+{% endblock extra_css%}
+
+{% block content %}
+
+<div id="logDeleteNote" deleteResultsAfterDays={{removeResultsAfterDays}}></div>
+<div id="resultPageAttributes" resultFolderPath={{resultFolderPath}} playbook={{playbook}}></div>
+<div id="testResultActiveOrArchive" value={{testResultActiveOrArchive}}></div>
+
+<div class="container-fluid">
+    <div class="mainBodyDiv">
+        <nav class="navbar navbar-expand-sm topbar fixed-top secondNavbarStyle" id="testResultsSecondNavbar">
+            <div class="flexRowInlineBlockLeft">
+                <a class="marginTop20px" href="#" name="selectAllTestResultButton" onclick="selectAll();" >Select All</a>&emsp;&emsp;
+                <a class="marginTop20px" href="#" name="selectAllTestResultButton" onclick="clearAll();" >Clear All</a>&emsp;&emsp;
+                <a class="marginTop20px" href="#" onclick="deleteSelected()">Delete Selected</a>&emsp;&emsp;
+                <a class="marginTop20px" href="#" data-toggle="modal" data-target="#deleteAllInthisDomainModal">Delete All In This Domain</a>&emsp;&emsp;
+                <a class="marginTop20px" href="#" data-toggle="modal" data-target="#deleteAllInThisPlaybookModal">Delete All In This Playbook</a>&emsp;&emsp;
+                <a class="marginTop20px" id="" href="#" onclick='archiveResults()'>Transfer To Results Archive</a>&emsp;&emsp;
+                <label class="marginTop10px" for="forceDeleteTestResults">ForceDeleteTestResults</label>&ensp;
+                <input type="checkbox" id="forceDeleteTestResults" />&emsp;&emsp;
+                <span class="marginTop20px" id="insertRemoveResultsInfo" style="color:black; font-size:14px"></span>
+                <!-- <span class="marginTop20px" id='archiveResultNote' style="color:black; padding-bottom:0; font-size:14px"></span> -->
+            </div>
+        </nav>
+
+        <!-- py-3 = vertical up/down -->
+        <!-- <section class="section-content py-0 px-0"></section> -->
+
+        <div class="row">
+            <!-- Download files is done by using form tag to return a direct response to receive the file -->
+            <form action="{% url 'downloadResults' %}" method="post">
+                {% csrf_token %}
+                <div id="insertTestResultPages"></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="openFileModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="modifyFile" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:70%; height:750px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<div class="flexRowInlineBlockRight">
+					<h6 class="modal-title" id="editFile">Result file:&ensp;</h6>
+					<div id="currentOpenedFile" style="float:left; margin-left:20px; padding-top:3px;"></div>
+				</div>
+            </div>
+
+            <div class="modal-body" style="margin-top:2px">
+					<div class="row" id="insertFileContents"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="closeText()" >Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="deleteAllInthisDomainModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="deleteAllInThisDomain" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:30%; height:300px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<!-- <div class="card-header" style="display:inline-block"> -->
+				<div class="fileRowInlineBlockRight">
+					<h6 class="modal-title" id="editFile">Delete all results in this domain&ensp;</h6>
+					<div id="currentOpenedFile" style="float:left; margin-left:20px; padding-top:3px;"></div>
+				</div>
+            </div>
+
+            <div class="modal-body" style="margin-top:2px">
+				<div class="row">&ensp;&ensp;Are you sure that you want to delete all the results in this domain?</div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="deleteAllInDomain()">Delete All</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="deleteAllInThisPlaybookModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="deleteAllInThisPlaybook" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:30%; height:300px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<!-- <div class="card-header" style="display:inline-block"> -->
+				<div class="fileRowInlineBlockRight">
+					<h6 class="modal-title" id="editFile">Delete all results in this playbook&ensp;</h6>
+					<div id="currentOpenedFile" style="float:left; margin-left:20px; padding-top:3px;"></div>
+				</div>
+            </div>
+
+            <div class="modal-body" style="margin-top:2px">
+				<div class="row">&ensp;&ensp;Are you sure that you want to delete all the results in this playbook?</div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="deleteAllInPlaybook()">Delete All</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script type="module" src="{% static 'commons/js/testResults.js' %}"></script>
+{% endblock extra_js %}

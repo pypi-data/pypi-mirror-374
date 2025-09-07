@@ -1,0 +1,21 @@
+---
+location: San Jose
+
+notes: Add some notes
+
+devices:
+   device_1:
+      ipAddress: 192.168.28.11
+      ipPort: 23
+      connectionProtocol: telnet
+      loginName: hgee
+
+   # Alternatively, get device details from the KeystackUI Lab Inventory
+   device_1: get_device_details_from_inventory
+
+   device_2: get_device_details_from_inventory
+   
+dataConfigs:
+    param1: value0
+
+

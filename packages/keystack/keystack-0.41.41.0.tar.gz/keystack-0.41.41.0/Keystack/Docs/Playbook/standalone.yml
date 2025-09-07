@@ -1,0 +1,37 @@
+---
+globalSettings:
+   loginCredentialKey: regressionTest
+   showResultDataLastDays: 10
+   abortTaskOnFailure: False
+   abortStageOnFailure: false
+   reportHeadingAdditions:
+      - key: ''
+
+   verifyFailurePatterns: ['Failed', 'SyntaxError']
+   #env: Samples/loadcoreSample
+  loadBalanceGroup: sanity
+    
+stages:
+    Test:
+        enable: True
+        runTasksConcurrently: False
+        #abortTaskonFailure: False
+        #env: Samples/hubert
+        #loadBalanceGroup: None
+
+        tasks:
+          - qaIsis:
+             enable: True
+             #abortTaskFailure: False
+             #env: DOMAIN=Communal/qa/pythonSample
+
+             # Exclude some testcases from the playlist
+             playlistExclusions:
+                 - Modules/Demo/Testcases/L2L3/isis.yml
+
+             playlist:
+                - Modules/Demo/Testcases/L2L3
+                - Modules/Demo/Testcases/standalonePython.yml
+
+
+

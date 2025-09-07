@@ -1,0 +1,37 @@
+# Sample:
+#   - Module 1 playlist run everything insie the L2L3_Testcases folder
+#     So you don't have to type every testcase
+#   - Run 2 modules in the same stage Test
+#   - Run 2 modules concurrently by setting runModulesConcurrently = True
+#   - module 2 passes in some variables into the script to consume
+
+globalSettings:
+    # Default = False
+    abortTaskOnFailure: False
+
+    # Default = True
+    abortStageOnFailure: False
+    
+
+stages:
+   Test:
+      enable: True
+      runModulesConcurrently: True
+      tasks:
+        - Layer3:
+            enable: True
+            env: DOMAIN=Keystack/demoEnv
+            playlist:
+               - Modules/Keystack_Samples/Testcases/L2L3_Testcases
+               #- Modules/Keystack_Samples/Testcases/L2L3_Testcases/ospf.yml
+               #- Modules/Keystack_Samples/Testcases/L2L3_Testcases/isis.yml
+
+        - DynamicVariables:
+            enable: True
+            env: DOMAIN=Keystack/demoEnv2
+            # Pass in variable values to scripts to consume
+            playbookVars:
+               serverIp: 10.10.10.1
+               serverName: qa
+            playlist:
+                - Modules/Keystack_Samples/Testcases/dynamicVariableSample.yml

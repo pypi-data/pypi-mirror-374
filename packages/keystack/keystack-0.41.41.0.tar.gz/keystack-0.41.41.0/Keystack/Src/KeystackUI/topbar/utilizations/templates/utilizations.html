@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+ 
+</style>
+{% endblock extra_css%}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="mainBodyDiv">
+        <nav class="navbar navbar-expand-sm topbar fixed-top secondNavbarStyle">
+            <div class="insertInlineBlock marginTop5px">
+                <div class="dropdown" style="display:inline-block">
+                    <a class="dropdown-toggle" id="getEnvSelections" data-toggle="dropdown" role='button' aria-haspopup=true aria-expanded=false>
+                        Select Envs
+                    </a>
+        
+                    <div class="dropdown-menu" style="width:300px; height:500px; overflow:auto" id="envDropdownMenu">
+                        <div id="insertEnvSelections" style="margin-left:20px">{{ envDropdownMenu|safe }}</div>
+                        
+                        <br>
+        
+                        <div style="margin-left:20px">
+                            <button type="submit" class="btn btn-sm btn-primary mt-2 ml-0 mb-3" style="padding-left:5px; padding-right:5px;" onclick="clearEnvSelections()">Reset</button>
+
+                            <!-- <button type="submit" class="btn btn-sm btn-primary mt-2 ml-3 mb-3" style="padding-left:5px; padding-right:5px;" onclick="collectSelectedEnvs()">Select</button> -->
+
+                            <button type="submit" class="btn btn-sm btn-danger mt-2 ml-3 mb-3" style="padding-left:5px; padding-right:5px;" onclick="closeEnvDropdown()">Close</button>
+                        </div>
+                    </div>
+                </div> 
+
+                &emsp;&emsp;
+                <div class="dropdown" style="display:inline-block">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role='button' aria-haspopup=true aria-expanded=false>
+                        Show <span id="insertDays"></span>
+                    </a>
+        
+                    <div class="dropdown-menu" style="width:300px; height:300px; overflow:auto" id="envDropdownMenu">
+                        <div style="margin-left:20px">
+                            <a href="#" onclick="showEnvUsage({userSelectedDays:1, getUtilization:true})">Today</a><br>
+                            <a href="#" onclick="showEnvUsage({userSelectedDays:2, getUtilization:true})">Since Yesterday</a><br>
+                            <a href="#" onclick="showEnvUsage({userSelectedDays:7, getUtilization:true})">Last 7 days</a><br>
+                            <a href="#" onclick="showEnvUsage({userSelectedDays:14, getUtilization:true})">Last 2 weeks</a><br>
+                            <a href="#" onclick="showEnvUsage({userSelectedDays:31, getUtilization:true})">Last Month</a><br>
+                            <a href="#" onclick="showEnvUsage({userSelectedDays:93, getUtilization:true})">Last 3 Months</a><br>
+                            <a href="#" onclick="showEnvUsage({userSelectedDays:186, getUtilization:true})">Last 6 Months</a><br>
+                            <a href="#" onclick="showEnvUsage({userSelectedDays:365, getUtilization:true})">Last Year</a><br>
+                            <a href="#" onclick="showEnvUsage({userSelectedDays:730, getUtilization:true})">Last 2 Years</a><br>
+                            <a href="#" onclick="showEnvUsage({userSelectedDays:1095, getUtilization:true})">Last 3 Years</a><br>
+                        </div>
+                    </div>
+                </div>
+
+                &emsp;&emsp;
+                <!-- <button type="submit" class="btn btn-sm btn-primary" onclick="go()">Get Utilizations</button> -->
+            </div>
+        </nav>
+
+        <ul class="nav nav-tabs" style="margin-top:10px">
+            <li class="nav-item">
+            <a class="nav-link active" href="#" onclick="go()">Env Usage</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="#" onclick="showUserUsage()">User Usage</a>
+            </li>
+
+            <!--
+            <li class="nav-item">
+            <a class="nav-link" href="#" onclick="showUserTimestamp()">User Timestamp</a>
+            </li>
+            -->
+        </ul>
+
+        <canvas id="userChart"></canvas>
+        <canvas id="barChart" style="max-width:700px;"></canvas>
+        <!-- <canvas id='userUsageTimestamps' style="margin:0"></canvas> -->
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<!-- References: https://www.chartjs.org/docs/latest/samples/bar/vertical.html -->
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script> -->
+<script src="{% static "chartJS/Chart.js" %}"></script>
+
+<!-- <script src="{% static "commons/js/keystackCharts.js" %}"></script> -->
+<script type="module" src="{% static 'commons/js/utilizations.js' %}"></script>
+
+{% endblock extra_js %}

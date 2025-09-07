@@ -1,0 +1,21 @@
+Env Load Balancer
+-----------------
+  - Env load-balancing automatically provides an available Env (testbed) instead of statically
+    defining an Env to use by stating the load-balancing group name
+  - Env load-balancing is only supported by running the Keystack docker container (KeystackUI)
+  - To create a load-balance group:
+       - Go on the KeystackUI, on the side panel, Envs, select Load-Balance-Mgmt
+       - In playbooks, set loadBalanceGroup: <load-balance-group-name>
+       - You could set loadBalanceGroup at the globaSettings, under Stages and Stage Task.
+
+  - If you set loadBalanceGroup in globalSettings, all stage tasks will get available envs to use.
+  - If a stage or a task don't require an Env, then set ->  env: not-required
+    Keystack will not assign an env for the stage or the stage task
+
+  NOTES:
+    - For env load balancing, the env must be added to the DB inside the keystack docker container. 
+      Keystack Load-balancer looks for some keywords.
+    - If you manually created new env YAML files, Keystack will automatically add the env to
+      the KeystackUI Env table when user clicks on:
+          - Envs UI page
+          - Env Load Balance UI page

@@ -1,0 +1,119 @@
+---
+# Parameter values inside globalSettings applies to all stages and modules
+# You could over write these globalSetting param values in each stage and modules
+# so they're all different.
+#
+globalSettings:
+   # The key use to use with specific login credentials
+   # from the file .loginCredentials.yml
+   # For example: logins for AWS S3 and Jira
+   loginCredentialKey: None
+
+   # Default = False
+   # Abort the task if a test case failed
+   # Move on to test the next stage.  Skipping the rest of the tasks 
+   # within the same stage.
+   abortTaskOnFailure: False
+
+   # Default = True
+   abortStageOnFailure: False
+
+   # Abort entire test if a testcase failed. Will not jump to Teardown.
+   # Default = False
+   abortTestOnFailure: False
+   
+   env: not-required
+   loadBalanceGroup: None
+
+   verifyFailurePatterns: ['Failed']
+   
+   # Add additional test report details to the test report header. 
+   # The test report will show these additional keys and values that
+   # you are staing here. Create as many as you like with a dash.
+   # reportHeadingAdditions:
+   #    - key: 'valueString'
+
+stages:
+    Setup:
+        enable: True
+        runTasksConcurrently: False
+        tasks:
+          - Setup:
+              enable: True
+              env: DOMAIN=Keystack/demoEnv1
+              playlist:
+                 - Modules/Keystack_Samples/Testcases/Bringups
+
+    # Run standalone python scripts.                                         
+    Test:
+        enable: True
+        runTasksConcurrently: False
+        tasks:
+            - Layer3:
+                enable: True
+                env: DOMAIN=Keystack/demoEnv2
+                #playlistExclusions:
+                    # - Example. a list of folders and files to exclude
+                    #   from the playlist  
+                playlist:
+                    - Modules/Keystack_Samples/Testcases/L2L3_Testcases/bgp.yml
+                    - Modules/Keystack_Samples/Testcases/L2L3_Testcases/ospf.yml
+                    - Modules/Keystack_Samples/Testcases/L2L3_Testcases/isis.yml
+                    
+                outerLoop: 1
+                innerLoop:
+                    allTestcases: 1
+                    folders:
+                        - Modules/Keystack_Samples/Testcases/L2L3_Testcases: 2
+                    #testcases:
+
+                dependencies:
+                    # Example: To run isis.yml testcase, bgp.yml testcase
+                    #          must pass
+                    Modules/Keystack_Samples/Testcases/Demo/L2L3_Testcases/isis.yml:
+                        enable: True
+                        dependOnCases:
+                            - Modules/Keystack_Samples/Testcases/L2L3_Testcases/bgp.yml
+
+            - StandAloneApps:
+                enable: True
+                # Pass in variable values to scripts to digest.
+                # Look at pythonSample.py script for sample on getting this variables
+                playbookVars:
+                   serverIp: 10.10.10.1
+                   serverName: qa
+                   server: sanity
+                env: DOMAIN=Keystack/demoEnv3
+                playlist:
+                    - Modules/Keystack_Samples/Testcases/standalonePython.yml
+                    - Modules/Keystack_Samples/Testcases/bashScript.yml
+                    - Modules/Keystack_Samples/Testcases/runPytest.yml
+
+    # Run python scripts with Keystack Env integration. 
+    # This allows your Python scripts to consume env parameter values inside Python scripts.
+    # And in your scripts, instead of using print, use logInfo(), logFailed(), logWarning(), logError()
+    DynamicVariableSample:
+        enable: True
+        tasks:
+          - DynamicVariables:
+              enable: True
+              env: DOMAIN=Keystack/demoEnv2
+              # Pass in variable values to scripts to digest.
+              playbookVars:
+                 serverIp: 10.10.10.1
+                 serverName: qa
+                 server: sanity
+              playlist:
+                 - Modules/Keystack_Samples/Testcases/dynamicVariableSample.yml
+
+    Teardown:
+        enable: True
+        runTasksConcurrently: False
+
+        # Default = False
+        teardownOnFailure: True
+        tasks:
+          - Teardown:
+              enable: True 
+              playlist:
+                 - Modules/Keystack_Samples/Testcases/Teardowns

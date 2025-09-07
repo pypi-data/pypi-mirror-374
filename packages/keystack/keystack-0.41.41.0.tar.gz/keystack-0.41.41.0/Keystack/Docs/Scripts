@@ -1,0 +1,153 @@
+Keystack supports running various script formats:
+    - Keystack integrated Python scripts 
+    - Regular Python scripts
+    - Linux bash/shell scripts
+
+What is "Keystack integrated Python scripts":
+#   Scripts could consume resource data from:
+#      playbooks.yml, env.yml, testcase.yml, configParams, port-groups, 
+#      L1/L2 port details, port-connections and access to artifactsFolder
+#      to store artifacts so other tests could retrieve data
+from keystackEnv import keystack
+
+keystack.logInfo()                                                                                                                          
+keystack.logFailed()
+keystack.logDebug()
+keystack.logWarning()
+keystack.logError(): Aborts test immediately
+
+# Type=dict
+# All the env.yml parameters/values
+keystack.taskProperties["envParams"]
+
+# Type=dict
+# The current running test case yml file parameters/values
+keystack.testcaseParams
+
+# Type=dict
+# Create custom variables in env.yml files for scripts to consume under the "dataConfigs" key.
+#
+# Subsequently, you could do the same in testcase.yml files. Everything under "dataConfigs" in 
+# testcase.yml files will overwrite "dataConfigs" in env.yml files.
+#
+# Another option: Dedicate a config params file and store all params in the file.
+#                 There is no need to create the "dataConfigs" key using this approach.
+#                 /Modules/<name>/DataConfigs/<file.yml> 
+keystack.taskProperties["dataConfigs"]
+
+# Type=dict
+# If you set Playbook variables for scripts to consume, retrieve the variable values like this:
+keystack.taskProperties["playbookVars"]
+
+# Type=dict
+# If the env yml file states a portGroup, the ports details could be consume by using this:
+#   Example: {'device-1': {'domain': 'Communal', 'ports': ['1/1', '1/2']}}
+#   Usage: keystack.portGroupsData["device-1"]["ports"] => ['1/1', '1/2']
+keystack.portGroupsData
+
+# Type=dict
+# Example: {'device-1': {'domain': 'Communal', 'deviceType': None, 'ipAddress': 'None', 
+#                        'ipPort': 'None', 'loginName': 'None', 'password': 'None', 
+#                        'connectionProtocol': 'ssh', 'ports': ['1/1', '1/2', '1/3', '1/4', '1/5'], 'additionalKeys': 'None'}, 
+#           'device-2': {'domain': 'Communal', 'deviceType': None, 'ipAddress': 'None', 'ipPort': 'None', 'loginName': 'None', 
+#                        'password': 'None', 'connectionProtocol': 'ssh', 'ports': ['2/1', '2/2', '2/3', '2/4', '2/5'], 
+#                        'additionalKeys': 'None'}}
+# 
+# Usage: keystack.devicesData["device-2"]["ports"] -> ['2/1', '2/2', '2/3', '2/4', '2/5']
+keystack.devicesData
+
+# Type=dict
+# Example: {'device-1': {'1/1': {'port': '1/1', 'connectedToDevice': 'device-2', 'connectedToPort': '2/1', 
+#                                'portGroups': ['portGroup1'], 'multiTenant': False, 'opticMode': 'single-mode', 
+#                                'portType': None, 'vlanIDs': [], 'autoNeg': True, 'speed': '1G', 
+#                                'reserved': 'available', 'additionalKeyValues': {}}, 
+#                        '1/2': {'port': '1/2', 'connectedToDevice': 'device-2', 'connectedToPort': '2/2', 
+#                                'portGroups': ['portGroup1'], 'multiTenant': False, 'opticMode': None, 
+#                                'portType': None, 'vlanIDs': [], 'autoNeg': True, 'speed': '1G',
+#                                'reserved': 'available', 'additionalKeyValues': {}}}}
+# Usage: keystack.portsData["device-1"]["1/1"]
+keystack.portsData
+
+# The test session's artifacts folder where you could store
+# artifacts for other scripts to consume or a place to simply store artifacts 
+# to digest after the test
+keystack.taskProperties["artifactsFolder"]
+
+
+# To run plain Python scripts without importing keystackEnv
+#    Python scripts have no access to data resources from
+#    playbooks.yml, env.yml, testcase.yml, configParams and access to artifactsFolder
+# 
+#    To check for failures, use verifyFailurePatterns in playbooks:
+# 
+# Optionally, put it under globalSettings so it applies to the entire playbook
+# Otherwise, define a verifyFailurePatterns for each Stage or for each task.
+globalSettings:
+   verifyFailurePatterns: ['Failed', 'SyntaxError']
+   
+   
+# Or put it under a stage that applies to all modules or put it under a module
+# that applies to only specific modules:
+stages:
+    Bringup:
+	enable: True
+	runModulesInParallel: False
+	#verifyFailurePatterns: ['Failed', 'SyntaxError']
+	tasks:
+        - Task_1
+           #verifyFailurePatterns: ['Failed', 'SyntaxError']
+	       enable: True
+	       playlist:
+                  - /Modules/Demo/Samples/Bringups
+
+ 
+# To run Linux shell scripts
+#    In the testcase.yml file, use the <shellScript> key
+#    and a list of shell scripts to run
+     shellScript:
+        - /Modules/Demo/Samples/Scripts/shellScript.bash
+ 
+# In playbooks, add the testcase.yml file to the playlist  
+stages:  
+    Test:
+       tasks:
+         - L2L3_Test
+            playlist:
+               - /Modules/Demo/Samples/Testcases/bgp.yml
+               - /Modules/Demo/Samples/Testcases/ospf.yml
+               - /Modules/Demo/Samples/Testcases/isis.yml
+               - /Modules/Demo/Samples/Testcases/standalonePython.yml
+               - /Modules/Demo/Samples/Testcases/bashScript.yml
+
+
+# To run plain standalone Python scripts:
+#    In the testcase.yml file, use the <standalonePythonScript> key
+#    If the scripts resides in /Modules, begin with short-format /Modules
+#    Otherwise, state the full path to the script
+     standalonePythonScript: /Modules/Demo/Samples/Scripts/standalonePython.py
+     
+# To run apps that have exported config files for importing, use <exportedConfigFile>:
+exportedConfigFile: ExportedConfigs/sample_fullCore.zip
+
+# Testcase params, use <dataConfigFile>
+# Store all config params in a file for scripts to consume
+# This aproach will overwrite the configParams key in env.yml resource files and testcase.yml files
+dataConfigFile: None
+
+# Which Python file is the main script in the central Apps location 
+pythonScript: /Apps/LoadCore/runLoadCore.py
+
+# Provide a list with dashes of paths to append to sys.path to support importing
+# libraries for scripts in the apps.
+# For scripts to import. Must begin with either /Apps or /Modules.
+importAppLibraryPaths:
+   - /Apps/LoadCore
+   
+   
+# To use artifacts in scripts
+# Create artifacts and put them in a shared location for other tests to access them                                                           
+jsonFile = f'{keystack.taskProperties["artifactsFolder"]}/myTestData.json'
+data = {'test': 'server', 'result': 'Passed'}
+with open(jsonFile, mode='w', encoding='utf-8') as fileObj:
+          json.dump(data, fileObj)
+

@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+
+    <style>
+        // Create variables
+        :root {
+            --main-radius: 25px;
+            --main-padding: 15px;
+        }
+    
+        .grid {
+            margin-top: 0px;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: .5fr 1fr .5fr;
+            grid-template-rows: 1fr;
+            grid-template-areas:
+                "installedApps description availableApps";      
+            grid-gap: 0.1rem;
+            background-color: white;
+        }
+    
+        #installedApps {
+            grid-area: installedApps;
+            border-radius:var(--main-radius);
+            padding-top:var(--main-padding);
+            height: 85%;
+            overflow: auto;
+            color: #66F854;
+            background: black;
+        }
+    
+        #availableApps {
+            grid-area: availableApps;
+            border-radius:var(--main-radius);
+            padding-top:var(--main-padding);
+            height: 85%;
+            overflow: auto;
+            color: #66F854;
+            background: black;
+            overflow: auto;
+        }
+
+        #description {
+            grid-area: description;
+            border-radius:var(--main-radius);
+            padding-top:var(--main-padding);
+            height: 85%;
+            overflow: auto;
+            color: #66F854;
+            background: black;
+        }
+    
+    </style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="mainBodyDivNoSecondNavbar">
+    <div class="grid">
+        <div id='installedApps'>
+            <div class="marginTop20px"><center>Installed Apps</center></div><br>
+            <center>
+                <button class="btn btn-sm btn-outline-success" data-toggle="modal" data-target="#removeAppsConfirmationModal">Remove Apps</button>&ensp;
+                <button class="btn btn-sm btn-outline-success" onclick="updateApps()">Update Apps</button>&ensp;
+            </center><br>
+
+            <div class="marginTop20px" id="insertInstalledApps"></div>
+        </div>
+
+        <div id='description'>
+            <center><div class="marginTop20px">Description</div></center><br>
+            <pre class="marginTop10px marginLeft20px mainFontSize mainTextColor" id='insertAppDescription'></pre>
+        </div>
+
+        <div id='availableApps'>
+            <div class="marginTop20px"><center>App Store</center></div><br>
+            <center><button class="btn btn-sm btn-outline-success" onclick="installApps()">Install</button></center><br>
+            <div class="marginTop10px" id='insertAppStoreApps'></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="removeAppsConfirmationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="removeAppConfirmationModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:30%; height:300px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<div class="fileRowInlineBlockRight">
+					<h5 class="modal-title textBlue">Remove App&ensp;</h5>
+					<div id="showLoadBalanceGroupName" style="float:left; margin-left:20px; padding-top:3px;"></div>
+				</div>
+            </div>
+
+            <div class="modal-body" style="margin-top:2px">
+				<div class="row">&ensp;&ensp;Are you sure that you want to remove tha app?</div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="removeApp()">Remove</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+    <script type="module" src="{% static 'commons/js/appStore.js' %}"></script>
+{% endblock extra_js %}

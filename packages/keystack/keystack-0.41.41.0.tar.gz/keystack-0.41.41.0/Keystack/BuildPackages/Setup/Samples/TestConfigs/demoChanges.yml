@@ -1,0 +1,18 @@
+/opt/KeystackTests/Testcases/Demo/L2L3_Testcases/bgp.yml:
+   scriptCmdlineArgs:
+      - -arg1 value1
+      - -arg2 value2
+   dataConfigs:
+      newParam1: value1
+   dataConfigsFile: /Modules/Demo/DataConfigs/bgp_dataConfigs.json
+   exportedConfigsFile: /Modules/Demo/DataConfigs/bgp_exportedConfigs.json
+   
+/opt/KeystackTests/Testcases/Demo/L2L3_Testcases/ospf.yml:
+   scriptCmdlineArgs:
+      - -arg1 value1  -arg2 value2
+   configParametersFile: /Modules/Demo/ConfigParameters/ospf.json
+   dataConfigs:
+      newParam1: value2
+   dataConfigsFile: /Modules/Demo/DataConfigs/ospf_dataConfigs.json
+   exportedConfigsFile: /Modules/Demo/DataConfigs/ospf_exportedConfigs.json
+

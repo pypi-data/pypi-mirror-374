@@ -1,0 +1,21 @@
+# These are default settings.
+# Allow user's to change the settings.
+# These settings will be used for the Keystack keystackSystemSettings.env file
+# and the docker-compose file
+
+keystackIp: 0.0.0.0
+keystackPort: 80
+keystackSecuredPort: 443
+mongoPort: 27017
+redisPort: 6379
+dockerhubUser: hubertgee
+
+# For debugging UI issues
+#debugPort: 8000
+
+# If using docker-compose or Kubernettes to bring up the containers, use
+# "keystackMongoDBHostname" hostname to connect to the MongoDB.
+# Otherwise, use static IP address. Cannot use localhost, 0.0.0.0 and DNS
+mongoIp: keystackMongoDBHostname
+
+

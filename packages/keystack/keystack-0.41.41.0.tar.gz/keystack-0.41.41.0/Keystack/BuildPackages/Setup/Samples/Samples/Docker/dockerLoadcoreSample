@@ -1,0 +1,23 @@
+# Usage
+# ./dockerLoadcore <docker image version>
+
+if [ $# -eq 0 ]; then
+    echo -e "\nError: You need to pass in the docker keystack version."
+    echo -e "Example: runDocker v0.6.1\n"
+    docker images
+    echo -e "\n"
+    exit
+fi
+
+docker run \
+    -it \
+    -v {path}KeystackTests:/opt/KeystackTests \
+    -v {path}KeystackSystem:/opt/KeystackSystem \
+    --name keystack_${1} \
+    --rm \
+    keystack:${1} \
+    keystack -playbook {path}KeystackTests/Playbooks/loadcoreSample.yml -sessionId myTestSession
+    
+
+
+

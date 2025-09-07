@@ -1,0 +1,35 @@
+---
+location: San Jose
+
+notes: Add some notes
+
+devices:
+   device_1:
+      ipAddress: 192.168.28.11
+      ipPort: 23
+      connectionProtocol: telnet
+      loginName: hgee
+
+   # Alternatively, get device details from the KeystackUI Lab Inventory
+   device_1: get_device_details_from_inventory
+
+portGroups:
+   - portGroup1
+
+dataConfigs:
+    param1: value0
+
+autoSetup:
+  execCliCmdsOnKeystackServer:
+       - ls -l /home/hgee
+
+  execCliCmdsOnEnvDevices:
+       device_1:
+            - cat /etc/os-release
+            - ls -l /home/hgee/Downloads
+
+autoTeardown:
+   <same as autoSetup>
+
+
+

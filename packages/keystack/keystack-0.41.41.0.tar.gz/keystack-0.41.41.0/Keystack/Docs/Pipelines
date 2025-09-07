@@ -1,0 +1,31 @@
+Pipelines are repeatable tests with predefined test parameters/values which you 
+created in the KeystackUI Pipelines page. 
+
+- Pipelines are created in the KeystackUI  
+- Stored in /opt/KeystackTests/Pipelines 
+- Pipelines are stored as Ymal files.
+- The name of the pipeline is the Ymal file name
+- Select a pipeline from the dropdown menu to run immediately
+
+Pipleline example:
+------------------
+    abortTestOnFailure: false
+    awsS3: false
+    debug: false
+    domain: Communal
+    emailResults: false
+    holdEnvsIfFailed: false
+    includeLoopTestPassedResults: false
+    jira: false
+    pauseOnError: false
+    pipeline: regression
+    playbook: DOMAIN=Communal/Samples/advance
+    reconfigs: ''
+    remoteController: 192.168.28.10:28028
+    sessionId: myAwesomeTest
+
+
+Running saved pipelines on the CLI:
+-----------------------------------
+  keystack run -pipeline <pipeline>
+  

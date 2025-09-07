@@ -1,0 +1,60 @@
+autoSetup and autoTeardown: 
+
+Automatically setup and teardown an env by running some 
+commands on the Keystack server and/or run some commands 
+on remote devices before running test.
+
+Example 1:
+
+  autoSetup:
+      execCliCmdsOnKeystackServer:
+            - ls -l /home/jdoe
+            - python3 myScript.py
+            
+      # Only SSH and Telnet connections are supported
+      # Keystack will get the device's connection-protocol from either the lab 
+      # Inventory or from the env devices
+      execCliCmdsOnEnvDevices:
+            # device_1 is the device name
+            # Followed by a list of commands to enter if logged into the device
+            device_1:
+                - cat /etc/os-release
+                - ls -l /home/jdoe/Downloads
+              
+  autoTeardown:
+      <Same as autoSetup>
+
+
+
+Example 2:
+
+    location: San Jose
+    notes: Add some notes
+
+    devices:
+      device_1:
+          ipAddress: 192.168.28.11
+          ipPort: 23
+          connectionProtocol: telnet
+          loginName: jdoe
+
+      # Alternatively, get device details from the KeystackUI Lab Inventory
+      device_1: get_device_details_from_inventory
+
+    portGroups:
+      - portGroup1
+
+    dataConfigs:
+        param1: value0
+
+    autoSetup:
+      execCliCmdsOnKeystackServer:
+          - ls -l /home/jdoe
+
+      execCliCmdsOnEnvDevices:
+          device_1:
+                - cat /etc/os-release
+                - ls -l /home/jdoe/Downloads
+
+    autoTeardown:
+      <same as autoSetup>
