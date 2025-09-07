@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=77.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PyKaTeX"
+version = "0.1.0"
+description = "A Python wrapper for the KaTeX library, providing fast server-side rendering of mathematical expressions."
+readme = "README.md"
+requires-python = ">=3"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+  {name = "Ruben van Nieuwpoort", email = "ruben@vannieuwpoort.dev"},
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+]
+
+[project.urls]
+homepage = "https://github.com/rubenvannieuwpoort/PyKaTeX"
