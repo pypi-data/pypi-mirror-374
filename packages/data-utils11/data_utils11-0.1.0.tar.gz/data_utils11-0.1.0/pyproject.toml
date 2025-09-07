@@ -1,0 +1,32 @@
+[project]
+name = "data-utils11"
+version = "0.1.0"
+description = "Simple data utilities package"
+readme = "README.md"
+authors = [
+    { name = "DaVita AI" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "polars",
+    "typer", 
+    "rich",
+    "ml-core",  # Local workspace dependency
+]
+
+[tool.uv.sources]
+ml-core = { workspace = true }
+
+[project.scripts]
+data-utils = "data_utils.cli:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+include = ["data_utils"]
+exclude = [
+    "**/__pycache__",
+    "**/*.pyc",
+]
