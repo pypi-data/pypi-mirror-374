@@ -1,0 +1,13 @@
+autoflake
+hunterMakesPy>=0.2.1
+typing_extensions>=4.10.0
+
+[development]
+mypy
+pyupgrade
+setuptools-scm
+
+[testing]
+pytest-cov
+pytest-xdist
+pytest
