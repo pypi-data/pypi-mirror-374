@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kmbbank"
+version = "0.1.1"
+description = "Unofficial MB Bank client (repackaged as kmbbank)."
+readme = "README.MD"
+requires-python = ">=3.8"
+license = { file = "LICENSE.txt" }
+authors = [{ name = "Lê Khang", email = "kmb247.com@gmail.com" }]
+keywords = ["mbbank", "banking", "api", "unofficial"]
+dependencies = [
+  "requests>=2.31.0",
+  "aiohttp",
+  "Pillow",
+  "wasmtime",
+  "mb-capcha-ocr>=0.1.5"
+]
+
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Intended Audience :: Developers",
+  "Topic :: Internet :: WWW/HTTP",
+]
+
+[project.urls]
+Homepage = "https://kmb247.com"
+Source = "https://github.com/thedtvn/MBBank"
+Issues = "https://github.com/thedtvn/MBBank/issues"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+[tool.setuptools.packages.find]
+where = ["."]
