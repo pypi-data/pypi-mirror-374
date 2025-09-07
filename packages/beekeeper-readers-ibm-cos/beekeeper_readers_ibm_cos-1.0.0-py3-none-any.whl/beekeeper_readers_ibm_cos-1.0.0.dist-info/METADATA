@@ -1,0 +1,20 @@
+Metadata-Version: 2.4
+Name: beekeeper-readers-ibm-cos
+Version: 1.0.0
+Summary: beekeeper readers ibm cloud object storage extension
+Author-email: Leonardo Furnielis <leonardofurnielis@outlook.com>
+License: Apache-2.0
+Requires-Python: <4.0,>=3.10
+Requires-Dist: beekeeper-core<2.0.0,>=1.0.0
+Requires-Dist: ibm-cos-sdk<3.0.0,>=2.14.2
+Provides-Extra: dev
+Requires-Dist: ruff>=0.11.13; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# Beekeeper readers extension - IBM Cloud Object Storage
+
+## Installation 
+
+```bash
+pip install beekeeper-readers-ibm-cos
+```
