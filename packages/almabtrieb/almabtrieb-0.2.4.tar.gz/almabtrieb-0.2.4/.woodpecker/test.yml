@@ -1,0 +1,21 @@
+when:
+  - branch: [main]
+    event: [pull_request, push]
+
+matrix:
+  EXTRAS: ["", " --all-extras"]
+
+steps:
+  build:
+    image: ghcr.io/astral-sh/uv:python3.11-alpine
+    commands:
+      - uv sync --frozen ${EXTRAS}
+  test_format:
+    image: ghcr.io/astral-sh/uv:python3.11-alpine
+    commands:
+      - uv run ruff format --check .
+      - uv run ruff check .
+  test_pytest:
+    image: ghcr.io/astral-sh/uv:python3.11-alpine
+    commands:
+      - uv run pytest almabtrieb
