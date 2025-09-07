@@ -1,0 +1,16 @@
+Metadata-Version: 2.4
+Name: encryptext
+Version: 6.2
+Author: YusufA442
+Author-email: yusuf365820@gmail.com
+License: Creative Commons Attribution-Noncommercial-Share Alike license
+Requires-Dist: LibraryBasics
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: license
+Dynamic: requires-dist
+
+Basic Substitution Cipher for printable characters. Could be cracked, which is why I will look to add a more complex substitution algorithm later. It should work, but is not guaranteed to be super safe encryption.
+
+new changes: file output should now write on command instead of on close.
