@@ -1,0 +1,33 @@
+Metadata-Version: 2.4
+Name: ML_Automation_Tool
+Version: 1.0.0
+Summary: Automated Machine Learning tool with GUI
+Home-page: https://github.com/yourusername/ML_Automation_Tool
+Author: Yassine
+Author-email: your_email@example.com
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: pandas
+Requires-Dist: scikit-learn
+Requires-Dist: joblib
+Requires-Dist: PySimpleGUI
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# ML Automation Tool
+Automatically train and evaluate multiple ML models from a CSV dataset.
+
+## How to use GUI
+1. Run `python gui_main.py`
+2. Select your CSV file and enter the target column
+3. Click "Run"
+4. Results appear in the output box, and the best model is saved automatically
