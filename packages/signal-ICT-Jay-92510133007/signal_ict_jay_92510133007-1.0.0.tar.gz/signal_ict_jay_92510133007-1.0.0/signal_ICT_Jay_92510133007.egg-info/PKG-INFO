@@ -1,0 +1,145 @@
+Metadata-Version: 2.4
+Name: signal_ICT_Jay_92510133007
+Version: 1.0.0
+Summary: A Python package for fundamental signal processing operations
+Home-page: 
+Author: Jay
+Author-email: jay.jagatiya136948@marwadiuniversity.ac.in
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Education
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.19.0
+Requires-Dist: matplotlib>=3.3.0
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: pytest-cov>=2.0; extra == "dev"
+Requires-Dist: black>=21.0; extra == "dev"
+Requires-Dist: flake8>=3.8; extra == "dev"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: license-file
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Signal Processing Package - ICT Department
+
+A comprehensive Python package for fundamental signal generation and operations, developed for the Programming with Python course (01CT1309) at Marwadi University, Faculty of Engineering and Technology.
+
+## 📋 Package Overview
+
+This package demonstrates core concepts of Signals and Systems through three modular components:
+
+- **Unitary Signals**: Unit step, impulse, and ramp signal generation
+- **Trigonometric Signals**: Sine wave, cosine wave, and exponential signal generation  
+- **Signal Operations**: Time shifting, scaling, addition, and multiplication operations
+
+## 🏗️ Package Structure
+
+\`\`\`
+signal_ICT_Jay_92510133007/
+├── __init__.py                # Package initialization and exports
+├── unitary_signals.py         # Unit step, impulse, and ramp signals
+├── trigonometric_signals.py   # Sine, cosine, and exponential signals
+├── operations.py              # Signal manipulation operations
+├── main.py                    # Demonstration script
+├── setup.py                   # Package setup and distribution
+└── README.md                  # This documentation file
+\`\`\`
+
+## 🚀 Installation
+
+### Method 1: Install from Wheel (Recommended)
+
+\`\`\`bash
+# Install from local wheel file
+pip install dist/signal_ICT_Jay_92510133007-1.0.0-py3-none-any.whl
+\`\`\`
+
+### Method 2: Install from TestPyPI
+
+\`\`\`bash
+# Install from TestPyPI (after upload)
+pip install -i https://test.pypi.org/simple/signal_ICT_Jay_92510133007
+\`\`\`
+
+## 📦 Dependencies
+
+- **NumPy** (>=1.19.0): For numerical array operations
+- **Matplotlib** (>=3.3.0): For signal visualization and plotting
+
+## 🎯 Usage Examples
+
+### Basic Signal Generation
+
+\`\`\`python
+import numpy as np
+from signal_ICT_Jay_92510133007 import unit_step, sine_wave
+
+# Generate unit step signal
+n = np.arange(-10, 10)
+step_signal = unit_step(n)
+
+# Generate sine wave
+t = np.linspace(0, 1, 1000)
+sine_signal = sine_wave(A=2, f=5, phi=0, t=t)
+\`\`\`
+
+### Signal Operations
+
+\`\`\`python
+from signal_ICT_Jay_92510133007 import signal_addition, time_shift
+
+# Add two signals
+result = signal_addition(signal1, signal2)
+
+# Time shift a signal
+shifted = time_shift(signal, k=5)
+\`\`\`
+
+### Complete Demonstration
+
+\`\`\`python
+# Run the complete demonstration
+python main.py
+\`\`\`
+
+## 🔧 Module Documentation
+
+### 1. unitary_signals.py
+
+**Functions:**
+- `unit_step(n)`: Generates unit step signal u[n]
+- `unit_impulse(n)`: Generates unit impulse signal δ[n]  
+- `ramp_signal(n)`: Generates ramp signal r[n]
+
+### 2. trigonometric_signals.py
+
+**Functions:**
+- `sine_wave(A, f, phi, t)`: Generates sine wave with amplitude A, frequency f, phase phi
+- `cosine_wave(A, f, phi, t)`: Generates cosine wave with specified parameters
+- `exponential_signal(A, a, t)`: Generates exponential signal A*e^(at)
+
+### 3. operations.py
+
+**Functions:**
+- `time_shift(signal, k)`: Shifts signal by k units in time
+- `time_scale(signal, k)`: Scales signal in time by factor k
+- `signal_addition(signal1, signal2)`: Adds two signals point-wise
+- `signal_multiplication(signal1, signal2)`: Multiplies two signals point-wise
