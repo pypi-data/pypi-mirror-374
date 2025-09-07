@@ -1,0 +1,71 @@
+Metadata-Version: 2.4
+Name: synaptik-core-beta
+Version: 0.1.0
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Rust
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Summary: Synaptik Core Python bindings (hackathon build)
+Author: Janay Harris
+License: Apache-2.0
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+
+# Synaptik Core (Python bindings)
+
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/snufkinwa/synaptik-core" alt="License"></a>
+  <img src="https://img.shields.io/badge/python-3.8%2B-blue?logo=python" alt="Python">
+  <img src="https://img.shields.io/badge/OpenAI-Hackathon-ff69b4?logo=openai" alt="Hackathon">
+</p>
+
+[![PyPI version](https://img.shields.io/pypi/v/synaptik-core-beta.svg)](https://pypi.org/project/synaptik-core-beta/)
+[![License](https://img.shields.io/pypi/l/synaptik-core-beta.svg)](https://opensource.org/licenses/Apache-2.0)
+
+**Synaptik Core** is the memory, ethics, and audit substrate for trustworthy AI agents.  
+This package provides Python bindings for the Rust core engine.
+
+
+##  Installation
+
+```bash
+pip install synaptik-core-beta
+````
+
+Requires Python **3.8+**.
+
+
+## ⚡ Quick Start
+
+```python
+import synaptik_core
+
+# Example: initialize memory / audit
+engine = synaptik_core.Engine()
+
+# Commit a simple memory fragment
+engine.commit("chat", {"user": "alice", "message": "hello"})
+
+# Retrieve it back
+print(engine.recall("chat"))
+```
+
+*(Example API — adjust if your bindings differ.)*
+
+##  Features
+
+*  **Contract-based safeguards** — run WASM contracts to enforce rules
+*  **Persistent memory** — short-term (SQLite hot cache) + long-term archival
+* **Transparent audit log** — append-only JSONL for all decisions
+*  **Resource limits** — bounded execution for safe, deterministic behavior
+
+## 🛠 Development
+
+This package is built with [Maturin](https://github.com/PyO3/maturin) and [PyO3](https://pyo3.rs/).
+Rust ≥ 1.70 and Python ≥ 3.8 required for local builds.
+
+
+## 📄 License
+
+Licensed under the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0).
+
+
