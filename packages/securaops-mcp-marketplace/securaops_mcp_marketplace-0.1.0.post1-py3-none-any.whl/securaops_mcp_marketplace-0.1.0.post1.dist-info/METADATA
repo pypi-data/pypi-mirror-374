@@ -1,0 +1,39 @@
+Metadata-Version: 2.4
+Name: securaops-mcp-marketplace
+Version: 0.1.0.post1
+Summary: A marketplace for MCP (Model Context Protocol) connectors
+Author-email: Nephthali Djabon Tchounda <securaops5@gmail.com>
+Project-URL: Homepage, https://github.com/securacoder/mcp-marketplace/sdks
+Project-URL: Documentation, https://github.com/securacoder/mcp-marketplace/sdks#readme
+Project-URL: Repository, https://github.com/securacoder/mcp-marketplace
+Project-URL: Issues, https://github.com/securacoder/mcp-marketplace/issues
+Keywords: mcp,slack,connector,llm,api
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests>=2.28.0
+Requires-Dist: pydantic>=1.10.0
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Dynamic: license-file
+
+# MCP Marketplace
+
+A Python SDK for MCP (Model Context Protocol) connectors, starting with Slack integration.
+
+## Installation
+
+```bash
+pip install securaops-mcp-marketplace
