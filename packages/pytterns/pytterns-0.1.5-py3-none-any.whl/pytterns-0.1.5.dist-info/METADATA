@@ -1,0 +1,253 @@
+Metadata-Version: 2.4
+Name: pytterns
+Version: 0.1.5
+Summary: A library to easily use design patterns with Python
+Author: Marcos Rosa
+Author-email: Marcos Rosa <marcos.cantor@gmail.com>
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENCE
+License-File: AUTHORS
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Dynamic: author
+Dynamic: license-file
+Dynamic: requires-python
+
+# Pytterns
+Pytterns is a Python library that provides an easy and intuitive way to use Design Patterns in your Python code.
+
+## Installation
+To install Pytterns, use the following command:
+```
+pip install pytterns
+```
+
+## Implemented Design Patterns
+
+### Strategy
+The Strategy pattern allows the definition of a family of algorithms, encapsulating them and making them interchangeable at runtime.
+
+#### Usage Example
+```
+from pytterns import strategy, load
+
+@strategy("payment")
+class CreditCardPayment:
+    def check(self, method):
+        return method == "credit_card"
+    
+    def execute(self):
+        return "Processing payment via Credit Card"
+
+@strategy("payment")
+class PayPalPayment:
+    def check(self, method):
+        return method == "paypal"
+    
+    def execute(self):
+        return "Processing payment via PayPal"
+
+# Selecting strategy based on payment method
+payment_strategy = load.strategy("payment").check("paypal").execute()
+print(payment_strategy)  # Output: Processing payment via PayPal
+```
+
+### Chain of Responsibility
+Chain of Responsibility is a behavioral design pattern that allows a request to be processed by a sequence of handlers. The order of the handlers will be defined in the decorator/annotation itself.
+
+#### Usage Example
+```
+from pytterns import chain, load
+
+@chain("auth_chain", order=1)
+class Authenticator:
+    def handle(self, request):
+        if not request.get("authenticated", False):
+            print("Authentication failed!")
+            return  # Stops the chain here
+        print("User authenticated")
+
+@chain("auth_chain", order=2)
+class Authorizer:
+    def handle(self, request):
+        if request.get("role") != "admin":
+            print("Authorization failed!")
+            return
+        print("User authorized")
+
+@chain("auth_chain", order=3)
+class Logger:
+    def handle(self, request):
+        print(f"Logging request: {request}")
+
+# Loading the chain
+auth_chain = load.chain("auth_chain")
+
+# Simulating requests
+print("=== Request 1 ===")
+auth_chain.handle({"authenticated": False, "role": "admin"})
+
+print("\n=== Request 2 ===")
+auth_chain.handle({"authenticated": True, "role": "user"})
+
+print("\n=== Request 3 ===")
+auth_chain.handle({"authenticated": True, "role": "admin"})
+```
+
+#### Expected Output
+```
+=== Request 1 ===
+Authentication failed!
+
+=== Request 2 ===
+User authenticated
+Authorization failed!
+
+=== Request 3 ===
+User authenticated
+User authorized
+Logging request: {'authenticated': True, 'role': 'admin'}
+```
+
+### Observer
+The Observer pattern lets you register listeners for named events and notify them later.
+
+#### Usage Example
+```
+from pytterns import observer, load
+
+@observer('user.created')
+def send_welcome_email(user_id):
+    print(f"send welcome to {user_id}")
+    return 'email_sent'
+
+@observer('user.created')
+class AuditListener:
+    def update(self, user_id):
+        print(f"audit: created {user_id}")
+        return 'audited'
+
+# Notify all listeners
+results = load.observer('user.created').notify(42)
+# results is a list of (success, value) tuples for each listener
+print(results)  # [(True, 'email_sent'), (True, 'audited')]
+```
+
+#### Behavior Notes
+- Register listeners using `@observer(event)`; you can register plain callables (functions) or classes
+  (the decorator will instantiate the class).
+- `load.observer(event).notify(*args, **kwargs)` calls all listeners in registration order.
+- The `notify` method returns a list of (success, result) tuples. If a listener raised an exception,
+  that entry will be (False, exception) and other listeners will still be called.
+
+### Factory
+Register classes under a factory name and create instances dynamically.
+
+#### Usage Example
+```
+from pytterns import factory, load
+
+@factory('db')
+class MyDB:
+    def __init__(self, dsn):
+        self.dsn = dsn
+
+inst = load.factory('db').create('sqlite:///:memory:')
+print(inst.dsn)
+```
+
+### Command
+Map names to executable handlers (functions or classes with `execute`), and run them via the loader.
+
+#### Usage Example
+```
+from pytterns import command, load
+
+@command('say')
+def say(msg):
+    print(msg)
+
+@command('say')
+class Loud:
+    def execute(self, msg):
+        print(msg.upper())
+
+load.command('say').execute('hello')
+```
+
+## Notes on Factory and Command
+- `FactoryLoader.create(..., index=0)` lets you pick which registered class to instantiate (default 0).
+
+## Observer & Command removal
+- `load.observer('evt').unsubscribe(listener)` removes a listener (pass the exact function or the class to remove its instances).
+- `load.command('name').unregister(handler)` removes a handler (exact callable or class).
+
+## Quick API reference
+
+- Registration decorators: `strategy`, `chain`, `observer`, `factory`, `command`.
+- Loaders: use `load.strategy(name)`, `load.chain(name)`, `load.observer(event)`, `load.factory(name)`, `load.command(name)` to retrieve registered items.
+
+Common methods:
+
+- `create(*args, index=0, **kwargs)` (factory loader) — instantiate a registered class.
+- `notify(*args, **kwargs)` (observer loader) — call all listeners and return list of (success, result) tuples.
+- `handle(request)` (chain loader) — run the chain handlers in order.
+- `execute(*args, **kwargs)` (command loader) — execute registered command handler(s).
+
+## Running tests
+
+Install test dependencies and run pytest:
+
+```bash
+pip install -r requirements.txt
+pytest -q
+```
+
+## Continuous Integration & Automatic Releases
+
+When code is merged into the `main` branch, a GitHub Actions workflow will run the test suite and, if it succeeds, automatically create and push the next patch tag (for example `v0.1.1`). That tag then triggers the existing publish workflow which builds and uploads the package to PyPI.
+
+Behavior details:
+
+- The auto-release workflow looks for the latest tag matching `v*` and increments the patch number. If no tag is found it falls back to `v0.1.0`.
+- The workflow runs tests first; tags are only created when the test job succeeds.
+- The workflow uses the repository's `GITHUB_TOKEN` to create and push the tag. If you need a different behavior (for example signing tags or pushing with a separate deploy key), update the workflow or provide a different secret.
+
+Options if you prefer manual control:
+
+- Disable or edit `.github/workflows/auto-release.yml`.
+- Create and push a tag locally: `git tag -a v0.1.1 -m "v0.1.1" && git push origin v0.1.1`.
+
+Using a Personal Access Token (RELEASE_PAT) to allow automated tag pushes
+
+If you want the workflow to push tags in a way that GitHub treats as a normal user push (so it's allowed by branch protection and triggers any workflows that listen to tag pushes), create a Personal Access Token (PAT) with the `repo` scope and add it as a repository secret named `RELEASE_PAT`.
+
+Steps:
+
+1. Create a PAT:
+
+    - Go to https://github.com/settings/tokens
+    - Click "Generate new token" (classic) or use a fine-grained token with repository write permissions.
+    - Give it a descriptive name (e.g., "pytterns-release-bot"), set the expiration you want, and grant `repo` (or the minimum needed) scopes.
+    - Copy the token (you won't see it again).
+
+2. Add the secret to the repository:
+
+    - On GitHub, open the repository → Settings → Secrets and variables → Actions → New repository secret.
+    - Name it `RELEASE_PAT` and paste the token value.
+
+Once `RELEASE_PAT` is present, the `publish.yml` workflow will use it automatically to push tags and publication will proceed without manual tagging.
+
+
+## Contributing
+
+Contributions are welcome. Please open an issue for discussion and submit a PR with tests for new behavior. Keep formatting consistent with the project style.
+
+## License
+
+See the `LICENCE` file in the repository for license terms.
