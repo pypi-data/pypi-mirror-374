@@ -1,0 +1,4 @@
+[console_scripts]
+agent_server = server.cli:main
+kernel_agent = kernel_agent.cli:main
+torch_server = torch.cli:main
