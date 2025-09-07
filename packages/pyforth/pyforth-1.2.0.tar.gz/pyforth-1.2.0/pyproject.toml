@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyforth"
+version = "1.2.0"
+description = "A minimalistic, Python-based Forth+ interpreter"
+authors = [{name = "UndrDsk0M"}]
+license = {file = "LICENSE"}
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/UndrDsk0M/PyForth"
+Repository = "https://github.com/UndrDsk0M/PyForth"
