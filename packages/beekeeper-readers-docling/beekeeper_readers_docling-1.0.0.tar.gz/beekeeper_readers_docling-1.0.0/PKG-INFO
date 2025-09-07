@@ -1,0 +1,21 @@
+Metadata-Version: 2.4
+Name: beekeeper-readers-docling
+Version: 1.0.0
+Summary: beekeeper readers docling extension
+Author-email: Leonardo Furnielis <leonardofurnielis@outlook.com>
+License: Apache-2.0
+Requires-Python: <4.0,>=3.10
+Requires-Dist: beekeeper-core<2.0.0,>=1.0.0
+Requires-Dist: docling<3.0.0,>=2.37.0
+Requires-Dist: torch==2.2.2
+Provides-Extra: dev
+Requires-Dist: ruff>=0.11.13; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# Beekeeper readers extension - Docling
+
+## Installation 
+
+```bash
+pip install beekeeper-readers-docling
+```
