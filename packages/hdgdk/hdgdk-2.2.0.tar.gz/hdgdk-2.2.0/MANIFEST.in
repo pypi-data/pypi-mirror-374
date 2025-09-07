@@ -1,0 +1,23 @@
+# 包含项目根目录下的关键文件
+include README.md
+include LICENSE
+include setup.py
+
+# 包含lib目录下的DLL文件
+include lib/hd.dll
+include lib/HDDebug.dll
+include lib/VMProtectSDK32.dll
+
+# 包含HD目录下的Python文件
+include HD/*.py
+
+# 排除不必要的文件
+exclude *.pyc
+exclude *.pyo
+exclude *.log
+exclude .gitattributes
+exclude .idea/
+exclude venv/
+exclude build/
+exclude dist/
+exclude *.egg-info/
