@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "abrevvprint"
+version = "0.1.0"
+description = "This module does: 'p' to print, 'pf' to formated print and 'pe' to prefix 'error'"
+authors = [
+    { name="KsDev", email="contatoksdev@tutamail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}

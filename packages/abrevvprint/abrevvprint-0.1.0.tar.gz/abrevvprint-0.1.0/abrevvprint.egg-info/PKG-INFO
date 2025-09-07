@@ -1,0 +1,19 @@
+Metadata-Version: 2.4
+Name: abrevvprint
+Version: 0.1.0
+Summary: This module does: 'p' to print, 'pf' to formated print and 'pe' to prefix 'error'
+Author-email: KsDev <contatoksdev@tutamail.com>
+License: MIT
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
+# abbreviated print
+
+Simple module to abbreviated print:
+
+```python
+import abrprint as sp
+
+sp.p("Normal print")
+sp.pf("Formated print", 123)
+sp.pe("Error print", "prefix 'Error:' added")
