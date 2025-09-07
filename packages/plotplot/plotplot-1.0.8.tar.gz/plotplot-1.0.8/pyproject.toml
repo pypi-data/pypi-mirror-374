@@ -1,0 +1,70 @@
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "plotplot"
+version = "1.0.8"
+description = "Drag and drop plotting, data selection, and filtering"
+authors = ["Andrew Barry <abarry@gmail.com>"]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+homepage = "https://plotplot.org"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+include = [
+  "plotplot",
+  "frontend/build/**/*",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+
+# Core stack
+numpy = ">=1.26,<2.0"
+pandas = ">=2.1"
+numba = ">=0.59"
+
+# Viz / rasterization
+plotly = "=5.13.1"
+datashader = ">=0.16.0"
+dask = ">=2024.5.0"
+shapely = ">=2.0.3"
+
+# Web
+Flask = ">=2.3.3,<3.0"     # or use Flask="^3.0" and Werkzeug="^3.0"
+Flask-Login = ">=0.6.3"
+Werkzeug = ">=2.3,<3.0"    # drop if you move to Flask 3.0
+
+# Serving / misc
+gunicorn = ">=21.2"
+waitress = "*"
+
+# Google / OAuth (remove oauth2client)
+oauthlib = ">=3.2.2"
+google-api-python-client = ">=2.126"
+google-auth-httplib2 = ">=0.2.0"
+google-auth-oauthlib = ">=1.2.0"
+
+# TLS / HTTP
+pyOpenSSL = ">=24.0"
+requests = ">=2.31"
+
+# Utilities
+line_profiler = ">=4.1"
+anndata = "*"
+polyleven = "*"
+platformdirs = "*"
+
+# Ensure distutils shim during builds
+setuptools = ">=68"
+
+
+
+[tool.poetry.scripts]
+plotplot = "plotplot.plotplot:main"
+
