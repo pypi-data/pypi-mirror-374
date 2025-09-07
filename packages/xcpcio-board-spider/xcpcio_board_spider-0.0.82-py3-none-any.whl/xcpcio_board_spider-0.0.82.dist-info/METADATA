@@ -1,0 +1,63 @@
+Metadata-Version: 2.3
+Name: xcpcio-board-spider
+Version: 0.0.82
+Summary: XCPCIO Board Spider
+License: MIT
+Author: Dup4
+Author-email: lyuzhi.pan@gmail.com
+Requires-Python: >=3.11,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: aiodns (>=3.2.0,<4.0.0)
+Requires-Dist: aiohttp (>=3.10.5,<4.0.0)
+Requires-Dist: asyncio (>=3.4.3,<4.0.0)
+Requires-Dist: beautifulsoup4 (>=4.12.2,<5.0.0)
+Requires-Dist: brotli (>=1.1.0,<2.0.0)
+Requires-Dist: domjudge-utility (>=0.0.23,<0.0.24)
+Requires-Dist: html5lib (>=1.1,<2.0)
+Requires-Dist: lxml (>=4.9.2,<5.0.0)
+Requires-Dist: pyexecjs (>=1.5.1,<2.0.0)
+Requires-Dist: pyyaml (>=6.0,<7.0)
+Requires-Dist: xlrd (>=2.0.1,<3.0.0)
+Requires-Dist: xmltodict (>=0.13.0,<0.14.0)
+Description-Content-Type: text/markdown
+
+# xcpcio/board-spider
+
+[![Test][test-ci-badge]][test-ci]
+[![GitHub release][gh-release-badge]][gh-release]
+
+## Development
+
+```bash
+# run test
+poetry run pytest
+poetry run pytest --snapshot-update
+
+# release
+poetry version patch
+```
+
+## Sponsors
+
+<p align="center">
+  <a href="https://github.com/sponsors/Dup4">
+    <img src='https://cdn.jsdelivr.net/gh/Dup4/static/sponsors-output/sponsors.svg' alt="Logos from Sponsors" />
+  </a>
+</p>
+
+## License
+
+[MIT](./LICENSE) License © 2020 - PRESENT [XCPCIO][xcpcio]
+
+[xcpcio]: https://github.com/XCPCIO
+[test-ci-badge]: https://github.com/XCPCIO/XCPCIO-Board-Spider/workflows/Test/badge.svg
+[test-ci]: https://github.com/XCPCIO/XCPCIO-Board-Spider/actions/workflows/test.yml
+[gh-release-badge]: https://img.shields.io/github/release/XCPCIO/XCPCIO-Board-Spider.svg
+[gh-release]: https://GitHub.com/XCPCIO/XCPCIO-Board-Spider/releases/
+
