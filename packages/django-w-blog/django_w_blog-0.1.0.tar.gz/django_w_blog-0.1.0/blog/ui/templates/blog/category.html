@@ -1,0 +1,46 @@
+{% extends 'blog/base.html' %}{% load i18n blog %}
+
+<!---->
+{% block title %}{{ block.super }} | {{ category.title }}{% endblock %}
+
+<!---->
+{% block content %}
+<section class="container flex flex-col gap-8 mx-auto px-4 py-20">
+  {% include 'blog/components/breadcrumbs.html' %}
+
+  <div
+    class="mx-auto prose prose-sm prose-video:rounded-box xl:prose-lg 2xl:prose-xl prose-headings:text-primary prose-headings:font-serif rtl:prose-headings:font-kufi prose-img:rounded-box prose-img:w-full"
+  >
+    <h1>{{ category.title }}</h1>
+
+    <p class="lead">{{ category.description }}</p>
+
+    {{ category.content }}
+  </div>
+
+  <ol class="grid grid-cols-12 gap-4">
+    {% for article in category.get_children.specific %}
+    <!---->
+    {% include 'blog/components/article.html' %}
+    <!---->
+    {% endfor %}
+  </ol>
+</section>
+{% endblock %}
+
+<!---->
+{% block drawer_content %}
+<li>
+  <a href="{% page_url category.get_parent LANGUAGE_CODE %}">
+    <i data-lucide="arrow-left" class="size-4 md:size-6 rtl:rotate-180"></i>
+    {{ category.get_parent.title }}
+  </a>
+</li>
+
+{% for page in category.get_children %}
+<li>
+  <a href="{% page_url page LANGUAGE_CODE %}">{{ page.title }}</a>
+</li>
+{% endfor %}
+<!---->
+{% endblock %}
