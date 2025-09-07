@@ -1,0 +1,5 @@
+[console_scripts]
+promptbin = app:main
+promptbin-install-tunnel = scripts.install_devtunnel:main
+promptbin-mcp = mcp_server:main
+promptbin-setup = setup_checker:main
