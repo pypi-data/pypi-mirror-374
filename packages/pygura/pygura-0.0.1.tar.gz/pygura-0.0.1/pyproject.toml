@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pygura"
+version = "0.0.1"
+description = "Pygura"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "Enrique Coronado" }]
+keywords = ["HAI"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: System :: Distributed Computing"
+]
+
+[project.urls]
+Homepage = "https://github.com/yourname/gurahub"
+Issues = "https://github.com/yourname/gurahub/issues"
+Documentation = "https://github.com/yourname/gurahub#readme"
+
+[tool.hatch.build.targets.wheel]
+packages = ["pygura"]
+sources = ["src"]
