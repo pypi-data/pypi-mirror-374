@@ -1,0 +1,29 @@
+when:
+ - event: [ push, tag ]
+   branch: main
+
+steps:
+ - name: build
+   image: alpine:3.21
+   commands:
+    - apk add doxygen git
+    #- (cd doxygen-awesome-css; git checkout v2.3.4)
+    - doxygen
+
+ - name: push
+   when:
+    - event: tag
+   image: python:3-alpine
+   commands:
+    - apk add git openssh
+    - mkdir .ssh
+    - echo ${SSH_KEY} > ${HOME}/.ssh/id_ed25519
+    - git config user.email "dnscode@ci.minec1.us"
+    - git config --global user.name "DNSCODE CI"
+    - git add docs
+    - git commit -m 'Build docs for $(git describe --tags $(git rev-list --tags --max-count 1)) [SKIP CI]'
+    - git push ${CI_REPO_CLONE_SSH_URL}
+   environment:
+     SSH_KEY:
+       from_secret: ssh-key
+   depends_on: build

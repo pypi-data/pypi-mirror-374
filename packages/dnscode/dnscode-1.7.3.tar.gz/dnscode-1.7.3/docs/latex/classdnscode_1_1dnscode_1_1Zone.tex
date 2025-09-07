@@ -1,0 +1,173 @@
+\doxysubsection{dnscode.\+dnscode.\+Zone Class Reference}
+\hypertarget{classdnscode_1_1dnscode_1_1Zone}{}\label{classdnscode_1_1dnscode_1_1Zone}\index{dnscode.dnscode.Zone@{dnscode.dnscode.Zone}}
+\doxysubsubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classdnscode_1_1dnscode_1_1Zone_ad696206776c2c68471126d950fa178d1}{\+\_\+\+\_\+post\+\_\+init\+\_\+\+\_\+}} (self)
+\item 
+\mbox{\hyperlink{classdnscode_1_1dnscode_1_1Zone_a31e74a07a8f0b0f95a14662d20f1df8c}{\+\_\+\+\_\+str\+\_\+\+\_\+}} (self)
+\item 
+\mbox{\hyperlink{classdnscode_1_1dnscode_1_1Zone_a231de844d4fb88390d37a0be6dbc962e}{new\+\_\+A}} (self, str name=\textquotesingle{}@\textquotesingle{}, int ttl=3600, str host=\textquotesingle{}0.\+0.\+0.\+0\textquotesingle{})
+\item 
+\mbox{\hyperlink{classdnscode_1_1dnscode_1_1Zone_af16862a7d8680f1eb6ab66a92105301f}{new\+\_\+\+AAAA}} (self, str name=\textquotesingle{}@\textquotesingle{}, int ttl=3600, str host=\textquotesingle{}fe80\+::42\+:2cff\+:fe29\+:8db1\textquotesingle{})
+\item 
+\mbox{\hyperlink{classdnscode_1_1dnscode_1_1Zone_a2718e32544f9310ce721bce73082bb97}{new\+\_\+\+CNAME}} (self, str name=\textquotesingle{}@\textquotesingle{}, int ttl=3600, str host=\textquotesingle{}example.\+com\textquotesingle{})
+\item 
+\mbox{\hyperlink{classdnscode_1_1dnscode_1_1Zone_a41dc247963652b15be123b329aeb1bcf}{new\+\_\+\+MX}} (self, str name=\textquotesingle{}@\textquotesingle{}, int ttl=3600, int priority=10, str host=\textquotesingle{}example.\+com\textquotesingle{})
+\item 
+\mbox{\hyperlink{classdnscode_1_1dnscode_1_1Zone_ae0a178b817cb174866bb5bb33507cb98}{new\+\_\+\+NS}} (self, str name=\textquotesingle{}@\textquotesingle{}, int ttl=3600, str host=\textquotesingle{}example.\+com\textquotesingle{})
+\item 
+\mbox{\hyperlink{classdnscode_1_1dnscode_1_1Zone_a579ec534602081efd30fbcbc279bc625}{new\+\_\+\+PTR}} (self, str name=\textquotesingle{}@\textquotesingle{}, int ttl=3600, str host=\textquotesingle{}example.\+com\textquotesingle{})
+\item 
+\mbox{\hyperlink{classdnscode_1_1dnscode_1_1Zone_aabed9788e2e4be4c6b0628214492fdbe}{new\+\_\+\+SOA}} (self, str mname=\textquotesingle{}ns1.\+example.\+com\textquotesingle{}, str rname=\textquotesingle{}admin.\+example.\+com\textquotesingle{}, int serial=int(time.\+time()), int refresh=86400, int retry=7200, int expire=15552000, int ttl=21700)
+\item 
+\mbox{\hyperlink{classdnscode_1_1dnscode_1_1Zone_a9b7c828acb3d62f8c677efb4a858ef97}{new\+\_\+\+SRV}} (self, str name=\textquotesingle{}@\textquotesingle{}, int ttl=3600, str service=\textquotesingle{}service\textquotesingle{}, str protocol=\textquotesingle{}proto\textquotesingle{}, int priority=10, int weight=10, int port=443, str host=\textquotesingle{}example.\+com\textquotesingle{})
+\item 
+\mbox{\hyperlink{classdnscode_1_1dnscode_1_1Zone_a602dd6071a6c3d1017e155c7ca2512a2}{new\+\_\+\+TXT}} (self, str name=\textquotesingle{}@\textquotesingle{}, int ttl=3600, str text=\textquotesingle{}example.\+com\textquotesingle{})
+\item 
+\mbox{\hyperlink{classdnscode_1_1dnscode_1_1Zone_a6ff7d4cb63c08a7d06fc47c341e3bba4}{new\+\_\+record}} (self, str name=\textquotesingle{}@\textquotesingle{}, int ttl=3600, str rtype=\textquotesingle{}\mbox{\hyperlink{classdnscode_1_1dnscode_1_1A}{A}}\textquotesingle{}, str data=\textquotesingle{}0.\+0.\+0.\+0\textquotesingle{})
+\item 
+\mbox{\hyperlink{classdnscode_1_1dnscode_1_1Zone_a338bc686b7c7db2cab7827996a3f23f3}{add}} (self, \mbox{\hyperlink{classdnscode_1_1dnscode_1_1Record}{Record}} record)
+\item 
+\mbox{\hyperlink{classdnscode_1_1dnscode_1_1Zone_a9c2c7f534d5ab0f841bf4ad2fb62f188}{save\+\_\+stdout}} (self)
+\item 
+\mbox{\hyperlink{classdnscode_1_1dnscode_1_1Zone_adfe5442ed2137a324f1c5ba676ba2043}{save\+\_\+file}} (self, str filepath)
+\end{DoxyCompactItemize}
+\doxysubsubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+str \mbox{\hyperlink{classdnscode_1_1dnscode_1_1Zone_a9edba14298d59d7453cc27786b57f457}{origin}} = \textquotesingle{}example.\+com\textquotesingle{}
+\item 
+list \mbox{\hyperlink{classdnscode_1_1dnscode_1_1Zone_a8e3137b233ce53fed0a87915be1b1fcd}{records}} = field(default\+\_\+factory=list)
+\end{DoxyCompactItemize}
+
+
+\doxysubsubsection{Detailed Description}
+\begin{DoxyVerb}Represents a DNS zone containing multiple records.\end{DoxyVerb}
+ 
+
+\doxysubsubsection{Member Function Documentation}
+\Hypertarget{classdnscode_1_1dnscode_1_1Zone_ad696206776c2c68471126d950fa178d1}\index{dnscode.dnscode.Zone@{dnscode.dnscode.Zone}!\_\_post\_init\_\_@{\_\_post\_init\_\_}}
+\index{\_\_post\_init\_\_@{\_\_post\_init\_\_}!dnscode.dnscode.Zone@{dnscode.dnscode.Zone}}
+\doxyparagraph{\texorpdfstring{\_\_post\_init\_\_()}{\_\_post\_init\_\_()}}
+{\footnotesize\ttfamily \label{classdnscode_1_1dnscode_1_1Zone_ad696206776c2c68471126d950fa178d1} 
+dnscode.\+dnscode.\+Zone.\+\_\+\+\_\+post\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Initializes a zone with the given origin and ensures it ends with a dot.\end{DoxyVerb}
+ \Hypertarget{classdnscode_1_1dnscode_1_1Zone_a31e74a07a8f0b0f95a14662d20f1df8c}\index{dnscode.dnscode.Zone@{dnscode.dnscode.Zone}!\_\_str\_\_@{\_\_str\_\_}}
+\index{\_\_str\_\_@{\_\_str\_\_}!dnscode.dnscode.Zone@{dnscode.dnscode.Zone}}
+\doxyparagraph{\texorpdfstring{\_\_str\_\_()}{\_\_str\_\_()}}
+{\footnotesize\ttfamily \label{classdnscode_1_1dnscode_1_1Zone_a31e74a07a8f0b0f95a14662d20f1df8c} 
+dnscode.\+dnscode.\+Zone.\+\_\+\+\_\+str\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Returns a string representation of the zone.\end{DoxyVerb}
+ \Hypertarget{classdnscode_1_1dnscode_1_1Zone_a338bc686b7c7db2cab7827996a3f23f3}\index{dnscode.dnscode.Zone@{dnscode.dnscode.Zone}!add@{add}}
+\index{add@{add}!dnscode.dnscode.Zone@{dnscode.dnscode.Zone}}
+\doxyparagraph{\texorpdfstring{add()}{add()}}
+{\footnotesize\ttfamily \label{classdnscode_1_1dnscode_1_1Zone_a338bc686b7c7db2cab7827996a3f23f3} 
+dnscode.\+dnscode.\+Zone.\+add (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{\mbox{\hyperlink{classdnscode_1_1dnscode_1_1Record}{Record}}}]{record}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Adds a record to the zone.\end{DoxyVerb}
+ \Hypertarget{classdnscode_1_1dnscode_1_1Zone_a231de844d4fb88390d37a0be6dbc962e}\index{dnscode.dnscode.Zone@{dnscode.dnscode.Zone}!new\_A@{new\_A}}
+\index{new\_A@{new\_A}!dnscode.dnscode.Zone@{dnscode.dnscode.Zone}}
+\doxyparagraph{\texorpdfstring{new\_A()}{new\_A()}}
+{\footnotesize\ttfamily \label{classdnscode_1_1dnscode_1_1Zone_a231de844d4fb88390d37a0be6dbc962e} 
+dnscode.\+dnscode.\+Zone.\+new\+\_\+A (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{str }]{name}{ = {\ttfamily \textquotesingle{}@\textquotesingle{}}, }\item[{int }]{ttl}{ = {\ttfamily 3600}, }\item[{str }]{host}{ = {\ttfamily \textquotesingle{}0.0.0.0\textquotesingle{}}}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Creates and adds a new A record to the zone.\end{DoxyVerb}
+ \Hypertarget{classdnscode_1_1dnscode_1_1Zone_af16862a7d8680f1eb6ab66a92105301f}\index{dnscode.dnscode.Zone@{dnscode.dnscode.Zone}!new\_AAAA@{new\_AAAA}}
+\index{new\_AAAA@{new\_AAAA}!dnscode.dnscode.Zone@{dnscode.dnscode.Zone}}
+\doxyparagraph{\texorpdfstring{new\_AAAA()}{new\_AAAA()}}
+{\footnotesize\ttfamily \label{classdnscode_1_1dnscode_1_1Zone_af16862a7d8680f1eb6ab66a92105301f} 
+dnscode.\+dnscode.\+Zone.\+new\+\_\+\+AAAA (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{str }]{name}{ = {\ttfamily \textquotesingle{}@\textquotesingle{}}, }\item[{int }]{ttl}{ = {\ttfamily 3600}, }\item[{str }]{host}{ = {\ttfamily \textquotesingle{}fe80\+:\+:42\+:2cff\+:fe29\+:8db1\textquotesingle{}}}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Creates and adds a new AAAA record to the zone.\end{DoxyVerb}
+ \Hypertarget{classdnscode_1_1dnscode_1_1Zone_a2718e32544f9310ce721bce73082bb97}\index{dnscode.dnscode.Zone@{dnscode.dnscode.Zone}!new\_CNAME@{new\_CNAME}}
+\index{new\_CNAME@{new\_CNAME}!dnscode.dnscode.Zone@{dnscode.dnscode.Zone}}
+\doxyparagraph{\texorpdfstring{new\_CNAME()}{new\_CNAME()}}
+{\footnotesize\ttfamily \label{classdnscode_1_1dnscode_1_1Zone_a2718e32544f9310ce721bce73082bb97} 
+dnscode.\+dnscode.\+Zone.\+new\+\_\+\+CNAME (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{str }]{name}{ = {\ttfamily \textquotesingle{}@\textquotesingle{}}, }\item[{int }]{ttl}{ = {\ttfamily 3600}, }\item[{str }]{host}{ = {\ttfamily \textquotesingle{}example.com\textquotesingle{}}}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Creates and adds a new CNAME record to the zone.\end{DoxyVerb}
+ \Hypertarget{classdnscode_1_1dnscode_1_1Zone_a41dc247963652b15be123b329aeb1bcf}\index{dnscode.dnscode.Zone@{dnscode.dnscode.Zone}!new\_MX@{new\_MX}}
+\index{new\_MX@{new\_MX}!dnscode.dnscode.Zone@{dnscode.dnscode.Zone}}
+\doxyparagraph{\texorpdfstring{new\_MX()}{new\_MX()}}
+{\footnotesize\ttfamily \label{classdnscode_1_1dnscode_1_1Zone_a41dc247963652b15be123b329aeb1bcf} 
+dnscode.\+dnscode.\+Zone.\+new\+\_\+\+MX (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{str }]{name}{ = {\ttfamily \textquotesingle{}@\textquotesingle{}}, }\item[{int }]{ttl}{ = {\ttfamily 3600}, }\item[{int }]{priority}{ = {\ttfamily 10}, }\item[{str }]{host}{ = {\ttfamily \textquotesingle{}example.com\textquotesingle{}}}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Creates and adds a new MX record to the zone.\end{DoxyVerb}
+ \Hypertarget{classdnscode_1_1dnscode_1_1Zone_ae0a178b817cb174866bb5bb33507cb98}\index{dnscode.dnscode.Zone@{dnscode.dnscode.Zone}!new\_NS@{new\_NS}}
+\index{new\_NS@{new\_NS}!dnscode.dnscode.Zone@{dnscode.dnscode.Zone}}
+\doxyparagraph{\texorpdfstring{new\_NS()}{new\_NS()}}
+{\footnotesize\ttfamily \label{classdnscode_1_1dnscode_1_1Zone_ae0a178b817cb174866bb5bb33507cb98} 
+dnscode.\+dnscode.\+Zone.\+new\+\_\+\+NS (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{str }]{name}{ = {\ttfamily \textquotesingle{}@\textquotesingle{}}, }\item[{int }]{ttl}{ = {\ttfamily 3600}, }\item[{str }]{host}{ = {\ttfamily \textquotesingle{}example.com\textquotesingle{}}}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Creates and adds a new NS record to the zone.\end{DoxyVerb}
+ \Hypertarget{classdnscode_1_1dnscode_1_1Zone_a579ec534602081efd30fbcbc279bc625}\index{dnscode.dnscode.Zone@{dnscode.dnscode.Zone}!new\_PTR@{new\_PTR}}
+\index{new\_PTR@{new\_PTR}!dnscode.dnscode.Zone@{dnscode.dnscode.Zone}}
+\doxyparagraph{\texorpdfstring{new\_PTR()}{new\_PTR()}}
+{\footnotesize\ttfamily \label{classdnscode_1_1dnscode_1_1Zone_a579ec534602081efd30fbcbc279bc625} 
+dnscode.\+dnscode.\+Zone.\+new\+\_\+\+PTR (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{str }]{name}{ = {\ttfamily \textquotesingle{}@\textquotesingle{}}, }\item[{int }]{ttl}{ = {\ttfamily 3600}, }\item[{str }]{host}{ = {\ttfamily \textquotesingle{}example.com\textquotesingle{}}}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Creates and adds a new PTR record to the zone.\end{DoxyVerb}
+ \Hypertarget{classdnscode_1_1dnscode_1_1Zone_a6ff7d4cb63c08a7d06fc47c341e3bba4}\index{dnscode.dnscode.Zone@{dnscode.dnscode.Zone}!new\_record@{new\_record}}
+\index{new\_record@{new\_record}!dnscode.dnscode.Zone@{dnscode.dnscode.Zone}}
+\doxyparagraph{\texorpdfstring{new\_record()}{new\_record()}}
+{\footnotesize\ttfamily \label{classdnscode_1_1dnscode_1_1Zone_a6ff7d4cb63c08a7d06fc47c341e3bba4} 
+dnscode.\+dnscode.\+Zone.\+new\+\_\+record (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{str }]{name}{ = {\ttfamily \textquotesingle{}@\textquotesingle{}}, }\item[{int }]{ttl}{ = {\ttfamily 3600}, }\item[{str }]{rtype}{ = {\ttfamily \textquotesingle{}\mbox{\hyperlink{classdnscode_1_1dnscode_1_1A}{A}}\textquotesingle{}}, }\item[{str }]{data}{ = {\ttfamily \textquotesingle{}0.0.0.0\textquotesingle{}}}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Creates and adds a generic DNS record to the zone.\end{DoxyVerb}
+ \Hypertarget{classdnscode_1_1dnscode_1_1Zone_aabed9788e2e4be4c6b0628214492fdbe}\index{dnscode.dnscode.Zone@{dnscode.dnscode.Zone}!new\_SOA@{new\_SOA}}
+\index{new\_SOA@{new\_SOA}!dnscode.dnscode.Zone@{dnscode.dnscode.Zone}}
+\doxyparagraph{\texorpdfstring{new\_SOA()}{new\_SOA()}}
+{\footnotesize\ttfamily \label{classdnscode_1_1dnscode_1_1Zone_aabed9788e2e4be4c6b0628214492fdbe} 
+dnscode.\+dnscode.\+Zone.\+new\+\_\+\+SOA (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{str }]{mname}{ = {\ttfamily \textquotesingle{}ns1.example.com\textquotesingle{}}, }\item[{str }]{rname}{ = {\ttfamily \textquotesingle{}admin.example.com\textquotesingle{}}, }\item[{int }]{serial}{ = {\ttfamily int(time.time())}, }\item[{int }]{refresh}{ = {\ttfamily 86400}, }\item[{int }]{retry}{ = {\ttfamily 7200}, }\item[{int }]{expire}{ = {\ttfamily 15552000}, }\item[{int }]{ttl}{ = {\ttfamily 21700}}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Creates and adds a new SOA record to the zone.\end{DoxyVerb}
+ \Hypertarget{classdnscode_1_1dnscode_1_1Zone_a9b7c828acb3d62f8c677efb4a858ef97}\index{dnscode.dnscode.Zone@{dnscode.dnscode.Zone}!new\_SRV@{new\_SRV}}
+\index{new\_SRV@{new\_SRV}!dnscode.dnscode.Zone@{dnscode.dnscode.Zone}}
+\doxyparagraph{\texorpdfstring{new\_SRV()}{new\_SRV()}}
+{\footnotesize\ttfamily \label{classdnscode_1_1dnscode_1_1Zone_a9b7c828acb3d62f8c677efb4a858ef97} 
+dnscode.\+dnscode.\+Zone.\+new\+\_\+\+SRV (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{str }]{name}{ = {\ttfamily \textquotesingle{}@\textquotesingle{}}, }\item[{int }]{ttl}{ = {\ttfamily 3600}, }\item[{str }]{service}{ = {\ttfamily \textquotesingle{}service\textquotesingle{}}, }\item[{str }]{protocol}{ = {\ttfamily \textquotesingle{}proto\textquotesingle{}}, }\item[{int }]{priority}{ = {\ttfamily 10}, }\item[{int }]{weight}{ = {\ttfamily 10}, }\item[{int }]{port}{ = {\ttfamily 443}, }\item[{str }]{host}{ = {\ttfamily \textquotesingle{}example.com\textquotesingle{}}}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Creates and adds a new SRV record to the zone.\end{DoxyVerb}
+ \Hypertarget{classdnscode_1_1dnscode_1_1Zone_a602dd6071a6c3d1017e155c7ca2512a2}\index{dnscode.dnscode.Zone@{dnscode.dnscode.Zone}!new\_TXT@{new\_TXT}}
+\index{new\_TXT@{new\_TXT}!dnscode.dnscode.Zone@{dnscode.dnscode.Zone}}
+\doxyparagraph{\texorpdfstring{new\_TXT()}{new\_TXT()}}
+{\footnotesize\ttfamily \label{classdnscode_1_1dnscode_1_1Zone_a602dd6071a6c3d1017e155c7ca2512a2} 
+dnscode.\+dnscode.\+Zone.\+new\+\_\+\+TXT (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{str }]{name}{ = {\ttfamily \textquotesingle{}@\textquotesingle{}}, }\item[{int }]{ttl}{ = {\ttfamily 3600}, }\item[{str }]{text}{ = {\ttfamily \textquotesingle{}example.com\textquotesingle{}}}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Creates and adds a new CNAME record to the zone.\end{DoxyVerb}
+ \Hypertarget{classdnscode_1_1dnscode_1_1Zone_adfe5442ed2137a324f1c5ba676ba2043}\index{dnscode.dnscode.Zone@{dnscode.dnscode.Zone}!save\_file@{save\_file}}
+\index{save\_file@{save\_file}!dnscode.dnscode.Zone@{dnscode.dnscode.Zone}}
+\doxyparagraph{\texorpdfstring{save\_file()}{save\_file()}}
+{\footnotesize\ttfamily \label{classdnscode_1_1dnscode_1_1Zone_adfe5442ed2137a324f1c5ba676ba2043} 
+dnscode.\+dnscode.\+Zone.\+save\+\_\+file (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{str}]{filepath}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Saves the zone records to a file.\end{DoxyVerb}
+ \Hypertarget{classdnscode_1_1dnscode_1_1Zone_a9c2c7f534d5ab0f841bf4ad2fb62f188}\index{dnscode.dnscode.Zone@{dnscode.dnscode.Zone}!save\_stdout@{save\_stdout}}
+\index{save\_stdout@{save\_stdout}!dnscode.dnscode.Zone@{dnscode.dnscode.Zone}}
+\doxyparagraph{\texorpdfstring{save\_stdout()}{save\_stdout()}}
+{\footnotesize\ttfamily \label{classdnscode_1_1dnscode_1_1Zone_a9c2c7f534d5ab0f841bf4ad2fb62f188} 
+dnscode.\+dnscode.\+Zone.\+save\+\_\+stdout (\begin{DoxyParamCaption}\item[{}]{self}{}\end{DoxyParamCaption})}
+
+
+
+\doxysubsubsection{Member Data Documentation}
+\Hypertarget{classdnscode_1_1dnscode_1_1Zone_a9edba14298d59d7453cc27786b57f457}\index{dnscode.dnscode.Zone@{dnscode.dnscode.Zone}!origin@{origin}}
+\index{origin@{origin}!dnscode.dnscode.Zone@{dnscode.dnscode.Zone}}
+\doxyparagraph{\texorpdfstring{origin}{origin}}
+{\footnotesize\ttfamily \label{classdnscode_1_1dnscode_1_1Zone_a9edba14298d59d7453cc27786b57f457} 
+str dnscode.\+dnscode.\+Zone.\+origin = \textquotesingle{}example.\+com\textquotesingle{}\hspace{0.3cm}{\ttfamily [static]}}
+
+\Hypertarget{classdnscode_1_1dnscode_1_1Zone_a8e3137b233ce53fed0a87915be1b1fcd}\index{dnscode.dnscode.Zone@{dnscode.dnscode.Zone}!records@{records}}
+\index{records@{records}!dnscode.dnscode.Zone@{dnscode.dnscode.Zone}}
+\doxyparagraph{\texorpdfstring{records}{records}}
+{\footnotesize\ttfamily \label{classdnscode_1_1dnscode_1_1Zone_a8e3137b233ce53fed0a87915be1b1fcd} 
+list dnscode.\+dnscode.\+Zone.\+records = field(default\+\_\+factory=list)\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/dnscode/\mbox{\hyperlink{dnscode_8py}{dnscode.\+py}}\end{DoxyCompactItemize}

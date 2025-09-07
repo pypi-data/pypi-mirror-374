@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dnscode"
+version = "1.7.3"
+authors = [
+	{ name="Minecraftchest1", email="me@minec1.us" },
+]
+description = "Simplifying DNS Zone Management"
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = [
+	"Development Status :: 4 - Beta",
+	"Programming Language :: Python :: 3",
+	"License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+	"Operating System :: OS Independent",
+	"Natural Language :: English",
+	"Topic :: Internet :: Name Service (DNS)",
+	"Topic :: Utilities",
+]
+dependencies = [
+	"dnspython==2.7.0",
+	"fqdn==1.5.1",
+]
+
+[project.urls]
+Homepage = "https://code.minecraftchest1.us/minecraftchest1/dnscode"
+Issues = "https://code.minecraftchest1.us/minecraftchest1/dnscode/issues"
+
+[tool.pytest.ini_options]
+addopts = [
+	"--import-mode=importlib",
+]
+pythonpath = [
+	"src"
+]

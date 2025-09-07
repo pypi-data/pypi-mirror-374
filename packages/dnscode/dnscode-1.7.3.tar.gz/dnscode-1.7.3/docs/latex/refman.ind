@@ -1,0 +1,192 @@
+\begin{theindex}
+
+  \item {\_\_init\_\_}
+    \subitem {dnscode.dnscode.A}, \hyperpage{5}
+    \subitem {dnscode.dnscode.AAAA}, \hyperpage{5}
+    \subitem {dnscode.dnscode.CNAME}, \hyperpage{6}
+    \subitem {dnscode.dnscode.InvalidDataException}, \hyperpage{7}
+    \subitem {dnscode.dnscode.MX}, \hyperpage{8}
+    \subitem {dnscode.dnscode.NS}, \hyperpage{9}
+    \subitem {dnscode.dnscode.PTR}, \hyperpage{10}
+    \subitem {dnscode.dnscode.SOA}, \hyperpage{13}
+    \subitem {dnscode.dnscode.SRV}, \hyperpage{14}
+    \subitem {dnscode.dnscode.TXT}, \hyperpage{16}
+  \item {\_\_post\_init\_\_}
+    \subitem {dnscode.dnscode.Zone}, \hyperpage{16}
+  \item {\_\_str\_\_}
+    \subitem {dnscode.dnscode.Record}, \hyperpage{11}
+    \subitem {dnscode.dnscode.Zone}, \hyperpage{16}
+
+  \indexspace
+
+  \item {add}
+    \subitem {dnscode.dnscode.Zone}, \hyperpage{17}
+
+  \indexspace
+
+  \item {data}
+    \subitem {dnscode.dnscode.Record}, \hyperpage{11}
+  \item {DNScode}, \hyperpage{1}
+  \item {dnscode}, \hyperpage{4}
+  \item {dnscode.dnscode}, \hyperpage{4}
+  \item {dnscode.dnscode.A}, \hyperpage{4}
+    \subitem {\_\_init\_\_}, \hyperpage{5}
+  \item {dnscode.dnscode.AAAA}, \hyperpage{5}
+    \subitem {\_\_init\_\_}, \hyperpage{5}
+  \item {dnscode.dnscode.CNAME}, \hyperpage{6}
+    \subitem {\_\_init\_\_}, \hyperpage{6}
+  \item {dnscode.dnscode.InvalidDataException}, \hyperpage{7}
+    \subitem {\_\_init\_\_}, \hyperpage{7}
+    \subitem {message}, \hyperpage{7}
+  \item {dnscode.dnscode.MX}, \hyperpage{7}
+    \subitem {\_\_init\_\_}, \hyperpage{8}
+    \subitem {host}, \hyperpage{8}
+    \subitem {priority}, \hyperpage{8}
+  \item {dnscode.dnscode.NS}, \hyperpage{8}
+    \subitem {\_\_init\_\_}, \hyperpage{9}
+    \subitem {host}, \hyperpage{9}
+  \item {dnscode.dnscode.PTR}, \hyperpage{9}
+    \subitem {\_\_init\_\_}, \hyperpage{10}
+  \item {dnscode.dnscode.Record}, \hyperpage{10}
+    \subitem {\_\_str\_\_}, \hyperpage{11}
+    \subitem {data}, \hyperpage{11}
+    \subitem {name}, \hyperpage{11}
+    \subitem {rclass}, \hyperpage{12}
+    \subitem {rtype}, \hyperpage{12}
+    \subitem {ttl}, \hyperpage{12}
+  \item {dnscode.dnscode.SOA}, \hyperpage{12}
+    \subitem {\_\_init\_\_}, \hyperpage{13}
+    \subitem {expire}, \hyperpage{13}
+    \subitem {mname}, \hyperpage{13}
+    \subitem {refresh}, \hyperpage{13}
+    \subitem {retry}, \hyperpage{13}
+    \subitem {rname}, \hyperpage{13}
+    \subitem {serial}, \hyperpage{13}
+  \item {dnscode.dnscode.SRV}, \hyperpage{13}
+    \subitem {\_\_init\_\_}, \hyperpage{14}
+    \subitem {host}, \hyperpage{14}
+    \subitem {port}, \hyperpage{14}
+    \subitem {priority}, \hyperpage{14}
+    \subitem {protocol}, \hyperpage{15}
+    \subitem {service}, \hyperpage{15}
+    \subitem {weight}, \hyperpage{15}
+  \item {dnscode.dnscode.TXT}, \hyperpage{15}
+    \subitem {\_\_init\_\_}, \hyperpage{16}
+  \item {dnscode.dnscode.Zone}, \hyperpage{16}
+    \subitem {\_\_post\_init\_\_}, \hyperpage{16}
+    \subitem {\_\_str\_\_}, \hyperpage{16}
+    \subitem {add}, \hyperpage{17}
+    \subitem {new\_A}, \hyperpage{17}
+    \subitem {new\_AAAA}, \hyperpage{17}
+    \subitem {new\_CNAME}, \hyperpage{17}
+    \subitem {new\_MX}, \hyperpage{17}
+    \subitem {new\_NS}, \hyperpage{17}
+    \subitem {new\_PTR}, \hyperpage{18}
+    \subitem {new\_record}, \hyperpage{18}
+    \subitem {new\_SOA}, \hyperpage{18}
+    \subitem {new\_SRV}, \hyperpage{18}
+    \subitem {new\_TXT}, \hyperpage{19}
+    \subitem {origin}, \hyperpage{19}
+    \subitem {records}, \hyperpage{19}
+    \subitem {save\_file}, \hyperpage{19}
+    \subitem {save\_stdout}, \hyperpage{19}
+
+  \indexspace
+
+  \item {expire}
+    \subitem {dnscode.dnscode.SOA}, \hyperpage{13}
+
+  \indexspace
+
+  \item {host}
+    \subitem {dnscode.dnscode.MX}, \hyperpage{8}
+    \subitem {dnscode.dnscode.NS}, \hyperpage{9}
+    \subitem {dnscode.dnscode.SRV}, \hyperpage{14}
+
+  \indexspace
+
+  \item {message}
+    \subitem {dnscode.dnscode.InvalidDataException}, \hyperpage{7}
+  \item {mname}
+    \subitem {dnscode.dnscode.SOA}, \hyperpage{13}
+
+  \indexspace
+
+  \item {name}
+    \subitem {dnscode.dnscode.Record}, \hyperpage{11}
+  \item {new\_A}
+    \subitem {dnscode.dnscode.Zone}, \hyperpage{17}
+  \item {new\_AAAA}
+    \subitem {dnscode.dnscode.Zone}, \hyperpage{17}
+  \item {new\_CNAME}
+    \subitem {dnscode.dnscode.Zone}, \hyperpage{17}
+  \item {new\_MX}
+    \subitem {dnscode.dnscode.Zone}, \hyperpage{17}
+  \item {new\_NS}
+    \subitem {dnscode.dnscode.Zone}, \hyperpage{17}
+  \item {new\_PTR}
+    \subitem {dnscode.dnscode.Zone}, \hyperpage{18}
+  \item {new\_record}
+    \subitem {dnscode.dnscode.Zone}, \hyperpage{18}
+  \item {new\_SOA}
+    \subitem {dnscode.dnscode.Zone}, \hyperpage{18}
+  \item {new\_SRV}
+    \subitem {dnscode.dnscode.Zone}, \hyperpage{18}
+  \item {new\_TXT}
+    \subitem {dnscode.dnscode.Zone}, \hyperpage{19}
+
+  \indexspace
+
+  \item {origin}
+    \subitem {dnscode.dnscode.Zone}, \hyperpage{19}
+
+  \indexspace
+
+  \item {port}
+    \subitem {dnscode.dnscode.SRV}, \hyperpage{14}
+  \item {priority}
+    \subitem {dnscode.dnscode.MX}, \hyperpage{8}
+    \subitem {dnscode.dnscode.SRV}, \hyperpage{14}
+  \item {protocol}
+    \subitem {dnscode.dnscode.SRV}, \hyperpage{15}
+
+  \indexspace
+
+  \item {rclass}
+    \subitem {dnscode.dnscode.Record}, \hyperpage{12}
+  \item {README.md}, \hyperpage{19}
+  \item {records}
+    \subitem {dnscode.dnscode.Zone}, \hyperpage{19}
+  \item {refresh}
+    \subitem {dnscode.dnscode.SOA}, \hyperpage{13}
+  \item {retry}
+    \subitem {dnscode.dnscode.SOA}, \hyperpage{13}
+  \item {rname}
+    \subitem {dnscode.dnscode.SOA}, \hyperpage{13}
+  \item {rtype}
+    \subitem {dnscode.dnscode.Record}, \hyperpage{12}
+
+  \indexspace
+
+  \item {save\_file}
+    \subitem {dnscode.dnscode.Zone}, \hyperpage{19}
+  \item {save\_stdout}
+    \subitem {dnscode.dnscode.Zone}, \hyperpage{19}
+  \item {serial}
+    \subitem {dnscode.dnscode.SOA}, \hyperpage{13}
+  \item {service}
+    \subitem {dnscode.dnscode.SRV}, \hyperpage{15}
+  \item {src/dnscode/\_\_init\_\_.py}, \hyperpage{19}
+  \item {src/dnscode/dnscode.py}, \hyperpage{20}
+
+  \indexspace
+
+  \item {ttl}
+    \subitem {dnscode.dnscode.Record}, \hyperpage{12}
+
+  \indexspace
+
+  \item {weight}
+    \subitem {dnscode.dnscode.SRV}, \hyperpage{15}
+
+\end{theindex}
