@@ -1,0 +1,38 @@
+Metadata-Version: 2.4
+Name: banklewan09
+Version: 0.1.6
+Summary: This is my first package. This package are calculation volume ,lateral and surface in cylinder .
+Home-page: https://github.com/yourusername/mypackage
+Author: Lewan
+Author-email: natthapong.nn@mail.wu.ac.th
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-python
+Dynamic: summary
+
+# Package name : banklewan09
+
+`banklewan09` is a lightweight Python package that provides simple utility functions
+for **math**, **string processing**, and **data summarization**.
+It is designed mainly for learning purposes and as an example of Python packaging.
+
+---
+
+## Features
+- **Volume calculation**: compute the volume of a cylinder  
+- **Lateral area calculation**: compute the lateral surface area of a cylinder  
+- **Surface area calculation**: compute the total surface area of a cylinder  
+
+---
+
+## Installation
+
+You can install the package directly from PyPI:
+
+```bash
+pip install banklewan09
