@@ -1,0 +1,24 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.12.10  # keep me sync with pyproject.toml
+    hooks:
+      - id: ruff
+        args: [ --fix ]
+  - repo: https://github.com/pycqa/isort
+    rev: 6.0.1  # keep me sync with pyproject.toml
+    hooks:
+      - id: isort
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.17.1  # keep me sync with pyproject.toml
+    hooks:
+      - id: mypy
+        args: [--ignore-missing-imports]
+  - repo: local
+    hooks:
+      - id: unittest
+        name: unittest
+        entry: uv
+        args: [run, --group, tests, --extra, openssl, python, -m, unittest, discover, -q]
+        language: system
+        types: [python]
+        pass_filenames: false

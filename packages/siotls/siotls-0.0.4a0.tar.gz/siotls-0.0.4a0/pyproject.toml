@@ -1,0 +1,145 @@
+[build-system]
+requires = ["setuptools>=77.0", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "siotls"
+version = "0.0.4a"
+description = "Sans-IO Python implementation of the TLS 1.3 (RFC 8446) protocol stack"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0 OR BSD-3-Clause"
+license-files = ["LICENSE", "LICENSE.APACHE", "LICENSE.BSD"]
+authors = [
+  { name="Julien Castiaux", email="julien.castiaux@mailfence.com" },
+]
+keywords = [
+
+]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Environment :: No Input/Output (Daemon)",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Topic :: Internet",
+  "Topic :: Security",
+  "Typing :: Typed",
+]
+
+dependencies = [
+  "asn1crypto",
+  "idna",
+]
+
+[project.optional-dependencies]
+openssl = [
+  "cryptography>=45",
+]
+
+hacl = [
+  "pyhacl"
+]
+
+[dependency-groups]
+tests = [
+  "coverage",
+  "freezegun",
+  "parameterized",
+]
+
+# Keep it sync with docs/requirements.txt
+docs = [
+  "furo",
+  "sphinx",
+  "sphinx-design",
+]
+
+# The versions must be synchronized with .pre-commit-config.yaml
+precommit = [
+  "pre-commit",
+  "isort==6.0.1",
+  "mypy==1.17.1",
+  "ruff==0.12.10",
+]
+
+[project.urls]
+Download = "https://pypi.org/project/siotls/"
+# Homepage =
+Repository = "https://codeberg.org/drlazor8/siotls"
+# Changelog =
+# Documentation =
+# Bug Tracker =
+# Funding =
+
+[project.scripts]
+siotls = "siotls.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+siotls = [
+  "py.typed",
+]
+
+
+[tool.ruff]
+line-length = 88
+lint.select = ["ALL"]
+lint.ignore = [
+  "D",  # docstrings, for now
+  "ANN",  # annotation
+  "COM812",  # trailing comma, unusable for now
+  "DJ",  # django
+  "PT",  # pytest
+  "PTH", # pathlib
+  "Q",  # quote, I like ' for technical strings and " for human text
+  "D212",  # docstrings
+  "ERA001",  # commented code
+  "N806",  # non-lowercase-variable-in-function
+  "PYI013",  # ellipsis
+  "PYI024",  # collections.namedtuple
+  "SIM102", "PLR5501", "RET505", "RET506",  # if/elif
+  "TD", "FIX002",  # todo
+  "RET504",  # x = ...; return x
+  "RUF002",  # unicode hyphen in docstring
+]
+lint.exclude = ["docs/**/*.py", "src/siotls/_vendor.py"]
+
+[tool.ruff.lint.per-file-ignores]
+"**/__init__.py" = [
+  "F401", "E402", "F403",  # imports
+]
+"**/__main__.py" = [
+  "T201"  # print
+]
+"src/siotls/iana.py" = ["D"]
+"src/siotls/contents/**/*.py" = [
+  "D102", "D105", "D107", "D204", "D205",  # docstrings
+  "N804",  # abc instead of cls
+]
+"src/siotls/states/**/*.py" = [
+  "TID252",  # from .. import State
+]
+"src/siotls/*/providers/**/*.py" = [
+  "I001",  # ruff consideres siotls as third party, isort does not
+]
+"tests/**/*.py" = [
+  "D",  # docstrings
+  "SLF001",  # access private members
+]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+known-first-party = ["siotls"]
+
+[tool.isort]
+src_paths = ["src", "tests"]
+skip = [".gitignore", ".dockerignore"]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+extra_standard_library = ["_hashlib"]
+known_first_party = ["siotls"]
+combine_as_imports = true
