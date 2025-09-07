@@ -1,0 +1,99 @@
+Metadata-Version: 2.3
+Name: ics-fixer
+Version: 1.0.1
+Summary: Fix slightly broken iCalendar files
+Keywords: icalendar,ical,ics,data-wrangling,sanitizer,datacleaning
+Author: nateify
+Author-email: nateify <nateify@users.noreply.github.com>
+License: MIT License
+         
+         Copyright (c) 2025 nateify
+         
+         Permission is hereby granted, free of charge, to any person obtaining a copy
+         of this software and associated documentation files (the "Software"), to deal
+         in the Software without restriction, including without limitation the rights
+         to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+         copies of the Software, and to permit persons to whom the Software is
+         furnished to do so, subject to the following conditions:
+         
+         The above copyright notice and this permission notice shall be included in all
+         copies or substantial portions of the Software.
+         
+         THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+         IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+         FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+         AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+         LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+         SOFTWARE.
+Classifier: Environment :: Console
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.13
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Topic :: Utilities
+Requires-Dist: dateparser>=1.2.2
+Requires-Dist: ftfy>=6.3.1
+Requires-Dist: icalendar>=6.3.1
+Requires-Dist: typer-slim>=0.17.4
+Requires-Python: >=3.13
+Project-URL: Documentation, https://github.com/nateify/ics-fixer#readme
+Project-URL: Homepage, https://github.com/nateify/ics-fixer
+Description-Content-Type: text/markdown
+
+# ics-fixer
+This program will fix common issues with ICS files that prevent programs such as Mozilla Thunderbird from parsing them.
+
+```
+Usage: ics-fixer [OPTIONS] INPUT_FILE [OUTPUT_FILE]
+
+Arguments:
+  INPUT_FILE     Path to the input ICS file.  [required]
+  [OUTPUT_FILE]  Path for the output file. If omitted, the input file is
+                 overwritten.
+
+Options:
+  --skip-mojibake-fix             Do not run the mojibake (garbled text)
+                                  fixer.
+  --debug                         Enable debug logging.
+  --help                          Show this message and exit.
+```
+
+## Installation
+
+[uv](https://docs.astral.sh/uv/) is recommended to install the package in a managed environment:
+
+    uv tool install ics-fixer
+
+## Dependencies
+
+* Python >= 3.13
+* dateparser
+* ftfy
+* icalendar
+* typer
+
+## Notes
+
+These fields may contain desired data but will be discarded if it is incorrectly formatted:
+
+* Event orgainizer
+* Event attendee list
+
+In my use case, this is acceptable as I have only encountered ICS files where malformed `ORGANIZER` or `ATTENDEE` values were useless.
+
+If start or end time is in the wrong format and can't be parsed, the current time at the program's execution will be substituted.
+
+If the start and end time are equal and contain the time, the end time will be shifted one hour, as some programs do not work properly with 0-length events. If the intention is an all-day event, the end time should be 24 hours after the start time.
+
+## Potential Implementations
+
+* Unit tests
+* Support for older Python versions
+* Timezone shifter for dates incorrectly assumed as UTC
+* Force all-day mode for events with same start and end time
+* Better fixes for malformed `ORGANIZER` or `ATTENDEE`
+  * I would need real world sample data
+
+
