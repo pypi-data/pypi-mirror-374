@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pycapabilitydecorator"
+version = "0.0.2"
+description = "Python capability decorator for creating modular applications"
+authors = [{name = "LX", email = "iiixxxiii@qq.com"}]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "click>=8.1.8",
+    "Flask>=2.3.3",
+]
+
+[project.urls]
+Homepage = "https://gitee.com/iiixxxiii/py-capability-decorator.git"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+pycapabilitydecorator = ["py.typed"]
