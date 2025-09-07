@@ -1,0 +1,303 @@
+
+{
+  "scopeName": "source.mdl",
+  "patterns": [
+    {
+      "name": "keyword.control.mdl",
+      "match": "\\b(pack|namespace|function|on_tick|on_load|tag|if|else|while|var|num|exec|recipe|loot_table|advancement|predicate|item_modifier|structure)\\b"
+    },
+    {
+      "name": "entity.name.section.mdl",
+      "match": "^(\\s*)(pack|namespace|function|tag|recipe|loot_table|advancement|predicate|item_modifier|structure)\\b"
+    },
+    {
+      "name": "string.quoted.double.mdl",
+      "match": "\"([^\"\\\\]|\\\\.)*\""
+    },
+    {
+      "name": "comment.line.mdl",
+      "match": "//.*$"
+    },
+    {
+      "name": "comment.block.mdl",
+      "begin": "/\\*",
+      "end": "\\*/"
+    },
+    {
+      "name": "constant.numeric.mdl",
+      "match": "\\b\\d+(\\.\\d+)?\\b"
+    },
+    {
+      "name": "keyword.operator.mdl",
+      "match": "\\b(\\+|-|\\*|/|=|==|!=|<|>|<=|>=)\\b"
+    },
+    {
+      "name": "punctuation.terminator.mdl",
+      "match": ";"
+    },
+    {
+      "name": "punctuation.section.block.mdl",
+      "match": "[{}]"
+    },
+    {
+      "name": "punctuation.section.parens.mdl",
+      "match": "[()]"
+    },
+    {
+      "name": "punctuation.section.brackets.mdl",
+      "match": "[\\[\\]]"
+    },
+    {
+      "name": "punctuation.angle.brackets.mdl",
+      "match": "[<>]"
+    },
+    {
+      "name": "punctuation.separator.mdl",
+      "match": "[:]"
+    },
+    {
+      "name": "variable.declaration.mdl",
+      "begin": "\\b(var)\\s+(num)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*(<)",
+      "end": "(>)",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.mdl" },
+        "2": { "name": "keyword.type.mdl" },
+        "3": { "name": "variable.other.mdl" },
+        "4": { "name": "punctuation.angle.brackets.mdl" }
+      },
+      "endCaptures": {
+        "1": { "name": "punctuation.angle.brackets.mdl" }
+      },
+      "patterns": [
+        {
+          "name": "entity.name.selector.mdl",
+          "match": "(@p|@r|@a|@e|@s|@initiator|@c|@v|@d|@w)"
+        },
+        {
+          "name": "entity.name.selector.arguments.mdl",
+          "match": "\\[([^\\]]*)\\]"
+        },
+        {
+          "name": "variable.other.mdl",
+          "match": "[a-zA-Z_][a-zA-Z0-9_]*"
+        }
+      ]
+    },
+    {
+      "name": "variable.assignment.mdl",
+      "begin": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*(<)",
+      "end": "(>)",
+      "beginCaptures": {
+        "1": { "name": "variable.other.mdl" },
+        "2": { "name": "punctuation.angle.brackets.mdl" }
+      },
+      "endCaptures": {
+        "1": { "name": "punctuation.angle.brackets.mdl" }
+      },
+      "patterns": [
+        {
+          "name": "entity.name.selector.mdl",
+          "match": "(@p|@r|@a|@e|@s|@initiator|@c|@v|@d|@w)"
+        },
+        {
+          "name": "entity.name.selector.arguments.mdl",
+          "match": "\\[([^\\]]*)\\]"
+        },
+        {
+          "name": "variable.other.mdl",
+          "match": "[a-zA-Z_][a-zA-Z0-9_]*"
+        }
+      ]
+    },
+    {
+      "name": "variable.substitution.mdl",
+      "begin": "\\$([a-zA-Z_][a-zA-Z0-9_]*)\\s*(<)",
+      "end": "(>)\\$",
+      "beginCaptures": {
+        "1": { "name": "variable.other.mdl" },
+        "2": { "name": "punctuation.angle.brackets.mdl" }
+      },
+      "endCaptures": {
+        "1": { "name": "punctuation.angle.brackets.mdl" },
+        "2": { "name": "keyword.operator.mdl" }
+      },
+      "patterns": [
+        {
+          "name": "entity.name.selector.mdl",
+          "match": "(@p|@r|@a|@e|@s|@initiator|@c|@v|@d|@w)"
+        },
+        {
+          "name": "entity.name.selector.arguments.mdl",
+          "match": "\\[([^\\]]*)\\]"
+        },
+        {
+          "name": "variable.other.mdl",
+          "match": "[a-zA-Z_][a-zA-Z0-9_]*"
+        }
+      ]
+    },
+    {
+      "name": "function.declaration.mdl",
+      "begin": "\\b(function)\\s+([a-zA-Z_][a-zA-Z0-9_]*):([a-zA-Z_][a-zA-Z0-9_]*)\\s*(<)",
+      "end": "(>)",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.mdl" },
+        "2": { "name": "entity.name.namespace.mdl" },
+        "3": { "name": "entity.name.function.mdl" },
+        "4": { "name": "punctuation.angle.brackets.mdl" }
+      },
+      "endCaptures": {
+        "1": { "name": "punctuation.angle.brackets.mdl" }
+      },
+      "patterns": [
+        {
+          "name": "entity.name.selector.mdl",
+          "match": "(@p|@r|@a|@e|@s|@initiator|@c|@v|@d|@w)"
+        },
+        {
+          "name": "entity.name.selector.arguments.mdl",
+          "match": "\\[([^\\]]*)\\]"
+        },
+        {
+          "name": "variable.other.mdl",
+          "match": "[a-zA-Z_][a-zA-Z0-9_]*"
+        }
+      ]
+    },
+    {
+      "name": "function.call.mdl",
+      "begin": "\\b(exec)\\s+([a-zA-Z_][a-zA-Z0-9_]*):([a-zA-Z_][a-zA-Z0-9_]*)\\s*(<)",
+      "end": "(>)",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.mdl" },
+        "2": { "name": "entity.name.namespace.mdl" },
+        "3": { "name": "entity.name.function.mdl" },
+        "4": { "name": "punctuation.angle.brackets.mdl" }
+      },
+      "endCaptures": {
+        "1": { "name": "punctuation.angle.brackets.mdl" }
+      },
+      "patterns": [
+        {
+          "name": "entity.name.selector.mdl",
+          "match": "(@p|@r|@a|@e|@s|@initiator|@c|@v|@d|@w)"
+        },
+        {
+          "name": "entity.name.selector.arguments.mdl",
+          "match": "\\[([^\\]]*)\\]"
+        },
+        {
+          "name": "variable.other.mdl",
+          "match": "[a-zA-Z_][a-zA-Z0-9_]*"
+        }
+      ]
+    },
+    {
+      "name": "hook.declaration.mdl",
+      "begin": "\\b(on_(load|tick))\\s+([a-zA-Z_][a-zA-Z0-9_]*):([a-zA-Z_][a-zA-Z0-9_]*)\\s*(<)",
+      "end": "(>)",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.mdl" },
+        "3": { "name": "entity.name.namespace.mdl" },
+        "4": { "name": "entity.name.function.mdl" },
+        "5": { "name": "punctuation.angle.brackets.mdl" }
+      },
+      "endCaptures": {
+        "1": { "name": "punctuation.angle.brackets.mdl" }
+      },
+      "patterns": [
+        {
+          "name": "entity.name.selector.mdl",
+          "match": "(@p|@r|@a|@e|@s|@initiator|@c|@v|@d|@w)"
+        },
+        {
+          "name": "entity.name.selector.arguments.mdl",
+          "match": "\\[([^\\]]*)\\]"
+        },
+        {
+          "name": "variable.other.mdl",
+          "match": "[a-zA-Z_][a-zA-Z0-9_]*"
+        }
+      ]
+    },
+    {
+      "name": "tag.declaration.mdl",
+      "begin": "\\b(tag)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s+\"([^\"]+)\"\\s+\"([^\"]+)\"",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.mdl" },
+        "2": { "name": "keyword.type.mdl" },
+        "3": { "name": "string.quoted.double.mdl" },
+        "4": { "name": "string.quoted.double.mdl" }
+      }
+    },
+    {
+      "name": "say.command.mdl",
+      "begin": "\\b(say)\\s+\"",
+      "end": "\"",
+      "beginCaptures": {
+        "1": { "name": "support.function.mdl" }
+      },
+      "endCaptures": {
+        "0": { "name": "string.quoted.double.mdl" }
+      },
+      "patterns": [
+        {
+          "name": "variable.substitution.mdl",
+          "begin": "\\$([a-zA-Z_][a-zA-Z0-9_]*)\\s*(<)",
+          "end": "(>)\\$",
+          "beginCaptures": {
+            "1": { "name": "variable.other.mdl" },
+            "2": { "name": "punctuation.angle.brackets.mdl" }
+          },
+          "endCaptures": {
+            "1": { "name": "punctuation.angle.brackets.mdl" },
+            "2": { "name": "keyword.operator.mdl" }
+          },
+          "patterns": [
+            {
+              "name": "entity.name.selector.mdl",
+              "match": "(@p|@r|@a|@e|@s|@initiator|@c|@v|@d|@w)"
+            },
+            {
+              "name": "entity.name.selector.arguments.mdl",
+              "match": "\\[([^\\]]*)\\]"
+            },
+            {
+              "name": "variable.other.mdl",
+              "match": "[a-zA-Z_][a-zA-Z0-9_]*"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "entity.name.selector.mdl",
+      "match": "(@p|@r|@a|@e|@s|@initiator|@c|@v|@d|@w)"
+    },
+    {
+      "name": "entity.name.selector.arguments.mdl",
+      "match": "\\[([^\\]]*)\\]"
+    },
+    {
+      "name": "variable.other.mdl",
+      "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b"
+    },
+    {
+      "name": "string.raw.mdl",
+      "begin": "\\$!raw",
+      "end": "raw!\\$",
+      "beginCaptures": {
+        "0": { "name": "keyword.raw.mdl" }
+      },
+      "endCaptures": {
+        "0": { "name": "keyword.raw.end.mdl" }
+      },
+      "patterns": [
+        {
+          "name": "string.raw.content.mdl",
+          "match": "."
+        }
+      ]
+    }
+  ]
+}
