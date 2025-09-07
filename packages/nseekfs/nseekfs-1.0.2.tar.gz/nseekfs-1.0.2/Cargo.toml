@@ -1,0 +1,49 @@
+[package]
+name = "nseekfs"
+version = "1.0.2"
+edition = "2021"
+description = "High-performance exact vector similarity search with Rust backend"
+repository = "https://github.com/NSeek-AI/nseekfs"
+authors = ["Diogo Novo <contact@nseek.io>"]
+rust-version = "1.64"
+license = "MIT"  
+readme = "README.md"
+
+[lib]
+name = "nseekfs"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.20", features = ["extension-module", "abi3-py38"] }
+numpy = "0.20"
+rayon = "1.10"
+rand = { version = "0.8", features = ["small_rng"] }
+rand_distr = "0.4"
+memmap2 = "0.9"
+smallvec = "1.11"
+dashmap = "6.0"
+log = "0.4"
+wide = "0.7"
+dirs = "5.0"
+lazy_static = "1.5"
+num_cpus = "1.16"
+pdqselect = "0.1"
+
+[dependencies.serde]
+version = "1.0"
+features = ["derive"]
+optional = true
+
+[features]
+default = ["simd"]
+serde = ["dep:serde"]
+simd = []
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"        
+debug = false          
+overflow-checks = false
+strip = true
