@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pytest-snapcheck"
+version = "0.1.5"
+description = "Minimal deterministic test-run snapshot capture for pytest."
+readme = {file = "README.md", content-type = "text/markdown"}
+requires-python = ">=3.9"
+license = "MIT"
+authors = [{name = "Cyril Rikh"}]
+keywords = ["pytest", "testing", "snapshot", "regression"]
+classifiers = [
+	"Framework :: Pytest",
+	"Programming Language :: Python :: 3",
+	"Programming Language :: Python :: 3 :: Only",
+	"Typing :: Typed",
+]
+dependencies = ["pytest>=8.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "build", "twine", "rich>=13.7", "typer>=0.12"]
+test = ["pytest>=8.0"]
+
+[project.urls]
+Homepage = "https://github.com/cr5459/pytest-snap"
+Issues = "https://github.com/cr5459/pytest-snap/issues"
+
+[project.entry-points."pytest11"]
+snap = "pytest_snap.plugin"
+
+[project.scripts]
+# Expose the CLI main entry point (previously pointed at non-existent 'app')
+pytest-snap = "pytest_snap.cli:main"
+pytest-snapcheck = "pytest_snap.cli:main"
+
+[tool.setuptools]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pytest_snap*"]
+exclude = ["bench", "example_suite", "tests"]
+
+[tool.setuptools.package-data]
+pytest_snap = ["py.typed"]
+
