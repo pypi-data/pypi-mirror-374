@@ -1,0 +1,65 @@
+#frm_controls QLabel {
+	color: #4D4D4D;
+	font-size: 10pt;
+}
+
+#frm_top QLabel {
+	color: #4D4D4D;
+	font-size: 10pt;
+	margin-left: 4px;
+}
+
+#frm_groups {
+	background: #7F7F7F;
+}
+
+
+DrumkitWidget {
+	margin: 2px;
+}
+
+DrumkitWidget GroupFrame {
+	margin-right: 1px;
+}
+
+DrumkitWidget GroupFrame QPushButton {
+	border: none;
+	margin-bottom: 1px;
+}
+
+DrumkitWidget GroupFrame QPushButton:checked {
+	color: #000000;
+}
+
+DrumkitWidget GroupButton {
+	padding: 1.5px 5px;
+	font-size: 10pt;
+	background: #D1D1BC;
+}
+
+DrumkitWidget GroupButton:checked {
+	background: #FAF7B9;
+}
+
+DrumkitWidget InstrumentButton {
+	background: #BCC4B9;
+	height: 16px;
+}
+
+DrumkitWidget InstrumentButton:checked {
+	background: #CDFAB9;
+}
+
+DrumkitWidget InstrumentButton:pressed {
+	background: #FABC48;
+}
+
+DrumkitWidget InstrumentButton QLabel {
+	font-size: 8.5pt;
+	padding: 1px 4px 1px 3px;
+}
+
+DrumkitWidget InstrumentButton QCheckBox {
+	padding: 2px 1px;
+}
+

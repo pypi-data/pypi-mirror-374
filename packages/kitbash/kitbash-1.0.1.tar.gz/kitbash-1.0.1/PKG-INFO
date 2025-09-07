@@ -1,0 +1,25 @@
+Metadata-Version: 2.4
+Name: kitbash
+Version: 1.0.1
+Summary: kitbash is a program you can use to combine parts of various SFZ files into a
+Author-email: Leon Dionne <ldionne@dridesign.sh.cn>
+Description-Content-Type: text/markdown
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+License-File: LICENSE
+Requires-Dist: PyQt5
+Requires-Dist: conn_jack
+Requires-Dist: jack_audio_player
+Requires-Dist: jack_midi_split
+Requires-Dist: liquiphy
+Requires-Dist: soundfile
+Requires-Dist: sfzen
+Requires-Dist: midi_notes
+Requires-Dist: recent_items_list
+Requires-Dist: soso_qt_extras >= 1.2.0
+Project-URL: Home, https://github.com/Zen-Master-SoSo/kitbash
+
+# KitBash
+
+A GUI application which you can use to create a new .sfz drumkit from pieces of other drumkits.
+
+
