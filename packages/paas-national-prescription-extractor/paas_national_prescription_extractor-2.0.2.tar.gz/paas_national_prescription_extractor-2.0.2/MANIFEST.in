@@ -1,0 +1,10 @@
+include README.md
+include LICENSE
+include CHANGELOG.md
+include CONTRIBUTING.md
+include PACKAGE_SUMMARY.md
+include requirements.txt
+recursive-include day_supply_national/data *.csv
+recursive-include docs *.md
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
