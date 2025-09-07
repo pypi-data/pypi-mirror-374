@@ -1,0 +1,31 @@
+Metadata-Version: 2.4
+Name: autowordle
+Version: 2.2.4
+Summary: Automatic Wordle collector
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aw-client>=0.5.15
+Requires-Dist: maturin>=1.8.2
+Requires-Dist: pillow>=11.1.0
+Requires-Dist: py7zr>=0.22.0
+Requires-Dist: pytesseract>=0.3.13
+Requires-Dist: pytz>=2025.1
+Requires-Dist: pyxdg>=0.28
+Requires-Dist: pyyaml>=6.0.2
+Requires-Dist: ttkthemes>=3.2.2
+Requires-Dist: wand>=0.6.13
+Dynamic: license-file
+
+# autowordle
+
+An automatic collector for Wordle clones.
+
+The program listens to the clipboard and then saves them to text files.
+When all the games are collected according to the config file
+(by default in =~/.config/autowordle/games.yaml=),
+then construct an image and put it into the clipboard.
+Then save all the files into various archives.
+
+This is very tailored to my personal use case
+and may be difficult to use for others.
