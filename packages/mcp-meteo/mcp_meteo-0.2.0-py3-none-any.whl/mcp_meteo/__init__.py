@@ -1,0 +1,1 @@
+#init vide to make mcp-meteo a package
