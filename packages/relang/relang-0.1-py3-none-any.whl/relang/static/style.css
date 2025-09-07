@@ -1,0 +1,17 @@
+table, select, textarea {
+  width: 100%;
+}
+html, body, table, textarea, tbody {
+  height: 100%;
+}
+td {
+  position: relative
+}
+textarea {
+  position: absolute;
+  resize: none;
+  top: 0;
+  left: 0;
+  outline: none;
+  border: none;
+}

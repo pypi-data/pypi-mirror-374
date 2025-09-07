@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Translation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th><select id="source-lang">{% for code, name in languages|dictsort(by='value') %}<option value="{{ code }}"{% if name == 'French' %} selected{% endif %}>{{ name }}</option>{% endfor %}</select></th>
+          <th><select id="target-lang">{% for code, name in languages|dictsort(by='value') %}<option value="{{ code }}"{% if name == 'English' %} selected{% endif %}>{{ name }}</option>{% endfor %}</select></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><textarea id="source-text" placeholder="source text ..."></textarea></td>
+          <td><textarea id="target-text" placeholder="click to translate ..." readonly></textarea></td>
+        </tr>
+      </tbody>
+    </table>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>
