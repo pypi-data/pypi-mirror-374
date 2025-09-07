@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "scientific-calculator": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "/Users/sawitmee/Code/amazon-q-developer/p6plab-mcp-calculator/dist/mcp_calculator-0.1.1-py3-none-any.whl",
+        "p6plab-mcp-calculator"
+      ],
+      "env": {
+        "CALCULATOR_LOG_LEVEL": "DEBUG",
+        "FASTMCP_LOG_LEVEL": "DEBUG"
+      },
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}

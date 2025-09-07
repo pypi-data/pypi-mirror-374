@@ -1,0 +1,33 @@
+# Include important project files
+include README.md
+include LICENSE
+include CHANGELOG.md
+include pyproject.toml
+
+# Include documentation
+recursive-include docs *.md *.rst *.txt
+
+# Include shell scripts
+recursive-include scripts *.sh
+
+# Include test fixtures
+recursive-include tests/fixtures *.json *.csv *.txt
+
+# Exclude development and build files
+exclude .gitignore
+exclude .pre-commit-config.yaml
+exclude tox.ini
+exclude Makefile
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * .DS_Store
+recursive-exclude * .pytest_cache
+recursive-exclude * .coverage
+recursive-exclude * htmlcov
+recursive-exclude * .tox
+recursive-exclude * .mypy_cache
+recursive-exclude * .ruff_cache
+recursive-exclude venv *
+recursive-exclude .venv *
+recursive-exclude build *
+recursive-exclude dist *

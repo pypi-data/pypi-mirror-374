@@ -1,0 +1,124 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "p6plab-mcp-calculator"
+dynamic = ["version"]
+description = "Scientific Calculator MCP Server - Comprehensive mathematical computation service for AI assistants"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "MCP Calculator Team", email = "peepeepopapapeepeepo@gmail.com"}
+]
+maintainers = [
+    {name = "MCP Calculator Team", email = "peepeepopapapeepeepo@gmail.com"}
+]
+keywords = [
+    "mcp", "model-context-protocol", "calculator", "mathematics", 
+    "scientific-computing", "statistics", "linear-algebra", "calculus"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Communications",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "fastmcp>=2.0.0",
+    "numpy>=1.21.0",
+    "scipy>=1.7.0", 
+    "sympy>=1.9.0",
+    "pydantic>=2.0.0",
+    "loguru>=0.6.0",
+]
+
+[project.optional-dependencies]
+currency = [
+    "requests>=2.25.0",
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    "ruff>=0.1.0",
+    "pyright>=1.1.0",
+    "build>=0.10.0",
+    "twine>=4.0.0",
+]
+
+[project.scripts]
+p6plab-mcp-calculator = "calculator.server:main"
+
+[project.urls]
+Homepage = "https://github.com/peepeepopapapeepeepo/mcp-calculator"
+Repository = "https://github.com/peepeepopapapeepeepo/mcp-calculator"
+Issues = "https://github.com/peepeepopapapeepeepo/mcp-calculator/issues"
+Documentation = "https://github.com/peepeepopapapeepeepo/mcp-calculator/blob/main/README.md"
+Changelog = "https://github.com/peepeepopapapeepeepo/mcp-calculator/blob/main/CHANGELOG.md"
+
+[tool.hatch.version]
+path = "calculator/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["calculator"]
+
+[tool.ruff]
+line-length = 99
+target-version = "py38"
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+ignore = [
+    "E501",  # line too long, handled by formatter
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.pyright]
+include = ["calculator", "tests"]
+exclude = ["venv", "build", "dist"]
+pythonVersion = "3.8"
+typeCheckingMode = "basic"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--cov=calculator",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--strict-markers",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
