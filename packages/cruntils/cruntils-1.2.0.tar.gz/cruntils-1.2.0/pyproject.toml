@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cruntils"
+version = "1.2.0"
+authors = [{name="CReed"}]
+description = "A collection of utilities."
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+  "pyserial>=3.5"
+]
+
+[project.optional-dependencies]
+windows = [
+  "pywin32>=306"
+]
+
+[tool.setuptools.package-data]
+myModule = ["EGM96_WW_15M_GH.GRD"]
