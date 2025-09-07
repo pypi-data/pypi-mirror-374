@@ -1,0 +1,139 @@
+{
+  "name": "qa_template",
+  "description": "Clean Q&A template with centered profile picture and question/answer layout",
+  "size": {
+    "width": 2560,
+    "height": 2560
+  },
+  "use_base_image": false,
+  "components": [
+    {
+      "type": "rectangle",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "width": 2560,
+        "height": 2560
+      },
+      "fill_color": "${theme_color}",
+      "outline_color": null
+    },
+    {
+      "type": "image",
+      "image_url": "${logo_url}",
+      "position": {
+        "x": 250,
+        "y": 250
+      },
+      "size": {
+        "width": 300,
+        "height": 300
+      },
+      "aspect_ratio": "cover"
+    },
+    {
+      "type": "text",
+      "text": "${question}",
+      "position": {
+        "x": 250,
+        "y": 850
+      },
+      "font_size": 240,
+      "color": [40, 40, 40],
+      "font_path": "HappyMonkey-Regular",
+      "alignment": "left",
+      "max_width": 2100
+    },
+    {
+      "type": "text",
+      "text": "${answer}",
+      "position": {
+        "x": 250,
+        "y": 1450
+      },
+      "font_size": 120,
+      "color": [100, 100, 100],
+      "font_path": "HappyMonkey-Regular",
+      "alignment": "left",
+      "max_width": 2000,
+      "line_spacing": 1.4
+    },
+    {
+      "type": "text",
+      "text": "${username}",
+      "position": {
+        "x": 280,
+        "y": 2400
+      },
+      "font_size": 55,
+      "color": [1, 1, 1],
+      "font_path": "Roboto-Italic",
+      "alignment": "center"
+    },
+    {
+      "type": "text",
+      "text": "${website_url}",
+      "position": {
+        "x": 1800,
+        "y": 2400
+      },
+      "font_size": 55,
+      "color": [1, 1, 1],
+      "font_path": "Roboto-Italic",
+      "alignment": "center"
+    }
+  ],
+  "validation": {
+    "question": {
+      "field": "question",
+      "type": "text",
+      "minLength": 1,
+      "maxLength": 25
+    },
+    "theme_color": {
+      "field": "theme_color",
+      "type": "text",
+      "minLength": 4,
+      "maxLength": 7
+    },
+    "answer": {
+      "field": "answer",
+      "type": "text",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "username": {
+      "field": "username",
+      "type": "text",
+      "minLength": 1,
+      "maxLength": 20
+    },
+    "website_url": {
+      "field": "website_url",
+      "type": "url",
+      "minLength": 1,
+      "maxLength": 20
+    },
+    "samples": {
+      "question": "What is renewable energy?",
+      "answer": "One wind turbine can power 1,500 homes annually!",
+      "username": "@username",
+      "website_url": "example.com",
+      "theme_color": "#795548",
+      "logo_url": "https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTA3L2hpcHBvdW5pY29ybl9waG90b19vZl9kaXNzZWN0ZWRfZmxvYXRpbmdfdGFjb19zZXBhcmF0ZV9sYXllcl9vZl84M2Q0ODAwNC03MDc0LTRlZjItYjYyOC1jZTU3ODhiYzQxOGEucG5n.png"
+    },
+    "fieldPrompt": {
+      "question": "Write a clear, concise question (3-4 words, max 25 characters) that grabs attention and encourages engagement. Examples: Why Choose Us?, How It Works?, What's Next?. Focus on topics that matter to your audience and create curiosity.",
+      "answer": "Provide a detailed, informative answer (max 120 characters) that directly addresses the question. Include interesting facts, statistics, or insights when possible to make it more engaging and valuable. Be specific and actionable.",
+      "username": "Enter your username or brand name (max 50 characters) that will be displayed as the source of this Q&A. Examples: @yourbrand, @expert, Your Company. Use your preferred professional identity.",
+      "website_url": "Enter your website URL (max 20 characters) where people can learn more about you or your business. Examples: yourbusiness.com, learn.yourbrand.com. Omit http:// for a cleaner look.",
+      "theme_color": "Choose a hex color code (4-7 characters) that matches your brand identity or the mood you want to convey. Examples: #795548 for brown, #4A90E2 for blue. Select colors that align with your brand and create the right emotional response."
+    }
+  },
+  "config": {
+    "isImageUploadPresent": false,
+    "sample_url": "https://dolze-templates-uat.s3.eu-north-1.amazonaws.com/uploads/qa_template.png"
+  }
+}
