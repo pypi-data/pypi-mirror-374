@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "prabhatai"
+version = "0.1.0"
+description = "Thin wrapper for OpenRouter chat completions API"
+authors = [ { name = "PrabhatAI" } ]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = ["requests"]

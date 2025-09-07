@@ -1,0 +1,76 @@
+Metadata-Version: 2.4
+Name: prabhatai
+Version: 0.1.0
+Summary: Thin wrapper for OpenRouter chat completions API
+Author: PrabhatAI
+License: MIT License
+        
+        Copyright (c) 2025 PrabhatAI
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        ...
+        
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Dynamic: license-file
+Dynamic: requires-python
+
+# PrabhatAI
+
+A thin Python wrapper for the OpenRouter chat completions API.
+
+## Installation
+```bash
+pip install prabhatai
+```
+
+## Usage
+
+### 1. Install locally
+Navigate to the `PrabhatAI` directory and run:
+
+```bash
+pip install .
+```
+
+### 2. Use in your Python code
+By default, the package uses the included API key and the free DeepSeek model, with a safe default for max_tokens.
+
+```python
+from prabhatai.client import PrabhatAIClient
+client = PrabhatAIClient()  # Uses default API key and model
+response = client.chat([
+    {"role": "user", "content": "Hello!"}
+])
+print(response)
+```
+
+#### To use your own API key
+Set the environment variable:
+
+```bash
+export OPENROUTER_API_KEY="sk-or-...your-key..."
+```
+Or pass it directly:
+
+```python
+client = PrabhatAIClient(api_key="sk-or-...your-key...")
+```
+
+#### To use a different model or max_tokens
+
+```python
+response = client.chat([
+    {"role": "user", "content": "Hello!"}
+], model="openai/gpt-4o", max_tokens=500)
+```
+
+The default max_tokens is set to 1000 to avoid quota errors for free accounts.
