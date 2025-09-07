@@ -1,0 +1,97 @@
+[package]
+name = "dataprof"
+version = "0.3.0"
+edition = "2021"
+license = "MIT"
+authors = ["Andrea Bozzo"]
+description = "A fast, lightweight CLI tool for CSV data profiling and analysis"
+repository = "https://github.com/AndreaBozzo/dataprof"
+keywords = ["csv", "data", "analysis", "profiling", "cli"]
+categories = ["command-line-utilities", "data-structures"]
+readme = "README.md"
+
+[dependencies]
+# CSV parsing
+csv = "1.3"
+serde = { version = "1.0", features = ["derive"] }
+
+# CLI
+clap = { version = "4.5", features = ["derive"] }
+
+# Terminal output
+colored = "3.0"
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Pattern detection
+regex = "1.10"
+
+# Date/time support
+chrono = "0.4"
+
+# JSON support
+serde_json = "1.0"
+
+# System info for adaptive chunking
+sysinfo = "0.30"
+
+# Rayon for parallel processing
+rayon = "1.8"
+
+# Memory mapping for large files
+memmap2 = "0.9"
+
+# SIMD acceleration
+wide = "0.7"
+
+# Random number generation for sampling
+rand = { version = "0.8", features = ["small_rng"] }
+rand_chacha = "0.3"
+
+# Batch processing support
+glob = "0.3"
+glob-match = "0.2"
+num_cpus = "1.16"
+
+# Python bindings
+pyo3 = { version = "0.23", features = ["extension-module"], optional = true }
+
+# Note: Arrow will be added in a future iteration once version conflicts are resolved
+
+[dev-dependencies]
+tempfile = "3.10"
+
+[[bin]]
+name = "dataprof-cli"
+path = "src/main.rs"
+
+
+# Debug profile per sviluppo veloce
+[profile.dev]
+opt-level = 1        # Ottimizzazione minima per compilazione veloce
+debug = true         # Mantieni simboli debug
+split-debuginfo = "packed"  # Su Windows
+incremental = true   # Build incrementali
+
+# Profile per test veloci
+[profile.test]
+opt-level = 1
+
+# Release profile ottimizzato
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = 3
+panic = "abort"      # Riduce dimensione binario
+
+# Python extension features
+[features]
+default = []
+python = ["pyo3"]
+
+# Python extension configuration
+[lib]
+name = "dataprof"
+crate-type = ["cdylib", "rlib"]
