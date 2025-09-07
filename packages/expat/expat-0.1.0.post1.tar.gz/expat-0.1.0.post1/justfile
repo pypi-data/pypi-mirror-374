@@ -1,0 +1,6 @@
+test:
+    uv run pytest
+
+release:
+    uv build
+    uv publish
