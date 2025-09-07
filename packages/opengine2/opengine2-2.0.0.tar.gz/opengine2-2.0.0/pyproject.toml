@@ -1,0 +1,26 @@
+[project]
+name = "opengine2"
+version = "2.0.0"
+description = "A text box that allows easier input of many characters in a structured way."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "inline>=0.0.1",
+    "pyhocon>=0.3.61",
+    "pyside6>=6.9.1",
+    "pyxdg>=0.28",
+]
+
+[project.scripts]
+opengine2 = "opengine2:exec_"
+
+[tool.uv]
+package = true
+
+[[tool.uv.index]]
+name = "tymoon"
+url = "https://gitea.tymoon.eu/api/packages/isoraqathedh/pypi/simple/"
+publish-url = "https://gitea.tymoon.eu/api/packages/isoraqathedh/pypi"
+
+[tool.setuptools.package-data]
+"opengine2" = ['*.opengine2.toml', '*.opengine2.hocon']
