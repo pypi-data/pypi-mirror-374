@@ -1,0 +1,201 @@
+Metadata-Version: 2.4
+Name: scxpand
+Version: 0.1.0
+Summary: Pan-cancer detection of T-cell clonal expansion from single-cell RNA sequencing
+Author-email: Ron Amit <ron2amit@gmail.com>
+Maintainer-email: Ofir Shorer <ofirshorer@campus.technion.ac.il>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/ronamit/scxpand
+Project-URL: Documentation, https://scxpand.readthedocs.io
+Project-URL: Repository, https://github.com/ronamit/scxpand
+Project-URL: Issues, https://github.com/ronamit/scxpand/issues
+Keywords: single-cell,RNA-seq,T-cell,clonal-expansion,machine-learning,bioinformatics
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: scanpy>=1.11.1
+Requires-Dist: plotly>=6.0.1
+Requires-Dist: matplotlib>=3.10.0
+Requires-Dist: scikit-learn>=1.5.2
+Requires-Dist: lightgbm>=4.6.0
+Requires-Dist: tensorboard>=2.19.0
+Requires-Dist: fire>=0.7.0
+Requires-Dist: optuna>=4.3.0
+Requires-Dist: seaborn>=0.13.2
+Requires-Dist: pydantic>=2.10.6
+Requires-Dist: anndata>=0.11.4
+Requires-Dist: structlog>=24.0.0
+Requires-Dist: igraph>=0.11.4
+Requires-Dist: shap>=0.48.0
+Requires-Dist: bbknn>=1.6.0
+Requires-Dist: torch>=2.6.0
+Requires-Dist: scrublet>=0.2.3
+Requires-Dist: scirpy>=0.9.3
+Requires-Dist: tabulate>=0.9.0
+Requires-Dist: requests>=2.31.0
+Requires-Dist: tqdm>=4.66.0
+Requires-Dist: pooch>=1.8.0
+Provides-Extra: dev
+Requires-Dist: vulture>=2.14; extra == "dev"
+Requires-Dist: pytest>=8.3.4; extra == "dev"
+Requires-Dist: ruff>=0.12.7; extra == "dev"
+Requires-Dist: pre-commit>=4.2.0; extra == "dev"
+Requires-Dist: ipykernel>=6.29.5; extra == "dev"
+Requires-Dist: ipywidgets>=8.1.5; extra == "dev"
+Requires-Dist: jupyter>=1.1.1; extra == "dev"
+Requires-Dist: jupyter-client>=8.6.3; extra == "dev"
+Requires-Dist: jupyter-core>=5.7.2; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx>=7.1.0; extra == "docs"
+Requires-Dist: sphinx-book-theme>=1.1.0; extra == "docs"
+Requires-Dist: myst-nb>=1.1.0; extra == "docs"
+Requires-Dist: pandoc>=2.3; extra == "docs"
+Requires-Dist: sphinx-copybutton>=0.5.0; extra == "docs"
+Requires-Dist: myst-parser>=2.0.0; extra == "docs"
+Requires-Dist: docutils>=0.20.1; extra == "docs"
+Requires-Dist: sphinxcontrib-bibtex>=2.6.0; extra == "docs"
+Requires-Dist: sphinx-autodoc-typehints>=2.4.0; extra == "docs"
+Requires-Dist: ipython>=8.0.0; extra == "docs"
+Requires-Dist: sphinxext-opengraph>=0.9.0; extra == "docs"
+Requires-Dist: sphinx-autobuild>=2024.2.4; extra == "docs"
+Requires-Dist: watchdog>=4.0.0; extra == "docs"
+Requires-Dist: colorama>=0.4.6; extra == "docs"
+Dynamic: license-file
+
+# scXpand
+
+
+
+<div align="center">
+  <br/>
+  <img src="docs/_static/images/scXpand_symbol.jpeg" alt="scXpand Logo" width="300"/>
+  <br/>
+  <br/>
+  <h3>Pan-cancer detection of T-cell clonal expansion from single-cell RNA sequencing without paired single-cell TCR sequencing</h3>
+  <br/>
+  <p>
+    <a href="https://scxpand.readthedocs.io">Documentation</a> •
+    <a href="#installation">Installation</a> •
+    <a href="#quick-start">Quick Start</a> •
+    <a href="docs/usage_examples.rst">Usage Examples</a> •
+    <a href="docs/data_format.rst">Data Format</a> •
+    <a href="docs/output_format.rst">Output Format</a> •
+    <a href="#model-architectures">Model Architectures</a> •
+    <a href="#citation">Citation</a>
+  </p>
+</div>
+
+<div style="width: 100vw; margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); margin-top: 20px; margin-bottom: 40px; padding: 0 40px;">
+  <img src="docs/_static/images/scXpand_datasets.jpeg" alt="scXpand Datasets Overview" style="width: 100%; height: auto; display: block; margin: 0; padding: 0;"/>
+</div>
+
+A framework for predicting T-cell clonal expansion from single-cell RNA sequencing data.
+
+**Manuscript in preparation** - detailed methodology and benchmarks coming soon.
+
+**[View full documentation](https://scxpand.readthedocs.io)** for comprehensive guides and API reference.
+
+
+## Features
+
+- **Multiple Model Architectures**: Autoencoder, MLP, LightGBM, Logistic Regression, and SVM for comprehensive analysis
+- **Scalable Processing**: Handles millions of cells with memory-efficient data streaming from disk during training
+- **Automated Hyperparameter Optimization**: Built-in Optuna integration for model tuning
+
+## Installation
+
+```bash
+pip install scxpand
+```
+
+## Quick Start
+
+```python
+import scxpand
+
+# List available pre-trained models
+scxpand.list_pretrained_models()
+
+# Run inference with automatic model download
+results = scxpand.run_inference_with_pretrained(
+    model_name="pan_cancer_autoencoder",
+    data_path="your_data.h5ad"
+)
+```
+
+Or via command line:
+
+```bash
+# Pre-trained model inference (curated models)
+scxpand predict --data_path your_data.h5ad --model_name pan_cancer_autoencoder
+
+# Direct URL inference (any external model - seamless sharing!)
+scxpand predict --data_path your_data.h5ad --model_url "https://your-platform.com/model.zip"
+
+# Local model inference
+scxpand predict --data_path your_data.h5ad --model_path results/my_model
+```
+
+## Development
+
+For development installation and model training, see the [documentation](https://scxpand.readthedocs.io/en/latest/installation.html).
+
+## Model Architectures
+
+scXpand provides multiple model architectures to suit different use cases and data characteristics:
+
+#### Autoencoder-based Classifiers
+
+Architecture featuring an encoder with auxiliary decoder for reconstruction and classifier head for expansion prediction. This approach leverages representation learning to capture complex patterns in single-cell data.
+
+#### Multi-Layer Perceptron (MLP)
+
+Standard feed-forward neural networks for direct expansion prediction.
+
+#### LightGBM
+
+Gradient boosting for classification tasks with excellent performance on tabular data.
+
+#### Linear Models
+
+Classical machine learning approaches including logistic regression and support vector machines.
+
+## License
+
+This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
+
+## Citation
+
+If you use scXpand in your research, please cite:
+
+```bibtex
+@article{scxpand2024,
+  title={scXpand: Pan-cancer detection of T-cell clonal expansion from single-cell RNA sequencing without paired single-cell TCR sequencing},
+  author={[Your Name]},
+  journal={[Journal Name]},
+  year={2024},
+  doi={[DOI]}
+}
+```
+
+This project was created in favor of the scientific community worldwide, with a special dedication to the cancer research community.
+We hope you’ll find this repository helpful, and we warmly welcome any requests or suggestions - please don’t hesitate to reach out!
+
+<p align="center">
+  <a href="https://mapmyvisitors.com/web/1byyd">
+     <img src="https://mapmyvisitors.com/map.png?d=yRhTNMKyBcxvPwQsz-rFDDwHhMjSeVYRSYtxm4oUNdY&cl=ffffff">
+   </a>
+</p>
+<p align="center">
+  <a href="#">
+     <img src="https://visitor-badge.laobi.icu/badge?page_id=ronamit.scxpand&left_text=scXpand%20Visitors" alt="Visitors" />
+   </a>
+</p>
