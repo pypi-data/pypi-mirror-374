@@ -1,0 +1,17 @@
+Metadata-Version: 2.4
+Name: ipulse_shared_ai_ftredge
+Version: 2.0.0
+Summary: Shared AI models for the Pulse platform project. Using AI for financial advisory and investment management.
+Home-page: https://github.com/TheFutureEdge/ipulse_shared_ai
+Author: russlan.ramdowar
+License-File: LICENCE
+Requires-Dist: pydantic[email]~=2.5
+Requires-Dist: python-dateutil~=2.8
+Requires-Dist: pytest~=7.1
+Requires-Dist: pandas==2.2.1
+Requires-Dist: ipulse_shared_base_ftredge~=12.2.0
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: summary
