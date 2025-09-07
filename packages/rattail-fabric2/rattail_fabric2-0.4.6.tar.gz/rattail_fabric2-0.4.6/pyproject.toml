@@ -1,0 +1,41 @@
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[project]
+name = "rattail-fabric2"
+version = "0.4.6"
+description = "Fabric (v2) Utilities for Rattail"
+readme = "README.md"
+authors = [{name = "Lance Edgar", email = "lance@edbob.org"}]
+license = {text = "GNU GPL v3+"}
+classifiers = [
+        "Development Status :: 3 - Alpha",
+        "Environment :: Console",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+        "Natural Language :: English",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3",
+        "Topic :: System :: Systems Administration",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+        "fabric2",
+        "invoke",
+        "rattail",
+]
+
+
+[project.urls]
+Homepage = "https://rattailproject.org"
+Repository = "https://forgejo.wuttaproject.org/rattail/rattail-fabric2"
+Changelog = "https://forgejo.wuttaproject.org/rattail/rattail-fabric2/src/branch/master/CHANGELOG.md"
+
+
+[tool.commitizen]
+version_provider = "pep621"
+tag_format = "v$version"
+update_changelog_on_bump = true

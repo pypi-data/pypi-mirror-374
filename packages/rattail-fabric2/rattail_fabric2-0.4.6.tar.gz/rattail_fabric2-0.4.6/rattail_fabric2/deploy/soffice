@@ -1,0 +1,125 @@
+#!/bin/sh
+# -*- coding: utf-8; -*-
+################################################################################
+#
+#  Rattail -- Retail Software Framework
+#  Copyright © 2010-2018 Lance Edgar
+#
+#  This file is part of Rattail.
+#
+#  Rattail is free software: you can redistribute it and/or modify it under the
+#  terms of the GNU General Public License as published by the Free Software
+#  Foundation, either version 3 of the License, or (at your option) any later
+#  version.
+#
+#  Rattail is distributed in the hope that it will be useful, but WITHOUT ANY
+#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+#  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+#  details.
+#
+#  You should have received a copy of the GNU General Public License along with
+#  Rattail.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# Generic 'init' script for headless LibreOffice Writer
+#
+################################################################################
+
+# "calling" init script may define any of the following as necessary:
+
+NAME=${NAME:-"rattail-soffice"}
+SCRIPTNAME=${SCRIPTNAME:-"/etc/init.d/$NAME"}
+DESC=${DESC:-"LibreOffice for Rattail"}
+DAEMON=${DAEMON:-"/usr/lib/libreoffice/program/soffice.bin"}
+SOFFICE=${SOFFICE:-"/usr/bin/soffice"}
+USER=${USER:-"rattail"}
+GROUP=${GROUP:-"rattail"}
+PIDFILE=${PIDFILE:-"/var/run/rattail/$NAME.pid"}
+PORT=${PORT:-"2002"}
+
+
+create_pid_dir() {
+    PIDDIR=`dirname "$PIDFILE"`
+    if [ ! -d "$PIDDIR" ]; then
+        mkdir --parents "$PIDDIR"
+    fi
+    chown $USER:$GROUP "$PIDDIR"
+}
+
+
+# Return
+#   0 if daemon has been started
+#   1 if daemon was already running
+#   2 if daemon could not be started
+do_start() {
+
+    create_pid_dir
+
+    start-stop-daemon --test --start --exec $DAEMON --user $USER --pidfile $PIDFILE --quiet > /dev/null \
+        || return 1
+    start-stop-daemon --start --chuid $USER --exec $DAEMON --startas $SOFFICE --pidfile $PIDFILE --background --quiet -- \
+                      --headless --pidfile=$PIDFILE --accept="socket,host=localhost,port=$PORT;urp;" \
+        || return 2
+}
+
+
+# Return
+#   0 if daemon has been stopped
+#   1 if daemon was already stopped
+#   2 if daemon could not be stopped
+#   other if a failure occurred
+do_stop()
+{
+    start-stop-daemon --test --stop --exec $DAEMON --user $USER --pidfile $PIDFILE --quiet > /dev/null \
+        || return 1
+    start-stop-daemon --stop --exec $DAEMON --user $USER --pidfile $PIDFILE --quiet > /dev/null \
+        || return 2
+}
+
+
+case "$1" in
+    start)
+        [ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
+        do_start
+        case "$?" in
+            0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+            2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+        esac
+        ;;
+    stop)
+        [ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
+        do_stop
+        case "$?" in
+            0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+            2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+        esac
+        ;;
+    status)
+        /usr/local/bin/check-rattail-daemon "$NAME" && exit 0 || exit $?
+        ;;
+    restart|force-reload)
+        log_daemon_msg "Restarting $DESC" "$NAME"
+        do_stop
+        case "$?" in
+            0|1)
+                do_start
+                case "$?" in
+                    0) log_end_msg 0 ;;
+                    1) log_end_msg 1 ;; # Old process is still running
+                    *) log_end_msg 1 ;; # Failed to start
+                esac
+                ;;
+            *)
+                # Failed to stop
+                log_end_msg 1
+                ;;
+        esac
+        ;;
+    *)
+        echo "Usage: $SCRIPTNAME {start|stop|status|restart|force-reload}" >&2
+        exit 3
+        ;;
+esac
+
+:

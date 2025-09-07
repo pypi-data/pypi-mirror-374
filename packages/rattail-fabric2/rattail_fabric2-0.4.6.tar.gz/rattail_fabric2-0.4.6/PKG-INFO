@@ -1,0 +1,35 @@
+Metadata-Version: 2.4
+Name: rattail-fabric2
+Version: 0.4.6
+Summary: Fabric (v2) Utilities for Rattail
+Project-URL: Homepage, https://rattailproject.org
+Project-URL: Repository, https://forgejo.wuttaproject.org/rattail/rattail-fabric2
+Project-URL: Changelog, https://forgejo.wuttaproject.org/rattail/rattail-fabric2/src/branch/master/CHANGELOG.md
+Author-email: Lance Edgar <lance@edbob.org>
+License: GNU GPL v3+
+License-File: COPYING.txt
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Systems Administration
+Requires-Dist: fabric2
+Requires-Dist: invoke
+Requires-Dist: rattail
+Description-Content-Type: text/markdown
+
+
+# rattail-fabric2
+
+Rattail is a retail software framework, released under the GNU General Public
+License.
+
+This package contains various utility functions for use with
+[Fabric](http://www.fabfile.org/) (v2).
+
+Please see Rattail's [home page](https://rattailproject.org/) for more
+information.

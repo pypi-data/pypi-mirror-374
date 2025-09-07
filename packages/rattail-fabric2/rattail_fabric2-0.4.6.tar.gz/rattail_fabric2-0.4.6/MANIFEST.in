@@ -1,0 +1,5 @@
+include *.txt
+include *.rst
+
+# TODO: this seems heavy-handed?
+recursive-include rattail_fabric2/deploy *

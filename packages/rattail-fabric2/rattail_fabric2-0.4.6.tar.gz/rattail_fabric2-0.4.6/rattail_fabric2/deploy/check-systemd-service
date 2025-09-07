@@ -1,0 +1,46 @@
+#!/bin/sh
+################################################################################
+#
+#  Rattail -- Retail Software Framework
+#  Copyright © 2010-2019 Lance Edgar
+#
+#  This file is part of Rattail.
+#
+#  Rattail is free software: you can redistribute it and/or modify it under the
+#  terms of the GNU General Public License as published by the Free Software
+#  Foundation, either version 3 of the License, or (at your option) any later
+#  version.
+#
+#  Rattail is distributed in the hope that it will be useful, but WITHOUT ANY
+#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+#  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+#  details.
+#
+#  You should have received a copy of the GNU General Public License along with
+#  Rattail.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# This is a simple script which will output a single line of info, and exit
+# with a return code which indicates status of a given systemd service.  It was
+# designed for use with Shinken monitoring.  Invoke like so:
+#
+#    check-systemd-service NAME
+#
+# Where NAME refers to the process, e.g. 'rattail-soffice'.  Exit code may be:
+#
+#  * 0 = process is confirmed running
+#  * 2 = process is confirmed *not* running
+#  * 3 = unknown state
+#
+################################################################################
+
+NAME="$1"
+if [ "$NAME" = "" ]; then
+    echo "Usage: check-systemd-service NAME"
+    exit 3
+fi
+
+sudo systemctl is-active $NAME.service || exit 2
+
+exit 0
