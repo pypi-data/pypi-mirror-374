@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=62", "setuptools_scm>=7.1.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+requires-python = ">= 3.7"
+name = "mpl_ascii"
+dependencies = [
+"matplotlib>=3.5.3",
+"rich>=13.7.1"
+]
+dynamic = ["version"]
+
+description = "A matplotlib backend that produces plots using only ASCII characters"
+license = {text = "MIT License"}
+readme = "README.md"
+keywords = ["matplotlib", "plotting", "ASCII"]
+authors = [
+    {name = "Chris Cave"}
+]
+maintainers = [
+    {name = "Chris Cave"}
+]
+
+[tool.setuptools_scm]
+
+[project.urls]
+Homepage = "https://github.com/chriscave/mpl_ascii"
+
+[tool.setuptools]
+packages = ["mpl_ascii"]
