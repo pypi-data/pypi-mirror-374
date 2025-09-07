@@ -1,0 +1,55 @@
+Metadata-Version: 2.4
+Name: chi-sdk
+Version: 0.0.3
+Summary: CHI TUI SDK: Typed Python CLI with JSON envelope for TUI frontends
+Author-email: CHI TUI <devnull@example.com>
+License: Apache-2.0 (see LICENSE)
+Project-URL: homepage, https://github.com/jacekjursza/chi_sdk
+Project-URL: repository, https://github.com/jacekjursza/chi_sdk
+Classifier: License :: OSI Approved :: Apache Software License
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: click>=8
+Requires-Dist: pydantic>=2
+Provides-Extra: dev
+Requires-Dist: pre-commit>=3.6; extra == "dev"
+Requires-Dist: black>=24.3; extra == "dev"
+Requires-Dist: ruff>=0.4; extra == "dev"
+Requires-Dist: pytest>=7; extra == "dev"
+Provides-Extra: tui
+Requires-Dist: chi-tui-bin>=0.0.1; extra == "tui"
+Dynamic: license-file
+
+CHI TUI SDK (Python)
+
+Typed Python CLI utilities for building command-line apps that emit a stable JSON envelope for terminal UIs. Uses Pydantic v2 and Click.
+
+## Development
+
+Install deps (dev extras included):
+
+```bash
+python3 -m venv .venv && source .venv/bin/activate
+pip install -U pip
+pip install -e .[dev]
+```
+
+Run linters and tests manually:
+
+```bash
+ruff .
+black --check .
+pytest -q
+```
+
+### Pre-commit hooks
+
+This repo includes pre-commit hooks for ruff, black, a max-lines check (<=600 lines per file), and pytest.
+
+```bash
+pre-commit install    # set up git hooks
+pre-commit run -a     # run on all files once
+```
+
+Hooks run automatically on commit. The custom max-lines check applies to files under `src/` and `tests/`.

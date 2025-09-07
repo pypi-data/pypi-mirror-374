@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chi-sdk"
+version = "0.0.3"
+description = "CHI TUI SDK: Typed Python CLI with JSON envelope for TUI frontends"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "click>=8",
+  "pydantic>=2",
+]
+authors = [{name = "CHI TUI", email = "devnull@example.com"}]
+license = {text = "Apache-2.0 (see LICENSE)"}
+classifiers = [
+  "License :: OSI Approved :: Apache Software License",
+]
+
+[project.urls]
+homepage = "https://github.com/jacekjursza/chi_sdk"
+repository = "https://github.com/jacekjursza/chi_sdk"
+
+[project.scripts]
+chi-admin = "chi_sdk.admin:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.optional-dependencies]
+dev = [
+  "pre-commit>=3.6",
+  "black>=24.3",
+  "ruff>=0.4",
+  "pytest>=7",
+]
+tui = [
+  "chi-tui-bin>=0.0.1",
+]
