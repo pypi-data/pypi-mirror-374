@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: horusdemodlib
+Version: 0.4.0
+Summary: Project Horus HAB Telemetry Demodulators
+License: LGPL-2.1-or-later
+Author: Mark Jessop
+Requires-Python: >=3.6,<4.0
+Classifier: License :: OSI Approved
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: audioop-lts; python_version >= "3.13" and python_version < "4.0"
+Requires-Dist: crcmod (>=1.7,<2.0)
+Requires-Dist: numpy (>=1.17,<2.0)
+Requires-Dist: python-dateutil (>=2.8,<3.0)
+Requires-Dist: requests (>=2.24.0,<3.0.0)
