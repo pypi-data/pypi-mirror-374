@@ -1,0 +1,20 @@
+Metadata-Version: 2.4
+Name: beekeeper-readers-watson-discovery
+Version: 1.0.0
+Summary: beekeeper readers watson discovery extension
+Author-email: Leonardo Furnielis <leonardofurnielis@outlook.com>
+License: Apache-2.0
+Requires-Python: <4.0,>=3.10
+Requires-Dist: beekeeper-core<2.0.0,>=1.0.0
+Requires-Dist: ibm-watson<11.0.0,>=10.0.0
+Provides-Extra: dev
+Requires-Dist: ruff>=0.11.13; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# Beekeeper readers extension - Watson Discovery
+
+## Installation 
+
+```bash
+pip install beekeeper-readers-watson-discovery
+```
