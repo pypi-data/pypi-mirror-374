@@ -1,0 +1,38 @@
+# dbks_optimize/pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "databricks_optimize"
+version = "0.2.2"
+authors = [
+  { name="Marco Lombardi", email="m.lombardi@live.it" },
+]
+description = "Databricks utility to identify which column to use for z-ordering and partitioning."
+readme = "README.MD"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "pyspark>=3.0.0",
+    "pytest>=8.3.5",
+]
+
+[tool.setuptools.packages]
+find = {where = ["src"]}
+
+[project.urls]
+Homepage = "https://github.com/LombMarc/databricks-optimize"
+Documentation = "https://github.com/LombMarc/databricks-optimize#readme"
+Repository = "https://github.com/LombMarc/databricks-optimize"
+Issues = "https://github.com/lombmarc/databricks-optimize/issues"
