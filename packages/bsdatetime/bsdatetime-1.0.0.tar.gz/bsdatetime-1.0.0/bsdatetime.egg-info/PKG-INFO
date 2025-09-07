@@ -1,0 +1,79 @@
+Metadata-Version: 2.4
+Name: bsdatetime
+Version: 1.0.0
+Summary: Bikram Sambat (Nepali) date/datetime conversion and utilities
+Home-page: https://github.com/Rajendra-Katuwal/bsdatetime
+Author: Rajendra Katuwal
+Author-email: Rajendra Katuwal <raj.katuwal2061@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/Rajendra-Katuwal/bsdatetime
+Project-URL: Documentation, https://rajendra-katuwal.github.io/bsdatetime.docs/
+Project-URL: Issues, https://github.com/Rajendra-Katuwal/bsdatetime/issues
+Project-URL: Source, https://github.com/Rajendra-Katuwal/bsdatetime
+Keywords: bikram sambat,nepali,calendar,date,datetime,conversion
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Internationalization
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# bsdatetime
+
+Lightweight, dependency‑free Bikram Sambat (Nepali) calendar utilities for Python.
+
+Documentation: https://rajendra-katuwal.github.io/bsdatetime.docs/
+
+## What it does
+* Convert between Gregorian (AD) and Bikram Sambat (BS)
+* Format / parse BS dates (localized month + weekday names)
+* Validate dates, get fiscal year, week number, ranges
+* Provide current BS date/time helpers
+
+## Install
+```bash
+pip install bsdatetime
+```
+
+## Quick start
+```python
+import datetime, bsdatetime as bs
+
+ad = datetime.date(2024, 12, 25)
+bs_tuple = bs.ad_to_bs(ad)          # (2081, 9, 9)
+ad_back = bs.bs_to_ad(*bs_tuple)    # 2024-12-25
+text = bs.format_bs_date(*bs_tuple, "%B %d, %Y")  # भदौ 09, 2081
+current_bs = bs.utils.get_current_bs_date()
+```
+
+Core API (most used)
+* ad_to_bs(date)
+* bs_to_ad(y, m, d)
+* format_bs_date(y, m, d, fmt)
+* parse_bs_date(text, fmt)
+* is_valid_bs_date(y, m, d)
+* utils.get_current_bs_date()
+
+Supported range: BS 1975–2100 (≈ AD 1918–2043)
+
+## Django?
+Use the companion package for model fields:
+```bash
+pip install django-bsdatetime
+```
+
+## License
+MIT
