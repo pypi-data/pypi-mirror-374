@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "lcw_data_platform_scaffold"
+version = "0.1.1"
+description = "Scaffold Azure data engineering artefacts for multiple LCW data products"
+authors = ["Amitesh Bhattacharya <amiteshbhattacharya58@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+click = "^8.1"
+
+[tool.poetry.scripts]
+lcw-dps = "lcw_data_platform_scaffold.scaffold:scaffold_projects"
