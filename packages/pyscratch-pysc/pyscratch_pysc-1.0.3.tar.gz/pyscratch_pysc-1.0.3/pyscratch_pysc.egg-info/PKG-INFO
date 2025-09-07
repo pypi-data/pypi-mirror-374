@@ -1,0 +1,37 @@
+Metadata-Version: 2.4
+Name: pyscratch-pysc
+Version: 1.0.3
+Summary: A Python game development framework designed to provide an easy transitioning from Scratch to Python
+Author-email: Daniel Ka-Wa Chan <kwdaniel525@protonmail.com>
+License: MIT
+Project-URL: Homepage, https://kwdchan.github.io/pyscratch/
+Project-URL: Repository, https://github.com/kwdChan/pyscratch
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: pymunk<7
+Requires-Dist: pygame<3
+Requires-Dist: numpy<3
+Requires-Dist: typing_extensions
+Requires-Dist: pillow<12
+
+# PyScratch 
+For more information, see: https://kwdchan.github.io/pyscratch/
+
+
+
+
+
+
+## Change History
+
+### 07 Sep 2025
+**v1.0.3**  
+Added undeclared dependency: Pillow   
+Specified the versions of the dependencies
+
+### Jul 2025
+**v1.0.0**  
+The first version
