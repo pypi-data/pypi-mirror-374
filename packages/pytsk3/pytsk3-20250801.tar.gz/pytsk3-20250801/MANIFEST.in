@@ -1,0 +1,29 @@
+include AUTHORS LICENSE version.txt
+include *.c
+include *.h
+include *.py
+exclude *.pyc
+exclude .git .gitignore .gitmodules
+exclude .travis.yml
+exclude API-CHANGES.txt config.log ruleset.xml setupDevRepos.py travis_build.sh
+recursive-include dpkg *
+recursive-include patches *
+recursive-include sleuthkit *
+recursive-exclude sleuthkit/autom4te.cache *
+recursive-exclude sleuthkit/bindings *
+recursive-exclude sleuthkit/debian *
+recursive-exclude sleuthkit/docs *
+recursive-exclude sleuthkit/framework *
+recursive-exclude sleuthkit/man *
+recursive-exclude sleuthkit/packages *
+recursive-exclude sleuthkit/rejistry++ *
+recursive-exclude sleuthkit/release *
+recursive-exclude sleuthkit/samples *
+recursive-exclude sleuthkit/tests *
+recursive-exclude sleuthkit/tools *
+recursive-exclude sleuthkit/unit_tests *
+recursive-exclude sleuthkit/win32 *
+recursive-exclude sleuthkit/xcode *
+recursive-include talloc *
+recursive-include test_data *
+recursive-include travis *
