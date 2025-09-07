@@ -1,0 +1,10 @@
+[project]
+name = "pyhatodi"
+version = "0.1.4"
+description = "Toolkit for developers."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[project.scripts]
+pyhatodi = "pyhatodi.cli:main"
