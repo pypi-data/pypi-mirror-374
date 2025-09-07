@@ -1,0 +1,135 @@
+QWidget, QPushButton, QMenu {
+	color: #404040;
+}
+
+QWidget:disabled, QPushButton:disabled {
+	color: #9C9C9C;
+}
+
+QPushButton {
+	background: #E8E8E8;
+}
+
+QLabel {
+	background: transparent;
+}
+
+QMenu {
+	background: #F0F0F0;
+}
+
+QMenu::item {
+	background: #F2F2F2;
+}
+
+QMenu::item:selected {
+	background: #D3E5F2;
+}
+
+
+QScrollBar:horizontal::groove{
+	background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #BFC1C9, stop:.5 #CED0D9, stop:1 #D3D5DE);
+}
+
+QScrollBar:handle,
+QScrollBar:add-line,
+QScrollBar:sub-line {
+	background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #F8F9FA, stop:.5 #F0F1F2, stop:1 #E9EAEB);
+	border: 1px solid #BFC6D6;
+}
+
+DrumkitWidget {
+	margin: 4px;
+}
+
+DrumkitWidget QLabel {
+	color: #666;
+	font-size: 10pt;
+	margin-left: 8px;
+}
+
+DrumkitWidget QPushButton:disabled {
+	color: #888;
+}
+
+#frm_top {
+	background-color: #FAF5E6;
+}
+
+#frm_top QLabel {
+}
+
+DrumkitWidget GroupFrame {
+	background-color: #D7D9D8;
+}
+
+DrumkitWidget QPushButton {
+	font-family: 'Ubuntu', 'Liberation Sans', 'Bitstream Vera Sans', sans-serif;
+}
+
+DrumkitWidget GroupButton {
+	padding: 1.5px 7px;
+	font-weight: bold;
+	font-size: 13px;
+}
+
+DrumkitWidget GroupButton:checked {
+	background-color: #FFF5CF;
+}
+
+DrumkitWidget InstrumentButton {
+	border: none;
+	margin: 1px;
+	padding: 2px;
+	background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #FAFAFA, stop:1 #E8E8E8);
+}
+
+DrumkitWidget InstrumentButton:pressed {
+	background: #FABC48;
+}
+
+DrumkitWidget InstrumentButton:checked {
+	background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #D9D9D9, stop:0.4 #EDEDED, stop:0.7 #F0F0F0, stop:1 #FCFCFC);
+}
+
+DrumkitWidget InstrumentButton QLabel {
+	font-size: 11px;
+}
+
+DrumkitWidget InstrumentButton QCheckBox {
+	padding: 8px 2px;
+}
+
+DrumkitWidget InstrumentButton QCheckBox::indicator {
+	height: 8px;
+	width: 8px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #FFFFFF;
+	background: #FFFFFF;
+}
+
+DrumkitWidget InstrumentButton QCheckBox::indicator:checked {
+	border-color: #705527;
+	background: #FFF9C3;
+}
+
+
+
+
+#frm_beats,
+#frm_beats QSpinBox
+{
+	background-color: #3B2A13;
+}
+
+#frm_beats QLabel {
+	color: #eee;
+}
+
+#frm_beats QSpinBox,
+#frm_beats QLCDNumber
+{
+	color: #EAF9CA;
+}
+
