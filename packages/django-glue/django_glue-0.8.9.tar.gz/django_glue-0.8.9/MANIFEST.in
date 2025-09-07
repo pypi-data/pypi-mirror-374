@@ -1,0 +1,14 @@
+include README.md
+include LICENSE.md
+recursive-include django_glue/templates *
+recursive-include django_glue/static *
+exclude *.db
+prune .github
+prune .run
+prune .dev
+prune .venv
+prune archived_docs
+prune docs
+prune example
+prune tests
+prune test_project
