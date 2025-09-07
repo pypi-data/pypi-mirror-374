@@ -1,0 +1,31 @@
+[project]
+name = "starch"
+dynamic = [
+  "authors",
+  "description",
+  "license",
+  "version"
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "click>=8.2.1",
+    "platformdirs>=4.3.8",
+]
+
+[project.scripts]
+starch = "starch:formatter.cli"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+]
+optional = []
+
+[tool.hatch.version]
+path = "src/starch/__init__.py"
+
