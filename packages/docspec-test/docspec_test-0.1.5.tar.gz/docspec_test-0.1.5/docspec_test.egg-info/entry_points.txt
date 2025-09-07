@@ -1,0 +1,5 @@
+[console_scripts]
+docspec-test = docspec_test.cli:main
+
+[pytest11]
+docspec_test = docspec_test.plugin
