@@ -1,0 +1,31 @@
+Metadata-Version: 2.4
+Name: normalized-django-settings
+Version: 1.0.0
+Summary: Normalized Django settings system
+Author-email: Irving Leonard <irvingleonard@gmail.com>
+License: The Unlicense
+Project-URL: homepage, https://github.com/irvingleonard/normalized-django-settings
+Project-URL: repository, https://github.com/irvingleonard/normalized-django-settings.git
+Keywords: django,settings
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: The Unlicense (Unlicense)
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Requires-Python: >=3.7
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: simplifiedapp; extra == "dev"
+Dynamic: description
+Dynamic: license-file
+Dynamic: summary
+
+This module proposes a normalized system to handle Django settings by loading them from the environment. The goal is to normalize the way the settings are provided across different deployment methods.
+
+The process consists in defining the possible environmental values and loading logic for such values in a submodule of your Django app. Then on your site settings, you'll use `normalize_settings` to compile the list of all the settings from your different installed apps and load them.
