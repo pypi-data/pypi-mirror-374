@@ -1,0 +1,222 @@
+# QA ColorLog
+
+A powerful and flexible logging package designed specifically for QA and testing workflows. Features colorized console output, configurable file logging, and seamless integration with test automation frameworks.
+
+## Features
+
+- **Colorized Console Output**: Automatic color coding for different log levels
+- **Flexible Configuration**: Environment variable based configuration
+- **File Logging Support**: Optional logging to files with automatic directory creation
+- **Multiple Logger Instances**: Support for creating custom logger instances
+- **Production Ready**: Comprehensive error handling and robust design
+- **Zero Dependencies**: No external dependencies required
+- **Python 3.8+ Support**: Compatible with modern Python versions
+
+## Installation
+
+```bash
+pip install qa-colorlog
+```
+
+## Quick Start
+
+```python
+from logger import logger
+
+logger.info("Application started successfully")
+logger.warning("This is a warning message")
+logger.error("An error occurred")
+logger.debug("Debug information")
+logger.critical("Critical system error")
+```
+
+## Advanced Usage
+
+### Creating Custom Logger Instances
+
+```python
+from logger import QALogger
+
+# Create a custom logger with specific configuration
+api_logger = QALogger(
+    name="api_tests",
+    log_level="INFO",
+    log_to_file=True,
+    log_file_path="api_tests.log",
+    colorize_output=True
+)
+
+api_logger.info("API test started")
+```
+
+### Exception Logging
+
+```python
+from logger import logger
+
+try:
+    result = 10 / 0
+except ZeroDivisionError:
+    logger.exception("Division by zero error occurred")
+```
+
+### Dynamic Log Level Changes
+
+```python
+from logger import logger
+
+logger.set_level("ERROR")  # Only log ERROR and CRITICAL messages
+logger.set_level("DEBUG")  # Log all messages
+```
+
+## Configuration
+
+All configuration is handled through environment variables:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `LOGGER_LOG_LEVEL` | `DEBUG` | Minimum log level (DEBUG, INFO, WARNING, ERROR, CRITICAL) |
+| `LOGGER_LOG_TO_FILE` | `false` | Enable file logging |
+| `LOGGER_LOG_FILE_PATH` | `execution.log` | Path for log file |
+| `LOGGER_COLORIZE_OUTPUT` | `true` | Enable colorized console output |
+| `LOGGER_DATE_FORMAT` | `%Y-%m-%d %H:%M:%S` | Date format for log timestamps |
+| `LOGGER_FORMAT` | `%(asctime)s - %(levelname)s - %(message)s` | Log message format |
+
+### Environment Variable Examples
+
+```bash
+# Set log level to INFO
+export LOGGER_LOG_LEVEL=INFO
+
+# Enable file logging
+export LOGGER_LOG_TO_FILE=true
+export LOGGER_LOG_FILE_PATH=/var/log/myapp.log
+
+# Disable colors for CI/CD environments
+export LOGGER_COLORIZE_OUTPUT=false
+
+# Custom log format
+export LOGGER_FORMAT="[%(levelname)s] %(name)s: %(message)s"
+```
+
+## Color Scheme
+
+The logger uses the following color scheme:
+
+- **DEBUG**: Light Grey
+- **INFO**: Green  
+- **WARNING**: Yellow
+- **ERROR**: Red
+- **CRITICAL**: Magenta
+
+## API Reference
+
+### QALogger Class
+
+#### Constructor
+
+```python
+QALogger(
+    name: str = "qa_logger",
+    log_level: Optional[str] = None,
+    log_to_file: Optional[bool] = None, 
+    log_file_path: Optional[str] = None,
+    colorize_output: Optional[bool] = None
+)
+```
+
+#### Methods
+
+- `debug(message: str, *args, **kwargs)`: Log debug message
+- `info(message: str, *args, **kwargs)`: Log info message  
+- `warning(message: str, *args, **kwargs)`: Log warning message
+- `error(message: str, *args, **kwargs)`: Log error message
+- `critical(message: str, *args, **kwargs)`: Log critical message
+- `exception(message: str, *args, **kwargs)`: Log exception with traceback
+- `set_level(level: Union[str, int])`: Change log level dynamically
+
+#### Properties
+
+- `name`: Logger name
+- `level`: Current log level
+
+### LogColor Enum
+
+Available color constants for custom formatting:
+
+```python
+from logger import LogColor
+
+print(f"{LogColor.RED.value}Error message{LogColor.RESET.value}")
+```
+
+## Examples
+
+The package includes several example scripts:
+
+- `examples/basic_usage.py`: Basic logging functionality
+- `examples/color_demo.py`: Demonstration of color output
+- `examples/custom_logger.py`: Custom logger instance creation
+- `examples/file_logging.py`: File logging example
+- `examples/test_automation.py`: Test automation logging example
+- `examples/api_testing.py`: API testing logging example
+
+## Testing
+
+Run the test suite:
+
+```bash
+# Install development dependencies
+pip install pytest pytest-cov
+
+# Run tests
+python -m pytest tests/ -v
+
+# Run tests with coverage
+python -m pytest tests/ --cov=logger --cov-report=html
+```
+
+## Development
+
+### Setup Development Environment
+
+```bash
+git clone <repository-url>
+cd qa-colorlog
+pip install -e .
+pip install pytest pytest-cov black flake8 mypy
+```
+
+### Code Quality
+
+```bash
+# Format code
+black .
+
+# Lint code  
+flake8 .
+
+# Type checking
+mypy .
+```
+
+## License
+
+MIT License - see LICENSE file for details.
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Add tests for new functionality
+4. Ensure all tests pass
+5. Submit a pull request
+
+## Changelog
+
+### 1.0.0
+- Initial release
+- Colorized console logging
+- File logging support
+- Environment variable configuration
+- Comprehensive test suite
