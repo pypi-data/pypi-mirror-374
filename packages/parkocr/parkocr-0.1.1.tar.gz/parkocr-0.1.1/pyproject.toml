@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "parkocr"
+version = "0.1.1"
+description = "Automatic license plate recognition using YOLOv8 and EasyOCR, with ROI filtering, FIFO output, and screenshot support."
+readme = "README.md"
+authors = [
+  { name = "João Luiz Thomazetti", email = "joaoluizthomazetti@gmail.com" }
+]
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.9"
+
+dependencies = [
+  "opencv-python",
+  "numpy",
+  "easyocr",
+  "ultralytics",
+]
+
+[project.urls]
+Homepage = "https://github.com/JoaoLuizThomazetti/parkocr"
+Repository = "https://github.com/JoaoLuizThomazetti/parkocr"
+Issues = "https://github.com/JoaoLuizThomazetti/parkocr/issues"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+packages = ["parkocr"]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["plates/*"]
