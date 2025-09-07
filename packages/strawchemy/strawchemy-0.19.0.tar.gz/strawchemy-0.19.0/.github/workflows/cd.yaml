@@ -1,0 +1,59 @@
+name: 🚀 Continuous Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      images:
+        description: Generate changelog and create Github release
+
+jobs:
+  changelog:
+    name: Publish and release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    environment: release
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Generate documentation changelog
+        uses: orhun/git-cliff-action@v4
+        id: git-cliff-repo
+        with:
+          config: pyproject.toml
+          args: --verbose
+        env:
+          OUTPUT: CHANGELOG.md
+          GITHUB_REPO: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate release changelog
+        uses: orhun/git-cliff-action@v4
+        id: git-cliff-release
+        with:
+          config: pyproject.toml
+          args: --verbose --latest --strip header
+        env:
+          OUTPUT: RELEASE_CHANGELOG.md
+          GITHUB_REPO: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit
+        run: |
+          git checkout main
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          set +e
+          git add CHANGELOG.md
+          git commit -m "build(doc) update changelog"
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git main
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: ${{ steps.git-cliff-release.outputs.content }}
+          generate_release_notes: true
+          token: ${{ secrets.PAT }}
