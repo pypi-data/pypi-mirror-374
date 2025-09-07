@@ -1,0 +1,30 @@
+Metadata-Version: 2.4
+Name: sdpmflut
+Version: 0.6.2
+Summary: SDPM Flutter Analysis Package
+Author-email: Grigorios Dimitriadis <gdimitriadis@uliege.be>
+Maintainer-email: Khader Abueltayef <abueltayef.khader@gmail.com>
+License: GPL-3.0-only
+Project-URL: Homepage, https://aeroconsult.gr/
+Project-URL: Source, https://aeroconsult.gr/sdpmflut-software/
+Keywords: flutter,aeroelasticity,SDPM,aerodynamics
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Physics
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.26
+Requires-Dist: scipy>=1.10
+Requires-Dist: matplotlib>=3.7
+Requires-Dist: rich>=13.8.0
+Provides-Extra: dev
+Requires-Dist: setuptools-scm; extra == "dev"
+Dynamic: license-file
