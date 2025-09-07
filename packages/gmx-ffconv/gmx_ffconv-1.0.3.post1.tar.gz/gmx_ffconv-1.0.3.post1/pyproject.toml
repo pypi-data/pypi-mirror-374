@@ -1,0 +1,28 @@
+[project]
+name = "gmx_ffconv"
+version = "1.0.3.post1"
+description = "An automated GROMACS force field converter tool"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "Jasmine E. Aaltonen" }]
+requires-python = ">=3.8"
+dependencies = [
+    "numpy",
+    "networkx"
+]
+
+[project.scripts]
+gmx_ffconv = "gmx_ffconv.cli:main"
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["Tutorial", "Scripts"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+
+
+[project.urls]
+"Homepage" = "https://github.com/Jassu1998/gmx_ffconv"
+"Bug Tracker" = "https://github.com/Jassu1998/gmx_ffconv/issues"
