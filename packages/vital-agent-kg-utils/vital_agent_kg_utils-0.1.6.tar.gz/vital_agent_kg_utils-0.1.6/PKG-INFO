@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: vital-agent-kg-utils
+Version: 0.1.6
+Summary: Vital Agent KG Utils
+Home-page: https://github.com/vital-ai/vital-agent-kg-utils
+Author: Marc Hadfield
+Author-email: marc@vital.ai
+License: Apache License 2.0
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: vital-ai-vitalsigns>=0.1.32
+Requires-Dist: vital-agent-container-sdk>=0.1.5
+Requires-Dist: vital-ai-haley-kg>=0.1.24
+Requires-Dist: kgraphservice>=0.0.8
+Requires-Dist: six
+Requires-Dist: pyyaml
+Requires-Dist: requests
+Requires-Dist: pydantic>=2.9.1
+
+# vital-agent-kg-utils
