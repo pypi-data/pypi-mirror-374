@@ -1,0 +1,247 @@
+{
+  "Pack Declaration": {
+    "prefix": "pack",
+    "body": [
+      "pack \"${1:Pack Name}\" \"${2:Description}\" ${3:15};"
+    ],
+    "description": "Pack declaration with metadata"
+  },
+  "Namespace": {
+    "prefix": "namespace",
+    "body": [
+      "namespace \"${1:namespace}\";"
+    ],
+    "description": "Namespace declaration"
+  },
+  "Function Declaration": {
+    "prefix": "function",
+    "body": [
+      "function ${1:namespace}:${2:function_name}<${3:@s}> {",
+      "    ${4:// Function body}",
+      "}"
+    ],
+    "description": "Function declaration with scope"
+  },
+  "Function Call": {
+    "prefix": "exec",
+    "body": [
+      "exec ${1:namespace}:${2:function_name}<${3:@s}>;"
+    ],
+    "description": "Execute function with scope"
+  },
+  "Variable Declaration": {
+    "prefix": "var",
+    "body": [
+      "var num ${1:variable_name}<${2:@s}> = ${3:0};"
+    ],
+    "description": "Variable declaration with scope"
+  },
+  "Variable Assignment": {
+    "prefix": "assign",
+    "body": [
+      "${1:variable_name}<${2:@s}> = ${3:value};"
+    ],
+    "description": "Variable assignment with scope"
+  },
+  "Variable Substitution": {
+    "prefix": "varread",
+    "body": [
+      "$${1:variable_name}<${2:@s}>$"
+    ],
+    "description": "Read variable value with scope"
+  },
+  "If Statement": {
+    "prefix": "if",
+    "body": [
+      "if $${1:condition}<${2:@s}>$ ${3:>} ${4:0} {",
+      "    ${5:// Then block}",
+      "}"
+    ],
+    "description": "If statement with condition"
+  },
+  "If-Else Statement": {
+    "prefix": "ifelse",
+    "body": [
+      "if $${1:condition}<${2:@s}>$ ${3:>} ${4:0} {",
+      "    ${5:// Then block}",
+      "} else {",
+      "    ${6:// Else block}",
+      "}"
+    ],
+    "description": "If-else statement with condition"
+  },
+  "While Loop": {
+    "prefix": "while",
+    "body": [
+      "while $${1:condition}<${2:@s}>$ ${3:>} ${4:0} {",
+      "    ${5:// Loop body}",
+      "}"
+    ],
+    "description": "While loop with condition"
+  },
+  "Hook - On Load": {
+    "prefix": "onload",
+    "body": [
+      "on_load ${1:namespace}:${2:function_name}<${3:@s}>;"
+    ],
+    "description": "Hook that runs when datapack loads"
+  },
+  "Hook - On Tick": {
+    "prefix": "ontick",
+    "body": [
+      "on_tick ${1:namespace}:${2:function_name}<${3:@s}>;"
+    ],
+    "description": "Hook that runs every tick"
+  },
+  "Tag - Recipe": {
+    "prefix": "tagrecipe",
+    "body": [
+      "tag recipe \"${1:tag_name}\" \"${2:path/to/recipe.json}\";"
+    ],
+    "description": "Recipe tag declaration"
+  },
+  "Tag - Loot Table": {
+    "prefix": "tagloot",
+    "body": [
+      "tag loot_table \"${1:tag_name}\" \"${2:path/to/loot_table.json}\";"
+    ],
+    "description": "Loot table tag declaration"
+  },
+  "Tag - Advancement": {
+    "prefix": "tagadvancement",
+    "body": [
+      "tag advancement \"${1:tag_name}\" \"${2:path/to/advancement.json}\";"
+    ],
+    "description": "Advancement tag declaration"
+  },
+  "Tag - Item Modifier": {
+    "prefix": "tagitemmod",
+    "body": [
+      "tag item_modifier \"${1:tag_name}\" \"${2:path/to/item_modifier.json}\";"
+    ],
+    "description": "Item modifier tag declaration"
+  },
+  "Tag - Predicate": {
+    "prefix": "tagpredicate",
+    "body": [
+      "tag predicate \"${1:tag_name}\" \"${2:path/to/predicate.json}\";"
+    ],
+    "description": "Predicate tag declaration"
+  },
+  "Tag - Structure": {
+    "prefix": "tagstructure",
+    "body": [
+      "tag structure \"${1:tag_name}\" \"${2:path/to/structure.json}\";"
+    ],
+    "description": "Structure tag declaration"
+  },
+  "Say Command": {
+    "prefix": "say",
+    "body": [
+      "say \"${1:message}\";"
+    ],
+    "description": "Say command (auto-converts to tellraw)"
+  },
+  "Say with Variable": {
+    "prefix": "sayvar",
+    "body": [
+      "say \"${1:message} $${2:variable}<${3:@s}>$ ${4:more text}\";"
+    ],
+    "description": "Say command with variable substitution"
+  },
+  "Raw Block": {
+    "prefix": "raw",
+    "body": [
+      "$!raw",
+      "    ${1:// Raw Minecraft commands here}",
+      "raw!$"
+    ],
+    "description": "Raw block for direct Minecraft commands"
+  },
+  "Scoreboard Operation": {
+    "prefix": "scoreboard",
+    "body": [
+      "scoreboard players ${1:set|add|remove} ${2:@s} ${3:objective} ${4:value};"
+    ],
+    "description": "Scoreboard operation command"
+  },
+  "Execute Command": {
+    "prefix": "execute",
+    "body": [
+      "execute ${1:as|at|if|unless} ${2:@s} ${3:run} ${4:command};"
+    ],
+    "description": "Execute command with conditions"
+  },
+  "Team Operation": {
+    "prefix": "team",
+    "body": [
+      "team ${1:add|remove|join|leave} ${2:team_name} ${3:@s};"
+    ],
+    "description": "Team management command"
+  },
+  "Effect Command": {
+    "prefix": "effect",
+    "body": [
+      "effect give ${1:@s} ${2:minecraft:speed} ${3:30} ${4:1};"
+    ],
+    "description": "Apply status effect"
+  },
+  "Particle Command": {
+    "prefix": "particle",
+    "body": [
+      "particle ${1:minecraft:explosion} ${2:~} ${3:~} ${4:~} ${5:1} ${6:1} ${7:1} ${8:0} ${9:10};"
+    ],
+    "description": "Create particle effect"
+  },
+  "Sound Command": {
+    "prefix": "playsound",
+    "body": [
+      "playsound ${1:minecraft:entity.player.levelup} ${2:player} ${3:@s} ${4:~} ${5:~} ${6:~} ${7:1} ${8:1};"
+    ],
+    "description": "Play sound effect"
+  },
+  "Give Command": {
+    "prefix": "give",
+    "body": [
+      "give ${1:@s} ${2:minecraft:diamond_sword} ${3:1};"
+    ],
+    "description": "Give item to player"
+  },
+  "Teleport Command": {
+    "prefix": "tp",
+    "body": [
+      "tp ${1:@s} ${2:~} ${3:~} ${4:~};"
+    ],
+    "description": "Teleport entity"
+  },
+  "Kill Command": {
+    "prefix": "kill",
+    "body": [
+      "kill ${1:@s};"
+    ],
+    "description": "Kill entity"
+  },
+  "Summon Command": {
+    "prefix": "summon",
+    "body": [
+      "summon ${1:minecraft:armor_stand} ${2:~} ${3:~} ${4:~} {${5:Tags:['mdl_server']}};"
+    ],
+    "description": "Summon entity"
+  },
+  "Comment Block": {
+    "prefix": "comment",
+    "body": [
+      "/*",
+      " * ${1:Comment text}",
+      " */"
+    ],
+    "description": "Multi-line comment block"
+  },
+  "Single Line Comment": {
+    "prefix": "//",
+    "body": [
+      "// ${1:Comment text}"
+    ],
+    "description": "Single line comment"
+  }
+}
