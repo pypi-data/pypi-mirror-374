@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gnoman-cli"
+version = "0.1.3"
+description = "Your short one-line summary here"
+readme = "README.md"
+authors = [
+  { name = "Christopher Hirschauer", email = "c.hirschauer@gmail.com" }
+]
+license = { file = "LICENSE.md" }
+requires-python = ">=3.9"
+dependencies = [
+  "eth-account",
+  "web3>=6",
+  "eth-abi",
+  "pycryptodome; python_version<'3.11'",
+  "cryptography",
+  "keyring",
+  "python-dotenv",
+  "rich",
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Environment :: Console",
+  "Topic :: Security :: Cryptography",
+  "Topic :: Internet :: WWW/HTTP",
+]
+
+[project.urls]
+Homepage = "https://github.com/74Thirsty/gnoman-cli"
+Source = "https://github.com/74Thirsty/gnoman-cli"
+Issues = "https://github.com/74Thirsty/gnoman-cli/issues"
+
+[project.scripts]
+gnoman = "gnoman.cli:main"
+
