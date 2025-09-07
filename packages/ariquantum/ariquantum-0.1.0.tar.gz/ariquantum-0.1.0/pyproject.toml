@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ariquantum"
+version = "0.1.0"
+authors = [{ name = "Arim Shcherbakov", email = "arimshcherbakov@gmail.com" }]
+description = "A powerful and intuitive Python library for simulating quantum computing, designed for education, research, and experimentation in the field of quantum technology."
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/ariquantum/library"
