@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel", "build"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ampy-proto"
+version = "2.0.1"
+description = "Canonical schemas for AmpyFin (generated Python protobufs)"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [{name = "AmpyFin Team"}]
+dependencies = ["protobuf>=6.32.0,<7"]
+
+[tool.setuptools]
+package-dir = {"" = "gen/python"}
+
+# Use namespace discovery to include packages without __init__.py
+[tool.setuptools.packages.find]
+where = ["gen/python"]
+namespaces = true
