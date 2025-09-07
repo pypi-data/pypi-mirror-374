@@ -1,0 +1,86 @@
+Metadata-Version: 2.4
+Name: streamlit-google-analytics-tag
+Version: 1.1
+Summary: Streamlit component that allows you to integrate Google Analytics by tag and send events to Google Analytics
+Home-page: https://github.com/motistein/streamlit-gtag
+Author: motis10
+Author-email: moti.stein@gmail.com
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: streamlit>=0.63
+Provides-Extra: devel
+Requires-Dist: wheel; extra == "devel"
+Requires-Dist: pytest==7.4.0; extra == "devel"
+Requires-Dist: playwright==1.39.0; extra == "devel"
+Requires-Dist: requests==2.31.0; extra == "devel"
+Requires-Dist: pytest-playwright-snapshot==1.0; extra == "devel"
+Requires-Dist: pytest-rerunfailures==12.0; extra == "devel"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Streamlit Google Analytics Tag (gtag)
+
+A Streamlit component that allows you to integrate Google Analytics by tag and send events to Google Analytics.
+
+## Installation
+
+```bash
+pip install streamlit-google-analytics-tag
+```
+
+## Usage
+
+**Important**: The package name is `streamlit-google-analytics-tag` but the module name is `streamlit_gtag`.
+
+```python
+import streamlit as st
+from streamlit_gtag import st_gtag  # Note: import from streamlit_gtag, not streamlit_google_analytics_tag
+
+# Initialize Google Analytics
+st_gtag(
+    gtag_id="GA_MEASUREMENT_ID",
+    config={
+        "send_page_view": True
+    }
+)
+
+# Send custom events
+st_gtag(
+    event="custom_event",
+    parameters={
+        "event_category": "engagement",
+        "event_label": "button_click"
+    }
+)
+```
+
+## Features
+
+- Easy integration with Google Analytics 4
+- Support for custom events
+- Streamlit-native component
+- Lightweight and fast
+
+## License
+
+MIT License
