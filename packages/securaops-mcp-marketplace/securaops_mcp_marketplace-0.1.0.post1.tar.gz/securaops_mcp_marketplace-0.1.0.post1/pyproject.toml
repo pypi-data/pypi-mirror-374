@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# If using hatchling tool
+#[build-system]
+#requires = ["hatchling>=1.12.0"]
+#build-backend = "hatchling.build"
+
+[project]
+name = "securaops-mcp-marketplace"
+version = "0.1.0.post1"
+description = "A marketplace for MCP (Model Context Protocol) connectors"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Nephthali Djabon Tchounda", email = "securaops5@gmail.com"}
+]
+keywords = ["mcp", "slack", "connector", "llm", "api"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "requests>=2.28.0",
+    "pydantic>=1.10.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/securacoder/mcp-marketplace/sdks"
+Documentation = "https://github.com/securacoder/mcp-marketplace/sdks#readme"
+Repository = "https://github.com/securacoder/mcp-marketplace"
+Issues = "https://github.com/securacoder/mcp-marketplace/issues"
+
+[project.optional-dependencies]
+dev = ["pytest", "black", "flake8", "mypy"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["securaops_mcp_marketplace"]
+
+# OR if using hatchling backend:
+[tool.hatch.build]
+include = ["src/securaops_mcp_marketplace"]
+packages = ["src/securaops_mcp_marketplace"]
+
+
