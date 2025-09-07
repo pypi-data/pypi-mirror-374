@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sdpmflut"
+dynamic = ["version"]
+description = "SDPM Flutter Analysis Package"
+readme = "README.md"
+license = {text = "GPL-3.0-only"}
+authors = [
+    {name = "Grigorios Dimitriadis", email = "gdimitriadis@uliege.be"},
+]
+maintainers = [
+    {name = "Khader Abueltayef", email = "abueltayef.khader@gmail.com"}
+]
+keywords = ["flutter", "aeroelasticity", "SDPM", "aerodynamics"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.10",
+    "matplotlib>=3.7",
+    "rich>=13.8.0",
+]
+
+[project.urls]
+Homepage = "https://aeroconsult.gr/"
+Source = "https://aeroconsult.gr/sdpmflut-software/"
+
+[project.optional-dependencies]
+dev = ["setuptools-scm"]
+
+[tool.setuptools]
+packages = ["sdpmflut"]
+package-dir = {"" = "src"}
+
+[tool.setuptools.dynamic]
+version = {attr = "sdpmflut.__version__.__version__"}
+
+[tool.setuptools_scm]
+write_to = "src/sdpmflut/__version__.py"
