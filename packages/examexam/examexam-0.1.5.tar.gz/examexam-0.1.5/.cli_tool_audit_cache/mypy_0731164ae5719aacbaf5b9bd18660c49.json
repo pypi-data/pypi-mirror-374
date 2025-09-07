@@ -1,0 +1,25 @@
+{
+    "tool": "mypy",
+    "desired_version": ">=1.0.0",
+    "is_needed_for_os": true,
+    "is_available": true,
+    "is_snapshot": false,
+    "found_version": "mypy 1.17.1 (compiled: yes)",
+    "parsed_version": "1.17.1",
+    "is_compatible": "Compatible",
+    "is_broken": false,
+    "last_modified": "2025-09-06T20:11:50.161014",
+    "tool_config": {
+        "name": "mypy",
+        "version": ">=1.0.0",
+        "version_switch": "--version",
+        "schema": "semver",
+        "if_os": null,
+        "tags": [
+            "build",
+            "work"
+        ],
+        "install_command": "pipx install mypy",
+        "install_docs": "https://mypy.readthedocs.io/en/stable/getting_started.html"
+    }
+}

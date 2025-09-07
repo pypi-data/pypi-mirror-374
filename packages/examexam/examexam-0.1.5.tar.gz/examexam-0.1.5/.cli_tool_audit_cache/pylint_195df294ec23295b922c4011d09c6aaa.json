@@ -1,0 +1,26 @@
+{
+    "tool": "pylint",
+    "desired_version": ">=1.0.0",
+    "is_needed_for_os": true,
+    "is_available": true,
+    "is_snapshot": false,
+    "found_version": "pylint 3.3.8\nastroid 3.3.11\nPython 3.13.7 (main, Aug 15 2025, 01:44:29) [GCC 13.3.0]",
+    "parsed_version": "3.3.8",
+    "is_compatible": "Compatible",
+    "is_broken": false,
+    "last_modified": "2025-09-06T20:11:50.004013",
+    "tool_config": {
+        "name": "pylint",
+        "version": ">=1.0.0",
+        "version_switch": "--version",
+        "schema": "semver",
+        "if_os": null,
+        "tags": [
+            "build",
+            "work",
+            "user"
+        ],
+        "install_command": null,
+        "install_docs": null
+    }
+}
