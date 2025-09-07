@@ -1,0 +1,300 @@
+---
+description: Makefile development patterns with proper naming conventions, variables, and automation
+globs: Makefile,*.mk
+---
+
+# Makefile Patterns
+
+## Core principles
+
+- **Use descriptive target names**: Follow `whatisit-whattodo` pattern (e.g., `devenv-start`, `database-migrate`)
+- **Define variables for repeated use**: Track versions, paths, and common commands
+- **Use functions sparingly**: Only when they significantly reduce code duplication
+- **Leverage regex for repetitive patterns**: When multiple similar commands exist
+- **Make targets for repeated commands**: Any command run multiple times should be a target
+
+## Target naming
+
+### Format: `whatisit-whattodo`
+```makefile
+# Environment management
+devenv-start:        # Start development environment
+devenv-stop:         # Stop development environment
+devenv-reset:        # Reset development environment
+
+# Database operations
+database-migrate:    # Run database migrations
+database-seed:       # Seed database with test data
+database-backup:     # Create database backup
+database-restore:    # Restore database from backup
+
+# Code quality
+code-format:         # Format all code
+code-lint:           # Run linting checks
+code-test:           # Run test suite
+code-coverage:       # Generate coverage report
+
+# Build and deployment
+build-docker:        # Build Docker image
+build-package:       # Build package/distribution
+deploy-staging:      # Deploy to staging environment
+deploy-production:   # Deploy to production
+
+# Dependencies
+deps-install:        # Install all dependencies
+deps-update:         # Update dependencies
+deps-clean:          # Clean dependency cache
+```
+
+## Variables & config
+
+### Essential
+```makefile
+# Project configuration
+PROJECT_NAME := myproject
+PROJECT_VERSION := $(shell cat VERSION 2>/dev/null || echo "dev")
+PROJECT_ROOT := $(shell pwd)
+
+# Python/UV configuration
+PYTHON_VERSION := 3.11
+UV_PYTHON := python$(PYTHON_VERSION)
+VENV_DIR := .venv
+
+# Docker configuration
+DOCKER_IMAGE := $(PROJECT_NAME)
+DOCKER_TAG := $(PROJECT_VERSION)
+DOCKER_REGISTRY := your-registry.com
+
+# File patterns
+SRC_FILES := $(shell find src -name "*.py" 2>/dev/null)
+TEST_FILES := $(shell find tests -name "*.py" 2>/dev/null)
+ALL_PY_FILES := $(SRC_FILES) $(TEST_FILES)
+
+# Tool configurations
+PYTEST_ARGS := --cov=src --cov-report=html --cov-report=term-missing
+RUFF_ARGS := --fix --show-fixes
+MYPY_ARGS := --strict --warn-unreachable
+
+# Environment detection
+IS_CI := $(shell test -n "$$CI" && echo "true" || echo "false")
+UNAME_S := $(shell uname -s)
+```
+
+### Paths
+```makefile
+# Common directories
+BUILD_DIR := build
+DIST_DIR := dist
+DOCS_DIR := docs
+COVERAGE_DIR := htmlcov
+CACHE_DIR := .cache
+
+# Configuration files
+PYPROJECT_TOML := pyproject.toml
+REQUIREMENTS_DEV := requirements-dev.txt
+DOCKER_COMPOSE := docker-compose.yml
+```
+
+## Functions (use sparingly)
+
+### Utility
+```makefile
+# Function to check if command exists
+define check_command
+	@which $(1) > /dev/null || (echo "Error: $(1) not found" && exit 1)
+endef
+
+# Function to run command with error handling
+define run_safely
+	@echo "Running: $(1)"
+	@$(1) || (echo "Failed: $(1)" && exit 1)
+endef
+
+# Function for conditional execution
+define run_if_exists
+	@test -f $(1) && $(2) || echo "Skipping: $(1) not found"
+endef
+```
+
+## Standard template
+
+```makefile
+# Project configuration
+PROJECT_NAME := myproject
+PROJECT_VERSION := $(shell cat VERSION 2>/dev/null || echo "dev")
+PYTHON_VERSION := 3.11
+
+# File patterns
+SRC_FILES := $(shell find src -name "*.py" 2>/dev/null)
+TEST_FILES := $(shell find tests -name "*.py" 2>/dev/null)
+
+# Tool arguments
+PYTEST_ARGS := --cov=src --cov-report=html --cov-report=term-missing
+RUFF_ARGS := --fix --show-fixes
+
+# Default target
+.DEFAULT_GOAL := help
+
+# Standard targets
+.PHONY: help deps-install deps-update devenv-start code-format code-lint code-test build-package clean
+
+help: ## Show this help message
+	@echo "$(PROJECT_NAME) - Available targets:"
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  %-20s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
+## Dependencies
+deps-install: ## Install all dependencies
+	uv sync --extra dev
+
+deps-update: ## Update all dependencies
+	uv sync --upgrade --extra dev
+
+deps-clean: ## Clean dependency cache
+	uv cache clean
+
+## Development Environment
+devenv-start: deps-install ## Start development environment
+	@echo "Development environment ready"
+	@echo "Run 'make devenv-serve' to start the server"
+
+devenv-serve: ## Start development server
+	uv run -m uvicorn $(PROJECT_NAME).main:app --reload
+
+devenv-stop: ## Stop development environment
+	@pkill -f "uvicorn.*$(PROJECT_NAME)" || true
+
+## Code Quality
+code-format: ## Format all code
+	uvx black $(SRC_FILES) $(TEST_FILES)
+	uvx isort $(SRC_FILES) $(TEST_FILES)
+	uvx ruff check $(RUFF_ARGS) .
+
+code-lint: ## Run linting checks
+	uvx ruff check .
+	uvx mypy src/
+	uvx black --check $(SRC_FILES) $(TEST_FILES)
+
+code-test: ## Run test suite
+	uv run -m pytest $(PYTEST_ARGS)
+
+code-coverage: ## Generate and open coverage report
+	uv run -m pytest $(PYTEST_ARGS)
+	@echo "Coverage report: file://$(PWD)/htmlcov/index.html"
+
+## Build and Package
+build-package: ## Build Python package
+	uv build
+
+build-docker: ## Build Docker image
+	docker build -t $(PROJECT_NAME):$(PROJECT_VERSION) .
+	docker tag $(PROJECT_NAME):$(PROJECT_VERSION) $(PROJECT_NAME):latest
+
+## Database (if applicable)
+database-migrate: ## Run database migrations
+	uv run -m alembic upgrade head
+
+database-seed: ## Seed database with test data
+	uv run scripts/seed_data.py
+
+database-reset: ## Reset database (drops and recreates)
+	uv run scripts/reset_database.py
+
+## Deployment
+deploy-staging: build-docker ## Deploy to staging
+	docker tag $(PROJECT_NAME):$(PROJECT_VERSION) staging/$(PROJECT_NAME):$(PROJECT_VERSION)
+	docker push staging/$(PROJECT_NAME):$(PROJECT_VERSION)
+
+deploy-production: build-docker ## Deploy to production
+	@read -p "Deploy $(PROJECT_VERSION) to production? [y/N]: " confirm && [ "$$confirm" = "y" ]
+	docker tag $(PROJECT_NAME):$(PROJECT_VERSION) production/$(PROJECT_NAME):$(PROJECT_VERSION)
+	docker push production/$(PROJECT_NAME):$(PROJECT_VERSION)
+
+## Cleanup
+clean: ## Clean build artifacts and cache
+	rm -rf $(BUILD_DIR) $(DIST_DIR) $(COVERAGE_DIR)
+	rm -rf .pytest_cache .mypy_cache .ruff_cache
+	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+	find . -name "*.pyc" -delete 2>/dev/null || true
+
+clean-all: clean deps-clean ## Clean everything including dependencies
+	rm -rf .venv
+```
+
+## Advanced patterns
+
+### Pattern rules
+```makefile
+# Pattern rule for service operations
+service-%: ## Service operations (start, stop, restart, logs)
+	@case "$*" in \
+		start) docker-compose up -d ;; \
+		stop) docker-compose down ;; \
+		restart) docker-compose restart ;; \
+		logs) docker-compose logs -f ;; \
+		*) echo "Unknown service operation: $*" && exit 1 ;; \
+	esac
+
+# Pattern rule for environment deployments
+deploy-%: build-docker ## Deploy to specific environment
+	@if [ "$*" = "production" ]; then \
+		read -p "Deploy to production? [y/N]: " confirm && [ "$$confirm" = "y" ]; \
+	fi
+	docker tag $(PROJECT_NAME):$(PROJECT_VERSION) $*/$(PROJECT_NAME):$(PROJECT_VERSION)
+	docker push $*/$(PROJECT_NAME):$(PROJECT_VERSION)
+
+# Pattern rule for database operations per environment
+db-%-migrate: ## Run migrations for specific environment
+	@echo "Running migrations for $* environment"
+	ENV=$* uv run -m alembic upgrade head
+```
+
+### Conditionals
+```makefile
+# Environment-specific behavior
+ifeq ($(IS_CI),true)
+    PYTEST_ARGS += --tb=short -q
+    RUFF_ARGS += --quiet
+else
+    PYTEST_ARGS += --tb=long -v
+endif
+
+# OS-specific commands
+ifeq ($(UNAME_S),Darwin)
+    OPEN_CMD := open
+else ifeq ($(UNAME_S),Linux)
+    OPEN_CMD := xdg-open
+else
+    OPEN_CMD := echo "Please open"
+endif
+
+code-coverage: code-test
+	$(OPEN_CMD) htmlcov/index.html
+```
+
+### Multi-step targets
+```makefile
+# Full CI pipeline
+ci-pipeline: deps-install code-lint code-test build-package ## Run full CI pipeline
+	@echo "✅ CI pipeline completed successfully"
+
+# Release preparation
+release-prepare: ## Prepare for release
+	@echo "Preparing release $(PROJECT_VERSION)"
+	$(call run_safely,git diff-index --quiet HEAD)  # Ensure clean working tree
+	$(call run_safely,make code-lint)
+	$(call run_safely,make code-test)
+	$(call run_safely,make build-package)
+	@echo "✅ Release $(PROJECT_VERSION) ready"
+
+# Development setup for new contributors
+dev-setup: ## Complete development environment setup
+	@echo "Setting up development environment..."
+	$(call check_command,uv)
+	$(call check_command,docker)
+	make deps-install
+	uvx pre-commit install
+	make database-migrate
+	make database-seed
+	@echo "✅ Development environment ready!"
+
+```

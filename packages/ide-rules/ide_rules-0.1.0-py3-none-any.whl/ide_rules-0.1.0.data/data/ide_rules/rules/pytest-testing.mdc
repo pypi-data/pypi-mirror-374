@@ -1,0 +1,355 @@
+---
+globs: test_*.py,*_test.py,tests/**/*.py
+description: Python unit testing best practices using pytest with focus on simplicity and clarity
+---
+
+# Pytest Testing
+
+## Core Principles
+
+- **Default to pytest**: Always use pytest, never unittest
+- **Avoid mocking**: Use real objects and fake data instead of mocks when possible
+- **Use patching sparingly**: Only patch external dependencies (APIs, file system, database)
+- **Parameterize tests**: Use `@pytest.mark.parametrize` for testing multiple scenarios
+- **Small, focused tests**: Each test should verify one specific behavior
+- **Clear test names**: Test names should describe what is being tested and expected outcome
+- **Arrange-Act-Assert**: Structure tests with clear setup, execution, and verification phases
+
+## Test Structure
+
+### Clear test names
+```python
+# Good: Descriptive test names
+def test_calculate_tax_returns_correct_amount_for_valid_input():
+    """Test that tax calculation returns expected amount."""
+    pass
+
+def test_validate_email_returns_false_for_missing_at_symbol():
+    """Test email validation rejects emails without @ symbol."""
+    pass
+
+def test_user_creation_raises_error_when_age_below_minimum():
+    """Test user creation fails for underage users."""
+    pass
+```
+
+### Arrange-Act-Assert pattern
+```python
+def test_order_total_calculation():
+    """Test order total includes tax and shipping."""
+    # Arrange
+    order_items = [
+        OrderItem(name="Widget", price=10.00, quantity=2),
+        OrderItem(name="Gadget", price=5.50, quantity=1)
+    ]
+    tax_rate = 0.08
+    shipping_cost = 3.99
+    
+    # Act
+    total = calculate_order_total(order_items, tax_rate, shipping_cost)
+    
+    # Assert
+    expected_total = 29.53  # (20.00 + 5.50) * 1.08 + 3.99
+    assert total == expected_total
+```
+
+## Parameterized Tests
+
+### Test multiple scenarios
+```python
+@pytest.mark.parametrize("price,tax_rate,expected", [
+    (100.00, 0.08, 108.00),
+    (50.00, 0.10, 55.00),
+    (0.00, 0.05, 0.00),
+    (25.99, 0.0625, 27.61),
+])
+def test_calculate_tax_amount(price, tax_rate, expected):
+    """Test tax calculation for various price and rate combinations."""
+    result = calculate_tax_amount(price, tax_rate)
+    assert result == expected
+
+@pytest.mark.parametrize("email,is_valid", [
+    ("user@example.com", True),
+    ("test.email@domain.org", True),
+    ("invalid-email", False),
+    ("@example.com", False),
+    ("user@", False),
+    ("", False),
+])
+def test_email_validation(email, is_valid):
+    """Test email validation for various email formats."""
+    result = validate_email(email)
+    assert result == is_valid
+```
+
+### Parameterize with IDs for clarity
+```python
+@pytest.mark.parametrize("user_data,expected_error", [
+    ({"name": "John"}, "Email is required"),
+    ({"email": "invalid"}, "Invalid email format"),
+    ({"email": "user@example.com", "age": 12}, "Age must be at least 13"),
+], ids=["missing_email", "invalid_email", "underage_user"])
+def test_user_validation_errors(user_data, expected_error):
+    """Test user validation returns appropriate error messages."""
+    result = validate_user_data(user_data)
+    assert result.error == expected_error
+```
+
+## Fake Data and Fixtures
+
+### Use fake data builders
+```python
+def create_user(
+    email: str = "test@example.com",
+    age: int = 25,
+    name: str = "Test User",
+    is_active: bool = True
+) -> User:
+    """Create a test user with default values."""
+    return User(email=email, age=age, name=name, is_active=is_active)
+
+def create_order(
+    user: User | None = None,
+    items: list[OrderItem] | None = None,
+    status: str = "pending"
+) -> Order:
+    """Create a test order with default values."""
+    if user is None:
+        user = create_user()
+    if items is None:
+        items = [OrderItem("Test Item", 10.00, 1)]
+    
+    return Order(user=user, items=items, status=status)
+
+def test_order_processing():
+    """Test order processing updates status correctly."""
+    # Arrange
+    user = create_user(email="customer@example.com")
+    order = create_order(user=user, status="pending")
+    
+    # Act
+    process_order(order)
+    
+    # Assert
+    assert order.status == "processed"
+```
+
+### Pytest fixtures for reusable setup
+```python
+@pytest.fixture
+def sample_users():
+    """Provide sample users for testing."""
+    return [
+        create_user(email="alice@example.com", age=30),
+        create_user(email="bob@example.com", age=25),
+        create_user(email="charlie@example.com", age=35),
+    ]
+
+@pytest.fixture
+def empty_database():
+    """Provide clean database state for testing."""
+    # Setup: Create temporary database or clear existing
+    db = create_test_database()
+    yield db
+    # Teardown: Clean up
+    db.close()
+
+def test_user_search(sample_users):
+    """Test user search functionality."""
+    # Act
+    results = search_users(sample_users, min_age=28)
+    
+    # Assert
+    assert len(results) == 2
+    assert all(user.age >= 28 for user in results)
+```
+
+## Patching External Dependencies
+
+### Patch external APIs and services
+```python
+from unittest.mock import patch
+
+@patch('requests.get')
+def test_fetch_weather_data_success(mock_get):
+    """Test weather data fetching handles successful API response."""
+    # Arrange
+    mock_response = Mock()
+    mock_response.json.return_value = {"temp": 72, "condition": "sunny"}
+    mock_response.status_code = 200
+    mock_get.return_value = mock_response
+    
+    # Act
+    weather = fetch_weather_data("12345")
+    
+    # Assert
+    assert weather.temperature == 72
+    assert weather.condition == "sunny"
+    mock_get.assert_called_once_with("https://api.weather.com/v1/weather/12345")
+
+@patch('pathlib.Path.read_text')
+def test_load_config_file(mock_read_text):
+    """Test configuration loading from file."""
+    # Arrange
+    mock_read_text.return_value = '{"debug": true, "port": 8080}'
+    
+    # Act
+    config = load_config_from_file("config.json")
+    
+    # Assert
+    assert config.debug is True
+    assert config.port == 8080
+```
+
+### Use temporary files for file operations
+```python
+import tempfile
+from pathlib import Path
+
+def test_save_user_data_to_file():
+    """Test saving user data creates correct file content."""
+    # Arrange
+    user = create_user(email="test@example.com", name="Test User")
+    
+    with tempfile.TemporaryDirectory() as temp_dir:
+        file_path = Path(temp_dir) / "user_data.json"
+        
+        # Act
+        save_user_to_file(user, file_path)
+        
+        # Assert
+        saved_content = file_path.read_text()
+        saved_data = json.loads(saved_content)
+        assert saved_data["email"] == "test@example.com"
+        assert saved_data["name"] == "Test User"
+```
+
+## Testing Exceptions
+
+### Test error conditions clearly
+```python
+def test_divide_by_zero_raises_error():
+    """Test division by zero raises appropriate error."""
+    with pytest.raises(ZeroDivisionError, match="division by zero"):
+        calculate_ratio(10, 0)
+
+def test_invalid_user_data_raises_validation_error():
+    """Test invalid user data raises validation error with message."""
+    invalid_data = {"email": "not-an-email"}
+    
+    with pytest.raises(ValidationError) as exc_info:
+        create_user_from_data(invalid_data)
+    
+    assert "Invalid email format" in str(exc_info.value)
+
+def test_process_payment_handles_insufficient_funds():
+    """Test payment processing handles insufficient funds gracefully."""
+    # Arrange
+    account = create_account(balance=50.00)
+    payment = create_payment(amount=100.00)
+    
+    # Act & Assert
+    with pytest.raises(InsufficientFundsError) as exc_info:
+        process_payment(account, payment)
+    
+    assert exc_info.value.required_amount == 100.00
+    assert exc_info.value.available_amount == 50.00
+```
+
+## Test Organization
+
+### Group related tests in classes
+```python
+class TestUserValidation:
+    """Test suite for user validation functions."""
+    
+    def test_valid_email_passes_validation(self):
+        """Test that valid email passes validation."""
+        assert validate_email("user@example.com") is True
+    
+    def test_invalid_email_fails_validation(self):
+        """Test that invalid email fails validation."""
+        assert validate_email("invalid-email") is False
+    
+    def test_empty_email_fails_validation(self):
+        """Test that empty email fails validation."""
+        assert validate_email("") is False
+
+class TestOrderProcessing:
+    """Test suite for order processing functionality."""
+    
+    @pytest.fixture
+    def sample_order(self):
+        """Provide sample order for testing."""
+        return create_order(status="pending")
+    
+    def test_process_order_updates_status(self, sample_order):
+        """Test that processing order updates status."""
+        process_order(sample_order)
+        assert sample_order.status == "processed"
+    
+    def test_process_order_calculates_total(self, sample_order):
+        """Test that processing order calculates correct total."""
+        process_order(sample_order)
+        assert sample_order.total > 0
+```
+
+### Keep tests focused and minimal
+```python
+def test_user_creation_sets_email():
+    """Test user creation sets email correctly."""
+    user = create_user(email="test@example.com")
+    assert user.email == "test@example.com"
+
+def test_user_creation_sets_default_active_status():
+    """Test user creation sets default active status."""
+    user = create_user()
+    assert user.is_active is True
+
+def test_user_creation_allows_custom_active_status():
+    """Test user creation allows custom active status."""
+    user = create_user(is_active=False)
+    assert user.is_active is False
+```
+
+## Configuration
+
+### pytest.ini for project settings
+```ini
+[tool:pytest]
+testpaths = tests
+python_files = test_*.py *_test.py
+python_classes = Test*
+python_functions = test_*
+addopts = 
+    --strict-markers
+    --disable-warnings
+    -v
+markers =
+    slow: marks tests as slow
+    integration: marks tests as integration tests
+    unit: marks tests as unit tests
+```
+
+### Use markers for test categorization
+```python
+@pytest.mark.unit
+def test_calculate_discount_amount():
+    """Unit test for discount calculation."""
+    result = calculate_discount(100.00, 0.10)
+    assert result == 10.00
+
+@pytest.mark.integration
+def test_full_order_workflow():
+    """Integration test for complete order workflow."""
+    order = create_order()
+    process_order(order)
+    assert order.status == "completed"
+
+@pytest.mark.slow
+def test_large_dataset_processing():
+    """Test processing of large dataset (slow test)."""
+    large_dataset = generate_test_data(size=10000)
+    result = process_dataset(large_dataset)
+    assert len(result) == 10000
+```

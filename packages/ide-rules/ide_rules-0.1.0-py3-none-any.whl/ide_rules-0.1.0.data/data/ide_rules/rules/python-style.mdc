@@ -1,0 +1,229 @@
+---
+globs: *.py
+description: Python coding style and best practices focusing on clean, readable code
+---
+
+# Python Style
+
+## Core principles
+
+- **Functions over classes**: Use functions for logic, classes only for data structures and types
+- **Small functions**: Keep functions focused on a single responsibility, typically 10-20 lines max
+- **Readable code**: Write code that tells a story - prioritize clarity over cleverness
+- **Type everything**: All function parameters and return values must have type hints
+- **Modern typing**: Use `str | None` instead of `Optional[str]`, `dict`/`list` instead of `Dict`/`List`
+- **Fail fast**: Use early returns and guard clauses to reduce nesting
+
+## Functions
+
+### Small, focused
+```python
+# Good: Small, focused function
+def calculate_tax_amount(price: float, tax_rate: float) -> float:
+    """Calculate tax amount for a given price."""
+    if price < 0:
+        raise ValueError("Price cannot be negative")
+    
+    return price * tax_rate
+
+def format_currency(amount: float) -> str:
+    """Format amount as currency string."""
+    return f"${amount:.2f}"
+
+# Good: Breaking down complex logic
+def process_order(order_data: dict[str, Any]) -> OrderResult:
+    """Process a customer order."""
+    validated_order = validate_order_data(order_data)
+    tax_amount = calculate_tax_amount(validated_order.total, validated_order.tax_rate)
+    final_total = validated_order.total + tax_amount
+    
+    return create_order_result(validated_order, tax_amount, final_total)
+```
+
+### Clear names
+```python
+# Good: Clear function and variable names
+def get_active_users_count(since_date: datetime) -> int:
+    """Return count of users active since the given date."""
+    active_users = filter_users_by_activity(since_date)
+    return len(active_users)
+
+# Good: Descriptive parameter names
+def send_notification(
+    recipient_email: str,
+    message_content: str,
+    notification_type: str = "info"
+) -> bool:
+    """Send notification to recipient."""
+    pass
+```
+
+## Types
+
+### Modern hints
+```python
+from collections.abc import Callable, Sequence
+from typing import Any
+
+# Good: Modern union syntax
+def process_data(
+    items: list[str],
+    config: dict[str, Any] | None = None,
+    callback: Callable[[str], None] | None = None,
+) -> dict[str, int]:
+    """Process data items with optional configuration."""
+    if config is None:
+        config = {}
+    
+    results: dict[str, int] = {}
+    return results
+```
+
+### Enums for fixed choices
+```python
+from enum import StrEnum
+from typing import Literal
+
+class ProcessingStatus(StrEnum):
+    PENDING = "pending"
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
+    FAILED = "failed"
+
+# Alternative for simple cases
+Priority = Literal["low", "medium", "high"]
+```
+
+## Structure
+
+### Early returns
+```python
+# Good: Early returns reduce nesting
+def validate_user_input(user_data: dict[str, Any]) -> str | None:
+    """Validate user input and return error message if invalid."""
+    if not user_data:
+        return "User data is required"
+    
+    if "email" not in user_data:
+        return "Email is required"
+    
+    if not is_valid_email(user_data["email"]):
+        return "Invalid email format"
+    
+    return None  # No errors
+```
+
+### Match statements
+```python
+def handle_response_status(status_code: int) -> str:
+    """Handle HTTP response status codes."""
+    match status_code:
+        case 200:
+            return "Success"
+        case 400 | 422:
+            return "Client error"
+        case 404:
+            return "Not found"
+        case 500:
+            return "Server error"
+        case _:
+            return f"Unknown status: {status_code}"
+```
+
+### Error handling
+```python
+def read_configuration_file(file_path: str) -> dict[str, Any]:
+    """Read and parse configuration file."""
+    try:
+        with open(file_path, 'r') as file:
+            content = file.read()
+    except FileNotFoundError:
+        raise ConfigurationError(f"Configuration file not found: {file_path}")
+    except PermissionError:
+        raise ConfigurationError(f"Permission denied reading: {file_path}")
+    
+    try:
+        return json.loads(content)
+    except json.JSONDecodeError as e:
+        raise ConfigurationError(f"Invalid JSON in configuration: {e}")
+```
+
+## Docs
+
+### Docstrings
+```python
+def calculate_compound_interest(
+    principal: float,
+    rate: float,
+    time_years: int,
+    compound_frequency: int = 1
+) -> float:
+    """Calculate compound interest.
+    
+    Args:
+        principal: Initial amount of money
+        rate: Annual interest rate (as decimal, e.g., 0.05 for 5%)
+        time_years: Number of years to compound
+        compound_frequency: Number of times interest compounds per year
+        
+    Returns:
+        Final amount after compound interest
+        
+    Raises:
+        ValueError: If any input values are negative
+    """
+    if principal < 0 or rate < 0 or time_years < 0:
+        raise ValueError("All values must be non-negative")
+    
+    return principal * (1 + rate / compound_frequency) ** (compound_frequency * time_years)
+```
+
+## Organization
+
+### Group related functions
+```python
+# User validation functions
+def validate_email(email: str) -> bool:
+    """Validate email format."""
+    return "@" in email and "." in email
+
+def validate_password_strength(password: str) -> bool:
+    """Check if password meets strength requirements."""
+    return len(password) >= 8 and any(c.isupper() for c in password)
+
+def validate_user_age(age: int) -> bool:
+    """Validate user age is within acceptable range."""
+    return 13 <= age <= 120
+
+# User creation workflow
+def create_user_account(email: str, password: str, age: int) -> UserAccount:
+    """Create new user account after validation."""
+    if not validate_email(email):
+        raise ValueError("Invalid email format")
+    
+    if not validate_password_strength(password):
+        raise ValueError("Password does not meet strength requirements")
+    
+    if not validate_user_age(age):
+        raise ValueError("Age must be between 13 and 120")
+    
+    return UserAccount(email=email, password_hash=hash_password(password), age=age)
+```
+
+### Avoid deep nesting
+```python
+# Good: Flat structure with early returns
+def process_user_request(request: UserRequest) -> ProcessingResult:
+    """Process user request with validation."""
+    if not request.is_authenticated:
+        return ProcessingResult.error("Authentication required")
+    
+    if not has_permission(request.user, request.action):
+        return ProcessingResult.error("Permission denied")
+    
+    if not is_valid_request_format(request):
+        return ProcessingResult.error("Invalid request format")
+    
+    result = execute_user_action(request)
+    return ProcessingResult.success(result)
+```

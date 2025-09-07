@@ -1,0 +1,180 @@
+---
+globs: *.py
+description: FastAPI deployment patterns with dependency injection, configuration, and routers
+---
+
+# FastAPI Patterns
+
+## Core architecture
+
+- **Dependency Injection**: Use `dependencies.py` for all dependency management
+- **Configuration**: Use Pydantic BaseModel with classmethods and environment variables
+- **Router Organization**: Separate endpoints into logical routers
+- **Type Safety**: Full type hints throughout the application
+
+## Project structure
+
+```
+app/
+├── main.py              # FastAPI app initialization
+├── config.py            # Configuration management
+├── dependencies.py      # Dependency injection
+├── database.py          # Database connection and models
+├── routers/
+│   ├── __init__.py
+│   ├── users.py         # User-related endpoints
+│   ├── orders.py        # Order-related endpoints
+│   └── health.py        # Health check endpoints
+└── schemas/
+    ├── __init__.py
+    ├── user.py          # User data models
+    └── order.py         # Order data models
+```
+
+## Configuration
+
+### config.py
+```python
+import os
+from pydantic import BaseModel, Field
+
+class DatabaseConfig(BaseModel):
+    """Database connection configuration."""
+    host: str = Field(..., description="Database host")
+    port: int = Field(5432, description="Database port")
+    database: str = Field(..., description="Database name")
+    username: str = Field(..., description="Database username")
+    password: str = Field(..., description="Database password")
+    
+    @classmethod
+    def from_env(cls) -> "DatabaseConfig":
+        """Create database config from environment variables."""
+        return cls(
+            host=os.getenv("DB_HOST", "localhost"),
+            port=int(os.getenv("DB_PORT", "5432")),
+            database=os.getenv("DB_NAME", "myapp"),
+            username=os.getenv("DB_USER", "postgres"),
+            password=os.getenv("DB_PASSWORD", "")
+        )
+    
+    @property
+    def connection_string(self) -> str:
+        """Get database connection string."""
+        return f"postgresql://{self.username}:{self.password}@{self.host}:{self.port}/{self.database}"
+
+class AppConfig(BaseModel):
+    """Application configuration."""
+    app_name: str = Field("MyApp", description="Application name")
+    debug: bool = Field(False, description="Debug mode")
+    api_version: str = Field("v1", description="API version")
+    max_connections: int = Field(100, description="Max database connections")
+    jwt_secret: str = Field(..., description="JWT secret key")
+    
+    @classmethod
+    def from_env(cls) -> "AppConfig":
+        """Create app config from environment variables."""
+        return cls(
+            app_name=os.getenv("APP_NAME", "MyApp"),
+            debug=os.getenv("DEBUG", "false").lower() == "true",
+            api_version=os.getenv("API_VERSION", "v1"),
+            max_connections=int(os.getenv("MAX_CONNECTIONS", "100")),
+            jwt_secret=os.getenv("JWT_SECRET", "your-secret-key")
+        )
+
+class Settings(BaseModel):
+    """Complete application settings."""
+    app: AppConfig
+    database: DatabaseConfig
+    
+    @classmethod
+    def from_env(cls) -> "Settings":
+        """Create settings from environment variables."""
+        return cls(
+            app=AppConfig.from_env(),
+            database=DatabaseConfig.from_env()
+        )
+```
+
+## Dependencies
+
+### dependencies.py
+```python
+from functools import lru_cache
+from typing import Annotated, AsyncGenerator
+from fastapi import Depends, HTTPException, status
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
+from .config import Settings
+from .database import get_database_session
+from .auth import verify_token
+
+@lru_cache()
+def get_settings() -> Settings:
+    """Get application settings (cached)."""
+    return Settings.from_env()
+
+async def get_database() -> AsyncGenerator[AsyncSession, None]:
+    """Get database session dependency."""
+    settings = get_settings()
+    engine = create_async_engine(
+        settings.database.connection_string,
+        max_overflow=settings.app.max_connections
+    )
+    
+    async_session = async_sessionmaker(
+        engine, class_=AsyncSession, expire_on_commit=False
+    )
+    
+    async with async_session() as session:
+        try:
+            yield session
+            await session.commit()
+        except Exception:
+            await session.rollback()
+            raise
+        finally:
+            await session.close()
+
+async def get_current_user(
+    token: str = Depends(verify_token),
+    db: AsyncSession = Depends(get_database)
+) -> UserRecord:
+    """Get current authenticated user."""
+    user_id = extract_user_id_from_token(token)
+    user_record = await fetch_user_record(db, user_id)
+    
+    if not user_record:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid user credentials"
+        )
+    
+    return user_record
+
+def get_pagination_params(
+    page: int = 1,
+    limit: int = 20
+) -> dict[str, int]:
+    """Get pagination parameters with validation."""
+    if page < 1:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Page must be >= 1"
+        )
+    
+    if limit < 1 or limit > 100:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Limit must be between 1 and 100"
+        )
+    
+    return {
+        "offset": (page - 1) * limit,
+        "limit": limit
+    }
+
+# Type aliases for dependency injection
+DatabaseDep = Annotated[AsyncSession, Depends(get_database)]
+SettingsDep = Annotated[Settings, Depends(get_settings)]
+CurrentUserDep = Annotated[UserRecord, Depends(get_current_user)]
+PaginationDep = Annotated[dict[str, int], Depends(get_pagination_params)]
+```

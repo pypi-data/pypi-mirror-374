@@ -1,0 +1,268 @@
+---
+globs: *.py
+description: Polars data processing best practices and patterns
+---
+
+# Polars Usage
+
+## Core principles
+
+- **Prefer Polars to pandas**: Faster, lower memory, stronger types
+- **Default to lazy**: Use `pl.scan_*`; collect only when needed
+- **Chain methods**: Keep transformations fluent and readable
+- **Use types**: Leverage Polars' typing for correctness
+- **Minimize copies**: Avoid unnecessary collections and intermediates
+
+## Loading
+
+### Lazy loading
+```python
+import polars as pl
+
+# Good: Lazy loading for large datasets
+def load_sales_data(file_path: str) -> pl.LazyFrame:
+    """Load sales data using lazy evaluation."""
+    return pl.scan_parquet(file_path)
+
+def load_csv_data(file_path: str) -> pl.LazyFrame:
+    """Load CSV data with lazy evaluation."""
+    return pl.scan_csv(file_path)
+
+# Only collect when you need the actual data
+def get_sample_data(file_path: str, n_rows: int = 1000) -> pl.DataFrame:
+    """Get a sample of data for exploration."""
+    return (
+        pl.scan_parquet(file_path)
+        .head(n_rows)
+        .collect()
+    )
+```
+
+### Eager loading (small data)
+```python
+def load_small_dataset(file_path: str) -> pl.DataFrame:
+    """Load small datasets directly into memory."""
+    return pl.read_parquet(file_path)
+
+def create_lookup_table(data: list[dict[str, str]]) -> pl.DataFrame:
+    """Create lookup table from dictionary list."""
+    return pl.DataFrame(data)
+```
+
+## Transformations
+
+### Method chaining
+```python
+def transform_sales_data(input_path: str, output_path: str) -> pl.LazyFrame:
+    """Transform sales data with method chaining."""
+    return (
+        pl.scan_parquet(input_path)
+        .with_columns([
+            pl.col("amount").cast(pl.Float64),
+            pl.col("date").str.to_date(),
+            pl.col("customer_id").cast(pl.Utf8)
+        ])
+        .filter(pl.col("amount") > 0)
+        .with_columns([
+            pl.col("date").dt.year().alias("year"),
+            pl.col("date").dt.month().alias("month"),
+            (pl.col("amount") * 0.1).alias("tax_amount")
+        ])
+        .group_by(["year", "month", "customer_id"])
+        .agg([
+            pl.col("amount").sum().alias("total_amount"),
+            pl.col("amount").count().alias("transaction_count"),
+            pl.col("tax_amount").sum().alias("total_tax")
+        ])
+        .sort(["year", "month", "total_amount"], descending=[False, False, True])
+        .sink_parquet(output_path)
+    )
+```
+
+### Column ops
+```python
+def clean_customer_data(df: pl.LazyFrame) -> pl.LazyFrame:
+    """Clean and standardize customer data."""
+    return df.with_columns([
+        # String cleaning
+        pl.col("name").str.strip_chars().str.to_uppercase(),
+        pl.col("email").str.to_lowercase(),
+        
+        # Conditional transformations
+        pl.when(pl.col("age") < 0)
+        .then(None)
+        .otherwise(pl.col("age"))
+        .alias("age_cleaned"),
+        
+        # Date parsing
+        pl.col("signup_date").str.to_datetime("%Y-%m-%d"),
+        
+        # Categorical encoding
+        pl.col("status").cast(pl.Categorical)
+    ])
+
+def calculate_derived_metrics(df: pl.LazyFrame) -> pl.LazyFrame:
+    """Calculate derived business metrics."""
+    return df.with_columns([
+        # Mathematical operations
+        (pl.col("revenue") - pl.col("cost")).alias("profit"),
+        (pl.col("profit") / pl.col("revenue") * 100).alias("profit_margin_pct"),
+        
+        # Window functions
+        pl.col("revenue").sum().over("department").alias("dept_total_revenue"),
+        pl.col("revenue").rank().over("department").alias("revenue_rank"),
+        
+        # Complex expressions
+        pl.when(pl.col("profit_margin_pct") > 20)
+        .then("high")
+        .when(pl.col("profit_margin_pct") > 10)
+        .then("medium")
+        .otherwise("low")
+        .alias("profit_category")
+    ])
+```
+
+## Filtering & selection
+
+### Filtering
+```python
+def filter_active_customers(df: pl.LazyFrame, days_threshold: int = 30) -> pl.LazyFrame:
+    """Filter for customers active within threshold days."""
+    cutoff_date = pl.datetime.now() - pl.duration(days=days_threshold)
+    
+    return df.filter(
+        (pl.col("last_activity") >= cutoff_date) &
+        (pl.col("status") == "active") &
+        (pl.col("total_purchases") > 0)
+    )
+
+def select_relevant_columns(df: pl.LazyFrame) -> pl.LazyFrame:
+    """Select and rename columns for analysis."""
+    return df.select([
+        pl.col("customer_id"),
+        pl.col("first_name").alias("name"),
+        pl.col("total_amount").alias("lifetime_value"),
+        pl.col("signup_date").dt.year().alias("signup_year")
+    ])
+```
+
+## Aggregations
+
+### Group ops
+```python
+def calculate_customer_metrics(df: pl.LazyFrame) -> pl.LazyFrame:
+    """Calculate customer-level metrics."""
+    return df.group_by("customer_id").agg([
+        pl.col("amount").sum().alias("total_spent"),
+        pl.col("amount").mean().alias("avg_order_value"),
+        pl.col("amount").count().alias("order_count"),
+        pl.col("amount").max().alias("largest_order"),
+        pl.col("date").min().alias("first_order_date"),
+        pl.col("date").max().alias("last_order_date")
+    ])
+
+def time_series_aggregation(df: pl.LazyFrame) -> pl.LazyFrame:
+    """Aggregate data by time periods."""
+    return df.group_by_dynamic(
+        "date",
+        every="1mo",  # Monthly aggregation
+        period="1mo"
+    ).agg([
+        pl.col("revenue").sum().alias("monthly_revenue"),
+        pl.col("customer_id").n_unique().alias("unique_customers"),
+        pl.col("order_id").count().alias("total_orders")
+    ])
+```
+
+## Joins & combinations
+
+### Joins
+```python
+def enrich_with_customer_data(
+    orders_df: pl.LazyFrame,
+    customers_df: pl.LazyFrame
+) -> pl.LazyFrame:
+    """Join orders with customer information."""
+    return orders_df.join(
+        customers_df,
+        on="customer_id",
+        how="left"
+    ).select([
+        pl.col("order_id"),
+        pl.col("amount"),
+        pl.col("customer_name"),
+        pl.col("customer_segment"),
+        pl.col("acquisition_channel")
+    ])
+
+def combine_datasets(
+    current_data: pl.LazyFrame,
+    historical_data: pl.LazyFrame
+) -> pl.LazyFrame:
+    """Combine current and historical datasets."""
+    return pl.concat([
+        historical_data.with_columns(pl.lit("historical").alias("data_source")),
+        current_data.with_columns(pl.lit("current").alias("data_source"))
+    ])
+```
+
+## Export & persistence
+
+### Writing
+```python
+def save_processed_data(df: pl.LazyFrame, output_path: str) -> None:
+    """Save processed data efficiently."""
+    # For lazy frames, use sink operations
+    df.sink_parquet(output_path)
+
+def save_multiple_formats(df: pl.DataFrame, base_path: str) -> None:
+    """Save data in multiple formats."""
+    df.write_parquet(f"{base_path}.parquet")
+    df.write_csv(f"{base_path}.csv")
+    
+def save_partitioned_data(df: pl.LazyFrame, output_dir: str) -> None:
+    """Save data partitioned by a column."""
+    df.sink_parquet(
+        output_dir,
+        partition_by="year"  # Partition by year column
+    )
+```
+
+## Performance
+
+### Memory-efficient ops
+```python
+def process_large_dataset(input_path: str, output_path: str) -> None:
+    """Process large dataset without loading into memory."""
+    (
+        pl.scan_parquet(input_path)
+        .filter(pl.col("is_valid") == True)
+        .group_by("category")
+        .agg([
+            pl.col("value").sum(),
+            pl.col("value").count()
+        ])
+        .sink_parquet(output_path)
+    )
+
+def streaming_aggregation(file_pattern: str) -> pl.DataFrame:
+    """Process multiple files with streaming."""
+    return (
+        pl.scan_parquet(file_pattern)  # Can use glob patterns
+        .group_by("date")
+        .agg(pl.col("amount").sum())
+        .collect(streaming=True)  # Use streaming for large results
+    )
+```
+
+### Column type optimizations
+```python
+def optimize_data_types(df: pl.LazyFrame) -> pl.LazyFrame:
+    """Optimize data types for memory efficiency."""
+    return df.with_columns([
+        pl.col("id").cast(pl.UInt32),  # Use smaller integer types
+        pl.col("category").cast(pl.Categorical),  # Use categorical for repeated strings
+        pl.col("amount").cast(pl.Float32),  # Use Float32 if precision allows
+        pl.col("is_active").cast(pl.Boolean)
+    ])
+```

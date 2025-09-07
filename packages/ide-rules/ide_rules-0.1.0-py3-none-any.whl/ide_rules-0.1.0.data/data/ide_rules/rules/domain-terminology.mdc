@@ -1,0 +1,248 @@
+---
+globs: *.py
+description: Domain terminology and naming conventions for clear code understanding
+---
+
+# Domain Terminology
+
+## Core concepts
+
+Use consistent terms across the codebase:
+
+- **Manifest**: An API request or specification that runs a job
+- **Record**: Data that gets persisted to a database
+- **Artifact**: Files or binary data stored in BLOB storage (GCS, S3)
+
+## Naming
+
+### Manifests (API requests/specs for jobs)
+
+```python
+from pydantic import BaseModel
+from typing import Any
+
+class ProcessingManifest(BaseModel):
+    """Manifest describing a data processing request."""
+    job_id: str
+    source_path: str
+    target_path: str
+    processing_options: dict[str, Any]
+
+class DeploymentManifest(BaseModel):
+    """Manifest for application deployment configuration."""
+    app_name: str
+    version: str
+    environment: str
+    resources: dict[str, Any]
+
+# Functions for manifest operations
+def create_processing_manifest(
+    job_id: str, 
+    source: str, 
+    target: str
+) -> ProcessingManifest:
+    """Create a manifest for data processing job."""
+    return ProcessingManifest(
+        job_id=job_id,
+        source_path=source,
+        target_path=target,
+        processing_options={}
+    )
+
+def validate_manifest(manifest: ProcessingManifest) -> list[str]:
+    """Validate manifest and return list of validation errors."""
+    errors: list[str] = []
+    
+    if not manifest.job_id:
+        errors.append("job_id is required")
+    
+    if not manifest.source_path:
+        errors.append("source_path is required")
+    
+    return errors
+
+def submit_manifest_for_processing(manifest: ProcessingManifest) -> str:
+    """Submit manifest to processing queue and return job ID."""
+    pass
+```
+
+### Records (database entities)
+
+```python
+from datetime import datetime
+from pydantic import BaseModel
+
+class UserRecord(BaseModel):
+    """Database record for user data."""
+    id: int
+    email: str
+    created_at: datetime
+    updated_at: datetime
+    is_active: bool
+
+class TransactionRecord(BaseModel):
+    """Database record for financial transactions."""
+    id: int
+    user_id: int
+    amount: float
+    transaction_type: str
+    created_at: datetime
+
+class AuditRecord(BaseModel):
+    """Database record for audit trail."""
+    id: int
+    entity_type: str
+    entity_id: str
+    action: str
+    user_id: int | None
+    timestamp: datetime
+    changes: dict[str, Any]
+
+# Functions for record operations
+def create_user_record(email: str) -> UserRecord:
+    """Create a new user record in the database."""
+    return UserRecord(
+        id=0,  # Will be assigned by database
+        email=email,
+        created_at=datetime.now(),
+        updated_at=datetime.now(),
+        is_active=True
+    )
+
+def fetch_user_record(user_id: int) -> UserRecord | None:
+    """Fetch user record from database by ID."""
+    pass
+
+def update_user_record(user_id: int, updates: dict[str, Any]) -> UserRecord:
+    """Update user record in database and return updated record."""
+    pass
+
+def delete_user_record(user_id: int) -> bool:
+    """Soft delete user record and return success status."""
+    pass
+
+def save_audit_record(
+    entity_type: str,
+    entity_id: str,
+    action: str,
+    changes: dict[str, Any],
+    user_id: int | None = None
+) -> AuditRecord:
+    """Save audit record to database."""
+    pass
+```
+
+### Artifacts (blob storage files)
+
+```python
+from pathlib import Path
+from typing import BinaryIO
+
+class ArtifactMetadata(BaseModel):
+    """Metadata for stored artifacts."""
+    artifact_id: str
+    filename: str
+    content_type: str
+    size_bytes: int
+    storage_path: str
+    created_at: datetime
+    checksum: str
+
+class ProcessingArtifact(BaseModel):
+    """Artifact containing processing results."""
+    job_id: str
+    artifact_type: str  # "report", "dataset", "model", etc.
+    metadata: ArtifactMetadata
+
+# Functions for artifact operations
+def upload_artifact(
+    file_data: bytes,
+    filename: str,
+    content_type: str = "application/octet-stream"
+) -> ArtifactMetadata:
+    """Upload artifact to BLOB storage and return metadata."""
+    pass
+
+def download_artifact(artifact_id: str) -> bytes:
+    """Download artifact from BLOB storage."""
+    pass
+
+def get_artifact_metadata(artifact_id: str) -> ArtifactMetadata | None:
+    """Get artifact metadata without downloading the file."""
+    pass
+
+def delete_artifact(artifact_id: str) -> bool:
+    """Delete artifact from BLOB storage."""
+    pass
+
+def list_artifacts_by_job(job_id: str) -> list[ArtifactMetadata]:
+    """List all artifacts associated with a job."""
+    pass
+
+def store_processing_artifact(
+    job_id: str,
+    artifact_type: str,
+    file_data: bytes,
+    filename: str
+) -> ProcessingArtifact:
+    """Store artifact from processing job."""
+    metadata = upload_artifact(file_data, filename)
+    
+    return ProcessingArtifact(
+        job_id=job_id,
+        artifact_type=artifact_type,
+        metadata=metadata
+    )
+```
+
+## Integration
+
+### Manifest → Record → Artifact workflow
+
+```python
+def process_data_pipeline(manifest: ProcessingManifest) -> ProcessingArtifact:
+    """Complete pipeline from manifest to artifact with record tracking."""
+    
+    # 1. Create job record to track processing
+    job_record = create_job_record(
+        job_id=manifest.job_id,
+        status="started",
+        manifest_data=manifest.model_dump()
+    )
+    
+    try:
+        # 2. Process according to manifest
+        result_data = execute_processing_job(manifest)
+        
+        # 3. Store result as artifact
+        artifact = store_processing_artifact(
+            job_id=manifest.job_id,
+            artifact_type="processed_data",
+            file_data=result_data,
+            filename=f"result_{manifest.job_id}.json"
+        )
+        
+        # 4. Update job record with success
+        update_job_record(
+            job_record.id,
+            {
+                "status": "completed",
+                "artifact_id": artifact.metadata.artifact_id,
+                "completed_at": datetime.now()
+            }
+        )
+        
+        return artifact
+        
+    except Exception as e:
+        # Update job record with failure
+        update_job_record(
+            job_record.id,
+            {
+                "status": "failed",
+                "error_message": str(e),
+                "failed_at": datetime.now()
+            }
+        )
+        raise
+```
