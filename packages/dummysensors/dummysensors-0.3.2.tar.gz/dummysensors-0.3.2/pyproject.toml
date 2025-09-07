@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dummysensors"
+version = "0.3.2"
+description = "Dummy sensor data generator for testing IoT/ML pipelines"
+readme = "README.md"
+authors = [{ name = "Mateusz Dalke" }]
+license = { text = "MIT" }
+requires-python = ">=3.9"
+
+[project.scripts]
+dummy-sensors = "dummysensors.cli:main"
+
+[project.optional-dependencies]
+config = ["PyYAML>=6.0"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/dummysensors", "README.md", "LICENSE"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/dummysensors"]
