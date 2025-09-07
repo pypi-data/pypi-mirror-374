@@ -1,0 +1,29 @@
+Metadata-Version: 2.4
+Name: bank-statement-separator
+Version: 2.0.0
+Summary: AI-powered tool for separating multi-statement PDF files using LangChain and LangGraph
+Author: Stephen Eaton
+License-Expression: MIT
+Requires-Python: >=3.11
+License-File: LICENSE
+Requires-Dist: langgraph>=0.2.0
+Requires-Dist: langchain>=0.3.0
+Requires-Dist: langchain-openai>=0.2.0
+Requires-Dist: pymupdf>=1.23.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: click>=8.0.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: rich>=13.0.0
+Requires-Dist: faker>=37.6.0
+Requires-Dist: reportlab>=4.4.3
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: mkdocs-material>=9.6.18
+Requires-Dist: mkdocs-mermaid2-plugin>=1.2.2
+Requires-Dist: langchain-ollama>=0.3.7
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: ruff>=0.1.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Dynamic: license-file
