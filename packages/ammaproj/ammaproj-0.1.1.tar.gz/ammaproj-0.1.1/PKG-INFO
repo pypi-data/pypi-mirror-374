@@ -1,0 +1,39 @@
+Metadata-Version: 2.4
+Name: ammaproj
+Version: 0.1.1
+Summary: This is my first package . A simple example package to discribes Triangle.
+Home-page: https://github.com/Amarit1008/AmaritPg
+Author: N. Amarittabut
+Author-email: nabeel65010@email.com
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-python
+Dynamic: summary
+
+# ammaproj
+
+`ammaproj` is a package that can tell the **area**, **perimeter**, **type by side**, of any triangle.
+It is designed mainly for learning purposes and as an example of Python packaging.
+
+---
+
+## Features
+- **Area of Triange**: use a function `Area(a,b,c)` to find area of any triangle
+- **Perimeter of Triangle**: use a function `Perimeter(a,b,c)` to find perimeter of any triangle
+- **Type_by_Side**: use a function `Type_by_Side(a,b,c)` to identify the type of triangle by side.
+
+---
+
+## Installation
+
+You can install the package directly from PyPI:
+
+```
+pip install ammaproj
+
+```
