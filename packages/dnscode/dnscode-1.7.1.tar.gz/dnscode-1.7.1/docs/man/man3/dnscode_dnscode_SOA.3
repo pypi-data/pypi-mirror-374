@@ -1,0 +1,98 @@
+.TH "dnscode.dnscode.SOA" 3 "Version 1.6.4" "DNScode" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+dnscode.dnscode.SOA
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherits \fBdnscode\&.dnscode\&.Record\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fB__init__\fP (self, str \fBname\fP='@', str \fBmname\fP='ns1\&.example\&.com', str \fBrname\fP='admin\&.example\&.com', int \fBserial\fP=int(time\&.time()), int \fBrefresh\fP=86400, int \fBretry\fP=7200, int \fBexpire\fP=15552000, int \fBttl\fP=21700)"
+.br
+.in -1c
+
+Public Member Functions inherited from \fBdnscode\&.dnscode\&.Record\fP
+.in +1c
+.ti -1c
+.RI "\fB__str__\fP (self)"
+.br
+.in -1c
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fBmname\fP = mname"
+.br
+.ti -1c
+.RI "\fBrname\fP = rname"
+.br
+.ti -1c
+.RI "\fBserial\fP = serial"
+.br
+.ti -1c
+.RI "\fBrefresh\fP = refresh"
+.br
+.ti -1c
+.RI "\fBretry\fP = retry"
+.br
+.ti -1c
+.RI "\fBexpire\fP = expire"
+.br
+.in -1c
+.SS "Additional Inherited Members"
+
+
+Static Public Attributes inherited from \fBdnscode\&.dnscode\&.Record\fP
+.in +1c
+.ti -1c
+.RI "str \fBrclass\fP = 'IN'"
+.br
+.ti -1c
+.RI "str \fBrtype\fP = '\fBA\fP'"
+.br
+.ti -1c
+.RI "str \fBname\fP = '@'"
+.br
+.ti -1c
+.RI "str \fBdata\fP = '0\&.0\&.0\&.0'"
+.br
+.ti -1c
+.RI "int \fBttl\fP = 3600"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+.nf
+Represents an 'SOA' (Start of Authority) record\&.
+.fi
+.PP
+ 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "dnscode\&.dnscode\&.SOA\&.__init__ ( self, str  name = \fR'@'\fP, str  mname = \fR'ns1\&.example\&.com'\fP, str  rname = \fR'admin\&.example\&.com'\fP, int  serial = \fRint(time\&.time())\fP, int  refresh = \fR86400\fP, int  retry = \fR7200\fP, int  expire = \fR15552000\fP, int  ttl = \fR21700\fP)"
+
+.SH "Member Data Documentation"
+.PP 
+.SS "dnscode\&.dnscode\&.SOA\&.expire = expire"
+
+.SS "dnscode\&.dnscode\&.SOA\&.mname = mname"
+
+.SS "dnscode\&.dnscode\&.SOA\&.refresh = refresh"
+
+.SS "dnscode\&.dnscode\&.SOA\&.retry = retry"
+
+.SS "dnscode\&.dnscode\&.SOA\&.rname = rname"
+
+.SS "dnscode\&.dnscode\&.SOA\&.serial = serial"
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for DNScode from the source code\&.
