@@ -1,0 +1,31 @@
+Metadata-Version: 2.4
+Name: bank-customer-generator
+Version: 1.0.0
+Summary: A command-line tool to generate fake bank customer data and export to CSV
+Author-email: Ethan Wang <EthanWang@example.com>
+Keywords: bank,customer,data,generator,csv,fake
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: Faker>=15.0.0
+Dynamic: license-file
+
+# Bank Customer Generator
+
+A command-line tool to generate fake bank customer data and export to CSV files.
+
+## Installation
+
+You can install the package from PyPI:
+
+```bash
+pip install bank-customer-generator
