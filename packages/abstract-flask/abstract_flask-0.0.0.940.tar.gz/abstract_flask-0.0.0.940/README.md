@@ -1,0 +1,279 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 5621292 (Deploy version 0.0.0.939 at 2025-09-06 21:32:03 UTC)
+# Abstract Flask v0.0.0.23
+
+## Description
+Abstract Flask is a Python module developed to streamline application development in Flask. Its comprehensive set of singleton classes and utility methods help manage files, directories, and Flask requests, making it easier to create secure and efficient network applications. 
+
+## Features
+- Singleton classes for file and directory management.
+- Utility methods to handle incoming Flask requests, including argument extraction, key matching, error handling, and JSON conversion.
+- Methods for file and directory management.
+
+
+### internal Scripts Overview
+
+
+-`network_tools`
+src/abstract_flask/network_tools.py
+network_tools.py in the abstract_flask package is a Python script designed to determine the host's IP address. The function "get_host_ip" attempts to connect to an Internet host to discover the local IP. If it cannot connect to a specified public DNS server, it defaults to the local host IP ("127.0.0.1"). The script leverages Python's socket library to create a socket object, set its timeout, and establish a connection to retrieve the IP address. The object is closed after the IP address is retrieved to free up resources. If an error occurs during this process, the function will print the error and return the localhost IP. This script is instrumental in finding out the IP address of the host machine, which in turn could be crucial in web development settings or network-related operations within the abstract_flask package.
+
+
+
+-`file_utils`
+src/abstract_flask/file_utils.py
+file_utils.py is a Python script, part of the abstract_flask v0.0.0.23 package. The script features a SingletonMeta metaclass and two Python singleton classes, fileManager and AbsManager, for managing files and directories. fileManager class is concerned with managing file extensions, while AbsManager handles various directory tasks. Using the SingletonMeta, these classes ensure that a single instance is initialized and can be reused without creating multiple instances. The fileManager class has an attribute "allowed_extentions" used for managing allowed file extensions. The AbsManager class has initialization and methods for creating and accessing various directories, both general ones (such as converts, users, uploads, downloads) and user-specific ones (such as uploads, downloads, processes, converts for each user). There are also methods to check and create directories if they do not exist. This Python script, in conjunction with others, assists in providing useful routines and utilities in file and directory management for developing flask applications.
+
+
+
+-`abstract_flask`
+src/abstract_flask/abstract_flask.py
+abstract_flask.py is a Python script in the abstract_flask v0.0.0.23 package. It includes several functionalities, starting with important imports such as the flask library, which help streamline the development of web applications. The script features various utility functions for handling flask request, among them, parsing incoming flask requests, extracting arguments and keyword arguments, case-insensitive matching of keys, handling required keys, and error handling. The script operates by defining functions that manage flask Blueprint creation and a specific function (execute_request) that facilitates secure and error-handled execution of requests. Other functions in the script deal with JSON conversion, matching and filtering of keyword arguments and error generation. In summary, abstract_flask.py is a crucial part of the abstract_flask package that provides crucial utility functions for the handling of flask-based requests and responses including JSON conversion, argument extraction and validation, and error handling.
+
+
+## Installation
+```python
+pip install abstract_flask
+```
+
+## Usage
+```python
+from abstract_flask import *
+```
+
+## Dependencies
+Abstract Flask requires:
+- flask
+
+## License
+This project is licensed under the MIT License.
+
+## Author
+Created by putkoff, partners@abstractendeavors.com.
+
+## Contributing
+Feel free to fork this repository and make improvements. When ready, submit a pull request.
+<<<<<<< HEAD
+=======
+=======
+Perfect 👍 — here’s a **ready-to-publish `README.md`** for `abstract_flask`. It’s formatted cleanly for GitHub/PyPI, with badges, sections, and consistent style.
+
+---
+
+````markdown
+# Abstract Flask
+
+[![PyPI version](https://img.shields.io/pypi/v/abstract_flask.svg)](https://pypi.org/project/abstract_flask/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python Versions](https://img.shields.io/pypi/pyversions/abstract_flask.svg)](https://pypi.org/project/abstract_flask/)
+
+Utilities for building **Flask apps faster**: structured request parsing, safe argument extraction, user/IP introspection, logging helpers, and light-weight file/directory utilities — all packaged as small, composable modules.
+
+**Version:** `0.0.0.23`  
+**Status:** Alpha  
+**License:** MIT  
+**Author:** putkoff · partners@abstractendeavors.com  
+**Repository:** [github.com/AbstractEndeavors/abstract_flask](https://github.com/AbstractEndeavors/abstract_flask)
+
+---
+
+## Why Abstract Flask?
+
+Most Flask projects re-implement the same glue: normalize request data (query/form/JSON), validate keys, coerce types, find the caller’s user or IP, wire in basic logging, and juggle upload/download/process folders.  
+
+**Abstract Flask** provides these as **small, composable utilities** you can import as needed — without forcing a project layout or framework.
+
+---
+
+## ✨ Features
+
+- **Robust request parsing**
+  - Unified access to JSON, form, and query data.
+  - Required key validation and case-insensitive matching.
+  - Convert positional args into typed kwargs with defaults.
+
+- **Execution helpers**
+  - Run a function with validated request data and return consistent `{result|error, status_code}` envelopes.
+
+- **User/IP introspection**
+  - Get authenticated user or resolve user by IP.
+  - Extract complete request metadata (`headers`, `cookies`, `files`, etc.).
+
+- **Blueprint & app tooling**
+  - App factory with built-in request logging.
+  - `/api/endpoints` route for quick endpoint discovery.
+
+- **File & directory helpers**
+  - Manage uploads, downloads, conversions, and user-specific directories with singleton managers.
+  - Validate file extensions and safely move/copy files.
+
+- **Network helpers**
+  - Discover host IP with safe fallback to `127.0.0.1`.
+
+---
+
+## 📦 Installation
+
+```bash
+pip install abstract_flask
+````
+
+### Dependencies
+
+**Core requirements:**
+
+* `flask`
+* `flask_cors`
+* `werkzeug`
+* `abstract_utilities`
+* `abstract_pandas`
+
+**Optional integrations:**
+
+* `abstract_queries` — for user/IP resolution.
+* `abstract_security` — for environment-driven config (`main_flask_start`).
+
+---
+
+## 🚀 Quickstart
+
+```python
+from abstract_flask.abstract_flask import get_Flask_app, get_bp
+from abstract_flask.request_utils.request_utils import extract_request_data
+from flask import jsonify
+
+# 1) Create a Blueprint
+bp, _logger = get_bp(name="example")
+
+@bp.route("/hello", methods=["GET", "POST"])
+def hello():
+    data = extract_request_data(request)
+    return jsonify({"message": "hi", "data": data}), 200
+
+# 2) Create the app and register Blueprints
+app = get_Flask_app(name="demo_app", bp_list=[bp])
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=5000)
+```
+
+---
+
+## 📚 Core Modules
+
+### Request utilities (`abstract_flask.request_utils`)
+
+* `extract_request_data(req, res_type='all')`
+* `get_request_info(req, res_type='user'|'ip_addr')`
+* `get_request_data(req)`
+* `required_keys(keys, req, defaults=None)`
+* `get_only_kwargs(varList, *args, **kwargs)`
+* `get_proper_kwargs(strings, **kwargs)`
+* `get_spec_kwargs(var_types, args=None, **kwargs)`
+* `execute_request(keys, req, func, desired_keys=None, defaults=None)`
+
+### App helpers (`abstract_flask.abstract_flask`)
+
+* `get_bp(name, abs_path=None)` → `(Blueprint, logger)`
+* `addHandler(app, name=None)` → app with audit logging
+* `get_Flask_app(name, bp_list=None, **kwargs)` → ready-to-run Flask app
+* `jsonify_it(obj)` → `(jsonify(obj), status_code)`
+* `/api/endpoints` → discover routes
+
+### File utilities (`abstract_flask.file_utils`)
+
+* `fileManager` (singleton, allowed extensions)
+* `AbsManager` & `AbsManagerDynamic` (directory management)
+* Helpers for uploads, downloads, conversions, per-user dirs.
+
+### Network utilities (`abstract_flask.network_utils`)
+
+* Safe host IP detection with fallback.
+
+---
+
+## 🧪 Examples
+
+### Validate keys & execute a function
+
+```python
+from abstract_flask.request_utils.get_requests import execute_request
+
+def add(a: int, b: int) -> int:
+    return a + b
+
+@app.route("/add", methods=["GET", "POST"])
+def add_endpoint():
+    result = execute_request(
+        keys=["a", "b"],
+        req=request,
+        func=add,
+        desired_keys=["a", "b"],
+        defaults={"a": 0, "b": 0}
+    )
+    return jsonify(result), result.get("status_code", 200)
+```
+
+### Typed arg shaping with defaults
+
+```python
+from abstract_flask.request_utils.get_requests import get_spec_kwargs
+
+spec = {
+  "query": {"value": "",   "type": str},
+  "limit": {"value": 25,   "type": int},
+  "exact": {"value": False,"type": bool},
+}
+
+@app.route("/search", methods=["POST"])
+def search():
+    data = request.get_json(silent=True) or {}
+    shaped = get_spec_kwargs(spec, [], **data)
+    return jsonify(shaped)
+```
+
+---
+
+## ⚠️ Known Quirks
+
+* `main_flask_start` has typos (`iteems`, `KEY_VALUS`, default `PORT=True`). Fix before production.
+* Docstring of `get_Flask_app` says “Quart” but it’s Flask.
+* `get_request_data` is defined twice in `request_utils.py`; use the second implementation.
+* Optional features rely on `abstract_queries` and `abstract_security`.
+
+---
+
+## 🔧 Compatibility
+
+* **Python:** ≥ 3.6 (tested up to 3.11)
+* **Flask:** Any modern 2.x release
+
+---
+
+## 🤝 Contributing
+
+Contributions welcome!
+
+1. Fork the repo.
+2. Create a branch (`feat/your-feature`).
+3. Add tests/examples.
+4. Open a pull request.
+
+Issues and PRs are tracked on GitHub: [AbstractEndeavors/abstract\_flask](https://github.com/AbstractEndeavors/abstract_flask).
+
+---
+
+## 📄 License
+
+MIT © Abstract Endeavors / putkoff
+
+```
+
+---
+
+Would you like me to also generate a **short PyPI-style description** (2–3 sentences) you can drop into `setup.py` or `pyproject.toml`? That way your PyPI page shows a polished tagline.
+```
+>>>>>>> 75f0d80 (Deploy version 0.0.0.938 at 2025-09-06 21:27:55 UTC)
+>>>>>>> 5621292 (Deploy version 0.0.0.939 at 2025-09-06 21:32:03 UTC)
