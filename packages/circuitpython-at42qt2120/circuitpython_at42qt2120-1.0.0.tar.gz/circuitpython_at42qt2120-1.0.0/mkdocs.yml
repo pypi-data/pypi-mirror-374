@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: 2025 Mike Coats
+# SPDX-License-Identifier: Unlicense
+site_name: CircuitPython AT42QT2120 Library
+nav:
+  - Introduction: index.md
+  - Compatibility: compatibility.md
+  - Reference: reference.md
+theme: readthedocs
+extra_css:
+- extra.css
+repo_url: https://github.com/MikeCoats/CircuitPython_AT42QT2120/
+repo_name: GitHub
+docs_dir: mkdocs
+plugins:
+- mkdocstrings:
+    handlers:
+      python:
+        options:
+          show_root_heading: true
