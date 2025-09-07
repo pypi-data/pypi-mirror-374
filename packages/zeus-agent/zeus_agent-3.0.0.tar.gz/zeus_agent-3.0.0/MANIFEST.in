@@ -1,0 +1,73 @@
+# Include documentation files
+include README.md
+include README.en.md
+include LICENSE
+include CHANGELOG.md
+include CONTRIBUTING.md
+
+# Include configuration files
+include *.yaml
+include *.yml
+include *.toml
+include *.ini
+include *.cfg
+
+# Include config directory
+recursive-include config *.yaml *.yml *.json *.toml
+recursive-include cfg *.yaml *.yml *.json *.toml
+
+# Include lib directory
+recursive-include lib *.py *.yaml *.yml *.json *.toml *.md
+
+# Exclude workspace directory (it contains examples, not part of the package)
+prune workspace
+
+# Include data files
+recursive-include data *.json *.yaml *.yml *.md *.txt
+recursive-exclude data *.bin *.sqlite3 *.db *.pkl *.cache
+
+# Include scripts
+recursive-include scripts *.py *.sh *.bat
+
+# Include tests (for development installations)
+recursive-include tests *.py *.yaml *.yml *.json *.md
+
+# Include examples
+recursive-include examples *.py *.yaml *.yml *.json *.md *.txt
+
+# Include docs
+recursive-include docs *.md *.rst *.txt *.yaml *.yml *.json
+
+# Exclude development and build artifacts
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.pyd
+global-exclude __pycache__
+global-exclude *.so
+global-exclude .git*
+global-exclude .DS_Store
+global-exclude *.swp
+global-exclude *.swo
+global-exclude *~
+
+# Exclude virtual environments and build directories
+prune venv
+prune .venv
+prune env
+prune .env
+prune build
+prune dist
+prune .eggs
+prune *.egg-info
+prune .pytest_cache
+prune .mypy_cache
+prune .coverage
+prune htmlcov
+prune temp
+prune test_env
+prune logs
+
+# Exclude IDE files
+prune .vscode
+prune .idea
+prune *.sublime-*
