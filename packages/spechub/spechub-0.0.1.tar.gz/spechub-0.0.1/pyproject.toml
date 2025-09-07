@@ -1,0 +1,16 @@
+[project]
+name = "spechub"
+version = "0.0.1"
+authors = [
+    {name = "Matt Holden"},
+]
+description = "Spechub"
+readme = "README.md"
+requires-python = ">=3.8"
+
+[project.urls]
+Homepage = "https://spechub.com"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
