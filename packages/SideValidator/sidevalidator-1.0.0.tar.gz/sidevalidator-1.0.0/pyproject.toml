@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "SideValidator"
+version = "1.0.0"
+description = "Add some Qt input validator."
+authors = ["qiufeng <appleidqiufeng@outlook.com>"]
+readme = "README.md"
+license = "MIT"
+keywords = ["Qt", "Site", "Easy", "Validator"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+
+[tool.poetry.urls]
+"Homepage" = "https://github.com/qiufengcute/SideValidator"
+"Repository" = "https://github.com/qiufengcute/SideValidator"
+"Changelog" = "https://github.com/qiufengcute/SideValidator/blob/main/CHANGELOG.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+PySide6 = "^6.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
