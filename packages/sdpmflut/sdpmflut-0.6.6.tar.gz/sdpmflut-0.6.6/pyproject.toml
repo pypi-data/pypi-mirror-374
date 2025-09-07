@@ -1,0 +1,48 @@
+[build-system]
+requires = ["scikit-build-core>=0.9", "numpy>=1.26"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "sdpmflut"
+dynamic = ["version"]
+description = "Subsonic unsteady Source-and-Doublet Panel Method for aerodynamics & flutter analysis (packaged)"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    {name = "Grigorios Dimitriadis", email = "gdimitriadis@uliege.be"},
+    {name = "Khader Abueltayef", email = "abueltayef.khader@gmail.com"},
+]
+keywords = ["flutter", "aeroelasticity", "SDPM", "aerodynamics"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.10",
+    "matplotlib>=3.7",
+    "rich>=13.8.0",
+]
+
+[project.urls]
+Homepage = "https://aeroconsult.gr/"
+Source = "https://aeroconsult.gr/sdpmflut-software/"
+
+[tool.scikit-build]
+wheel.expand-macos-universal-tags = true
+
+[tool.scikit-build.cmake]
+version = ">=3.20"
+
+[tool.scikit-build.metadata.version]
+provider = "scikit_build_core.metadata.regex"
+input = "src/sdpmflut/__version__.py"
