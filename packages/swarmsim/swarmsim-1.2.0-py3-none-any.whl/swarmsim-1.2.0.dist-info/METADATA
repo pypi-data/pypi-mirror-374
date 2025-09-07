@@ -1,0 +1,87 @@
+Metadata-Version: 2.4
+Name: swarmsim
+Version: 1.2.0
+Summary: An agent-based swarm simulator.
+Project-URL: Homepage, https://github.com/kenblu24/RobotSwarmSimulator
+Project-URL: Bug Tracker, https://github.com/kenblu24/RobotSwarmSimulator/issues
+Author-email: Connor Mattson <c.mattson@utah.edu>, kenblu24 <kenblu24@hotmail.com>
+Maintainer-email: kenblu24 <kenblu24@hotmail.com>
+License-Expression: MIT
+License-File: LICENSE
+Keywords: agent-based,robotics,simulator,swarm
+Classifier: Development Status :: 3 - Alpha
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.11
+Requires-Dist: circle-fit
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: opencv-python
+Requires-Dist: pandas
+Requires-Dist: pillow
+Requires-Dist: pygame-ce
+Requires-Dist: pyyaml>=6.0.1
+Requires-Dist: quads
+Requires-Dist: ripser
+Requires-Dist: scikit-learn
+Requires-Dist: scipy
+Requires-Dist: shapely
+Requires-Dist: thorpy
+Provides-Extra: dev
+Requires-Dist: pytest; extra == 'dev'
+Requires-Dist: pytest-cov; extra == 'dev'
+Requires-Dist: pytest-mock; extra == 'dev'
+Requires-Dist: pytest-xdist; extra == 'dev'
+Requires-Dist: ruff; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: myst-parser; extra == 'docs'
+Requires-Dist: numpydoc; extra == 'docs'
+Requires-Dist: pydata-sphinx-theme~=0.16.1; extra == 'docs'
+Requires-Dist: sphinx; extra == 'docs'
+Requires-Dist: sphinx-autodoc-typehints; extra == 'docs'
+Requires-Dist: sphinx-copybutton; extra == 'docs'
+Requires-Dist: sphinx-design; extra == 'docs'
+Requires-Dist: sphinx-togglebutton; extra == 'docs'
+Requires-Dist: tqdm; extra == 'docs'
+Provides-Extra: shapes
+Requires-Dist: pointpats; extra == 'shapes'
+Description-Content-Type: text/markdown
+
+# Robot Swarm Simulator
+Contributors: Connor Mattson, Jeremy Clark, Daniel S. Brown, Kevin Zhu
+
+[<img src="https://gist.githubusercontent.com/cxmeel/0dbc95191f239b631c3874f4ccf114e2/raw/documentation.svg" alt="Documentation" height="40" />](https://kenblu24.github.io/RobotSwarmSimulator/)
+
+
+## Setup
+Install RSS with pip
+    
+    pip install --upgrade swarmsim
+
+or, for faster install with uv (`pip install uv`) preface any pip commands with `uv`, i.e. `uv pip install...`
+
+To install as editable:
+
+    git clone https://github.com/kenblu24/RobotSwarmSimulator.git
+    cd RobotSwarmSimulator
+    pip install -e .
+
+See also:
+* [Installation Guide](https://kenblu24.github.io/RobotSwarmSimulator/guide/install.html)
+* [Development Installation](https://kenblu24.github.io/RobotSwarmSimulator/devel/install.html)
+
+<!-- Test Simulation
+
+    python -m demo.simulation.cyclic_pursuit
+
+Test Evolution (Novelty Search) - Will take a long time to evolve.
+
+    python -m demo.evolution.novelty_search -->
+
+
+## Demos
+
+**Code for novelty search has moved to https://github.com/kenblu24/novelswarms-es**
+
+We invite you to augment cautiously and carefully test output validity.
