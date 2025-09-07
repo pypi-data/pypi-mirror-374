@@ -1,0 +1,300 @@
+Metadata-Version: 2.4
+Name: wapilot-sdk
+Version: 1.0.0
+Summary: Official Python SDK for WAPILOT.io - WhatsApp Business API Integration
+Home-page: https://wapilot.io
+Author: WAPILOT
+Author-email: support@wapilot.io
+Project-URL: Documentation, https://docs.wapilot.io
+Project-URL: Source, https://github.com/wapilot/wapilot-python-sdk
+Project-URL: Bug Tracker, https://github.com/wapilot/wapilot-python-sdk/issues
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Communications :: Chat
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests>=2.25.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# WAPILOT Python SDK
+
+Official Python SDK for WAPILOT.io - WhatsApp Business API Integration Platform
+
+## Overview
+
+WAPILOT SDK provides a simple and intuitive way to integrate WhatsApp Business API functionality into your Python applications. This SDK handles all the complexity of API communication, authentication, and data formatting, allowing you to focus on building your application logic.
+
+## Features
+
+- 📱 **Contact Management** - Create, update, and manage WhatsApp contacts
+- 👥 **Contact Groups** - Organize contacts into groups for better management
+- 💬 **Message Sending** - Send text, media, and interactive messages
+- 📝 **Templates** - Manage and send template messages
+- 🤖 **Automated Replies** - Set up and manage automated responses
+- ✨ **Modern Architecture** - Built with modern Python, supports async/await
+- 🔒 **Secure** - Built-in token-based authentication and HTTPS
+- 🚀 **Simple API** - Intuitive methods for all operations
+
+## Installation
+
+```bash
+pip install wapilot-sdk
+```
+
+## Quick Start
+
+```python
+from wapilot import WapilotSDK
+
+# Initialize the SDK
+wapilot = WapilotSDK(token='your-api-token')  # Get this from your WAPILOT dashboard
+
+# Send a message
+try:
+    result = wapilot.send_message({
+        'phone': '+1234567890',
+        'message': 'Hello from Python!'
+    })
+    print(result)
+except Exception as e:
+    print(f'Error: {e}')
+```
+
+## Configuration Options
+
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| token | str | Yes | - | Your WAPILOT API token |
+| base_url | str | No | https://app.wapilot.io | API base URL |
+
+## API Reference
+
+### Contact Management
+
+#### Get All Contacts
+```python
+contacts = wapilot.get_contacts()
+```
+
+#### Create Contact
+```python
+new_contact = wapilot.create_contact({
+    'name': 'John Doe',
+    'phone': '+1234567890',  # International format with country code
+    # Optional fields
+    'email': 'john@example.com',
+    'notes': 'VIP Customer'
+})
+```
+
+#### Update Contact
+```python
+updated_contact = wapilot.update_contact('contact-uuid', {
+    'name': 'John Smith',
+    # Include only fields you want to update
+})
+```
+
+#### Delete Contact
+```python
+wapilot.delete_contact('contact-uuid')
+```
+
+### Message Sending
+
+#### Send Text Message with Interactive Buttons
+```python
+wapilot.send_message({
+    'phone': '+1234567890',
+    'message': 'Hello! How can we help you today?',
+    'header': 'Welcome Message',  # Optional
+    'footer': 'Reply with a button',  # Optional
+    'buttons': [
+        {
+            'id': 'support',
+            'title': 'Get Support'
+        },
+        {
+            'id': 'sales',
+            'title': 'Sales Inquiry'
+        }
+    ]
+})
+```
+
+#### Send Media Message
+```python
+wapilot.send_media_message({
+    'phone': '+1234567890',
+    'media_type': 'image',  # 'image', 'video', 'document', 'audio'
+    'media_url': 'https://example.com/image.jpg',
+    'caption': 'Check out our new product!',  # Optional
+    'file_name': 'product.jpg'  # Required for documents
+})
+```
+
+#### Send Template Message
+```python
+wapilot.send_template_message({
+    'phone': '+1234567890',
+    'template': {
+        'name': 'appointment_reminder',
+        'language': {
+            'code': 'en'  # Language code
+        },
+        'components': [
+            {
+                'type': 'header',
+                'parameters': [
+                    {
+                        'type': 'image',
+                        'image': {
+                            'link': 'https://example.com/appointment.jpg'
+                        }
+                    }
+                ]
+            },
+            {
+                'type': 'body',
+                'parameters': [
+                    {
+                        'type': 'text',
+                        'text': 'John Doe'  # Dynamic parameter
+                    },
+                    {
+                        'type': 'text',
+                        'text': '3:00 PM'  # Dynamic parameter
+                    }
+                ]
+            }
+        ]
+    }
+})
+```
+
+### Contact Groups
+
+#### Get All Groups
+```python
+groups = wapilot.get_contact_groups()
+```
+
+#### Create Group
+```python
+new_group = wapilot.create_contact_group({
+    'name': 'VIP Customers',
+    'description': 'Our premium customers'  # Optional
+})
+```
+
+#### Update Group
+```python
+updated_group = wapilot.update_contact_group('group-uuid', {
+    'name': 'Premium Customers'
+})
+```
+
+#### Delete Group
+```python
+wapilot.delete_contact_group('group-uuid')
+```
+
+### Automated Replies
+
+#### Get All Automated Replies
+```python
+replies = wapilot.get_canned_replies()
+```
+
+#### Create Automated Reply
+```python
+new_reply = wapilot.create_canned_reply({
+    'name': 'Welcome Message',
+    'message': 'Thank you for contacting us! Our team will respond shortly.',
+    'keywords': ['hi', 'hello', 'hey']  # Optional trigger keywords
+})
+```
+
+#### Update Automated Reply
+```python
+updated_reply = wapilot.update_canned_reply('reply-uuid', {
+    'message': 'Thank you for reaching out! We will get back to you soon.'
+})
+```
+
+#### Delete Automated Reply
+```python
+wapilot.delete_canned_reply('reply-uuid')
+```
+
+### Templates
+
+#### Get All Templates
+```python
+templates = wapilot.get_templates()
+```
+
+## Error Handling
+
+The SDK uses Python's built-in exception handling:
+
+```python
+try:
+    contacts = wapilot.get_contacts()
+except requests.exceptions.RequestException as e:
+    if e.response is not None:
+        # API Error (4xx or 5xx response)
+        print(f'API Error: {e.response.json()}')
+        print(f'Status Code: {e.response.status_code}')
+    else:
+        # Network Error (no response received)
+        print(f'Network Error: {e}')
+except Exception as e:
+    # Other errors
+    print(f'Error: {e}')
+```
+
+Common Error Codes:
+- 401: Invalid or expired API token
+- 400: Invalid request parameters
+- 404: Resource not found
+- 429: Rate limit exceeded
+- 500: Server error
+
+## Best Practices
+
+1. **Error Handling**: Always implement proper error handling using try/except blocks
+2. **Token Security**: Never expose your API token in client-side code
+3. **Rate Limiting**: Implement proper rate limiting in your application
+4. **Message Templates**: Use templates for recurring messages
+5. **Contact Management**: Keep contact information up to date
+6. **Testing**: Test your integration thoroughly in a development environment
+
+## Support
+
+For support or inquiries, please contact:
+- Email: support@wapilot.io
+
+## License
+
+MIT License - feel free to use this SDK in your projects.
