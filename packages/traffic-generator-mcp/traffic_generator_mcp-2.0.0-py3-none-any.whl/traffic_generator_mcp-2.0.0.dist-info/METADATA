@@ -1,0 +1,197 @@
+Metadata-Version: 2.4
+Name: traffic-generator-mcp
+Version: 2.0.0
+Summary: Generate load testing with k6 and Amazon Relay
+Author-email: Hyeonggeun Oh <kandy@plaintexting.com>
+License: MIT
+Project-URL: Homepage, https://github.com/Geun-Oh/k6-mcp-server
+Project-URL: Repository, https://github.com/Geun-Oh/k6-mcp-server
+Project-URL: Issues, https://github.com/Geun-Oh/k6-mcp-server/issues
+Keywords: k6,load-testing,performance,mcp,stress-testing,msk
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Systems Administration
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: mcp>=1.0.0
+Requires-Dist: boto3>=1.40.0
+Dynamic: license-file
+
+# Traffic Generator MCP Server
+
+A Model Context Protocol (MCP) server for running k6 load tests and Kafka performance tests using AWS CodeBuild.
+
+## Features
+
+- **Load Testing**: Run k6 load tests with configurable virtual users, duration, and request parameters
+- **Test Monitoring**: Check status and get results of running tests
+- **Kafka Performance Testing**: Run high-performance Kafka message injection tests using AWS CodeBuild
+- **JSON Results**: Get detailed test results in JSON format
+- **Flexible Configuration**: Support for custom HTTP methods, headers, body, and thresholds
+
+## Prerequisites
+
+- Python 3.10 or higher
+- k6 installed on your system ([Installation Guide](https://k6.io/docs/get-started/installation/))
+- AWS credentials configured for CodeBuild and Kafka testing functionality
+
+## Usage
+
+### Configuration File
+
+```json
+{
+  "mcpServers": {
+    "traffic-generator-mcp": {
+      "command": "uvx",
+      "args": ["traffic-generator-mcp@latest"],
+      "env": {
+        "KAFKA_BOOTSTRAP_SERVERS": "broker1:9094,broker2:9094,broker3:9094",
+        "KAFKA_TOPIC": "your-topic-name",
+        "S3_BUCKET_NAME": "your-s3-bucket",
+        "VPC_ID": "vpc-xxxxxxxxx",
+        "SUBNET_IDS": "subnet-xxxxxxxx,subnet-yyyyyyyy",
+        "SECURITY_GROUP_IDS": "sg-xxxxxxxxx,sg-yyyyyyyy",
+        "IAM_ROLE": "YourCodeBuildRole",
+        "USE_SSL": "true",
+        "AWS_REGION": "us-west-2"
+      }
+    }
+  }
+}
+```
+
+### Strands Agent SDK
+
+```python
+traffic_generator_mcp_client = MCPClient(
+    lambda: stdio_client(
+        StdioServerParameters(
+            command="uvx",
+            args=["traffic-generator-mcp@latest"],
+            env={
+                **aws_env,
+                "KAFKA_BOOTSTRAP_SERVERS": "broker1:9094,broker2:9094,broker3:9094",
+                "KAFKA_TOPIC": "your-topic-name",
+                "S3_BUCKET_NAME": "your-s3-bucket",
+                "VPC_ID": "vpc-xxxxxxxxx",
+                "SUBNET_IDS": "subnet-xxxxxxxx,subnet-yyyyyyyy",
+                "SECURITY_GROUP_IDS": "sg-xxxxxxxxx,sg-yyyyyyyy"
+            },
+        )
+    )
+)
+
+traffic_generator_mcp_client.start()
+
+agent = Agent(
+    model,
+    system_prompt,
+    tools=[traffic_generator_mcp_client.list_tools_sync()],
+)
+```
+
+## Tools
+
+### start_k6_load_test
+
+Start a k6 load test in background and return test ID for monitoring.
+
+**Parameters:**
+
+- `url` (required): Target URL for the load test
+- `vus` (optional): Number of virtual users (default: 10)
+- `duration` (optional): Test duration (default: "30s")
+- `rps` (optional): Requests per second limit
+- `method` (optional): HTTP method (default: "GET")
+- `headers` (optional): HTTP headers object
+- `body` (optional): Request body for POST/PUT requests
+- `thresholds` (optional): k6 thresholds for pass/fail criteria
+
+**Example:**
+
+```json
+{
+  "url": "https://httpbin.org/get",
+  "vus": 20,
+  "duration": "1m",
+  "method": "GET",
+  "headers": {
+    "User-Agent": "k6-test"
+  }
+}
+```
+
+### check_k6_test_status
+
+Check the status of a running k6 test.
+
+**Parameters:**
+
+- `test_id` (required): Test ID returned by start_k6_load_test
+
+### get_k6_test_results
+
+Get detailed results of a completed k6 test.
+
+**Parameters:**
+
+- `test_id` (required): Test ID returned by start_k6_load_test
+
+### run_codebuild_kafka_test
+
+Create a CodeBuild project, trigger a Kafka performance test, and automatically clean up resources.
+
+**Parameters:**
+
+- `vus` (optional): Number of virtual users (default: 50)
+- `msg_per_sec` (optional): Messages per second (default: 10000)
+- `duration_sec` (optional): Test duration in seconds (default: 300)
+
+**Example:**
+
+```json
+{
+  "vus": 100,
+  "msg_per_sec": 20000,
+  "duration_sec": 600
+}
+```
+
+**Environment Variables Required:**
+
+- `KAFKA_BOOTSTRAP_SERVERS`: Kafka broker endpoints (comma-separated)
+- `KAFKA_TOPIC`: Target Kafka topic name
+- `S3_BUCKET_NAME`: S3 bucket containing test data in `events/data.json`
+- `VPC_ID`: VPC ID where Kafka cluster is located
+- `SUBNET_IDS`: Subnet IDs for CodeBuild (comma-separated)
+- `SECURITY_GROUP_IDS`: Security group IDs for CodeBuild (comma-separated)
+- `IAM_ROLE` (optional): IAM role for CodeBuild (default: "FISExperimentRole")
+- `USE_SSL` (optional): Enable SSL for Kafka connection (default: "true")
+- `AWS_REGION` (optional): AWS region (default: "us-west-2")
+
+## Test Data Format
+
+The Kafka test expects JSON data in S3 at `s3://{bucket}/events/data.json`. Example format:
+
+```json
+[
+  {
+    "url": "https://amazon.com",
+    "test_number": 20,
+    "duration": "1m",
+    "method": "GET"
+  }
+]
+```
+
+## License
+
+MIT License
