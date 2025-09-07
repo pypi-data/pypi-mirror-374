@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "symmorademo"
+version = "0.1.0"
+description = "A simple demo package for PyPI"
+readme = "README.md"
+authors = [
+	{ name = "Symmora", email = "symmora@gmail.com" }
+]
+license = { text = "MIT" }
+classifiers = [
+	"License :: OSI Approved :: MIT License",
+	"Programming Language :: Python",
+	"Programming Language :: Python :: 3",
+]
+requires-python = ">=3.8"
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/symmora/symmorademo"
