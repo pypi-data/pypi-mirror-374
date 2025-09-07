@@ -1,0 +1,205 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false  # Don't cancel other jobs if one fails
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12', '3.13']
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Set up Rust
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        components: rustfmt, clippy
+
+    - name: Setup Rust environment (Windows fix)
+      if: runner.os == 'Windows'
+      shell: bash
+      run: |
+        echo "Setting up Rust environment for Windows..."
+
+        # Ensure cargo is in PATH
+        if [ -f "$HOME/.cargo/bin/cargo" ] || [ -f "$HOME/.cargo/bin/cargo.exe" ]; then
+          echo "Found existing Rust installation"
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          echo "CARGO_HOME=$HOME/.cargo" >> $GITHUB_ENV
+        else
+          echo "Installing Rust via rustup..."
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable --component rustfmt clippy
+          source $HOME/.cargo/env
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          echo "CARGO_HOME=$HOME/.cargo" >> $GITHUB_ENV
+        fi
+
+        # Verify installation
+        export PATH="$HOME/.cargo/bin:$PATH"
+        cargo --version || echo "Cargo still not available"
+
+    - name: Verify Rust installation
+      shell: bash
+      run: |
+        echo "Rust version:"
+        rustc --version
+        echo "Cargo version:"
+        cargo --version
+        echo "PATH: $PATH"
+        echo "CARGO_HOME: ${CARGO_HOME:-not set}"
+
+    - name: Ensure Rust is in PATH (All platforms)
+      shell: bash
+      run: |
+        echo "Ensuring Rust is available in PATH..."
+
+        # Add cargo to PATH if it exists but isn't in PATH
+        if [ -d "$HOME/.cargo/bin" ]; then
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          echo "CARGO_HOME=$HOME/.cargo" >> $GITHUB_ENV
+          echo "Added $HOME/.cargo/bin to PATH"
+        fi
+
+        # For Windows, also try the Windows-style path
+        if [ "$RUNNER_OS" = "Windows" ] && [ -d "/c/Users/runneradmin/.cargo/bin" ]; then
+          echo "/c/Users/runneradmin/.cargo/bin" >> $GITHUB_PATH
+          echo "Added Windows cargo path to PATH"
+        fi
+    
+    - name: Cache Rust dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+          target
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-
+    
+    - name: Create virtual environment
+      run: |
+        python -m venv venv
+
+    - name: Activate virtual environment and install dependencies
+      shell: bash
+      run: |
+        source venv/bin/activate || source venv/Scripts/activate
+        python -m pip install --upgrade pip
+        pip install maturin pytest
+        echo "VIRTUAL_ENV=$VIRTUAL_ENV" >> $GITHUB_ENV
+        echo "PATH=$PATH" >> $GITHUB_ENV
+    
+    - name: Debug and verify Rust toolchain
+      shell: bash
+      run: |
+        echo "=== RUST TOOLCHAIN DEBUG ==="
+        echo "Operating System: $RUNNER_OS"
+        echo "PATH: $PATH"
+        echo "CARGO_HOME: ${CARGO_HOME:-not set}"
+        echo "HOME: $HOME"
+
+        echo "=== SEARCHING FOR CARGO ==="
+        # Try to find cargo in various locations
+        for path in \
+          "cargo" \
+          "$HOME/.cargo/bin/cargo" \
+          "/c/Users/runneradmin/.cargo/bin/cargo" \
+          "/c/Users/runneradmin/.cargo/bin/cargo.exe" \
+          "$(which cargo 2>/dev/null || echo 'not found')"
+        do
+          if command -v "$path" &> /dev/null; then
+            echo "✅ Found cargo at: $path"
+            "$path" --version
+            break
+          else
+            echo "❌ Not found: $path"
+          fi
+        done
+
+        echo "=== FINAL VERIFICATION ==="
+        if command -v cargo &> /dev/null; then
+          echo "✅ Cargo is available"
+          cargo --version
+        else
+          echo "❌ Cargo is NOT available"
+          echo "Available commands:"
+          compgen -c | grep -i rust || echo "No rust-related commands found"
+          exit 1
+        fi
+
+    - name: Run Rust tests
+      shell: bash
+      run: cargo test
+
+    - name: Normalize line endings for Rust files
+      shell: bash
+      run: |
+        echo "Normalizing line endings for Rust files..."
+
+        # Convert any CRLF to LF in Rust source files
+        find . -name "*.rs" -type f -exec dos2unix {} \; 2>/dev/null || {
+          # Fallback if dos2unix is not available
+          find . -name "*.rs" -type f -print0 | xargs -0 sed -i 's/\r$//'
+        }
+
+        # Also normalize TOML files
+        find . -name "*.toml" -type f -exec dos2unix {} \; 2>/dev/null || {
+          find . -name "*.toml" -type f -print0 | xargs -0 sed -i 's/\r$//'
+        }
+
+        echo "Line ending normalization complete"
+
+    - name: Run Rust linting
+      shell: bash
+      run: |
+        cargo fmt --all -- --check
+        cargo clippy -- -D warnings
+
+    - name: Build Python extension
+      shell: bash
+      run: |
+        source venv/bin/activate || source venv/Scripts/activate
+        maturin develop
+
+    - name: Run Python tests
+      shell: bash
+      run: |
+        source venv/bin/activate || source venv/Scripts/activate
+        pytest tests/ -v
+    
+    - name: Test pure Python fallback
+      shell: bash
+      run: |
+        source venv/bin/activate || source venv/Scripts/activate
+        # Test that fallback works when Rust extension is not available
+        python -c "
+        import sys
+        sys.path.insert(0, 'python')
+        # Mock import error for Rust extension
+        import builtins
+        original_import = builtins.__import__
+        def mock_import(name, *args, **kwargs):
+            if 'demopy_gb_jj._rust' in name:
+                raise ImportError('Mocked import error')
+            return original_import(name, *args, **kwargs)
+        builtins.__import__ = mock_import
+
+        import demopy
+        assert 'Python fallback' in demopy.hello()
+        assert demopy.add(2, 3) == 5
+        print('Pure Python fallback test passed!')
+        "
