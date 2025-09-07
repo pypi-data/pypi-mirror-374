@@ -1,0 +1,65 @@
+[tool.poetry]
+name = "open-biohit"
+version = "0.0.2"
+description = "Python interface to the InstrumentLib.dll provided by the device vendor"
+authors = ["Niklas Mertsch <niklas.mertsch@stud.uni-goettingen.de>"]
+readme = "README.md"
+license = "MIT"
+
+packages = [
+    { include = "biohit_pipettor", from = "src" }
+]
+
+include = [
+    "src/biohit_pipettor/py.typed",
+    "src/biohit_pipettor/InstrumentLib.dll"
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pythonnet = "^3.0.3"
+
+[tool.poetry.group.dev.dependencies]
+black = "*"
+isort = "*"
+mypy = "*"
+pyproject-flake8 = "*"
+pytest = "*"
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "*"
+
+[tool.poetry.group.simulation.dependencies]
+matplotlib = "*"
+
+[tool.black]
+line-length = 120
+
+[tool.flake8]
+max-line-length = 120
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[[tool.mypy.overrides]]
+module = [
+    "setuptools",
+    "clr",
+    "InstrumentLib",
+    "System",
+    "matplotlib.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "error",
+    # ignore libmono warnings on Linux
+    "ignore:builtin type GC Offset Base has no __module__ attribute:DeprecationWarning",
+]
+
+# ----------------------
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
