@@ -1,0 +1,42 @@
+### shell-lib
+
+`shell-lib` is designed to simplify common file system and command-line operations. It provides an easy to remember,  shell-like API that makes your scripts more readable.
+
+### Usage
+
+```python
+from shell_lib import sh
+sh.create_dir("my_project")
+sh.run("echo 'Hello, World!' > my_project/hello.txt")
+sh.remove_dir("my_project")
+```
+
+### API
+
+```python
+    sh.create_dir(path: str, exist_ok: bool = False)
+    sh.remove_dir(path: str, ignore_missing: bool = False)
+    sh.remove_file(path: str, ignore_missing: bool = False)
+    sh.copy_file(src: str, dst: str, overwrite: bool = False)
+    sh.copy_dir(src: str, dst: str, overwrite: bool = False)
+    sh.move_file(src: str, dst: str, overwrite: bool = False)
+    sh.move_dir(src: str, dst: str, overwrite: bool = False)
+    sh.rename_file(src: str, dst: str) -> None:
+    sh.rename_dir(src: str, dst: str) -> None:
+
+    sh.list_dir(path: str) -> List[str]
+    sh.walk_dir(top_dir: str) -> Generator[Tuple[str, str]]
+
+    sh.get_file_info(path: str) -> FileInfo
+    sh.exists(path: str) -> bool
+    sh.is_file(path: str) -> bool
+    sh.is_dir(path: str) -> bool
+    sh.get_path_parts(path: str) -> Tuple[str, str]
+    sh.join_path(*parts: str) -> str
+
+    sh.run(command: str,
+           print_output: bool = True,
+           text: bool = True,
+           fail_on_error: bool = True) -> subprocess.CompletedProcess:
+    sh.exit(exit_code: int = 0) -> None
+```
