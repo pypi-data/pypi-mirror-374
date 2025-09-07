@@ -1,0 +1,321 @@
+Metadata-Version: 2.4
+Name: failure-invoker-mcp
+Version: 1.1.0
+Summary: Invoke mock AZ, DB, and MSK Failure. Internally use AWS FIS, AWS SSM.
+Author-email: Hyeonggeun Oh <kandy@plaintexting.com>
+License: MIT
+Project-URL: Homepage, https://github.com/Geun-Oh/failure-invoker-mcp
+Project-URL: Repository, https://github.com/Geun-Oh/failure-invoker-mcp
+Project-URL: Issues, https://github.com/Geun-Oh/failure-invoker-mcp/issues
+Keywords: aws,fis,chaos-engineering,mcp,fault-injection
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Systems Administration
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: boto3>=1.34.0
+Requires-Dist: requests>=2.31.0
+Requires-Dist: mcp>=1.0.0
+Dynamic: license-file
+
+# Failure Invoker MCP Server
+
+A comprehensive chaos engineering tool that enables failure injection experiments across multiple AWS services using AWS Fault Injection Simulator (FIS) and AWS Systems Manager (SSM).
+
+## Features
+
+- **Multi-Service Support**: Target EC2, RDS, ECS, Lambda, ASG, ELB, EKS, and MSK
+- **Tag-Based Targeting**: Flexible resource selection using AWS tags
+- **Configurable Duration**: Control experiment duration with human-readable formats
+- **Auto-Recovery**: Built-in recovery mechanisms for most services
+- **Comprehensive Logging**: Detailed experiment tracking and status monitoring
+
+## Supported AWS Services
+
+| Service | Action | Recovery |
+|---------|--------|----------|
+| EC2 | Stop instances | Auto-restart after duration |
+| RDS | Reboot/Failover | Automatic |
+| ECS | Stop tasks | Service auto-recovery |
+| Lambda | Error injection | Duration-based |
+| ASG | Capacity errors | Duration-based |
+| ELB | Unavailable state | Duration-based |
+| EKS | Terminate nodes | Auto Scaling recovery |
+| MSK | Restart brokers | Automatic |
+
+## Installation
+
+### MCP Configuration
+
+```json
+{
+  "mcpServers": {
+    "failure-invoker": {
+      "command": "uvx",
+      "args": ["failure-invoker-mcp@latest"],
+      "env": {
+        "AWS_REGION": "us-west-2",
+        "AWS_ACCESS_KEY_ID": "your-access-key",
+        "AWS_SECRET_ACCESS_KEY": "your-secret-key"
+      }
+    }
+  }
+}
+```
+
+### Strands Agent SDK
+
+```python
+from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
+
+failure_invoker_client = MCPClient(
+    lambda: stdio_client(
+        StdioServerParameters(
+            command="uvx",
+            args=["failure-invoker-mcp@latest"],
+            env={
+                "AWS_REGION": "us-west-2",
+                "AWS_ACCESS_KEY_ID": "your-access-key",
+                "AWS_SECRET_ACCESS_KEY": "your-secret-key"
+            }
+        )
+    )
+)
+
+failure_invoker_client.start()
+
+agent = Agent(
+    model,
+    system_prompt,
+    tools=[failure_invoker_client.list_tools_sync()],
+)
+```
+
+## Available Tools
+
+### 1. `db_failure`
+
+Execute database failure experiments on RDS instances or Aurora clusters.
+
+**Parameters:**
+- `db_identifier` (required): RDS instance or cluster identifier
+- `failure_type` (optional): "reboot" or "failover" (default: "reboot")
+- `region` (optional): AWS region (uses AWS_REGION env var if not specified)
+
+**Examples:**
+```python
+# Reboot RDS instance
+db_failure(db_identifier="my-database", failure_type="reboot")
+
+# Failover Aurora cluster
+db_failure(db_identifier="my-cluster", failure_type="failover", region="us-east-1")
+```
+
+### 2. `az_failure`
+
+Execute availability zone failure experiments affecting all resources in a specific AZ.
+
+**Parameters:**
+- `availability_zone` (required): Target availability zone (e.g., "us-west-2a")
+- `region` (optional): AWS region (uses AWS_REGION env var if not specified)
+
+**Examples:**
+```python
+# Simulate AZ failure
+az_failure(availability_zone="us-west-2a")
+
+# Target specific region
+az_failure(availability_zone="eu-west-1b", region="eu-west-1")
+```
+
+### 3. `msk_failure`
+
+Execute MSK (Managed Streaming for Kafka) cluster failure experiments.
+
+**Parameters:**
+- `cluster_name` (required): MSK cluster name
+- `region` (optional): AWS region (uses AWS_REGION env var if not specified)
+
+**Examples:**
+```python
+# Restart MSK brokers
+msk_failure(cluster_name="my-kafka-cluster")
+
+# Target specific region
+msk_failure(cluster_name="prod-kafka", region="us-east-1")
+```
+
+### 4. `tag_based_failure`
+
+Execute failure experiments on all resources matching specified tags across multiple AWS services.
+
+**Parameters:**
+- `tag_key` (required): Tag key to search for
+- `tag_value` (required): Tag value to match
+- `duration` (optional): Duration of the failure (e.g., "60s", "10m", "2h", default: "10m")
+- `region` (optional): AWS region (uses AWS_REGION env var if not specified)
+
+**Examples:**
+```python
+# Target all resources with Environment=test tag
+tag_based_failure(tag_key="Environment", tag_value="test", duration="5m")
+
+# Target specific team's resources
+tag_based_failure(tag_key="Team", tag_value="backend", duration="30s")
+
+# Target EKS cluster nodes
+tag_based_failure(
+    tag_key="eks:cluster-name", 
+    tag_value="my-cluster", 
+    duration="2m"
+)
+
+# Target auto-scaling enabled resources
+tag_based_failure(
+    tag_key="k8s.io/cluster-autoscaler/enabled", 
+    tag_value="true", 
+    duration="1h"
+)
+```
+
+### 5. `get_experiment_status`
+
+Check the status of running or completed FIS experiments.
+
+**Parameters:**
+- `experiment_id` (optional): Specific experiment ID to check
+- `region` (optional): AWS region (uses AWS_REGION env var if not specified)
+
+**Examples:**
+```python
+# Get all recent experiments
+get_experiment_status()
+
+# Check specific experiment
+get_experiment_status(experiment_id="EXP123456789")
+
+# Check experiments in specific region
+get_experiment_status(region="eu-west-1")
+```
+
+## Duration Format
+
+The `duration` parameter accepts human-readable formats:
+- `"30s"` - 30 seconds
+- `"5m"` - 5 minutes  
+- `"2h"` - 2 hours
+- `"1h30m"` - 1 hour 30 minutes
+
+## Resource Targeting Logic
+
+### Tag-Based Targeting
+
+The `tag_based_failure` tool searches across all supported AWS services:
+
+1. **EC2 Instances**: Uses describe-instances with tag filters
+2. **RDS**: Queries all instances/clusters, then checks tags individually
+3. **ECS**: Searches services across all clusters for matching tags
+4. **Lambda**: Iterates through functions checking tags
+5. **ASG**: Examines Auto Scaling Group tags
+6. **ELB**: Checks Load Balancer tags
+7. **EKS**: Searches Node Groups across all clusters
+8. **MSK**: Not included in tag-based targeting (use `msk_failure` instead)
+
+### Failure Actions by Service
+
+- **EC2**: Stop instances → Auto-restart after duration
+- **RDS Instances**: Reboot → Automatic recovery
+- **RDS Clusters**: Failover → Automatic recovery  
+- **ECS**: Stop tasks → Service maintains desired count
+- **Lambda**: Inject errors → Duration-based
+- **ASG**: Insufficient capacity errors → Duration-based
+- **ELB**: Mark unavailable → Duration-based
+- **EKS**: Terminate 100% of nodes → Auto Scaling recovery
+
+## Prerequisites
+
+1. **AWS Credentials**: Configure via environment variables or AWS profiles
+2. **IAM Permissions**: Ensure the following permissions:
+   - `fis:*` - For Fault Injection Simulator
+   - `ssm:*` - For Systems Manager (MSK experiments)
+   - `ec2:*`, `rds:*`, `ecs:*`, `lambda:*`, `autoscaling:*`, `elasticloadbalancing:*`, `eks:*`, `kafka:*` - For resource discovery and targeting
+3. **FIS Service Role**: Create an IAM role for FIS experiments with appropriate permissions
+
+## Error Handling
+
+- **Resource Not Found**: Experiments skip missing resources
+- **Permission Denied**: Clear error messages with required permissions
+- **Invalid Duration**: Automatic conversion to AWS FIS PT format
+- **Network Issues**: Configurable timeouts and retries (300s read, 60s connect, 3 retries)
+
+## Safety Features
+
+- **Dry Run Mode**: Preview targets before execution
+- **Auto Recovery**: Most experiments include automatic recovery
+- **Resource Validation**: Verify resources exist before targeting
+- **Region Isolation**: Experiments are region-specific
+- **Tag Validation**: Ensure exact tag matches to prevent accidental targeting
+
+## Examples
+
+### Chaos Engineering Scenarios
+
+```python
+# Test EKS cluster resilience
+tag_based_failure(
+    tag_key="eks:cluster-name",
+    tag_value="production-cluster",
+    duration="5m"
+)
+
+# Simulate database failover
+db_failure(
+    db_identifier="prod-aurora-cluster",
+    failure_type="failover"
+)
+
+# Test multi-AZ application resilience  
+az_failure(availability_zone="us-west-2a")
+
+# Validate auto-scaling behavior
+tag_based_failure(
+    tag_key="Environment",
+    tag_value="staging", 
+    duration="10m"
+)
+
+# Test Kafka cluster resilience
+msk_failure(cluster_name="event-streaming-cluster")
+```
+
+## Monitoring
+
+Use `get_experiment_status()` to monitor experiment progress:
+
+```python
+# Start experiment
+result = tag_based_failure(tag_key="Team", tag_value="platform")
+experiment_id = result.content[0].text  # Extract experiment ID
+
+# Monitor progress
+status = get_experiment_status(experiment_id=experiment_id)
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Add tests for new functionality
+4. Submit a pull request
+
+## License
+
+MIT License - see LICENSE file for details.
