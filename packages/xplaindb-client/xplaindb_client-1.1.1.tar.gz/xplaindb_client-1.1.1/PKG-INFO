@@ -1,0 +1,197 @@
+Metadata-Version: 2.4
+Name: xplaindb-client
+Version: 1.1.1
+Summary: Python client for XplainDB
+Author: Ojas Gupta
+Author-email: Ojas <gupta.ojas.27@gmail.com>
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests>=2.28
+Dynamic: author
+Dynamic: license-file
+Dynamic: requires-python
+
+# XplainDB-Client - The Python Client for XplainDB
+
+[\<img src="https://img.shields.io/pypi/v/xplaindb-client" alt="PyPI version"\>](https://pypi.python.org/pypi/xplaindb-client)
+[\<img src="https://img.shields.io/pypi/pyversions/3.8" alt="Python version"\>](https://www.python.org/downloads/)
+[\<img src="https://img.shields.io/badge/license-LGPL--3.0-blue" alt="License"\>](https://www.gnu.org/licenses/lgpl-3.0)
+
+**`xplaindb-client`** is the official Python client for **XplainDB**. It provides a simple, intuitive, and powerful interface for interacting with an XplainDB server, handling everything from database creation and security management to complex multi-model queries.
+
+This client abstracts away the complexity of HTTP requests, allowing you to work with your **Document**, **Graph**, **Vector**, and **SQL** models using clean, Pythonic code on a single, unified data core.
+
+-----
+
+## Account Creation
+
+First, create an account at [XplainDB](https://xplaindb.xplainnn.com/signup/). In your [Dashboard](https://xplaindb.xplainnn.com/dashboard/), find your **Tenant Domain**. This will be the `BASE_URL` for your client.
+
+## Installation
+
+Install the client library directly from PyPI.
+
+```bash
+pip install xplaindb-client
+```
+
+-----
+
+## 🚀 Getting Started: A Unified Walkthrough
+
+This guide demonstrates how to model a project management application, showcasing how all of XplainDB's data models work together seamlessly.
+
+### Step 1: Connecting and Creating a Database
+
+Connect to the XplainDB server and bootstrap your database. `XplainDBClient.create_db()` creates the database (if new) and retrieves the root admin key.
+
+```python
+from xplaindb_client import XplainDBClient, DatabaseExistsError
+
+# Configuration
+BASE_URL = "https://your-tenant-domain.db.xplainnn.com"
+DB_NAME = "project_tracker"
+client = None
+
+try:
+    # This creates 'project_tracker' and gets the admin key.
+    client = XplainDBClient.create_db(
+        base_url=BASE_URL, 
+        db_name=DB_NAME,
+        verify_ssl=False # Set to True in production
+    )
+    print("✅ Successfully created database and connected as admin!")
+    # In a real app, save this key securely.
+    my_admin_key = client.api_key
+    print(f"Admin Key: {my_admin_key}")
+
+except DatabaseExistsError:
+    print(f"Database '{DB_NAME}' already exists. Connect using its API key.")
+    # my_admin_key = "your_saved_admin_key"
+    # client = XplainDBClient(base_url=BASE_URL, db_name=DB_NAME, api_key=my_admin_key)
+except ConnectionError as e:
+    print(f"❌ Error: {e}")
+```
+
+### Step 2: Populating Data (Document API)
+
+In XplainDB, everything starts as a flexible JSON document. Use the intuitive `document_*` methods to manage your data.
+
+```python
+print("\n--- Populating Data with the Document API ---")
+
+# Insert documents into collections
+client.document_insert("employees", {
+    "_id": "emp_alice", "name": "Alice", "role": "Project Manager", "experience": 8,
+    "bio": "Expert in Agile development and scalable system architecture."
+})
+client.document_insert("employees", {
+    "_id": "emp_bob", "name": "Bob", "role": "Senior Software Engineer", "experience": 5,
+    "bio": "Specialist in high-performance backend services using Python."
+})
+client.document_insert("projects", {
+    "_id": "proj_hydra", "name": "Project Hydra", "status": "In Progress"
+})
+
+print("✅ Inserted employees and a project.")
+
+# Search for documents using advanced query operators
+senior_engineers = client.document_search(
+    "employees", 
+    {"experience": {"$gte": 5}}
+)
+print(f"Found senior engineers: {[eng['name'] for eng in senior_engineers]}")
+```
+
+### Step 3: Building Relationships (Graph API)
+
+Model complex relationships by creating edges between your documents. The documents you inserted are already graph nodes.
+
+```python
+print("\n--- Building Relationships with the Graph API ---")
+
+# The writer creates an edge to assign Alice to Project Hydra
+client.graph_add_edge(
+    source="emp_alice",
+    target="proj_hydra",
+    label="MANAGES"
+)
+print("✅ Created a 'MANAGES' edge between Alice and Project Hydra.")
+
+# Traverse the graph to find connections
+alice_projects = client.graph_get_neighbors(node_id="emp_alice")
+project_id = alice_projects[0]['node_properties']['_id']
+print(f"Found Alice's projects via graph query: {project_id}")
+```
+
+### Step 4: Relational Access (SQL API)
+
+Bridge the gap between your NoSQL data and the power of SQL. Create a **writable view** to `SELECT` and `UPDATE` with familiar syntax.
+
+```python
+print("\n--- Accessing Data with the SQL API ---")
+
+# Create a writable view, exposing JSON fields as SQL columns
+client.create_view(
+    view_name="employee_view",
+    collection="employees",
+    fields=["name", "role", "experience", "bio"]
+)
+print("✅ Created a writable 'employee_view'.")
+
+# Select data from the view
+engineers = client.sql("SELECT name, role FROM employee_view WHERE experience >= 5")
+print(f"Found engineers via SQL: {engineers}")
+```
+
+### Step 5: The "Magic" - Automatic Vector Synchronization 🪄
+
+This is where XplainDB shines. Update your data with a simple SQL command, and the vector index updates automatically for semantic search.
+
+```python
+print("\n--- Demonstrating Automatic Vector Synchronization ---")
+
+# 1. Register a field for automatic vectorization
+# This tells XplainDB to watch the 'bio' field for changes.
+client.register_vector_field(collection="employees", text_field="bio")
+print("✅ Registered the 'bio' field for auto-vectorization.")
+
+# 2. Embed the initial document
+# (In a real app, you might do this for all documents on startup)
+alice_doc = client.document_search("employees", {"_id": "emp_alice"})
+client.vector_embed_and_add("bio", alice_doc)
+
+# 3. Vector search for Alice based on her current bio
+print("\nSearching for 'system design'...")
+results_before = client.vector_find_similar(
+    query_text="system design expert",
+    k=1
+)
+print(f"Found: {results_before[0]['document']['name']}") # Prints Alice
+
+# 4. Update Alice's bio using a simple SQL UPDATE on the view
+print("\nPromoting Alice and changing her bio via SQL...")
+client.sql("""
+    UPDATE employee_view 
+    SET bio = 'Leader in AI-driven product strategy and machine learning.'
+    WHERE name = 'Alice'
+""")
+
+# 5. Verify the vector index was automatically updated
+print("\nSearching for 'system design' again...")
+results_after = client.vector_find_similar(query_text="system design expert", k=1)
+# Alice is no longer the best match for the old query!
+print(f"Found: {results_after[0]['document']['name']}") # Now prints Bob
+
+print("\nSearching for 'machine learning leader'...")
+results_new = client.vector_find_similar(query_text="machine learning leader", k=1)
+# Alice is now the best match for the new query!
+print(f"Found: {results_new[0]['document']['name']}") # Prints Alice again
+
+print("\n✅ Success! The SQL update automatically synchronized the vector index.")
+```
