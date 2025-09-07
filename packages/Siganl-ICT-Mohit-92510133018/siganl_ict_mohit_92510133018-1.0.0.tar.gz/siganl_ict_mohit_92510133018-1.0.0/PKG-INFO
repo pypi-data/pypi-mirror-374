@@ -1,0 +1,103 @@
+Metadata-Version: 2.4
+Name: Siganl_ICT_Mohit_92510133018
+Version: 1.0.0
+Summary: A Python package for fundamental signal processing operations
+Home-page: https://github.com/sonimohit11/Siganl_ICT_Mohit_92510133018
+Author: Mohit Parekh
+Author-email: mohit.parekh141006@marwadiuniversity.ac.in
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Education
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=1.19.0
+Requires-Dist: matplotlib>=3.3.0
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: pytest-cov>=2.0; extra == "dev"
+Requires-Dist: black>=21.0; extra == "dev"
+Requires-Dist: flake8>=3.8; extra == "dev"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Signal Processing Python Package  
+**Project:** `Siganl_ICT_Mohit_92510133018`  
+**Student Name:** [Your Name]  
+**Enrollment No:** [Your Enrollment Number]  
+**Subject:** Programming with Python (01CT1309)  
+**Institution:** Marwadi University – Department of Information and Communication Technology  
+
+---
+
+## 📂 Folder Structure
+
+├── init.py
+├── main.py
+├── test_signal.py
+├── unitary_signals/
+│ ├── init.py
+│ ├── unitary_signals.py
+│ └── operations.py
+└── trigonometric_signals/
+├── init.py
+└── trigonometric_signals.py
+
+
+---
+
+## ✅ About this Project
+
+This project demonstrates fundamental concepts of signals and systems by creating a Python package for signal generation and operations.
+
+The package includes:
+
+### Modules:
+1. **unitary_signals** – Generates unit step, impulse, and ramp signals.
+2. **trigonometric_signals** – Generates sine, cosine, and exponential signals.
+3. **operations** – Performs time shifting, scaling, addition, and multiplication of signals.
+
+### Main Script:
+- `main.py` demonstrates how to generate, manipulate, and plot signals using the package.
+
+### Test Script:
+- `test_signal.py` contains tests to verify that the functions are working as expected.
+
+---
+
+## ✅ Features
+
+- Generate and plot various discrete and continuous signals.
+- Perform signal operations like shifting, scaling, addition, and multiplication.
+- Interactive plotting using `matplotlib`.
+- Well-structured Python package format.
+- Easy to run and test.
+
+---
+
+## ✅ Installation
+
+1. **Clone or download the project** and unzip it.
+2. Navigate to the folder where `main.py` is located:
+   ```bash
+   cd Siganl_ICT_Mohit_92510133018
+
+
+   2:57  %65
+   
