@@ -1,0 +1,27 @@
+[build-system]
+requires = [
+    "setuptools"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "embx-devices"
+version = "0.0.1"
+authors = [
+    { name = "YuraTheBest", email = "stuchalkin.yud@gmail.com" },
+]
+description = ""
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/Aerokitties/embx-devices"
+Issues = "https://github.com/Aerokitties/embx-devices/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["embx_devices*"]
