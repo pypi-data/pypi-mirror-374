@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "pypipr"
+version = "1.0.185"
+description = "The Python Package Index Project"
+authors = ["ufiapjj <ufiapjj@gmail.com>"]
+readme = "readme.md"
+
+[tool.poetry.dependencies]
+python = "^3"
+getch = { version = "*", markers = "platform_system == 'Linux'" }
+colorama = "*"
+lxml = "*"
+cssselect = "*"
+tzdata = "*"
+requests = "*"
+pyyaml = "*"
+pint = "*"
+django = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+pypipr = "pypipr.__terminal__:main"
