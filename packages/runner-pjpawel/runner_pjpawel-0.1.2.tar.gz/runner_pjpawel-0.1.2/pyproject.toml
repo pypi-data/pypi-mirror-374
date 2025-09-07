@@ -1,0 +1,25 @@
+[project]
+name = "runner-pjpawel"
+version = "0.1.2"
+authors = [
+  { name="pjpawel", email="pjpawel@proton.me" },
+]
+description = "Universal runner with builder objects to run async, threaded or group commands"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha"
+]
+license = "Apache-2.0"
+license-files = ["LICEN[CS]E*"]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/pjpawel/runner"
+Issues = "https://github.com/pjpawel/runner/issues"
+
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
