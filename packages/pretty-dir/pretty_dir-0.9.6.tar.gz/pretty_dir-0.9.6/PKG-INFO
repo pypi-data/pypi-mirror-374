@@ -1,0 +1,16 @@
+Metadata-Version: 2.4
+Name: pretty-dir
+Version: 0.9.6
+Summary: A pretty-printed version of dir(obj) for more comfortable debugging
+Requires-Python: >=3.11.0
+Requires-Dist: colorama>=0.4.6
+Provides-Extra: dev
+Requires-Dist: build>=1.2.2; extra == 'dev'
+Requires-Dist: ruff>=0.12.7; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: mkdocs-material>=9.6.16; extra == 'docs'
+Requires-Dist: mkdocs>=1.6.1; extra == 'docs'
+Requires-Dist: mkdocstrings-python>=0.30.0; extra == 'docs'
+Description-Content-Type: text/markdown
+
+Test
