@@ -1,0 +1,23 @@
+# # Copyright (c) 2021,2022,2023,2024,2025 Kian-Meng Ang
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+import pytest
+
+
+@pytest.mark.parametrize("option", ["-vp", "--volume-page"])
+def test_logging(cli_runner, infile, option):
+    txtfile = infile("sample_all_headers.txt")
+    output = cli_runner("-d", option, txtfile)
+    assert "Create separate volume page: " in output.stdout
