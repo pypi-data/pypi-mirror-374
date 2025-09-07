@@ -1,0 +1,13 @@
+# 环境安装
+1. brew install --cask anaconda
+2. 安装成功后，Mac系统的目录： /opt/homebrew/anaconda3/
+3. conda init --all 初始化启动配置到所有终端，zsh、default
+
+# 初始化开发环境
+1. cd mcp-server 进入开放目录
+2. conda create --name mcp-server python=3.10 创建python环境
+3. conda activate mcp-server 激活python环境，变成 (mcp-server) liutao@TAO MCP-Server % 效果
+4. pip install uv  安装 uv （python包管理器）
+5. uv venv weather-server （创建天气MCP服务）， bin/activate weather-server（激活项目）,bin/deactivate weather-server(取消激活项目)
+6. cd weather-server & uv init (初始化天气MCP服务项目)
+7. uv build
