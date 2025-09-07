@@ -1,0 +1,22 @@
+ase
+igraph>=0.11
+networkx>=3.3
+numpy
+numba>=0.61
+numpydantic
+pandas
+pydantic>=2.11
+rdkit>=2024.9
+rustworkx>=0.16
+scikit-learn
+scipy
+sparse
+torch_geometric
+torch
+typing-extensions
+
+[:sys_platform != "linux"]
+networkit==11.1
+
+[:sys_platform == "linux"]
+networkit==11.1.post1
