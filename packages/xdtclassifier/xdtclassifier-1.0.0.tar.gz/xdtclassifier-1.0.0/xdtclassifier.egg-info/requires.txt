@@ -1,0 +1,16 @@
+numpy>=1.19.0
+pandas>=1.3.0
+numba>=0.56.0
+psutil>=5.8.0
+scikit-learn>=1.0.0
+
+[benchmark]
+matplotlib>=3.3.0
+seaborn>=0.11.0
+
+[dev]
+pytest>=6.0
+pytest-cov
+black
+flake8
+mypy

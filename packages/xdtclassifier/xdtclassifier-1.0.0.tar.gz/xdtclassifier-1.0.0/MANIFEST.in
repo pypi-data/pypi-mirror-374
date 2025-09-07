@@ -1,0 +1,35 @@
+# Include the README
+include README.md
+
+# Include the license file
+include LICENSE
+
+# Include the package files
+include xdt.py
+include __init__.py
+
+# Include configuration files
+include pyproject.toml
+include setup.py
+
+# Exclude unnecessary files
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.pyd
+global-exclude __pycache__
+global-exclude .git*
+global-exclude .DS_Store
+global-exclude *.so
+global-exclude *.dylib
+global-exclude *.dll
+
+# Exclude development files
+exclude .gitignore
+exclude .github*
+exclude tests/*
+exclude examples/*
+exclude benchmarks/*
+exclude docs/*
+
+# Include any additional data files if needed
+# recursive-include xdt/data *
