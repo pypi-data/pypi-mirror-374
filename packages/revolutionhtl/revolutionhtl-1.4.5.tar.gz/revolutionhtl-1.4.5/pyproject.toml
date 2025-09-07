@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "revolutionhtl"
+version = "1.4.5"
+authors = []
+description = "REvolutionH-tl: Reconstruction of Evolutionary Histories tool"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+keywords = ["Evolution reconstruction",
+            "Gene/species tree inference",
+            "Tree reconciliation", 
+            "Orthology",
+            "Paralogy",
+            "Aligment hits",
+            "Best match graphs",
+            ]
+dependencies = [
+    "networkx >= 2.8",
+    "pandas >= 1.4.2",
+    "numpy >= 1.22.3",
+    "tqdm >= 4.63.0",
+    "bmgedit",
+    "biopython",
+    "upsetplot",
+    "PyQt6",
+    "seaborn",
+    "scikit-learn",
+    "tqdm_joblib",
+    "PyPDF2",
+    ]
+
+[project.urls]
+"Homepage" = "https://gitlab.com/jarr.tecn/revolutionh-tl"
+"Bug Tracker" = "https://gitlab.com/jarr.tecn/revolutionh-tl/issues"
+
