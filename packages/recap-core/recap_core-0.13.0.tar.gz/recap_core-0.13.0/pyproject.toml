@@ -1,0 +1,144 @@
+[project]
+name = "recap-core"
+version = "0.13.0"
+description = "Recap reads and writes schemas from web services, databases, and schema registries in a standard format"
+authors = [
+    { name = "Chris Riccomini", email = "criccomini@apache.org" },
+]
+dependencies = []
+requires-python = ">=3.10, <3.14"
+readme = "README.md"
+keywords = [
+    "avro",
+    "data",
+    "data catalog",
+    "data discovery",
+    "data engineering",
+    "data governance",
+    "data infrastructure",
+    "data integration",
+    "data pipelines",
+    "data quality",
+    "devops",
+    "devtools",
+    "etl",
+    "infrastructure",
+    "json schema",
+    "metadata",
+    "protobuf",
+]
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+documentation = "https://recap.build"
+homepage = "https://recap.build"
+repository = "https://github.com/recap-cloud/recap"
+
+[project.optional-dependencies]
+kafka = [
+    "confluent-kafka[schema-registry]>=2.1.1",
+]
+proto = [
+    "proto-schema-parser>=0.2.0",
+]
+hive = [
+    "pymetastore>=0.2.0",
+]
+bigquery = [
+    "google-cloud-bigquery>=3.17.2",
+]
+json = [
+    "referencing>=0.30.0",
+    "httpx>=0.24.1",
+]
+app = [
+    "fastapi>=0.103.0",
+    "pydantic>=2.3.0",
+    "pydantic-settings>=2.0.3",
+    "typer>=0.9.0",
+    "uvicorn>=0.23.2",
+    "rich>=13.5.2",
+    "python-dotenv>=1.0.0",
+    "fsspec>=2023.9.2",
+]
+all = [
+    "recap-core[app,bigquery,hive,json,kafka,proto]",
+]
+
+[project.scripts]
+recap = "recap.cli:app"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm.build]
+includes = [
+    "recap",
+]
+
+[tool.pdm.dev-dependencies]
+tests = [
+    "pytest>=7.2.1",
+    "snowflake-connector-python>=3.0.4",
+    "fakesnow>=0.5.1",
+    "psycopg2-binary>=2.9.6",
+    "jsonschema>=4.18.4",
+    "mysql-connector-python>=8.1.0",
+    "httpx>=0.24.1",
+    "uvicorn>=0.23.2",
+]
+style = [
+    "black>=23.1.0,<24.0.0",
+    "isort>=5.12.0",
+    "pylint>=2.16.1",
+    "pyright>=1.1.293,<1.1.331",
+    "autoflake>=2.2.0",
+]
+
+[tool.pdm.scripts]
+run-black = "black recap/ tests/"
+run-isort = "isort recap/ tests/"
+run-autoflake = "autoflake --in-place --remove-unused-variables --remove-all-unused-imports --recursive recap/ tests/"
+unit = "pytest tests/unit -vv"
+spec = "pytest tests/spec -vv"
+integration = "pytest tests/integration -vv"
+serve = "uvicorn recap.server.app:app --reload"
+
+[tool.pdm.scripts.style]
+composite = [
+    "run-black",
+    "run-isort",
+    "run-autoflake",
+]
+
+[tool.pdm.scripts.test]
+composite = [
+    "unit",
+    "spec",
+]
+
+[tool.isort]
+profile = "black"
+case_sensitive = true
+
+[tool.pylint.messages_control]
+max-line-length = 110
+
+[tool.pyright]
+include = [
+    "recap/",
+]
+pythonPlatform = "All"
+exclude = [
+    "**/__pycache__",
+]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
