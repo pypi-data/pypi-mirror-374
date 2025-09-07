@@ -1,0 +1,47 @@
+[project]
+name = "Tikorgzo"
+dynamic = ["version"]
+description = "A TikTok video downloader that downloads source quality videos utilizing TikWM API."
+readme = "README.md"
+authors = [
+    { name = "Scoofszlo", email = "scoofszlo@gmail.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "aiohttp>=3.12.15",
+    "pip>=25.1.1",
+    "platformdirs>=4.3.8",
+    "playwright>=1.54.0",
+    "requests>=2.32.4",
+    "rich>=14.0.0",
+    "rich-argparse>=1.7.1",
+]
+
+[build-system]
+requires = ["setuptools", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[dependency-groups]
+dev = [
+    "setuptools-scm>=9.2.0",
+]
+
+[project.scripts]
+tikorgzo = "tikorgzo.main:run"
+
+[tool.ruff]
+line-length = 200
+
+[tool.ruff.lint]
+extend-select = [
+    "E", "W"
+]
+preview = true
+
+[tool.ruff.format]
+preview = true
+
+[tool.setuptools_scm]
+version_file = "src/tikorgzo/_version.py"
+version_scheme = "guess-next-dev"
+local_scheme = "no-local-version"
