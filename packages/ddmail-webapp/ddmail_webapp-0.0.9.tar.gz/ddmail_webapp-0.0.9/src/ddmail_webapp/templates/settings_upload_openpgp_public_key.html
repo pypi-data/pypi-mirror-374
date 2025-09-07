@@ -1,0 +1,15 @@
+{% extends "all.html" %}
+{% block content %}
+{% include 'settings_menu.html' %}
+<h3>Upload OpenPGP public key</h3>
+<form action="" method="post" enctype="multipart/form-data">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+Upload your OpenPGP public key in armored(base64 encoded) format. We do not accept keys in binary format. 
+<p>OpenpPGP public key file:
+</p>
+<input type="file" name="openpgp_public_key" id="openpgp_public_key">
+<p>
+<input type="submit" value="Submit">
+</p>
+</form>
+{% endblock%}
