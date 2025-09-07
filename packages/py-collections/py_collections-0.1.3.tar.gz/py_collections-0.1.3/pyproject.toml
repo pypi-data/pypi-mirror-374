@@ -1,0 +1,220 @@
+[project]
+name = "py-collections"
+version = "0.1.3"
+description = "A Python collections library providing enhanced collection types with additional functionality"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.13"
+dependencies = []
+authors = [
+    {name = "Matias Gallardo", email = "10453322+mato777@users.noreply.github.com"},
+]
+maintainers = [
+    {name = "Matias Gallardo", email = "10453322+mato777@users.noreply.github.com"},
+]
+keywords = [
+    "collections",
+    "data-structures",
+    "functional-programming",
+    "mixin",
+    "utility",
+    "python",
+    "list",
+    "dict",
+    "json",
+    "serialization",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/mato777/py-collections"
+Repository = "https://github.com/mato777/py-collections"
+Documentation = "https://github.com/mato777/py-collections#readme"
+"Bug Tracker" = "https://github.com/mato777/py-collections/issues"
+"Source Code" = "https://github.com/mato777/py-collections"
+
+[project.optional-dependencies]
+dev = [
+    "pydantic>=2.11.7",
+    "pytest>=8.4.1",
+    "pytest-sugar>=1.1.1",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.2.0",
+    "mypy>=1.8.0",
+    "black>=24.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/py_collections"]
+
+[tool.ruff]
+# Same as Black.
+line-length = 88
+indent-width = 4
+
+# Assume Python 3.13
+target-version = "py313"
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+[tool.ruff.lint]
+# Enable pycodestyle (`E`), Pyflakes (`F`), and isort (`I`) codes by default.
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # Pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "N",   # pep8-naming
+    "ARG", # flake8-unused-arguments
+    "SIM", # flake8-simplify
+    "RUF", # Ruff-specific rules
+    "PLW", # Pylint warnings
+    "PLC", # Pylint conventions
+    "PLR", # Pylint refactor
+    "PLE", # Pylint errors
+]
+
+# Never enforce `E501` (line length violations) in docstrings or comments.
+ignore = [
+    "E501",  # Line too long
+    "T201",  # print found (for debug methods)
+    "PLW1641", # Object does not implement __hash__ method (for test classes)
+    "PLC0415", # import should be at top-level (for conditional imports)
+    "ARG001", # Unused function argument (for lambda predicates)
+    "ARG005", # Unused lambda argument (for lambda predicates)
+    "UP035",  # typing.List is deprecated (for compatibility)
+    "F401",   # Imported but unused (for conditional imports)
+    "PLR2004", # Magic value used in comparison (acceptable in tests)
+    "N818",   # Exception name should end with Error (ItemNotFoundException is fine)
+    "PLR0911", # Too many return statements (acceptable for complex logic)
+    "PLR0915", # Too many statements (acceptable for examples)
+    "SIM105", # Use contextlib.suppress (try-except-pass is fine for examples)
+    "SIM113", # Use enumerate (simple counter is fine)
+]
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.isort]
+known-first-party = ["py_collections"]
+
+[tool.ruff.lint.per-file-ignores]
+# Ignore `E501` (line length violations) in tests and examples.
+"tests/**/*" = ["E501"]
+"examples/**/*" = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--verbose",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+]
+
+[tool.coverage.run]
+source = ["src/py_collections"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/.venv/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+show_missing = true
+precision = 2
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+
+[dependency-groups]
+dev = [
+    "pytest-cov>=6.2.1",
+    "taskipy>=1.14.1",
+]
+
+[tool.taskipy.tasks]
+format = "ruff format ."
+check = "ruff check ."
+check-fix = "ruff check --fix ."
+format-check = "ruff format --check ."
+lint = "ruff check . && ruff format --check ."
+test = "pytest"
+test-verbose = "pytest -v"
+test-coverage = "pytest --cov=src/py_collections --cov-report=term-missing"
+test-coverage-html = "pytest --cov=src/py_collections --cov-report=html --cov-report=term-missing"
+all = "ruff check . && ruff format --check . && pytest"
