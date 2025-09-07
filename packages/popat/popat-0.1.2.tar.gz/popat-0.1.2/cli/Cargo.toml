@@ -1,0 +1,20 @@
+[package]
+name = "popat-cli"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "popat"
+path = "src/main.rs"
+
+[dependencies]
+popat-core = { path = "../core" }
+clap = { version = "4.0", features = ["derive"] }
+crossterm = "0.27"
+regex = "1.10"
+tokio = { version = "1.0", features = ["full"] }
+fastrand = "2.0"
+
+[dev-dependencies]
+assert_cmd = "2.0"
+predicates = "3.0"
