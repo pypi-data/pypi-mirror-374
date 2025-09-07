@@ -1,0 +1,153 @@
+# MO API SDK
+
+**`mo-api-sdk`** is the official SDK for building backend/API plugins for the [**Multimodal Observer (MOo)**](https://github.com/MultimodalObserver-2/mo) application.  
+It provides core interfaces, utilities, and tools to ensure your plugins are fully compatible with the MO backend runtime.
+
+
+## 🚀 Features
+
+- Exposes base interfaces and utilities for building valid MO-compatible plugins.
+- Includes CLI tools to assist in plugin development and packaging.
+- Current available commands:
+  - `create-mop`: interactive template generator for starting new MO plugin projects.
+  - `build-mop`: packages a plugin directory into a `.zip` file ready for use in MO.
+  - `test-capture-mop`: simulate and test your MO CapturePlugin with real or simulated input events, including coverage reporting.
+
+## 🛠️ Usage
+
+### Importing Base APIs
+
+Import all base classes and utilities **directly from** `mo` to ensure compatibility with the MO backend:
+```python
+    from mo.core.plugin import Plugin
+    from mo.core import Properties, PropertySelectOption
+    # Or import other base classes, helpers, or constants as needed
+```
+
+### Building Your Plugin
+
+- Implement your plugin as a subclass of the provided base interfaces (`Plugin`, `CapturePlugin`, etc).
+- Use the provided tools to define properties, validate configuration, and interact with the MO runtime.
+- Add your `metadata.json` and all required files in your plugin directory.
+
+
+### 📦 Example: Minimal Capture Plugin
+
+```python
+    from mo.modules.capture import CapturePlugin, CaptureData
+
+    class MyCapture(CapturePlugin):
+        def load(self):
+            # Initialize plugin
+            pass
+
+        def unload(self):
+            # Cleanup resources
+            pass
+
+        # ...implement all required methods...
+```
+
+
+## 🔧 CLI Tools
+
+The SDK provides a command-line tool for packaging your plugin:
+
+
+### `create-mop`
+
+Start a new MO plugin project using the interactive template generator:
+```bash
+  create-mop
+```
+
+- Prompts you for the essential details and generates a full plugin project structure.
+- Includes ready-to-edit `metadata.json`, code skeletons, property templates, icon, and locale folders.
+
+You can also use command-line flags:
+
+    create-mop --plugin-id my-plugin --publisher-id my-lab --venv
+
+---
+
+### `build-mop`
+
+Package your plugin for MO by running:
+
+```bash
+    build-mop
+```
+
+This will:
+
+- Validate your `metadata.json` and all entry points.
+- Package all necessary files into a versioned `.zip` in the `dist/` directory.
+- Ensure all dependencies are included in the package.
+
+> **Note:**  
+> If you encounter issues with automatic dependency detection, you can provide your own `requirements.txt` file and specify it using the `-r` or `--requirements` flag when running `build-mop`.
+
+---
+
+### `test-capture-mop`
+
+Test your MO CapturePlugin implementation in isolation, with real or simulated input, and (optionally) get a code coverage report of your plugin.
+
+```bash
+test-capture-mop
+```
+
+**Key features:**
+- Runs your capture plugin just as MO would, and writes output to a timestamped file.
+- Lets you simulate external events (like mouse or keyboard) during the test using the --simulate option.
+- Supports pause/resume testing, custom flush interval, settings injection, and coverage analysis of your plugin's code.
+- You can also import the `CapturePluginTester` class in your own Python test files and run programmatic tests, not just from the CLI.
+
+**Common options:**
+
+| Option / Short                | Description                                                     |
+| ----------------------------- | --------------------------------------------------------------- |
+| `--plugin-dir PATH`           | Path to the plugin root or metadata.json (default: `./`)        |
+| `--pause`, `-p`               | Simulate pause and resume during test                           |
+| `--duration SECONDS`, `-d`    | Duration of the test (default: `3.0`)                           |
+| `--flush SECONDS`, `-f`       | Data flush interval (default: `1.0`)                            |
+| `--settings FILE`             | Path to settings file (JSON)                                    |
+| `--out DIR`, `-o`             | Output folder for results                                       |
+| `--prefix STRING`             | Prefix for output file name                                     |
+| `--quiet`, `-q`               | Only show warnings and errors                                   |
+| `--verbose`, `-v`             | Show detailed log output                                        |
+| `--simulate ENTRYPOINT`, `-s` | Python entrypoint for a simulation function (e.g. `my.mod:run`) |
+| `--coverage`, `-c`            | Measure coverage for just the plugin's entrypoint code          |
+
+
+**Examples:**
+
+```bash
+  # Basic usage
+  test-capture-mop --plugin-dir ./my_plugin
+```
+
+```bash
+  # With keyboard simulation (run function in ./tests/sim_keyboard.py)
+  test-capture-mop -s tests.sim_keyboard:run
+```
+
+```bash
+  # Run for 10 seconds, with pause/resume, and coverage
+  test-capture-mop -d 10 -p -c
+```
+
+```bash
+  # Custom settings and output folder
+  test-capture-mop --settings settings.json -o ./test-results
+```
+
+To see a coverage report after running with --coverage, just run:
+```bash
+  coverage report
+```
+
+Or for a HTML report:
+```bash
+  coverage html
+```

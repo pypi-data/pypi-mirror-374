@@ -1,0 +1,31 @@
+[project]
+name = "mo-sdk"
+version = "1.0.0"
+description = "Official SDK for building Multimodal Observer (MOo) plugins."
+authors = [
+    {name = "Matías Figueroa Contreras", email = "matias.figueroa.c@usach.cl"}
+]
+urls = {"repository" = "https://github.com/MultimodalObserver-2/mo-api-sdk"}
+keywords = ["sdk", "mop", "cli", "tools", "MOo", "MO", "plugin", "multimodal", "observer"]
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = {text = "GPL-3.0-only"}
+dependencies = [
+    "pydantic (>=2.11.5,<3.0.0)",
+    "pipreqs (>=0.5.0,<0.6.0)",
+    "i18nice (>=0.16.0,<0.17.0)",
+    "questionary (>=2.1.0,<3.0.0)",
+    "coverage (>=7.10.4,<8.0.0)"
+]
+
+[tool.poetry]
+packages = [{include = "mo", from = "src"}, {include = "mop", from = "src"}]
+
+[project.scripts]
+build-mop = "mop.build:main"
+create-mop = "mop.create:main"
+test-capture-mop = "mop.test_capture:main"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
