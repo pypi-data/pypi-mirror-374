@@ -1,0 +1,39 @@
+[build-system]
+requires = ['setuptools', 'wheel', 'simplifiedapp', 'devautotools']
+build-backend = 'setuptools.build_meta:__legacy__'
+
+[project]
+name = 'normalized-django-settings'
+dynamic = ['version', 'description', 'readme']
+requires-python = '>=3.7'
+authors = [
+	{ name = 'Irving Leonard', email = 'irvingleonard@gmail.com'}
+]
+keywords = ['django', 'settings']
+license = {text = 'The Unlicense'}
+classifiers = [
+	'Development Status :: 4 - Beta',
+	'Environment :: Web Environment',
+	'Framework :: Django',
+	'Intended Audience :: Developers',
+	'License :: OSI Approved :: The Unlicense (Unlicense)',
+	'Natural Language :: English',
+	'Operating System :: OS Independent',
+	'Programming Language :: Python',
+	'Programming Language :: Python :: 3',
+	'Topic :: Internet :: WWW/HTTP',
+	'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+]
+
+[project.optional-dependencies]
+dev = [
+	'simplifiedapp',
+]
+
+[project.urls]
+homepage = 'https://github.com/irvingleonard/normalized-django-settings'
+# documentation = 'https://github.com/irvingleonard/normalized-django-settings'
+repository = 'https://github.com/irvingleonard/normalized-django-settings.git'
+
+[tool.setuptools.packages.find]
+include = ['normalized_django_settings*']
