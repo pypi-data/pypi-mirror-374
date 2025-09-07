@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "isaadvmutility"
+version = "1.3.4"
+description = "Utilities for ADV Microservices (data stores, MS Graph, Splunk, Qualys, RabbitMQ, Azure Blob, Postgres)"
+authors = ["Declerus Yves Kerbens <yveskerbs89@gmail.com>"]
+readme = "README.md"
+packages = [{ include = "isaadvmutility" }]
+keywords = ["utilities", "microservices", "azure", "postgres", "splunk", "rabbitmq", "qualys"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Operating System :: OS Independent",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+configobj = "*"
+pyyaml = "*"
+pytz = "*"
+pandas = "*"
+numpy = "*"
+pyarrow = "*"
+psycopg2-binary = "*"
+azure-storage-blob = "*"
+azure-core = "*"
+msal = "*"
+requests = "*"
+urllib3 = "*"
+qualysapi = "*"
+aio-pika = "*"
+dask = { version = "*", extras = ["dataframe", "distributed"] }
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
