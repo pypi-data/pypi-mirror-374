@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eastinstaller24"
+version = "1.0.0"
+description = "EastInstaller24 - a lightweight pip wrapper CLI"
+authors = [
+  { name="Xscripts, Inc. (BB)", email="sunnyplaysyt9@gmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = []
+
+[project.scripts]
+ea = "EastRY.a:main"
