@@ -1,0 +1,99 @@
+Metadata-Version: 2.1
+Name: babi_grammars
+Version: 0.0.63
+Summary: grammars for babi
+Home-page: https://github.com/asottile/babi-grammars
+Author: Anthony Sottile
+Author-email: asottile@umich.edu
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: licenses/LICENSE_Dart-Code_Dart-Code
+License-File: licenses/LICENSE_PowerShell_EditorSyntax
+License-File: licenses/LICENSE_TingPing_language-meson
+License-File: licenses/LICENSE_Xoronic_pest-Syntax-Highlighting-for-vscode
+License-File: licenses/LICENSE_alefragnani_vscode-language-pascal
+License-File: licenses/LICENSE_asottile_MagicPython
+License-File: licenses/LICENSE_asottile_atom-language-rust
+License-File: licenses/LICENSE_asottile_language-shellscript
+License-File: licenses/LICENSE_asottile_language-xml
+License-File: licenses/LICENSE_asottile_yaml.tmbundle
+License-File: licenses/LICENSE_atom_language-css
+License-File: licenses/LICENSE_atom_language-php
+License-File: licenses/LICENSE_atom_language-sass
+License-File: licenses/LICENSE_crystal-lang-tools_vscode-crystal-lang
+License-File: licenses/LICENSE_dotnet_csharp-tmLanguage
+License-File: licenses/LICENSE_elixir-editors_elixir-tmbundle
+License-File: licenses/LICENSE_fadeevab_make.tmbundle
+License-File: licenses/LICENSE_gleam-lang_vscode-gleam
+License-File: licenses/LICENSE_grafana_vscode-jsonnet
+License-File: licenses/LICENSE_hashicorp_syntax
+License-File: licenses/LICENSE_ionide_ionide-fsgrammar
+License-File: licenses/LICENSE_jeff-hykin_better-c-syntax
+License-File: licenses/LICENSE_jeff-hykin_better-cpp-syntax
+License-File: licenses/LICENSE_jeff-hykin_better-go-syntax
+License-File: licenses/LICENSE_jeff-hykin_better-objc-syntax
+License-File: licenses/LICENSE_jeff-hykin_better-objcpp-syntax
+License-File: licenses/LICENSE_lingua-pupuli_puppet-editor-syntax
+License-File: licenses/LICENSE_microsoft_TypeScript-TmLanguage
+License-File: licenses/LICENSE_microsoft_vscode
+License-File: licenses/LICENSE_microsoft_vscode-JSON.tmLanguage
+License-File: licenses/LICENSE_microsoft_vscode-markdown-tm-grammar
+License-File: licenses/LICENSE_microsoft_vscode-mssql
+License-File: licenses/LICENSE_mmims_language-batchfile
+License-File: licenses/LICENSE_moby_moby
+License-File: licenses/LICENSE_nishtahir_language-kotlin
+License-File: licenses/LICENSE_pragmagic_vscode-nim
+License-File: licenses/LICENSE_scala_vscode-scala-syntax
+License-File: licenses/LICENSE_stackb_bazel-stack-vscode
+License-File: licenses/LICENSE_textmate_diff.tmbundle
+License-File: licenses/LICENSE_textmate_git.tmbundle
+License-File: licenses/LICENSE_textmate_haskell.tmbundle
+License-File: licenses/LICENSE_textmate_html.tmbundle
+License-File: licenses/LICENSE_textmate_ini.tmbundle
+License-File: licenses/LICENSE_textmate_lua.tmbundle
+License-File: licenses/LICENSE_textmate_perl.tmbundle
+License-File: licenses/LICENSE_textmate_r.tmbundle
+License-File: licenses/LICENSE_textmate_ruby.tmbundle
+License-File: licenses/LICENSE_textmate_swift.tmbundle
+License-File: licenses/LICENSE_textmate_toml.tmbundle
+License-File: licenses/LICENSE_trond-snekvik_vscode-rst
+License-File: licenses/LICENSE_ziglang_vscode-zig
+
+[![build status](https://github.com/asottile/babi-grammars/actions/workflows/main.yml/badge.svg)](https://github.com/asottile/babi-grammars/actions/workflows/main.yml)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/asottile/babi-grammars/main.svg)](https://results.pre-commit.ci/latest/github/asottile/babi-grammars/main)
+
+babi-grammars
+=============
+
+grammars for babi
+
+## installation
+
+```bash
+pip install babi-grammars
+```
+
+### licenses
+
+the licenses for the individual grammars are included in the `licenses`
+directory.  the license for this repository is available in the `LICENSE` file
+
+
+### (internal/contributing instructions)
+
+to add a grammar:
+- add it to the `REPOS` list in `./bin/download-syntax`
+    - if you want the latest, use `version='HEAD'` and then run
+      `./bin/download-syntax update --only repo/name` to freeze it
+- run `./bin/download-syntax download --only repo/name`
+- add a sample syntax file in `/testdata`
+
+to update all the grammars
+- run `./bin/download-syntax update`
+- then run `./bin/download-syntax download`
