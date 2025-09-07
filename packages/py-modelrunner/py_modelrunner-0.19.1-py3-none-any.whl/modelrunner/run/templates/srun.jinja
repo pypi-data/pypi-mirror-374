@@ -1,0 +1,37 @@
+#!/bin/bash -l
+
+{% if LOG_FOLDER is defined %}
+# Standard output and error
+#SBATCH --output={{ LOG_FOLDER }}/{{ JOB_NAME }}.out.txt
+#SBATCH --error={{ LOG_FOLDER }}/{{ JOB_NAME }}.err.txt
+{% endif %}
+# Preserve environment variables:
+#SBATCH --export=ALL
+#SBATCH --job-name={{ JOB_NAME }}
+# Queue (Partition):
+{% if CONFIG['partition'] is defined %}
+#SBATCH -p {{ CONFIG['partition'] }}
+{% endif %}
+
+hostname
+echo $JOB_ID
+
+{% if CONFIG.num_threads is number %}
+# set the number of threads to use
+export MKL_NUM_THREADS={{ CONFIG.num_threads }}
+export NUMBA_NUM_THREADS={{ CONFIG.num_threads }}
+export NUMEXPR_NUM_THREADS={{ CONFIG.num_threads }}
+export OMP_NUM_THREADS={{ CONFIG.num_threads }}
+export OPENBLAS_NUM_THREADS={{ CONFIG.num_threads }}
+{% endif %}
+
+{% if OUTPUT_FOLDER is defined and OUTPUT_FOLDER %}
+mkdir -p {{ OUTPUT_FOLDER }}
+{% endif %}
+
+# Run the program
+{% if USE_MODELRUNNER is defined and USE_MODELRUNNER %}
+{{ CONFIG.python_bin }} -m modelrunner {{ MODEL_FILE }} {{ JOB_ARGS }}
+{% else %}
+{{ CONFIG.python_bin }} {{ MODEL_FILE }} {{ JOB_ARGS }}
+{% endif %}
