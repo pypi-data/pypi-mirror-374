@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cloudchain-cli"
+version = "0.1.0"
+description = "Deterministic Google Drive backup manager using chained accounts."
+readme = "README.md"
+license = { file = "LICENSE.md" }
+authors = [{ name="Christopher Hirschauer", email="you@example.com" }]
+requires-python = ">=3.9"
+dependencies = [
+    "google-api-python-client",
+    "google-auth-oauthlib",
+    "google-auth",
+    "keyring",
+    "PyYAML",
+    "cryptography",
+    "rich",
+]
+
+[project.scripts]
+cloudchain = "cloudchain.cli:main"
+
