@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "railsutra"
+version = "0.2.8"
+description = "Your gateway to real-time Indian Railways data powered by NTES."
+authors = [{name="Avinash Gupta", email="avinash12231@gmail.com"}]
+dependencies = ["requests",'bs4','pandas','numpy']
+requires-python = ">=3.8"
+readme = "README.md"
+license = {text='MIT'}
+
+[pypi]
+  username = "__token__"
+  password = "pypi-AgEIcHlwaS5vcmcCJDJhYWE0N2UxLWJjZDEtNGM4Mi1iZjIzLWVhYTJiNTJhNmQ2OQACKlszLCI1ZmM1MWZjYy02YzA5LTQ1NjAtOTA4Ni0yMmUzMGNmOGM2MjgiXQAABiBWKP-bqsBzucktDNgeXiTLY2HHTQsekZsuUyKrbAKigA"
