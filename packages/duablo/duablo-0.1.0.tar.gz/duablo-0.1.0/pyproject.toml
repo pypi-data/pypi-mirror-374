@@ -1,0 +1,42 @@
+[project]
+name = "duablo"
+version = "0.1.0"
+description = "A command-line tool to dual-launch multiple instances of Diablo II: Resurrected."
+requires-python = ">=3.12,<3.13"
+authors = [
+    { name = "Garrett HE", email = "garrett.he@outlook.com" }
+]
+readme = "README.md"
+license = { text = "BSD-3-Clause" }
+keywords = ["diablo2resurrected", "game", "multi-instance"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "typer>=0.16.1",
+]
+
+[project.urls]
+homepage = "https://github.com/garrett-he/duablo"
+repository = "https://github.com/garrett-he/duablo.git"
+changelog = "https://github.com/garrett-he/duablo/blob/main/CHANGELOG.md"
+
+[project.scripts]
+duablo = "duablo.__main__:app"
+
+[dependency-groups]
+dev = [
+    "chance>=0.110",
+    "nuitka>=2.7.12",
+    "pre-commit>=4.3.0",
+    "pylint>=3.3.8",
+    "pytest>=8.4.1",
+    "pytest-cov>=6.2.1",
+    "zstandard>=0.24.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
