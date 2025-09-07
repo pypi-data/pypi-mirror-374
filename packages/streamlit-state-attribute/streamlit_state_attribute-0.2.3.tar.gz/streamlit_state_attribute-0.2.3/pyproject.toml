@@ -1,0 +1,143 @@
+[project]
+name = "streamlit-state-attribute"
+version = "0.2.3"
+description = "A lightweight utility to bind class attributes directly to Streamlit's session state, making it easy to persist and share values across reruns."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "streamlit>=1.30.0",
+]
+keywords = ["streamlit", "session state", "state management", "attributes", "sync"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Utilities",
+]
+
+
+[dependency-groups]
+dev = [
+    "inline-snapshot>=0.28.0",
+    "pre-commit>=4.3.0",
+    "pre-commit-uv>=4.1.5",
+    "pytest>=8.4.2",
+    "ruff>=0.12.12",
+]
+
+[build-system]
+requires = ["uv_build>=0.8.5,<0.9.0"]
+build-backend = "uv_build"
+
+[tool.uv]
+required-version = ">=0.8.5"
+
+
+[tool.ruff.lint]
+preview=true
+extend-select=[
+    "A",      #flake8-builtins
+    "AIR",    #Airflow
+    "ANN",    #flake8-annotations
+    "ARG",    #flake8-unused-arguments
+    "ASYNC",  #flake8-async
+    "B",      #flake8-bugbear
+    "BLE",    #flake8-blind-except
+    "C4",     #flake8-comprehensions
+#    "C90",    #mccabe
+#    "COM",    #flake8-commas
+#    "CPY",    #flake8-copyright
+    "D",      #pydocstyle
+    "DJ",     #flake8-django
+    "DOC",     #pydoclint
+    "DTZ",    #flake8-datetimez
+    "E",
+    "EM",     #flake8-errmsg
+    "ERA",    #eradicate
+#    "EXE",    #flake8-executable
+    "F",      #Pyflakes
+    "FA",     #flake8-future-annotations
+    "FAST",      # FastAPI
+#    "FBT",    #flake8-boolean-trap
+#    "FIX",    #flake8-fixme
+    "FLY",    # flynt
+    "FLY",    #flynt
+    "FURB",   #refurb
+#    "G",      #flake8-logging-format
+    "I",      #isort
+    "ICN",    #flake8-import-conventions
+    "INP",    #flake8-no-pep420
+    "INT",    #flake8-gettext
+    "ISC",    #flake8-implicit-str-concat
+    "LOG",    #flake8-logging
+    "N",      #pep8-naming
+    "NPY",    #NumPy-specific rules
+    "PD",     #pandas-vet
+    "PERF",   #Perflint
+    "PGH",    #pygrep-hooks
+    "PIE",    #flake8-pie
+    "PL",     #Pylint
+    "PT",     #flake8-pytest-style
+    "PTH",    #flake8-use-pathlib
+#    "PYI",    #flake8-pyi
+    "Q",      #flake8-quotes
+    "RET",    #flake8-return
+    "RSE",    #flake8-raise
+    "RUF",    #Ruff-specific rules
+#    "S",      #flake8-bandit
+    "SIM",    #flake8-simplify
+    "SLF",    #flake8-self
+#    "SLOT",   #flake8-slots
+#    "T10",    #flake8-debugger
+#    "T20",    #flake8-print
+    "TC",    #flake8-type-checking
+    "TD",     #flake8-todos
+    "TID",    #flake8-tidy-imports
+    "TRY",    #tryceratops
+    "UP",     #pyupgrade
+    "W",      #pycodestyle
+#    "YTT",    #flake8-2020
+]
+
+ignore = [
+    "ANN401",       # Using Any-type should be allowed
+    "ISC001",       # Incompatible with formatter
+    "TD003",        # No links for TODOs.
+    "DOC201",       # No mandatory Returns section in docstrings.
+    "FURB140",      # prefer list comps
+    "D107",         # No mandatory docstrings for __init__
+    "D100",
+    "B903",         # No mandatory dataclass usage (due to descriptor)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"src/tests/*" = ["D", "PLR2004", "SLF001", "ANN"]
+"src/examples/*" = ["D", "PLR2004"]
+
+[tool.ruff]
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 100
+max-doc-length = 100
+
+[tool.ruff.lint.pep8-naming]
+# Allow Pydantic's `@validator` decorator to trigger class method treatment.
+classmethod-decorators = ["classmethod", "pydantic.field_validator"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.pytest.ini_options]
+pythonpath=["src", "src/tests"]
+testpaths=["src/tests"]
+
+[tool.inline-snapshot]
+format-command="ruff check --fix-only --stdin-filename {filename} | ruff format --stdin-filename {filename}"
+default-flags=["report"]
+default-flags-tui=["create", "review"]
