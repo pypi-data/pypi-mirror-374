@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m pytest tests/ -v)",
+      "Bash(uv run:*)",
+      "Bash(uv add:*)",
+      "Bash(just test-file:*)",
+      "Bash(just test:*)",
+      "Bash(cat:*)",
+      "Bash(just typecheck)",
+      "Bash(just check)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
