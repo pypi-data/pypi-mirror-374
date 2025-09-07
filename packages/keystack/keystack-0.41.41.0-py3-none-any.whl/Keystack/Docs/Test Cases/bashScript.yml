@@ -1,0 +1,18 @@
+Title: A stand alone shell script
+Description: QA
+objective: sample
+topology: L3
+requirements:
+   - List of requirements here
+
+# If you have predefined Jira Issues as testcases, state the
+# Issue Key to use for appending failure descriptions to the existing Jira Issue Key.
+jiraTestcaseIssueKey: KEYS-46
+
+# Options: shellScripts | standalonePythonScripts | pythonScripts
+shellScripts:
+   - /opt/KeystackTests/Modules/Demo/Scripts/shellScript.bash
+
+scriptCmdlineArgs:
+   - arg: -dataModelFile /opt/KeystackTests/Modules/Demo/ConfigParameters/sample.json
+   

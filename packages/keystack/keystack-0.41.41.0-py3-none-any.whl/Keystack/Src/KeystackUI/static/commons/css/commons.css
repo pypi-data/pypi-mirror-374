@@ -1,0 +1,979 @@
+/*   margin-bottom: 130px; */
+
+#content {
+  /* overflow: auto; */
+  font-size: 13px;
+}
+
+body {
+  font-family: "Helvetica Neue", helvetica, Arial, sans-erif;
+  font-weight: 350;
+}
+
+.mainBodyDiv {
+  margin-top: 100px;
+  padding-left: 225px;
+  min-height: 100vh;
+}
+
+.defaultFontSize {
+  font-size: 13px;
+}
+
+.mainBodyDivNoSecondNavbar {
+  margin-top: 51px;
+  padding-left: 225px;
+  min-height: 100vh;
+}
+
+.mainFontDetails {
+  font-family: "Helvetica Neue", helvetica, Arial, sans-erif;
+  font-weight: 350;
+  font-size: 13px;
+}
+
+/*
+.footerStyle {
+  position: fixed;
+  height: 130px;
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+  overflow: auto;
+  padding-left:225px;
+  z-index:5;
+}
+*/
+
+textarea {
+  resize: none;
+}
+
+.zIndex9 {
+    z-index: 9; 
+}
+
+.zIndex10 {
+    z-index: 10;
+}
+
+.normalFontWeight {
+  font-weight: normal;
+}
+
+.sidebar {
+  overflow: auto;
+  height: 100%;
+  /* background-color: #081aa8; */
+  background-color: black;
+}
+
+/* #deeafe  #eaf1fe F0F0F3 ebebeb 081aa8 #8e091c */
+
+.topbar {
+  background-color: black;
+  font-size: 22px;
+  text-decoration: none;
+}
+
+.topbarStyle {
+  padding-left: 240px;
+  height: 50px; 
+  position: fixed;
+  z-index: 10;
+}
+
+.topbarTitlePage {
+  /* color:#F3F93D; */
+  color: #66F854;
+  font-size: 14px;
+}
+
+.topbarLinkStyle {
+  font-size: 18px;
+  float: right;
+  margin: 12px;
+  text-decoration: none;
+}
+
+.topbarLinkSpanFontSize {
+  font-size: 9px;
+  text-align: center;
+  color: #66F854;
+}
+
+/* block=show: Use js to insert this class to hide from user
+   Take in consider, the &emsp takes up space. Must wrap it up 
+   inside the same hidden text
+*/
+.hideFromUser {
+  display: none;
+}
+
+/* bootstrap button size */
+
+button.btn {
+  height: 20px;
+  padding: 2px 7px 5px 7px;
+  font-size: 11px;
+}
+
+button.btn:hover {
+  color: white;
+  background-color: blue;
+}
+
+/* bootstrap input tag box size */
+
+.form-control {
+  height: 20px;
+}
+
+/* Usage: <div class="input-group"><input id="userGroupName" type="text" class="form-control inputWidth300px">>dov>  */
+.input-group>input.inputWidth100px    {flex: 0 1 100px;}
+.input-group>input.inputBoxWidth150px {flex: 0 1 150px;}
+.input-group>input.inputBoxWidth200px {flex: 0 1 200px;}
+.input-group>input.inputBoxWidth300px {flex: 0 1 300px;}
+.input-group>input.inputBoxWidth400px {flex: 0 1 400px;}
+.input-group>input.inputBoxWidth500px {flex: 0 1 500px;}
+
+.inputBoxWidth100px {
+  width: 100px;
+}
+
+.inputBoxWidth150px {
+  width: 150px;
+}
+
+.inputBoxWidth200px {
+  width: 200px;
+}
+
+.inputBoxWidth300px {
+  width: 300px;
+}
+
+.inputBoxWidth400px {
+  width: 400px;
+}
+
+.hideInstantMessages {
+  display: none;
+}
+
+/* Main content area */
+
+.container-fluid {
+  color: black;
+}
+
+/* sidebar nav-links */
+a.nav-link span {
+  font-size: 13px;
+  color: #66F854;
+}
+
+.sidebarFont {
+  font-size: 13px !important;
+  /* color: white; */
+  color: #66F854;
+}
+
+.lineHeight1-2 {
+  line-height: 1.2;
+}
+
+ul.sidebar li, span {
+  line-height: .1;
+}
+
+ul.sidebar li, a, span {
+  line-height: .1;
+}
+
+.lineHeight1px {
+  line-height: 1px;
+}
+
+.lineHeight5px {
+  line-height: 5px;
+}
+
+.lineHeight25px {
+  line-height:25px;
+}
+
+.noTextDecoration {
+  text-decoration: none;
+}
+
+a {
+  text-decoration: none;
+  color: blue;
+}
+
+a:hover {
+  text-decoration: none;
+  color: blue;
+}
+
+a.deviceTypeHoverColor:hover {
+  text-decoration: none;
+  color: yellow;
+}
+
+a.yellowHoverColor:hover {
+  text-decoration: none;
+  color: yellow;
+}
+
+a.fas {
+  color: white;
+}
+
+.show {
+  display: block;
+}
+
+.hide {
+  display: none;
+}
+
+select {
+  background: none;
+  padding: 0;
+} 
+
+.insertInlineBlock {
+  display: inline-block;
+}
+
+select.form-control:focus {
+  box-shadow: none!important;
+}
+
+.flexRowInlineBlockLeft {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: left;
+  padding: 0;
+}
+
+.flexRowInlineBlockRight {
+  display: flex; 
+  flex-direction: row; 
+  justify-content: right; 
+  align-items: right;
+  padding: 0;
+}
+
+.flexRowInlineBlockCenter {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.whiteBackgroundBlockFont {
+  background-color:white;
+  color:black;
+}
+
+.blackBackgroundWhiteFont {
+  background-color: black;
+  color: white;
+}
+
+.blackBackgroundGreenFont {
+  background-color: black; 
+  color: #66F854;
+}
+
+.blackBackgroundYellowFonts {
+  background-color: black; 
+  color: yellow;
+}
+
+.backgroundColorBlack {
+  background-color: black;
+}
+
+.backgroundColorBlue {
+  background-color: blue;
+}
+
+.backgroundColorRed {
+  background-color: red;
+}
+
+.greenColorStatus {
+  color: #47E21A;
+}
+
+.redColorStatus {
+  color: red;
+}
+
+.mainFontSize {
+  font-size: 13px;
+}
+
+.fontSize10px {
+  font-size: 10px;
+}
+
+.fontSize11px {
+  font-size: 11px;
+}
+
+/* sidebar dropdown selection font-size */
+.fontSize12px {
+  font-size: 12px;
+}
+
+.fontSize15px {
+  font-size: 17px;
+}
+
+.width50px {
+    width: 50px
+}
+
+.width100px {
+  width: 100px
+}
+
+.width125px {
+  width: 125px
+}
+
+.width150px {
+  width: 150px
+}
+
+.width200px {
+  width: 200px;
+}
+
+.width300px {
+  width: 300px;
+}
+
+.width350px {
+  width: 350px;
+}
+
+.width400px {
+  width: 400px;
+}
+
+.width500px {
+  width: 500px !important;
+}
+
+.width550px {
+  width: 550px !important;
+}
+
+.padding0 {
+  padding: 0;
+}
+
+.paddingLeft2px {
+  padding-left: 2px;
+}
+
+.paddingLeft5px {
+  padding-left: 5px;
+}
+
+.paddingLeft10px {
+  padding-left: 10px;
+}
+
+.paddingLeft20px {
+  padding-left: 20px;
+}
+
+.paddingLeft30px {
+  padding-left: 30px;
+}
+
+.paddingLeft40px {
+  padding-left: 40px;
+}
+
+.paddingLeft50px {
+  padding-left: 50px;
+}
+
+.paddingTop2px {
+  padding-top: 2px;
+}
+
+.paddingTop3px {
+  padding-top: 3px;
+}
+
+.paddingTop5px {
+  padding-top: 5px;
+}
+
+.paddingTop7px {
+  padding-top: 7px;
+}
+
+.paddingTop10px {
+  padding-top: 10px;
+}
+
+.paddingTop20px {
+  padding-top: 20px;
+}
+
+.paddingBottom3px {
+  padding-bottom: 3px;
+}
+
+.paddingBottom5px {
+  padding-bottom: 5px;
+}
+
+.paddingBottom10px {
+  padding-bottom: 10px;
+}
+
+.paddingBottom20px {
+  padding-bottom: 20px;
+}
+
+.margin5px {
+  margin: 5px;
+}
+
+.marginTop0px {
+  margin-top: 0px;
+}
+
+.marginTop2px {
+  margin-top: 2px;
+}
+
+.marginTop5px {
+  margin-top: 5px;
+}
+
+.marginTop10px {
+  margin-top: 10px;
+}
+
+.marginTop15px {
+  margin-top: 15px;
+}
+
+.marginTop20px {
+  margin-top: 20px;
+}
+
+.marginTop30px {
+  margin-top: 30px;
+}
+
+.marginTop50px {
+  margin-top: 50px;
+}
+
+.marginLeft0 {
+  margin-left: 0;
+}
+
+.marginLeft5px {
+  margin-left: 5px;
+}
+
+.marginLeft10px {
+  margin-left: 10px;
+}
+
+.marginLeft20px {
+  margin-left: 20px;
+}
+
+.marginLeft40px {
+  margin-left: 40px;
+}
+
+.marginLeft60px {
+  margin-left: 60px;
+}
+
+.marginLeft150px {
+  margin-left: 150px;
+}
+
+.marginRight10px {
+  margin-right: 10px;
+}
+ 
+.marginBottom5px {
+  margin-bottom: 5px;
+}
+
+.marginBottom10px {
+  margin-bottom: 10px;
+}
+
+.floatLeft {
+  float: left;
+}
+
+.floatRight {
+  float: right;
+}
+
+.mainTextColor {
+  color: #66F854;
+}
+
+.textWhite {
+  color: white;
+}
+
+.textYellow {
+  color: yellow;
+}
+
+.textBlack {
+  color: black;
+}
+
+.textBlue {
+  color: blue;
+}
+
+.textRed {
+  color: red;
+}
+
+.textGreen {
+  color: green;
+}
+
+.textAlignLeft {
+  text-align: left !important;
+}
+
+.textAlignRight {
+  text-align: right;
+}
+
+.textAlignCenter {
+  text-align: center;
+}
+
+.verticalAlignTop {
+  vertical-align: top;
+}
+
+.verticalAlignMiddle {
+  vertical-align: middle;
+}
+
+.verticalAlignBottom{
+  vertical-align: bottom;
+}
+
+.filterInputBox {
+  height: 20px; 
+  width: 130px; 
+}
+
+/* make dropdown scrollable. 
+max-height: 100vh which limits it to 100% of the viewport's height */
+.dropdown-menu_original{
+  overflow: hidden;
+  overflow-y: auto;
+  max-height: calc(100vh - 100px);
+  z-index: 20;
+}
+
+.dropdown-menu {
+  height: auto;
+  overflow-y: auto;
+  z-index: 20;
+}
+
+ul.dropdownFontSize {
+  font-size: 13px;
+  color: black;
+}
+
+ul.dropdownFontSize li a {
+  line-height: 1;
+}
+
+ul.lineHeight1 li a {
+  line-height: 1;
+}
+
+ul.lineHeight li {
+  line-height: 1;
+}
+
+  /* position: absolute; */
+.stylePositionAbsolute {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+
+.stylePositionStatic {
+  position: static;
+}
+
+.dropdownSize {
+  width: 500px !important;
+  height: 300px;
+  overflow: auto;
+  font-size: 13px;
+}
+
+.dropdownEditDevice {
+  max-width:30%;
+  height:300px; 
+  overflow: auto;
+}
+
+.dropdownExtraSmall {
+  max-width:30%;
+  height:100px;
+  overflow:auto; 
+  color:black;
+}
+
+.dropdownSizeExtraSmall200px {
+  width: 200px;
+  height: 200px;
+  overflow: auto; 
+  color: black;
+}
+
+.dropdownSizeSmall {
+  width: 300px !important;
+  height: 300px;
+  overflow: auto;
+  font-size: 13px;
+}
+
+.dropdownSizeSmall2 {
+  width: 500px;
+  height: 200px;
+  font-size: 13px;
+}
+
+.dropdownSizeMedium {
+  width: 500px !important;
+  height: 300px;
+  overflow: auto;
+  font-size: 13px;
+}
+
+.dropdownSizeMedium1 {
+  width: 500px !important;
+  height: 500px;
+  overflow: auto;
+  font-size: 13px;
+}
+
+.dropdownSizeMedium2 {
+  width: 650px !important;
+  height: 300px;
+  overflow: auto;
+  font-size: 13px;
+}
+
+.dropdownSizeMediumExraHeight {
+  width: 500px;
+  height: 700px;
+  overflow: auto;
+  font-size: 13px;
+}
+
+.dropdownSizeLarge {
+  width: 700px;
+  height: 300px;
+  overflow: auto;
+  font-size: 13px;
+}
+
+.dropdownSizeLargeExtraHeight {
+  width: 700px;
+  height: 500px;
+  overflow: auto;
+  font-size: 13px;
+}
+
+.dropdownSizeExtraLarge {
+  width: 1000px;
+  height: 300px;
+  overflow: auto;
+  font-size: 13px;
+}
+
+.dropdownSizeExtraLarge2 {
+  max-width: 50%;
+  height: 500px;
+  overflow: auto;
+  font-size: 13px;
+}
+
+.dropdownSize90Percent800px {
+  max-width:90%;
+  height:800px;
+  overflow:auto; 
+}
+
+.dropdownSizeWidth700pxHeight800px {
+  width: 700px !important;
+  height: 800px;
+  overflow:auto; 
+}
+
+.dropdownLinkFontSize {
+  font-size: 18px;
+}
+
+.dropdownFileContentSize {
+  max-width:65%; 
+  height:650px; 
+  overflow:auto;
+}
+
+.dropdownFileContentSizeLabInventory {
+  max-width: 60%; 
+  height: 800px; 
+  overflow:auto;  
+}
+
+.secondNavbarStyle {
+  position: fixed; 
+  padding-left: 240px;
+  top: 47px;
+  width: 100%;
+  height: 40px;
+  z-index: 9;
+  background:#eee;
+  /* color:black; */
+  font-size: 13px;
+}
+
+.secondNavbarStyle a {
+  color: black;
+}
+
+.mediumModalSize {
+    max-width: 50%;
+    height: 600px;
+    overflow: auto;
+    color: black;
+}
+
+.mediumModalSizeExtraHeight {
+  max-width: 50%;
+  height: 800px;
+  overflow: auto;
+  color: black;
+}
+
+.mediumModalSizeExtraWidth{
+  max-width: 75%;
+  height: 600px;
+  overflow: auto;
+  color: black;
+}
+
+.messagesModal {
+    max-width: 75%;
+    height: 600px;
+    overflow: auto;
+    color: black;
+}
+
+.modalTextColor {
+  color:black;
+}
+
+.modalHeaderTextColor {
+  color: blue;
+}
+
+.listNoBullets {
+  list-style-type: none;
+}
+
+  /* word-wrap: break-all;   white-space: normal; */
+.wordWrap {
+  word-wrap: break-word;
+}
+
+.maxWidth25px {
+  max-width: 25px;
+}
+
+.maxWidth50px {
+  max-width: 50px;
+}
+
+.maxWidth100px {
+  max-width: 100px;
+}
+
+.maxWidth200px {
+  max-width: 200px;
+}
+
+/* table styles are for fixed header scrolling */
+.tableStyle {
+  margin-top: 10px;
+  /*height: 800px; /* Using 800px will have a nice sticky th, but trade off is the row height is LARGE and not placed at the top of the table  if only a few rows */
+  /* height: auto; /* Using height:auto shows tight row height, but no stick th */
+  overflow: auto;
+}
+
+/* tableFixHead2 is for pipelines:
+   Make table fixed size in case there is no row data and 
+   user clicks on a header dropdown filter. The dropdown 
+   need some space to show all the options */
+.tableFixHead2 {
+  height: 700px;
+}
+
+.tableFixHead2 thead {
+  border-top: 1pt solid gray;
+}
+
+.tableFixHead2 thead th {
+  position: sticky;
+  top: 0;
+  /* background: #eee; */
+  background: black;
+  color: #66F854;
+}
+
+.tableFixHead2 th::after {
+  content: '';
+  width: 100%;
+  height: 1px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: black;
+}
+
+.tableFixHead2 th,
+.tableFixHead2 td {
+  color: black;
+  background-color: white;
+  font-weight: 350;
+  text-align: center;
+  line-height: 15px;
+  font-size: 13px;
+  vertical-align: top;
+  padding: 7px;
+  /* border: 1px solid #ccc; If this border is included, then the body scrolling will show passed thead */
+  height: 15px;
+  text-overflow: ellipsis; /* too long gets dots ... */
+  /* white-space: nowrap; */
+}
+
+/* NOTE!  height:0 sets the row to the exact height of the row's data.
+If this isn't set, then each row has extra spacing to fit the total table size
+which looks ugly! Additionally, must create an additional row */
+.tableFixHead2 tbody tr {
+  outline: thin solid;
+  color: #eee;
+  background: white;
+  height: 0;
+}
+
+
+/* tableFixeHead3 is for inventory, portMgmt and portGroup */
+.tableFixHead3 thead {
+  border-top: 1pt solid gray;
+}
+
+.tableFixHead3 thead th {
+  position: sticky;
+  top: 0;
+  /* background: #eee; */
+  background: black;
+  color: #66F854;
+}
+
+.tableFixHead3 th::after {
+  content: '';
+  width: 100%;
+  height: 1px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: black;
+}
+
+.tableFixHead3 th,
+.tableFixHead3 td {
+  color: black;
+  background-color: white;
+  font-weight: 350;
+  text-align: center;
+  line-height: 15px;
+  font-size: 13px;
+  vertical-align: top;
+  padding: 7px;
+  /* border: 1px solid #ccc; If this border is included, then the body scrolling will show passed thead */
+  height: 15px;
+  text-overflow: ellipsis; /* too long gets dots ... */
+  /* white-space: nowrap; */
+}
+
+/* NOTE!  height:0 sets the row to the exact height of the row's data.
+If this isn't set, then each row has extra spacing to fit the total table size
+which looks ugly! */
+.tableFixHead3 tbody tr {
+  outline: thin solid;
+  color: #eee;
+  background: white;
+}
+
+
+
+.tableMessages {
+  width: 95%;
+}
+
+.tableMessages th {
+  /* position: sticky; */
+  top: 0;
+  text-align: center;
+  /* background: #eee; */
+  background-color: black;
+  color: #66F854;
+}
+
+.tableMessages td {
+  color: black;
+}
+
+.tableMessages td,
+.tableMessages th {
+  padding: 5px;
+  line-height: 15px;
+  vertical-align: middle;
+  font-size: 13px;
+  font-weight: 350;
+}
+
+

@@ -1,0 +1,13 @@
+# Sample: Simple playbook
+
+stages:
+   Test:
+      enable: True
+      tasks:
+        - Layer3:
+            enable: True
+            env: DOMAIN=Keystack/demoEnv1
+            playlist:
+               - Modules/Keystack_Samples/Testcases/L2L3_Testcases/bgp.yml
+               - Modules/Keystack_Samples/Testcases/L2L3_Testcases/ospf.yml
+               - Modules/Keystack_Samples/Testcases/L2L3_Testcases/isis.yml

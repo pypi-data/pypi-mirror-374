@@ -1,0 +1,360 @@
+
+Keystck test cases are YAML files that details a test case.
+It states the description, objectives, requirements, which app to use, which script to run and  
+configurable parameters that get passed into scripts to consume.
+
+These keywords are retrievable inside scripts if the Python scripts import keystackEnv.
+To modify testcase parameter/values to make testcase configs dynamic, scroll down to configParams section to see how 
+to consume the keywords inside scripts.
+
+In testcase YAMLl files, set the followings built-in keywords
+  Keywords that describes the testcase
+    - title
+    - description
+    - objectives
+    - topology
+    - image
+    - requirements
+    - setup
+    - steps
+    - pass_criteria
+    - fail_criteria
+    - teardown
+    - jiraTestcaseIssueKey
+
+  Keywords for executing the script
+    - pythonScript
+    - standalonePythonScript
+    - shellScript
+    - runCliCommand
+    - dataConfigs
+    - dataConfigsFile
+    - exportedConfigsFile
+    - scriptCmdlineArgs
+    - importAppLibraryPaths
+
+- These keywords states how to execute each test case
+- And what data to use for scripts to consume
+
+Where are test cases located:
+      In each /opt/KeystackTests/Module, store test case YAML files in the Testcases folder:
+          /opt/KeystackTests/Modules/<module_name>/Testcases
+
+How to execute testcases:
+    - Testcases are executed in playbooks under playlist
+    - Below example shows:
+          - Executing all test cases including subfolders:  /opt/KeystackTests/Modules/<module_name>/Testcases/BGP directory
+          - Executing individual testcases: /opt/KeystackTests/Modules/<module_name>//Testcases/BGP/adjacency.yml 
+
+          NOTE:
+               If you don't want Keystack to automatically run test cases in subfolders, provide a list of
+               full path test case YAML files
+
+      For example:
+
+          In a playbook:
+
+          stages:
+             Tests:  <-- Give a meaningful name for the stage
+                tasks:
+                  - L2L3:  <-- Give a meaningful name for the tasks
+                     playlist:
+                        - Modules/Demo/Testcases/BGP/bgp.yml
+                        - Modules/Demo/Testcases/OSPF/ospf.yml
+                        - Modules/Demo/Testcases/ISIS/isis.yml
+                        - Modules/Demo/Testcases/standalonePython.py   <--  THIS IS NOT A TEST CASE YAML FILE. SIMPLY RUN A PYTHON SCRIPT. 
+                                                                            Scripts could reside anywhere in the file system.
+
+title:
+    - The test case title
+
+description:
+    - The test case description
+
+objectives:
+    - Test objectives
+
+topology:
+    - The topology description
+
+image:
+    - PNG, GIF and JPEG files
+    - Use this <images> keyword anywhere in test case YAML file to display the image
+
+requirements:
+    - A list of requirements to support the test case
+
+setup:
+    - A list of setups to perform before running the steps 
+
+steps:
+    - A list of tasks to perform for the test case
+
+pass_criteria:
+    - A list of verifications for passed criteria
+
+fail_criteria:
+    - A list of verifications for failed criteria 
+
+teardown:
+    - A list of tasks to teardown the setup at the endf of the test case
+
+jiraTestcaseIssueKey:
+    - For Keystack to automatically open bug defects in Jira, there must be a JIRA
+      issue created for all test cases
+
+    - With a JIRA issue created, JIRA returns an issue tracking ID
+
+    - State the JIRA ID as the value for jiraTestcaseIssueKey
+
+    - If the test case failed, Keystack will verify if the Jira ID state is opened.
+      If it's opened, it will ignore it.
+      If it's not opened, Keystack will change the Jira issue ID state to open and
+      add the failure message to the issue
+
+pythonScript:
+    - These are scripts that are integrated with Keystack by importing keystackEnv
+    - Python scripts could reside anywhere in your file system
+      State the full path of the script(s) in a list
+
+    - Type: list 
+         - <State 1 or more Python scripts to run in a list>
+
+      Import the below line that makes it possible to use test keystack framework resources 
+      and creating/retrieving artifacts:
+
+           from keystackEnv import keystack
+
+    - Scripts that import keystackEnv could use data resources from the following Yaml files: 
+        envs, playbooks, testcases, lab devices
+
+        Note: To access resources in Python scripts:
+              keystack.taskProperties[key]
+              keystack.testcaseParams[key]
+
+    - Scripts have access to artifact folder to dump artifacts for usage 
+      in other scripts or for data mining after the test
+
+    - State the full path to the Python script to run
+
+    Example:
+       #    If the scripts resides in /Modules, begin the path with short-format /Modules/...
+       #    Otherwise, state the full path to the script    
+       pythonScript:
+           - /path_to_script/script.py
+
+    - If the Python script uses argparse for external args:
+          Include the parameter scriptCmdlineArgs as shown below:
+
+          # Example:
+          scriptCmdlineArgs:
+            - -dataModelFile /opt/KeystackTests/Modules/IxNetworkDataModel/ConfigParameters/<file>.yml
+            - -email
+
+          print(keystack.testcase.scriptCmdlineArgs) -> ['-dataModelFile /opt/KeystackTests/Modules/IxNetworkDataModel/ConfigParameters/<file>.yml', '-email']
+
+        In the Python scripts, get the input args:
+
+            from keystackEnv import keystack
+            
+            parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+            parser.add_argument('-dataModelFile', required=True,  nargs="?", default=None, help='The data-model config file')
+            args = parser.parse_args(keystack.testcaseScriptArgv)  <-- This contains all of the args that you stated in scriptCmdlineArgs
+           
+standalonePythonScript:
+    - These are ordinary Python files without using built-in KeystackEnv
+    - Scripts could reside anywhere in your file system
+      State the full path of the script(s) in a list
+
+    - Type: list <Supports 1 or more Python scripts to run in a list>
+
+    Restrictions:
+        - Cannot use importAppLibraryPaths to add paths to sys.path
+            - The standalone python scripts must add the library path using sys.path.insert() or sys.path.append()
+
+        - No access to Keystack framework data resources from: envs, playbooks, testcases and artifact folder
+          Run Python scripts as-is.
+          If your script requires verifying for stdout failure or error, use verifyFailurePatterns to look for failures
+
+    - To run Python scripts and verify for failures, use "verifyFailurePatterns" in playbooks
+
+        For example, in a Playbook, add verifyFailurePatterns in globalSettings or in stages or in tasks:
+            verifyFailurePatterns: ['Failed', 'SyntaxError']
+
+            - Keystack will scan all stdout print statements looking for word patterns
+            - These word patterns are used as regex
+
+      NOTE:
+          - Keystack will pass the test with uncaught errors!
+          - Keystack does not know what is considered failed on stand-alone scripts
+          - It just runs through the script and relies on users to state what are considered failed
+            by using verifyFailurePatterns 
+
+    Example:
+       #    If the scripts resides in /Modules, begin the path with short-format /Modules...
+       #    Otherwise, state the full path to the script
+       standalonePythonScript:
+           - /path_to_script/script.py
+
+    - Optional: Pass in command line arguments for argparse or sys.argv to digest inside the script.
+
+      Include the parameter scriptCmdlineArgs as shown below example. You could
+      include all parameters in a single line or break them up into a list for readability
+
+          scriptCmdlineArgs:
+            - -dataModelFile /opt/KeystackTests/Modules/IxNetworkDataModel/ConfigParameters/<file>.yml
+            - -email      
+
+          print(keystack.testcaseParams["scriptCmdlineArgs"]) -> ['-dataModelFile /opt/KeystackTests/Modules/IxNetworkDataModel/ConfigParameters/<file>.yml', '-email']
+    TIP:
+        - Since shell scripts and standalone Python scripts are not integrated with keystack framework resources, you 
+          could still pass in params/values into the script by using scriptCmdlineArgs as shown above.
+
+        - For example. If you want the scripts to consume data from a config file, pass 
+                       in param/value -dataModelFile /opt/KeystackTests/Modules/IxNetworkDataModel/ConfigParameters/<file>.yml
+
+          scriptCmdlineArgs:
+            - -dataModelFile /opt/KeystackTests/Modules/IxNetworkDataModel/ConfigParameters/<file>.yml
+
+          In the Python scripts, consume the parameter -dataModelFile value by using sys.argv and/or argparse
+
+cliCommand:
+    - This is an alternative for standalonePythonScript
+    - Run any app as you do on the CLI in the Keystack Linux server (as long as the server could run the app manually on the CLI)
+    - For example:  To run PyTest, state the complete pytest cli command including args
+    - Keystack will execute any CLI command to run as a testcase 
+    - Keystack will also reserve the env that you stated in the playbook
+    - In the playbook, use verifyFailurePattern to scan the stdout for error
+
+    For example:
+       In a testcase yml file: /opt/KeystackTests/Modules/Demo/Testcases/vanillaPythonScript.yml
+
+       # Example 1: The CLI that you would enter on the server to execute a script or app
+       cliCommand:
+          - python3.10 /opt/KeystackTests/Modules/Demo/Scripts/plainPythonScript.py -build1 image1.yml -buid2 image2.yml
+
+       # Example 2:
+       cliCommand:
+          - python3.10 /opt/KeystackTests/Modules/Demo/Scripts/plainPythonScript.py
+
+       # This is an OPTIOINAL way to include CLI args with the app. 
+       # You could use Example 1 way of including args
+       scriptCmdlineArgs:
+          - -build1 image1.yml -buid2 image2.yml
+
+       # Example 3 (PyTest):
+          You could also pass in args from the keystack command line using the param: -appArgs
+          For example, include some pytest args:
+              keystack -playbook regression -appArgs "-x -s -v --html=test.html"
+
+          This will get appended to the cliCommand that you state in the testcase yml file looking like this:
+             cliCommand: python3.10 /opt/KeystackTests/Modules/Demo/Scripts/plainPythonScript.py -x -s -v --html=test.html
+
+          Note:
+              If you already have scriptCmdlineArgs, then the appArgs has precedence and overwrite them.
+
+shellScript:
+    - Type: list  <State 1 or ore shell scripts in a list>
+    - Run Linux shell/Bash scripts
+
+    - You could also pass in command line arguments for argparse.
+      Include the parameter scriptCmdlineArgs as shown below example:
+
+    Example:
+        shellScript:
+           - /path_to_shell_script/script.bash
+
+         Optional: If there are command line args to feed into the scripts:
+                   use scriptCmdlineArgs:
+
+          scriptCmdlineArgs:
+            - -dataModelFile /opt/KeystackTests/Modules/IxNetworkDataModel/ConfigParameters/<file>.yml
+            - -arg1
+ 
+          print(keystack.testcaseParams["scriptCmdlineArgs"]) -> ['-dataModelFile /opt/KeystackTests/Modules/IxNetworkDataModel/DataConfigs/<file>.yml', '-arg1']
+
+scriptCmdlineArgs:
+    - a list of external args that you normally passed into scripts
+    - Usage:
+
+      scriptCmdlineArgs:
+         - -arg1 value1 -arg2 value2 -arg3 value3
+
+         Note: If the line gets too long, add another arg.
+               Keystack will append the two arg list.
+          - -arg4 value4 -arg5 value5
+
+    Example:
+        print(keystack.testcaseParams["scriptCmdlineArgs"]) -> ['-arg1 value1 -arg2 value2', '-arg4 value4 -arg5 value5']
+ 
+dataConfigs:
+    (Changeable)
+
+    - dict object: param/value format
+
+    - In the env Yaml files, you could include params/values in the key
+      "dataConfigs" for scripts to consume.
+
+      In Python scripts, this is how to get dataConfigs param/values from env Yaml files:
+        keystack.taskProperties["envParams"]['dataConfigs']
+
+    - In the testcase Yaml files, you could include params/values in the key
+      "dataConfigs" for scripts to consume.
+
+      In Python scripts, this is how to get dataConfigs param/values from env Yaml files:
+        keystack.testcaseParams["dataConfigs"]
+
+
+dataConfigsFile:
+    key/value pair data files to be consumed in scripts
+
+    type: File path.  Begins with /Modules.
+
+    (Changeable)
+    NOTE: There should be a folder called DataConfigs in the /opt/Modules folder to store data-config/data-model files.
+          
+          For example:
+             dataConfigsFile: /opt/KeystackTests/Modules/<module name>/DataConfigs/config.yml
+
+          Keystack will pass in the file to your script to digest the key/value data
+
+          In the Python scripts, this is how you retreive the data-config file:
+
+          from keystackEnv import keystack
+          print(keystack.testcaseParams["dataConfigs"])
+
+          or you could get the data config file and read it inside the python script:
+              keystack.testcaseParams["dataConfigsFile"]
+
+exportedConfigsFile:
+    These are configuration files that were exported by an app for loading
+
+    (Changeable)
+    NOTE: There should be a folder called ExportedConfigs in your Module's folder to store exported config files.
+
+          For example:
+             exportedConfigsFile: /opt/KeystackTests/Modules/<module name>/ExportedConfigs/config.json
+
+    - Typically, traffic generator test tools allows saving an exported config file to load
+
+    - In the Python scripts, this is how you retreive the exported data-config file:
+
+          from keystackEnv import keystack
+          print(keystack.testcaseParams["exportedConfigsFile"])
+
+importAppLibraryPaths:
+    - Note: Not for standAlonePythonScripts. For integrated Keystack python scripts only.
+            Stand alone python scripts must add library paths using sys.path.insert()
+
+    - If the test case requires external libraries, keystack needs to
+      know the paths to all the external library modules. 
+      Keystack will add the paths to sys.path so
+      your APPs won't have import errors when running the testcase or script
+
+      Below shows two paths to add in a testcase.yml file.  These paths will be remove after the test.
+
+      importAppLibraryPaths:
+         - /Path/IxNetworkDataModel
+
+Reconfiguring test cases or script:
+    Refer to doc "Reconfiguring Test Params"

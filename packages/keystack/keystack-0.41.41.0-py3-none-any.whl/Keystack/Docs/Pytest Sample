@@ -1,0 +1,76 @@
+Requirements:
+   - The server where Keystack is installed must have Pytest pip installed
+   - python 3.7+
+
+- The Keystack PyTest sample app is stored in /opt/KeystackTests/Modules/Demo/PyTest
+- Your PyTest app could be located anywhere in the filesystem
+- State in the testcase yml file using the entrypoint shown below in "Testcase yml file"
+
+
+Playbook sample:
+    - Keystack installation comes with a sample pytest playbook to use
+    - In /opt/KeystackTests/Playbooks/DOMAIN=Communal/Samples/pytest.yml
+
+    globalSettings:
+       # Pytest stdout showing failures
+       # These are failure patterns that catches pytest failures on stdout at runtime
+       verifyFailurePatterns: ['Failed:', 'FAILED.*::']
+
+    stages:
+      Test:
+         enable: True
+         tasks:
+         - Layer3:
+               enable: True
+               env: DOMAIN=Communal/Samples/demoEnv1
+               #loadBalanceGroup: qa
+               playlist:
+                  - /Testcases/Demo/runPytest.yml
+
+Testcase yml file:
+   - Keystack installation comes with a sample pytest testcase yml file:
+   - In /opt/KeystackTests/Testcases/Demo/runPytest.yml
+
+   Title: Run PyTest Sample
+   Description: Run any app using CLI command 
+   objective: sample
+   topology: L3
+   requirements:
+      - List of requirements here
+
+   # The CLI that you enter to run pytest
+   # TIP: The PyTest app could be in any directory. 
+   #      Just state the full path here
+   cliCommand: pytest -v -s -x /opt/KeystackTests/Modules/Demo/PyTest/Demo
+
+
+Test Report:
+
+Keystack Report: PipelineId:9766   Result:Failed
+                 TotalCases:1  TotalPassed:0  TotalFailed:1
+                 SkippedTestcases:0  AbortedTestcases:0 AbortedStages:1
+                 Aborted Stages: Test 
+
+Playbook Executed: Samples-pytest
+PipelineId: 9766
+Test Result Folder: /opt/KeystackTests/Results/DOMAIN=Default/PLAYBOOK=Samples-pytest/12-04-2023-14:28:11:985886_9766
+StartTime: 2023-12-04 14:28:11.984026
+StopTime: 2023-12-04 14:28:14.238679
+Duration: 0:00:02.254653
+
+STAGE:  Test
+TASK: PyTest-Layer3
+ENV:  Samples/demoEnv1
+	   Result:Failed   Testcases=1  TotalPassed=0  TotalFailed=1  Skipped:0  TestcaseAborted=0  Errors=0
+
+      abortTaskOnFailure: False
+      abortStageOnFailure: True
+      abortTestOnFailure: False
+      Test start time: 12-04-2023 14:28:12:442481
+      Test stop time: 12-04-2023 14:28:13:165826
+      Test duration 0:00:00.723338
+
+      1:    Failed     /Playlist/Demo/runPytest.yml     1/1 1/1: [0:00:00.641320]
+         - E       Failed: pytest script failed message
+
+         - FAILED ../KeystackTests/Modules/Demo/PyTest/Demo/test_sample.py::Sample::test_setup_ixia

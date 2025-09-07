@@ -1,0 +1,322 @@
+About Keystack:
+    Keystack is an automation test framework with a built-in lab manager and a scheduler.
+    It is designed for QA testing with or without lab devices such as servers, network
+    traffic generators or any type of device in the lab that forms testbeds.
+    Keystack automatically manage testbed to prevent usage collisions with
+    other tests and people who are also using the same testbeds.
+
+    Some key features below. (Please read other feature docs for details):
+
+        Domains and User-Privileges:
+            - Create domains to group tests, testbeds and results
+            - The default domain is "Communal"
+            - Allow specific users as a member of each domain
+            - Configure user-roles for each domain: 
+                - User-Levels: Admin, Director, Manager, Engineer
+
+            - For Example: A user in domain-1 could be any of the above User-Levels
+
+            - Users who are not a member of the domain will not be be able to see the domain
+              in the Keystack UI.  They're not able to use domain Playbooks and Envs that 
+              they're not a member of.
+
+        Envs (Stands for Environment. Also known as testbeds):
+            - In Playbooks, state a static env to use for each stage or for each task
+            - If the env is not-shareable and if the env is being used by another test or by a 
+              user, your test session will wait until the required env is available.
+              NOTE: 
+                 - Keystack requires the keystack docker container running in order to manage env collision detection
+                 - If no docker container is running, the envs must be statically defined in Playbooks
+
+            - Group testbeds and give it a load-balancer name.
+            - Use Env load-balance names instead of a static env in playbooks to dynamically assign an available env
+              (Requires Keystack docker container)
+
+            - Envs could be shared or not-shared. Meaning if the env is set as shareable, all tests
+              could use the env at the same time
+            - pauseOnFailure and holdEnvsIfFailed test parameters:
+                 - pauseOnFailure: Pauses the test if a failure is encountered so you could debug the defect. 
+                                   Resume testing when done debugging
+
+                 - holdEnvsIfFailed: When the task is done and if the task has failed, the env is on hold for debugging
+                                     until you release it.
+                                     Requires Keystack docker container
+            - Schedule 1 or more envs to be reserved at a given date-time
+
+        Testcases:
+            - Yaml files describing a testcase, objectives, requirements, which script to run and 
+              which Jira defect issue ID to use for this testcase failure.
+
+        Playbooks:
+            - Defined test stages, task and testcases to execute
+            - Set dependencies. Meaning to exclude testcases if a specific prior testcase(s) failed
+            - Loop testing: If a bug is difficult to reproduce, set the test to run in a loop and include
+                            test parameter pauseOnFailure to pause the test when it fails
+            - Control enabling/disabling all Stages and Tasks.
+            - Use playlist to control which testcase and/or scripts to run.
+            - Schedule to run a playbook at a given date-time
+
+Keystack terminologies:
+    Env:           As known as testbeds, silos, bench, etc.
+                   Keystack abbreviates it with "env"
+                   An Env is a Yaml file that contains devices, IP Addresses, login credentials, etc
+    Pipeline:      As known as a test session that executes test cases
+    Playbook:      As known as test suite. It breaks down a test into stages, tasks and playlist 
+                   State the testcases and/or scripts to run in a playlist
+    Modules:       Think of this as apps/features folder. 
+                   Subfolders container supporting data config files, scripts and testcases
+    Stages:        A playbook could be given multiple stages. By default, the next stage will not run
+                   unless the previous stage passes. If the running stage fails, the test is a failure
+                   and aborts.
+    Tasks:         Used in playbooks in Stages. Give a meaningful name for a task along with the Env
+                   to use, a playlist of testcases and scripts to execute
+    Playlist:      A list of testcases, scripts or CLI commands to execute on the Keystack server 
+                
+
+Bring up or update Keystack:
+    - pip install keystack
+    - keystack setup -docker or keystack upgrade -docker (installing the latest)
+    - To install a specific version: keystack setup|upgrade -docker -version <version>
+
+      NOTE: "pip install Keystack" on the local Linux host 
+            and subsequently install Keystack container from dockerhub
+
+Keystack installation creates two folders:
+    1> /opt/KesytackTests
+    2> /opt/KeystackSystem
+
+Files and Folders in /opt/KeystackTests/Modules and /opt/KeystackSystem
+    - The folders are owned by users in the Linux OS's user "keystack" (lowercase-k) and 
+      user-group "Keystack" (upper case K)
+    - Anytime a user creates, modifies, deletes a file, a Keystack watchdog background process will
+      detect file changes and assure the files are owned by keystack:Keystack with permission 770
+
+    IMPORTANT: 
+        - If for some reason this does not happen, you must do:
+            sudo chown -r keystack:Keystack <file|folder> 
+            sudo chmod -r 770 <file|folder>
+
+      This will lock down the Keystack application from unwanted users
+      And this will allow other Keystack users to access your files and folders for testing
+
+[Keystack workflow]:
+
+Initial workflow setup in sequential order: 
+
+    - Create a Module in       -> /opt/KeystackTests/Modules/<module_name>
+    - Create a Testcase folder -> /opt/KeystackTests/Modules/<module_name>/Testcases
+    - Create Test cases        -> /opt/KeystackTests/Modules/<module_name>/Testcases/<testcase1.yml>
+    - Creata Envs              -> /opt/KeystackTests/Envs/DOMAIN=<domain>/<env1.yml>
+    - Create Playbooks         -> /opt/KeystackTests/Playbooks/DOMAIN=<domain>/<playbook1.yml>
+    # Pipelines are saved CLI command args that runs Keystack
+    - Create Pipelines         -> /opt/KeystackTests/Pipelines
+    - Create Testcases         -> /opt/KeystackTests/Testcases
+      (This /opt/KeystackTests/Modules/<module>/Testcases folder is an alternative place to store testcases in a central location)
+
+The structure is designed to enforce organized tests and testing environments (testbeds).
+The Keystack installation comes with samples for test-driving Keystack and to use for learning purpose.
+Take a look at the samples to get familiar with them.  Below are descriptions explaining what they are and how they're used.
+Please read the individual subject docs.
+
+    1> Modules
+        - Modules are user defined names to group subjects. Use it anyway you like to organize your features.
+        - Resides in /opt/KeystackTests/Modules/<module name>
+        - Contains subfolders: Testcases, ExportedConfigs, DataConfigs and Scripts
+          Refer to the samples in: /opt/KeystackTests/Modules/Demo
+        - In the Testcases folder, optionally create subfolders to group sub-cases
+        - Same goes for the Scripts and Envs folders
+
+        NOTE:
+            - Don't modify Keystack samples and expect them to persist because when you perform Keystack updates,
+              the samples will get updated and all of your modifications are gone.
+
+    2> Test cases
+        - Test cases are in .yml file format:
+        - Resides in /opt/KeystackTests/Modules/<module name>/Testcases
+          Alternatively, testcases can be centralized in /opt/KeystackTests/Testcases 
+        - It states which script to run, which app to use to run your scripts and everything about the testcase
+        - You could create subfolders to group and organize testcases 
+
+    3> Env
+        - Env are .yml files that contain devices such as /server names, IP addresses, login, ports, everything that describe 
+          a testbed, silo or environment for a test to use dynamically.
+        - Envs are under a DOMAIN name in which you have to create first
+        - Resides in /opt/KeystackTests/Envs/DOMAIN=<domain>/<env yml file>
+        - State which env to use for a test in playbooks
+        - If Keystack docker container is running, Keystack will automatically reserve the env for usage 
+          and unreserve the env when the test is done.
+
+    4> Playbook
+        - Playbooks are under a DOMAIN name in which you have to create first
+        - Playbooks are kept in /path/KeystackTests/Playbooks/DOMAIN=<domain>
+        - Keystack requires the -playbook param input that states which playbook to run for testing
+        - Most of the playbook params are common for globalSettings, stages and tasks
+        - The params set in globalSettings applies to all stages and tasks
+        - If the params are set in globalSettings, they could be overwritten in the stage level and if you set the same
+          param in the tasks level, the param value at the module level has the highest precedence. 
+          This makes testing agile and flexible.
+
+        - Playbooks are broken down into 4 areas:
+
+            1>  globalSettings
+            2>  stages:
+            3>      tasks:
+            4>          playlist:
+
+        globalSettings
+            - As the name implies, params in globalSettings applies to all stages and tasks by default
+            - The globalSettings params could be overwritten at any stages and tasks
+
+        Stages:
+            - A Playbook executes tests in stages. 
+              For example, you could create a Bringup stage, a Test stage, an Analytical stage and a Teardown stage
+              By default, each stage must pass in order to run the next stage.
+              This makes testing fast at understanding where the failure is at and this save time by not 
+              continue running remaining testcases.  However, if you like to continue testing other stages, set the 
+              params to False:
+
+                    - abortStageFailure: False      
+                    - abortTaskFailure: False 
+
+            - A stage could contain multiple tasks to run
+              You could set stages to run tasks in series or in concurrently for speed
+              For example:
+
+                  stages:
+                     <stage name>
+                        tasks:
+                          - Feature_Test_1:
+                            runtasksInConcurrently: False
+                            playlist:
+                                - /Modules/Test/Samples/Testcases
+
+         Tasks:
+            - State which env to use
+            - State which testcases or CLI command to run in playlist
+
+[Running keystack on CLI]
+
+    keystack -playbook DOMAIN=Communal/Samples/pythonSample
+    Alternatively:
+        keystack run -playbook Samples/pythonSample -domain Communal
+
+    # Add a test identifier to your test with the -sessionId parameter
+    keystack -playbook Samples/pythonSample -domain Communal -sessionId myTestId
+
+    - The above example states to use the pythonSample.yml playbook in the subfolder called Samples.
+    - The full path is /opt/KeystackTests/Playbooks/DOMAIN=<domain>/Demos/pythonSample
+    - Keystack automatically search for playbooks starting at the folder /opt/KeystackTests/Playbook/DOMAIN=<domain>
+
+New installation and Keystack updates come with samples.
+Keystack requires a -playbook input that states which test to run.
+
+Playbooks are kept in /path/KeystackTests/Playbooks
+
+[A simple Keystack Playbook]:
+
+    stages:
+        <stage name>:
+            tasks:
+                - <task name>:
+                  playlist:
+                     - /Modules/Demo/Samples/Testcases/bgp.yml
+
+- Playlist could be a folder. Keystack will run everything inside the Testcases folder including subfolders.
+- The bgp.yml file in the playlist is a test case file that states which python script to run
+
+- If your test requires testbeds, silos or any devices to use for testing, create an env yml 
+  file containing all the devices. Env yaml files are kept in /path/KeystackTests/Envs/DOMAIN=<domain>
+
+- You could create subfolders to group your envs.
+- Read Envs doc for details
+
+[A simple env yml file called env1.yml]:
+
+---
+location: San Jose
+notes: Add some notes
+
+devices:
+   device_1:
+      ipAddress: 192.168.28.11
+      ipPort: 23
+      connectionProtocol: telnet
+      loginName: hgee
+
+   # Alternatively, get device details from the KeystackUI Lab Inventory
+   device_1: get_device_details_from_inventory
+   device_2: get_device_details_from_inventory
+   
+dataConfigs:
+    param1: value0
+
+
+To specify the env to use for your test, add the env in the playbook:
+
+stages:
+    myStage:
+        tasks:
+            - <task name>:
+                env: DOMAIN=Communal/env1  <-- State which env to use when this Demo module runs
+                playlist:
+                    - /Modules/Demo/Samples/Testcases/bgp.yml
+
+If test case scripts need to retreive env resource values, go in your script:
+    from keystackEnv import keystack
+    print(keystack.taskProperties["envParams"]['dataConfigs'])
+
+[Playbook variables passed into scripts for usage]:
+
+If you need to create additional variables that are not in envs yml files and testcase yml files, you 
+could create variables in the playbook for scripts to consume:
+
+stages:
+    myStage:
+        tasks:
+            - <task name>:
+                env: DOMAIN=Communal/env1
+                playbookVars:  <-- all playbookVars param/value are passed into python scripts to consume
+                   serverIp: 10.10.10.1
+                   serverName: qa
+                   server: sanity
+                playlist:
+                    - /Modules/Demo/Samples/Testcases/bgp.yml
+
+[How to retreive variables created in playbooks]:
+
+    from keystackEnv import keystack
+    keystack.taskProperties["playbookVars"]
+
+[A simple testcase yaml file example]:
+
+    Example:
+        The example test case shown below states which python script to run if this testcase 
+        is included in the playbook playlist
+
+        Title: A stand alone python script
+        Description: QA
+        objective: BGP route stability
+        topology: L3
+        requirements:
+           - List of requirements here
+
+        # If you have predefined Jira Issues as testcases, state the
+        # Issue Key to use for appending failure descriptions to the existing Jira Issue Key.
+        jiraTestcaseIssueKey: KEYS-46
+
+        # Options:
+        #   standalonePythonScripts: No keystack integration. Run Python script as-is.
+        #   pythonScripts: Includes keystack integration.
+        #   shellScripts:
+        #   cliCommands: Run any app that the server supports
+        standalonePythonScripts:
+           - /opt/KeystackTests/Modules/Demo/Scripts/standalonePython.py
+        
+        cliCommands:
+          - python3.10 /Modules/Demo/Scripts/standalonePython.py
+
+        scriptCmdlineArgs:
+        - -dataModelFile /opt/KeystackTests/Modules/Demo/ConfigParameters/sample.json
+
+    For more details on testcase topic, please read the Testcases doc
+

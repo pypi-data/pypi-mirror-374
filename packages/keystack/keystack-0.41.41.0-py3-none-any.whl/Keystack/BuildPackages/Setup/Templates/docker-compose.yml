@@ -1,0 +1,56 @@
+version: '3.8'
+
+networks:
+  keystack-net:
+    driver: bridge
+
+    
+volumes:
+  prometheus_data: {}
+
+services:
+  mongo:
+    image: mongo:{mongoVersion}
+    container_name: mongo
+    hostname: keystackMongoDBHostname
+    restart: unless-stopped
+    volumes:
+      - {keystackSystemPath}/MongoDB:/data/db
+    expose:
+      - {mongoPort}
+    networks:
+      - keystack-net
+    
+  # Use {dockerHubUsername} to download/install image from dockerHub if user
+  # host has internet connection
+  keystack:
+    image: {dockerHubUsername}keystack:{keystackVersion}
+    container_name: keystack
+    restart: unless-stopped
+    volumes:
+      - {keystackTestPath}:{keystackTestPath}
+      - {keystackSystemPath}:{keystackSystemPath}
+      - /var/log/nginx:/var/log/nginx
+      - /var/lib/nginx:/var/lib/nginx
+      - /var/log/gunicorn:/var/log/gunicorn
+      - /var/run/gunicorn:/var/run/gunicorn
+      - /var/log/run:/var/log/run
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - {keystackPort}
+      #- {debugPort}
+    networks:
+      - keystack-net
+    ports:
+      - {keystackIp}:{keystackPort}:{keystackPort}
+      - {keystackIp}:{keystackSecuredPort}:{keystackSecuredPort}
+    #   - {keystackIp}:{debugPort}:{debugPort}
+    # environment:
+    #   - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+    #   - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    #env_file:
+    #   - .env
+    # network_mode: host
+
+
+  

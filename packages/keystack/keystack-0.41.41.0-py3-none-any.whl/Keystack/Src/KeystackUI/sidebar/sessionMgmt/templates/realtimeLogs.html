@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 style="margin-top: 3px;">DiscusIt Home Page</h1>
+    <ul>
+        {%for group in groups%}
+        <div id="{{group.uuid}}">
+            <li><a>{{group.name}}</a></li>
+            {% if request.user in group.members.all%}
+                <button id="leave-{{group.uuid}}" class="group_option" value="leave_group {{group.uuid}}">\
+                Leave</button>
+            {%else%}
+                <button id="join-{{group.uuid}}" class="group_option" value="join_group {{group.uuid}}">\
+                Join</button>
+            {%endif%}
+            {% if request.user in group.members.all%}
+            <button id="open-{{group.uuid}}" class="group_option" value="open_group {{group.uuid}}">\
+            Open</button>
+            {%endif%}
+        </div>
+        {%endfor%}
+    </ul>
+
+
+
+    Got to websocket Demo
+    <button onclick="websocket()" class="btn btn-sm btn-danger">Press me</button><br>
+
+    <div id="onOpen">onOpen Messages:</div>
+    <div id="onMessage">Messages:</div>
+
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+    // https://earthly.dev/blog/build-real-time-comm-app/
+
+    //var endpoint =wsStart + window.location.host + window.location.pathname
+    var onOpen = document.querySelector("#onOpen");
+    var onMessage = document.querySelector("#onMessage");
+    const endpoint = `ws://${window.location.host}/ws/testcaseLogs/`
+    var socket = new WebSocket(endpoint);
+    console.log(`----- endpont: ${endpoint}`)
+
+    function openSocket() {
+        socket.onopen = function(e) {
+            console.log('---- sending to servere onopen ----')
+            socket.send(JSON.stringify({"message": "Hi there, from client onOpen!"}));
+            //socket.send('hi there')
+        }
+    }
+    
+    function websocket() {
+        //var wsStart='ws://'
+        
+        openSocket();
+
+        /*
+        socket.onclose = function (e) {
+            console.log(`---- onclose unexpectedly: ${e.reason} ---`)
+        }
+        */
+
+        // Send to server
+        //document.querySelector("#pressMe").onclick = function (e) {
+        //console.log('--- user clicked press me. Sending message to server ---')
+        //socket.send(JSON.stringify({'message': 'Hi there, from client onOpen!'}))
+
+        // Listen from server
+        socket.onmessage = function(e) {
+            let data = JSON.parse(e.data);
+            data = data['payload']
+            console.log(`onmessage: type:${data.type}  data:${data}`);
+
+            switch(data.type){
+                case "send_message":
+                    console.log(`---- send_message ----`)
+                    var onMessage = document.querySelector("#onMessage");
+                    onMessage.innerHTML += `<br><br>+++++ ${data.message}`
+
+                    // Kick the server to send again
+                    socket.onopen();
+
+                    break;
+
+                case "leave_group":
+                    //leave_group_handler(data)
+                    console.log('---- leave_group ----')
+                    break;
+
+                case "join_group":
+                    //join_group_handler(data)
+                    console.log('---- join_group ----')
+                    break;
+            }
+
+            /*
+            if (data.type == 'send_message') {
+                var onMessage = document.querySelector("#onMessage");
+                console.log(`---- showing: ${data.message}`)
+                onMessage.innerHTML += `<br><br>+++++ ${data.message}`
+            }
+            */
+        }
+
+        socket.onopen();
+    }
+    
+
+</script>
+{% endblock extra_js %}

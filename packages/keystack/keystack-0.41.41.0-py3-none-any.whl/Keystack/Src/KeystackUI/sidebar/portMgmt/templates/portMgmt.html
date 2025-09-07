@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block extra_css %}
+    <link href={% static "commons/css/commons.css" %} rel="stylesheet" type="text/css">
+{% endblock extra_css%}
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="mainBodyDiv">
+    <div class="marginTop10px flexRowInlineBlockLeft">
+        <label class="testParameterSessionIdLabel paddingTop10px" for="layer1Name">Name:</label>&emsp;
+        <input id="layer1Name" type="text" class="form-control width300px" />
+    </div>
+
+    <div class="marginTop10px flexRowInlineBlockLeft">
+        <div class="dropdown">
+            <a class="dropdown-toggle" id="portDeviceTypeSelection" data-toggle="dropdown" role='button' aria-haspopup=true aria-expanded=false>
+                Select a Device Type
+            </a>&emsp;
+            <span id="insertSelectedDeviceType"></span>
+            <span id="insertCustomDeviceType"></span>
+            
+            <ul class="dropdown-menu dropdownMedium dropdownFontSize" id="selectPortMgmtDeviceType">
+                <li class="dropdown-item" deviceType="layer1Swich">Layer1 Switch</li>
+                <li class="dropdown-item" deviceType="layer2 Swich">Layer2 Switch</li>
+                <li class="dropdown-item" deviceType="trafficGenerator">Traffic Generator</li>
+
+                <li class="dropdown-item" deviceType="custom">
+                    <div class="flexRowInlineBlockLeft">
+                        <label class="testParameterSessionIdLabel paddingTop10px" for="layer1CustomInput">Custom Device Type:</label>&emsp;
+                        <input name="customInput" id="layer1CustomInput" type="text" class="form-control width200px" >&emsp;
+                        <button id="customDeviceTypeIdEnterButton" type="submit" class="btn btn-sm btn-outline-primary">Enter</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="marginTop10px flexRowInlineBlockLeft">
+        <label class="testParameterSessionIdLabel paddingTop10px" for="layer1Vendor">Vendor:</label>&emsp;
+        <input id="layer1Vendor" type="text" class="form-control width300px" >
+    </div>
+
+    <div class="marginTop10px flexRowInlineBlockLeft">
+        <label class="testParameterSessionIdLabel paddingTop10px" for="layer1Model">Model:</label>&emsp;
+        <input id="layer1Model" type="text" class="form-control width300px" >
+    </div>
+
+    <div class="marginTop10px flexRowInlineBlockLeft">
+        <label class="testParameterSessionIdLabel paddingTop10px" for="layer1SerialNumber">Serial Number:</label>&emsp;
+        <input id="layer1SerialNumber" type="text" class="form-control width300px" >
+    </div>
+
+    <div class="marginTop10px flexRowInlineBlockLeft">
+        <label class="testParameterSessionIdLabel paddingTop10px" for="layer1Location">Location:</label>&emsp;
+        <input id="layer1Location" type="text" class="form-control width300px" >
+    </div>
+
+    <div class="marginTop10px flexRowInlineBlockLeft">
+        <label class="testParameterSessionIdLabel paddingTop10px" for="layer1IpAddress">IP Address:</label>&emsp;
+        <input id="layer1IpAddress" type="text" class="form-control width300px" >&ensp;&ensp;
+
+        <label class="testParameterSessionIdLabel paddingTop10px" for="layer1IpPort">IP Port:</label>&emsp;
+        <input id="layer1IpPort" type="text" class="form-control width100px" >
+    </div>
+
+    <div class="marginTop10px flexRowInlineBlockLeft">
+        <label class="testParameterSessionIdLabel paddingTop10px" for="layer1LoginName">Login Name:</label>&emsp;
+        <input id="layer1LoginName" type="text" class="form-control width300px" >
+    </div>
+
+    <div class="marginTop10px flexRowInlineBlockLeft">
+        <label class="testParameterSessionIdLabel paddingTop10px" for="layer1Password">Password:</label>&emsp;
+        <input id="layer1Password" type="text" class="form-control width300px" >
+    </div>
+
+    <div class="marginTop10px flexRowInlineBlockLeft">
+        <label class="testParameterSessionIdLabel paddingTop10px" for="layer1IpSSHProtocol">Connection Protocol:</label>&emsp;
+        <input class="marginBottom10px"  id="layer1IpSSHProtocol" type="radio" name="connectProtocol" value="ssh" checked>&nbsp;SSH&emsp;&emsp;
+        <input class="marginBottom10px"  id="layer1IpTelnetProtocol" type="radio" name="connectProtocol" value="telnet">&nbsp;Telnet&emsp;&emsp;
+    </div>
+    <br>
+
+    <span>Add Ports Manually</span><br>
+    <textarea id="addPortsManuallyTextAreaId" cols="100" rows="5"></textarea><br>
+    <br>
+
+    <button id="layer1CreateProfileButton" type="submit" class="btn btn-sm btn-outline-primary">Create New Profile</button>
+  </div>
+</div>
+<br>
+
+{% endblock content %}
+
+{% block extra_js %}
+    <script type="module" src="{% static 'commons/js/portMgmt.js' %}"></script>
+{% endblock extra_js%}

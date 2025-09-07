@@ -1,0 +1,283 @@
+Playbook Overview:
+------------------
+   Playbooks are test-suites
+   They are organized in Domains
+   All testings are done in Stages. Stages are performed in sequential order.
+   The current stage must pass in order to perform the next stage.
+   In each stage, create 1 or more tasks
+   In each Task, state 1 or more of the followings:
+      - Testcase YAML files to execute
+      - Python scripts to execute
+      - CLI commands to execute
+
+   - Playbooks are located in /opt/KeystackTests/Playbooks/DOMAIN=<domain>
+   - Create subfolders in the Playbook domains folder to organize playbooks
+
+
+Below are Playbook parameters that defines a test-suite for a single test:    
+--------------------------------------------------------------------------
+
+# The following parameters under globalSettings applies to the 
+# all the Stages and Tasks. Some parameters could be overwritten at the 
+# stage-level and task-level
+# 
+# Parameters that could be overwritten at each level are the followings:
+#      abortStageOnFailure
+#      abortTaskOnFailure
+#      verifyFailurePatterns
+#      env
+#      playbookVars 
+#      loadBalanceGroup 
+globalSettings:
+    # For AWS-S3 and Jira automatic bug tracking. 
+    # Select a login credential key name that you created in 
+    # /opt/KeystackSystem/keystackSystemSettings.env.
+    # There is a default key called keystack
+    # Set to null if not using aws_s3 or Jira. Otherwise, keystack
+    # will look for values that cannot be null. Will abort the test.
+    loginCredentialKey: keystack
+
+    # How many days to keep test results
+    showResultDataLastDays: 10
+
+    # Placeholder at the moment: Used for graphing historical test results
+    trackResults: False
+
+    # Abort the current task testcase immediately if the test case failed
+    # and move on to test the next task. This will skip the rest of the task  
+    # playlist and jump to the task's teardown if exists. 
+    # If you don't want to perform a task teardown, add this param in the task
+    # teardown: teardownOnFailure=False
+    # This parameter could be set in globalSettings, stage and task
+    # Default = False
+    abortTaskOnFailure: False
+
+    # Abort the testing stage if there is a failure
+    # This will skip all other stages as well.
+    # Jump to the task's Teardown if exists and stage teardown if exists.
+    # If you don't want to perform a task teardown and stage teardown, add 
+    # this param in the task teardown and the stage Teardown: teardownOnFailure=False
+    # Set to False to continue running all other stages
+    # Default = True
+    abortStageOnFailure: False
+
+    # Abort the test immediately if a testcase failed.
+    # Will not jump to Teardown.
+    # User could also pass in -abortTestOnFailure on CLI, which has 
+    # precedence over the abortTestOnFailure in playbooks
+    # Default = False
+    abortTestOnFailure: False 
+
+    # For test report: Add some key/value to decorate the report
+    # Will be shown near the top of the test report
+    reportHeadingAdditions:
+       - key: ''
+
+    # For standalone Python scripts and bash shell script that don't import keystackEnv
+    # Add word patterns to check for failures in a running script
+    # These word patterns are Python regex
+    # This parameter could be set in globalSettings, stage and task
+    verifyFailurePatterns: ['Failed', 'SyntaxError']
+
+    # The loadbalance group to use for the test.
+    # NOTE: If 'env' is stated at the stage level or at task level,
+    #       the static env has higher precedence over load balance group
+    # This parameter could be set in globalSettings, stage and task
+    loadBalanceGroup: <load balance group name>
+
+    # The env to use for the test.
+    # Must begin with DOMAIN=<domain>/ 
+    # This parameter could be set in globalSettings, stage and task
+    # If loadBalanceGroup is used, enter 'not-required' as value if env is not required 
+    # Otherwise, the defined env has precedence over load-balanced env
+    env: <env name>
+
+    # Create some custom variables for scripts and apps to consume.
+    # Variables could also be at the stage level and task level.
+    #
+    # How to consume variables inside scripts:
+    #   from keystackEnv import keystack
+    #   keystack.taskProperties['playbookVars']['deleteSession']
+    playbookVars:
+      rebootAgentsBeforeEachTest: False
+      waitTimeBetweenTests: 0
+      deleteSession: True
+      deleteSessionOnFailure: True
+      abortOnFailure: False
+      getPdfResultsFile: True
+      getCsvResultsFile: True
+      getCapturesAndLogs: True
+      # This param is specific to an call called LoadCore, but you could still use it
+      deleteTestLogsAndResultsOnLoadCore: True
+
+
+# A playbook must begin with <stages>
+# In stages, you could run 1 or more tasks
+# Setup Tasks could be executed in series or in parallel by setting runTasksConcurrently
+stages:
+   # The <Setup> stage is optional. If you include it, Keystack will
+   # run this first.  If this Setup stage fails, then it will jump to
+   # the <Teardown> stage if it exists and skip the rest of stages.
+   Setup:
+      enable: True
+      runTasksConcurrently: False
+
+      tasks:
+         - testBringups:
+            enable: True
+            playlist:
+               # playlist are testcase YAML files and/or python scripts
+               # They could reside in:
+               #    - /opt/KeystackTests/Modules/<module_name>/Testcases
+               # Begin the path with either short-cut Modules or /Modules or /opt/KeystackTests/Modules
+               # The path could be either a folder or YAML files
+               # If the path is a folder, Keystack will execute all the YAML testcase files recursively
+               # If you don't want to run recursively, state each YAML individually
+               - Modules/Demo/Testcases/Samples/Bringups.yml
+               - Modules/Demo/Testcases/L2L3/BGP/routeConvergence.yml
+
+
+   # <Test> is the stage name
+   Test:
+      # Enable | disable this stage
+      enable: True
+
+      # Run all the stage tasks in parallel (True) or in series (False)
+      runTasksConcurrently: False
+
+      # The following parameters applies to all the modules in this stage
+      # Could be overwritten in the modules level
+      # NOTE: Cannot set both env and loadbalance. It's one or the other.
+      #       Otherwise, load balance will be used
+      env: DOMAIN=Communal/Samples/demo
+      loadBalanceGroup: None
+
+      # <tasks> inside stages
+      # A stage could run multiple tasks in series or in parallel
+      tasks:
+         # Optional: Run task Setup scripts. Setup is a Keystack built-in task.
+         #           If there's any failure, the rest of the tasks are skipped.
+         #           If there is a Teardown task, teardown will be performed unless teardownOnFailure=False.
+         - Setup:
+            enable: True
+            playlist:
+               - Modules/Demo/Testcases/L2L3/setup_dut1.yml
+               - Modules/Demo/Testcases/L2L3/setup_dut2.yml
+
+         - Layer3:
+            enable: True
+
+            # optional parameters
+            abortTaskOnFailure: False
+            env: DOMAIN=qa/pythonSample
+            loadBalanceGroup: regression
+
+            # Overwriting the globalSettings playbookVars with 
+            # these two key value pairs
+            playbookVars:
+               key1: value1
+               key2: value2
+
+            # Optional: Don't run some test cases.
+            #            Must include .yml extension
+            playlistExclusions:
+               - Modules/Demo/Testcases/isis.yml
+
+            # Playlist could be:
+            #   - folders
+            #   - test case yaml files 
+            #   - .sh|.bash|.py files
+            #       - Python scripts supports imorting keystackEnv to consume Keystack 
+            #         resources in the scripts (env ip addresses, login credentials, ports, etc)
+            # 
+            #       - verifyFailurePattern is still supported
+            #       Note: Keystack looks for a keyword keystackEnv in the standalone python script to determine if 
+            #             it has to use verifyFailurePattern for non keystackEnv scripts
+            #
+            # If it is a folder, Keystack will automatically run everything inside folders.
+            # To exclude some testcases in a folder, use <playlistExclusions> as shown 
+            # above to exclude 1 or more testcases in a list
+            #
+            # You could specify full path testcases individually also beginning with /Modules
+            #
+            # NOTE:
+            #    - Standalone scripts could reside anywhere in the server's file system
+            #    - State the full path to the file
+            #    - Otherwise, testcasee .yml files resides in /opt/KeystackTests/Modules/<module_name>/Testcases
+            playlist:
+               - Modules/Demo/Testcases/Testcases/bgp.yml
+               - Modules/Demo/Testcases/standalonePython.yml
+               - Modules/Demo/Testcases/bashScript.yml
+               - full_path_to/plainPythonScript.py  -arg1 1.1.1.1  -arg2 ssh
+               - full_path_to/shellScript.sh
+
+
+            # Optional: How many times do run a testcase
+            #           Everything is default to 1
+            outerLoop: 1
+            innerLoop:
+               # All testcases will run x number of times for each outerLoop
+               allTestcases: 1
+
+               # Same goes for all testcases inside folders, which include subfolders too
+               # folders:
+               #    - /Modules/Demo/Testcases: 3
+
+               # Same goes for individual testcasess
+               #testcases:
+               #    - /Modules/Demo/Testcases/bgp.yml: 10
+
+            # Optional: For each testcase in dependenciesto run, they depend on some
+            # other test cases to pass in order to run 
+            dependencies:
+               # For this test case isis.yml to run, the testcase bgp.yml must pass
+               /Modules/Demo/Testcases/isis.yml:
+                  enable: False
+                  dependOnCases:
+                     - /Modules/Demo/Testcases/bgp.yml
+
+         # This is a task Teardown is a Keystack built-in task that runs by default after all the tasks are done
+         - Teardown:
+            enable: True
+
+            # Default = True
+            # If abortOnStageFailure=True or abortTaskOnFailure=True, teardown will be
+            # executed. To disable teardown, set this param teardownOnFailure=True
+            #teardownOnFailure: False
+
+            playlist:
+               - Modules/Demo/Testcases/L2L3/teardown.yml
+
+   # This is a stage Teardown.
+   Teardown:
+      enable: True
+      runTasksConcurrently: False
+
+      # Default = True
+      # If abortOnStageFailure=True or abortTaskOnFailure=True, teardown will be
+      # executed. To disable teardown, set this param teardownOnFailure=True
+      teardownOnFailure: False
+
+      tasks:
+         - Teardown:
+            enable: True
+            
+            # You could set the env with a "not-required" value to state that this module will
+            # not be using an env for teardown.
+            # not-required is used for excluding the defined Env at globalSettings if the env 
+            # or loadBalanceGroup
+            env: not-required
+            playlist:
+               - Modules/Demo/Testcases/Teardowns.yml
+
+
+How to use playbook properties inside python scripts:
+-----------------------------------------------------
+    from keystackEnv import keystack
+    keystack.taskProperties
+    keystack.taskProperties["playbookVars"]
+
+    # Every test comes with an artifacts-folder to store data to share across stages, task, testcases and scripts
+    # The artifactsFolder is stored in the pipeline's test result folder called Artifacts
+    # Example: /opt/KeystackTests/Results/DOMAIN=Communal/PLAYBOOK=Samples-advance/12-15-2024-13:15:14:636261_2227/Artifacts
+    keystack.taskProperties["artifactsFolder"]

@@ -1,0 +1,595 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link href={% static "commons/css/commons.css" %} rel="stylesheet" type="text/css">
+{% endblock extra_css%}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div id="inventoryAttributes" domain={{domain}}></div>
+
+    <div class="mainBodyDiv">
+        <!-- sticky-top second-nav -->
+        <nav class="navbar navbar-expand-sm topbar fixed-top secondNavbarStyle">
+            <div class="insertInlineBlock marginTop20px">
+                <a href="#" id='showAddDeviceForm' role='button' aria-haspopup=true aria-expanded=false>Add-Device</a>&emsp;&emsp;&emsp;
+                <a href="#" id="deleteDevices" role='button' aria-haspopup=true aria-expanded=false data-bs-toggle="modal" data-bs-target="#deleteDeviceModal">Delete-Devices</a>&emsp;&emsp;&emsp;
+                <a href="#" id='showInventoryTableNavLink' role='button' aria-haspopup=true aria-expanded=false><span class="inventoryNavLink hideFromUser">Inventory&emsp;&emsp;&emsp;</span></a>
+
+                <!-- The exportCSV GET will generate a zipped CSV file for user to download as a HTTPResponse return -->
+                <a id="exportDevicesToCSV" href="{% url 'exportCSV' %}?domain={{domain}}">Export Devices To CSV</a>&emsp;&emsp;&emsp;
+
+                <a id="importCSVDevices" href="#" role='button' aria-haspopup=true aria-expanded=false data-bs-toggle="modal" data-bs-target="#importDevicesCSVModal">Import CSV Devices</a>&emsp;&emsp;&emsp;
+
+                <a href="#" id="addDevicesToEnv" role='button' aria-haspopup=true aria-expanded=false >Add Devices To Env</a>&emsp;&emsp;&emsp;
+
+                <div class="dropdown  insertInlineBlock">
+                    <a id="createFilters" class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup=true aria-expanded=false> Create/Remove Filters</a>
+                    <ul id="selectDeviceTypeFilter" class="dropdown-menu" aria-labelledby="">
+
+                        <li class="mainFontSize textBlack paddingLeft20px"><a id="manageDeviceTypeFilters" href="#" role='button' aria-haspopup=true aria-expanded=false data-bs-toggle="modal" data-bs-target="#manageDeviceTypesModal">Device Types</a></li>
+
+                        <li class="mainFontSize textBlack paddingLeft20px"><a id="manageDeviceLocationFilters" href="#" role='button' aria-haspopup=true aria-expanded=false data-bs-toggle="modal" data-bs-target="#manageDeviceLocationsModal">Device Locations</a></li>
+
+                        <li class="mainFontSize textBlack paddingLeft20px"><a id="manageDeviceVendorFilters" href="#" role='button' aria-haspopup=true aria-expanded=false data-bs-toggle="modal" data-bs-target="#manageDeviceVendorsModal">Device Vendors</a></li>
+                    </ul>
+                </div>
+                &emsp;&emsp;
+
+                <a href="#" id="inventoryAddInventoryColumn" role='button' aria-haspopup=true aria-expanded=false data-bs-toggle="modal" data-bs-target="#inventoryAddRemoveKeysModal">Add / Remove Fields</a>&emsp;&emsp;&emsp;
+
+                <div id="portConnections"></div>
+                &emsp;&emsp;
+            </div>
+        </nav>
+
+        <div class="row">
+            <div class="flexRowInlineBlockLeft">
+                Devices Per Page:&emsp;
+
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary btn-lg dropdown-toggle" type="button" id="setDevicesPerPageDropdown" data-toggle="dropdown" aria-expanded="false"></button>
+                    <ul class="dropdown-menu" aria-labelledby="setDevicesPerPageDropdown" id="setDevicesPerPage">
+                        <li class="paddingLeft20px textBlack">25</li>
+                        <li class="paddingLeft20px textBlack">50</li>
+                        <li class="paddingLeft20px textBlack">100</li>
+                        <li class="paddingLeft20px textBlack">300</li>
+                    </ul>
+                </div>&emsp;&emsp;
+                <div id="insertPagination"></div>
+            </div>
+        </div>
+
+        <div class='hideFromUser' id="addDeviceForm">
+            <i>Each device must have a unique name</i>
+            <div class="flexRowInlineBlockLeft">
+                <label class="testParameterSessionIdLabel paddingTop10px" for="newDeviceName">Name:</label>&emsp;
+                <input id="newDeviceName" type="text" class="form-control width300px marginTop10px" />
+            </div>
+
+            <div class="flexRowInlineBlockLeft">
+                <label class="testParameterSessionIdLabel paddingTop10px" for="newDeviceNotes">Notes:</label>&emsp;
+                <input id="newDeviceNotes" type="text" class="form-control marginTop10px" style="width:500px" />
+            </div>
+
+            <div class="marginTop10px flexRowInlineBlockLeft">
+                <label class="testParameterSessionIdLabel paddingTop10px" for="newDeviceIpAddress">IP Address:</label>&emsp;
+                <input id="newDeviceIpAddress" type="text" class="form-control width300px marginTop10px" >&ensp;&ensp;
+
+                <label class="testParameterSessionIdLabel paddingTop10px" for="newDeviceIpPort">IP Port:</label>&emsp;
+                <input id="newDeviceIpPort" type="text" class="form-control width100px marginTop10px" >
+            </div>
+
+            <div class="marginTop10px flexRowInlineBlockLeft">
+                <label class="testParameterSessionIdLabel paddingTop10px" for="newDeviceLoginName">Login Name:</label>&emsp;
+                <input id="newDeviceLoginName" type="text" class="form-control width300px marginTop10px" >
+            </div>
+
+            <form>
+                {% csrf_token %}
+                <div class="marginTop10px flexRowInlineBlockLeft">
+                    <label class="testParameterSessionIdLabel paddingTop10px" for="newDevicePassword">Password:</label>&emsp;
+                    <input id="newDevicePassword" type="password" class="form-control width300px marginTop10px" autocomplete='no' >
+                </div>
+            </form>
+
+            <div class="marginTop10px flexRowInlineBlockLeft">
+                <label class="testParameterSessionIdLabel" for="newDeviceIpSSHProtocol">Connection Protocol:</label>&emsp;
+                <input class="marginBottom10px"  id="newDeviceIpSSHProtocol"    type="radio" name="connectProtocol" value="ssh" checked />&nbsp;SSH&emsp;&emsp;
+                <input class="marginBottom10px"  id="newDeviceIpTelnetProtocol" type="radio" name="connectProtocol" value="telnet" />&nbsp;Telnet&emsp;&emsp;
+            </div>
+
+            <div class="marginTop10px"><i>Create a new device-type on the Filters link if it is not in the dropdown menu</i></div>
+            <div class="flexRowInlineBlockLeft">
+                <div id="insertDeviceTypeOptions"></div> <div class="marginLeft10px"  id="insertSelectedDeviceType"></div>
+            </div><br>
+
+            <div class="marginTop10px"><i>Create a new location on the Filters link if it is not in the dropdown menu</i></div>
+            <div class="flexRowInlineBlockLeft">
+                <div id="insertLocationOptions"></div> <div class="marginLeft10px"  id="insertSelectedLocation"></div>
+            </div><br>
+
+            <div class="marginTop10px"><i>Create a new vendor on the Filters link if it is not in the dropdown menu</i></div>
+            <div class="flexRowInlineBlockLeft">
+                <div id="insertVendorOptions"></div> <div class="marginLeft10px"  id="insertSelectedVendor"></div>
+            </div><br>
+
+            <div class="marginTop10px flexRowInlineBlockLeft">
+                <label class="testParameterSessionIdLabel paddingTop10px" for="newDeviceModel">Model:</label>&emsp;
+                <input id="newDeviceModel" type="text" class="form-control width300px marginTop10px" >
+            </div>
+
+            <div class="marginTop10px flexRowInlineBlockLeft">
+                <label class="testParameterSessionIdLabel paddingTop10px" for="newDeviceSerialNumber">Serial Number:</label>&emsp;
+                <input id="newDeviceSerialNumber" type="text" class="form-control width300px marginTop10px" >
+            </div>
+
+            <div class="marginTop10px flexRowInlineBlockLeft">
+                <label class="testParameterSessionIdLabel paddingTop10px" for="assetTag">Asset Tag:</label>&emsp;
+                <input id="assetTag" type="text" class="form-control width300px marginTop10px" >
+            </div>
+
+            <div class="marginTop10px">Add Ports:</div>
+            <span>&emsp;&emsp;Ex: 2/5-10           This creates five ports: 2/5, 2/6, 2/7, 2/8/ 2/9, 2/10</span><br>
+            <span>&emsp;&emsp;Ex: 1/1-10, 2/1      Separate ranges and individual ports with commas</span><br>
+            <span>&emsp;&emsp;Ex: Ethernet1/1/1-5  You could include interface prefixes</span><br>
+            <span>&emsp;&emsp;Ex: 1.1.1-5          Dots or forward slashes are accepted</span><br>
+            <textarea id="addPortsManuallyTextAreaId" cols="100" rows="5"></textarea><br>
+            <br>
+
+            <button id="addDeviceButton" type="submit" class="btn btn-sm btn-outline-primary">Add Device</button>
+        </div>
+
+        <div class="row tableStyle hideFromUser" id="showInventory">
+            <div class="row" id="insertInventoryTable"></div>
+        </div>
+
+        <br>
+    </div>
+</div> 
+
+<div class="modal" id="editDeviceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="false"
+aria-labelledby="editDeviceLabel">
+    <div id="editDeviceLabel" class="modal-dialog modal-dialog-scrollable textBlack ">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div class="fileRowInlineBlockRight">
+                    <h6 class="modal-title">Edit Device:&ensp;<span id=insertDeviceName></span></h6>
+                    <div id="insertStatus"></div>
+                </div>
+            </div>
+
+            <div class="modal-body" >
+                <!-- Device Type -->
+                <div class="flexRowInlineBlockLeft">
+                    <div class="editDeviceTypeSelection hide" id="insertDeviceTypeDropdownForEdit"></div>
+                    <div class="editDeviceTypeSelection hide" id="insertSelectedDeviceTypeForEdit"></div>
+                </div>
+
+                <!-- Device Location -->
+                <div class="flexRowInlineBlockLeft">
+                    <div class="editDeviceLocationSelection hide" id="insertDeviceLocationDropdownForEdit"></div>
+                    <div class="editDeviceLocationSelection hide" id="insertSelectedDeviceLocationForEdit"></div>
+                </div>
+
+                <div class="flexRowInlineBlockLeft">
+                    <div class="editDeviceVendorSelection hide" id="insertDeviceVendorDropdownForEdit"></div>
+                    <div class="editDeviceVendorSelection hide" id="insertSelectedDeviceVendorForEdit"></div>
+                </div>
+
+                <div class="flexRowInlineBlockLeft">
+                    <label class="testParameterSessionIdLabel editDeviceIpAddress hide" for="ipAddressInput" id="ipAddress"></label>
+                    <input class="form-control width300px editDeviceIpAddress hide" id="ipAddressInput"  type="text">
+                </div>
+
+                <div class="flexRowInlineBlockLeft">
+                    <label class="testParameterSessionIdLabel editDeviceIpPort hide" for="ipPortInput" id="ipPort"></label>
+                    <input class="form-control width300px editDeviceIpPort hide" id="ipPortInput" type="text">
+                </div>
+
+                <div class="flexRowInlineBlockLeft">
+                    <label class="testParameterSessionIdLabel editDeviceLoginName hide" for="loginNameInput" id="loginName"></label>
+                    <input class="form-control width300px editDeviceLoginName hide" id="loginNameInput" type="text">
+                </div>
+
+                <span class="editDeviceLoginPassword hide" id="insertDevicePassword">mypassword</span><br><br>
+                <div class="flexRowInlineBlockLeft">
+                    <label class="testParameterSessionIdLabel editDeviceLoginPassword hide" for="loginPasswordInput" id="password"></label>
+                    <input class="form-control width300px editDeviceLoginPassword hide" id="loginPasswordInput" type="text">
+                </div>
+
+                <div class="flexRowInlineBlockLeft">
+                    <label class="testParameterSessionIdLabel editDeviceSerialNumber hide" for="serialNumberInput" id="serialNumber"></label>
+                    <input class="form-control width300px editDeviceSerialNumber hide" id="serialNumberInput" type="text" >
+                </div>
+
+                <div class="flexRowInlineBlockLeft">
+                    <label class="testParameterSessionIdLabel editDeviceModel hide" for="modelInput" id="model"></label>
+                    <input class="form-control width300px editDeviceModel hide" id="modelInput" type="text">
+                </div>
+
+                <!-- Notes -->
+                <label class="testParameterSessionIdLabel editDeviceNotes hide" for="deviceNotesTextareaId" id="notes"></label>
+                <textarea id="deviceNotesTextareaId" class="editDeviceNotes" cols="60" rows="15"></textarea>
+
+                <!-- Connection Protocol -->
+                <div class="flexRowInlineBlockLeft">
+                    <label class="testParameterSessionIdLabel paddingTop5px editConnectionProtocol hide">Connection Protocol:&emsp;</label>
+                    <input class="editConnectionProtocol hide" type="radio" name="connectProtocol" value="ssh" checked/><span class="editConnectionProtocol hide marginTop15px">&nbsp;SSH&emsp;&emsp;</span>
+                    <input class="editConnectionProtocol hide" type="radio" name="connectProtocol" value="telnet"/><span class="editConnectionProtocol hide marginTop15px" >&nbsp;Telnet&emsp;&emsp;</span>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="editDeviceButton">Edit</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="closeEditModal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="deleteDeviceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true"
+aria-labelledby="deleteDeviceLabel">
+    <div id="deleteDeviceLabel" class="modal-dialog modal-dialog-scrollable dropdownSizeSmall2">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div class="flexRowInlineBlockRight">
+                    <h6 class="modal-title"><span class="textBlack">Delete Device</span>&ensp;</h6>
+                </div>
+            </div>
+
+            <div class="modal-body marginTop2px">
+                <div class="row">&ensp;&ensp;<span class="textBlack">Are you sure that you want to delete these devices?</span></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="deleteDevicesButton">Delete</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="editFieldOptionsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true"
+aria-labelledby="editFieldOptionsModalLabel">
+    <div id="editFieldOptionsModalLabel" class="modal-dialog modal-dialog-scrollable dropdownSizeSmall2">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div class="flexRowInlineBlockRight">
+                    <h6 class="modal-title"><span class="textBlack">Delete Device</span>&ensp;</h6>
+                </div>
+            </div>
+
+            <div class="modal-body marginTop2px">
+                <div class="row">&ensp;&ensp;<span class="textBlack">Are you sure that you want to delete these devices?</span></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="editFieldOptionsButton">Delete</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="inventoryAddRemoveKeysModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true"
+aria-labelledby="inventoryAddRemoveKeys">
+    <div id="inventoryAddFields" class="modal-dialog modal-dialog-scrollable dropdownSizeExtraLarge2">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div class="flexRowInlineBlockLeft">
+                    <h6 class="modal-title textBlack">Domain: <span id="inventoryInsertDomainForFields"></span></h6>
+                </div>
+            </div>
+
+            <div class="modal-body marginTop2px"> 
+                <!-- ADD NEW Field -->
+                <div class="input-group mb-3">
+                    <input id="inventoryKeyNameInput" type="text" class="form-control inputBoxWidth300px textBlack" aria-label="Field name" placeholder="New field name">    
+                </div>                 
+                <br>
+
+                <div class="flexRowInlineBlockLeft">
+                    <select id="inventoryValueType">
+                        <option selected disabled value="">Option Type</option>
+                        <option value="options">Create option-list</option>
+                        <option value="Boolean: True">Boolean: True</option>
+                        <option value="Boolean: False">Boolean: False</option>
+                    </select>
+                    &emsp;&emsp;
+
+                    <div class="input-group">
+                        <input id="inventoryKeyValueInput" class="form-control inputBoxWidth200px textBlack" type="text"  aria-label="key value" placeholder="Field options">
+
+                        <input id="inventoryDefaultKeyValueInput" class="form-control inputBoxWidth200px textBlack" type="text"  aria-label="Default key value" placeholder="Default selection">
+
+                        <button id="inventoryAddKeyButton" class="btn btn-primary" type="button">Add Field</button>
+                    </div>
+                </div>
+                <span><i class="marginLeft150px normalFontWeight textBlack">&ensp;&ensp;&ensp;Create a value-list for users to select. Separate words with commas.</i></span><b>
+                <br><br>
+
+                <div class="row">
+                    <table id="inventoryRemoveKeyTable" class="tableFixHead2">   
+                        <thead>
+                            <tr>
+                                <th>Select</th>
+                                <th>Field</th>
+                                <th>Type</th>
+                                <th>Default-Value</th>
+                                <th>Options</th>
+                            </tr>
+                        </thead>
+            
+                        <tbody id="inventoryRemoveKeyTableData"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="inventoryRemoveKeysButton">Remove Fields</button>
+                <button type="button" class="btn btn-danger" id="closeInventoryRemoveKeysModal" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="importDevicesCSVModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true"
+aria-labelledby="importDevicesCSVLabel">
+    <div id="importDevicesCSVLabel" class="modal-dialog modal-dialog-scrollable dropdownSizeMedium">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div class="flexRowInlineBlockRight">
+                    <h6 class="modal-title textBlack">Import Devices&ensp;</h6>
+                </div>
+            </div>
+
+            <div class="modal-body marginTop2px">
+                <label class="modalTextColor" for="overwriteExistingDevicesCheckbox">Overwrite key values on existing devices</label>:&ensp;
+                <input class="paddingTop10px" type="checkbox" id="overwriteExistingDevicesCheckbox" /><br><br>
+
+                <!-- https://uploadcare.com/blog/how-to-upload-files-using-js/ -->
+                <form id="formImportCSV" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input id="importDomainInventoryCSVInput" name="importCsvFile" type="file" accept=".csv" /><br><br>
+                    <button class="btn btn-primary btn-sm" type="submit">Import CSV File</button>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="manageDeviceTypesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true"
+aria-labelledby="manageDeviceTypesLabel">
+    <div id="manageDeviceTypesLabel" class="modal-dialog modal-dialog-scrollable dropdownSizeMediumExraHeight">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div class="flexRowInlineBlockRight">
+                    <h6 class="modal-title textBlack">Add/Remove Device Types&ensp;</h6>
+                </div>
+            </div>
+
+            <div class="modal-body marginTop2px">
+                <div class="flexRowInlineBlockLeft">
+                    <label class="testParameterSessionIdLabel paddingTop10px textBlack normalFontWeight" for="deviceTypeInput">Add New Device Type:</label>&emsp;
+                    <input name="deviceTypeInput" id="deviceTypeInput" type="text" class="form-control width200px marginTop10px" >&emsp;
+                    <button id="createDeviceTypeEnterButton" type="submit" class="btn btn-sm btn-outline-primary marginTop10px">Add</button>
+                </div>
+
+                <div class="marginTop20px" id="insertDeviceTypesTable"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="removeDeviceTypesFilterButton" class="btn btn-primary" type="button">Remove Device Types</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="manageDeviceLocationsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true"
+aria-labelledby="manageDeviceLocationsLabel">
+    <div id="manageDeviceLocationsLabel" class="modal-dialog modal-dialog-scrollable dropdownSizeMediumExraHeight">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div class="flexRowInlineBlockRight">
+                    <h6 class="modal-title textBlack">Add/Remove Device Locations&ensp;</h6>
+                </div>
+            </div>
+
+            <div class="modal-body marginTop2px">
+                <div class="flexRowInlineBlockLeft">
+                    <label class="testParameterSessionIdLabel paddingTop10px textBlack normalFontWeight" for="deviceLocationInput">Add new location:</label>&emsp;
+                    <input name="deviceLocationInput" id="deviceLocationInput" type="text" class="form-control width200px marginTop10px" >&emsp;
+                    <button id="createDeviceLocationEnterButton" type="submit" class="btn btn-sm btn-outline-primary marginTop10px">Enter</button>
+                </div>
+
+                <div class="marginTop20px" id="insertDeviceLocationsTable"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="removeDeviceLocationsFilterButton" class="btn btn-primary" type="button">Remove Locations</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="manageDeviceVendorsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true"
+aria-labelledby="manageDeviceVendorsLabel">
+    <div id="manageDeviceVendorsLabel" class="modal-dialog modal-dialog-scrollable dropdownSizeMediumExraHeight">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div class="flexRowInlineBlockRight">
+                    <h6 class="modal-title textBlack">Add/Remove Device Vendors&ensp;</h6>
+                </div>
+            </div>
+
+            <div class="modal-body marginTop2px">
+                <div class="flexRowInlineBlockLeft">
+                    <label class="testParameterSessionIdLabel paddingTop10px textBlack normalFontWeight" for="deviceVendorInput">Add new Vendor:</label>&emsp;
+                    <input name="deviceVendorInput" id="deviceVendorInput" type="text" class="form-control width200px marginTop10px" >&emsp;
+                    <button id="createDeviceVendorEnterButton" type="submit" class="btn btn-sm btn-outline-primary marginTop10px">Enter</button>
+                </div>
+
+                <div class="marginTop20px"  id="insertDeviceVendorsTable"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="removeDeviceVendorsFilterButton" class="btn btn-primary" type="button">Remove Vendors</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="editPortAdditionalFieldModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true"
+aria-labelledby="editPortAdditionalFieldLabel">
+    <div id="editPortAdditionalField" class="modal-dialog modal-dialog-scrollable dropdownSizeMedium">
+        <div class="modal-content">
+            
+            <div class="modal-header normalFontWeight">
+                <h7>
+                    <div class="flexRowInlineBlockLeft textBlack">
+                        <div>Device:&ensp;</div>     <div id="insertEditPortAdditionalFieldDevice"></div>&emsp;&emsp;&emsp;
+                    </div>
+                    <div class="flexRowInlineBlockLeft textBlack">
+                        <div>Port:&ensp;</div>       <div id="insertEditPortAdditionalFieldPort"></div>&emsp;&emsp;&emsp;
+                    </div>
+                    <div class="flexRowInlineBlockLeft textBlack">
+                        <div>Key:&ensp;</div>        <div id="insertEditPortAdditionalFieldKey"></div>&emsp;&emsp;&emsp;
+                    </div>
+                    <div class="flexRowInlineBlockLeft textBlack">
+                        <div>ValueType:&ensp;</div>  <div id="insertEditPortAdditionalFieldValueType"></div>
+                    </div>
+                </h7>
+            </div>
+
+            <div class="modal-body marginTop2px">
+                <div class="input-group">
+                    <input id="additionalPortKeyValueInput" class="form-control inputWidth300px textBlack" type="text"  aria-label="key value" placeholder="Key Value">
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="editPortAdditionalKeyButton" class="btn btn-primary" type="button">Enter</button>
+                <button id="closeEditPortAdditionalFieldModal" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="addPortsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true"
+aria-labelledby=addPortsLabel">
+    <div id=addPortsLabel" class="modal-dialog modal-dialog-scrollable dropdownSizeMedium">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div class="flexRowInlineBlockRight">
+                    <h6 class="modal-title textBlack">Add Ports&ensp;</h6>
+                </div>
+            </div>
+
+            <div class="modal-body marginTop2px normalFontWeight textBlack">
+                <div class="flexRowInlineBlockLeft">
+                    Domain:&ensp;<div id="insertAddPortsDomain"></div>&emsp;&emsp;
+                    Device:&ensp;<div id="insertAddPortsDevice"></div>
+                </div>
+                <br>
+
+                <textarea id="addPortsTextAreaId" cols="60" rows="4"></textarea><br>
+            </div>
+
+            <div class="modal-footer">
+                <button id="addPortsButton" class="btn btn-primary" type="button">Add Ports</button>
+                <button id="addPortsCloseModalButton" type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="addDevicesToEnvModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true"
+aria-labelledby=viewRemoveEnvLabel">
+    <div id=viewRemoveEnv" class="modal-dialog modal-dialog-scrollable dropdownFileContentSizeLabInventory">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div class="row">
+                    <h6 class="modal-title textBlack" id="insertEnvForInventory"></h6><br>
+                    <div id="modifyEnvStatus" class="textBlack normalFontWeight"></div>
+                    <div id="addDevicesToEnvStatus" class="textBlack normalFontWeight"></div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="flexRowInlineBlockLeft">
+                    <div class="input-group">
+                        <!-- Create new ENV -->
+                        <label class="normalFontWeight textBlack marginLeft10px" for="newEnvForAddDevicesToEnv">Create New Env:&emsp;</label>
+                        <input type="text" id="newEnvForAddDevicesToEnv" class="form-control inputWidth200px" placeholder="" />&emsp;&emsp;
+
+                        <label class="normalFontWeight textBlack" for="envGroupForAddDevicesToEnv">Optional: Env Group:&emsp;</label>
+                        <input type="text" id="envGroupForAddDevicesToEnv" class="form-control inputWidth300px" placeholder="Default: Communal" />&emsp;
+
+                        <button id="inventoryCreateEnvButton" class="btn btn-sm btn-primary" type="submit">
+                            Create Env
+                        </button>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <div class="textBlack normalFontWeight insertInlineBlock floatLeft" id="insertSelectEnv"></div>&emsp;&emsp;
+                <!-- <div class="textBlack normalFontWeight insertInlineBlock floatRight" id="insertInventoryAddDevicesToEnvStatus"></div> &emsp;&emsp; -->
+                <br><br>
+
+                <div class="flexRowInlineBlockLeft">
+                    <div id="insertDeviceNamesTextBox" style="position:absolute; left:0; margin-left:10px; padding-top:10px; height:533px; width:35%; overflow:auto; border:1px solid black;">
+                        <div class="textBlack normalFontWeight marginLeft10px" id="insertDeviceNames"></div><br>
+                    </div>
+
+                    <!-- To configure the textarea height, go to getFileContents() and set the rows="25" -->
+                    <div style="position:absolute; right:0; padding-left:20px; width:65%;" class="paddingRight10px">
+                        <div id="insertEnvContents" class="hideFromUser"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flexRowInlineBlockLeft" style="margin-bottom:10px; margin-top:0;">
+                <button id="addDevicesToEnvButton" class="btn btn-sm btn-primary marginLeft10px hideFromUser">
+                    Add Devices To Env
+                </button>
+
+                <button id="modifyEnvFileButton" class="btn btn-sm btn-primary hideFromUser" style="margin-left:215px">
+                    Udpate Above Env File
+                </button>
+            </div>
+ 
+            <div class="modal-footer">
+                <button id="closeAddDevicesToEnvModal" type="button" class="btn btn-danger">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+    <script type="module" src="{% static 'commons/js/inventory.js' %}"></script>
+{% endblock extra_js%}

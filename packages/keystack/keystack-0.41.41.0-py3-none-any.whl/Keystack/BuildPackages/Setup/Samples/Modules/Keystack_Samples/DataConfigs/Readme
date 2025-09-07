@@ -1,0 +1,14 @@
+This folder stores all data-model files and parameter files for scripts to consume.
+
+In your script:
+
+from keystackEnv import keystack
+
+# To get resources from ConfigParameters data-model files or parameter files, use
+# keystack.testcase.dataConfigs:
+keystack.testcase.dataConfigs.<param>
+
+
+# To get resources from env files, use keystack.taskParams.envParams.<param>
+keystack.taskParams.envParams.<param>
+

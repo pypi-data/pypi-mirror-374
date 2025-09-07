@@ -1,0 +1,25 @@
+---
+server1: 192.168.28.6
+username: admin
+password: admin
+
+licenseServerIp: 10.10.10.1
+licenseServerUser: admin
+licenseServerPassword: admin
+
+devices:
+    device_1:
+      ipAddress: 192.168.28.11
+      ipPort: 23
+      connectionProtocol: telnet
+      loginName: jdoe
+
+    # Use this to get device details from inventory if you added the device to the inventory
+    #device_1: get_device_details_from_inventory
+
+# portGroups:
+#   - portGroup1
+
+dataConfigs:
+   key1: value1
+   

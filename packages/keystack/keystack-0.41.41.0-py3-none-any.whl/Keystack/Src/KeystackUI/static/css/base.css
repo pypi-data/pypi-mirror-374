@@ -1,0 +1,102 @@
+.brandPosition {
+    position:fixed;
+    width:220px;
+    z-index:11;
+    background-color: black;
+}
+
+.brandFont {
+    color: white;
+    font-size: 20px;
+}
+
+.sidebar {
+    overflow: auto;
+    height: 100%;
+    /* background-color: #081aa8; */
+    background-color: black;
+}
+
+.sidebarDropdownArrowColor {
+    color: #66F854;
+}
+
+.sidebarNavPosition {
+    position:absolute;
+    z-index:11;
+}
+
+.sidebarBeneathBranding {
+    position:fixed;
+    margin-top:70px;
+    z-index:10;
+}
+
+.sidebarDropdownStyle {
+    border-width:1px;
+    border-style:solid;
+    border-color:#E5E3E2;
+    overflow:auto;
+    height:200px;
+    width:200px;
+    font-size: 12px;
+}
+
+.paddingLeft52px {
+    padding-left: 52px;
+}
+
+.blink {
+    animation: blink 1s infinite;
+  }
+  
+  @keyframes blink {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opactity: 1;
+    }
+  }
+
+  .blink1-5s {
+    animation: blink 1.5s linear infinite;
+  }
+  
+  @keyframes blinkSlow {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opactity: 1;
+    }
+  }
+
+
+/*
+@keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+}
+*/
+
+/*
+@keyframes condemned_blink_effect {
+    0% {
+      visibility: hidden;
+    }
+    50% {
+      visibility: hidden;
+    }
+    100% {
+      visibility: visible;
+    }
+  }
+*/

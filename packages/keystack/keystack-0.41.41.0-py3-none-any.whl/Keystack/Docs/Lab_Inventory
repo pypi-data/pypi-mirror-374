@@ -1,0 +1,85 @@
+
+Lab Inventory: Asset Management
+
+- All devices are segregated in domains
+- 2-ways to import devices
+     1> Manually one-by-one
+     2> Import CSV file
+- Add devices to Envs
+
+Add New Device (Manually):
+   - Add-Device
+   - Delete-Device
+   - Export Devices to CSV
+   - Import CSV devices
+   - Add Devices To Env
+   - Create/Remove Filters
+        - Device-Types
+        - Device-Locations
+        - Device-Vendors
+   - Add / Remove Custom Fields
+
+Import CSV devices:
+   - In Lab Inventory, click "Export Devices To CSV" to get all the default headers
+   - If any value have spaces, must put words inside double-quotes  <-- IMPORTANT!
+
+   Adding custom fields:
+       - To add custom fields, create the addtional fields first
+       - Then export the csv file
+
+ 
+Lab Inventory (Asset Management):
+   - Status 
+       Red:   Unreachable
+       Green: Reachable
+   - Name
+   - Device Type
+   - Vendor
+   - Model
+   - Serial #
+   - Location
+   - IP Address
+   - IP Port
+   - Login name
+   - Password
+   - Connection Protocol (SSH | Telnet)
+   - Ports
+        - Add-Ports
+        - Remove-Ports
+        - Add-Ports-To-Port-Group (Create Port-Groups first)
+        - Remove-Ports-From-Port-Group
+        - Connect-Ports-To-Device
+        - Disconect-Device
+        - Add / Remove Fields
+
+        Port-Mgmt
+           - Src-Ports
+           - Connected-To-Device
+           - Connected-To-Port
+           - Port-Type
+           - VLAN
+           - Port-Speed
+           - Port-Groups
+           - PG-Multi-Tenant
+           - Additional-Custom-Fields
+
+   - Notes
+   - User defined addtional fields
+
+
+Adding Additional Fields for all devices and port-mgmt:
+    - In Inventory, on the top toolbar, click "Add / Remove Fields"
+    - Add a new field name, select the type (boolean or options)
+    
+    Option: 
+        - Create a list of options for users to select
+        - Separate words with a comma
+        - Define the default option. Defaults to the first item
+
+    Boolean: True | Boolean: False
+
+
+Add / Remove Field Options
+   - Allows users to add or remove field options 
+
+   

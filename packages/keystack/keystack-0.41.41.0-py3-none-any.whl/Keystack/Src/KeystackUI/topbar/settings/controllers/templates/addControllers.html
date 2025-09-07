@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-sm topbar fixed-top secondNavbarStyle">
+        <div style="display:inline-block; padding-left:2px; margin-top:5px">
+            <a href="#" data-toggle="modal" data-target="#addControllerModal">Add</a>&emsp;
+            <a href="#" onclick="removeControllerButton()">Remove</a>&emsp;
+            <div id="removeControllerStatus" style="float:right; display:online-block"></div>
+        </div>
+    </nav>
+
+    <div class="row mt-2">
+        <!-- <table id="sessionsTable" class="table table-sm table-fixed tableFixHead tableMessages mt-1"> -->
+        <table id="sessionsTable" class="tableFixHead2">
+          <thead>
+            <tr>
+              <th scope="col">Select</th>
+              <th scope="col" style="text-align:center">Name</th>
+              <th scope="col" style="text-align:center">HTTPS</th>
+              <th scope="col" style="text-align:center">Controller</th>
+              <th scope="col" style="text-align:center">IpPort</th>
+              <th scope="col" style="text-align:center">Access-Key</th>
+            </tr>
+          </thead>
+    
+          <tbody id="tableData"></tbody>
+        </table>
+      </div>
+    </nav>
+</div>
+
+<div class="modal" id="addControllerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:40%; height:400px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Add Remote Controller</h5>
+                <div id="controllerStatus"></div>
+            </div>
+
+            <div class="modal-body" id="modalShowControllers">
+                <div style="margin-top:10px; display:flex; flex-direction: row; justify-content:left; align-items:left">
+                    <label for='controllerName' style="color:black; margin-left:20px; ">Remote Controller Name:</label>&emsp; 
+                    <input type="text" class="form-control" id="controllerName" value="" placeholder="" style="width:300px"/>
+                </div>
+                <br>
+
+                <div class="pl-2 form-check form-check-inline" style="inline:block; color:black; margin-left:10px; margin-top:10px">
+                    <!-- <label for='verifyTrue' style="color:black;">Verify Reachability:</label>&emsp; -->
+                    HTTPS: &emsp;
+                    Yes: &ensp;<input class="form-check-input" type="radio" checked="checked" id="verifyTrue" name="https" value="true"> &emsp;&emsp;
+                    No: &ensp;<input class="form-check-input" type="radio" id="verifyFalse" name="https" value="false">
+                </div>
+                <br>
+
+                <div style="margin-top:10px; display:flex; flex-direction: row; justify-content:left; align-items:left">
+                    <label for='controllerIp' style="color:black; margin-left:20px; ">Remote IP Address:</label>&emsp; 
+                    <input type="text" class="form-control" id="controllerIp" value="" placeholder="" style="width:300px"/>
+                </div>
+
+                <div style="margin-top:10px; display:flex; flex-direction: row; justify-content:left; align-items:left">
+                    <label for='ipPort' style="color:black; margin-left:20px; ">IP Port:</label>&emsp;
+                    <input type="text" class="form-control" id="ipPort" value="" placeholder="If using HTTPS, defaults to 443" style="width:300px"/>
+                </div>
+
+                <!-- <input class="form-check-input" type="radio" checked="checked" id="{group}" name="group" value="{group}"> -->
+                <!-- <div style="margin-top:10px; margin-left:20px; display:flex; flex-direction: row; justify-content:left; align-items:left"> --> 
+                <div class="pl-2 form-check form-check-inline" style="inline:block; color:black; margin-left:10px; margin-top:10px">
+                    <!-- <label for='verifyTrue' style="color:black;">Verify Reachability:</label>&emsp; -->
+                    Verify Reachability: &emsp;
+                    Yes: &ensp;<input class="form-check-input" type="radio" checked="checked" id="verifyTrue" name="verifyConnectivity" value="true"> &emsp;&emsp;
+                    No: &ensp;<input class="form-check-input" type="radio" id="verifyFalse" name="verifyConnectivity" value="false">
+                </div>
+                <br><br>
+
+                <div id="insertAccessKey" value="" style="margin-left:20px"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="modifyButton" style="float:right; margin:5px;" onclick="addController()" class="btn btn-sm btn-danger">
+                    Add
+                </button>
+
+                <button type="button" class="btn btn-primary" data-dismiss="modal"  onclick="resetInputBox()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+    <script type="module" src="{% static 'commons/js/addRemoteControllers.js' %}"></script>
+{% endblock extra_js %}

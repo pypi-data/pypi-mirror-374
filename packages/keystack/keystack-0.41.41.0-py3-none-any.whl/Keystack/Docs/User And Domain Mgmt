@@ -1,0 +1,44 @@
+
+  Keystack separates resources by domains and configures user-groups to domains for access.
+  The followings show the steps to create users and assign users to domains 
+
+       1> Create Domain(s)
+       2> Create new user account with privilege level: admin, director, manager, engineer
+       3> Put users in domains
+       4> If the user will be creating scripts, playbooks, envs, testcases:
+          On the Linux OS, add the Linux host user to the Keystack user-group
+          sudo usermod -a -G Keystack <new Linux host user>
+
+          Otherwise, if the new user is using Keystack for lab inventory usage, there is no need to 
+          perform step 4
+
+   When a user logs into Keystack, they could only view and use Domains they belong to
+    
+    NOTE: 
+       - The only CLI security is CLI-secured-mode. Users must include their apiKey that
+         has to be set in the user's Linux OS env file (i.e: .bashrc) and set
+         keystack_cliSecuredMode=true in the file keystackSystemSettings.env
+
+Domain key features:
+
+    - Keystack comes with a default domain called Communal
+
+    - The Communal domain is where you share all resources with all users and with all other domains.
+
+    - By default, adding a new user in the Keystack UI will add the user to the default domain Communal.
+      You could also remove the user from the domain Communal to restrict users to specific domains.
+
+NOTE:  
+    - If you want to share all resources with everybody, use the domain Communal.
+      
+
+User accounts for each domain:
+   This means for each domain, a user assign the the domain could be an admin, directory, manager or engineer
+
+    Privileges:
+        - admin:    Can perform and view everything
+        - director: Cannot create domains and users
+        - manager:  Can only view and modify domains and users that he/she belongs to
+        - engineer: Can only run and view domain he/she belongs to
+
+    

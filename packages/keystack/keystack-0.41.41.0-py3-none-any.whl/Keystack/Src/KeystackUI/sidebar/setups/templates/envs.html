@@ -1,0 +1,474 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <!-- <link href={% static "commons/css/envLoadBalance.css" %} rel="stylesheet" type="text/css"> -->
+
+    <style>
+        // Create variables
+        :root {
+            --main-radius: 25px;
+            --main-padding: 15px;
+        }
+    
+        .grid {
+            margin-top: 0px;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 100px 400px 50px;
+            grid-template-areas:
+                "createTask previewTaskOptions"
+                "addTask existingTasks"
+                "addTaskButton showTaskButton";     
+            grid-gap: 0.1rem;
+            background-color: white;
+        }
+    
+        #createTask {
+            grid-area: createTask;
+            border-radius:var(--main-radius);
+            padding-top:var(--main-padding);
+            height: 100%;
+            overflow: auto;
+            color: #66F854;
+            background: white;
+        }
+
+        #addTask {
+            grid-area: addTask;
+            border-radius:var(--main-radius);
+            padding-top:var(--main-padding);
+            height: 100%;
+            overflow: auto;
+            color: #66F854;
+            background: black;
+        }
+        #addTaskButton {
+            grid-area: addTaskButton;
+            border-radius:var(--main-radius);
+            padding-top:var(--main-padding);
+            height: 100%;
+            overflow: auto;
+            color: #66F854;
+            background: white;
+        }
+
+        #previewTaskOptions {
+            grid-area: previewTaskOptions;
+            border-radius:var(--main-radius);
+            padding-top:var(--main-padding);
+            height: 100%;
+            overflow: auto;
+            color: #66F854;
+            background: black;
+            overflow: auto;
+        }
+
+        #existingTasks {
+            grid-area: existingTasks;
+            border-radius:var(--main-radius);
+            padding-top:var(--main-padding);
+            height: 100%;
+            overflow: auto;
+            color: #66F854;
+            background: black;
+            overflow: auto;
+        }
+
+        #showTaskButton {
+            grid-area: showTaskButton;
+            border-radius:var(--main-radius);
+            padding-top:var(--main-padding);
+            height: 100%;
+            overflow: auto;
+            color: #66F854;
+            background: white;
+        }
+    
+    </style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container-fluid">
+    <div id='envPageAttributes' envGroupPath={{envGroupPath}} topbarDisplayDomain={{topbarDisplayDomain}} topbarDisplayGroup={{topbarDisplayGroup}}></div>
+
+    <div class="mainBodyDiv">
+        <nav class="navbar navbar-expand-sm topbar fixed-top secondNavbarStyle" id="envNavbar">
+            <div class="insertInlineBlock marginTop5px">
+                <a href="#" data-toggle="modal" data-target="#createEnvModal">Create Env</a>&emsp;&emsp;
+                <a href="#" id="deleteSetupButton">Delete Env</a>&emsp;&emsp;
+                <a href="#" data-toggle="modal" data-target="#deleteEnvGroupModal">Delete Env Group</a>&emsp;&emsp;
+                <a href="#" id="envScheduler" env='all' onclick="getEnvCronScheduler(this)">Scheduler</a>
+                <!-- <a href="#" id="viewEnvScheduler" data-toggle="modal" data-target="#createEnvSchedulerModal">Scheduler</a> -->
+                <span class="verticalAlignTop badge badge-danger badge-counter" id='insertEnvSchedulerCount'></span>&emsp;&emsp;
+            </div>
+        </nav>
+
+        <div class ="row">
+            <div class="flexRowInlineBlockLeft">
+                Devices Per Page:&emsp;
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary btn-lg dropdown-toggle" type="button" id="setDevicesPerPageDropdown" data-toggle="dropdown" aria-expanded="false"></button>
+                    <ul class="dropdown-menu" aria-labelledby="setDevicesPerPageDropdown" id="setDevicesPerPage">
+                        <li class="paddingLeft20px textBlack">50</li>
+                        <li class="paddingLeft20px textBlack">100</li>
+                        <li class="paddingLeft20px textBlack">150</li>
+                        <li class="paddingLeft20px textBlack">200</li>
+                        <li class="paddingLeft20px textBlack">250</li>
+                        <li class="paddingLeft20px textBlack">300</li>
+                    </ul>
+                </div>&emsp;&emsp;
+                <div id="insertPagination"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="insertInlineBlock paddingLeft2px marginTop5px">
+                <input class="col-2 form-control" type="search" id="filterSetup" onkeyup="filterSetup()" placeholder="Filter Setup" />&emsp;
+                <div id="reserveStatus" class="floatRight"></div>
+            </div>
+        </div>
+
+        <div class="row table-responsive"> 
+            <table id="envTable" class="tableFixHead2"> 
+                <thead>
+                    <tr>
+                        <th scope="col">Select</th>
+                        <th scope="col">View / Edit</th>
+                        <th scope="col">Envs (Testbeds)</th>
+                        <th scope="col">Port-Groups</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">LoadBalance GRP</th>
+                        <th scope="col">Shared</th>
+                        <th scope="col">Available</th>
+                        <th scope="col">Actively-Reserved</th>
+                        <th scope="col">On-Scheduler</th>
+                        <th scope="col">Reserve</th>
+                        <th scope="col">Release</th>
+                        <th scope="col">Reset</th>
+                    </tr>
+                </thead>
+                <tbody id="setupTableData"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="createEnvModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+        aria-labelledby="createEnvContents" aria-hidden="true">
+
+    <!-- modal-dialog-scrollable|modal-dialog-centered modal-lg -->
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:65%; height:700px; overflow:auto; color:black">
+        <div class="modal-content">
+ 
+            <div class="modal-header">
+                <div class="floatLeft insertInlineBlock">
+                    <h6 class="modal-title textBlue">Create Env Yaml File</h6>
+                </div>
+                <div id="createEnvStatus" class="floatRight marginRight10px"></div>
+            </div>
+
+            <div class="row modal-body">
+                <textarea id="insertEnvTemplate" name="" cols="123" rows="20"></textarea><br><br>
+            </div>
+
+            <div class="modal-footer">
+                <div style="display:inline-block;">
+                    <input type="text" id="newEnv" class="form-control floatRight" placeholder="New Env name" />
+                    <input type="text" id="envGroup" class="form-control floatRight" placeholder="Optional: Group envs in folders by using forward slashes" />
+
+                    <button id="createEnvButton" class="btn btn-sm btn-primary floatRight margin5px" onclick="createEnv()">
+                        Create Env
+                    </button>
+
+                    <button class="btn btn-sm btn-danger floatRight margin5px" type="submit" name="" value="" id="closeCreateEnvTextAreaId"
+                        onclick="closeCreateEnv()" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="viewEditEnvModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable dropdownFileContentSize textBlack" >
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div class="insertInlineBlock floatLeft">
+                    <h6 class="modal-title" id="currentOpenedFile"></h6>
+                </div>
+                <div id="modifyEnvStatus" class="floatRight"></div>
+            </div>
+
+            <div class="row modal-body" id="insertFileContents"></div>
+
+            <div class="modal-footer">
+                <!-- Button calls modifyFile(). modifyFile() calls getElementById('textarea') to get the text -->
+			    <button id="envModifyButton" class="btn btn-sm btn-primary floatRight margin5px" onclick="modifyFile()">
+                    Modify File
+                </button>
+
+                <button type="submit" name="" value="" id="textAreaButton"
+                onclick="closeText()" class="btn btn-sm btn-danger floatRight margin5px" data-bs-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="activeUsersModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+        aria-labelledby="activeUsers" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:95%; height:700px; overflow:auto; color:black">
+        <div class="modal-content">
+ 
+            <div class="modal-header">
+                <div class="floatLeft insertInlineBlock">
+                    <h6 class="modal-title textBlue" id="userMgmt">Env:</h6>
+                    <div id="releaseStatus"></div>
+                </div>
+            </div>
+
+            <div class="row modal-body">
+                <div style="display:inline-block; width:50%; height:600px; float:left;">
+                    <h6 class="modal-title textBlue floatLeft">Active-Users</h6>
+
+                    <button id="removeFromActiveUsersButton" class="btn btn-sm btn-outline-primary floatRight marginRight10px margin5px marginBottom10px" style="margin-right:45px">
+                        Release Active User
+                    </button>
+
+                    <div id="insertActiveUsers"></div>
+                </div>
+
+                <div style="display:inline-block; width:50%; height:600px; float:right;">
+                    <h6 class="modal-title textBlue floatLeft">Wait-List</h6>
+
+                    <button id="removeFromWaitListButton" class="btn btn-sm btn-outline-primary floatRight margin5px marginBottom10px" style="margin-right:45px">
+                        Remove From WaitList
+                    </button>
+
+                    <div id="insertWaitList"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="floatRight margin5px btn btn-sm btn-danger" type="submit" id="closeActiveUsers" data-bs-dismiss="modal" >Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="deleteEnvGroupModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:65%; height:650px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div class="insertInlineBlock floatLeft">
+                    <h6 class="modal-title">Delete Env Group</h6>
+                </div>
+            </div>
+
+            <div class="row modal-body" id="insertDeleteEnvGroup"></div>
+
+            <div class="modal-footer">
+                <!-- Button calls modifyFile(). modifyFile() calls getElementById('textarea') to get the text -->
+			    <button id="modifyButton" class="btn btn-sm btn-primary floatRight margin5px" onclick="deleteEnvGroups()">
+                    Delete
+                </button>
+
+                <button type="submit" name="" value="" id="textAreaButton"
+                onclick="closeDeleteEnvGroups()" class="btn btn-sm btn-danger floatRight margin5px" data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="releaseEnvConfirmationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="releaseEnvConfirmation" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width:30%; height:300px; overflow:auto; color:black">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<div class="flexRowInlineBlockRight">
+					<h6 class="modal-title">Release Env&ensp;</h6>
+					<div id="currentOpenedFile" style="float:left; margin-left:20px; padding-top:3px;"></div>
+				</div>
+            </div>
+
+            <div class="modal-body" style="margin-top:2px">
+				<div class="row">&ensp;&ensp;Are you sure about releasing the env while a pipeline is actively using it?</div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="releaseEnvConfirmationButton" data-dismiss="modal">Release Env</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="createEnvSchedulerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="createEnvSchedulerModal" aria-hidden="false">
+    <div class="modal-dialog modal-dialog-scrollable mediumModalSizeExtraWidth">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div id="insertEnvName"></div>
+                <h6 id="envSchedulerStatus"></h6>
+            </div>
+
+            <div class="modal-body">
+                <!-- .---------------- minute (0 - 59)
+                     |  .------------- hour (0 - 23)
+                     |  |  .---------- day of month (1 - 31)
+                     |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+                     |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+                     |  |  |  |  |
+                     *  *  *  *  * 
+               -->
+
+                <h6 id="selectedEnv"></h6>
+
+                <!-- <span>** NOTE: Leaving all values with  *  will run the reservation every minute!</span><br><br> -->
+
+                <div class="lineHeight25px">
+                    <span>Schedule a reservation date-time</span>
+                    <div class="ml-4" id="insertSchedulerDatetimePicker"></div>
+
+                    <span>Optionally, set an automatic release date-time</span>
+                    <div  class="ml-4" id="insertSchedulerExpiresDatetimePicker"></div>
+                </div>
+
+                <div class="row">
+                    <div class="insertInlineBlock lineHeight5px">
+                        <label class="modalTextColor" for="removeEnvAfterRunning">Remove the scheduled reservation when the Env is reserved&ensp;</label>
+                        <!-- style="vertical-align:middle" -->
+                        <input class="mt-2" type="checkbox" id="removeEnvAfterRunning" />
+                        <br>Otherwise, the scheduled reservation will repeat
+                    </div>
+                </div>
+
+				<div class="mt-4 flexRowInlineBlockLeft">
+                    Select a different user for scheduling the reservation: &ensp;<div id="insertDomainUserSelection"></div>
+                </div>
+
+                <div class="mt-3">
+                    Add Reservation Notes (100 characters allowed)<br>
+                    <textarea class="ml-3" id="reservationNotesId" name="" cols="50" rows="2"></textarea>
+                </div>
+                <br>
+
+                <button type="button" class=" btn btn-sm btn-primary" onclick="saveScheduledEnv()">Add Reservation</button>&emsp;
+
+                <div class='row mt-2'>
+                    <div id="insertEnvSchedules"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" id="removeScheduledEnvsButton"  class=" btn btn-sm btn-primary" onclick="removeScheduledEnvsButton()">Remove Scheduled Reservations</button>
+                <button type="button" id="closeEnvSchedulerModal" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="autoSetupModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="autoSetupAndTeardown" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable mediumModalSizeExtraHeight">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+				<div class="flexRowInlineBlockRight">
+					<h7 class="modal-title" id="insertAutoSetupEnv"></h7>
+				</div>
+            </div>
+
+            <div class="modal-body" style="margin-top:2px">
+                <div class="grid">
+                    <div class="createTask">
+                        <div class="flexRowInlineBlockLeft">
+                            <label class="testParameterSessionIdLabel" for="addAutoStartCommand">Task List Name: &ensp;</label><br>
+                            <input name="addAutoStartName" id="addAutoStartCommand" type="text" class="form-control width200px">
+                        </div>
+
+                        <div class="flexRowInlineBlockLeft">
+                            <label for="runCliCommandsOnKeystackServer">Run CLI commands on Keystack server: &ensp;</label><br>
+                            <input name="runCliCommandsOnKeystackServer" class="mb-2" id="runCliCommandsOnKeystackServer" type="checkbox">                        
+                        </div>
+
+                        <div class="flexRowInlineBlockLeft">
+                            <label for="connectToDeviceSendCliCommands">Connect To Device To CLI commands: &ensp;</label><br>
+                            <input name="connectToDeviceSendCliCommands" id="connectToDeviceSendCliCommands" type="checkbox">                        
+                        </div>
+                    </div>
+
+                    <div id="addTask">
+                        <textarea class="mt-2 ml-2 backgroundColorBlack mainTextColor" style="border:none; outline:none;" id="testcaseTextareaId" cols="56" rows="19"></textarea>
+                    </div>
+
+                    <div id="addTaskButton">
+                        <div class="flexRowInlineBlockRight">
+                            <button type="button" class="mt-2 mr-2 btn btn-primary">Add Task</button>
+                        </div>
+                    </div>
+
+                    <!-- Right side -->
+                    <div class="previewTaskOptions">
+                        <button type="button" class="mb-2 mr-2 btn btn-primary">Show Task</button>
+                    </div>
+
+                    <div id="existingTasks">
+                    </div>
+                    <div id="showTaskButton">
+                        <div class="flexRowInlineBlockRight">
+                            <button type="button" class="mt-2 mr-2 btn btn-primary">Show Task</button>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <div id="insertAutoSetupTaskCreatorTemplate"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="closeEnvAutoSetupModal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+<div class="modal" id="viewReservationNotesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true"
+aria-labelledby="viewReservationNotes">
+    <div id="viewReservationNotes" class="modal-dialog modal-dialog-scrollable textBlack dropdownSizeLargeExtraHeight">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div class="fileRowInlineBlockRight">
+                    <h6 class="modal-title">Reservation Notes</h6>
+                    <div id="insertReservationNotesStatus"></div>
+                </div>
+            </div>
+
+            <div class="modal-body" >
+                <label class="testParameterSessionIdLabel editDeviceNotes" for="reservationNotesTextareaId" id="notes"></label>
+                <textarea id="reservationNotesTextareaId" class="editDeviceNotes" cols="60" rows="15"></textarea>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="editDeviceButton">Edit</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="closeEnvReservationNotesModal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+
+{% endblock content %}
+
+{% block extra_js %}
+    <script type="module" src="{% static 'commons/js/envs.js' %}"></script>
+{% endblock extra_js %}

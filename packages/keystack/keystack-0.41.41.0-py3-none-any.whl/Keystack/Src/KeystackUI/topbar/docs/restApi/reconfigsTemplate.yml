@@ -1,0 +1,15 @@
+# These are all the available testcase parameters to use for you testcase changes
+# The param/values are retrievable in the testcase scripts
+#
+# - Replace [testcase path] with a full path to a testcase to make changes in 
+# - Remove the keys that don't apply
+# - Save changes
+
+[testcase path]:
+   scriptCmdlineArgs:
+      - arg: -param1 value
+   configParametersFile: null
+   configParams:
+      newParam1: null
+   dataConfigsFile: null
+   exportedConfigsFile: null

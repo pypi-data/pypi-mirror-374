@@ -1,0 +1,34 @@
+{% load static %}
+
+{% block content %}
+<!-- <link href={% static "commonCSS/login.css" %} rel="stylesheet" type="text/css"> -->
+<link href={% static "commons/css/login.css" %} rel="stylesheet" type="text/css">
+
+<div class="container-fluid text-center">
+    <main class="login login-screen" style="margin-top:100px">
+        <div class="app-title">
+            <p style="color:#0101df; font-family:arial; font-size:30px">Keystack</p>
+        </div>
+  
+        <form method="POST" action="" enctype='multipart/form-data'>
+            {% csrf_token %}
+
+            <div class="login-form">
+                {% for line in form %}
+                    {{line}}
+                    <label class="login-field-icon fui-user" for="{{ line.field.label }}"></label>
+                    <br><br>
+                {% endfor %}
+
+                {% if loginFailed %}
+                    <br>
+                    {{loginFailed}}<br><br>
+                {% endif %}
+                
+                <button style="width:175px" type="submit" class="btn btn-primary btn-large">Login</button>
+            </div>
+        </form>
+    </main>
+</div>
+
+{% endblock %}
