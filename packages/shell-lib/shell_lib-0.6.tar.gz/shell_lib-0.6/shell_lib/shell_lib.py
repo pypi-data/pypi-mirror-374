@@ -1,0 +1,340 @@
+# Co create with Google Gemini
+import os
+import sys
+import shutil
+import stat
+import subprocess
+import traceback
+from datetime import datetime
+from typing import List, Tuple, Generator
+
+class FileInfo:
+    """
+    A class that encapsulates information about a file or directory.
+    """
+    def __init__(self, path: str, size: int,
+                 modified_time: datetime, access_time: datetime, creation_time: datetime,
+                 is_dir: bool, is_file: bool,
+                 permissions: str):
+        self.path: str = path
+        self.size: int = size
+        self.modified_time: datetime = modified_time
+        self.access_time: datetime = access_time
+        self.creation_time: datetime = creation_time
+        self.is_dir: bool = is_dir
+        self.is_file: bool = is_file
+        self.permissions: str = permissions
+
+class CDContextManager:
+    def __init__(self, path: str) -> None:
+        self.original_cwd = os.getcwd()
+        os.chdir(path)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        os.chdir(self.original_cwd)
+
+class ShellAPI:
+    """
+    A simple API designed to replace Linux Shell scripts.
+    It unifies common file system operations and Shell command execution.
+    """
+    def _cp(self, s: str):
+        print(f'\033[93m{s}\033[0m')
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is not None:
+            if issubclass(exc_type, subprocess.CalledProcessError):
+                print(f"\nError: Command failed with exit code {exc_val.returncode}", file=sys.stderr)
+                self.exit(exc_val.returncode)
+            else:
+                traceback.print_exception(exc_type, exc_val, exc_tb, file=sys.stderr)
+                self.exit(1)
+
+    # --- File and Directory Operations API ---
+
+    def create_dir(self, path: str, exist_ok: bool = False) -> None:
+        """
+        Creates a directory.
+
+        :param path: The path of the directory to create.
+        :param exist_ok: If True, existing directories will not raise an error.
+        """
+        self._cp(f"Creating directory: {path}")
+        os.makedirs(path, exist_ok=exist_ok)
+
+    def remove_dir(self, path: str, ignore_missing: bool = False) -> None:
+        """
+        Recursively removes a directory and its contents.
+
+        :param path: The path of the directory to remove.
+        :param ignore_missing: If True, no error is raised if the directory is missing.
+        """
+        if ignore_missing and not self.is_dir(path):
+            return
+        self._cp(f"Removing directory: {path}")
+        shutil.rmtree(path)
+
+    def remove_file(self, path: str, ignore_missing: bool = False) -> None:
+        """
+        Removes a file.
+
+        :param path: The path of the file to remove.
+        :param ignore_missing: If True, no error is raised if the file is missing.
+        """
+        if ignore_missing and not self.is_file(path):
+            return
+        self._cp(f"Removing file: {path}")
+        os.remove(path)
+
+    def copy_file(self, src: str, dst: str, overwrite: bool = False) -> None:
+        """
+        Copies a file.
+
+        :param src: The source file path.
+        :param dst: The destination file path.
+        :param overwrite: If True, overwrites the destination if it exists.
+        """
+        self._cp(f"Copying file from '{src}' to '{dst}'")
+        if not overwrite and self.is_file(dst):
+            raise FileExistsError(f"Destination file '{dst}' already exists.")
+
+        shutil.copy2(src, dst)
+
+    def copy_dir(self, src: str, dst: str, overwrite: bool = False) -> None:
+        """
+        Copies a directory.
+
+        :param src: The source directory path.
+        :param dst: The destination directory path.
+        :param overwrite: If True, overwrites the destination if it exists.
+        """
+        self._cp(f"Copying directory from '{src}' to '{dst}'")
+        if self.is_dir(dst):
+            if not overwrite:
+                raise FileExistsError(f"Destination directory '{dst}' already exists.")
+            shutil.rmtree(dst)
+        shutil.copytree(src, dst)
+
+    def move_file(self, src: str, dst: str, overwrite: bool = False) -> None:
+        """
+        Moves a file.
+
+        :param src: The source file path.
+        :param dst: The destination file path.
+        :param overwrite: If True, overwrites the destination if it exists.
+        """
+        self._cp(f"Moving file from '{src}' to '{dst}'")
+        if self.is_file(dst):
+            if not overwrite:
+                raise FileExistsError(f"Destination file '{dst}' already exists.")
+            os.remove(dst)
+        shutil.move(src, dst)
+
+    def move_dir(self, src: str, dst: str, overwrite: bool = False) -> None:
+        """
+        Moves a directory.
+
+        :param src: The source directory path.
+        :param dst: The destination directory path.
+        :param overwrite: If True, overwrites the destination if it exists.
+        """
+        self._cp(f"Moving directory from '{src}' to '{dst}'")
+        if self.is_dir(dst):
+            if not overwrite:
+                raise FileExistsError(f"Destination directory '{dst}' already exists.")
+            shutil.rmtree(dst)
+        shutil.move(src, dst)
+
+    def rename_file(self, src: str, dst: str) -> None:
+        """
+        Renames a file.
+
+        :param src: The source file path.
+        :param dst: The destination file path.
+        """
+        self._cp(f"Renaming file from '{src}' to '{dst}'")
+        if not self.is_file(src):
+            raise FileNotFoundError(f"Source file '{src}' does not exist.")
+        if self.is_file(dst):
+            raise FileExistsError(f"Destination file '{dst}' already exists.")
+
+        os.rename(src, dst)
+
+    def rename_dir(self, src: str, dst: str) -> None:
+        """
+        Renames a directory.
+
+        :param src: The source directory path.
+        :param dst: The destination directory path.
+        """
+        self._cp(f"Renaming directory from '{src}' to '{dst}'")
+        if not self.is_dir(src):
+            raise FileNotFoundError(f"Source directory '{src}' does not exist.")
+        if self.is_dir(dst):
+            raise FileExistsError(f"Destination directory '{dst}' already exists.")
+
+        os.rename(src, dst)
+
+    def get_file_info(self, path: str) -> FileInfo:
+        """
+        Retrieves detailed information about a file or directory.
+
+        :param path: The path of the file or directory.
+        :return: A FileInfo object containing detailed information.
+        """
+        stats = os.stat(path)
+        mode = stats.st_mode
+        return FileInfo(
+            path=path,
+            size=stats.st_size,
+            modified_time=datetime.fromtimestamp(stats.st_mtime),
+            access_time=datetime.fromtimestamp(stats.st_atime),
+            creation_time=datetime.fromtimestamp(stats.st_ctime),
+            is_dir=stat.S_ISDIR(mode),
+            is_file=stat.S_ISREG(mode),
+            permissions=oct(mode)[-3:]
+        )
+
+    def list_dir(self, path: str) -> List[str]:
+        """
+        Lists all files and subdirectories within a directory.
+
+        :param path: The directory path.
+        :return: A list of all entry names.
+        """
+        return os.listdir(path)
+
+    def walk_dir(self, top_dir: str) -> Generator[Tuple[str, str]]:
+        """
+        A generator that traverses a directory and all its subdirectories,
+        yielding (directory_path, filename) tuples.
+
+        :param top_dir: The root directory to start walking from.
+        :yields: (dirpath, filename) tuples.
+        """
+        for dirpath, dirnames, filenames in os.walk(top_dir):
+            for filename in filenames:
+                yield (dirpath, filename)
+
+    def cd(self, path: str):
+        """
+        Changes the current working directory temporarily.
+
+        This method is designed to be used as a context manager (`with` statement).
+        The original working directory will be restored automatically upon exiting
+        the `with` block, even if an exception occurs.
+
+        Example:
+        with sh.cd('/path/to/project'):
+            sh.run('git status')
+
+        :param path: The path to the directory to change to.
+        """
+        return CDContextManager(path)
+
+    def exists(self, path: str) -> bool:
+        """
+        Checks if a path exists.
+
+        :param path: The file or directory path.
+        :return: True if the path exists, False otherwise.
+        """
+        return os.path.exists(path)
+
+    def is_file(self, path: str) -> bool:
+        """
+        Checks if a path is a file.
+
+        :param path: The file path.
+        :return: True if the path is a file, False otherwise.
+        """
+        return os.path.isfile(path)
+
+    def is_dir(self, path: str) -> bool:
+        """
+        Checks if a path is a directory.
+
+        :param path: The directory path.
+        :return: True if the path is a directory, False otherwise.
+        """
+        return os.path.isdir(path)
+
+    def get_path_parts(self, path: str) -> Tuple[str, str]:
+        """
+        Splits a path into its directory name and file name.
+
+        :param path: The file or directory path.
+        :return: A 2-element tuple containing (directory name, file name).
+        """
+        return os.path.split(path)
+
+    def join_path(self, *parts: str) -> str:
+        """Safely joins path components."""
+        return os.path.join(*parts)
+
+    # --- Shell Command Execution API ---
+    def run(self,
+            command: str,
+            print_output: bool = True,
+            text: bool = True,
+            fail_on_error: bool = True) -> subprocess.CompletedProcess:
+        """
+        Executes a shell command. When print_output is True, the output is streamed
+        to the console in real-time. Otherwise, it is captured and returned.
+
+        Args:
+            command: The command string to execute.
+            print_output: If True, streams stdout and stderr to the console.
+                          Defaults to True.
+            text: If True, output is decoded as text.
+
+        Returns:
+            A subprocess.CompletedProcess object with captured output.
+            If print_output is True, stdout and stderr will be empty.
+        """
+        self._cp(command)
+
+        if print_output:
+            # Real-time print mode: Stream output directly to the console.
+            # This is the most reliable way to handle progress bars.
+            result = subprocess.run(
+                command,
+                shell=True,
+                check=fail_on_error,
+                capture_output=False, # Output is not captured, it's streamed
+                text=text
+            )
+            # Return a CompletedProcess object with empty output streams
+            return subprocess.CompletedProcess(
+                args=result.args,
+                returncode=result.returncode,
+                stdout="",
+                stderr=""
+            )
+        else:
+            # Silent mode: Capture all output and return it.
+            result = subprocess.run(
+                command,
+                shell=True,
+                check=fail_on_error,
+                capture_output=True, # Output is captured
+                text=text
+            )
+            return result
+
+    # --- Script Control API ---
+    def exit(self, exit_code: int = 0) -> None:
+        """
+        Exits the script with a specified exit code.
+
+        :param exit_code: The exit code, defaults to 0.
+        """
+        sys.exit(exit_code)
+
+sh = ShellAPI()
