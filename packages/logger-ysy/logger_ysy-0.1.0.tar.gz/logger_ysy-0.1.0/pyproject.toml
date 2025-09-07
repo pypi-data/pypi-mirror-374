@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "logger_ysy"
+version = "0.1.0"
+authors = [
+    { name="ysy", email="3100507985@qq.com" }
+]
+
+description = "即导即用的Python日志工具包，支持控制台+文件双输出，可灵活覆盖默认配置"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = []
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["logger"]
+    
