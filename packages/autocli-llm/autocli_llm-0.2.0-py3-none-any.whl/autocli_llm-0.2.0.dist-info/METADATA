@@ -1,0 +1,306 @@
+Metadata-Version: 2.4
+Name: autocli-llm
+Version: 0.2.0
+Summary: Parse CLI arguments from natural language using LLMs
+Home-page: https://github.com/horatio-sans-serif/autocli
+Author: Horatio Sans Serif
+Author-email: Horatio Sans Serif <horatio@sans-serif.net>
+License: MIT
+Project-URL: Homepage, https://github.com/horatio-sans-serif/autocli
+Project-URL: Bug Tracker, https://github.com/horatio-sans-serif/autocli/issues
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: transformers>=4.30.0
+Requires-Dist: torch>=2.0.0
+Requires-Dist: sentencepiece>=0.1.99
+Requires-Dist: protobuf>=3.20.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: black>=22.0.0; extra == "dev"
+Requires-Dist: flake8>=4.0.0; extra == "dev"
+Requires-Dist: mypy>=0.990; extra == "dev"
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# autocli
+
+Parse CLI arguments from natural language descriptions using small LLMs. Write your CLI examples in **any format** - the LLM understands them all!
+
+## Features
+
+- **Flexible Input Format** - Understands any CLI syntax: `--name=value`, `-n value`, `name:value`, etc.
+- **100% Local** - No API calls, runs entirely offline on your machine
+- **Lightweight** - Flan-T5-small model (~250MB) runs on CPU, no GPU required
+- **One-time download** - Model downloads automatically on first use, then works offline forever
+- Natural language CLI description parsing
+- Automatic argument type inference
+- Support for positional and named arguments
+- Built-in help generation
+- Fallback regex parser for reliability
+- Returns arguments as NamedTuple-like objects
+
+## Installation
+
+```bash
+pip install autocli-llm
+```
+
+Note: The package imports as `autocli` after installation.
+
+**First Run**: On first use, the package will automatically download the Flan-T5-small model (~250MB) from HuggingFace. This requires an internet connection but only happens once - the model is cached locally for all future use.
+
+## Quick Start
+
+```python
+import autocli
+
+args = autocli.parse(
+    """
+    This app greets someone with excitement
+    
+        $ python greet.py --name Alice --excitement 3
+        Hello, Alice!!!
+    """
+)
+
+print(f"Hello, {args.name}{'!' * args.excitement}")
+```
+
+## Format Flexibility & Type Intelligence
+
+The LLM understands **any reasonable CLI format** and **intelligently infers data types** from context!
+
+### Mixed Syntax Styles
+```python
+import autocli
+
+# All of these formats work!
+args = autocli.parse("""
+    A config tool that accepts various argument formats
+    
+    Examples:
+        $ mytool --name="Alice" --age=30 --verbose
+        $ mytool name:Bob age:25 -v
+        $ mytool -n Charlie -a 35 --verbose=true
+        $ mytool --name David age 40
+""")
+
+# The LLM figures out that these all refer to the same arguments:
+# - name (string)
+# - age (number) 
+# - verbose (boolean flag)
+```
+
+### Intelligent Type Inference
+
+```python
+# The LLM automatically understands different data types
+args = autocli.parse("""
+    Scientific tool with various data types
+    
+    Examples:
+        $ analyze --threshold 3.14159 --iterations 1000 --verbose yes
+        $ analyze --ratio 0.5 --count 42 --debug true --days Mon,Wed,Fri
+        $ analyze threshold:2.71 iterations:500 verbose:1 days:[Monday,Friday]
+""")
+
+# Automatically infers:
+# - threshold: float (3.14159)
+# - iterations: integer (1000)
+# - verbose: boolean (yes/no, true/false, 1/0)
+# - days: list (comma-separated or bracket notation)
+```
+
+### Boolean Values - All Formats Understood
+```python
+# The LLM understands all common boolean representations
+args = autocli.parse("""
+    Build tool with boolean flags
+    
+    Examples:
+        $ build --optimize=true --debug=false    # true/false
+        $ build --compress=yes --verbose=no      # yes/no  
+        $ build --minify=1 --sourcemaps=0        # 1/0
+        $ build --production --no-warnings       # flag presence
+""")
+```
+
+### Lists and Collections
+```python
+# Various list formats are automatically recognized
+args = autocli.parse("""
+    Scheduler that accepts multiple values
+    
+    Examples:
+        $ schedule --days Monday,Tuesday,Wednesday,Thursday,Friday
+        $ schedule --days "Mon Tue Wed Thu Fri"
+        $ schedule --days=[Monday,Wednesday,Friday]
+        $ schedule --times 9:00,12:00,15:00,18:00
+""")
+```
+
+## Examples
+
+### Positional args
+
+```python
+import autocli
+
+args = autocli.parse(
+    """
+    This app adds two numbers and prints their sum
+
+        $ python sum.py 1 2
+        3
+    """
+)
+
+print(args[0] + args[1])
+```
+
+### Named args and defaults
+
+```python
+import autocli
+
+args = autocli.parse(
+    """
+    This app prints the file with the longest name in the given directory (default: PWD)
+
+        $ ls /tmp
+        a.txt ab.txt abc.txt
+
+        $ python longest_filename.py --path /tmp
+        abc.txt
+    """
+)
+
+print(f'finding the longest filename in directory: {args.path})
+```
+
+### Named args wth numeric values and allowed ranges
+
+```python
+# greet.py
+
+import autocli
+
+args = autocli.parse(
+    """
+    This app greets the given `name` defaulting to "Earthling" and
+    appends `excitement` number of exclamation marks.
+    """
+)
+
+print(f'{args.name}{'!' * args.excitement}')
+```
+
+```
+$ python greet.py --help
+Greets the given name.
+
+Options:
+
+    -n NAME
+    --name NAME
+
+        NAME is who is being greeted.
+
+        Default: "Earthling"
+
+    -e EXCITEMENT
+    --excitement EXCITEMENT
+
+        EXCITEMENT is a positive integer that contols
+        the number of exclamation marks.
+
+        Default: 1
+```
+
+```
+$ python greet.py -e -3
+ERROR: The value for EXCITEMENT is too low. The lowest value is 1,
+which is also the default.
+
+    -e EXCITEMENT
+    --excitement EXCITEMENT
+
+        EXCITEMENT is a positive integer that contols
+        the number of exclamation marks.
+
+        Default: 1
+
+Did you mean?
+    python greet.py -e 3
+```
+
+```
+$ python greet.py --excitement 42
+Greetings, Earthling!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+```
+
+## How It Works
+
+1. **Intelligent Parsing**: The LLM understands intent, not just syntax - it recognizes that `--name=foo`, `-n foo`, `name:foo`, and `name foo` all mean the same thing
+2. **Local LLM Processing**: Runs entirely on your machine - no API calls or internet connection required after initial download
+3. **Structured Output**: Converts any CLI format to structured argument specifications  
+4. **Automatic ArgParse**: Generates standard Python argparse configuration
+5. **NamedTuple-like Access**: Returns arguments as an object supporting both attribute and index access
+
+**Privacy First**: All processing happens locally on your device. Your code and CLI descriptions never leave your machine.
+
+**Performance**: The small model (~250MB) runs efficiently on CPU - no GPU required. Works on laptops, desktops, and even resource-constrained environments.
+
+## Advanced Usage
+
+### Custom Model
+
+```python
+from autocli.parser import LLMParser
+
+# Use a different model
+parser = LLMParser(model_name="google/flan-t5-base")
+```
+
+### Accessing Arguments
+
+```python
+args = autocli.parse(description)
+
+# Named arguments via attributes
+print(args.name)
+print(args.port)
+
+# Positional arguments via indexing
+print(args[0])  # First positional arg
+print(args[1])  # Second positional arg
+```
+
+## Requirements
+
+- Python 3.8+
+- PyTorch 2.0+ (CPU version is sufficient)
+- Transformers 4.30+
+- ~250MB disk space for model cache
+- Internet connection (first run only, for model download)
+
+## License
+
+MIT
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
