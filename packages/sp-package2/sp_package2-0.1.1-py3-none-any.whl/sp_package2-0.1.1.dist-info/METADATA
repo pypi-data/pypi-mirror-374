@@ -1,0 +1,38 @@
+Metadata-Version: 2.4
+Name: sp_package2
+Version: 0.1.1
+Summary: A simple example package with basic calculation of sphere.
+Home-page: https://github.com/paytai/sp_package
+Author: Yok
+Author-email: raseljone.com@gmail.com
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-python
+Dynamic: summary
+
+# sp_package
+
+`sp_package` is a lightweight Python package that provides simple utility functions
+for **sp_volume**, **sp_surface**, and **sp_cap**.
+It is designed mainly for learning purposes and as an example of Python packaging.
+
+---
+
+## Features
+- **sp_volume**: calculate the volume of the sphere.
+- **sp_surface**: calculate the surface of the sphere
+- **sp_cap**: calculate the volume of the spherical cap.
+
+---
+
+## Installation
+
+You can install the package directly from PyPI:
+
+```bash
+pip install sp_package2
