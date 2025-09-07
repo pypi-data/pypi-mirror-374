@@ -1,0 +1,249 @@
+[tool.poetry]
+name = "commit-for-free"
+version = "1.1.5"
+description = "A sophisticated Git commit message generator that uses AI to create meaningful, conventional commit messages based on your code changes."
+authors = ["Alaamer <ahmedmuhamed12@gmail.com>"]
+maintainers = ["Alaamer <ahmedmuhamed239@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/alaamer12/c4f"
+repository = "https://github.com/alaamer12/c4f"
+documentation = "https://github.com/alaamer12/c4f"
+keywords = [
+    "git",
+    "commit",
+    "ai",
+    "artificial-intelligence",
+    "conventional-commits",
+    "developer-tools",
+    "automation",
+    "cli",
+    "command-line",
+    "productivity",
+    "version-control",
+    "commit-message",
+    "code-quality",
+    "workflow",
+    "git-tools",
+    "semantic-commits",
+    "devops",
+    "software-development",
+    "python-tool",
+    "git-automation",
+    "commit-history",
+    "code-documentation"
+]
+
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Operating System :: POSIX",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: MacOS",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Version Control",
+    "Topic :: Software Development :: Version Control :: Git",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+    "Framework :: Pytest",
+]
+packages = [{ include = "c4f" }]
+include = [
+    "CHANGELOG.md",
+    "CODE_OF_CONDUCT.md",
+    "README.md",
+    "CONTRIBUTING.md",
+    "LICENSE",
+    "requirements.txt",
+    "SECURITY.md",
+    "c4f/py.typed",
+]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/alaamer12/c4f/issues"
+"Changelog" = "https://github.com/alaamer12/c4f/blob/main/CHANGELOG.md"
+"Security" = "https://github.com/alaamer12/c4f/blob/main/SECURITY.md"
+"Funding" = "https://github.com/sponsors/alaamer12"
+"Source" = "https://github.com/alaamer12/c4f"
+
+[tool.poetry.scripts]
+c4f = "c4f.cli:main"
+version = "scripts.release.update_version:cli"
+
+[tool.poetry.dependencies]
+python = ">=3.11"
+g4f = "^0.5.7.3"
+rich = "^14.0.0"
+
+[tool.poetry.extras]
+monitoring = ["psutil"]  # Optional dependency for process monitoring and system utilities
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+coverage = "^7.7.1"
+mypy = "^1.15.0"
+ruff = "^0.11.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+testpaths = "tests"
+addopts = "-ra -q"
+markers = [
+    "long: marks tests as long-running (use '-m long' to run them)"
+]
+filterwarnings = [
+    "ignore::DeprecationWarning:g4f.requests.aiohttp:34",
+    "ignore::DeprecationWarning:aiohttp.client:1425",
+    "ignore:Error handling file change:UserWarning:tests.test_subprocess"
+]
+
+[tool.coverage.run]
+branch = true
+source = ["c4f"]
+omit = ["**/__main__.py", "c4f/_progress.py", "c4f/processor/**"] # TODO: Remove this later
+
+[tool.coverage.report]
+# Regexes for lines to exclude from consideration
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "    pass",
+    "except ImportError:",
+    "    pass",
+    "except Exception:",
+    "    pass",
+]
+ignore_errors = true
+fail_under = 85 # Set minimum coverage percentage
+show_missing = true
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+indent-width = 4
+exclude = ["tests/*", "scripts/*", "docs/*", "examples/*", "demos/*", "c4f/_progress.py"]  # Exclude all files in tests directory
+
+
+[tool.ruff.lint]
+extend-select = [
+    "E",    # pycodestyle errors
+    "F",    # pyflakes
+    "I",    # isort
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "ANN",  # flake8-annotations
+    "B",    # flake8-bugbear
+    "A",    # flake8-builtins
+    "C4",   # flake8-comprehensions
+    "DTZ",  # flake8-datetimez
+    "T10",  # flake8-debugger
+    "EM",   # flake8-errmsg
+    "ISC",  # flake8-implicit-str-concat
+    "ICN",  # flake8-import-conventions
+    "G",    # flake8-logging-format
+    "INP",  # flake8-no-pep420
+    "PIE",  # flake8-pie
+    "T20",  # flake8-print
+    "PYI",  # flake8-pyi
+    "PT",   # flake8-pytest-style
+    "Q",    # flake8-quotes
+    "RSE",  # flake8-raise
+    "RET",  # flake8-return
+    "SLF",  # flake8-self
+    "SIM",  # flake8-simplify
+    "ARG",  # flake8-unused-arguments
+    "PTH",  # flake8-use-pathlib
+    "TD",   # flake8-todos
+    "FIX",  # flake8-fix-me
+    "ERA",  # eradicate
+    "PD",   # pandas-vet
+    "PGH",  # pygrep-hooks
+    "PL",   # pylint
+    "TRY",  # tryceratops
+    "NPY",  # numpy
+    "RUF",  # ruff-specific
+]
+
+ignore = [
+    "E501",    # line too long - handled by formatter
+    "UP007",   # optional-type-checking-imports
+    "PGH003",  # specific-string-type-hints
+    "G004",    # string-type-hint-for-literal-string
+    "UP006",   #
+    "UP035",   #
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+    "ANN",  # flake8-annotations
+    "S101",  # assert
+]
+"benchmark/**/*.py" = [
+    "T20",  # flake8-print
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["c4f"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+strict_optional = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "scripts.*"
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "demos.*"
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "examples.*"
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "c4f._progress"
+ignore_errors = true
