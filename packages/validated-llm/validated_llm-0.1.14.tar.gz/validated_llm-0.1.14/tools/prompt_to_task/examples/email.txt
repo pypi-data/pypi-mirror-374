@@ -1,0 +1,16 @@
+Generate a professional email for {recipient_name} regarding {subject_matter}.
+
+The email should include:
+- A proper greeting using the recipient's name
+- A clear introduction stating the purpose
+- Main body with {num_points} key points
+- A professional closing
+- Your signature as {sender_name} from {company_name}
+
+Requirements:
+- The tone should be {tone_style} (formal/casual/friendly)
+- Email length should be between 150-300 words
+- Include a clear call-to-action if {include_cta} is true
+- Make sure to address any concerns about {main_concern}
+
+Format the output as plain text with proper email structure.
