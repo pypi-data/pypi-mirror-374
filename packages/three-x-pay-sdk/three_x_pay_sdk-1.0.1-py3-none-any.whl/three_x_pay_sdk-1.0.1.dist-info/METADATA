@@ -1,0 +1,80 @@
+Metadata-Version: 2.1
+Name: three-x-pay-sdk
+Version: 1.0.1
+Summary: Python SDK for 3X PAY API
+Home-page: https://github.com/enveloss/3x-pay-sdk
+License: MIT
+Keywords: payments,crypto,sdk,api,3xpay
+Requires-Python: >=3.8,<4.0
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Typing :: Typed
+Requires-Dist: httpx (>=0.24,<1.0)
+Requires-Dist: pydantic (>=2.5,<3.0)
+Project-URL: Repository, https://github.com/enveloss/3x-pay-sdk
+Description-Content-Type: text/markdown
+
+three-x-pay-sdk
+================
+
+Python SDK for the 3X PAY API.
+
+- API reference: [OpenAPI spec](https://app.3xpay.org/api/openapi.json)
+
+Installation
+------------
+
+```bash
+pip install three-x-pay-sdk
+```
+
+Quick start
+-----------
+
+```python
+from three_x_pay_sdk import ThreeXPayClient
+
+
+client = ThreeXPayClient(api_key="YOUR_API_KEY")
+
+# Health check
+await client.ping()
+
+# Create payin
+created = await client.create_payin(
+    amount=10.5,
+    currency="USDT",
+    merchant_order_id="order-123",
+    merchant_callback_url="https://example.com/webhook",
+    merchant_return_url="https://example.com/return",
+    is_test=True,
+)
+print(created.payment_url)
+
+# Get payin
+info = await client.get_payin(created.id)
+print(info.status)
+```
+
+Webhook signature
+-----------------
+
+```python
+from three_x_pay_sdk import verify_signature
+
+is_valid = verify_signature(body_bytes, secret_key, signature_from_header)
+```
+
+License
+-------
+
+MIT
+
