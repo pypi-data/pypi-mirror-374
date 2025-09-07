@@ -1,0 +1,14 @@
+[project]
+name = "signal-ict-snehfaldu-92510133030"
+version = "0.1.0"
+description = "A Python package for unitary, trigonometric signals and operations"
+authors = [
+  { name="Sneh Faldu", email="faldusneh@gmail.com" }
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "numpy",
+    "matplotlib"
+]
