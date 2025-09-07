@@ -1,0 +1,6 @@
+[console_scripts]
+mkdocs=mkdocs_notion_plugin.mkdocs_cli:cli
+
+[mkdocs.plugins]
+notion=mkdocs_notion_plugin:NotionPlugin
+
