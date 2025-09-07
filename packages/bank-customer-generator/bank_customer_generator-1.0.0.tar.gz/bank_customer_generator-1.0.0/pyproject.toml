@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bank-customer-generator"
+version = "1.0.0"
+description = "A command-line tool to generate fake bank customer data and export to CSV"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Ethan Wang", email = "EthanWang@example.com"}
+]
+keywords = ["bank", "customer", "data", "generator", "csv", "fake"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+dependencies = [
+    "Faker>=15.0.0",
+]
+
+[project.scripts]
+bank-customer-generator = "bank_customer_generator.bank_customer_generator:main"
