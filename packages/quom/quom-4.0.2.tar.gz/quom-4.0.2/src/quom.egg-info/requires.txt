@@ -1,0 +1,10 @@
+
+[:python_version < "3.8"]
+importlib-metadata
+
+[testing]
+pytest
+pyfakefs
+pytest-cov
+flake8
+flake8-quotes
