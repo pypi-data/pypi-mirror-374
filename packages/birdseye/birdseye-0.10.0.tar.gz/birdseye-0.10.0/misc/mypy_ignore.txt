@@ -1,0 +1,70 @@
+error: "AST" has no attribute "_depth"
+error: "AST" has no attribute "_loops"
+error: "AST" has no attribute "_tree_index"
+error: "AST" has no attribute "first_token"
+error: "AST" has no attribute "parent"
+error: "FrameInfo" has no attribute "arguments"
+error: "FrameInfo" has no attribute "call_id"
+error: "FrameInfo" has no attribute "inner_call"
+error: "FrameInfo" has no attribute "iteration"
+error: "FrameInfo" has no attribute "start_time"
+error: "FunctionType" has no attribute "traced_file"
+error: "TracedFile" has no attribute "tokens"
+error: "Type[Base]" has no attribute "metadata"
+error: "comprehension" has no attribute "first_token"
+error: "comprehension" has no attribute "parent"
+error: "expr" has no attribute "_is_interesting_expression"
+error: "expr" has no attribute "_loops"
+error: "expr" has no attribute "ctx"
+error: "expr" has no attribute "parent"
+error: "generic_visit" of "NodeTransformer" does not return a value
+error: "stmt" has no attribute "_loops"
+error: "stmt" has no attribute "parent"
+error: Argument 1 to "partial" has incompatible type "function"; expected "Callable[..., <nothing>]"
+error: Incompatible types in assignment (expression has type "Type[type]", variable has type "_SpecialForm")
+error: Item "For" of "Union[While, For, comprehension]" has no attribute "parent"
+error: Item "While" of "Union[While, For, comprehension]" has no attribute "parent"
+error: Item "comprehension" of "Union[While, For, comprehension]" has no attribute "parent"
+error: Module has no attribute "_depth"
+error: Module has no attribute "isasyncgenfunction"
+error: Name 'lru_cache' already defined
+error: Return type of "__call__" incompatible with supertype "TreeTracerBase"
+error: Return type of "generic_visit" incompatible with supertype "NodeTransformer"
+error: Return type of "generic_visit" incompatible with supertype "NodeVisitor"
+error: Too many arguments for "Function"
+error: Too many arguments for "FunctionType"
+error: Unexpected keyword argument "arguments" for "Call"
+error: Unexpected keyword argument "data" for "Call"
+error: Unexpected keyword argument "exception" for "Call"
+error: Unexpected keyword argument "function" for "Call"
+error: Unexpected keyword argument "id" for "Call"
+error: Unexpected keyword argument "return_value" for "Call"
+error: Unexpected keyword argument "start_time" for "Call"
+error: Unexpected keyword argument "traceback" for "Call"
+note: "Call" defined here
+error: Incompatible types in assignment (expression has type "Iterator[Any]", variable has type "AbstractSet[Any]")
+error: Incompatible types in assignment (expression has type "chain[int]", variable has type "range")
+error: Name 'unicode' is not defined
+error: Name 'xrange' is not defined
+error: Unexpected keyword argument "data" for "Function"
+error: Unexpected keyword argument "file" for "Function"
+error: Unexpected keyword argument "hash" for "Function"
+error: Unexpected keyword argument "html_body" for "Function"
+error: Unexpected keyword argument "lineno" for "Function"
+error: Unexpected keyword argument "name" for "Function"
+note: "Function" defined here
+error: Argument 2 to "decorate_methods" has incompatible type "Callable[[FunctionType], FunctionType]"; expected "Callable[[Callable[..., Any]], Callable[..., Any]]"
+error: Item "For" of "Union[For, While, comprehension]" has no attribute "_tree_index"
+error: Item "While" of "Union[For, While, comprehension]" has no attribute "_tree_index"
+error: Item "comprehension" of "Union[For, While, comprehension]" has no attribute "_tree_index"
+error: No overload variant of "map" matches argument types [Any, builtins.list[builtins.int*], builtins.list[builtins.bool*], builtins.list[Any], builtins.list[builtins.str*]]
+error: "FrameInfo" has no attribute "inner_calls"
+error: Module has no attribute "getargs"
+error: No overload variant of "map" matches argument types [Any, builtins.list[Any], builtins.list[builtins.bool*], builtins.list[Any], builtins.list[builtins.str*]]
+error: Module has no attribute "cache"
+error: "FunctionDef" has no attribute "first_token"
+error: Module 'lib2to3.pgen2.tokenize' has no attribute 'detect_encoding'
+error: Incompatible types in assignment (expression has type "CodeType", variable has type Module)
+error: Module 'threading' has no attribute 'currentThread'
+error: Module 'werkzeug.serving' has no attribute 'ThreadingMixIn'
+error: Need type annotation for variable

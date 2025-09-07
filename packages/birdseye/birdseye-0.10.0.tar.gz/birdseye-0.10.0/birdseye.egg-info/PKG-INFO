@@ -1,0 +1,95 @@
+Metadata-Version: 2.4
+Name: birdseye
+Version: 0.10.0
+Summary: Graphical Python debugger which lets you easily view the values of all evaluated expressions
+Home-page: http://github.com/alexmojaki/birdseye
+Author: Alex Hall
+Author-email: alex.mojaki@gmail.com
+License: MIT
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Debuggers
+Requires-Python: >=3.8
+Description-Content-Type: text/x-rst
+License-File: LICENSE.txt
+Requires-Dist: Flask
+Requires-Dist: flask-humanize
+Requires-Dist: sqlalchemy
+Requires-Dist: asttokens
+Requires-Dist: littleutils>=0.2
+Requires-Dist: cheap_repr
+Requires-Dist: outdated
+Requires-Dist: cached_property
+Provides-Extra: tests
+Requires-Dist: bs4; extra == "tests"
+Requires-Dist: selenium; extra == "tests"
+Requires-Dist: pytest; extra == "tests"
+Requires-Dist: numpy; extra == "tests"
+Requires-Dist: pandas; extra == "tests"
+Requires-Dist: gunicorn; extra == "tests"
+Requires-Dist: twine; extra == "tests"
+Requires-Dist: build; extra == "tests"
+Requires-Dist: django; extra == "tests"
+Requires-Dist: IPython; extra == "tests"
+Dynamic: license-file
+
+|logo| birdseye
+===============
+
+|Supports Python versions 3.8+|
+
+birdseye is a Python debugger which records the values of expressions in a
+function call and lets you easily view them after the function exits.
+For example:
+
+.. figure:: https://i.imgur.com/rtZEhHb.gif
+   :alt: Hovering over expressions
+
+You can use birdseye no matter how you run or edit your code. Just ``pip install birdseye``, add the ``@eye`` decorator
+as seen above, run your function however you like, and view the results in your browser.
+It's also `integrated with some common tools <http://birdseye.readthedocs.io/en/latest/integrations.html>`_ for a smoother experience.
+
+You can try it out **instantly** on `futurecoder <https://futurecoder.io/course/#ide>`_: enter your code in the editor on the left and click the ``birdseye`` button to run. No imports or decorators required.
+
+Feature Highlights
+------------------
+
+Rather than stepping through lines, move back and forth through loop
+iterations and see how the values of selected expressions change:
+
+.. figure:: https://i.imgur.com/236Gj2E.gif
+   :alt: Stepping through loop iterations
+
+See which expressions raise exceptions, even if they’re suppressed:
+
+.. figure:: http://i.imgur.com/UxqDyIL.png
+   :alt: Exception highlighting
+
+Expand concrete data structures and objects to see their contents.
+Lengths and depths are limited to avoid an overload of data.
+
+.. figure:: http://i.imgur.com/PfmqZnT.png
+   :alt: Exploring data structures and objects
+
+Calls are organised into functions (which are organised into files) and
+ordered by time, letting you see what happens at a glance:
+
+.. figure:: https://i.imgur.com/5OrB76I.png
+   :alt: List of function calls
+
+.. |logo| image:: https://i.imgur.com/i7uaJDO.png
+.. |Supports Python versions 3.8+| image:: https://img.shields.io/pypi/pyversions/birdseye.svg
+   :target: https://pypi.python.org/pypi/birdseye
+
+.. inclusion-end-marker
+
+**Read more documentation** `here <http://birdseye.readthedocs.io>`_
