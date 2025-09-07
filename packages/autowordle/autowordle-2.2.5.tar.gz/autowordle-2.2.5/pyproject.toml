@@ -1,0 +1,32 @@
+[project]
+name = "autowordle"
+version = "2.2.5"
+description = "Automatic Wordle collector"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "aw-client>=0.5.15",
+    "maturin>=1.8.2",
+    "pillow>=11.1.0",
+    "py7zr>=0.22.0",
+    "pytesseract>=0.3.13",
+    "pytz>=2025.1",
+    "pyxdg>=0.28",
+    "pyyaml>=6.0.2",
+    "ttkthemes>=3.2.2",
+    "wand>=0.6.13",
+]
+
+[project.scripts]
+autowordle = "autowordle.prog:top"
+
+[tool.uv]
+package = true
+
+[[tool.uv.index]]
+name = "tymoon"
+url = "https://gitea.tymoon.eu/api/packages/isoraqathedh/pypi/simple/"
+publish-url = "https://gitea.tymoon.eu/api/packages/isoraqathedh/pypi"
+
+[tool.setuptools.package-data]
+"autowordle.res" = ['*.png', 'redactle-base.sh']
