@@ -1,0 +1,84 @@
+Metadata-Version: 2.4
+Name: hdgdk
+Version: 2.1.0
+Summary: HDGDK - Python工具开发包
+Home-page: https://github.com/zhangsan/hdgdk
+Author: zhangsan
+Author-email: Your Name <your.email@example.com>
+Project-URL: Homepage, https://github.com/yourusername/hdgdk
+Project-URL: Bug Tracker, https://github.com/yourusername/hdgdk/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Microsoft :: Windows
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# HDGDK - Python工具开发包
+
+版本: 2.1.0
+
+HDGDK是一个功能丰富的Python工具包，提供多种系统操作和开发工具，适用于Windows平台。
+
+## 功能特性
+
+- **系统操作**: 提供窗口管理、系统信息获取等功能
+- **内存操作**: 内存读写、进程内存管理
+- **图形处理**: 截图、实时绘制、识图等功能
+- **硬件交互**: 键鼠控制、驱动交互
+- **网络功能**: IP操作、VNC等远程控制
+- **安全工具**: 注入、HOOK、加密等安全相关功能
+
+## 支持平台
+
+- Windows (x86/x64)
+
+## 安装方法
+
+```bash
+pip install hdgdk
+```
+
+## 使用示例
+
+```python
+import HD
+
+# 初始化
+# 请根据实际情况修改dll路径
+HD.Config.load_dll("path/to/hd.dll")
+
+# 使用示例
+# 获取窗口
+window = HD.窗口.窗口_取句柄("窗口标题")
+print(f"找到窗口句柄: {window}")
+
+# 截图示例
+img = HD.截图.截图_窗口(window)
+# 保存截图
+HD.截图.图片_保存(img, "screenshot.png")
+
+# 键鼠控制示例
+HD.键鼠.鼠标_移动(100, 100)
+HD.键鼠.鼠标_左键单击()
+```
+
+## 依赖项
+
+- Python 3.6或更高版本
+- Windows操作系统
+- 相关DLL文件（位于lib目录下）
+
+## 注意事项
+
+- 请确保您拥有使用此工具包的合法权限
+- 某些功能可能需要管理员权限才能正常工作
+- DLL文件需要与您的Python版本（32位/64位）匹配
+
+## 版权信息
+
+此项目使用MIT许可证 - 详见LICENSE文件
