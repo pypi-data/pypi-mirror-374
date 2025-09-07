@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "HoloViro"
+version = "0.1.1"
+description = "Thread-safe, singleton virtual environment manager for rapid code generation, safe pip installs, and sandboxed Python automation."
+authors = [
+  { name="Tristan McBride Sr.", email = "142635792+TristanMcBrideSr@users.noreply.github.com" },
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pyperclip",
+    "pyautogui",
+    "python-dotenv",
+    "uv"
+]
+
+[project.urls]
+Homepage = "https://github.com/TristanMcBrideSr"
