@@ -1,0 +1,50 @@
+# no python virtual environment
+.venv*
+
+# no compiled python or caches
+**/__pycache__
+**/.*_cache
+__*/**/*
+my_pycache/*
+profile.*
+
+
+#ignore the scratchpad 
+scratch/*
+
+
+# tempfolder used by get_core  
+build
+
+# ignore test coverage reports
+.coverage*
+**/coverage/*
+**/coverage*.xml
+
+# no  test results 
+junit/*
+results/
+
+# OS specific stuff
+desktop.ini
+
+
+# Do not check in the autodoc generated API documentaion files 
+docs/_build
+docs/api
+docs/~$*
+
+# no node_modules ( pyright ) 
+node_modules
+
+# no poetry packaging 
+dist/
+
+src/mpflash/coverag*
+
+# no hypothesis patches
+**/.hypothesis
+
+profile.*
+
+

@@ -1,0 +1,158 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "CLI: mpflash",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "mpflash.cli_main",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "-VV",
+                // "add",
+                // "--path",
+                // "\\\\wsl.localhost\\Ubuntu\\home\\jos\\micropython\\ports\\samd\\build-SEEED_WIO_TERMINAL\\firmware.uf2",
+                // "--force",
+                "flash",
+                "--board",
+                "RPI_PICO2_W@settrace_tests",
+                "--custom",
+                "--version",
+                "preview",
+                // "--variant",
+                // "--variant",
+                // "SPIRAM",
+                // "--erase",
+                // "--variant",
+                // "DP",
+                // "FLASH_16M",
+                // "--board",
+                // "PIMORONI_PICOLIPO",
+                // "flash",
+                // "--no-erase",
+                // "--board",
+                // "SEEED_WIO_TERMINAL",
+                // "PICO",
+                // "--serial",
+                // "COM22",
+                // "--board",
+                // "--ignore",
+                // "/dev/ttyAMA0",
+                // "/dev/ttyACM0",
+                // "--version",
+                // "?",
+                // "--board",
+                // "--no-erase",
+                // "v1.22.2",
+                // "--port",
+                // "samd",
+            ]
+        },
+        {
+            "name": "Pytest --collect-only (debug)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "args": [
+                ".",
+                "--collect-only",
+                "--capture=no",
+            ],
+            "cwd": "${workspaceFolder}/snippets",
+            "justMyCode": false
+        },
+        {
+            "name": "Python: file as Module",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "mpflash.mpboard_id.${fileBasenameNoExtension}",
+            "justMyCode": false
+        },
+        {
+            "name": "mpremote",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "mpremote",
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "resume",
+                "exec",
+                "print(42)",
+            ]
+        },
+        {
+            "name": "Python: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            // "cwd": "${workspaceFolder}",
+            "cwd": "${fileDirname}",
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "Python: this File - Args ",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": [
+                "${input:cmdlineParams}"
+            ]
+        },
+        {
+            "name": "Micro-CPython: Current File",
+            "type": "debugpy",
+            "subProcess": false,
+            "justMyCode": true,
+            "request": "launch",
+            "program": "${file}",
+            "cwd": "${fileDirname}",
+            "console": "integratedTerminal",
+            "env": {
+                // patch python path with CPYTHON replacements
+                //"PYTHONPATH": "all-stubs/cpython_core"
+                //"PYTHONPATH": "${workspaceFolder}/tests/mocks/pycopy-cpython_core"
+                "PYTHONPATH": "${workspaceFolder}/tests/mocks/micropython-cpython_core;${workspaceFolder}/tests/mocks/machine"
+            },
+        },
+        {
+            "name": "Python: Debug process --path",
+            "type": "debugpy",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "program": "${file}",
+            "args": [
+                "--path",
+                "./temp"
+            ]
+        },
+        {
+            "name": "Debug pytest tests",
+            "purpose": [
+                "debug-test"
+            ],
+            "type": "debugpy",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "stopOnEntry": false,
+            // false : Avoid debugpy trying to debug micropython
+            // but may cause issue with pytest-cov coverage reporting 
+            "subProcess": false,
+        },
+    ],
+    "inputs": [
+        {
+            "id": "cmdlineParams",
+            "type": "promptString",
+            "description": "commandline parameters",
+            "default": ""
+        }
+    ]
+}

@@ -1,0 +1,91 @@
+# This workflow will :
+# - test mpflash
+# - upload coverage stats to Codecov
+# - upload artifacts from the results folder
+
+name: pytest_mpflash
+on:
+    workflow_dispatch:
+    pull_request:
+        # branches: [main]
+
+    push:
+        branches: [main, dev/*, mpflash/*, feat/*, fix/*]
+        paths:
+            - .github/workflows/pytest_mpflash.yml
+            - .github/workflows/codecov.yml
+            - "mpflash/**"
+            - "pyproject.toml"
+            - "poetry.lock"
+            - "tests"
+
+env:
+    PYTHONIOENCODING: utf-8
+    # fix:  DeprecationWarning: Jupyter is migrating its paths to use standard platformdirs
+    JUPYTER_PLATFORM_DIRS: "1"
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    test_mpflash:
+        name: Python ${{ matrix.python-version }} on ${{ matrix.os }}
+        runs-on: ${{ matrix.os }}
+
+        strategy:
+            fail-fast: false
+            matrix:
+                os: [ubuntu-latest, windows-latest, macos-latest]
+                python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+                # include: # for testing
+                #     - os: ubuntu-latest
+                #       python-version: "3.11"
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v5
+              with: 
+                fetch-tags: true
+
+            #----------------------------------------------
+            # uv is not in the default image
+            #----------------------------------------------
+            - name: Install the latest version of uv
+              uses: astral-sh/setup-uv@v6
+              with:
+                version: "latest"
+
+            - name: Set up Python ${{ matrix.python-version }}
+              uses: actions/setup-python@v5
+              with:
+                  python-version: ${{ matrix.python-version }}
+                  #   cache: "poetry"
+
+            #----------------------------------------------
+            # install project
+            #----------------------------------------------
+            - name: Install mpflash & test dependencies
+              run: uv sync --extra test
+
+            - name: Test mpflash
+              run: |
+                  # run once to bootstrap database (test hack)
+                  uv run mpflash download --board RPI_PICO
+                  uv run pytest --cov --cov-branch --cov-report=xml
+
+            #----------------------------------------------
+            # upload coverage stats
+            # .XML  to Codecov
+            #----------------------------------------------
+
+            - name: Upload coverage-mpflash-*.xml to Codecov
+              if: always() # ignore errors
+              continue-on-error: true
+              uses: codecov/codecov-action@v5
+              with:
+                  token: ${{ secrets.CODECOV_TOKEN }}
+                  # fail_ci_if_error: false
+                  # file: results/coverage-mpflash-${{ matrix.python-version }}-${{ matrix.os }}.xml
+                  # flags: mpflash
+
+
