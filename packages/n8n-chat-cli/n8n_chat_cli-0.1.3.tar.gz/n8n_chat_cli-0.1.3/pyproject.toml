@@ -1,0 +1,18 @@
+[project]
+name = "n8n-chat-cli"
+version = "0.1.3"
+description = "A command-line interface for n8n chat webhooks."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+authors = [
+  { name = "Kuldip Satpute", email = "satputekuldip@gmail.com" },
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+n8n-chat = "n8n_chat_cli.cli:main"
