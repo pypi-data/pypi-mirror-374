@@ -1,0 +1,359 @@
+[project]
+name = "litestar-playwright"
+description = "Playwright integration for Litestar."
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Hasan Sezer Taşan", email = "hasansezertasan@gmail.com" }]
+maintainers = [
+  { name = "Hasan Sezer Taşan", email = "hasansezertasan@gmail.com" },
+]
+dynamic = ["version"]
+keywords = [
+  "litestar",
+  "playwright",
+  "browser",
+  "testing",
+  "automation",
+  "litestar-plugin",
+  "litestar-extension",
+  "litestar-playwright",
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Information Technology",
+  "Intended Audience :: System Administrators",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+  "Programming Language :: Python",
+  "Topic :: Internet",
+  "Topic :: Internet :: WWW/HTTP :: Browsers",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Software Development :: Libraries",
+  "Topic :: Software Development",
+  "Typing :: Typed",
+]
+requires-python = ">=3.8"
+dependencies = ["litestar", "playwright"]
+
+
+[project.urls]
+changelog = "https://github.com/hasansezertasan/litestar-playwright/blob/main/CHANGELOG.md"
+documentation = "https://github.com/hasansezertasan/litestar-playwright#readme"
+homepage = "https://github.com/hasansezertasan/litestar-playwright"
+issues = "https://github.com/hasansezertasan/litestar-playwright/issues"
+releasenotes = "https://github.com/hasansezertasan/litestar-playwright/releases"
+source = "https://github.com/hasansezertasan/litestar-playwright.git"
+
+
+[dependency-groups]
+dev = [
+  "litestar-playwright",
+  "tox>=4.25.0",
+  "tox-uv>=1.13.1",
+  { include-group = "lint" },
+  { include-group = "test" },
+  { include-group = "tool" },
+]
+lint = [
+  "pylint>=3.2.7",
+  "mypy>=1.14.1",
+  "pyright>=1.1.403",
+  "ty==0.0.1a19",
+  "pyrefly==0.25.1",
+  "ruff>=0.12.12",
+  "taplo>=0.9.3",
+  "typos>=1.34.0",
+  "validate-pyproject[all]>=0.24.1",
+  "vulture>=2.14",
+  "slotscheck>=0.16.5",
+]
+test = [
+  "coverage-enable-subprocess==1.0",
+  "coverage[toml]~=7.4",
+  "pytest-asyncio>=0.24.0",
+  "pytest-dependency>=0.6.0",
+  "pytest-mock~=3.12",
+  "pytest-playwright>=0.5.2",
+  "pytest-rerunfailures~=14.0",
+  "pytest-snapshot>=0.9.0",
+  "pytest-xdist[psutil]~=3.5",
+  "pytest~=8.1",
+  "uvicorn>0.27.0",
+  "httpx>=0.27.0",
+]
+tool = ["poethepoet>=0.30.0", "pre-commit==3.5.0"]
+
+
+[tool.uv]
+cache-keys = [
+  { file = "pyproject.toml" },
+  { git = { commit = true, tags = true } },
+]
+trusted-publishing = "always"
+
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+
+[tool.hatch.version]
+source = "vcs"
+fallback-version = "0.1.0"
+
+
+[tool.hatch.build]
+hooks.vcs.version-file = "src/litestar_playwright/_version.py"
+
+
+[tool.hatch.version.raw-options]
+version_scheme = "only-version"
+local_scheme = "no-local-version"
+
+
+[tool.pytest.ini_options]
+addopts = "-v --tb=short"
+testpaths = ["tests"]
+asyncio_default_fixture_loop_scope = "function"
+
+
+[tool.coverage.run]
+source_pkgs = ["litestar_playwright", "tests"]
+branch = true
+parallel = true
+omit = ["src/litestar_playwright/__about__.py"]
+
+
+[tool.coverage.paths]
+litestar_playwright = [
+  "src/litestar_playwright",
+  "*/litestar-playwright/src/litestar_playwright",
+]
+tests = ["tests", "*/litestar-playwright/tests"]
+
+
+[tool.coverage.report]
+# fail_under = 99
+# omit = ["src/**/_version.py"]
+# show_missing = true
+# skip_covered = true
+exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
+
+
+[tool.vulture]
+ignore_decorators = ["@app.command"]
+ignore_names = [
+  "return_value",
+  "pytestmark",
+  "anyio_backend",
+  "side_effect",
+  "on_app_init",
+  "fx_async_client",
+]
+min_confidence = 60
+paths = ["src", "tests", "examples"]
+
+
+[tool.slotscheck]
+strict-imports = false
+
+
+[tool.ruff]
+fix = true
+preview = true
+show-fixes = true
+src = ["src", "tests", "examples"]
+target-version = "py38"
+unsafe-fixes = true
+
+
+[tool.ruff.analyze]
+detect-string-imports = true
+preview = true
+
+
+[tool.ruff.format]
+docstring-code-format = true
+line-ending = "lf"
+preview = true
+
+
+[tool.ruff.lint]
+ignore = ["COM812", "CPY001"]
+fixable = ["ALL"]
+logger-objects = ["logging_setup.logger"]
+preview = true
+select = ["ALL"]
+
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = ['S101']
+
+
+[tool.ruff.lint.pyupgrade]
+keep-runtime-typing = true
+
+
+[tool.ruff.lint.pycodestyle]
+ignore-overlong-task-comments = true
+
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+
+[tool.ruff.lint.ruff]
+parenthesize-tuple-in-subscript = true
+
+
+[tool.ruff.lint.mccabe]
+max-complexity = 5
+
+
+[tool.mypy]
+files = ["src", "tests", "examples"]
+pretty = true
+python_version = "3.9"
+show_error_codes = true
+strict = true
+
+
+[tool.pyright]
+include = ["src/litestar_playwright", "tests", "examples"]
+
+
+[tool.ty.src]
+include = ["src", "tests", "examples"]
+respect-ignore-files = false
+
+
+[tool.ty.environment]
+python-version = "3.8"
+
+
+[tool.ty.terminal]
+error-on-warning = true
+
+
+[tool.pyrefly]
+python-version = "3.8"
+project-includes = ["src", "tests", "examples"]
+
+
+[tool.pylint.MASTER]
+ignore-paths = "^src/litestar_playwright/_version.py$"
+
+
+[tool.poe]
+executor.type = "uv"
+
+
+[tool.poe.tasks.test]
+help = "Run tests"
+cmd = "tox run"
+
+
+[tool.poe.tasks.style]
+help = "Run Style"
+cmd = "tox run -e style"
+
+
+[tool.poe.tasks.pypi-readme]
+help = "Generate Fancy PyPI README"
+shell = "hatch-fancy-pypi-readme -o PyPI.md && open PyPI.md"
+
+
+[tool.tox]
+env_list = [
+  "style",
+  "run",
+  "3.14",
+  "3.13",
+  "3.12",
+  "3.11",
+  "3.10",
+  "3.9",
+  "3.8",
+]
+requires = ["tox>=4"]
+
+
+[tool.tox.env_run_base]
+commands = [
+  [
+    "playwright",
+    "install",
+  ],
+  [
+    "pytest",
+    "-v",
+    "--tb=short",
+    "--basetemp={env_tmp_dir}",
+    { replace = "posargs", default = [
+    ], extend = true },
+  ],
+]
+constrain_package_deps = true
+dependency_groups = ["test"]
+description = "Run the tests under {base_python}"
+env_tmp_dir = "{toxworkdir}/tmp/{envname}"
+package = "wheel"
+runner = "uv-venv-runner"
+use_frozen_constraints = true
+wheel_build_env = ".pkg"
+
+
+[tool.tox.env.style]
+base_python = ["3.9"]
+commands = [
+  ["ruff", "check"],
+  ["ruff", "format"],
+  [
+    "mypy",
+    # "--install-types",
+    # "--non-interactive",
+    "--explicit-package-bases",
+    "--python-version",
+    "3.9",
+  ],
+  [
+    "mypy",
+    # "--install-types",
+    # "--non-interactive",
+    "--explicit-package-bases",
+    "--python-version",
+    "3.13",
+  ],
+  ["pyright"],
+  ["pylint", "src"],
+  # ["ty", "check"],
+  ["pyrefly", "check"],
+  ["vulture"],
+  # ["slotscheck", "src"],
+  ["taplo", "lint"],
+  ["taplo", "format"],
+  ["validate-pyproject", "pyproject.toml"],
+  ["typos", "--diff"],
+  # ["actionlint"],
+  # ["yamlfmt", "."],
+]
+runner = "uv-venv-runner"
+dependency_groups = ["lint", "test"]
+description = "Run Linters and Formatters"
+allowlist_externals = ["actionlint", "yamlfmt"]
