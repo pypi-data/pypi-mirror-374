@@ -1,0 +1,33 @@
+Metadata-Version: 2.4
+Name: dephix-api-models
+Version: 0.1.1
+Summary: Models and interfaces for trading APIs
+Author: Dephix
+Project-URL: Homepage, https://github.com/dephix/api_models
+Project-URL: Repository, https://github.com/dephix/api_models
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pydantic>=2.11.7
+Dynamic: license-file
+Dynamic: requires-python
+
+# Dephix API Models
+
+A Python library providing Pydantic models and abstract interfaces for working with trading APIs.
+
+## Installation
+
+```bash
+pip install dephix-api-models
+```
+
+## Support
+
+For questions and support, please open an issue on GitHub.
