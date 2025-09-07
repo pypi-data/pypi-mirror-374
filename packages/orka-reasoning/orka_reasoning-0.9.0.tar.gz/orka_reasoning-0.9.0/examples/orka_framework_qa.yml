@@ -1,0 +1,27 @@
+orchestrator:
+  id: orka-qa
+  strategy: simple
+  queue: orka:qa
+  memory:
+    enabled: true
+    backend: redisstack
+    config:
+      redis_url: redis://localhost:6380/0
+  agents:
+    - qa_agent
+
+agents:
+  - id: qa_agent
+    type: openai-answer
+    prompt: |
+      You are an expert on the OrKa Reasoning AI Framework. Answer the following question:
+      {{ get_input() }}
+
+      Provide a detailed, accurate response based on your knowledge of OrKa.
+    queue: orka:qa
+    config:
+      memory_type: long_term
+      vector: true
+    metadata:
+      category: qa
+      content_type: framework_knowledge 
