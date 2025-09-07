@@ -1,0 +1,202 @@
+
+lepton_scale_factors:
+  ####################################################################################################
+  electron_sf:
+    # in PocketCoffea by convention the cleaned collection are called *Good
+    collection: ElectronGood
+    
+    id: 
+    # mapping of the electron id working point of NanoAOD 
+    # to the name of the corresponding scale factors
+    # in the correction set provided by EGM 
+      mvaIso_WP80: wp80iso
+      mvaIso_WP90: wp90iso
+      mvaNoIso_WP80: wp80noiso
+      mvaNoIso_WP90: wp90noiso
+      mvaFall17V2Iso_WP80: wp80iso
+      mvaFall17V2Iso_WP90: wp90iso
+      mvaFall17V2noIso_WP80: wp80noiso
+      mvaFall17V2noIso_WP90: wp90noiso
+
+    JSONfiles: 
+      '2016_PreVFP':
+        file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/EGM/2016preVFP_UL/electron.json.gz
+        name: UL-Electron-ID-SF
+        reco:
+          pt_lt_20: RecoBelow20
+          pt_gt_20: RecoAbove20
+  
+      '2016_PostVFP':
+        file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/EGM/2016postVFP_UL/electron.json.gz
+        name: UL-Electron-ID-SF    
+        reco:
+          pt_lt_20: RecoBelow20
+          pt_gt_20: RecoAbove20
+
+      '2017':
+        file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/EGM/2017_UL/electron.json.gz
+        name: UL-Electron-ID-SF
+        reco:
+          pt_lt_20: RecoBelow20
+          pt_gt_20: RecoAbove20
+
+      '2018':
+        file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/EGM/2018_UL/electron.json.gz
+        name: UL-Electron-ID-SF
+        reco:
+          pt_lt_20: RecoBelow20
+          pt_gt_20: RecoAbove20
+
+      '2022_preEE':
+        file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/EGM/2022_Summer22/electron.json.gz
+        fileSS: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/EGM/2022_Summer22/electronSS.json.gz
+        name: Electron-ID-SF
+        reco:
+          pt_lt_20: RecoBelow20
+          pt_gt_20_lt_75: Reco20to75
+          pt_gt_75: RecoAbove75
+
+      '2022_postEE':
+        file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/EGM/2022_Summer22EE/electron.json.gz
+        fileSS: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/EGM/2022_Summer22EE/electronSS.json.gz
+        name: Electron-ID-SF
+        reco:
+          pt_lt_20: RecoBelow20
+          pt_gt_20_lt_75: Reco20to75
+          pt_gt_75: RecoAbove75
+
+      '2023_preBPix':
+        file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/EGM/2023_Summer23/electron.json.gz
+        fileSS: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/EGM/2023_Summer23/electronSS.json.gz
+        name: Electron-ID-SF
+        reco:
+          pt_lt_20: RecoBelow20
+          pt_gt_20_lt_75: Reco20to75
+          pt_gt_75: RecoAbove75
+
+      '2023_postBPix':
+        file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/EGM/2023_Summer23BPix/electron.json.gz
+        fileSS: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/EGM/2023_Summer23BPix/electronSS.json.gz
+        name: Electron-ID-SF
+        reco:
+          pt_lt_20: RecoBelow20
+          pt_gt_20_lt_75: Reco20to75
+          pt_gt_75: RecoAbove75
+
+    era_mapping:
+      # this is needed because the correction set provided by EGM
+      # have a fixed set of era labels, different from ours
+      "2016_PreVFP": "2016preVFP"
+      "2016_PostVFP": "2016postVFP"
+      "2017": "2017"
+      "2018": "2018"
+      "2022_preEE": "2022Re-recoBCD"
+      "2022_postEE": "2022Re-recoE+PromptFG"
+      "2023_preBPix": "2023PromptC"
+      "2023_postBPix": "2023PromptD"
+      
+    apply_ele_scale_and_smearing: 
+      '2016_PreVFP': False
+      '2016_PostVFP': False
+      '2017': False
+      '2018': False
+      '2022_preEE': True
+      '2022_postEE': True
+      '2023_preBPix': False
+      '2023_postBPix': False
+    
+    # The trigger SF configuration is expected to have this structure
+    # needs to be provided by the user.
+    trigger_sf:
+      2016_PreVFP:
+        name: ???
+        file: ???
+      2016_PostVFP:
+        name: ???
+        file: ???
+      '2017':
+        name: ???
+        file: ???
+      '2018':
+        name: ???
+        file: ???
+      2022_preEE:
+        2022_preEE:
+        name: Electron-HLT-SF
+        file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/EGM/2022_Summer22/electronHlt.json.gz
+        path: ???
+      2022_postEE:
+        name: Electron-HLT-SF
+        file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/EGM/2022_Summer22EE/electronHlt.json.gz
+        path: ???
+      2023_preBPix:
+        name: Electron-HLT-SF
+        file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/EGM/2023_Summer23/electronHlt.json.gz
+        path: ???
+      2023_postBPix:
+        name: Electron-HLT-SF
+        file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/EGM/2023_Summer23BPix/electronHlt.json.gz
+        path: ???
+
+  ##################################################################################################  
+  muon_sf:
+     # in PocketCoffea by convention the cleaned collection are called *Good
+    collection: MuonGood
+    
+    sf_name:
+      '2016_PreVFP':
+          id: NUM_TightID_DEN_TrackerMuons
+          iso: NUM_LooseRelIso_DEN_TightIDandIPCut
+          trigger: NUM_IsoMu24_or_IsoTkMu24_DEN_CutBasedIdTight_and_PFIsoTight
+
+      '2016_PostVFP':
+          id: NUM_TightID_DEN_TrackerMuons
+          iso: NUM_LooseRelIso_DEN_TightIDandIPCut
+          trigger: NUM_IsoMu24_or_IsoTkMu24_DEN_CutBasedIdTight_and_PFIsoTight
+
+      '2017':
+          id: NUM_TightID_DEN_TrackerMuons
+          iso: NUM_LooseRelIso_DEN_TightIDandIPCut
+          trigger: NUM_IsoMu27_DEN_CutBasedIdTight_and_PFIsoTight
+
+      '2018':
+          id: NUM_TightID_DEN_TrackerMuons
+          iso: NUM_LooseRelIso_DEN_TightIDandIPCut
+          trigger: NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight
+
+      '2022_preEE':
+          id: NUM_TightID_DEN_TrackerMuons
+          iso: NUM_LoosePFIso_DEN_TightID
+          # trigger: NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight
+
+      '2022_postEE':
+          id: NUM_TightID_DEN_TrackerMuons
+          iso: NUM_LoosePFIso_DEN_TightID
+          # trigger: NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight
+
+      '2023_preBPix':
+          id: NUM_TightID_DEN_TrackerMuons
+          iso: NUM_LoosePFIso_DEN_TightID
+          
+      '2023_postBPix':
+          id: NUM_TightID_DEN_TrackerMuons
+          iso: NUM_LoosePFIso_DEN_TightID
+
+    JSONfiles:
+      '2016_PreVFP':
+          file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/MUO/2016preVFP_UL/muon_Z.json.gz
+      '2016_PostVFP':
+          file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/MUO/2016postVFP_UL/muon_Z.json.gz
+      '2017':
+          file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/MUO/2017_UL/muon_Z.json.gz
+      '2018':
+          file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/MUO/2018_UL/muon_Z.json.gz
+      '2022_preEE':
+          file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/MUO/2022_Summer22/muon_Z.json.gz
+      '2022_postEE':
+          file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/MUO/2022_Summer22EE/muon_Z.json.gz
+      '2023_preBPix':
+          file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/MUO/2023_Summer23/muon_Z.json.gz
+      '2023_postBPix':
+          file: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/MUO/2023_Summer23BPix/muon_Z.json.gz
+    
