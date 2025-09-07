@@ -1,0 +1,88 @@
+Metadata-Version: 2.4
+Name: django-bsdatetime
+Version: 1.0.0
+Summary: Django model fields for Bikram Sambat (Nepali) dates (built on bsdatetime)
+Home-page: https://github.com/Rajendra-Katuwal/django-bsdatetime
+Author: Rajendra Katuwal
+Author-email: Rajendra Katuwal <raj.katuwal2061@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/Rajendra-Katuwal/django-bsdatetime
+Project-URL: Documentation, https://rajendra-katuwal.github.io/bsdatetime.docs/
+Project-URL: Issues, https://github.com/Rajendra-Katuwal/django-bsdatetime/issues
+Project-URL: Source, https://github.com/Rajendra-Katuwal/django-bsdatetime
+Keywords: django,bikram sambat,nepali,calendar,date,datetime,fields
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 3.2
+Classifier: Framework :: Django :: 4.0
+Classifier: Framework :: Django :: 4.1
+Classifier: Framework :: Django :: 4.2
+Classifier: Framework :: Django :: 5.0
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Internationalization
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Web Environment
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: Django>=3.2
+Requires-Dist: bsdatetime>=1.0.0
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# django-bsdatetime
+
+Django model fields for Bikram Sambat (Nepali) dates built on the `bsdatetime` core.
+
+Documentation: https://rajendra-katuwal.github.io/bsdatetime.docs/
+
+## Install
+```bash
+pip install django-bsdatetime
+```
+Installs `bsdatetime` automatically.
+
+## Quick model example
+```python
+from django.db import models
+from django_bsdatetime import BikramSambatDateField
+
+class Person(models.Model):
+    name = models.CharField(max_length=100)
+    birth_date_bs = BikramSambatDateField(null=True, blank=True)
+
+person = Person.objects.create(name="राम बहादुर", birth_date_bs=(2050, 5, 15))
+print(person.birth_date_bs)  # (2050, 5, 15)
+```
+Data is stored internally as Gregorian; you work with BS tuples.
+
+## Provided fields
+* BikramSambatDateField (aliases: BSDateField, NepaliDateField)
+* BikramSambatDateTimeField
+
+Input format:
+* Date: (year, month, day)
+* DateTime: (year, month, day, hour, minute, second)
+
+## Why use it
+* Clean separation of storage (AD) vs domain (BS)
+* Validation & conversion handled in one place
+* Admin friendly
+
+Need pure functions only? Use core:
+```bash
+pip install bsdatetime
+```
+
+## License
+MIT
