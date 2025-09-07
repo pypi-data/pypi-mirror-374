@@ -1,0 +1,95 @@
+Metadata-Version: 2.4
+Name: mojangson
+Version: 0.2.1
+Summary: Python Mojangson parser
+Home-page: https://github.com/MushroomForYou/mojangson
+Author: mushroomforyou
+Author-email: mushroomforus@gmail.com
+Project-URL: GitHub, https://github.com/MushroomForYou/mojangson
+Keywords: json mojang nbt parser
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: lark>=1.2.2
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# mojangson
+[![Python](https://img.shields.io/pypi/pyversions/mojangson.svg)](https://badge.fury.io/py/mojangson) [![PyPI](https://badge.fury.io/py/mojangson.svg)](https://badge.fury.io/py/mojangson)
+
+A small Python library for parsing, stringifying, simplifying, and normalizing [Mojangson](https://minecraft.fandom.com/wiki/Commands#Data_tags) - mojang's variant of json.
+
+## Installation
+
+```bash
+pip install mojangson
+```
+
+## API
+`parse` - Parse Mojangson text into a typed dict representation.
+
+`stringify` - Convert a typed Mojangson dict back to a Mojangson string.
+
+`simplify` - Simplify a typed Mojangson dict into a regular Python dict/list/primitive values, stripping Minecraft-specific type suffixes.
+
+`normalize` - Normalize Mojangson text by parsing and then stringifying it - ensures consistent formatting and ordering.
+
+## Usage 
+```py
+from mojangson import parse, stringify, simplify, normalize
+
+mojangson_string = '{key:value}'
+
+mojangson_parsed = parse(mojangson_string)
+print(mojangson_parsed)
+# {'type': 'compound', 'value': {'key': {'type': 'string', 'value': 'value'}}}
+
+print(simplify(mojangson_parsed))
+# {'key': 'value'}
+
+mojangson_stringified = stringify(mojangson_parsed)
+print(mojangson_stringified)
+# {key:value}
+
+print(normalize(mojangson_string) == mojangson_stringified)
+# True
+```
+## CLI
+**Syntax:**
+```bash
+mojangson <command> [input] [-f FILE] [-o FILE]
+```
+**Arguments:**
+| Argument       | Description                                                          |
+| -------------- | -------------------------------------------------------------------- |
+| `input`        | Mojangson string, if not using `-f/--file`                           |
+| `-f, --file`   | Path to an input file containing a Mojangson string                  |
+| `-o, --output` | Path to an output file. If not provided, output is printed to stdout |
+
+**Examples:**
+```bash
+mojangson parse "{a:b}"
+# {'type': 'compound', 'value': {'a': {'type': 'string', 'value': 'b'}}}
+
+mojangson simplify "{'type': 'compound', 'value': {'a': {'type': 'string', 'value': 'b'}}}" -o output.txt
+# writes {'a': 'b'} to output.txt
+
+mojangson stringify -f input.json
+# reads from input.json
+```
