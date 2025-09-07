@@ -1,0 +1,82 @@
+#cloud-config
+# Ensure user exists and is in the docker group
+users:
+  - name: '{{ remote_user }}'
+    groups: docker
+    sudo: ALL=(ALL) NOPASSWD:ALL
+
+# Update packages and install prerequisites
+package_update: true
+package_upgrade: true
+packages:
+  - curl
+  - git
+  - qemu-guest-agent
+
+# Write application files, Docker Compose and Caddy files
+write_files:
+  - path: /home/{{ remote_user }}/docker-compose.yml
+    content: |
+{{ docker_compose_content | indent(6) }}
+  - path: /home/{{ remote_user }}/Caddyfile
+    content: |
+{{ caddyfile_content | indent(6) }}
+{% if dockerfile_content %}
+  - path: /home/{{ remote_user }}/Dockerfile
+    content: |
+{{ dockerfile_content | indent(6) }}
+{% endif %}
+{% if app_files %}
+{% for file_path, file_content in app_files.items() %}
+  - path: /home/{{ remote_user }}/{{ file_path }}
+    content: |
+{{ file_content | indent(6) }}
+{% endfor %}
+{% endif %}
+  - path: /home/{{ remote_user }}/build-and-run.sh
+    content: |
+      #!/bin/bash
+      set -e
+      cd /home/{{ remote_user }}
+      
+      # Install Docker if not already installed
+      if ! command -v docker &> /dev/null; then
+          curl -fsSL https://get.docker.com -o get-docker.sh
+          sh get-docker.sh
+          usermod -aG docker {{ remote_user }}
+          systemctl enable --now docker || true
+      fi
+      
+      # Wait for Docker to be ready
+      echo "Waiting for Docker service to be active..."
+      until systemctl is-active --quiet docker; do
+          systemctl start docker || true
+          sleep 2
+      done
+      # Ensure Docker CLI is responsive (may take a moment after service is active)
+      for i in {1..30}; do
+          sudo -E docker info >/dev/null 2>&1 && break
+          sleep 2
+      done
+      
+      # Build Docker image if Dockerfile exists (use sudo to avoid group delay)
+      {% if dockerfile_content %}
+      echo "Building Docker image..."
+      sudo -E docker build -t {{ app_image }} .
+      {% endif %}
+      
+      # Start containers (use sudo to avoid group delay)
+      echo "Starting containers..."
+      sudo -E docker compose up -d
+      
+      echo "✅ Application deployed successfully!"
+    permissions: '0755'
+
+# Install Docker, set permissions, and run build script
+runcmd:
+  - curl -fsSL https://get.docker.com -o get-docker.sh
+  - sh get-docker.sh
+  - usermod -aG docker {{ remote_user }}
+  - systemctl enable --now qemu-guest-agent || true
+  - chown -R {{ remote_user }}:{{ remote_user }} /home/{{ remote_user }}
+  - runuser -l {{ remote_user }} -c '/home/{{ remote_user }}/build-and-run.sh'
