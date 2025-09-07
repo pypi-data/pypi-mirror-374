@@ -1,0 +1,83 @@
+Metadata-Version: 2.4
+Name: canvalib
+Version: 0.0.7
+Summary: Canva-like library for terminal
+Author-email: danb1551 <danielbalcar22@gmail.com>
+License: Copyright 2025 danb1551
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Project-URL: Homepage, https://github.com/danb1551/canvalib
+Project-URL: Issues, https://github.com/danb1551/canvalib/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Classifier: Natural Language :: Czech
+Classifier: Topic :: Terminals
+Classifier: Topic :: Utilities
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: colorama>=0.4.6
+Dynamic: license-file
+
+# Canvalib
+
+###### by danb1551
+
+Canvalib is library for window with diferent text and backround color in your terminal.
+
+<video src="show.mp4" autoplay>show video</video>
+
+## Installation
+```bash
+pip install canvalib
+```
+
+## Usage
+
+#### Import library
+
+```python
+from canvalib import Canvas
+```
+
+#### Create object:
+
+```python
+c = Canvas(width, height, background, color)
+```
+
+All parameters is optional. If you are strugelling why WIDTH and HEIGHT are in default without maked with - 1 then it's because if not, it will do something strange even I don't know why.
+
+WIDTH: default to terminal width - 1. If you add more than default (it depend on your terminal size) it will not work properly.
+
+HEIGHT: default to terminal height - 1. If you add more than default (it depend on your terminal size) it will not work properly.
+
+BACKGROUND: default to Back.BLACK. If you want to change it import Back from colorama and give Back.color to your char or string.
+
+COLOR: default to Fore.GREEN. If you want to change it import Fore from colorama and give Fore.color to your char or string.
+
+#### Add text to your canvas:
+
+```python
+c.add_text(x, y, text, color, background)
+```
+
+X: row of the canvas where your text will be. Notice that it's starting from 0 index.
+
+Y: column of the canvas where your text will be. Notice that it's starting from 0 index.
+
+TEXT: whatever you want
+
+COLOR: default to self.color. Must be Fore.color or escape sequence that setting text color
+
+BACKGROUND: default to self.background. Must be Back.color or escape sequence that setting background color
+
+#### Render it:
+
+```python
+c.render()
+```
