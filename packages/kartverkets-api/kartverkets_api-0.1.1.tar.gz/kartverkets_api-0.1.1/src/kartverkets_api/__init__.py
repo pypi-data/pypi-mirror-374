@@ -1,0 +1,1 @@
+from .kartverket import kartverketsAPI
