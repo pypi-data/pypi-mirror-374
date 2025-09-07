@@ -1,0 +1,148 @@
+Metadata-Version: 2.4
+Name: ai-builder-photo
+Version: 1.0.0
+Summary: AI Builder Photo - генератор изображений диалогов в стиле мессенджера
+Home-page: https://github.com/yourusername/ai-builder-photo
+Author: hokemka
+Author-email: your.email@example.com
+Project-URL: Bug Reports, https://github.com/yourusername/ai-builder-photo/issues
+Project-URL: Source, https://github.com/yourusername/ai-builder-photo
+Keywords: ai,builder,photo,chat,screenshot,generator,messenger,image
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Multimedia :: Graphics
+Classifier: Topic :: Communications :: Chat
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: Pillow>=9.0.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# AI Builder Photo
+
+AI Builder Photo - модуль для генерации скриншотов чата в стиле мессенджера. Идеально подходит для создания PNG изображений диалогов для презентаций и демонстраций.
+
+## Установка
+
+```bash
+pip install Pillow
+```
+
+## Быстрый старт
+
+```python
+from ai_builder_photo import create_chat_screenshot
+
+# Простой диалог
+dialog = """-Привет
+-Привет! Как дела?
+-Хорошо, а у тебя?
+-Тоже отлично!"""
+
+# Создание скриншота
+file_path = create_chat_screenshot(dialog, "chat.png")
+print(f"Скриншот создан: {file_path}")
+```
+
+## Расширенное использование
+
+```python
+from ai_builder_photo import ChatScreenshotGenerator
+
+# Кастомный генератор
+generator = ChatScreenshotGenerator(
+    width=450,
+    background_color="#1C1C1E"  # Темная тема
+)
+
+# Изменение цветов
+generator.user_color = "#0A84FF"
+generator.bot_color = "#2C2C2E"
+generator.user_text_color = "#FFFFFF"
+generator.bot_text_color = "#FFFFFF"
+
+# Создание скриншота
+file_path = generator.generate_from_dialog_string(dialog, "dark_chat.png")
+```
+
+## Программное создание сообщений
+
+```python
+messages = [
+    ("Привет! Как дела?", True),  # True = пользователь
+    ("Привет! Все отлично!", False),  # False = бот
+    ("Отлично!", True),
+]
+
+file_path = generator.generate_chat_screenshot(messages, "chat.png")
+```
+
+## Формат диалога
+
+Диалог передается в виде строки, где каждая строка начинается с `-`:
+
+```
+-Первое сообщение (пользователь)
+-Второе сообщение (бот)
+-Третье сообщение (пользователь)
+-Четвертое сообщение (бот)
+```
+
+Четные позиции (0, 2, 4...) = сообщения пользователя (справа, синие)
+Нечетные позиции (1, 3, 5...) = сообщения бота (слева, серые)
+
+## API
+
+### `create_chat_screenshot(dialog_string, save_path, width=400)`
+
+Быстрая функция для создания скриншота.
+
+**Параметры:**
+- `dialog_string` - строка диалога
+- `save_path` - путь для сохранения PNG файла
+- `width` - ширина изображения
+
+**Возвращает:** Путь к созданному файлу
+
+### `ChatScreenshotGenerator`
+
+Основной класс для генерации скриншотов.
+
+**Методы:**
+- `generate_from_dialog_string(dialog_string, save_path)` - из строки диалога
+- `generate_chat_screenshot(messages, save_path)` - из списка сообщений
+
+## Примеры
+
+Запустите `python example.py` для демонстрации всех возможностей модуля.
+
+## Особенности
+
+- ✅ Автоматический перенос длинных сообщений
+- ✅ Поддержка темной и светлой темы  
+- ✅ Простое сохранение в PNG файлы
+- ✅ Кастомизация цветов и размеров
+- ✅ Поддержка русского языка
+- ✅ Стиль современных мессенджеров
+
+## Лицензия
+
+MIT License
