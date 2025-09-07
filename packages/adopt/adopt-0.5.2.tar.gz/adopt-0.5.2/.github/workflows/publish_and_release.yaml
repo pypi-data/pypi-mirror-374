@@ -1,0 +1,58 @@
+# This workflow will upload adopt to PyPI when a release is created
+
+name: Publish and Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/_build.yaml
+    with:
+      python-version: "3.11" # cannot be environment variable, limitation of workflow
+
+  check-tag:
+    name: Check
+    needs: build
+    uses: ./.github/workflows/_check_tag.yaml
+    with:
+      continue-on-error: false
+
+  publish:
+    # not possible to do in a reusable component with trusted publishers
+    name: Publish
+    needs: check-tag
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    environment:
+      name: pypi
+      url: https://pypi.org/project/adopt
+    steps:
+      - name: Clean dist
+        run: |
+          rm -rf dist/
+
+      - name: Retrieve data
+        uses: actions/download-artifact@v4
+        with:
+          name: wheel
+          path: dist/wheel
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/wheel
+
+  release:
+    name: Release
+    needs: publish
+    uses: ./.github/workflows/_release.yaml
+    secrets: inherit # inherit all secrets if required for testing

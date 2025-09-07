@@ -1,0 +1,44 @@
+on: workflow_call
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - name: Clean dist
+        run: |
+          rm -rf dist/
+
+      - name: Retrieve wheel
+        uses: actions/download-artifact@v4
+        with:
+          name: wheel
+          path: dist/wheel
+
+      - name: Retrieve version
+        uses: actions/download-artifact@v4
+        with:
+          name: version
+          path: dist/
+
+      - name: Store version
+        run: |
+          echo "VERSION=$(cat dist/version.txt)" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/wheel/*
+          name: Release ${{ env.VERSION }}
+          tag_name: ${{ env.VERSION }}
+          body: Releasing ${{ env.VERSION }} # TODO: Add release notes from CHANGELOG.md
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}

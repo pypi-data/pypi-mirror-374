@@ -1,0 +1,42 @@
+on: workflow_call
+
+jobs:
+  test-wheel:
+    name: Test wheel
+    runs-on: ubuntu-latest
+    env: # load here all relevant environment variables
+      ADOPT_AZURE_DEVOPS_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
+      ADOPT_AZURE_DEVOPS_ORGANIZATION_URL: ${{ vars.AZURE_DEVOPS_ORGANIZATION_URL }}
+      ADOPT_AZURE_DEVOPS_PROJECT_NAME: ${{ vars.AZURE_DEVOPS_PROJECT_NAME }}
+      ADOPT_AZURE_DEVOPS_TEAM_NAME: ${{ vars.AZURE_DEVOPS_TEAM_NAME }}
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"] # remove versions that are not supported
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Clean dist
+        run: |
+          rm -rf dist/
+
+      - name: Retrieve wheel
+        uses: actions/download-artifact@v4
+        with:
+          name: wheel
+          path: dist/
+
+      - name: Install wheel
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install dist/*.whl
+
+      - name: Test with pytest
+        # adjust pytest test marking if necessary
+        run: |
+          python -m pip install pytest
+          python -m pytest tests/ -m "not mutate"
