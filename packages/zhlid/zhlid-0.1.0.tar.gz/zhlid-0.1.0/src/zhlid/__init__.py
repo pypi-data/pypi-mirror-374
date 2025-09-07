@@ -1,0 +1,1 @@
+from zhlid.model import load_model
