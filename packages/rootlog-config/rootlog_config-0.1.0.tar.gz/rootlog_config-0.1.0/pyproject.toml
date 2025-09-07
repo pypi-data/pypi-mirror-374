@@ -1,0 +1,103 @@
+[tool.poetry]
+name = "rootlog-config"
+version = "0.1.0"
+description = "Simple Python logging utility that configures the root logger properly. One function call for both console and file logging with colors, rotation, and thread safety."
+authors = ["Python Logger Contributors"]
+readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/byte-pipe/simple-logger"
+repository = "https://github.com/byte-pipe/simple-logger"
+documentation = "https://github.com/byte-pipe/simple-logger#readme"
+keywords = ["logging", "logger", "console", "file", "rotation", "colors", "thread-safe", "root-logger"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Logging",
+    "Topic :: Utilities",
+]
+packages = [{ include = "logger" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+colorlog = "^6.9.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+pytest-httpserver = "^1.1.3"
+autoflake = "^2.3.1"
+isort = "^6.0.1"
+black = "^25.1.0"
+flake8 = "^7.2.0"
+pytest-cov = "^6.1.1"
+bandit = "^1.7.7"
+mypy = "^1.8.0"
+PyYAML = "^6.0.1"
+pre-commit = "^3.6.0"
+tomli = "^2.0.1"
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+skips = ["B101", "B311", "B404", "B607", "B603", "B110"]
+targets = ["src"]
+
+[tool.black]
+line-length = 222
+target-version = ["py38"]
+include = '\.pyi?$'
+extend-exclude = '^/docs'
+
+[tool.isort]
+profile = "black"
+line_length = 222
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+src_paths = ["src", "tests"]
+
+[tool.mypy]
+python_version = "3.8"
+ignore_missing_imports = true
+follow_imports = "skip"
+warn_return_any = false
+warn_unused_configs = false
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = false
+warn_redundant_casts = false
+warn_unused_ignores = false
+warn_no_return = false
+warn_unreachable = false
+implicit_optional = true
+strict_optional = false
+allow_redefinition = true
+disable_error_code = [
+  "attr-defined",
+  "arg-type",
+  "assignment",
+  "index",
+  "return-value",
+  "var-annotated",
+]
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+python_classes = ["Test*"]
+addopts = "-v"
