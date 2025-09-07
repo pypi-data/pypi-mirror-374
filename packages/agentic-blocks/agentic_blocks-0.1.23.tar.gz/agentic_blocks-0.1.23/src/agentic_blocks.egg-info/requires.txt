@@ -1,0 +1,16 @@
+mcp
+requests
+python-dotenv
+openai
+langchain-core
+langfuse
+pocketflow
+pocketflow-tracing
+
+[dev]
+pytest
+build
+twine
+
+[test]
+pytest
