@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "brief-excel"
+version = "1.0.0"
+description = "一个强大的Excel处理工具包"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {file = "LICENSE"}
+authors = [
+    {name = "hh66dw", email = "hh66dw@163.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Office/Business :: Financial :: Spreadsheet",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+dependencies = [
+    "et_xmlfile==2.0.0",
+    "openpyxl==3.1.5",
+    "Pillow>=10.0.0",
+    "requests>=2.31.0"
+]
+
+[project.urls]
+Homepage = "https://gitee.com/hh66dw/brief_excel"
+Documentation = "https://gitee.com/hh66dw/brief_excel#readme"
+Repository = "https://gitee.com/hh66dw/brief_excel"
+Issues = "https://gitee.com/hh66dw/brief_excel/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+    "black>=22.0",
+    "flake8>=4.0",
+    "isort>=5.0"
+]
