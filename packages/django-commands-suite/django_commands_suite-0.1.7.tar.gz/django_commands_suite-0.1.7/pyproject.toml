@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-commands-suite"
+version = "0.1.7"
+description = "A powerful suite of management commands for Django projects with integrated logging support"
+authors = [{name = "Mohammed taha", email = "net@khamedspace.com"}]
+license = {text = "MIT"}
+readme = "README.md"
+keywords = ["django", "commands", "management", "suite", "log"]
+dependencies = ["Django>=5.0" ,"Faker>=18.0.0"]
+
+[project.urls]
+homepage = "https://github.com/khamedtaha/django-commands-suite"
+repository = "https://github.com/khamedtaha/django-commands-suite"
