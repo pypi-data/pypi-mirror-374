@@ -1,0 +1,48 @@
+Metadata-Version: 2.4
+Name: django-commands-suite
+Version: 0.2.4
+Summary: A powerful suite of management commands for Django projects with integrated logging support
+Author-email: Mohammed taha <net@khamedspace.com>
+License: MIT
+Project-URL: homepage, https://github.com/khamedtaha/django-commands-suite
+Project-URL: repository, https://github.com/khamedtaha/django-commands-suite
+Keywords: django,commands,management,suite,log
+Description-Content-Type: text/markdown
+Requires-Dist: Django>=5.0
+Requires-Dist: Faker>=18.0.0
+
+# Django Commands Suite
+
+**Django Commands Suite** is a Django app that provides a **powerful set of management commands** ready to use in your Django projects.
+
+This package helps you automate repetitive tasks like database backup, seeding, cache management, and logging command executions.
+
+---
+
+## **Installation**
+
+Install the package via pip:
+
+```bash
+pip install django-commands-suite
+```
+
+---
+
+## **Usage**
+
+1. Add `django_commands_suite` to your `INSTALLED_APPS` in `settings.py`:
+
+    ```python
+    INSTALLED_APPS = [
+        ...
+        'django_commands_suite',
+    ]
+    ```
+
+2. Run migrations to create database tables
+
+    ```bash
+    python manage.py makemigrations django_commands_suite
+    python manage.py migrate
+    ```

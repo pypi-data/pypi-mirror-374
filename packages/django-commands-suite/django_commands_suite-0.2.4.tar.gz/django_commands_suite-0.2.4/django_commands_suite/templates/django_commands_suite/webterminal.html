@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCS Web Terminal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm/css/xterm.css" />
+    <script src="https://cdn.jsdelivr.net/npm/xterm/lib/xterm.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit/lib/xterm-addon-fit.js"></script>
+    <style>
+        :root {
+            --primary-color: #00ff9d;
+            --secondary-color: #007b55;
+            --background-dark: #0a0e14;
+            --background-light: #141a24;
+            --text-color: #e6e6e6;
+            --error-color: #ff5555;
+            --success-color: #50fa7b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            background: var(--background-dark);
+            color: var(--text-color);
+            font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .terminal-header {
+            background: var(--background-light);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #2a2f3b;
+        }
+        
+        .terminal-title {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .terminal-title::before {
+            content: "➜";
+            color: var(--success-color);
+        }
+        
+        .terminal-controls {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .control-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 16px;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            padding: 5px;
+        }
+        
+        .control-btn:hover {
+            opacity: 1;
+        }
+        
+        #terminal {
+            flex: 1;
+            padding: 15px;
+        }
+        
+        .terminal-status {
+            background: var(--background-light);
+            padding: 8px 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #7a8288;
+            border-top: 1px solid #2a2f3b;
+        }
+        
+        .xterm .xterm-screen canvas {
+            border-radius: 5px;
+        }
+        
+        .loader {
+            display: none;
+            width: 12px;
+            height: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading .loader {
+            display: inline-block;
+        }
+        
+        .terminal-menu {
+            display: flex;
+            gap: 5px;
+            margin-right: 15px;
+        }
+        
+        .menu-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .menu-item:hover {
+            background: rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .terminal-header {
+                padding: 10px 15px;
+            }
+            
+            .terminal-menu {
+                display: none;
+            }
+            
+            .terminal-status {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal-header">
+        <div class="terminal-title">Django Commands Suite Web Terminal</div>
+        <div class="terminal-menu">
+            <div class="menu-item">File</div>
+            <div class="menu-item">Edit</div>
+            <div class="menu-item">View</div>
+            <div class="menu-item">Help</div>
+        </div>
+        <div class="terminal-controls">
+            <button class="control-btn" id="minimize">—</button>
+            <button class="control-btn" id="maximize">◻</button>
+            <button class="control-btn" id="close">✕</button>
+        </div>
+    </div>
+    
+    <div id="terminal"></div>
+    
+    <div class="terminal-status">
+        <div class="status-left">Ready</div>
+        <div class="status-right">
+            <span id="current-time">00:00:00</span> | 
+            <span id="command-count">0 commands executed</span>
+        </div>
+    </div>
+
+    <script>
+        // Initialize terminal with better configuration
+        const term = new Terminal({
+            theme: {
+                background: "#0a0e14",
+                foreground: "#e6e6e6",
+                cursor: "#00ff9d",
+                selection: "#1d6c8c",
+                black: "#000000",
+                red: "#ff5555",
+                green: "#50fa7b",
+                yellow: "#f1fa8c",
+                blue: "#bd93f9",
+                magenta: "#ff79c6",
+                cyan: "#8be9fd",
+                white: "#bfbfbf",
+                brightBlack: "#4d4d4d",
+                brightRed: "#ff6e67",
+                brightGreen: "#5af78e",
+                brightYellow: "#f4f99d",
+                brightBlue: "#caa9fa",
+                brightMagenta: "#ff92d0",
+                brightCyan: "#9aedfe",
+                brightWhite: "#e6e6e6"
+            },
+            fontSize: 14,
+            fontFamily: "'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace",
+            cursorBlink: true,
+            allowTransparency: true
+        });
+
+        // Load fit addon for responsive terminal
+        const fitAddon = new FitAddon.FitAddon();
+        term.loadAddon(fitAddon);
+        
+        // Open terminal in container
+        term.open(document.getElementById('terminal'));
+        fitAddon.fit();
+        
+        // Welcome message
+        term.write('\x1b[1;32mWelcome to Django Commands Suite Web Terminal\x1b[0m\r\n');
+        term.write('Type a command and press Enter to execute it.\r\n');
+        term.write('Type \x1b[1;33mhelp\x1b[0m to see available commands.\r\n\r\n');
+        term.write('$ ');
+        
+        let currentInput = '';
+        let commandHistory = [];
+        let historyIndex = -1;
+        let commandCount = 0;
+
+        // Update time function
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString();
+            document.getElementById('current-time').textContent = timeStr;
+        }
+        
+        // Update command count
+        function updateCommandCount() {
+            document.getElementById('command-count').textContent = 
+                `${commandCount} command${commandCount !== 1 ? 's' : ''} executed`;
+        }
+        
+        // Initialize time and update every second
+        updateTime();
+        setInterval(updateTime, 1000);
+        updateCommandCount();
+        
+        // Handle terminal resizing
+        window.addEventListener('resize', () => {
+            fitAddon.fit();
+        });
+        
+        // Handle key events
+        term.onKey(e => {
+            const ev = e.domEvent;
+            const key = ev.key;
+            
+            if (key === 'Enter') {
+                let cmd = currentInput.trim();
+                currentInput = '';
+                term.write('\r\n');
+                historyIndex = -1;
+                
+                if (cmd.length > 0) {
+                    // Add to command history
+                    commandHistory.push(cmd);
+                    if (commandHistory.length > 50) {
+                        commandHistory.shift();
+                    }
+                    
+                    // Show loading indicator
+                    document.querySelector('.status-left').textContent = "Executing...";
+                    document.querySelector('.status-left').classList.add('loading');
+                    
+                    // Execute command
+                    fetch("/dcs/terminal/run/", {
+                        method: "POST",
+                        headers: { 
+                            "Content-Type": "application/x-www-form-urlencoded",
+                            "X-CSRFToken": getCookie("csrftoken") // Assuming Django CSRF protection
+                        },
+                        body: "command=" + encodeURIComponent(cmd)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        term.write(data.output + "\r\n");
+                        document.querySelector('.status-left').textContent = "Done";
+                        commandCount++;
+                        updateCommandCount();
+                    })
+                    .catch(err => {
+                        term.write("\x1b[1;31mError: " + err + "\x1b[0m\r\n");
+                        document.querySelector('.status-left').textContent = "Error";
+                    })
+                    .finally(() => {
+                        document.querySelector('.status-left').classList.remove('loading');
+                        setTimeout(() => {
+                            document.querySelector('.status-left').textContent = "Ready";
+                        }, 2000);
+                        term.write('$ ');
+                    });
+                } else {
+                    term.write('$ ');
+                }
+            } else if (key === 'Backspace') {
+                if (currentInput.length > 0) {
+                    currentInput = currentInput.slice(0, -1);
+                    term.write('\b \b');
+                }
+            } else if (key === 'ArrowUp') {
+                if (commandHistory.length > 0) {
+                    if (historyIndex < commandHistory.length - 1) {
+                        historyIndex++;
+                    }
+                    currentInput = commandHistory[commandHistory.length - 1 - historyIndex];
+                    term.write('\x1b[2K\r$ ' + currentInput);
+                }
+            } else if (key === 'ArrowDown') {
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    currentInput = commandHistory[commandHistory.length - 1 - historyIndex];
+                    term.write('\x1b[2K\r$ ' + currentInput);
+                } else {
+                    historyIndex = -1;
+                    currentInput = '';
+                    term.write('\x1b[2K\r$ ');
+                }
+            } else if (key.length === 1) {
+                currentInput += key;
+                term.write(key);
+            }
+        });
+        
+        // Helper function to get CSRF token (for Django)
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+        // Add click handlers for control buttons
+        document.getElementById('minimize').addEventListener('click', () => {
+            term.write('\r\n\x1b[1;33mTerminal minimized\x1b[0m\r\n');
+        });
+        
+        document.getElementById('maximize').addEventListener('click', () => {
+            fitAddon.fit();
+            term.write('\r\n\x1b[1;33mTerminal resized\x1b[0m\r\n');
+        });
+        
+        document.getElementById('close').addEventListener('click', () => {
+            if (confirm('Are you sure you want to close the terminal?')) {
+                term.write('\r\n\x1b[1;31mClosing terminal...\x1b[0m');
+                setTimeout(() => {
+                    document.body.innerHTML = '<h1 style="color: white; text-align: center; margin-top: 50px;">Terminal closed</h1>';
+                }, 500);
+            }
+        });
+    </script>
+</body>
+</html>
