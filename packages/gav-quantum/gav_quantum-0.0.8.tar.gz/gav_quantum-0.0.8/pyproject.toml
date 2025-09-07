@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools >= 77.0.3", "numpy"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gav_quantum"
+version = "0.0.8"
+authors = [
+  { name="Emil Marinov", email="emil@intp.io" }
+]
+description = "A quantum information utility package."
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Quantum Computing",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Mathematics"
+]
+license = "MIT"
+license-files = ["LICENSE"]
+
+[project.urls]
+Homepage = "https://github.com/grayalienventures/gav_quantum"
+Issues = "https://github.com/grayalienventures/gav_quantum/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
