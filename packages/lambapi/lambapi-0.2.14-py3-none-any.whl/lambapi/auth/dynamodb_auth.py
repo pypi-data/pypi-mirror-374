@@ -1,0 +1,429 @@
+"""
+DynamoDBAuth クラス
+
+DynamoDB 認証システムのメインクラスです。
+"""
+
+import json
+import datetime
+import logging
+import hashlib
+from typing import Dict, Any, Optional, Type, List, Union, Callable
+from functools import wraps
+
+try:
+    import boto3
+    from botocore.exceptions import ClientError
+
+    BOTO3_AVAILABLE = True
+except ImportError:
+    BOTO3_AVAILABLE = False
+    ClientError = Exception
+
+try:
+    import jwt
+
+    JWT_AVAILABLE = True
+except ImportError:
+    JWT_AVAILABLE = False
+
+from .base_user import BaseUser
+from ..request import Request
+from ..exceptions import (
+    AuthenticationError,
+    AuthorizationError,
+    ValidationError,
+    ConflictError,
+    NotFoundError,
+)
+
+
+class DynamoDBAuth:
+    """DynamoDB 認証システムのメインクラス"""
+
+    def __init__(
+        self, custom_user: Optional[Type[BaseUser]] = None, secret_key: Optional[str] = None
+    ):
+        """
+        DynamoDBAuth のコンストラクタ
+
+        Args:
+            custom_user: カスタムユーザーモデル（BaseUser を継承したクラス）
+            secret_key: JWT 署名用の秘密鍵（優先度最高）
+        """
+        import os
+
+        self.user_model = custom_user or BaseUser
+        self.table_name = self.user_model.get_table_name()
+        self.expiration = self.user_model.get_expiration()
+
+        # secret_key の優先順位
+        if secret_key:
+            # 優先度 1: 明示的指定
+            self.secret_key = secret_key
+        else:
+            # 優先度 2: 環境変数
+            env_key = os.getenv("LAMBAPI_SECRET_KEY")
+            if env_key:
+                self.secret_key = env_key
+            else:
+                # エラー: どちらも設定されていない
+                raise ValueError(
+                    "Secret key is required for JWT authentication.\n"
+                    "Set it via: DynamoDBAuth(secret_key='your-key') or "
+                    "export LAMBAPI_SECRET_KEY='your-key'"
+                )
+
+        # DynamoDB クライアントの初期化
+        endpoint_url = self.user_model.get_endpoint_url()
+        if endpoint_url:
+            self.dynamodb = boto3.resource("dynamodb", endpoint_url=endpoint_url)
+        else:
+            self.dynamodb = boto3.resource("dynamodb")
+
+        self.table = self.dynamodb.Table(self.table_name)
+
+        # ログ設定
+        self.logger = logging.getLogger(__name__)
+        if self.user_model.is_auth_logging_enabled():
+            self.logger.setLevel(logging.INFO)
+
+    def _log_auth_event(
+        self, event: str, user_id: Optional[str] = None, details: Optional[Dict[str, Any]] = None
+    ) -> None:
+        """認証イベントのログ出力"""
+        if self.user_model.is_auth_logging_enabled():
+            log_data = {
+                "event": event,
+                "timestamp": datetime.datetime.now().isoformat(),
+                "user_id": user_id,
+                "details": details or {},
+            }
+            self.logger.info(f"Auth Event: {json.dumps(log_data)}")
+
+    def _generate_jwt_token(self, user: BaseUser) -> str:
+        """JWT トークンを生成"""
+        payload = user.to_token_payload()
+        token = jwt.encode(payload, self.secret_key, algorithm="HS256")
+        return str(token)
+
+    def _decode_jwt_token(self, token: str) -> Dict[str, Any]:
+        """JWT トークンをデコード"""
+        try:
+            decoded = jwt.decode(token, self.secret_key, algorithms=["HS256"])
+            return dict(decoded)
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationError("トークンの有効期限が切れています")
+        except jwt.InvalidTokenError:
+            raise AuthenticationError("無効なトークンです")
+
+    def _generate_session_id(self, user: BaseUser) -> str:
+        """ユーザー情報からセッション ID を生成"""
+        user_info = f"{user.id}_{self.secret_key}"
+        full_hash = hashlib.sha256(user_info.encode("utf-8")).hexdigest()
+        return full_hash[:16]
+
+    def _save_session(self, user: BaseUser, token: str, payload: Dict[str, Any]) -> None:
+        """セッション情報を DynamoDB に保存"""
+        try:
+            session_id = self._generate_session_id(user)
+            ttl = (
+                payload["exp"]
+                if isinstance(payload["exp"], int)
+                else int(payload["exp"].timestamp())
+            )
+            exp_value = (
+                payload["exp"] if isinstance(payload["exp"], int) else (payload["exp"].isoformat())
+            )
+
+            session_item = {
+                "id": session_id,
+                "token": token,
+                "user_id": user.id,
+                "exp": exp_value,
+                "ttl": ttl,
+            }
+
+            self.table.put_item(Item=session_item)
+        except Exception as e:
+            self.logger.error(f"Session save error: {str(e)}")
+            raise AuthenticationError("セッションの保存に失敗しました")
+
+    def _verify_session(self, user: BaseUser, token: str) -> bool:
+        """セッション情報を DynamoDB で検証"""
+        try:
+            session_id = self._generate_session_id(user)
+            response = self.table.get_item(Key={"id": session_id})
+            if "Item" in response:
+                stored_token = response["Item"].get("token")
+                return bool(stored_token == token)
+            return False
+        except Exception as e:
+            self.logger.error(f"Session verification error: {str(e)}")
+            return False
+
+    def _delete_session(self, user: BaseUser) -> None:
+        """セッション情報を DynamoDB から削除"""
+        try:
+            session_id = self._generate_session_id(user)
+            self.table.delete_item(Key={"id": session_id})
+        except Exception as e:
+            self.logger.error(f"Session deletion error: {str(e)}")
+
+    def _get_user_by_id(self, user_id: Optional[str]) -> Optional[BaseUser]:
+        """ユーザー ID でユーザーを取得"""
+        if not user_id:
+            return None
+
+        try:
+            response = self.table.get_item(Key={"id": user_id})
+            if "Item" not in response:
+                return None
+
+            item = response["Item"]
+            # セッションアイテムかチェック
+            if set(item.keys()) == {"id", "exp", "ttl", "token", "user_id"}:
+                return None
+
+            # ユーザーオブジェクトを再構築
+            user = self.user_model.__new__(self.user_model)
+            for key, value in item.items():
+                if key in ("created_at", "updated_at"):
+                    try:
+                        setattr(user, key, datetime.datetime.fromisoformat(value))
+                    except (ValueError, TypeError):
+                        setattr(user, key, value)
+                else:
+                    setattr(user, key, value)
+            return user
+        except Exception as e:
+            self.logger.error(f"User retrieval error: {str(e)}")
+            return None
+
+    def _save_user(self, user: BaseUser) -> None:
+        """ユーザーを DynamoDB に保存"""
+        try:
+            user_dict = user.to_dict(include_password=True)
+            self.table.put_item(Item=user_dict)
+        except Exception as e:
+            self.logger.error(f"User save error: {str(e)}")
+            raise ConflictError("ユーザーの保存に失敗しました")
+
+    def _delete_user(self, user_id: str) -> None:
+        """ユーザーを DynamoDB から削除"""
+        try:
+            self.table.delete_item(Key={"id": user_id})
+        except Exception as e:
+            self.logger.error(f"User deletion error: {str(e)}")
+            raise NotFoundError("ユーザーの削除に失敗しました")
+
+    def signup(self, user: BaseUser) -> BaseUser:
+        """ユーザー登録"""
+        # IDの検証
+        if not user.id:
+            raise ValidationError("id は必須です")
+
+        # パスワードバリデーション
+        if not user.password:
+            raise ValidationError("password は必須です")
+
+        # パスワードの強度チェック
+        user.validate_password(user.password)
+
+        # パスワードをハッシュ化
+        hashed_password = user.hash_password(user.password)
+        user.password = hashed_password
+
+        # 既存ユーザーチェック
+        if self._get_user_by_id(user.id):
+            raise ConflictError("この ID は既に使用されています")
+
+        try:
+            self._save_user(user)
+            self._log_auth_event("user_signup", user.id)
+
+            # 保存されたユーザーを取得して返す
+            saved_user = self._get_user_by_id(user.id)
+            if not saved_user:
+                raise ValidationError("ユーザーの保存に失敗しました")
+            return saved_user
+        except ValueError as e:
+            raise ValidationError(str(e))
+
+    def login(self, id: str, password: str) -> str:
+        """ユーザーログイン"""
+        # ユーザー取得
+        existing_user = self._get_user_by_id(id)
+
+        if not existing_user or not existing_user.verify_password(password):
+            self._log_auth_event("login_failed", id)
+            raise AuthenticationError("認証に失敗しました")
+
+        # JWT トークン生成
+        token = self._generate_jwt_token(existing_user)
+        payload = existing_user.to_token_payload()
+
+        # セッション保存（同じユーザーの場合は自動的に上書きされる）
+        self._save_session(existing_user, token, payload)
+
+        self._log_auth_event("login_success", existing_user.id)
+
+        return token
+
+    def logout(self, user: BaseUser) -> Dict[str, Any]:
+        """ユーザーログアウト"""
+
+        try:
+            self._delete_session(user)
+            self._log_auth_event("logout", user.id)
+        except Exception as e:
+            self.logger.error(f"Logout error: {str(e)}")
+
+        return {"message": "ログアウトしました"}
+
+    def delete_user(self, user_id: str) -> Dict[str, Any]:
+        """ユーザー削除"""
+        user = self._get_user_by_id(user_id)
+        if not user:
+            raise NotFoundError("ユーザーが見つかりません")
+
+        self._delete_user(user_id)
+        self._log_auth_event("user_deleted", user_id)
+
+        return {"message": "ユーザーを削除しました"}
+
+    def update_password(self, id: str, new_password: str) -> BaseUser:
+        """パスワード更新"""
+        if not id:
+            raise ValidationError("id は必須です")
+
+        if not new_password:
+            raise ValidationError("new_password は必須です")
+
+        try:
+            user = self._get_user_by_id(id)
+            if not user:
+                raise NotFoundError("ユーザーが見つかりません")
+            user.update_attributes(password=new_password)
+            self._save_user(user)
+
+            self._log_auth_event("password_updated", user.id)
+
+            return user
+        except ValueError as e:
+            raise ValidationError(str(e))
+
+    def _extract_token(self, request: Request) -> Optional[str]:
+        """リクエストからトークンを抽出"""
+        auth_header = request.headers.get("Authorization") or request.headers.get("authorization")
+        if not auth_header:
+            return None
+
+        if not auth_header.startswith("Bearer "):
+            return None
+
+        return auth_header[7:]
+
+    def get_authenticated_user(self, request: Request) -> BaseUser:
+        """認証済みユーザーを取得"""
+        token = self._extract_token(request)
+        if not token:
+            raise AuthenticationError("認証トークンが見つかりません")
+
+        # JWT トークンの検証
+        payload = self._decode_jwt_token(token)
+
+        # ユーザーオブジェクトを再構築
+        user = self.user_model.__new__(self.user_model)
+        # 必要な属性を直接設定
+        for key, value in payload.items():
+            if key not in ["iat", "exp"]:
+                setattr(user, key, value)
+
+        # セッション検証
+        if not self._verify_session(user, token):
+            raise AuthenticationError("セッションが無効です")
+
+        return user
+
+    def require_role(self, required_roles: Union[str, List[str]]) -> Callable:
+        """ロールベースの認証デコレータ"""
+        if isinstance(required_roles, str):
+            required_roles = [required_roles]
+
+        def decorator(func: Callable) -> Callable:
+            @wraps(func)
+            def wrapper(*args: Any, **kwargs: Any) -> Any:
+                import inspect
+                from ..dependencies import get_function_dependencies
+
+                sig = inspect.signature(func)
+
+                # リクエストオブジェクトを取得（kwargs から）
+                request = kwargs.get("request")
+                if not request:
+                    # args からも探してみる
+                    for arg in args:
+                        if hasattr(arg, "headers") and hasattr(
+                            arg, "json"
+                        ):  # Request オブジェクトの特徴
+                            request = arg
+                            break
+
+                if not request:
+                    # リクエストオブジェクトが見つからない場合、現在のコンテキストから取得を試す
+                    import sys
+
+                    frame = sys._getframe()
+                    while frame:
+                        if "request" in frame.f_locals:
+                            request = frame.f_locals["request"]
+                            if hasattr(request, "headers") and hasattr(request, "json"):
+                                break
+                        frame = frame.f_back  # type: ignore
+
+                    if not request:
+                        raise AuthenticationError("リクエストオブジェクトが見つかりません")
+
+                # ユーザー認証
+                user = self.get_authenticated_user(request)
+
+                # ロール権限チェック
+                if self.user_model.is_role_permission_enabled():
+                    user_role = getattr(user, "role", None)
+                    if user_role not in required_roles:
+                        raise AuthorizationError(f"必要なロール: {', '.join(required_roles)}")
+
+                # 認証されたユーザーを request オブジェクトに保存（依存性注入システム用）
+                setattr(request, "_authenticated_user", user)
+
+                # 新しい依存性注入システムが使用されているかチェック
+                dependencies = get_function_dependencies(func)
+                if dependencies:
+                    # 依存性注入システムが使用されている場合、
+                    # 認証ユーザーは自動的に注入されるので、そのまま実行
+                    return func(*args, **kwargs)
+                else:
+                    # 従来のシステム：user パラメータを手動注入
+                    if "user" in sig.parameters:
+                        # user を適切な位置に注入
+                        if kwargs:
+                            kwargs["user"] = user
+                            return func(*args, **kwargs)
+                        else:
+                            # user を最初の引数として渡し、残りの引数を続ける
+                            return func(user, *args, **kwargs)
+                    else:
+                        # user パラメータがない場合はそのまま実行
+                        return func(*args, **kwargs)
+
+            # ラップされた関数に元の関数の属性を保持
+            wrapper._auth_required = True  # type: ignore
+            wrapper._required_roles = required_roles  # type: ignore
+            return wrapper
+
+        return decorator
+
+    def validation_password(self, password: str) -> None:
+        """パスワードのバリデーション"""
+        self.user_model.validate_password(password)
