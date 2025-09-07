@@ -1,0 +1,23 @@
+[project]
+name = "relang"
+readme = "README.md"
+authors = [
+    { name = "Gertjan van Zwieten", email = "git@gjvz.nl" },
+]
+requires-python = '>=3.9'
+dependencies = [
+    "flask",
+    "ctranslate2",
+    "sentencepiece",
+]
+dynamic = ["description", "version"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+]
+
+[project.scripts]
+relang = "relang:cli"
+
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
