@@ -1,0 +1,70 @@
+[project]
+name = "cinetica"
+version = "0.17.0"
+description = "A Python library for physics modules."
+authors = [
+    { name = "Elabsurdo984", email = "matiassfernandez00@gmail.com" },
+]
+dependencies = [
+    "numpy>=2.3.2",
+    "matplotlib>=3.10.5",
+    "pint>=0.23"
+]
+
+requires-python = ">=3.13"
+readme = "README.md"
+license = { file = "LICENSE" }
+keywords = ["physics", "library", "science"]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.0.0",
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "pre-commit>=3.0.0",
+    "hypothesis>=6.0.0"
+]
+
+[project.urls]
+"Source Code" = "https://github.com/Elabsurdo984/Cinetica"
+"Documentation" = "https://github.com/Elabsurdo984/Cinetica/blob/master/DOCS.md"
+"Changelog" = "https://github.com/Elabsurdo984/Cinetica/blob/master/CHANGELOG.md"
+"Bug Tracker" = "https://github.com/Elabsurdo984/Cinetica/issues"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["cinetica", "cinetica.cinematica", "cinetica.cinematica.circular", "cinetica.cinematica.espacial", "cinetica.cinematica.oscilatorio", "cinetica.cinematica.parabolico", "cinetica.cinematica.rectilineo", "cinetica.cinematica.relativo", "cinetica.dinamica", "cinetica.graficos"]
+
+[tool.black]
+line-length = 88
+target-version = ['py313']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
