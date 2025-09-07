@@ -1,0 +1,75 @@
+registry_version: "1.0"
+assets:
+  # System prompt
+  - id: system
+    path: system.md
+    sha256: 667d7a26818138a3d0737a5244f356079008379c5d19e23b86501e3582ff290d
+    version: "1.0.0"
+    size_bytes: 7082
+    last_modified: "2025-09-06T17:30:00Z"
+    
+  # Station briefs
+  - id: station_brief.requirements
+    path: station_briefs/requirements.md
+    sha256: 0719603f18ce5bb507b1b281ea5590d21f1ff7601368e55b032c9be471b39428
+    version: "1.0.0"
+    size_bytes: 467
+    last_modified: "2025-09-06T15:00:00Z"
+    
+  - id: station_brief.objectives
+    path: station_briefs/objectives.md
+    sha256: 1a5b2452f475b7b7a77639e1cac8f4b90f570ee85f9face9be3136d8005d2e12
+    version: "1.0.0"
+    size_bytes: 457
+    last_modified: "2025-09-06T15:00:00Z"
+    
+  - id: station_brief.verification
+    path: station_briefs/verification.md
+    sha256: 49d16a1983faae22cd6d9842197b31fcb3a59b77d78ec9852a883a91ec87b809
+    version: "1.0.0"
+    size_bytes: 469
+    last_modified: "2025-09-06T15:00:00Z"
+    
+  - id: station_brief.validation
+    path: station_briefs/validation.md
+    sha256: d16e58a04c7fd9466c0394e6bbab95dc5bf5e408812696d4444d1a148c621aea
+    version: "1.0.0"
+    size_bytes: 445
+    last_modified: "2025-09-06T15:00:00Z"
+    
+  - id: station_brief.evaluation
+    path: station_briefs/evaluation.md
+    sha256: 1be784d1031c94be1bc575b51e1c176eb60880bfc2cae0ae0cecc1288dd02438
+    version: "1.0.0"
+    size_bytes: 448
+    last_modified: "2025-09-06T15:00:00Z"
+    
+  # Stage 2 operators
+  - id: stage2_multiply
+    path: ops/operators/multiply.md
+    sha256: d3b72d76c2ae438e7a98a6b8758f5ce3a678fbf35f94e554d1b220fa50821a62
+    version: "1.0.0"
+    size_bytes: 2483
+    last_modified: "2025-09-06T15:00:00Z"
+    
+  - id: stage2_elementwise
+    path: ops/operators/elementwise.md
+    sha256: ae991838a33540269cbaf1b9f0b01e2697f1492144d1685b0f5182f3e3cda2f0
+    version: "1.0.0"
+    size_bytes: 2249
+    last_modified: "2025-09-06T15:00:00Z"
+    
+  # Stage 3 lensing
+  - id: combined_lens
+    path: ops/lensing/combined.md
+    sha256: e6f608076a63d73137460dd110d489c755450a7ce2a3c81e8698f0fa853e8cfb
+    version: "1.0.0"
+    size_bytes: 1516
+    last_modified: "2025-09-06T15:00:00Z"
+    
+  - id: lens_shift_z
+    path: ops/lensing/shift.md
+    sha256: b69236e40f3d2dc3297013b22d76181747811a4f906139c540ec3bda878b5295
+    version: "1.0.0"
+    size_bytes: 1672
+    last_modified: "2025-09-06T15:00:00Z"
