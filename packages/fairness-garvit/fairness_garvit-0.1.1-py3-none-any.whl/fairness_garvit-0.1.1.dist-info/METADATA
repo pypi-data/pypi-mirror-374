@@ -1,0 +1,19 @@
+Metadata-Version: 2.4
+Name: fairness-garvit
+Version: 0.1.1
+Summary: A fairness-aware ML algorithm package
+Author: Garvit Gupta
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: torch
+Requires-Dist: scikit-learn
+Requires-Dist: matplotlib
+Dynamic: author
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+Fairness-aware ML algorithm for reducing bias in predictive models.
