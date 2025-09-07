@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "whitepaper-scanner-cli"
+version = "0.1.0"
+description = "Whitepaper - Dataset scanner CLI for analysts and policymakers"
+authors = [
+    { name = "Vamsi Rajagiri" }
+]
+readme = "README.md"
+requires-python = ">=3.8"
+
+dependencies = [
+  "pandas>=1.3",
+  "openpyxl>=3.0",
+  "rich>=12.0",
+  "typer>=0.9.0",
+  "click>=8.0.0",
+]
+
+[project.scripts]
+whitepaper = "whitepaper.__main__:main"
