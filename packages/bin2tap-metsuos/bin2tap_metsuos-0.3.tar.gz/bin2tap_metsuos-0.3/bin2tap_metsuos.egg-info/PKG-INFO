@@ -1,0 +1,26 @@
+Metadata-Version: 2.4
+Name: bin2tap-metsuos
+Version: 0.3
+Summary: MetsuOS Version to avoid skooltools bin2tap dep conflict. Convert a binary file into ZX Spectrum TAP file
+Home-page: https://github.com/metsuke/bin2tap-py-metsuos
+Author: Raül Torralba => Raúl Carrillo aka metsuke
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: summary
+
+# bin2tap-metsuos
+
+Ajuste del bin2tap de Raül Torralba para evitar conflictos con skooltools e integrar con metsuos
+
+A command to convert binary file into ZX Spectrum TAP file.
+
+Is a translation from the [JuananZX command](https://github.com/juananZX/scr2tap) from C# to python. Of course thank you so much for share it.
+
+## Installation
+
+```bash
+pip install bin2tap-metsuos
+```
