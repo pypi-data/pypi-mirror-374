@@ -1,0 +1,20 @@
+[project]
+name = "dev-quick-init"
+version = "0.1.1"
+description = "Quick developer machine setup from YAML"
+authors = [
+    { name="Stephen Krol", email="you@example.com" }
+]
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "pyyaml",
+    "click"
+]
+
+[project.scripts]
+dev-quick-init = "quick_init.installer:main"
+
+[tool.uv]
+package = true
