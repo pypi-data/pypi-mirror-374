@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "csweb"
+version = "0.1.0"
+description = "Compass Web - Web frontend and UI components for Compass Bot"
+authors = [
+    {name = "Dagster Labs", email = "hello@dagsterlabs.com"}
+]
+license = {text = "Apache-2.0"}
+requires-python = ">=3.13"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/dagster-io/dagster-compass"
+Repository = "https://github.com/dagster-io/dagster-compass"
+Issues = "https://github.com/dagster-io/dagster-compass/issues"
+
+[project.scripts]
+csweb = "csweb.cli:main"
+
+[tool.hatch.version]
+path = "src/csweb/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/csweb"]
