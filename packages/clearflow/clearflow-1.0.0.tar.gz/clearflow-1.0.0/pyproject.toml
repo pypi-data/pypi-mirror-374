@@ -1,0 +1,349 @@
+[build-system]
+requires = ["hatchling >= 1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "clearflow"
+version = "1.0.0"  # Version dynamically set by CI/CD pipeline
+description = "Type-safe orchestration for unpredictable AI."
+authors = [
+  {name = "Richard Beauchamp", email = "rbeauchamp@users.noreply.github.com"}
+]
+maintainers = [
+  {name = "ClearFlow Contributors"}
+]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.13"
+
+keywords = [
+    "language-models", "ai-agents", "orchestration", "agents", "async", 
+    "type-safe", "zero-dependencies", "reliable"
+]
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Text Processing :: Linguistic",
+    "Typing :: Typed",
+]
+
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/artificial-sapience/ClearFlow"
+Repository = "https://github.com/artificial-sapience/ClearFlow.git"
+Source = "https://github.com/artificial-sapience/ClearFlow"
+Issues = "https://github.com/artificial-sapience/ClearFlow/issues"
+Examples = "https://github.com/artificial-sapience/ClearFlow/tree/main/examples"
+Inspiration = "https://github.com/The-Pocket/PocketFlow"
+
+[project.optional-dependencies]
+dev = [
+    # Testing
+    "pytest>=8.4.2",
+    "pytest-asyncio>=1.1.0",
+    "pytest-cov>=6.3.0",
+    
+    # Type checking
+    "pyright>=1.1.405",
+    "typeguard>=4.4.4",  # Runtime type-checker
+    
+    # Linting & formatting
+    "ruff>=0.12.0",
+    "flake8-bugbear>=24.12.0",
+    
+    # Security & vulnerability scanning
+    "pip-audit>=2.9.0",      # CVE scanner for dependencies
+    "bandit[toml]>=1.8.0",   # AST security analyzer
+    # semgrep removed due to rich version conflict with dspy 3.0.3
+    
+    # Code quality & complexity
+    "radon>=6.0.1",          # Cyclomatic complexity, maintainability index
+    "xenon>=0.9.3",          # Complexity monitor (fails if too complex)
+    "vulture>=2.14",         # Dead code detection
+]
+examples = [
+    # Union of all example dependencies
+    "openai>=1.106.1",
+    "python-dotenv>=1.1.1",
+    "dspy>=3.0.3",
+    "pydantic>=2.11.0",
+    "rich>=13.7.1",  # Required by dspy 3.0.3
+    "faiss-cpu>=1.9.0.post2",
+    "numpy>=2.3.2",
+]
+
+[tool.hatch.build]
+# Exclude development and session files from package distributions
+exclude = [
+  "/.github",
+  "/.claude",
+  "*.sh",
+  "session-*.md",
+  "continue-*.md",
+  "plan.md",
+  "design-*.md",
+  "CLAUDE.md",
+  "GEMINI.md",
+  ".env*",
+  "GitVersion.yml",
+]
+
+[tool.hatch.build.targets.wheel]
+# Wheel only needs the package code
+only-include = ["clearflow", "py.typed"]
+
+[tool.hatch.build.targets.sdist]
+# Source distribution includes more files for development
+include = [
+  "/clearflow",
+  "/tests",
+  "/examples",
+  "/docs",
+  "/linters",
+  "README.md",
+  "LICENSE",
+  "pyproject.toml",
+]
+
+#################################### Ruff Configuration ####################################
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+indent-width = 4
+preview = true
+fix = false
+extend-exclude = ["*.ipynb", "typings", "**/.venv", "**/venv"]  # Exclude notebooks, type stubs, and virtual environments
+unsafe-fixes = false
+
+[tool.ruff.format]
+# Drop-in replacement for Black with same defaults
+preview = true
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint]
+select = [
+  "ALL",  # Maximum strictness for mission-critical code
+  # Explicitly list key rule sets for mission-critical quality
+  "F",    # Pyflakes - basic error detection
+  "E",    # pycodestyle errors
+  "W",    # pycodestyle warnings
+  "C90",  # mccabe complexity
+  "I",    # isort - import sorting
+  "N",    # pep8-naming
+  "D",    # pydocstyle - docstring checking
+  "UP",   # pyupgrade - Python version upgrade suggestions
+  "YTT",  # flake8-2020 - misuse of sys.version
+  "ANN",  # flake8-annotations - type annotation enforcement
+  "S",    # flake8-bandit - security rules
+  "B",    # flake8-bugbear - bug detection
+  "A",    # flake8-builtins - builtin shadowing
+  "C4",   # flake8-comprehensions - comprehension optimization
+  "DTZ",  # flake8-datetimez - timezone aware datetime
+  "EM",   # flake8-errmsg - error message formatting
+  "EXE",  # flake8-executable - shebang issues
+  "ISC",  # flake8-implicit-str-concat
+  "ICN",  # flake8-import-conventions
+  "LOG",  # flake8-logging
+  "PIE",  # flake8-pie - misc lints
+  "PT",   # flake8-pytest-style - pytest rules
+  "Q",    # flake8-quotes
+  "RET",  # flake8-return - return consistency
+  "SLF",  # flake8-self - private member access
+  "SIM",  # flake8-simplify - simplification suggestions
+  "TID",  # flake8-tidy-imports - import restrictions
+  "TCH",  # flake8-type-checking - type checking imports
+  "ARG",  # flake8-unused-arguments - unused arguments
+  "PTH",  # flake8-use-pathlib - prefer pathlib
+  "ERA",  # eradicate - commented out code detection
+  "PL",   # Pylint rules
+  "TRY",  # tryceratops - exception handling
+  "FLY",  # flynt - f-string conversion
+  "PERF", # Perflint - performance lints
+  "RUF",  # Ruff-specific rules
+]
+# Minimal ignores only for true conflicts:
+ignore = [
+  # Docstring conflicts (must choose one)
+  "D203", # 1 blank line required before class docstring (conflicts with D211)
+  "D213", # Multi-line docstring summary should start at the second line (conflicts with D212)
+  # Formatter conflicts that cannot be resolved
+  "COM812", # Missing trailing comma (conflicts with formatter)
+  "ISC001", # Implicitly concatenated string literals (conflicts with formatter)
+  # Line length - let formatter handle this (Black/Ruff don't break strings/comments)
+  "E501", # Line too long (trust formatter's judgment)
+  # Copyright headers not standard in Python ecosystem (Django, Flask, FastAPI don't use them)
+  "CPY001", # Missing copyright notice at top of file
+]
+# Never allow fixes for imports that may change execution order
+unfixable = [
+  "F401",
+  "E402", 
+  "C408",
+]  # T201 and PERF401 should be fixed, not unfixable
+
+[tool.ruff.lint.pycodestyle]
+# More lenient line length for edge cases (URLs, long strings, etc.)
+max-line-length = 120
+
+[tool.ruff.lint.mccabe]
+# Mission-critical: Enforce low complexity
+max-complexity = 7  # A grade maximum
+
+[tool.ruff.lint.per-file-ignores]
+# Package initialization files
+"__init__.py" = ["F401", "D104"]  # Allow unused imports and missing docstrings
+# Methods that raise exceptions through validated helper methods still document them for API users
+"clearflow/__init__.py" = ["DOC502"]  # ValueError raised by _validate_and_create_route helper
+# Test files have different requirements
+"tests/**/*.py" = [
+  "S101",    # Use of assert (required for pytest)
+  "D",       # Allow missing docstrings in tests
+  "PLR2004", # Magic values in assertions are expected values
+  "RUF029",  # Async functions without await (intentional for flow functions)
+  "C901",    # Complex test scenarios are acceptable
+  "PERF401", # Explicit loops needed for type checking
+  "PLR6301", # Methods that could be static (needed for inheritance)
+  "FBT003",  # Boolean literals in function calls (clear in tests)
+  # REMOVED for mission-critical quality:
+  # T201 - No print statements, use proper logging/assertions
+]
+# Main package can use internal imports
+"clearflow/**/*.py" = [
+  "TID251",  # Allow imports from internal modules within the package itself
+  "TID252",  # Allow relative imports within the package
+]
+# Example files are meant to be educational
+"examples/**/*.py" = [
+  "T201",    # Print statements are needed for user interaction
+  "INP001",  # Examples don't need to be packages
+  "EXE001",  # Shebang presence is fine without executable bit
+  "D",       # Allow missing docstrings in examples
+]
+# Linter scripts are infrastructure tools with different requirements
+"linters/**/*.py" = [
+  "T201",    # Print statements are required for linter output
+  "T203",    # pprint statements for debugging output
+  "C901",    # Infrastructure code requires higher complexity for AST analysis (max: 9, down from 27)
+]
+
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false
+parametrize-names-type = "tuple"
+parametrize-values-row-type = "tuple"
+parametrize-values-type = "tuple"
+raises-require-match-for = ["ValueError", "TypeError", "RuntimeError"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"  # Force absolute imports
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+# Architecture enforcement
+"typing.Any" = { msg = "Avoid Any type. Use proper types or object with documented justification." }
+# Ban mocking/patching for mission-critical testing
+"unittest.mock.patch" = { msg = "patch() violates hexagonal architecture. Use MockLM at the LM boundary instead." }
+"unittest.mock.MagicMock" = { msg = "MagicMock hides bugs. Use explicit MockLM with defined responses." }
+"unittest.mock.Mock" = { msg = "Mock hides bugs. Use explicit MockLM with defined responses." }
+"mock.patch" = { msg = "patch() violates hexagonal architecture. Use MockLM at the LM boundary instead." }
+"mock.MagicMock" = { msg = "MagicMock hides bugs. Use explicit MockLM with defined responses." }
+"mock.Mock" = { msg = "Mock hides bugs. Use explicit MockLM with defined responses." }
+
+[tool.ruff.lint.flake8-bugbear]
+# Immutable calls configuration
+extend-immutable-calls = ["tuple", "frozenset"]
+
+[tool.ruff.lint.flake8-bandit]
+# Enable security-focused rules
+check-typed-exception = true
+
+#################################### Pyright Configuration ####################################
+[tool.pyright]
+typeCheckingMode = "strict"
+pythonVersion = "3.13"
+include = ["clearflow", "tests", "examples", "linters"]
+exclude = ["**/__pycache__", "**/.venv", "**/venv", ".venv"]
+stubPath = "typings"  # Use our DSPy type stubs
+strictListInference = true        # list[...] inferred as precise union instead of Any
+strictDictionaryInference = true  # dict[...] inferred as precise union
+strictSetInference = true         # set[...] inferred as precise union
+analyzeUnannotatedFunctions = true
+# Treat all reportable issues as errors instead of warnings
+reportUnnecessaryTypeIgnoreComment = "error"
+reportMissingParameterType = "error"
+reportUnknownParameterType = "error"
+reportUnknownVariableType = "error"
+reportUnknownMemberType = "error"
+reportImplicitStringConcatenation = "error"
+reportUndefinedVariable = "error"
+reportAssertAlwaysTrue = "error"
+reportSelfClsParameterName = "error"
+reportImplicitOverride = "error"
+reportImportCycles = "error"  # Do not allow import cycles
+reportMissingTypeStubs = "error"  # External libraries must have stubs
+
+#################################### Coverage Configuration ####################################
+[tool.coverage.run]
+source = ["clearflow"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+  "def __repr__",
+  "if self\\.debug:",
+  "if settings\\.DEBUG",
+  "raise AssertionError",
+  "raise NotImplementedError",
+  "if 0:",
+  "if __name__ == .__main__.:",
+  "\\.\\.\\.",  # Exclude ellipsis in abstract/protocol methods
+]
+ignore_errors = false  # Mission-critical: We need to know about ALL coverage errors
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+#################################### Pytest Configuration ####################################
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = [
+  "--cov=clearflow",
+  "--cov-report=term-missing", 
+  "--cov-fail-under=100",  # Require 100% coverage minimum
+  "--strict-config",
+  "--strict-markers",
+  "-Werror",  # Treat warnings as errors
+  "--tb=short",
+]
+filterwarnings = [
+  "ignore::DeprecationWarning",
+  "ignore::PendingDeprecationWarning",
+]
+
+#################################### Security & Quality Tools ####################################
+[tool.bandit]
+# Security analysis configuration
+targets = ["clearflow", "examples"]
+exclude_dirs = ["tests", ".venv"]
+skips = []  # No skips - check everything
+severity = "low"  # Report all severity levels
+
+[tool.bandit.assert_used]
+skips = ["*/test_*.py", "*_test.py"]  # Allow assert in tests
+
+# Note: vulture, xenon, and radon don't read pyproject.toml automatically
+# Their settings are hardcoded in quality-check.sh where they're invoked
