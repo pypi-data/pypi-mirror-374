@@ -1,0 +1,67 @@
+[project]
+name = "portabellas"
+version = "0.2.0"
+description = "Add your description here"
+readme = "docs/README.md"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "polars>=1.32.0",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.17.1",
+    "pre-commit>=4.2.0",
+    "pytest>=8.4.1",
+    "pytest-cov>=6.2.1",
+    "ruff>=0.12.7",
+]
+docs = [
+    "mkdocs>=1.6.1",
+    "mkdocs-autorefs>=1.4.2",
+    "mkdocs-exclude>=1.0.2",
+    "mkdocs-gen-files>=0.5.0",
+    "mkdocs-glightbox>=0.4.0",
+    "mkdocs-literate-nav>=0.6.2",
+    "mkdocs-material>=9.6.16",
+    "mkdocs-section-index>=0.3.10",
+    "mkdocstrings>=0.30.0",
+    "mkdocstrings-python>=1.16.12",
+]
+
+[build-system]
+requires = ["uv_build>=0.8.4,<0.9.0"]
+build-backend = "uv_build"
+
+[tool.mypy]
+strict = true
+
+[tool.pytest.ini_options]
+addopts = [
+    "--doctest-modules",
+    "--strict-markers",
+    "--tb=short", # short tracebacks
+]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "D100",
+    "D104",
+    "TD002",
+    "TD003",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+    "D103",
+    "INP001",
+    "S101",
+]
+
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
