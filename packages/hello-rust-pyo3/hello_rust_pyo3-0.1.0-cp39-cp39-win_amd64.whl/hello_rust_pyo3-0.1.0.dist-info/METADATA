@@ -1,0 +1,55 @@
+Metadata-Version: 2.4
+Name: hello-rust-pyo3
+Version: 0.1.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Rust
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Summary: Small example of a Rust extension module for Python using PyO3 + maturin.
+Author-email: Your Name <you@example.com>
+License: MIT
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+Project-URL: Homepage, https://example.com/hello-rust-pyo3
+
+# hello-rust-pyo3
+
+Minimal **Rust** extension for Python using **PyO3 + maturin**.
+
+## Quick test (local)
+
+```bash
+python -m venv .venv
+# Windows: py -3.12 -m venv .venv
+source .venv/bin/activate  # Windows: .\.venv\Scripts\Activate.ps1
+python -m pip install -U pip maturin
+maturin develop  # builds & installs into the venv
+
+python -c "import hello_rust_pyo3 as m; print(m.add(2,3), m.greet('Sequa'))"
+```
+
+## Build wheels / sdist
+
+```bash
+maturin build --release --out dist           # wheels
+maturin build --release --sdist --out dist   # add sdist
+```
+
+## Verify & Publish
+
+```bash
+python -m pip install -U twine
+python -m twine check dist/*
+# TestPyPI
+python -m twine upload -r testpypi -u __token__ -p <TESTPYPI_TOKEN> dist/*
+# PyPI
+python -m twine upload -r pypi -u __token__ -p <PYPI_TOKEN> dist/*
+```
+
+## Notes (Windows/macOS/Linux)
+
+- Install Rust toolchain: https://rustup.rs/
+- Windows: install Microsoft C++ build tools (Visual Studio Build Tools).
+- macOS: Xcode Command Line Tools (`xcode-select --install`).
+- Linux: ensure `gcc`/`clang` and Python dev headers are installed.
+
