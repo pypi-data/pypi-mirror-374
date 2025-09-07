@@ -1,0 +1,6 @@
+[console_scripts]
+ssdp=ssdp:__main__.ssdp
+
+[pygments.lexers]
+ssdp=ssdp.lexers:SSDPLexer
+
