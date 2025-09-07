@@ -1,0 +1,17 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling >= 1.26"]
+
+[project]
+dependencies = ["requests", "bs4", "pytz"]
+description = "A web scraper that lists items from Findmestore."
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+name = "fmslist"
+readme = "README.md"
+requires-python = ">=3.13"
+version = "0.0.12"
+
+[project.urls]
+Homepage = "https://github.com/d4n1elchen/fmslist"
+Issues = "https://github.com/d4n1elchen/fmslist/issues"
