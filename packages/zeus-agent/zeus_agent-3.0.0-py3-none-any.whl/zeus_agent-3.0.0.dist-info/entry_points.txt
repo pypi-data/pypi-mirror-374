@@ -1,0 +1,4 @@
+[console_scripts]
+zeus = zeus.cli:main
+zeus-agent = zeus.cli:agent_cmd
+zeus-dev = zeus.cli:dev_cmd
