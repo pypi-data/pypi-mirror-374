@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chartengineer"
+version = "0.1.5"
+description = "Plotly and Pandas wrapper for quick and modern chart building."
+readme = "README.md"
+requires-python = ">=3.7"
+authors = [
+    { name = "Brandyn Hamilton", email = "brandynham1120@gmail.com" }
+]
+license = { text = "MIT" }
+dependencies = [
+    "pandas",
+    "numpy",
+    "dotenv",
+    "plotly",
+    "matplotlib",
+    "colorcet",
+    "nbformat>=4.2.0",
+    "kaleido>=0.1.0"
+]
+urls = { "Homepage" = "https://github.com/brandynhamilton/chartengineer" }
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+
+[project.optional-dependencies]
+dev = ["build", "twine"] 
+
+[tool.setuptools.packages.find]
+include = ["chartengineer", "chartengineer.*"]
+
+[dependency-groups]
+dev = [
+    "build>=1.1.1",
+    "twine>=4.0.2",
+]
