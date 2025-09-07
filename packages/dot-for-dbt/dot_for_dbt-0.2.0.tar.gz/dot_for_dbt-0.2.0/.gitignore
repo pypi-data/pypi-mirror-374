@@ -1,0 +1,17 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+pypi_token.md
+
+# Virtual environments
+.venv
+
+# DuckDB
+*.duckdb
+*.duckdb.wal
+
+.dot/
