@@ -1,0 +1,21 @@
+CVXPY
+Minimize
+  x
+Subject To
+Bounds
+ 0.0 <= x
+End
+----------------------------------------
+AFTER COMPILATION
+Minimize
+  C0
+Subject To
+Bounds
+End
+----------------------------------------
+GUROBI
+Minimize
+  x
+Subject To
+Bounds
+End

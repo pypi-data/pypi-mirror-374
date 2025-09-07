@@ -1,0 +1,40 @@
+CVXPY
+Maximize
+  Sum(x, None, False)
+Subject To
+ 8: power(x, 2.0) <= 1.0
+Bounds
+ 0.0 <= x
+End
+----------------------------------------
+AFTER COMPILATION
+Minimize
+  - x_0 - x_1
+Subject To
+ R0: x_2 <= 1
+ R1: x_3 <= 1
+ R2: - x_2 + soc_t_2 = 1
+ R3: - x_2 + soc_x_3 = -1
+ R4: - 2 x_0 + soc_x_4 = 0
+ R5: - x_3 + soc_t_5 = 1
+ R6: - x_3 + soc_x_6 = -1
+ R7: - 2 x_1 + soc_x_7 = 0
+ qc0: [ - soc_t_2 ^2 + soc_x_3 ^2 + soc_x_4 ^2 ] <= 0
+ qc1: [ - soc_t_5 ^2 + soc_x_6 ^2 + soc_x_7 ^2 ] <= 0
+Bounds
+ x_2 free
+ x_3 free
+ soc_x_3 free
+ soc_x_4 free
+ soc_x_6 free
+ soc_x_7 free
+End
+----------------------------------------
+GUROBI
+Maximize
+  x[0] + x[1]
+Subject To
+ 8[0]: [ x[0] ^2 ] <= 1
+ 8[1]: [ x[1] ^2 ] <= 1
+Bounds
+End

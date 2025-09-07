@@ -1,0 +1,25 @@
+CVXPY
+Minimize
+  -x + 1.0
+Subject To
+ 28: x <= 1.0
+Bounds
+ 0.0 <= x
+End
+----------------------------------------
+AFTER COMPILATION
+Minimize
+  - C0
+Subject To
+ R0: C0 <= 1
+Bounds
+End
+----------------------------------------
+GUROBI
+Minimize
+  - x + Constant
+Subject To
+ 28: x <= 1
+Bounds
+ Constant = 1
+End

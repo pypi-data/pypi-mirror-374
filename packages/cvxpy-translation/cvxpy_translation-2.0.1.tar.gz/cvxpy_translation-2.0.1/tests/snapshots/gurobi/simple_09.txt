@@ -1,0 +1,24 @@
+CVXPY
+Minimize
+  -x
+Subject To
+ 22: x <= 1.0
+Bounds
+ 0.0 <= x
+End
+----------------------------------------
+AFTER COMPILATION
+Minimize
+  - C0
+Subject To
+ R0: C0 <= 1
+Bounds
+End
+----------------------------------------
+GUROBI
+Minimize
+  - x
+Subject To
+ 22: x <= 1
+Bounds
+End

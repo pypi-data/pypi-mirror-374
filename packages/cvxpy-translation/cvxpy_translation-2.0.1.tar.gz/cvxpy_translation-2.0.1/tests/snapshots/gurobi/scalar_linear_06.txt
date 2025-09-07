@@ -1,0 +1,32 @@
+CVXPY
+Minimize
+  x
+Subject To
+ 45: 1.0 <= x
+ 49: 1.0 <= y
+Bounds
+ x free
+ y free
+End
+----------------------------------------
+AFTER COMPILATION
+Minimize
+  C0
+Subject To
+ R0: - C0 <= -1
+ R1: - C1 <= -1
+Bounds
+ C0 free
+ C1 free
+End
+----------------------------------------
+GUROBI
+Minimize
+  x
+Subject To
+ 45: x >= 1
+ 49: y >= 1
+Bounds
+ x free
+ y free
+End

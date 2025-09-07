@@ -1,0 +1,26 @@
+CVXPY
+Minimize
+  b
+Subject To
+Bounds
+Binaries
+ b
+End
+----------------------------------------
+AFTER COMPILATION
+Minimize
+  C0
+Subject To
+Bounds
+Binaries
+ C0
+End
+----------------------------------------
+GUROBI
+Minimize
+  b
+Subject To
+Bounds
+Binaries
+ b
+End

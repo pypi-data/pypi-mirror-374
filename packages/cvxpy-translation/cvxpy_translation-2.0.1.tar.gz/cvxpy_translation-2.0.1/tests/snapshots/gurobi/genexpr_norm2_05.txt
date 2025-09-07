@@ -1,0 +1,32 @@
+CVXPY
+Minimize
+  Pnorm(x + -1.0, 2)
+Subject To
+Bounds
+ x free
+End
+----------------------------------------
+AFTER COMPILATION
+Minimize
+  x_0
+Subject To
+ R0: - x_0 + soc_t_0 = 0
+ R1: - x_1 + soc_x_1 = -1
+ qc0: [ - soc_t_0 ^2 + soc_x_1 ^2 ] <= 0
+Bounds
+ x_0 free
+ x_1 free
+ soc_x_1 free
+End
+----------------------------------------
+GUROBI
+Minimize
+  norm2_2
+Subject To
+ R0: - x[0] + AddExpression_1 = -1
+Bounds
+ x[0] free
+ AddExpression_1 free
+General Constraints
+ GC0: norm2_2 = NORM ( 2 ) ( AddExpression_1 )
+End

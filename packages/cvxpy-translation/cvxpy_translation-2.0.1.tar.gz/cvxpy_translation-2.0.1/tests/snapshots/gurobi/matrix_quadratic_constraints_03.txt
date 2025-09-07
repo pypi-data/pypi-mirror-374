@@ -1,0 +1,34 @@
+CVXPY
+Maximize
+  Sum(x, None, False)
+Subject To
+ 27: QuadForm(x, [[np.float64(4.0) np.float64(6.0)]
+ [np.float64(6.0) np.float64(10.0)]]) <= 1.0
+Bounds
+ 0.0 <= x
+End
+----------------------------------------
+AFTER COMPILATION
+Minimize
+  - x_0 - x_1
+Subject To
+ R0: x_2 <= 1
+ R1: - x_2 + soc_t_1 = 1
+ R2: x_2 + soc_x_2 = 1
+ R3: - 4 x_0 - 6 x_1 + soc_x_3 = 0
+ R4: - 2 x_1 + soc_x_4 = 0
+ qc0: [ - soc_t_1 ^2 + soc_x_2 ^2 + soc_x_3 ^2 + soc_x_4 ^2 ] <= 0
+Bounds
+ x_2 free
+ soc_x_2 free
+ soc_x_3 free
+ soc_x_4 free
+End
+----------------------------------------
+GUROBI
+Maximize
+  x[0] + x[1]
+Subject To
+ 27: [ 4 x[0] ^2 + 12 x[0] * x[1] + 10 x[1] ^2 ] <= 1
+Bounds
+End

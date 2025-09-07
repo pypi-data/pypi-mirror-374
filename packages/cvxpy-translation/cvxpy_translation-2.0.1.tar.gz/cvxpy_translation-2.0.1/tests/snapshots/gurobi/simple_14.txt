@@ -1,0 +1,21 @@
+CVXPY
+Minimize
+  power(x, 2.0)
+Subject To
+Bounds
+ 0.0 <= x
+End
+----------------------------------------
+AFTER COMPILATION
+Minimize
+ [ 2 C0 ^2 ] / 2 
+Subject To
+Bounds
+End
+----------------------------------------
+GUROBI
+Minimize
+ [ 2 x ^2 ] / 2 
+Subject To
+Bounds
+End
