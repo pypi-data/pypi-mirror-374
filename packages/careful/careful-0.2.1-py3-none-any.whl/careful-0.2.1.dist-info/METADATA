@@ -1,0 +1,68 @@
+Metadata-Version: 2.4
+Name: careful
+Version: 0.2.1
+Summary: careful extensions to httpx: throttle, retry, cache
+Project-URL: Repository, https://codeberg.org/jpt/careful
+Author-email: jpt <dev@jpt.sh>
+License: BSD-2-Clause
+License-File: LICENSE
+Classifier: Development Status :: 6 - Mature
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Requires-Dist: httpx>=0.28.1
+Description-Content-Type: text/markdown
+
+# careful
+
+<img src="https://careful.jpt.sh/carefully-3681327.svg" width=100 height=100 alt="logo of a warning sign">
+
+**careful** is a Python library for making requests to unreliable websites with `httpx`.
+ 
+**Code**: <https://codeberg.org/jpt/careful>
+
+**Docs**: <https://careful.jpt.sh>
+
+[![status-badge](https://ci.codeberg.org/api/badges/15185/status.svg)](https://ci.codeberg.org/repos/15185)
+
+It offers enhancements to 
+[`httpx.Client`](https://www.python-httpx.org)
+useful for writing long-running scrapers & crawlers, particularly against sites that are slow or have intermittent errors.
+
+- **configurable retry support.** retry on timeouts or other errors, with exponential back-off.
+- **simple request throttling.** set a maximum number of requests per minute.
+- **development cache.** configurable caching aimed at reducing redundant requests made while authoring/testing web scrapers.
+
+### example
+
+```python
+from httpx import Client
+from careful.httpx import make_careful_client
+
+client = make_careful_client(
+    # can configure httpx.Client however you usually would
+    client=Client(headers={'user-agent': 'careful/1.0'}),
+    # retries are configurable w/ exponential back off
+    retry_attempts=2,
+    retry_wait_seconds=5,
+    # can cache to process memory, filesystem, or SQLite
+    cache_storage=MemoryCache(),
+    # requests will automatically be throttled to aim at this rate
+    requests_per_minute=60,
+)
+
+# all normal methods on httpx.Client make use of configured enhancements
+client.get("https://example.com")
+```
+
+
+---
+
+Logo licensed from [Adrien Coquet via Noun Project](https://thenounproject.com/icon/carefully-3681327/)
