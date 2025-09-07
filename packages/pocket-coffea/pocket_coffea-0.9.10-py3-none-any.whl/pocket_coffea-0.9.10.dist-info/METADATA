@@ -1,0 +1,120 @@
+Metadata-Version: 2.4
+Name: pocket_coffea
+Version: 0.9.10
+Summary: Configurable analysis framework based on Coffea for CMS NanoAOD events analysis
+Author-email: Davide Valsecchi <davide.valsecchi@cern.ch>, Matteo Marchegiani <matteo.marchegiani@cern.ch>
+License: BSD-3-Clause
+Project-URL: Documentation, https://pocketcoffea.readthedocs.io/
+Project-URL: Repository, https://github.com/PocketCoffea/PocketCoffea
+Project-URL: Issues, https://github.com/PocketCoffea/PocketCoffea/issues
+Project-URL: Discussion, https://github.com/PocketCoffea/PocketCoffea/discussions
+Project-URL: Changelog, https://github.com/PocketCoffea/PocketCoffea/releases
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering
+Classifier: Typing :: Typed
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: typing-extensions>=3.7; python_version < "3.8"
+Requires-Dist: coffea==0.7.29
+Requires-Dist: numba>=0.57.0
+Requires-Dist: numpy>=1.22.0
+Requires-Dist: awkward<2,>=1.10.3
+Requires-Dist: mplhep>=0.3.48
+Requires-Dist: cloudpickle
+Requires-Dist: vector<1.5.0
+Requires-Dist: boost_histogram>=1.5.0
+Requires-Dist: hist>=2.8.0
+Requires-Dist: pyaml
+Requires-Dist: requests
+Requires-Dist: parsl
+Requires-Dist: matplotlib>=3.7
+Requires-Dist: rich
+Requires-Dist: rucio-clients>=37.5.0
+Requires-Dist: onnxruntime
+Requires-Dist: omegaconf
+Requires-Dist: law
+Requires-Dist: click>=8.0.4
+Requires-Dist: correctionlib>=2.6.1
+Requires-Dist: setuptools<71
+Provides-Extra: dev
+Requires-Dist: snakeviz; extra == "dev"
+Requires-Dist: memray; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: pytest>=6; extra == "dev"
+Requires-Dist: pytest-cov>=3; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: nox; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx>=4.0; extra == "docs"
+Requires-Dist: myst-parser>=0.13; extra == "docs"
+Requires-Dist: sphinx-book-theme>=0.1.0; extra == "docs"
+Requires-Dist: sphinx-copybutton; extra == "docs"
+Requires-Dist: sphinx-markdown-tables; extra == "docs"
+Requires-Dist: nox; extra == "docs"
+Provides-Extra: test
+Requires-Dist: pytest>=6; extra == "test"
+Requires-Dist: pytest-cov>=3; extra == "test"
+Provides-Extra: dask
+Requires-Dist: dask>=2024.8.1; extra == "dask"
+Dynamic: license-file
+
+```bash
+    ____             __        __  ______      ________          
+   / __ \____  _____/ /_____  / /_/ ____/___  / __/ __/__  ____ _
+  / /_/ / __ \/ ___/ //_/ _ \/ __/ /   / __ \/ /_/ /_/ _ \/ __ `/
+ / ____/ /_/ / /__/ ,< /  __/ /_/ /___/ /_/ / __/ __/  __/ /_/ / 
+/_/    \____/\___/_/|_|\___/\__/\____/\____/_/ /_/  \___/\__,_/  
+```
+<!--[![Actions Status][actions-badge]][actions-link] -->
+[![Documentation Status][rtd-badge]][rtd-link]
+[![PyPI version][pypi-version]][pypi-link]
+[![PyPI platforms][pypi-platforms]][pypi-link]
+[![GitHub Discussion][github-discussions-badge]][github-discussions-link]
+
+<!-- prettier-ignore-start -->
+[actions-badge]:            https://github.com/PocketCoffea/PocketCoffea/workflows/CI/badge.svg
+[actions-link]:             https://github.com/PocketCoffea/PocketCoffea/actions
+[github-discussions-badge]: https://img.shields.io/static/v1?label=Discussions&message=Ask&color=blue&logo=github
+[github-discussions-link]:  https://github.com/PocketCoffea/PocketCoffea/discussions
+[pypi-link]:                https://pypi.org/project/pocket-coffea/
+[pypi-platforms]:           https://img.shields.io/pypi/pyversions/pocket-coffea
+[pypi-version]:             https://img.shields.io/pypi/v/pocket-coffea
+[rtd-badge]:                https://readthedocs.org/projects/pocketcoffea/badge/?version=latest
+[rtd-link]:                 https://pocketcoffea.readthedocs.io/en/latest/?badge=latest
+
+<!-- prettier-ignore-end -->
+PocketCoffea is a slim configuration framework for CMS NanoAOD analysess based on [Coffea](https://github.com/CoffeaTeam/coffea/). 
+
+The goal of the framework is to define an HEP analysis in a declarative way where possible (with a well defined
+configuration files), and with python code where customization is needed (by subclassing the base PocketCoffea processor).
+
+PocketCoffea defines a customizable structure to process NanoAOD events and define weights, categories, histograms. This
+is done thans to a `BaseProcessor` class which defines a `workflow` of operations to go from Raw NanoAOD to histograms.
+The user can customize the process from the confguration file or by redefining well-defined steps in the workflow.
+
+## Documentation
+
+- All the documentaton material is hosted at: https://pocketcoffea.readthedocs.io
+
+- A set of tutorials is available at: https://github.com/PocketCoffea/Tutorials
+
+- Complete analyses examples
+  - Z->ee **[analysis example page](https://pocketcoffea.readthedocs.io/en/latest/analysis_example.html)** 
+  
+- [Join](https://mattermost.web.cern.ch/cms-exp/channels/pocketcoffea---qa) the Q&A CMS Mattermost channel for technical questions
+
+

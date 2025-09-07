@@ -1,0 +1,12 @@
+[console_scripts]
+build-datasets = pocket_coffea.scripts.dataset.build_datasets:build_datasets
+check-jobs = pocket_coffea.scripts.check_jobs:check_jobs
+dataset-discovery-cli = pocket_coffea.scripts.dataset.dataset_query:dataset_discovery_cli
+hadd-skimmed-files = pocket_coffea.scripts.hadd_skimmed_files:hadd_skimmed_files
+make-config = pocket_coffea.sripts.make_config:make_config
+make-plots = pocket_coffea.scripts.plot.make_plots:make_plots
+merge-outputs = pocket_coffea.scripts.merge_outputs:main
+pocket-coffea = pocket_coffea.__main__:cli
+print-parameters = pocket_coffea.scripts.print_parameters:print_parameters
+runner = pocket_coffea.scripts.runner:run
+split-output = pocket_coffea.scripts.split_output:main
