@@ -1,0 +1,28 @@
+Metadata-Version: 2.4
+Name: duablo
+Version: 0.1.0
+Summary: A command-line tool to dual-launch multiple instances of Diablo II: Resurrected.
+Project-URL: homepage, https://github.com/garrett-he/duablo
+Project-URL: repository, https://github.com/garrett-he/duablo.git
+Project-URL: changelog, https://github.com/garrett-he/duablo/blob/main/CHANGELOG.md
+Author-email: Garrett HE <garrett.he@outlook.com>
+License: BSD-3-Clause
+License-File: LICENSE
+Keywords: diablo2resurrected,game,multi-instance
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: <3.13,>=3.12
+Requires-Dist: typer>=0.16.1
+Description-Content-Type: text/markdown
+
+# duablo
+
+A command-line tool to dual-launch multiple instances of Diablo II: Resurrected.
+
+## License
+
+Copyright (C) 2025 Garrett HE <garrett.he@outlook.com>
+
+The BSD 3-Clause License, see [LICENSE](./LICENSE).
+
