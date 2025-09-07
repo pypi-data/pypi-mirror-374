@@ -1,0 +1,82 @@
+r"""
+This module is a convenience wrapper for loading predefined toy datasets that come with an installation of `tce-lib`.
+These are useful for largely for educational reasons, i.e., seeing how `tce-lib` expects training data to look.
+"""
+
+from dataclasses import dataclass, fields
+from pathlib import Path
+import json
+from importlib.resources import files
+
+from ase import Atoms, io
+
+from tce.constants import LatticeStructure
+
+
+DATASET_DIR = files("tce") / "datasets"
+"""@private"""
+
+
+@dataclass
+class Dataset:
+
+    r"""
+    Dataset class that can load a pre-defined dataset. To see available datasets:
+
+    ```py
+    from tce.datasets import Dataset, available_datasets
+
+    for dataset_name in available_datasets:
+        print(dataset)
+    ```
+
+    To load a given dataset:
+
+    ```py
+    from pathlib import Path
+
+    from tce.datasets import Dataset, available_datasets
+
+    for dataset_name in available_datasets:
+        dataset = Dataset.load(Path(dataset_name))
+    ```
+    
+    See [here](https://github.com/MUEXLY/tce-lib#loading-and-visualizing-datasets) for a more concrete example
+    showing what you can do with the `tce.datasets.Dataset` object!
+    """
+
+    lattice_parameter: float
+    lattice_structure: LatticeStructure
+    description: str
+    contact_info: str
+    configurations: list[Atoms]
+
+    def __repr__(self):
+        parts = []
+        for f in fields(self):
+            value = getattr(self, f.name)
+            if f.name == "configurations":
+                parts.append(f"{f.name}=[...]")
+            else:
+                parts.append(f"{f.name}={value!r}")
+        return f"{self.__class__.__name__}({', '.join(parts)})"
+
+    @classmethod
+    def from_dir(cls, directory: Path) -> "Dataset":
+
+        with (DATASET_DIR / directory / "metadata.json").open("r") as file:
+            metadata = json.load(file)
+
+        metadata["lattice_structure"] = getattr(LatticeStructure, metadata["lattice_structure"].upper())
+
+        return cls(
+            **metadata,
+            configurations=[
+                io.read(path) for path in (DATASET_DIR / directory).glob("*.xyz")
+            ]
+        )
+    
+
+def available_datasets() -> list[str]:
+
+    return list(x.name for x in DATASET_DIR.iterdir())
