@@ -1,0 +1,137 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Claude Code Settings",
+  "description": "Schema for Claude Code settings.json configuration files (new nested object format)",
+  "type": "object",
+  "properties": {
+    "hooks": {
+      "type": "object",
+      "description": "Hook configurations organized by hook type",
+      "properties": {
+        "PreToolUse": {
+          "type": "array",
+          "description": "Pre-tool-use hooks",
+          "items": {
+            "$ref": "#/definitions/toolHookEntry"
+          }
+        },
+        "PostToolUse": {
+          "type": "array", 
+          "description": "Post-tool-use hooks",
+          "items": {
+            "$ref": "#/definitions/toolHookEntry"
+          }
+        },
+        "UserPromptSubmit": {
+          "type": "array",
+          "description": "User prompt submit hooks",
+          "items": {
+            "$ref": "#/definitions/basicHookEntry"
+          }
+        },
+        "Notification": {
+          "type": "array",
+          "description": "Notification hooks", 
+          "items": {
+            "$ref": "#/definitions/basicHookEntry"
+          }
+        },
+        "Stop": {
+          "type": "array",
+          "description": "Stop hooks",
+          "items": {
+            "$ref": "#/definitions/basicHookEntry"
+          }
+        },
+        "SubagentStop": {
+          "type": "array",
+          "description": "Subagent stop hooks",
+          "items": {
+            "$ref": "#/definitions/basicHookEntry"
+          }
+        },
+        "PreCompact": {
+          "type": "array",
+          "description": "Pre-compact hooks",
+          "items": {
+            "$ref": "#/definitions/compactHookEntry"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true,
+  "definitions": {
+    "hookCommand": {
+      "type": "object",
+      "required": ["type", "command"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "command",
+          "description": "Type of hook handler"
+        },
+        "command": {
+          "type": "string",
+          "description": "Command to execute"
+        }
+      },
+      "additionalProperties": false
+    },
+    "basicHookEntry": {
+      "type": "object",
+      "required": ["hooks"],
+      "properties": {
+        "hooks": {
+          "type": "array",
+          "description": "Array of hook commands",
+          "items": {
+            "$ref": "#/definitions/hookCommand"
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "toolHookEntry": {
+      "type": "object",
+      "required": ["matcher", "hooks"],
+      "properties": {
+        "matcher": {
+          "type": "string",
+          "description": "Regex pattern to match tool names (e.g., '.*', 'Bash', 'Read')"
+        },
+        "hooks": {
+          "type": "array",
+          "description": "Array of hook commands",
+          "items": {
+            "$ref": "#/definitions/hookCommand"
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "compactHookEntry": {
+      "type": "object",
+      "required": ["matcher", "hooks"],
+      "properties": {
+        "matcher": {
+          "type": "string",
+          "enum": ["manual", "auto"],
+          "description": "Type of compaction trigger"
+        },
+        "hooks": {
+          "type": "array",
+          "description": "Array of hook commands",
+          "items": {
+            "$ref": "#/definitions/hookCommand"
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
