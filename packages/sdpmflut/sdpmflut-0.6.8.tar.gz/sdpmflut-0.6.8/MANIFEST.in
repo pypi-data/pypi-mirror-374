@@ -1,0 +1,5 @@
+include src/sdpmflut/py.typed
+recursive-include src/sdpmflut/kernels/sources *.c
+
+# Exclude ext/ folder from source distributions
+recursive-exclude ext *
