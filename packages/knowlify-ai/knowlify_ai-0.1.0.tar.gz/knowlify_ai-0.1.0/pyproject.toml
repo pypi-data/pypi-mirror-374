@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "knowlify-ai"
+version = "0.1.0"
+description = "Turn your Python code into an explanatory video by calling knowlify.create('fast'|'detailed')."
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+authors = [{ name = "Knowlify" }]
+dependencies = ["websockets>=12.0"]
+
+[project.urls]
+Homepage = "https://knowlify.com"
+
+[tool.hatch.build.targets.wheel]
+packages = ["knowlify"]
+
+[tool.hatch.build.targets.sdist]
+include = ["knowlify", "README.md", "LICENSE", "pyproject.toml"]
