@@ -1,0 +1,118 @@
+Metadata-Version: 2.2
+Name: sparrow-lib
+Version: 2.0.3
+Summary: A library to augment LLMs with dynamic, trainable routers for efficient fine-tuning.
+Home-page: 
+Author: AmirReza
+Author-email: amirrezaahali@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: torch>=1.9.0
+Requires-Dist: transformers>=4.10.0
+Requires-Dist: pandas
+Requires-Dist: scikit-learn
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Sparrow 🐦: Dynamic Routers for Efficient LLM Fine-Tuning
+
+[![PyPI version](https://badge.fury.io/py/sparrow-lib.svg)](https://badge.fury.io/py/sparrow-lib)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+**[English](#english) | [فارسی](#فارسی)**
+
+---
+
+## English
+
+Sparrow is a lightweight Python library that seamlessly integrates with Hugging Face `transformers` to make your Large Language Models (LLMs) smarter and more efficient. It augments pre-trained models with **dynamic, trainable routers** that learn to create sparse computational paths through the network.
+
+This allows for highly parameter-efficient fine-tuning (PEFT) where you freeze the original model's weights and only train the tiny routers, saving immense computational resources and preventing catastrophic forgetting.
+
+### Key Features
+- **Plug-and-Play**: Convert a standard Hugging Face model into a dynamic, sparse model with a single line of code.
+- **Parameter-Efficient**: Fine-tune only a tiny fraction of the total parameters (often < 0.1%).
+- **Autonomous Routing**: Routers learn automatically how many and which neurons to activate, guided by a sparsity-regularized loss.
+- **Deep Integration**: Comes with a custom `SparrowTrainer` for seamless integration with the Hugging Face ecosystem.
+- **Insightful Reporting**: Includes utilities to generate reports on neuron activation and model sparsity.
+
+### Installation
+```bash
+pip install sparrow-lib
+```
+
+### Quickstart
+
+Here's how to fine-tune a BERT model by only training the routers:
+```python
+from transformers import BertForSequenceClassification, AutoTokenizer, TrainingArguments
+from sparrow import SparrowConfig, add_routers_to_model, SparrowTrainer, get_sparsity_report
+
+# 1. Define your Sparrow configuration
+sparrow_config = SparrowConfig(sparsity_lambda=0.01)
+
+# 2. Load a pre-trained model and augment it with routers
+model = BertForSequenceClassification.from_pretrained('bert-base-uncased')
+model = add_routers_to_model(model, config=sparrow_config)
+
+# 3. Freeze original model weights (only routers will be trainable)
+for name, param in model.named_parameters():
+    if 'router' not in name:
+        param.requires_grad = False
+
+# ... Load your dataset ...
+
+# 4. Use the custom SparrowTrainer which handles the sparsity loss
+training_args = TrainingArguments(output_dir="test_trainer", num_train_epochs=1)
+
+trainer = SparrowTrainer(
+    model=model,
+    args=training_args,
+    sparrow_config=sparrow_config,
+    train_dataset=your_train_dataset,
+    eval_dataset=your_eval_dataset
+)
+
+# 5. Start training!
+trainer.train()
+
+# 6. Get a report on how sparse your model became
+trainer.evaluate()
+report = get_sparsity_report(model)
+print("\n--- Sparsity Report ---")
+print(report)
+```
+
+---
+
+## فارسی
+
+`Sparrow` 🐦 یک کتابخانه سبک پایتون است که به راحتی با `transformers` هاگینگ فیس ادغام می‌شود تا مدل‌های زبان بزرگ (LLM) شما را هوشمندتر و کارآمدتر کند. این کتابخانه مدل‌های از پیش آموزش‌دیده را با **مسیریاب‌های دینامیک و قابل آموزش** تقویت می‌کند که یاد می‌گیرند مسیرهای محاسباتی پراکنده (sparse) در شبکه ایجاد کنند.
+
+این روش امکان تنظیم دقیق بهینه از نظر پارامتر (PEFT) را فراهم می‌کند، به طوری که شما وزن‌های مدل اصلی را منجمد کرده و فقط مسیریاب‌های کوچک را آموزش می‌دهید. این کار باعث صرفه‌جویی عظیم در منابع محاسباتی شده و از فراموشی فاجعه‌بار (catastrophic forgetting) جلوگیری می‌کند.
+
+### قابلیت‌های کلیدی
+- **استفاده آسان**: یک مدل استاندارد هاگینگ فیس را با یک خط کد به یک مدل دینامیک و پراکنده تبدیل کنید.
+- **بهینه از نظر پارامتر**: فقط بخش بسیار کوچکی از پارامترهای کل مدل (معمولاً کمتر از ۰.۱٪) را آموزش دهید.
+- **مسیریابی خودکار**: مسیریاب‌ها به طور خودکار و با هدایت یک تابع زیان مبتنی بر پراکندگی، یاد می‌گیرند که چه تعداد و کدام نورون‌ها را فعال کنند.
+- **ادغام عمیق**: شامل یک `SparrowTrainer` سفارشی برای ادغام کامل با اکوسیستم هاگینگ فیس.
+- **گزارش‌گیری دقیق**: شامل ابزارهایی برای تولید گزارش از میزان فعالیت نورون‌ها و پراکندگی مدل.
+
+### نصب
+```bash
+pip install sparrow-lib
+```
+### شروع سریع
+مثال بالا نحوه تنظیم دقیق مدل BERT را فقط با آموزش مسیریاب‌ها نشان می‌دهد.
