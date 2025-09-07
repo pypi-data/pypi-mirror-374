@@ -1,0 +1,5 @@
+__title__ = 'SpotDown'
+__version__ = '0.0.1'
+__author__ = 'Arrowar'
+__description__ = 'A command-line program to download muisic'
+__copyright__ = 'Copyright 2025'
