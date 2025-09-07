@@ -1,0 +1,12 @@
+msgspec>=0.19.0
+rich>=14.1.0
+watchdog>=6.0.0
+websockets>=15.0.1
+click>=8.1.7
+twine>=6.1.0
+ruff>=0.12.11
+
+[db]
+sqlalchemy[asyncio]>=2.0.0
+psycopg2-binary>=2.9.0
+asyncpg>=0.30.0
