@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Shader Workshop</title>
+  <script type="module" src="/static/shader.js"></script>
+  <link rel="stylesheet" type="text/css" href="/static/style.css" />
+  <link rel="icon" type="image/png" href="/static/favicon.ico" />
+</head>
+
+<body>
+  <nav>
+    <ul id="files"></ul>
+  </nav>
+  <main>
+    <canvas id="canvas"></canvas>
+    <div id="controls">
+      <p>
+        <button id="screenshotBtn" title="Screenshot">&#x1F4F7;</button>
+        <button id="resetBtn" title="Reset">&#x23EE;</button>
+        <button id="playPause" title="Play/Pause">&#x23F5;</button>
+        <label id="infoLbl"></label>
+        <label id="fpsInfo"></label>
+        <label id="resInfo"></label>
+      </p>
+      <p>
+        <select id="resSelect">
+          <option value="144">144p</option>
+          <option value="240">240p</option>
+          <option value="360" selected>360p</option>
+          <option value="480">480p</option>
+          <option value="720">720p</option>
+        </select>
+        <select id="aspectSelect">
+          <option value="16:9">Landscape 16:9</option>
+          <option value="16:10" selected>Landscape 16:10</option>
+          <option value="4:3">Landscape 4:3</option>
+          <option value="1:1">Square 1:1</option>
+          <option value="9:16">Portrait 9:16</option>
+        </select>
+        <label id="lowresLbl">Low res:
+          <input type="range" min="1" max="32" value="1" id="lowres">
+        </label>
+      </p>
+    </div>
+    <pre id="errorBlock"></pre>
+    <div id="refList"></div>
+    <fieldset id="fragControls"></fieldset>
+  </main>
+</body>
+
+</html>
