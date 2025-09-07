@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+requires-python = ">= 3.10"
+name = "PyBACCHUS"
+dynamic = ["version"]
+
+[tool.setuptools.dynamic]
+version = {attr = "PyBACCHUS.__version__"}
+
+[tool.setuptools.packages]
+find = {}
