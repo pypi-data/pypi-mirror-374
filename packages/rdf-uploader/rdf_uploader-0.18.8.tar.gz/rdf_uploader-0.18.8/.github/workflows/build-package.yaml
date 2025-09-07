@@ -1,0 +1,70 @@
+name: Build Package
+on:
+  workflow_call:
+jobs:
+  build-package:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.survey-repo.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Survey repo
+        id: survey-repo
+        run: |
+          ./ci/survey_repo.sh
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+          cache: 'pip'
+      - name: Build Python Package
+        run: |
+          echo "VERSION = \"${{ steps.survey-repo.outputs.version }}\"" > src/rdf_uploader/__about__.py
+          pip install hatch uv
+          hatch build
+      - name: Upload source distribution
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package-sdist
+          path: dist/*.tar.gz
+          retention-days: 4
+      - name: Upload Wheel Distribution
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package-wheel
+          path: dist/*.whl
+          retention-days: 4
+      - name: Upload to PyPI
+        if: github.event_name != 'pull_request'
+        env:
+          HATCH_INDEX_AUTH: "${{ secrets.HATCH_INDEX_AUTH }}"
+        run: |
+          hatch publish --user __token__
+  build-docker:
+    runs-on: ubuntu-latest
+    needs: build-package
+    if: github.event_name != 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/rdf-uploader:${{ needs.build-package.outputs.version }}
+          build-args: |
+            VERSION=${{ needs.build-package.outputs.version }}

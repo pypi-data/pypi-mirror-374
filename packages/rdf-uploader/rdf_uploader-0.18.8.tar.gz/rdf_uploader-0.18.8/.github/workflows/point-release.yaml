@@ -1,0 +1,9 @@
+name: Point release
+on:
+  push:
+    branches:
+      - main
+jobs:
+  point-release:
+    uses: ./.github/workflows/build-package.yaml
+    secrets: inherit
