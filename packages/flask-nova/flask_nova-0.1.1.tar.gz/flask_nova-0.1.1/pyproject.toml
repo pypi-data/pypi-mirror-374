@@ -1,0 +1,21 @@
+[project]
+name = "flask-nova"
+version = "0.1.1"
+description = "Extra check using pydandic in flask application"
+authors = [
+    {name = "manitreasure1",email = "manitreasure1@gmail.com"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "flask[async] (>=3.1.1,<4.0.0)",
+    "pydantic (>=2.11.7,<3.0.0)"
+]
+
+[tool.poetry]
+packages = [{include = "flask_nova", from = "src"}]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
