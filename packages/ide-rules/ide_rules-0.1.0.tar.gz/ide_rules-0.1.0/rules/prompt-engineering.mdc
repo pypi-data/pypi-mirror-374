@@ -1,0 +1,149 @@
+---
+description: Prompt engineering patterns and best practices for AI interactions
+alwaysApply: false
+---
+
+# Prompt Engineering
+
+## Structure
+
+Each prompt should follow:
+
+1. **Role Definition**
+```
+You are a [specific role] with expertise in [domain/technology].
+```
+
+2. **Context**
+```
+Context:
+- Project: [project description]
+- Current state: [relevant details]
+- Requirements: [key requirements]
+```
+
+3. **Task**
+```
+Task: [specific action to perform]
+
+Requirements:
+- [Key requirement 1]
+- [Key requirement 2]
+```
+
+4. **Output Format**
+```
+Please provide:
+1. [Expected section 1]
+2. [Expected section 2]
+```
+
+## Templates
+
+### Code generation
+```
+You are a [language] developer specializing in [domain].
+
+Context:
+- Project: [description]
+- Stack: [technologies]
+
+Task: [coding task]
+
+Requirements:
+- Follow [standards]
+- Include error handling
+- Add documentation
+
+Please provide:
+1. Complete code
+2. Usage examples
+3. Setup requirements
+```
+
+### Code review
+```
+You are a senior engineer reviewing code.
+
+Context:
+- Project: [context]
+- Focus: [review areas]
+
+Review for:
+- Code quality
+- Performance
+- Security
+- Best practices
+
+Please provide:
+1. Issues found (with line numbers)
+2. Improvement suggestions
+3. Priority levels
+```
+
+### Debugging
+```
+You are a debugging expert in [technology].
+
+Context:
+- Environment: [details]
+- Expected: [behavior]
+- Actual: [behavior]
+
+Problem: [description]
+
+Please provide:
+1. Root cause
+2. Solution steps
+3. Prevention tips
+```
+
+## Best practices
+
+### Do
+- Be specific and clear
+- Provide relevant context
+- Include examples when helpful
+- Define success criteria
+- Break complex tasks into steps
+
+### Don't
+- Use vague requests ("make it better")
+- Skip important context
+- Make assumptions about knowledge
+- Combine multiple unrelated tasks
+- Provide unnecessary details
+
+## Checklist
+
+- [ ] Role clearly defined
+- [ ] Context provided
+- [ ] Task specifically stated
+- [ ] Requirements listed
+- [ ] Output format specified
+- [ ] Examples included (if needed)
+
+## Advanced
+
+### Chain-of-thought
+```
+Let's solve this step by step:
+1. First, [initial step]
+2. Then, [next step]
+3. Finally, [conclusion]
+```
+
+### Few-shot
+```
+Example 1:
+Input: [input]
+Output: [output]
+
+Example 2:
+Input: [input]
+Output: [output]
+
+Now apply to: [new input]
+```
+
+Remember: Be specific, structured, and include necessary context—concisely.

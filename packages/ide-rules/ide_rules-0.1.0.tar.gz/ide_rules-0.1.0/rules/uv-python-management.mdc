@@ -1,0 +1,297 @@
+---
+globs: *.py,pyproject.toml,*.md,Makefile
+description: UV Python package management and execution patterns
+---
+
+# UV Python Management
+
+## Core principles
+
+- **Use UV for all Python operations**: Replace pip, pipenv, poetry, and virtualenv with UV
+- **Define dependencies in pyproject.toml**: All project dependencies and metadata go in pyproject.toml
+- **Use uvx for one-off tools**: Run formatters, linters, and utilities with uvx without installing globally
+- **UV for project execution**: Use `uv run` to execute Python scripts and modules
+- **Lock file management**: Leverage uv.lock for reproducible builds
+
+## Project setup
+
+### pyproject.toml
+```toml
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "my-project"
+version = "0.1.0"
+description = "Project description"
+authors = [
+    {name = "Your Name", email = "you@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+# Core dependencies
+dependencies = [
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "pydantic>=2.5.0",
+    "polars>=0.20.0",
+    "typer[all]>=0.9.0",
+    "rich>=13.7.0",
+]
+
+# Optional dependencies for different use cases
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.21.0",
+    "mypy>=1.7.0",
+    "ruff>=0.1.0",
+]
+docs = [
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.4.0",
+]
+test = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "httpx>=0.25.0",
+]
+
+# Project scripts and entry points
+[project.scripts]
+myapp = "myapp.cli:main"
+myapp-server = "myapp.server:run"
+
+[project.urls]
+Homepage = "https://github.com/username/my-project"
+Documentation = "https://my-project.readthedocs.io"
+Repository = "https://github.com/username/my-project"
+
+# Tool configurations
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+addopts = "--cov=src --cov-report=term-missing"
+```
+
+## Commands
+
+### Init
+```bash
+# Create new project with pyproject.toml
+uv init my-project
+cd my-project
+
+# Initialize existing project
+uv init --name my-project
+
+# Add pyproject.toml to existing codebase
+uv init --lib
+```
+
+### Deps
+```bash
+# Install all dependencies from pyproject.toml
+uv sync
+
+# Install with optional dependencies
+uv sync --extra dev
+uv sync --extra dev --extra docs
+
+# Add new dependency
+uv add fastapi
+uv add --dev pytest
+uv add --optional docs mkdocs
+
+# Add with version constraints
+uv add "polars>=0.20.0,<1.0.0"
+uv add --dev "black>=23.0.0"
+
+# Remove dependency
+uv remove fastapi
+uv remove --dev pytest
+
+# Update dependencies
+uv sync --upgrade
+uv sync --upgrade-package polars
+
+# Install from lock file (CI/production)
+uv sync --frozen
+```
+
+### Running
+```bash
+# Run Python scripts
+uv run main.py
+uv run src/myapp/cli.py --help
+
+# Run modules
+uv run -m pytest
+uv run -m myapp.server
+uv run -m uvicorn myapp.server:app --reload
+
+# Run with specific Python version
+uv run --python 3.11 main.py
+uv run --python 3.12 -m pytest
+
+# Run scripts defined in pyproject.toml
+uv run myapp --help
+uv run myapp-server --port 8000
+```
+
+### One-off tools (uvx)
+```bash
+# Code formatting
+uvx black .
+uvx black src/ tests/
+uvx isort .
+
+# Linting
+uvx ruff check .
+uvx ruff check --fix .
+uvx mypy src/
+
+# Testing tools
+uvx pytest
+uvx pytest tests/ -v
+uvx coverage run -m pytest
+
+# Documentation
+uvx mkdocs serve
+uvx mkdocs build
+
+# Database tools
+uvx alembic revision --autogenerate -m "Add user table"
+uvx alembic upgrade head
+
+# Other utilities
+uvx pre-commit install
+uvx pre-commit run --all-files
+uvx bandit -r src/
+uvx safety check
+```
+
+## Workflow
+
+### Setup
+```bash
+# 1. Create new project
+uv init my-fastapi-app
+cd my-fastapi-app
+
+# 2. Add core dependencies
+uv add fastapi uvicorn pydantic
+
+# 3. Add development tools
+uv add --dev pytest mypy ruff black
+
+# 4. Create basic structure
+mkdir -p src/myapp tests
+touch src/myapp/__init__.py
+touch src/myapp/main.py
+touch tests/__init__.py
+
+# 5. Sync environment
+uv sync --extra dev
+```
+
+### Daily
+```bash
+# Start development session
+uv sync  # Ensure dependencies are up to date
+
+# Run application
+uv run src/myapp/main.py
+# OR if you have scripts defined:
+uv run myapp-server
+
+# Format code before committing
+uvx black .
+uvx isort .
+uvx ruff check --fix .
+
+# Run tests
+uv run -m pytest
+# OR
+uvx pytest -v
+
+# Type checking
+uvx mypy src/
+
+# Run with hot reload for development
+uv run -m uvicorn myapp.main:app --reload
+```
+
+### CI/CD
+```bash
+# Install exact dependencies from lock file
+uv sync --frozen
+
+# Run linting
+uvx ruff check .
+uvx mypy src/
+
+# Run tests with coverage
+uvx pytest --cov=src --cov-report=xml
+
+# Build package
+uv build
+
+# Security scanning
+uvx bandit -r src/
+uvx safety check
+```
+
+## Patterns
+
+### Makefile
+```makefile
+# Use UV for all Python operations
+.PHONY: install dev test lint format clean
+
+# Install dependencies
+install:
+	uv sync
+
+# Install with development dependencies
+dev:
+	uv sync --extra dev
+
+# Run tests
+test:
+	uvx pytest
+
+# Run tests with coverage
+test-cov:
+	uvx pytest --cov=src --cov-report=html
+
+# Lint code
+lint:
+	uvx ruff check .
+	uvx mypy src/
+
+# Format code
+format:
+	uvx black .
+	uvx isort .
+	uvx ruff check --fix .
+```

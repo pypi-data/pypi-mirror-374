@@ -1,0 +1,93 @@
+---
+globs: *.py
+description: Typer CLI development patterns with Annotated types and comprehensive help
+---
+
+# Typer CLI Guide
+
+## Core principles
+
+- **Always use Annotated types**: Every parameter must use `typing.Annotated` with proper Typer annotations
+- **Clear command naming**: Use descriptive verbs and nouns that reflect the action
+- **Comprehensive help**: Every command, option, and argument needs clear help text
+- **Rich output**: Use Rich console for beautiful, colored output
+- **Error handling**: Graceful error handling with meaningful messages
+- **Configuration**: Support both CLI arguments and config files
+
+## Structure
+
+### Main app
+
+```python
+import typer
+from pathlib import Path
+from typing import Annotated
+from rich.console import Console
+from rich.table import Table
+from rich.progress import track
+from enum import Enum
+
+app = typer.Typer(
+    name="myapp",
+    help="A powerful CLI tool for data processing and management.",
+    add_completion=False
+)
+console = Console()
+
+class OutputFormat(str, Enum):
+    """Supported output formats."""
+    JSON = "json"
+    CSV = "csv"
+    TABLE = "table"
+
+class LogLevel(str, Enum):
+    """Logging levels."""
+    DEBUG = "debug"
+    INFO = "info"
+    WARNING = "warning"
+    ERROR = "error"
+
+@app.callback()
+def main(
+    verbose: Annotated[
+        bool,
+        typer.Option(
+            "--verbose", "-v",
+            help="Enable verbose output with detailed logging."
+        )
+    ] = False,
+    log_level: Annotated[
+        LogLevel,
+        typer.Option(
+            "--log-level",
+            help="Set the logging level for the application."
+        )
+    ] = LogLevel.INFO,
+    config_file: Annotated[
+        Path | None,
+        typer.Option(
+            "--config", "-c",
+            help="Path to configuration file (TOML format).",
+            exists=True,
+            file_okay=True,
+            dir_okay=False
+        )
+    ] = None,
+) -> None:
+    """
+    MyApp CLI - A powerful tool for data processing and management.
+    
+    This CLI provides commands for processing data files, managing configurations,
+    and generating reports. Use --help with any command for detailed information.
+    """
+    if verbose:
+        console.print("🔧 Verbose mode enabled", style="dim")
+    
+    # Setup logging based on level
+    setup_logging(log_level.value)
+    
+    # Load configuration if provided
+    if config_file:
+        load_configuration(config_file)
+        console.print(f"📁 Configuration loaded from {config_file}", style="dim")
+```

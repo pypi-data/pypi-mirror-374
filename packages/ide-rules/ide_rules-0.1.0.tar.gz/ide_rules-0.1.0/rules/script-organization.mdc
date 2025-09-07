@@ -1,0 +1,144 @@
+---
+description: Script organization and PEP 723 inline script metadata patterns
+globs: tools/*.py,scripts/*.py,tools/*.sh,scripts/*.sh
+---
+
+## Best practices
+
+### Structure
+1. **Shebang**: Always use `#!/usr/bin/env -S uv run --script`
+2. **Metadata**: Complete PEP 723 block with all dependencies
+3. **Docstring**: Clear description of script purpose
+4. **Typer App**: Use `typer.Typer()` with help text
+5. **Type Annotations**: Use `Annotated` for all parameters
+6. **Rich Output**: Use `rich.console` for colored output
+7. **Error Handling**: Proper error handling and exit codes
+
+# Scripts & PEP 723
+
+## Core principles
+
+- **All scripts go in `tools/` directory**: Centralized location for all project automation scripts
+- **Use PEP 723 inline script metadata**: Self-contained dependency declarations
+- **Follow Typer CLI patterns**: Consistent command-line interface structure
+- **Use UV for script execution**: Leverage `uv run --script` for dependency management
+
+## Structure
+
+```
+project-name/
+├── tools/                  # All automation scripts
+│   ├── build.py           # Build automation
+│   ├── deploy.py          # Deployment scripts
+│   ├── database.py        # Database operations
+│   ├── maintenance.py     # Maintenance tasks
+│   └── dev-setup.sh       # Development environment setup
+├── project_name/          # Main application code
+└── tests/                 # Test files
+```
+
+## Script template
+
+### Standard header
+```python
+#!/usr/bin/env -S uv run --script
+#
+# /// script
+# requires-python = ">=3.12"
+# dependencies = ["typer"]
+# ///
+
+"""
+Script description goes here.
+
+This script does X, Y, and Z operations.
+"""
+
+import typer
+from typing import Annotated
+
+app = typer.Typer(help="Script description for CLI help")
+
+@app.command()
+def main(
+    # Your parameters here
+) -> None:
+    """Main command description."""
+    pass
+
+if __name__ == "__main__":
+    app()
+```
+
+### Example
+```python
+#!/usr/bin/env -S uv run --script
+#
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#     "typer",
+#     "rich",
+#     "requests",
+# ]
+# ///
+
+"""
+Database management script.
+
+Handles database operations like migrations, seeding, and backups.
+"""
+
+import typer
+from typing import Annotated
+from pathlib import Path
+from rich.console import Console
+from rich.prompt import Confirm
+
+console = Console()
+app = typer.Typer(help="Database management operations")
+
+@app.command()
+def migrate(
+    environment: Annotated[str, typer.Option("--env", "-e", help="Target environment")] = "development",
+    dry_run: Annotated[bool, typer.Option("--dry-run", help="Show what would be done")] = False,
+) -> None:
+    """Run database migrations."""
+    console.print(f"[blue]Running migrations for {environment} environment[/blue]")
+    
+    if dry_run:
+        console.print("[yellow]DRY RUN: Would run migrations[/yellow]")
+        return
+    
+    # Migration logic here
+    console.print("[green]✅ Migrations completed[/green]")
+
+@app.command()
+def seed(
+    force: Annotated[bool, typer.Option("--force", help="Force seed even if data exists")] = False,
+) -> None:
+    """Seed database with test data."""
+    if not force:
+        if not Confirm.ask("This will add test data. Continue?"):
+            console.print("[yellow]Cancelled[/yellow]")
+            return
+    
+    console.print("[blue]Seeding database...[/blue]")
+    # Seeding logic here
+    console.print("[green]✅ Database seeded[/green]")
+
+@app.command()
+def backup(
+    output_dir: Annotated[Path, typer.Option("--output", "-o", help="Backup output directory")] = Path("backups"),
+) -> None:
+    """Create database backup."""
+    output_dir.mkdir(exist_ok=True)
+    console.print(f"[blue]Creating backup in {output_dir}[/blue]")
+    # Backup logic here
+    console.print("[green]✅ Backup completed[/green]")
+
+if __name__ == "__main__":
+    app()
+```
+
+
