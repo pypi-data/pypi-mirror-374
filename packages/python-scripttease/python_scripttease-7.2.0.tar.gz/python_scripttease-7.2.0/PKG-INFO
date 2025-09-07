@@ -1,0 +1,53 @@
+Metadata-Version: 2.4
+Name: python-scripttease
+Version: 7.2.0
+Summary: A collection of classes and commands for automated command line scripting using Python.
+Home-page: https://develmaycare.com/products/python/scripttease/
+Download-URL: https://gittraction.com/diff6/python-scripttease
+Author: Shawn Davis
+Author-email: shawn@develmaycare.com
+Project-URL: Documentation, https://docs.diff6.com/en/python-scripttease/latest/
+Project-URL: Source, https://gittraction.com/diff6/python-scripttease
+Project-URL: Tracker, https://gittraction.com/diff6/python-scripttease/issues
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: colorama
+Requires-Dist: jinja2
+Requires-Dist: Markdown
+Requires-Dist: pygments
+Requires-Dist: python-commonkit
+Requires-Dist: pyyaml
+Requires-Dist: tabulate
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: download-url
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: summary
+
+# Python Script Tease
+
+![](https://img.shields.io/badge/status-active-green.svg)
+![](https://img.shields.io/badge/stage-stable-green.svg)
+![](https://img.shields.io/badge/coverage-100%25-green.svg)
+
+A collection of classes and commands for automated command line scripting using Python.
+
+## Install
+
+```bash
+pip install python-scripttease;
+```
