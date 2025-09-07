@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "superfastapi"
+version = "0.1.2"
+description = "Build versioned APIs from single-block functions with inline tests, locks, and FastAPI serving."
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{ name = "Chase Anderson" }]
+keywords = ["fastapi", "api", "versioning", "pydantic", "serverless", "superfast"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Internet :: WWW/HTTP",
+  "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+  "Framework :: FastAPI",
+]
+dependencies = [
+  "fastapi>=0.111",
+  "uvicorn>=0.22",
+  "pydantic>=2.6",
+  "click>=8.0",
+  "python-jose[cryptography]>=3.3",
+]
+
+[project.scripts]
+apikit = "superfastapi.cli:main"
+
+[project.urls]
+Homepage = "https://pypi.org/project/superfastapi/"
+
+[tool.setuptools.packages.find]
+where = ["src"]
