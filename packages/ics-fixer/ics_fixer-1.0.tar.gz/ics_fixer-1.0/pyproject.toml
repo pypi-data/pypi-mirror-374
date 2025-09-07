@@ -1,0 +1,22 @@
+[project]
+name = "ics-fixer"
+version = "1.0"
+description = "Fix slightly broken iCalendar files"
+readme = "README.md"
+authors = [
+    { name = "nateify", email = "nateify@users.noreply.github.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "dateparser>=1.2.2",
+    "ftfy>=6.3.1",
+    "icalendar>=6.3.1",
+    "typer-slim>=0.17.4",
+]
+
+[project.scripts]
+ics-fixer = "ics_fixer:main"
+
+[build-system]
+requires = ["uv_build>=0.8.15,<0.9.0"]
+build-backend = "uv_build"
