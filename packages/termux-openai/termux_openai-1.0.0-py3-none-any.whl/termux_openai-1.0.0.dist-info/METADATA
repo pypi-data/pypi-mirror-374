@@ -1,0 +1,21 @@
+Metadata-Version: 2.4
+Name: termux-openai
+Version: 1.0.0
+Summary: OpenAI Python client fork for Termux (no Rust/jiter required)
+Author-email: coderfenrir <coderfenrirmedia@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/coderfenrir/termux-openai
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: anyio>=3.5.0
+Requires-Dist: distro>=1.7.0
+
+# Termux-OpenAI
+
+Termux uyumlu OpenAI Python client 📱🐍  
+Rust bağımlılığı yok, `jiter` yok → direkt kurulabilir.
+
+## Kurulum
+```bash
+pip install termux-openai
