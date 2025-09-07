@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "videolab"
+version = "0.2.0"
+description = "A CLI for video processing."
+readme = "README.md"
+authors = [{name = "Kian-Meng, Ang"}]
+requires-python = ">=3.9"
+license = {text = "AGPL-3.0-or-later"}
+dependencies = [
+    "av>=15.1.0",
+    "Pillow>=10.4.0",
+]
+
+[project.scripts]
+videolab = "videolab.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "nox",
+    "numpy",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
