@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "signal-ict-shivkumarpaun-92510133008"   # distribution name (with dashes)
+version = "0.1.2"
+description = "Educational Python package for basic signals and operations."
+authors = [{ name="Shivkumar Paun", email="shivkumarpaun@example.com" }]
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+keywords = ["signal", "unitary", "trigonometric", "ramp", "sine", "cosine", "python"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["signal_ict_shivkumarpaun_92510133008"]
