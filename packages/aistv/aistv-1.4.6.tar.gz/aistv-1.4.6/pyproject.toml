@@ -1,0 +1,18 @@
+[project]
+name = "aistv"
+version = "1.4.6"
+description = "STV AI Chatbot Library for Python"
+authors = [
+  { name = "Trọng Phúc", email = "phuctrongytb16@gmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.8, <3.13"
+dependencies = [
+  "requests",
+  "groq"
+]
+keywords = ["chatbot", "ai", "stv", "discord", "tiktok"]
+[project.urls]
+"Discord" = "https://discord.gg/fTaCmdxG9H"
+"TikTok" = "https://vm.tiktok.com/@aistvchat"
+"GitHub" = "https://github.com/phuctrong1tuv"
