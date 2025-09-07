@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+
+name = "ardot_permit_officer"
+version = "1.0.1"
+description = "Fetch ARDOT permit officer contact info from all 10 district pages."
+readme = "README.md"
+requires-python = ">=3.8,<3.11"
+license = {text = "MIT"}
+authors = [
+	{ name = "Justin Kumpe", email = "jakumpe@kumpeapps.com" }
+]
+classifiers = [
+	"Programming Language :: Python :: 3",
+	"License :: OSI Approved :: MIT License",
+	"Operating System :: OS Independent",
+]
+dependencies = [
+	"requests",
+	"beautifulsoup4"
+]
+
+[project.scripts]
+ardot-permit-officer = "ardot_permit_officer.cli:main"
