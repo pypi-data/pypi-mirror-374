@@ -1,0 +1,30 @@
+# Python virtual environments
+.venv
+venv
+env
+
+# Python cache files
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Build and distribution files
+dist
+build
+*.egg-info
+pip-wheel-metadata
+libs
+
+# Editor and IDE files
+.vscode
+.idea
+*.iml
+
+# Local environment variables
+.env
+.env.*
+
+# Coverage reports
+.coverage
+htmlcov
