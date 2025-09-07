@@ -1,0 +1,24 @@
+[project]
+name = "picovdb"
+version = "0.2.1"
+
+[project.urls]
+#Homepage = "https://example.com"
+#Documentation = "https://readthedocs.org"
+Repository = "https://github.com/wensheng/picovdb.git"
+#Issues = "https://github.com/wensheng/picovdb/issues"
+#Changelog = "https://github.com/wensheng/picovdb/blob/master/CHANGELOG.md"
+
+[tool.poetry]
+authors = ["Wensheng Wang <wenshengwang@gmail.com>"]
+description = "A tiny and fast local vector database in Python."
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+numpy = "*"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
