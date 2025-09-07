@@ -1,0 +1,39 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_call:
+    inputs:
+      priority:
+        description: 'Run with priority (cancels other runs)'
+        type: boolean
+        default: false
+        required: false
+
+concurrency:
+  group: ${{ inputs.priority && format('test-priority-{0}', github.sha) || format('test-{0}', github.ref) }}
+  cancel-in-progress: ${{ !inputs.priority }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/${{ github.repository }}:ci
+    
+    steps:
+    - uses: actions/checkout@v5
+    
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+    
+    - name: Install dependencies
+      run: uv sync --group dev --all-extras
+    
+    - name: Run tests
+      run: uv run pytest
