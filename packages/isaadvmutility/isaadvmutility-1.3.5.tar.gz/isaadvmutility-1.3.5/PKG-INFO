@@ -1,0 +1,34 @@
+Metadata-Version: 2.3
+Name: isaadvmutility
+Version: 1.3.5
+Summary: Utilities for ADV Microservices (data stores, MS Graph, Splunk, Qualys, RabbitMQ, Azure Blob, Postgres)
+Keywords: utilities,microservices,azure,postgres,splunk,rabbitmq,qualys
+Author: Declerus Yves Kerbens
+Author-email: yveskerbs89@gmail.com
+Requires-Python: >=3.9,<4.0
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Dist: aio-pika
+Requires-Dist: azure-core
+Requires-Dist: azure-storage-blob
+Requires-Dist: configobj
+Requires-Dist: dask[dataframe,distributed]
+Requires-Dist: msal
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: psycopg2-binary
+Requires-Dist: pyarrow
+Requires-Dist: pytz
+Requires-Dist: pyyaml
+Requires-Dist: qualysapi
+Requires-Dist: requests
+Requires-Dist: urllib3
+Description-Content-Type: text/markdown
+
+
