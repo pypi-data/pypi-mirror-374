@@ -1,0 +1,90 @@
+## Notes
+# Consider removing `[tool.hatch.metadata] allow-direct-references = true` when 
+# the dependency on the p4p fork is no longer needed.
+
+[project]
+name = "p4pillon"
+dynamic = ["version"]
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "p4p>=4.2.1",
+    "pyyaml>=6.0.2",
+]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: BSD License",
+  "Programming Language :: Python",
+  "Typing :: Typed"
+]
+license = {text = "BSD-3-Clause"}
+keywords = ["pva", "pvaccess", "p4p", "epics"]
+authors = [
+  {name = "Ivan Finch", email = "ivan.finch@stfc.ac.uk"},
+  {name = "Ajit Kurup", email = "a.kurup@imperial.ac.uk"},
+  {name = "Kathryn Baker", email = "k.baker@stfc.ac.uk"},
+  {name = "Aqeel AlShafei", email = "aqeel.alshafei@stfc.ac.uk"}
+]
+maintainers = [
+  {name = "Ivan Finch", email = "ivan.finch@stfc.ac.uk"},
+]
+
+[project.urls]
+Repository = "https://github.com/epics-base/p4p"
+
+[project.optional-dependencies]
+test = [
+  "ruff>=0.12",
+  "coverage>7.9",
+  "pytest>=8.4",
+]
+dist = [
+    "build>=1.2.2.post1",
+    "twine>=6.1.0",
+]
+
+## Build system configuration
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["p4pillon/"]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.version.raw-options]
+version_scheme = "no-guess-dev"
+
+## Testing configuration
+[tool.coverage.run]
+source = ["."]
+
+[tool.coverage.report]
+show_missing = true
+
+[tool.coverage.xml]
+output = "coverage.xml"
+
+## Linting configuration
+[tool.ruff]
+# Allow lines to be as long as 120.
+line-length = 120
+
+[tool.ruff.lint]
+extend-select = [
+  "UP",  # pyupgrade
+  "I", # isort
+]
+
+[tool.uv.sources]
+p4p = { git = "https://github.com/epics-base/p4p" }
+
+
