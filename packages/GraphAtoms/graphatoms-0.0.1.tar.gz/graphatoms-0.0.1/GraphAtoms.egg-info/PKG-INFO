@@ -1,0 +1,32 @@
+Metadata-Version: 2.4
+Name: GraphAtoms
+Version: 0.0.1
+Summary: The Chemical Core Class for Graph Theory Analysis & Graph Neural Network.
+Author-email: LiuGaoyong <liugaoyong_88@163.com>
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: ase
+Requires-Dist: igraph>=0.11
+Requires-Dist: networkit==11.1; sys_platform != "linux"
+Requires-Dist: networkit==11.1.post1; sys_platform == "linux"
+Requires-Dist: networkx>=3.3
+Requires-Dist: numpy
+Requires-Dist: numba>=0.61
+Requires-Dist: numpydantic
+Requires-Dist: pandas
+Requires-Dist: pydantic>=2.11
+Requires-Dist: rdkit>=2024.9
+Requires-Dist: rustworkx>=0.16
+Requires-Dist: scikit-learn
+Requires-Dist: scikit-optimize>=0.10.2
+Requires-Dist: scipy
+Requires-Dist: sparse
+Requires-Dist: torch_geometric
+Requires-Dist: torch
+Requires-Dist: typing-extensions
+Dynamic: license-file
+
+# GraphAtoms
+
+The Chemical Core Class for Graph Theory Analysis & Graph Neural Network.
