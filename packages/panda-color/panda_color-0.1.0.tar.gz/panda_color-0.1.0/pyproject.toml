@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "panda-color"
+version = "0.1.0"
+description = "A color library that supports RGB with swizzling and will support hex and hsv in the future"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Colin Politi", email = "urboycolinthepanda@gmail.com" }
+]
+requires-python = ">=3.9"
+dependencies = []
+
+[project.urls]
+"Homepage" = "https://github.com/ColinThePanda/PandaColor"
+"Bug Tracker" = "https://github.com/ColinThePanda/PandaColor/issues"
