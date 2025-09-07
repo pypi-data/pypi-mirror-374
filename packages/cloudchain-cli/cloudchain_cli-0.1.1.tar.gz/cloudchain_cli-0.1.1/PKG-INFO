@@ -1,0 +1,154 @@
+Metadata-Version: 2.4
+Name: cloudchain-cli
+Version: 0.1.1
+Summary: Deterministic Google Drive backup manager with chained accounts and encrypted state.
+Author-email: Christopher Hirschauer <you@example.com>
+License: CloudChain License
+        
+        Copyright © 2025 Christopher Hirschauer
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to use, copy, and modify the Software for personal or commercial purposes, subject to the following conditions:
+        	1.	The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+        	2.	The Software is provided “as is”, without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and noninfringement. In no event shall the author be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the Software or the use or other dealings in the Software.
+        	3.	All rights not expressly granted are reserved by the author.
+        
+        
+Project-URL: Homepage, https://github.com/74Thirsty/CloudChain
+Project-URL: Source, https://github.com/74Thirsty/CloudChain
+Project-URL: Issues, https://github.com/74Thirsty/CloudChain/issues
+Project-URL: Documentation, https://github.com/74Thirsty/CloudChain#readme
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: License :: Other/Proprietary License
+Classifier: Environment :: Console
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: System :: Archiving :: Backup
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: google-api-python-client
+Requires-Dist: google-auth-oauthlib
+Requires-Dist: google-auth
+Requires-Dist: keyring
+Requires-Dist: PyYAML
+Requires-Dist: cryptography
+Requires-Dist: rich
+Dynamic: license-file
+
+# CloudChain
+
+> Single-Chain Google Drive Backup Manager A deterministic, account-chain approach to managing unlimited Google Drive backups. DO NOT USE IN AN ATTEMPT TO ABUSE TOC's.
+
+---
+
+## 🚀 Overview
+
+CloudChain is a command-line backup manager designed to store files into a linked chain of Google accounts.
+Instead of juggling random drives, CloudChain enforces a strict naming convention and quota-based rotation so your backups are always deterministic and infinitely expandable.
+	
+ 	•	Uses sequential Gmail accounts (<base><NNN>.cloudchain@gmail.com) to extend storage when quotas are hit.
+	•	Self-contained state: All metadata, configs, and tokens are managed inside a single local root folder.
+	•	Deterministic rules: Naming and rotation are enforced by code, so you’ll never wonder which account is “next.”
+
+---
+
+## 📂 Local Directory Structure
+
+On first run, you’ll be asked for your local backup root (LOCAL_ROOT).
+CloudChain will create a state directory:
+
+```
+<LOCAL_ROOT>/cloud_backup/
+├── client_secret.json        # OAuth credentials
+├── accounts.yaml             # Account chain state
+├── <base>001.cloudchain/     # Per-account directory
+│   ├── token.json
+│   ├── uploads.yaml
+│   └── mirrored files...
+└── ...
+```
+
+All state lives here. Nothing is hidden elsewhere.
+
+⸻
+
+## 🔗 Account Naming
+
+CloudChain enforces a strict naming scheme:
+```
+<basename>001.cloudchain@gmail.com
+
+
+	•	The very first account must end in 001.cloudchain.
+	•	Each new account increments numerically (002, 003, …).
+	•	Base string (mybackup, familydrive, etc.) is locked at first creation.
+```
+
+If quota reaches ≥95%, CloudChain warns you and requires the next sequential account.
+
+---
+
+## ☁️ Remote Storage
+
+All files are uploaded to:
+```
+Drive:/backup/
+```
+
+This is fixed and cannot be changed. Every account in the chain mirrors the same folder structure.
+
+---
+
+## 🔧 Usage
+
+
+1.	Initialize
+ 
+```
+cloudchain init
+```
+
+	•	Prompts for local backup root.
+	•	Enforces base account naming (001.cloudchain).
+
+
+2.	Add a new account
+```
+cloudchain add
+```
+
+	•	Checks last account’s quota.
+	•	Requires next sequential Gmail (<base>002.cloudchain@gmail.com).
+
+
+
+ 3.	Backup files
+```
+cloudchain backup /path/to/files
+```
+
+
+ 4.	Reset all state
+```
+cloudchain reset
+```
+	•	Wipes local configs and exits.
+	•	Does not touch remote accounts.
+
+---
+
+## ⚠️ Warnings
+	•	Do not deviate from naming scheme. The system will reject mismatches.
+	•	Manual Gmail creation required. You must manually create each <base><NNN>.cloudchain@gmail.com before adding it.
+	•	Drive quota is finite. CloudChain only detects when it’s time to roll over; it cannot expand a single account.
+ 
+ ---
+
+## 🛠️ Philosophy
+
+CloudChain takes the chaos out of cloud backup by enforcing discipline:
+	•	No ad-hoc accounts
+	•	No mystery folders
+	•	No hidden state
+
+Just a clean, deterministic chain of accounts you can audit at a glance.

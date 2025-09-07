@@ -1,0 +1,35 @@
+[project]
+name = "cloudchain-cli"
+version = "0.1.1"
+description = "Deterministic Google Drive backup manager with chained accounts and encrypted state."
+license = { file = "LICENSE.md" }
+authors = [{ name="Christopher Hirschauer", email="you@example.com" }]
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.9"
+dependencies = [
+    "google-api-python-client",
+    "google-auth-oauthlib",
+    "google-auth",
+    "keyring",
+    "PyYAML",
+    "cryptography",
+    "rich",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "License :: Other/Proprietary License",
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+    "Topic :: System :: Archiving :: Backup",
+]
+
+[project.urls]
+Homepage = "https://github.com/74Thirsty/CloudChain"
+Source = "https://github.com/74Thirsty/CloudChain"
+Issues = "https://github.com/74Thirsty/CloudChain/issues"
+Documentation = "https://github.com/74Thirsty/CloudChain#readme"
+
+[project.scripts]
+cloudchain = "cloudchain.cli:main"
+
