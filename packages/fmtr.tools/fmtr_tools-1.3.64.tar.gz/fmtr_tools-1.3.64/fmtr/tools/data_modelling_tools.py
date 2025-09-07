@@ -1,0 +1,218 @@
+from functools import cached_property
+from typing import ClassVar, List, Any, Dict
+
+from pydantic import BaseModel
+from pydantic import RootModel, ConfigDict
+from pydantic.fields import FieldInfo
+from pydantic_core import PydanticUndefined, PydanticUndefinedType
+
+from fmtr.tools.datatype_tools import is_optional
+from fmtr.tools.iterator_tools import get_class_lookup
+from fmtr.tools.tools import Auto, Required
+
+
+class Field(FieldInfo):
+    """
+
+    Allow DRYer field definitions, set annotation and defaults at the same time, easier field inheritance, etc.
+
+    """
+    ANNOTATION = None
+    DEFAULT = Auto
+    FILLS = None
+    DESCRIPTION = None
+    TITLE = Auto
+    KWARGS = None
+
+    def __init__(self):
+        """
+
+        Infer default from type annotation, if enabled, use class/argument fills to create titles/descriptions, etc.
+
+        """
+        title = self.get_title_auto()
+        description = self.get_desc()
+        default = self.get_default_auto()
+        kwargs = self.KWARGS or {}
+
+        if default is Required:
+            default = PydanticUndefined
+
+        super().__init__(default=default, title=title, description=description, **kwargs)
+
+    @cached_property
+    def fills(self) -> Dict[str, str]:
+        """
+
+        Get fills with filled title merged in
+
+        """
+        return (self.FILLS or {}) | dict(title=self.get_title_auto())
+
+    def get_default_auto(self) -> type[Any] | None | PydanticUndefinedType:
+        """
+
+        Infer default, if not specified.
+
+        """
+        if self.DEFAULT is not Auto:
+            return self.DEFAULT
+
+        if is_optional(self.ANNOTATION):
+            return None
+        else:
+            return Required
+
+    def get_title_auto(self) -> str | None:
+        """
+
+        Get title from classname/mask
+
+        """
+
+        mask = self.__class__.__name__ if self.TITLE is Auto else self.TITLE
+        fills = (self.FILLS or {})
+
+        if mask:
+            return mask.format(**fills)
+
+        return None
+
+    def get_desc(self) -> str | None:
+        """
+
+        Get description from classname/mask
+
+        """
+
+        if self.DESCRIPTION:
+            return self.DESCRIPTION.format(**self.fills)
+
+        return None
+
+
+def to_df(*objs, name_value='value'):
+    """
+
+    DataFrame representation of Data Models as rows.
+
+    """
+    from fmtr.tools import tabular
+
+    rows = []
+    for obj in objs:
+        if isinstance(obj, BaseModel):
+            row = obj.model_dump()
+        else:
+            row = {name_value: obj}
+        rows.append(row)
+
+    df = tabular.DataFrame(rows)
+    if 'id' in df.columns:
+        df.set_index('id', inplace=True, drop=True)
+    return df
+
+
+class MixinArbitraryTypes:
+    """
+
+    Convenience for when non-serializable types are needed
+    """
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+class MixinFromJson:
+
+    @classmethod
+    def from_json(cls, json_str):
+        """
+
+        Error-tolerant deserialization
+
+        """
+        from fmtr.tools import json_fix
+        data = json_fix.from_json(json_str, default={})
+
+        if type(data) is dict:
+            self = cls(**data)
+        else:
+            self = cls(data)
+
+        return self
+
+
+
+class Base(BaseModel, MixinFromJson):
+    """
+
+    Base model allowing model definition via a list of custom Field objects.
+
+    """
+    FIELDS: ClassVar[List[Field] | Dict[str, Field]] = []
+
+    def __init_subclass__(cls, **kwargs):
+        """
+
+        Fetch aggregated fields metadata from the hierarchy and set annotations and FieldInfo objects in the class.
+
+        """
+        super().__init_subclass__(**kwargs)
+
+        fields = {}
+        for base in reversed(cls.__mro__):
+
+            try:
+                raw = base.FIELDS
+            except AttributeError:
+                raw = {}
+
+            if isinstance(raw, dict):
+                fields |= raw
+            else:
+                fields |= get_class_lookup(*raw, name_function=str.lower)
+
+        cls.FIELDS = fields
+
+        for name, FieldInfoType in fields.items():
+            if name in cls.__annotations__:
+                continue
+
+            field = FieldInfoType()
+            setattr(cls, name, field)
+
+            annotation = FieldInfoType.ANNOTATION
+            cls.__annotations__[name] = annotation
+
+    def to_df(self, name_value='value'):
+        """
+
+        DataFrame representation with Fields as rows.
+
+        """
+
+        objs = []
+        for name in self.model_fields.keys():
+            val = getattr(self, name)
+            objs.append(val)
+
+        df = to_df(*objs, name_value=name_value)
+        df['id'] = list(self.model_fields.keys())
+        df = df.set_index('id', drop=True)
+        return df
+
+
+class Root(RootModel, MixinFromJson):
+    """
+
+    Root (list) model
+
+    """
+
+    def to_df(self):
+        """
+
+        DataFrame representation with items as rows.
+
+        """
+
+        return to_df(*self.items)
