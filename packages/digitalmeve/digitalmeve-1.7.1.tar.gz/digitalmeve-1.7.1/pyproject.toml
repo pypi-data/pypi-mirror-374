@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "digitalmeve"
+version = "1.7.1"
+description = "DigitalMeve — The .MEVE Standard: timestamp, hash, and certify digital documents."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [
+  { name = "DigitalMeve Team" }
+]
+keywords = ["proof", "verification", "hash", "timestamp", "json", "digitalmeve", "meve"]
+
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Security :: Cryptography",
+  "Topic :: Software Development :: Libraries",
+  "Operating System :: OS Independent",
+  "Typing :: Typed"
+]
+
+dependencies = [
+  "pikepdf>=9.0.0",      # PDF embedding
+  "pillow>=10.0.0",      # PNG embedding (present/futur)
+  "click>=8.1.7",        # CLI
+]
+
+# ⬇️ Expose le binaire CLI `digitalmeve`
+[project.scripts]
+digitalmeve = "digitalmeve.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/BACOUL/digitalmeve"
+Repository = "https://github.com/BACOUL/digitalmeve"
+Issues = "https://github.com/BACOUL/digitalmeve/issues"
+Documentation = "https://github.com/BACOUL/digitalmeve/tree/main/docs"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# Inclure fichiers non-Python (schémas, scripts) dans la wheel
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+digitalmeve = ["schemas/*.json", "examples/*.sh"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.black]
+line-length = 88
+target-version = ["py310", "py311", "py312"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"

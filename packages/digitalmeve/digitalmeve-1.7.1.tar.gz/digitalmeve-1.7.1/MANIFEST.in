@@ -1,0 +1,18 @@
+# sdist: fichiers de base
+- include README.md
+- include LICENSE
+- include pyproject.toml
++ include README.md
++ include LICENSE
++ include pyproject.toml
+
+- # Schémas, docs et scripts (pour le sdist)
+- recursive-include schemas *.json
+- recursive-include docs *.md
+- recursive-include examples *.sh
++ # Docs (facultatif en wheel, utile en sdist)
++ recursive-include docs *.md
++
++ # Données **dans le package** (sdist + wheel)
++ recursive-include src/digitalmeve/schemas *.json
++ recursive-include src/digitalmeve/examples *.sh
