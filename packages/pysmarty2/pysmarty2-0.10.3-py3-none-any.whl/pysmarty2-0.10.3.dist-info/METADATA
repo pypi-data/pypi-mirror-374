@@ -1,0 +1,59 @@
+Metadata-Version: 2.4
+Name: pysmarty2
+Version: 0.10.3
+Summary: Python API for Salda Smarty Modbus TCP
+Home-page: https://github.com/martinssipenko/pysmarty2
+Author: Martins Sipenko, Theo Nicolaum
+Author-email: martins.sipenko@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pymodbus<4.0.0,>=3.11.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: summary
+
+# pysmarty2
+
+Python API for Salda Smarty 2X/3X/4X P/V Ventilation Unit. This is used in [Home Assistant](https://home-assistant.io).
+
+This package, `pysmarty2`, is a fork of the original [`pysmarty`](https://github.com/z0mbieprocess/pysmarty) created by [z0mbieprocess](https://github.com/z0mbieprocess).
+
+The package was renamed to `pysmarty2` to allow for publishing it to PyPI without conflicting with the existing `pysmarty` package.
+
+## Install
+
+```bash
+pip install pysmarty2
+```
+
+## Publish
+
+1. Make sure that `setup.py` is updated with the new version, commit and push it before version is tagged.
+2. Tag the new version.
+3. Start python container:
+
+```sh
+docker run --rm -it -v $(pwd):/pystmarty2 python:3.13 bash
+```
+
+4. Then from within container run:
+
+```sh
+cd /pystmarty2
+pip install build twine
+python -m build
+twine upload dist/*
+```
+
+## Acknowledgments
+
+Please give credit to the original author for their work on `pysmarty`. This fork was created to make minor modifications and improvements, but the majority of the work remains the original author's.
