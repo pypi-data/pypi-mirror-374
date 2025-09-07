@@ -1,0 +1,29 @@
+[project]
+name = "oxidize"
+version = "0.6.0"
+description = "High-performance data processing tools for Python, built with Rust"
+authors = [
+    {name = "Eric Aleman"}
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+keywords = ["data-processing", "rust", "performance", "tools"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing",
+]
+
+[project.urls]
+Repository = "https://github.com/ericaleman/oxidize"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
