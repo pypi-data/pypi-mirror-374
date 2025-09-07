@@ -1,0 +1,28 @@
+Metadata-Version: 2.4
+Name: 2DIFY
+Version: 1.0.1
+Summary: Generate 2D Interaction With PLIP Output
+Author-email: Muzammil Kabier <kabeermuzammil614@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/Muzatheking12/2DIFY
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: contourpy==1.3.3
+Requires-Dist: cycler==0.12.1
+Requires-Dist: et_xmlfile==2.0.0
+Requires-Dist: fonttools==4.59.2
+Requires-Dist: kiwisolver==1.4.9
+Requires-Dist: matplotlib==3.10.6
+Requires-Dist: numpy==2.3.2
+Requires-Dist: openpyxl==3.1.5
+Requires-Dist: packaging==25.0
+Requires-Dist: pandas==2.3.2
+Requires-Dist: pillow==11.3.0
+Requires-Dist: pyparsing==3.2.3
+Requires-Dist: python-dateutil==2.9.0.post0
+Requires-Dist: pytz==2025.2
+Requires-Dist: six==1.17.0
+Requires-Dist: tzdata==2025.2
+Requires-Dist: rdkit==2025.3.6
+Provides-Extra: rdkit
+Requires-Dist: rdkit; extra == "rdkit"
