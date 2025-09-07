@@ -1,0 +1,268 @@
+Metadata-Version: 2.4
+Name: oxidize-postal
+Version: 0.1.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Rust
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Text Processing
+Classifier: Topic :: Scientific/Engineering :: GIS
+Summary: High-performance postal address parser and normalizer using libpostal with Rust bindings
+Keywords: address,postal,parsing,normalization,libpostal,rust,performance
+Author-email: Eric Aleman <eric@example.com>
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+Project-URL: Repository, https://github.com/ericaleman/oxidize-postal
+
+# oxidize-postal
+
+Python bindings for libpostal address parsing with improved performance and installation experience.
+
+oxidize-postal provides the same address parsing capabilities as [pypostal](https://github.com/openvenues/pypostal) but addresses key limitations: it installs without C compilation, releases the Python GIL for true parallel processing, and offers a cleaner API. Built using Rust and [libpostal-rust](https://crates.io/crates/libpostal-rust) bindings to the [libpostal](https://github.com/openvenues/libpostal) C library.
+
+## Key Improvements Over pypostal
+
+| Feature | oxidize-postal | pypostal |
+|---------|----------------|----------|
+| **Installation** | `pip install` with pre-built wheels | Requires C compilation, system dependencies |
+| **Parallel Processing** | GIL released, true multithreading | GIL blocks concurrent parsing |
+| **API Design** | Single module, consistent naming | Multiple imports, scattered functions |
+| **Error Handling** | Structured errors with context | Basic exception messages |
+| **Platform Support** | Cross-platform wheels | Complex Windows build process |
+
+## Core Functionality
+
+- **Address Parsing**: Extract components (street, city, state, postal code, etc.) from address strings
+- **Address Expansion**: Generate normalized variations with abbreviations expanded (St. → Street)
+- **Address Normalization**: Standardize address formatting and component ordering
+- **International Support**: Handles addresses worldwide with Unicode and multiple scripts
+
+## Installation
+
+```bash
+pip install oxidize-postal
+
+# Download language model data (one-time setup)
+python -c "import oxidize_postal; oxidize_postal.download_data()"
+```
+
+## Usage
+
+### Basic Address Parsing
+
+```python
+import oxidize_postal
+
+# Parse an address into components
+address = "781 Franklin Ave Crown Heights Brooklyn NYC NY 11216 USA"
+parsed = oxidize_postal.parse_address(address)
+print(parsed)
+# Output: {'house_number': '781', 'road': 'franklin ave', 'suburb': 'crown heights', 
+#          'city': 'brooklyn', 'state': 'ny', 'postcode': '11216', 'country': 'usa'}
+
+# Get parsed address as JSON string
+json_result = oxidize_postal.parse_address_to_json(address)
+```
+
+### Address Expansion
+
+```python
+# Expand address abbreviations
+address = "123 Main St NYC NY"
+expansions = oxidize_postal.expand_address(address)
+print(expansions)
+# Output: ['123 main street nyc new york', '123 main street nyc ny', ...]
+
+# Get expansions as JSON
+json_expansions = oxidize_postal.expand_address_to_json(address)
+```
+
+## Parallel Processing & Performance
+
+One of the key advantages of oxidize-postal over pypostal is GIL-free parallel processing. However, it's important to understand when you'll see benefits.
+
+### When Parallel Processing Helps
+
+arallel processing provides the most benefit when combined with slower I/O operations:
+
+**Great for parallel processing:**
+```python
+import oxidize_postal
+from concurrent.futures import ThreadPoolExecutor
+import requests
+
+def process_customer_record(record):
+    # Fetch from API (50-200ms)
+    customer = requests.get(f"https://api.example.com/customers/{record['id']}").json()
+    
+    # Parse address (0.3ms) - GIL released so other threads can work
+    parsed = oxidize_postal.parse_address(customer['address'])
+    
+    # Write to database (50-200ms)
+    db.update(customer['id'], parsed)
+    
+    return parsed
+
+# Process many records in parallel
+with ThreadPoolExecutor(max_workers=20) as executor:
+    results = list(executor.map(process_customer_record, records))
+```
+
+**Limited benefit for pure address parsing:**
+```python
+# Just parsing addresses without I/O
+addresses = ["123 Main St", "456 Oak Ave"] * 100
+
+# Parallel might even be slower due to thread overhead
+with ThreadPoolExecutor() as executor:
+    results = list(executor.map(oxidize_postal.parse_address, addresses))
+```
+
+### Real-World Use Cases
+
+Where to use oxidize-postal's GIL release:
+
+1. **ETL Pipelines**: Reading from databases/APIs, parsing, and writing back
+2. **Stream Processing**: Handling Kafka/Kinesis streams with address data
+3. **Web Services**: API endpoints that parse addresses alongside other operations
+4. **File Processing**: Reading large CSV/Parquet files, parsing addresses, writing results
+
+### Threading vs Multiprocessing
+
+Because oxidize-postal releases the GIL, **threading is usually preferable** to multiprocessing:
+
+```python
+from concurrent.futures import ThreadPoolExecutor
+from multiprocessing import Pool
+
+# Threading - Lower overhead, shared memory
+with ThreadPoolExecutor(max_workers=8) as executor:
+    results = list(executor.map(oxidize_postal.parse_address, addresses))
+
+# Multiprocessing - Higher overhead due to serialization
+# Only use if you need true CPU parallelism for other operations
+with Pool(processes=8) as pool:
+    results = pool.map(oxidize_postal.parse_address, addresses)
+```
+
+Threading outperforms multiprocessing by 3-5x for pure address parsing of small batches (under 5-20k addresses depending on your machine) due to lower overhead.
+
+## API Reference
+
+### Core Functions
+
+#### `parse_address(address: str) -> dict`
+Parse an address string into its component parts.
+
+**Parameters:**
+- `address`: The address string to parse
+
+**Returns:**
+- Dictionary with keys like 'house_number', 'road', 'city', 'state', 'postcode', etc.
+
+#### `expand_address(address: str) -> list[str]`
+Generate normalized variations of an address.
+
+**Parameters:**
+- `address`: The address string to expand
+
+**Returns:**
+- List of expanded address strings
+
+#### `download_data(force: bool = False) -> bool`
+Download the libpostal data files.
+
+**Parameters:**
+- `force`: If True, re-download even if data exists
+
+**Returns:**
+- True if successful, False otherwise
+
+### Additional Functions
+
+- `parse_address_to_json(address: str) -> str`: Parse and return as JSON
+- `expand_address_to_json(address: str) -> str`: Expand and return as JSON
+- `normalize_address(address: str) -> str`: Normalize an address string
+
+### Constants
+
+The module provides various constants for address components:
+
+```python
+import oxidize_postal
+
+# Address component constants
+oxidize_postal.ADDRESS_ANY
+oxidize_postal.ADDRESS_NAME
+oxidize_postal.ADDRESS_HOUSE_NUMBER
+oxidize_postal.ADDRESS_STREET
+oxidize_postal.ADDRESS_UNIT
+oxidize_postal.ADDRESS_LEVEL
+oxidize_postal.ADDRESS_POSTAL_CODE
+# ... and more
+```
+
+## Requirements
+
+- Python 3.7+
+- libpostal data files (~2GB, downloaded separately)
+- Rust toolchain (for building from source)
+
+## Project Structure
+
+```
+oxidize-postal/
+├── oxidize-postal/         # Rust extension module
+│   ├── src/
+│   │   ├── lib.rs          # PyO3 module definition
+│   │   └── postal/
+│   │       ├── parser.rs   # Core parsing functions
+│   │       ├── python_api.rs   # Python-exposed functions
+│   │       ├── error.rs    # Error types
+│   │       └── constants.rs    # libpostal constants
+│   ├── Cargo.toml          # Rust dependencies
+│   └── pyproject.toml      # Python package config
+├── tests/
+│   ├── fixtures/           # Sample addresses
+│   ├── unit/               # Unit tests
+│   ├── integration/        # End-to-end tests
+│   └── performance/        # Benchmarking tests
+├── main.py                 # Usage examples
+├── data_manager.py         # libpostal data downloader
+├── build.sh                # Build script
+└── pyproject.toml          # Root package config
+```
+
+### Architecture
+
+- **Stack**: Python → PyO3 → Rust → libpostal-rust → libpostal C library
+- **GIL Release**: All parsing operations release the Python GIL for true parallel processing
+- **Error Handling**: Rust errors are converted to Python exceptions (ValueError, RuntimeError)
+- **Data Requirements**: libpostal needs ~2GB of language model data (stored in `/usr/local/share/libpostal`)
+
+### Build Process
+
+1. `maturin` compiles the Rust extension with PyO3 bindings
+2. Links against libpostal-rust crate
+3. Produces a Python wheel with native extension
+4. No Python runtime dependencies required
+
+## License
+
+MIT License
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Acknowledgments
+
+- [libpostal](https://github.com/openvenues/libpostal) - The core C library for address parsing
+- [libpostal-rust](https://crates.io/crates/libpostal-rust) - Rust bindings for libpostal
+- [pypostal](https://github.com/openvenues/pypostal) - The original Python bindings that inspired this project
