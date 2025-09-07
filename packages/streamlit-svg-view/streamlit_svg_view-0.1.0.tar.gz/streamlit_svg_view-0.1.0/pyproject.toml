@@ -1,0 +1,69 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "streamlit-svg-view"
+version = "0.1.0"
+description = "A Streamlit custom component for displaying SVG animations with interactive play, pause, and restart controls"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+keywords = ["streamlit", "svg", "animation", "component", "interactive"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers", 
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Software Development :: User Interfaces",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "streamlit>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/streamlit-svg-view"
+Repository = "https://github.com/yourusername/streamlit-svg-view"
+Issues = "https://github.com/yourusername/streamlit-svg-view/issues"
+Documentation = "https://github.com/yourusername/streamlit-svg-view/blob/main/README.md"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+    "isort",
+    "mypy",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["streamlit_svg_view"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "streamlit_svg_view/**",
+    "README.md", 
+    "LICENSE",
+    "pyproject.toml",
+]
+exclude = [
+    "streamlit_svg_view/frontend/node_modules",
+    "streamlit_svg_view/frontend/src",
+    "streamlit_svg_view/frontend/package*.json",
+    "streamlit_svg_view/frontend/tsconfig.json",
+    "streamlit_svg_view/frontend/webpack.config.js",
+]
+
+[dependency-groups]
+dev = [
+    "build>=1.3.0",
+    "twine>=6.2.0",
+]
