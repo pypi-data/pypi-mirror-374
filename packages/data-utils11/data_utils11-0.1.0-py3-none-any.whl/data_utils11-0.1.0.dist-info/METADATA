@@ -1,0 +1,38 @@
+Metadata-Version: 2.4
+Name: data-utils11
+Version: 0.1.0
+Summary: Simple data utilities package
+Author: DaVita AI
+Requires-Python: >=3.11
+Requires-Dist: ml-core
+Requires-Dist: polars
+Requires-Dist: rich
+Requires-Dist: typer
+Description-Content-Type: text/markdown
+
+# Data Utils
+
+A simple data utilities package for common data operations.
+
+## Installation
+
+```bash
+# From workspace root
+uv sync
+
+# Run the CLI
+uv run data-utils --help
+```
+
+## Usage
+
+```bash
+# Generate sample data
+uv run data-utils generate --rows 1000 --output sample.parquet
+
+# Inspect data
+uv run data-utils inspect sample.parquet
+
+# Convert formats
+uv run data-utils convert sample.parquet --output sample.csv --format csv
+```
