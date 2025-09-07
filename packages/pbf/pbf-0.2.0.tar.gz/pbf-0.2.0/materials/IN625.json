@@ -1,0 +1,47 @@
+{
+  "name": "IN625",
+  "density": {
+    "temperatures": [ 22.0, 1290.0, 1350.0 ],
+    "values": [ 8440.0, 8000.0, 7500.0 ],
+    "extrapolation": "constant"
+  },
+  "specificHeatCapacity": {
+    "temperatures": [ 21, 93, 204, 316, 427, 538, 649, 760, 871, 982, 1093 ],
+    "values": [ 410, 427, 456, 481, 511, 536, 565, 590, 620, 645, 670 ],
+    "extrapolation": "constant"
+  },
+  "heatConductivity": {
+    "temperatures": [ 21, 93, 204, 316, 427, 538, 649, 760, 871, 982 ],
+    "values": [ 9.8, 10.1, 10.8, 12.5, 14.1, 15.7, 17.5, 19.0, 20.8, 22.8],
+    "extrapolation": "constant"
+  },
+  "solidTemperature": 1290,
+  "liquidTemperature": 1320,
+  "latentHeatOfFusion": 2.8e5,
+  "thermalExpansionCoefficient": {
+    "temperatures": [ 93.0, 204.0, 316.0, 427.0, 538.0, 649.0, 760.0, 871.0, 982.0 ],
+    "values": [ 12.8e-6, 13.1e-6, 13.3e-6, 13.7e-6, 14.0e-6, 14.8e-6, 15.3e-6, 15.8e-6, 16.2e-6 ],
+    "extrapolation": "constant"
+  },
+  "thermalExpansionCoefficientCooling": {
+    "temperatures": [ 93.0, 204.0, 316.0, 427.0, 538.0, 649.0, 760.0, 871.0, 982.0 ],
+    "values": [ 12.8e-6, 13.1e-6, 13.3e-6, 13.7e-6, 14.0e-6, 14.8e-6, 15.3e-6, 15.8e-6, 16.2e-6 ],
+    "extrapolation": "constant"
+  },
+  "youngsModulus": {
+    "temperatures": [ 21.0, 93.0, 204.0, 316.0, 427.0, 538.0, 649.0, 760.0, 871.0 ],
+    "values": [ 207.5, 204.1, 197.9, 191.7, 185.5, 178.6, 170.3, 160.6, 147.5 ],
+    "extrapolation": "constant"
+  },
+  "poissonRatio": {
+    "temperatures": [ 21.0, 93.0, 204.0, 316.0, 427.0, 538.0, 649.0, 760.0, 871.0 ],
+    "values": [ 0.258, 0.278, 0.286, 0.290, 0.295, 0.305, 0.321, 0.340, 0.336 ],
+    "extrapolation": "constant"
+  },
+  "yieldStress": {
+    "temperatures": [ 21.0, 93.0, 204.0, 316.0, 427.0, 538.0, 649.0, 760.0, 871.0, 1040.0, 1150.0 ],
+    "values": [ 493.0, 479.0, 443.0, 430.0, 424.0, 423.0, 422.0, 415.0, 386.0, 31.0, 15.0 ],
+    "extrapolation": "constant"
+  },
+  "hardening": 0.0
+}
