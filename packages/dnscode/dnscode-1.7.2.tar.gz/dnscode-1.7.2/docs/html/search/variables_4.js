@@ -1,0 +1,4 @@
+var searchData=
+[
+  ['name_0',['name',['../classdnscode_1_1dnscode_1_1Record.html#a0f33da03220ff62ce0b7e61947c1aae9',1,'dnscode.dnscode.Record.name'],['../classdnscode_1_1dnscode_1_1A.html',1,'dnscode.dnscode.A.name'],['../classdnscode_1_1dnscode_1_1AAAA.html',1,'dnscode.dnscode.AAAA.name'],['../classdnscode_1_1dnscode_1_1CNAME.html',1,'dnscode.dnscode.CNAME.name'],['../classdnscode_1_1dnscode_1_1MX.html',1,'dnscode.dnscode.MX.name'],['../classdnscode_1_1dnscode_1_1NS.html',1,'dnscode.dnscode.NS.name'],['../classdnscode_1_1dnscode_1_1PTR.html',1,'dnscode.dnscode.PTR.name'],['../classdnscode_1_1dnscode_1_1SOA.html',1,'dnscode.dnscode.SOA.name'],['../classdnscode_1_1dnscode_1_1SRV.html',1,'dnscode.dnscode.SRV.name'],['../classdnscode_1_1dnscode_1_1TXT.html',1,'dnscode.dnscode.TXT.name']]]
+];

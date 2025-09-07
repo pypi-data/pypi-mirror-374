@@ -1,0 +1,202 @@
+.TH "dnscode.dnscode.Zone" 3 "Version 1.6.4" "DNScode" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+dnscode.dnscode.Zone
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fB__post_init__\fP (self)"
+.br
+.ti -1c
+.RI "\fB__str__\fP (self)"
+.br
+.ti -1c
+.RI "\fBnew_A\fP (self, str name='@', int ttl=3600, str host='0\&.0\&.0\&.0')"
+.br
+.ti -1c
+.RI "\fBnew_AAAA\fP (self, str name='@', int ttl=3600, str host='fe80::42:2cff:fe29:8db1')"
+.br
+.ti -1c
+.RI "\fBnew_CNAME\fP (self, str name='@', int ttl=3600, str host='example\&.com')"
+.br
+.ti -1c
+.RI "\fBnew_MX\fP (self, str name='@', int ttl=3600, int priority=10, str host='example\&.com')"
+.br
+.ti -1c
+.RI "\fBnew_NS\fP (self, str name='@', int ttl=3600, str host='example\&.com')"
+.br
+.ti -1c
+.RI "\fBnew_PTR\fP (self, str name='@', int ttl=3600, str host='example\&.com')"
+.br
+.ti -1c
+.RI "\fBnew_SOA\fP (self, str mname='ns1\&.example\&.com', str rname='admin\&.example\&.com', int serial=int(time\&.time()), int refresh=86400, int retry=7200, int expire=15552000, int ttl=21700)"
+.br
+.ti -1c
+.RI "\fBnew_SRV\fP (self, str name='@', int ttl=3600, str service='service', str protocol='proto', int priority=10, int weight=10, int port=443, str host='example\&.com')"
+.br
+.ti -1c
+.RI "\fBnew_TXT\fP (self, str name='@', int ttl=3600, str text='example\&.com')"
+.br
+.ti -1c
+.RI "\fBnew_record\fP (self, str name='@', int ttl=3600, str rtype='\fBA\fP', str data='0\&.0\&.0\&.0')"
+.br
+.ti -1c
+.RI "\fBadd\fP (self, \fBRecord\fP record)"
+.br
+.ti -1c
+.RI "\fBsave_stdout\fP (self)"
+.br
+.ti -1c
+.RI "\fBsave_file\fP (self, str filepath)"
+.br
+.in -1c
+.SS "Static Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "str \fBorigin\fP = 'example\&.com'"
+.br
+.ti -1c
+.RI "list \fBrecords\fP = field(default_factory=list)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+.nf
+Represents a DNS zone containing multiple records\&.
+.fi
+.PP
+ 
+.SH "Member Function Documentation"
+.PP 
+.SS "dnscode\&.dnscode\&.Zone\&.__post_init__ ( self)"
+
+.PP
+.nf
+Initializes a zone with the given origin and ensures it ends with a dot\&.
+.fi
+.PP
+ 
+.SS "dnscode\&.dnscode\&.Zone\&.__str__ ( self)"
+
+.PP
+.nf
+Returns a string representation of the zone\&.
+.fi
+.PP
+ 
+.SS "dnscode\&.dnscode\&.Zone\&.add ( self, \fBRecord\fP record)"
+
+.PP
+.nf
+Adds a record to the zone\&.
+.fi
+.PP
+ 
+.SS "dnscode\&.dnscode\&.Zone\&.new_A ( self, str  name = \fR'@'\fP, int  ttl = \fR3600\fP, str  host = \fR'0\&.0\&.0\&.0'\fP)"
+
+.PP
+.nf
+Creates and adds a new A record to the zone\&.
+.fi
+.PP
+ 
+.SS "dnscode\&.dnscode\&.Zone\&.new_AAAA ( self, str  name = \fR'@'\fP, int  ttl = \fR3600\fP, str  host = \fR'fe80::42:2cff:fe29:8db1'\fP)"
+
+.PP
+.nf
+Creates and adds a new AAAA record to the zone\&.
+.fi
+.PP
+ 
+.SS "dnscode\&.dnscode\&.Zone\&.new_CNAME ( self, str  name = \fR'@'\fP, int  ttl = \fR3600\fP, str  host = \fR'example\&.com'\fP)"
+
+.PP
+.nf
+Creates and adds a new CNAME record to the zone\&.
+.fi
+.PP
+ 
+.SS "dnscode\&.dnscode\&.Zone\&.new_MX ( self, str  name = \fR'@'\fP, int  ttl = \fR3600\fP, int  priority = \fR10\fP, str  host = \fR'example\&.com'\fP)"
+
+.PP
+.nf
+Creates and adds a new MX record to the zone\&.
+.fi
+.PP
+ 
+.SS "dnscode\&.dnscode\&.Zone\&.new_NS ( self, str  name = \fR'@'\fP, int  ttl = \fR3600\fP, str  host = \fR'example\&.com'\fP)"
+
+.PP
+.nf
+Creates and adds a new NS record to the zone\&.
+.fi
+.PP
+ 
+.SS "dnscode\&.dnscode\&.Zone\&.new_PTR ( self, str  name = \fR'@'\fP, int  ttl = \fR3600\fP, str  host = \fR'example\&.com'\fP)"
+
+.PP
+.nf
+Creates and adds a new PTR record to the zone\&.
+.fi
+.PP
+ 
+.SS "dnscode\&.dnscode\&.Zone\&.new_record ( self, str  name = \fR'@'\fP, int  ttl = \fR3600\fP, str  rtype = \fR'\fBA\fP'\fP, str  data = \fR'0\&.0\&.0\&.0'\fP)"
+
+.PP
+.nf
+Creates and adds a generic DNS record to the zone\&.
+.fi
+.PP
+ 
+.SS "dnscode\&.dnscode\&.Zone\&.new_SOA ( self, str  mname = \fR'ns1\&.example\&.com'\fP, str  rname = \fR'admin\&.example\&.com'\fP, int  serial = \fRint(time\&.time())\fP, int  refresh = \fR86400\fP, int  retry = \fR7200\fP, int  expire = \fR15552000\fP, int  ttl = \fR21700\fP)"
+
+.PP
+.nf
+Creates and adds a new SOA record to the zone\&.
+.fi
+.PP
+ 
+.SS "dnscode\&.dnscode\&.Zone\&.new_SRV ( self, str  name = \fR'@'\fP, int  ttl = \fR3600\fP, str  service = \fR'service'\fP, str  protocol = \fR'proto'\fP, int  priority = \fR10\fP, int  weight = \fR10\fP, int  port = \fR443\fP, str  host = \fR'example\&.com'\fP)"
+
+.PP
+.nf
+Creates and adds a new SRV record to the zone\&.
+.fi
+.PP
+ 
+.SS "dnscode\&.dnscode\&.Zone\&.new_TXT ( self, str  name = \fR'@'\fP, int  ttl = \fR3600\fP, str  text = \fR'example\&.com'\fP)"
+
+.PP
+.nf
+Creates and adds a new CNAME record to the zone\&.
+.fi
+.PP
+ 
+.SS "dnscode\&.dnscode\&.Zone\&.save_file ( self, str filepath)"
+
+.PP
+.nf
+Saves the zone records to a file\&.
+.fi
+.PP
+ 
+.SS "dnscode\&.dnscode\&.Zone\&.save_stdout ( self)"
+
+.SH "Member Data Documentation"
+.PP 
+.SS "str dnscode\&.dnscode\&.Zone\&.origin = 'example\&.com'\fR [static]\fP"
+
+.SS "list dnscode\&.dnscode\&.Zone\&.records = field(default_factory=list)\fR [static]\fP"
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for DNScode from the source code\&.

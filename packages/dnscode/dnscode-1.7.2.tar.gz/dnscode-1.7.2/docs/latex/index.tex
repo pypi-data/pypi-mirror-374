@@ -1,0 +1,50 @@
+\doxysection{DNScode}
+\hypertarget{index}{}\label{index}\index{DNScode@{DNScode}}
+\label{index_md_README}%
+\Hypertarget{index_md_README}%
+\hypertarget{index_autotoc_md1}{}\doxysubsection{\texorpdfstring{Simplifying DNS Zone management}{Simplifying DNS Zone management}}\label{index_autotoc_md1}
+\DoxyHorRuler{0}
+\hypertarget{index_autotoc_md3}{}\doxysubsection{\texorpdfstring{About}{About}}\label{index_autotoc_md3}
+DNScode is a project to help simplify DNS zone management, when using plain text files with servers like BIND and NSD. It provides a framework for programmatically generating zone files with Python, allowing for more flexability, compared to other DNS as code solutions.\hypertarget{index_autotoc_md4}{}\doxysubsection{\texorpdfstring{Installation}{Installation}}\label{index_autotoc_md4}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ bash}
+\DoxyCodeLine{\#\ Create\ working\ directory}
+\DoxyCodeLine{mkdir\ dnsproject}
+\DoxyCodeLine{cd\ dnsproject}
+\DoxyCodeLine{}
+\DoxyCodeLine{\#\ Create\ virtual\ envrionment\ (optional,\ but\ highly\ recomended)}
+\DoxyCodeLine{python3\ -\/m\ venv\ .venv}
+\DoxyCodeLine{source\ .venv/bin/activate}
+\DoxyCodeLine{}
+\DoxyCodeLine{\#\ Install\ the\ dnscode\ package}
+\DoxyCodeLine{pip\ install\ dnscode}
+
+\end{DoxyCode}
+\hypertarget{index_autotoc_md5}{}\doxysubsection{\texorpdfstring{Usage}{Usage}}\label{index_autotoc_md5}
+Import the dnscode package into a python script, create a zone object, then add records into the zone. Records can be added either via helper functions in the \href{https://dnscode.minecraftchest1.us/classdnscode_1_1dnscode_1_1Zone}{\texttt{ dnscode.\+Zone}} class, or by manually creating record objects and adding them through \href{https://dnscode.minecraftchest1.us/classdnscode_1_1dnscode_1_1Zone\#a338bc686b7c7db2cab7827996a3f23f3}{\texttt{ dnscode.\+Zone.\+add()}}. Both methods are shown in the example below.
+
+Once the zone is setup, you can save it as a text file using \href{https://dnscode.minecraftchest1.us/classdnscode_1_1dnscode_1_1Zone\#adfe5442ed2137a324f1c5ba676ba2043}{\texttt{ dnscode.\+Zone.\+save\+\_\+file()}}. Currently, it also outputs to to STDOUT. See \href{https://code.minecraftchest1.us/minecraftchest1/dnscode/issues/5}{\texttt{ https\+://code.\+minecraftchest1.\+us/minecraftchest1/dnscode/issues/5}} for details.
+
+API docs at \href{https://dnscode.minecraftchest1.us/classdnscode_1_1dnscode_1_1Zone}{\texttt{ https\+://dnscode.\+minecraftchest1.\+us/classdnscode\+\_\+1\+\_\+1dnscode\+\_\+1\+\_\+1\+Zone}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{import}\ dnscode}
+\DoxyCodeLine{}
+\DoxyCodeLine{zone\ =\ \mbox{\hyperlink{classdnscode_1_1dnscode_1_1Zone}{dnscode.Zone}}(origin=\textcolor{stringliteral}{'example.com'})\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Create\ zone\ object}}
+\DoxyCodeLine{zone.new\_SOA(mname=\textcolor{stringliteral}{'ns1.minecraftchest1.us.'},\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Create\ SOA}}
+\DoxyCodeLine{\ \ \ \ rname=\textcolor{stringliteral}{'admin.minecraftchest1.us.'},}
+\DoxyCodeLine{\ \ \ \ refresh=onemonth,\ retry=oneday,\ ttl=oneday)}
+\DoxyCodeLine{zone.new\_A(name=\textcolor{stringliteral}{'myhost'},\ ttl=3600,\ host=\textcolor{stringliteral}{'0.0.0.0'})\ \ \ \ \ \textcolor{comment}{\#New\ A\ record}}
+\DoxyCodeLine{zone.new\_AAAA(name=\textcolor{stringliteral}{'myhost'},\ ttl-\/3600,\ hosts=\textcolor{stringliteral}{'::1'})}
+\DoxyCodeLine{\textcolor{comment}{\#\ More\ helper\ functions\ in\ the\ docs}}
+\DoxyCodeLine{}
+\DoxyCodeLine{cname\ =\ \mbox{\hyperlink{classdnscode_1_1dnscode_1_1CNAME}{dnscode.CNAME}}(name=\textcolor{stringliteral}{'mycname'},\ ttl=60,\ host=\textcolor{stringliteral}{'example.com'})}
+\DoxyCodeLine{\textcolor{comment}{\#\ More\ record\ objects\ in\ the\ docs.}}
+\DoxyCodeLine{zone.add(cname)}
+\DoxyCodeLine{}
+\DoxyCodeLine{zone.save\_file(\textcolor{stringliteral}{'example.zone'})}
+
+\end{DoxyCode}
+ 
