@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DCS Web Terminal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm/css/xterm.css" />
+    <script src="https://cdn.jsdelivr.net/npm/xterm/lib/xterm.js"></script>
+    <style>
+        body { margin: 0; background: black; color: white; font-family: monospace; }
+        #terminal { height: 100vh; width: 100%; }
+    </style>
+</head>
+<body>
+    <div id="terminal"></div>
+    <script>
+        const term = new Terminal({ theme: { background: "#000000" } });
+        term.open(document.getElementById("terminal"));
+        term.write("Welcome to Django Commands Suite Web Terminal\r\n$ ");
+
+        let currentInput = "";
+
+        term.onKey(e => {
+            const key = e.key;
+            const ev = e.domEvent;
+
+            if (ev.key === "Enter") {
+                let cmd = currentInput.trim();
+                currentInput = "";
+                term.write("\r\n");
+
+                if (cmd.length > 0) {
+                    fetch("/dcs_terminal/run/", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: "command=" + encodeURIComponent(cmd)
+                    }).then(r => r.json()).then(data => {
+                        term.write(data.output + "\r\n$ ");
+                    }).catch(err => {
+                        term.write("Error: " + err + "\r\n$ ");
+                    });
+                } else {
+                    term.write("$ ");
+                }
+            } else if (ev.key === "Backspace") {
+                if (currentInput.length > 0) {
+                    currentInput = currentInput.slice(0, -1);
+                    term.write("\b \b");
+                }
+            } else {
+                currentInput += key;
+                term.write(key);
+            }
+        });
+    </script>
+</body>
+</html>
