@@ -1,0 +1,31 @@
+Metadata-Version: 2.4
+Name: icc_utils
+Version: 0.1.66
+Summary: Package used to handle common functions at ICC
+Home-page: https://github.com/jbradleyicc/icc_utils
+Author: Jordan Bradley
+Author-email: jbradley@icc-ims.com
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: sqlalchemy>=2.0.27
+Requires-Dist: pyodbc>=5.1.0
+Requires-Dist: pandas>=2.2.1
+Requires-Dist: tqdm>=4.66.2
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
