@@ -1,0 +1,93 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "avwx-swift"
+dynamic = ["version"]
+description = "Python connector for the FAA SWIFT data information system"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+keywords = ["aviation", "weather", "notam", "faa", "swift"]
+authors = [
+    { name = "Michael duPont", email = "michael@dupont.dev" },
+]
+classifiers = []
+dependencies = [
+    "geojson~=3.2",
+    # "pika~=1.3.2",
+    "solace-pubsubplus~=1.10",
+    # "sftpretty~=1.1.9",
+    "xmltodict~=0.14.2",
+]
+
+[project.urls]
+Issues = "https://github.com/avwx-rest/avwx-swift/issues"
+Source = "https://github.com/avwx-rest/avwx-swift"
+
+[tool.hatch.version]
+path = "avwx_swift/__about__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["avwx_swift"]
+
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+    "mypy>=1.0.0",
+    "pytest-asyncio>=0.23.7",
+    "time-machine",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:avwx_swift tests}"
+
+[tool.hatch.envs.hatch-test]
+extra-dependencies = [
+    "pytest-asyncio>=0.23.7",
+    "pytest-cov",
+    "pytest-github-actions-annotate-failures",
+    "time-machine",
+]
+
+[tool.pytest.ini_options]
+addopts = """\
+    --cov avwx_swift \
+    --cov tests \
+    --cov-report term-missing \
+    --no-cov-on-fail \
+"""
+
+[tool.coverage.run]
+source_pkgs = ["avwx_swift", "tests"]
+branch = true
+parallel = true
+omit = []
+
+[tool.coverage.report]
+fail_under = 30  # increase over time
+exclude_lines = [
+    "no cov",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+
+[tool.mypy]
+disallow_any_unimported = false
+disallow_untyped_defs = true
+no_implicit_optional = true
+strict_equality = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_return_any = true
+check_untyped_defs = true
+show_error_codes = true
+
+[tool.ruff]
+lint.ignore = [
+    "D105",
+    "D203",
+    "D213",
+    # "PLR2004", # Magic variable. Consider slowly re-enabling
+    # "N818",
+]
