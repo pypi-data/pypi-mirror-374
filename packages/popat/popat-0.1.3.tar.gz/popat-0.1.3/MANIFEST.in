@@ -1,0 +1,9 @@
+include README.md
+include LICENSE
+include Cargo.toml
+include Cargo.lock
+recursive-include cli *
+recursive-include core *
+recursive-include popat_python *
+include *.bat
+include *.ps1
