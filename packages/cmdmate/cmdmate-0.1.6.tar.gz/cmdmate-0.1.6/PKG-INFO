@@ -1,0 +1,165 @@
+Metadata-Version: 2.4
+Name: cmdmate
+Version: 0.1.6
+Summary: cmdmate : Your AI powered terminal assistant 🚀
+Author: Chinmay Rao
+License: MIT
+Project-URL: Homepage, https://github.com/mmchinmay555/cmdmate
+Project-URL: Repository, https://github.com/mmchinmay555/cmdmate
+Requires-Python: <3.14,>=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests<3,>=2.31
+Dynamic: license-file
+
+# cmdmate 🚀
+
+Your AI-powered terminal assistant that helps you find the right commands, explanations, and even generates git commit messages!
+
+## Features
+
+- **Command Generation**: Get the right terminal commands for any task
+- **Explanation Mode**: Ask questions and get detailed explanations
+- **Git Commit Helper**: Generate meaningful commit messages from your git diff
+- **Cross-platform**: Supports Windows, Linux, and macOS
+- **Auto OS Detection**: Automatically detects your operating system
+
+## Installation
+
+```bash
+pip install cmdmate
+```
+
+## Usage
+
+### Basic Command Generation
+
+Generate terminal commands for any task:
+
+```bash
+cmdmate "list all files in current directory"
+cmdmate "find all python files"
+cmdmate "compress folder into zip"
+```
+
+### Explanation Mode (`--explain` or `-e`)
+
+Get explanations for anything:
+
+```bash
+cmdmate -e "what is docker"
+cmdmate --explain "how does git rebase work"
+cmdmate -e "difference between chmod 755 and 644"
+```
+
+### Git Commit Message Generation (`--commitHelp`)
+
+Generate meaningful commit messages from your git diff:
+
+```bash
+git diff | cmdmate --commitHelp
+git diff --staged | cmdmate --commitHelp
+```
+
+Example output:
+```
+feat: add user authentication with JWT tokens
+
+- Implement login/logout endpoints
+- Add JWT token validation middleware
+- Create user session management
+```
+
+### Specify Target OS (`--os` or `-o`)
+
+Force commands for a specific operating system:
+
+```bash
+cmdmate "list files" --os windows
+cmdmate "list files" --os linux
+cmdmate "list files" -o mac
+```
+
+Supported OS aliases:
+- `windows`, `win`
+- `linux`, `lin`
+- `mac`, `darwin`
+
+### Custom Server (`--server`)
+
+Use a custom server endpoint:
+
+```bash
+cmdmate "your query" --server http://localhost:8000/
+```
+
+## Examples
+
+### Command Generation
+```bash
+$ cmdmate "find all files larger than 100MB"
+find . -type f -size +100M
+
+$ cmdmate "kill process on port 3000"
+lsof -ti:3000 | xargs kill -9
+```
+
+### Explanations
+```bash
+$ cmdmate -e "what does chmod 755 mean"
+chmod 755 sets file permissions where:
+- 7 (owner): read(4) + write(2) + execute(1) = full permissions
+- 5 (group): read(4) + execute(1) = read and execute only
+- 5 (others): read(4) + execute(1) = read and execute only
+```
+
+### Git Commit Messages
+```bash
+$ git diff | cmdmate --commitHelp
+fix: resolve authentication timeout issue
+
+- Increase JWT token expiration to 24 hours
+- Add retry logic for failed auth requests
+- Update error handling for expired tokens
+```
+
+## Command Line Options
+
+| Option | Short | Description |
+|--------|-------|-------------|
+| `query` | - | The command or task you want to perform |
+| `--os` | `-o` | Target OS (auto-detected if not provided) |
+| `--explain` | `-e` | Ask anything, get explanation |
+| `--commitHelp` | - | Generate git commit message from diff input |
+| `--server` | - | Server URL (default: https://cmdmate.onrender.com/) |
+
+## Version
+
+Current version: v0.1.4
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Disclaimer
+
+cmdmate generates commands using AI, which may not always be perfect. Always review commands before execution, especially for:
+- File deletion operations
+- System configuration changes
+- Network operations
+- Administrative commands
+
+## 🙋‍♂️ Support
+
+If you encounter any issues or have questions:
+1. Check the existing issues on GitHub
+2. Create a new issue with detailed information
+3. Include your OS, Python version, and error messages
+
+---
+
+Made with ❤️ by Chinmay Rao
