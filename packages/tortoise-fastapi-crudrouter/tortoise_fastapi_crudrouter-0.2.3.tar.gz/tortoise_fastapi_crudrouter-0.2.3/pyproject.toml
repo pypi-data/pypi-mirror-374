@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "tortoise-fastapi-crudrouter"
+version = "0.2.3"
+description = "A dynamic FastAPI router that automatically creates CRUD routes for your models"
+authors = ["Dybfuo <mail@fincubes.ru>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/awtkns/fastapi-crudrouter"
+repository = "https://github.com/awtkns/fastapi-crudrouter"
+documentation = "https://fastapi-crudrouter.awtkns.com/"
+keywords = ["fastapi", "tortoise", "crud", "restful", "routing", "generator", "crudrouter"]
+
+classifiers = [
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Typing :: Typed",
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+]
+
+packages = [
+    { include = "tortoise_fastapi_crud" },
+]
+
+[tool.poetry.dependencies]
+python = ">=3.11"
+fastapi = "^0.116.1"
+tortoise-orm = {extras = ["asyncpg"], version = "^0.25.1"}
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+httpx = "^0.28.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
