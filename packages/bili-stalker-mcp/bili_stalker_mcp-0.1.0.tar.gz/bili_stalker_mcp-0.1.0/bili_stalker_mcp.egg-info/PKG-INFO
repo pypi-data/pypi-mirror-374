@@ -1,0 +1,158 @@
+Metadata-Version: 2.4
+Name: bili_stalker_mcp
+Version: 0.1.0
+Summary: MCP Server for getting Bilibili user video updates
+Author-email: 222wcnm <2328072813li@gmail.com>
+Maintainer-email: 222wcnm <2328072813li@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/222wcnm/BiliStalkerMCP
+Project-URL: Documentation, https://github.com/222wcnm/BiliStalkerMCP#readme
+Project-URL: Repository, https://github.com/222wcnm/BiliStalkerMCP
+Project-URL: Issues, https://github.com/222wcnm/BiliStalkerMCP/issues
+Project-URL: Changelog, https://github.com/222wcnm/BiliStalkerMCP/releases
+Keywords: mcp,bilibili,stalker,video,updates,ai,model-context-protocol
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Multimedia :: Video
+Classifier: Topic :: Communications
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: bilibili-api-python>=16.0.0
+Requires-Dist: fastmcp>=0.4.0
+Requires-Dist: mcp[cli]>=1.11.0
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: requests>=2.31.0
+Requires-Dist: httpx>=0.25.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: isort>=5.12.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Dynamic: license-file
+
+# BiliStalkerMCP (b站用户视监MCP)
+
+[![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)](https://www.python.org/)
+[![PyPI](https://img.shields.io/pypi/v/bili_stalker_mcp.svg)](https://pypi.org/project/bili_stalker_mcp/)
+[![FastMCP](https://img.shields.io/badge/MCP-FastMCP-orange)](https://github.com/jlowin/fastmcp)
+[![bilibili-api](https://img.shields.io/badge/Bilibili-API-ff69b4)](https://github.com/Nemo2011/bilibili-api)
+
+**BiliStalkerMCP** 是一个基于 MCP (Model Context Protocol) 的服务，允许AI模型通过标准化协议获取指定Bilibili用户的最新视频和动态更新。
+
+---
+
+## 🚀 快速开始
+
+### 1. 安装
+
+有一个简单的安装过程，使用 `pipx` 来安装，并可以在任何地方运行，而无需担心虚拟环境。
+
+```bash
+pipx install bili-stalker-mcp
+# 或者
+pip install bili-stalker-mcp
+```
+
+### 2. MCP客户端配置
+
+将以下配置添加到你的MCP客户端（如Cline）的 `settings.json` 文件中：
+
+```json
+{
+  "mcpServers": {
+    "bilistalker": {
+      "command": "bili-stalker-mcp",
+      "args": [],
+      "env": {
+        "SESSDATA": "您的SESSDATA",
+        "BILI_JCT": "您的BILI_JCT",
+        "BUVID3": "您的BUVID3"
+      }
+    }
+  }
+}
+```
+
+> **如何获取Cookie?**
+> 1. 登录 [bilibili.com](https://www.bilibili.com)
+> 2. 打开浏览器开发者工具 (F12)
+> 3. 切换到 `Application` -> `Cookies` -> `https://www.bilibili.com`
+> 4. 复制 `SESSDATA`, `bili_jct`, 和 `buvid3` 的值
+
+> ⚠️ **安全提示**: 不要将包含凭证的配置文件提交到公共仓库
+
+---
+
+## ✨ 功能
+
+- 🔍 用户视频获取：获取B站用户的最新视频列表，包含播放量、时长、发布日期等详细信息
+- 📱 动态更新监控：获取用户动态，支持多种类型过滤（文字、图片、视频、文章等）
+- 🔗 智能用户匹配：支持用户名或用户ID双重查询，用户名自动搜索最匹配的用户
+- 📊 标准化输出：提供完整的JSON数据结构，包含用户基本信息和统计数据
+- 🔄 重试机制：内置网络请求重试和API限流处理
+- 🎨 格式化预设：提供Markdown格式化提示，可直接用于ChatGPT等模型
+
+---
+
+## 💬 提示预设
+
+- **`format_video_response`**: 格式化视频数据为Markdown表格，包含播放量和发布信息
+- **`format_dynamic_response`**: 格式化动态数据为时间轴列表，支持多种动态类型
+
+---
+
+## 🛠️ 工具
+
+### `get_user_video_updates`
+B站用户视频列表查询工具。
+
+**参数:**
+- `user_id` (int, 可选): 用户的B站数字ID
+- `username` (str, 可选): 用户的B站用户名，系统将自动搜索匹配
+- `limit` (int, 默认为10): 返回的视频数量 (1-50)
+
+**说明:** 至少需要提供 `user_id` 或 `username` 中的一个
+
+### `get_user_dynamic_updates`
+B站用户动态获取工具，支持多种类型过滤。
+
+**参数:**
+- `user_id` (int, 可选): 用户的B站数字ID
+- `username` (str, 可选): 用户的B站用户名，系统将自动搜索匹配
+- `limit` (int, 默认为10): 返回的动态数量 (1-50)
+- `dynamic_type` (str, 默认为"ALL"): 动态类型过滤，可选值: ALL, VIDEO, ARTICLE, ANIME, DRAW
+
+**说明:** 支持多种动态类型，如文字、图片、视频、文章等
+
+---
+
+## 📁 资源支持
+
+### 数据结构Schema资源
+- URI: `bili://schemas`
+- 获取视频和动态的数据结构定义，帮助模型理解输出格式
+
+### 资源访问示例
+```python
+# 通过URI直接访问资源（在支持资源的MCP客户端中）
+read_resource("bili://schemas")
+```
+
+---
+
+## 📝 许可证
+
+[MIT License](https://github.com/222wcnm/BiliStalkerMCP/blob/main/LICENSE)
