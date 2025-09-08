@@ -1,0 +1,23 @@
+Metadata-Version: 2.4
+Name: roboka
+Version: 0.0.5
+Summary: A Python wrapper for Rubika bot API
+Author-email: Ali Zolghadr <tradecoinex5@gmail.com>
+License: Proprietary
+Project-URL: Homepage, https://rb-chat.ir
+Project-URL: Documentation, https://rb-chat.ir
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Dynamic: license-file
+
+# Roboka
+
+Roboka is a Python wrapper for the **Rubika Bot API**.
+
+With this library you can easily create and manage your Rubika bots in Python.
+
+## Installation
+```bash
+pip install roboka
