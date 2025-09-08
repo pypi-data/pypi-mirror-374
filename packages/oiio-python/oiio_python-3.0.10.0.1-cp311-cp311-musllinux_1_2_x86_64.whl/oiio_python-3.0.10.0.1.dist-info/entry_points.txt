@@ -1,0 +1,16 @@
+[console_scripts]
+iconvert = OpenImageIO._tool_wrapper:iconvert
+idiff = OpenImageIO._tool_wrapper:idiff
+igrep = OpenImageIO._tool_wrapper:igrep
+iinfo = OpenImageIO._tool_wrapper:iinfo
+maketx = OpenImageIO._tool_wrapper:maketx
+ocioarchive = PyOpenColorIO._tool_wrapper:ocioarchive
+ociobakelut = PyOpenColorIO._tool_wrapper:ociobakelut
+ociocheck = PyOpenColorIO._tool_wrapper:ociocheck
+ociochecklut = PyOpenColorIO._tool_wrapper:ociochecklut
+ocioconvert = PyOpenColorIO._tool_wrapper:ocioconvert
+ociolutimage = PyOpenColorIO._tool_wrapper:ociolutimage
+ociomakeclf = PyOpenColorIO._tool_wrapper:ociomakeclf
+ocioperf = PyOpenColorIO._tool_wrapper:ocioperf
+ociowrite = PyOpenColorIO._tool_wrapper:ociowrite
+oiiotool = OpenImageIO._tool_wrapper:oiiotool
