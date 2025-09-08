@@ -1,0 +1,99 @@
+Metadata-Version: 2.3
+Name: nbtx
+Version: 0.1.0
+Summary: 
+License: MIT License
+         
+         Copyright (c) 2025 Jonas da Silva
+         
+         Permission is hereby granted, free of charge, to any person obtaining a copy
+         of this software and associated documentation files (the "Software"), to deal
+         in the Software without restriction, including without limitation the rights
+         to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+         copies of the Software, and to permit persons to whom the Software is
+         furnished to do so, subject to the following conditions:
+         
+         The above copyright notice and this permission notice shall be included in all
+         copies or substantial portions of the Software.
+         
+         THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+         IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+         FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+         AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+         LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+         SOFTWARE.
+Author: Jonas da Silva
+Author-email: phoenixr41414141@gmail.com
+Requires-Python: >=3.13
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Programming Language :: Python :: 3.15
+Classifier: Topic :: File Formats
+Classifier: Topic :: Games/Entertainment
+Classifier: Topic :: Software Development
+Classifier: Typing :: Typed
+Provides-Extra: dev
+Provides-Extra: docs
+Requires-Dist: codespell (==2.4.1) ; extra == "dev"
+Requires-Dist: coverage (==7.10.6) ; extra == "dev"
+Requires-Dist: docstr-coverage (==2.3.2) ; extra == "dev"
+Requires-Dist: isort (==6.0.1) ; extra == "dev"
+Requires-Dist: mypy (==1.17.1) ; extra == "dev"
+Requires-Dist: nox (==2025.5.1) ; extra == "dev"
+Requires-Dist: pdoc (==15.0.4) ; extra == "docs"
+Requires-Dist: pytest (==8.4.1) ; extra == "dev"
+Requires-Dist: ruff (==0.12.12) ; extra == "dev"
+Description-Content-Type: text/markdown
+
+# nbtx - NBT parser in Python
+
+Zero-dependency, strictly-typed NBT parser and writer.
+
+## Installation
+
+Because the entire implementation finds place in a single file and does not
+depend on third-party libraries, you can simply copy `src/nbtx/__init__.py`
+to your project. Alternatively, you can install nbtx by using a package
+manager.
+
+### Pip
+
+```console
+pip install nbtx
+```
+
+### Poetry
+
+```console
+poetry add nbtx
+```
+
+### uv
+
+```console
+uv add nbtx
+```
+
+## Usage (Library)
+
+```python
+import nbtx
+
+with open("file.nbt", "rb") as f:
+    content = nbtx.load(f)
+
+print(content.pretty())
+```
+
+## References
+
+- <https://wiki.bedrock.dev/nbt/nbt-in-depth>
+
