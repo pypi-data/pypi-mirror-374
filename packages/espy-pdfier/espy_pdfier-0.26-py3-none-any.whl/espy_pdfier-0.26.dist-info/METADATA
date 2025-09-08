@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: espy_pdfier
+Version: 0.26
+Summary: ESSL assets management
+Author: Femi Adigun
+Author-email: femi.adigun@myeverlasting.net
+Keywords: fastapi,ESSL,ReachAI
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: reportlab >=4.2.0
+Requires-Dist: pillow >=11.1.0
+Requires-Dist: boto3 >=1.36.11
+
+Internal helper package for ESSL assets management
