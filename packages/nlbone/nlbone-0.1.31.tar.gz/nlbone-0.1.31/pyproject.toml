@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nlbone"
+version = "0.1.31"
+description = "Backbone package for interfaces and infrastructure in Python projects"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Amir Hosein Kahkbazzadeh", email = "a.khakbazzadeh@gmail.com" }]
+
+dependencies = [
+    "pydantic>=2.0",
+    "pydantic-settings>=2.0",
+    "httpx>=0.27",
+    "anyio>=4.0",
+    "python-keycloak==5.8.1",
+    "fastapi>=0.116",
+    "starlette>=0.47",
+    "uvicorn>=0.35",
+    "sqlalchemy>=2.0",
+    "psycopg>=3.2.9"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.5",
+    "mypy>=1.10",
+    "pre-commit>=3.7",
+    "twine",
+    "tomli"
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/nlbone"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "src/nlbone",
+  "README.md",
+  "LICENSE",
+]
