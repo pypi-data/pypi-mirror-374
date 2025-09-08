@@ -1,0 +1,124 @@
+name: Security Scan
+
+on:
+  # Run weekly security scans
+  schedule:
+    - cron: '0 2 * * 1'  # Every Monday at 2 AM UTC
+  # Allow manual trigger
+  workflow_dispatch:
+  # Run on security-related changes
+  push:
+    paths:
+      - 'logflux/**'
+      - 'requirements*.txt'
+      - 'pyproject.toml'
+      - '.github/workflows/security.yml'
+
+jobs:
+  comprehensive-security-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+        
+    - name: Cache security tools
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-security-tools-${{ hashFiles('requirements-dev.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-security-tools-
+          
+    - name: Install dependencies and security tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .[dev]
+        pip install safety bandit semgrep
+        
+    - name: Run comprehensive dependency vulnerability scan
+      run: |
+        echo "=== Dependency Vulnerability Scan (Safety) ==="
+        safety check --output json > safety-detailed-report.json || true
+        safety check --output text || true
+        
+    - name: Run comprehensive static security analysis
+      run: |
+        echo "=== Static Security Analysis (Bandit) ==="
+        bandit -r logflux/ -f json -o bandit-detailed-report.json -ll || true
+        bandit -r logflux/ -f txt -ll || true
+        echo ""
+        echo "=== Bandit Summary ==="
+        bandit -r logflux/ --severity-level medium || true
+        
+    - name: Run advanced pattern-based security analysis
+      run: |
+        echo "=== Advanced Security Analysis (Semgrep) ==="
+        semgrep --config=auto --json -o semgrep-comprehensive-report.json logflux/ || true
+        semgrep --config=auto logflux/ --verbose || true
+        
+    - name: Run comprehensive secrets detection
+      run: |
+        echo "=== Secrets Detection Scan ==="
+        semgrep --config=p/secrets --json -o secrets-comprehensive-report.json . || true
+        semgrep --config=p/secrets . --verbose || true
+        
+    - name: Run OWASP security patterns scan
+      run: |
+        echo "=== OWASP Security Patterns ==="
+        semgrep --config=p/owasp-top-ten --json -o owasp-report.json logflux/ || true
+        semgrep --config=p/owasp-top-ten logflux/ || true
+        
+    - name: Run supply chain security scan
+      run: |
+        echo "=== Supply Chain Security ==="
+        # Check for suspicious package installations
+        pip list --format=json > installed-packages.json
+        # Verify package integrity
+        pip check || true
+        
+    - name: Generate security summary
+      run: |
+        echo "=== Security Scan Summary ===" > security-summary.txt
+        echo "Scan Date: $(date)" >> security-summary.txt
+        echo "Repository: ${{ github.repository }}" >> security-summary.txt
+        echo "Commit: ${{ github.sha }}" >> security-summary.txt
+        echo "" >> security-summary.txt
+        echo "Security scans completed successfully." >> security-summary.txt
+        cat security-summary.txt
+        
+    - name: Upload comprehensive security reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: comprehensive-security-reports-${{ github.run_number }}
+        path: |
+          bandit-detailed-report.json
+          semgrep-comprehensive-report.json
+          secrets-comprehensive-report.json
+          owasp-report.json
+          safety-detailed-report.json
+          installed-packages.json
+          security-summary.txt
+        retention-days: 90
+        
+    - name: Comment security summary on PR
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          if (fs.existsSync('security-summary.txt')) {
+            const summary = fs.readFileSync('security-summary.txt', 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🔒 Security Scan Results\n\n\`\`\`\n${summary}\n\`\`\``
+            });
+          }

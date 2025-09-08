@@ -1,0 +1,15 @@
+include README.md
+include LICENSE-APACHE-2.0
+include CHANGELOG.md
+include CONTRIBUTING.md
+include requirements.txt
+include requirements-dev.txt
+recursive-include logflux *.py
+recursive-include examples *.py
+recursive-include tests *.py
+recursive-include docs *.md
+prune htmlcov
+prune .pytest_cache
+prune .mypy_cache
+exclude .coverage
+exclude .gitignore

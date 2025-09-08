@@ -1,0 +1,22 @@
+# LogFlux Python SDK - Development requirements
+
+# Testing
+pytest>=6.0.0
+pytest-cov>=2.10.0
+
+# Code formatting and linting
+black>=21.0.0
+flake8>=3.8.0
+isort>=5.0.0
+mypy>=0.800
+
+# Build and packaging
+build>=0.7.0
+twine>=3.0.0
+
+# Security scanning
+safety>=1.10.0
+
+# Documentation (future)
+# sphinx>=4.0.0
+# sphinx-rtd-theme>=1.0.0
