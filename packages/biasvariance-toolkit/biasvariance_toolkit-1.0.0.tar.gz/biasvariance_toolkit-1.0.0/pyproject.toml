@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "biasvariance_toolkit"
+version = "1.0.0"
+description = "Bias–Variance decomposition toolkit for regression (MSE) and classification (0–1 loss)"
+authors = [
+    {name="Antony Ajay Geoffrey", email="ajaygeoffrey456@gmail.com"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "numpy",
+    "torch",
+    "scikit-learn",
+    "scipy"
+]
+
+[project.urls]
+Homepage = "https://github.com/AntonyAjay123/biasvariance_toolkit"
