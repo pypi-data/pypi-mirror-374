@@ -1,0 +1,19 @@
+Metadata-Version: 2.4
+Name: cstructimpl
+Version: 0.1.0
+Summary: Python package to translate C struct to classes
+Author: Brendon Mendicino
+License-Expression: Apache-2.0
+Project-URL: Repository, https://github.com/Brendon-Mendicino/c_struct
+Project-URL: Issues, https://github.com/Brendon-Mendicino/c_struct/issues
+Classifier: Development Status :: 4 - Beta
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Dynamic: license-file
+
+# `c_struct`
+
+Python package to translate C struct to classes
+
