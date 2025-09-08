@@ -1,0 +1,204 @@
+Metadata-Version: 2.4
+Name: zooz-cli
+Version: 1.1.5
+Summary: CLI tool for transferring Microsoft Power Pages sites between environments
+Author-email: Zooz Tech <itzharm@zooz-tech.co.il>
+License: MIT License
+        
+        Copyright (c) 2025 Zooz Tech
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/zooz-tech/zooz-cli
+Project-URL: Repository, https://github.com/zooz-tech/zooz-cli
+Project-URL: Issues, https://github.com/zooz-tech/zooz-cli/issues
+Keywords: power-pages,cli,microsoft,dynamics,transfer
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Utilities
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: PyYAML>=5.4.0
+Dynamic: license-file
+
+# Zooz CLI
+
+A command-line interface tool for transferring Microsoft Power Pages sites between environments.
+
+## Features
+
+- Interactive environment selection from `pac auth list`
+- Interactive site selection from `pac pages list`
+- Automatic site ID detection from current environment
+- Cross-platform compatibility (Mac/Windows/Linux)
+- Simple and intuitive CLI interface
+- Available as both Python and npm packages
+
+## Prerequisites
+
+- Microsoft Power Platform CLI (`pac`) installed and configured
+- Either Python 3.7+ or Node.js 14+
+
+### Installing Microsoft Power Platform CLI
+
+**Windows:**
+```bash
+# Via winget
+winget install Microsoft.PowerPlatformCLI
+
+# Or via npm
+npm install -g @microsoft/powerplatform-cli
+```
+
+**Mac/Linux:**
+```bash
+npm install -g @microsoft/powerplatform-cli
+```
+
+Or download from: https://aka.ms/PowerAppsCLI
+
+## Installation
+
+You can install Zooz CLI either via npm (recommended) or Python pip.
+
+### Option 1: Install from npm (Recommended)
+
+```bash
+# Install globally
+npm install -g zooz-cli-npm
+
+# Or using yarn
+yarn global add zooz-cli-npm
+```
+
+### Option 2: Install from Python PyPI
+
+Install the latest version directly from PyPI:
+
+```bash
+pip install zooz-cli
+```
+
+Or with pip3:
+
+```bash
+pip3 install zooz-cli
+```
+
+### Install from source
+
+1. Clone or download the project
+2. Navigate to the project directory
+3. Install the CLI tool:
+
+```bash
+pip install .
+```
+
+Or for development:
+
+```bash
+pip install -e .
+```
+
+## Usage
+
+### Transfer Site Between Environments
+
+Simply run the command and follow the interactive prompts:
+
+```bash
+zooz transfer-site
+```
+
+### Command Options
+
+- `--download-path`: Path where to download the site (default: `./`)
+- `--upload-path`: Path from where to upload the site (default: auto-detected from downloaded folder)
+
+### Examples
+
+```bash
+# Basic usage with interactive prompts
+zooz transfer-site
+
+# With custom download path
+zooz transfer-site --download-path ./downloads
+
+# With both custom paths
+zooz transfer-site --download-path ./downloads --upload-path ./uploads
+```
+
+## How it works
+
+1. **Source Environment Selection**: Displays available environments from `pac auth list` and prompts for interactive selection
+2. **Add New Environments**: Option to add new environments by entering "0" and providing environment URL
+3. **Site Selection**: Shows available sites from `pac pages list` in the selected environment and prompts for interactive selection
+4. **Download**: Downloads the selected site using `pac pages download`
+5. **Auto-Detection**: Automatically finds the downloaded folder for upload
+6. **Target Environment Selection**: Prompts for target environment selection
+7. **Upload**: Uploads the site from the downloaded folder to the selected target environment using `pac pages upload`
+8. **Cleanup**: Automatically deletes the downloaded folder after successful transfer
+
+## Requirements
+
+The tool expects:
+- The `pac` CLI to be installed and authenticated with your environments
+- Proper permissions to download from source and upload to target environments
+- Access to Power Pages sites in both source and target environments
+
+## Project Structure
+
+```
+zooz-cli/
+├── bin/
+│   └── zooz              # Executable wrapper
+├── src/
+│   └── cli.py           # Main CLI implementation
+├── setup.py             # Installation script
+└── README.md            # This file
+```
+
+## Development
+
+To contribute to this project:
+
+1. Clone the repository
+2. Install in development mode: `pip install -e .`
+3. Make your changes
+4. Test with: `zooz transfer-site /path/to/test/project`
+
+## License
+
+MIT License
+
+## Support
+
+For issues and questions, please contact the development team.

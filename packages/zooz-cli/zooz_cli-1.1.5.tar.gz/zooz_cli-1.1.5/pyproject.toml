@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zooz-cli"
+version = "1.1.5"
+description = "CLI tool for transferring Microsoft Power Pages sites between environments"
+readme = "README.md"
+authors = [{name = "Zooz Tech", email = "itzharm@zooz-tech.co.il"}]
+license = {file = "LICENSE"}
+keywords = ["power-pages", "cli", "microsoft", "dynamics", "transfer"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+]
+requires-python = ">=3.7"
+dependencies = [
+    "PyYAML>=5.4.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/zooz-tech/zooz-cli"
+Repository = "https://github.com/zooz-tech/zooz-cli"
+Issues = "https://github.com/zooz-tech/zooz-cli/issues"
+
+[project.scripts]
+zooz = "zooz_cli.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
