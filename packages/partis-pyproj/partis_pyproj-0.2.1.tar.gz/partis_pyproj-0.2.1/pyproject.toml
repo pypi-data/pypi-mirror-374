@@ -1,0 +1,171 @@
+# -*- coding: UTF-8 -*-
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
+#                                                                              #
+#                       OOOOOOOOO---------------OOOOOOOOO                      #
+#                       OOOOO-----------------------OOOOO                      #
+#                       OOO-------------------NNNN----OOO                      #
+#                       O--------------------NNNNNN-----O                      #
+#                       O----------NN--------NNN-NNN----O                      #
+#                       ---------NNNNNNN-----NNN--NNN----                      #
+#                       ---------NNNNNNNNN---NNN---NNNNNN                      #
+#                       NNNNNN---NNN---NNNNNNNNN---------                      #
+#                       ----NNN--NNN-----NNNNNN----------                      #
+#                       O----NNN-NNN--------NN----------O                      #
+#                       O-----NNNNNN--------------------O                      #
+#                       OOO----NNNN-------------------OOO                      #
+#                       OOOOO-----------------------OOOOO                      #
+#                       OOOOOOOOO---------------OOOOOOOOO                      #
+#                                                                              #
+#                                Nanohmics, Inc.                               #
+#                                                                              #
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
+
+#===============================================================================
+# Meta-data and dependencies
+#===============================================================================
+
+[project]
+name = "partis-pyproj"
+version = "0.2.1"
+description = "Minimal set of Python project utilities (PEP-517/621)"
+maintainers = [
+  { name = "Nanohmics Inc.", email = "software.support@nanohmics.com" } ]
+license = { file = "LICENSE.txt" }
+readme = { file = "README.md" }
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: BSD License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Topic :: Software Development :: Build Tools",
+  "Operating System :: POSIX :: Linux",
+  "Operating System :: Microsoft :: Windows" ]
+
+requires-python = ">= 3.8"
+dependencies = [
+  "packaging >= 24.2",
+  "tomli >= 2.0.1",
+  "requests >= 2.32.3"]
+
+#===============================================================================
+[project.optional-dependencies]
+
+meson = [
+  "meson >= 0.61.3",
+  "ninja >= 1.10.2.3" ]
+
+cmake = [
+  "cmake >= 3.24.3",
+  "ninja >= 1.10.2.3" ]
+
+#===============================================================================
+[[project.authors]]
+name = "Nanohmics Inc."
+email = "software.support@nanohmics.com"
+
+#===============================================================================
+[project.urls]
+homepage = "https://github.com/kcdodd/partis-pyproj/"
+
+#===============================================================================
+[project.scripts]
+partis-pyproj = "partis.pyproj.cli.__main__:main"
+
+#===============================================================================
+# Build and distribution configuration
+#===============================================================================
+[build-system]
+requires = [
+  "packaging == 21.3",
+  "tomli >= 1.2.3" ]
+
+build-backend = "pyproj.backend"
+backend-path = [ 'src' ]
+
+#-------------------------------------------------------------------------------
+[tool.pyproj.dist]
+
+ignore = [
+  '__pycache__',
+  '*.py[cod]',
+  '*.so',
+  '*.egg-info',
+  '.nox',
+  '.pytest_cache',
+  '.coverage',
+  'tmp',
+  'dist',
+  'build',
+  'doc/_build',
+  'doc/.nox',
+  'test/*/build' ]
+
+#...............................................................................
+[tool.pyproj.dist.source]
+# NOTE: docs, tests, etc. not distributed to minimize size
+copy = ['src']
+
+#...............................................................................
+[tool.pyproj.dist.binary.purelib]
+
+# copied under namespace module
+copy = [
+  { src = 'src/pyproj', dst = 'partis/pyproj' } ]
+
+#===============================================================================
+# Testing configuration
+#===============================================================================
+[tool.noxfile]
+default_venv_backend = "uv"
+python = [
+  # "3.14",
+  "3.13",
+  "3.12",
+  "3.11",
+  "3.10",
+  "3.9",
+  "3.8",
+  "pypy3.10",
+  "pypy3.9"]
+
+envdir = "tmp/.nox"
+
+#===============================================================================
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--maxfail=1 --cov-append --cov-config=pyproject.toml"
+
+log_level = "NOTSET"
+# un-comment the following to print *all* logging messages
+#log_cli = true
+#log_cli_level = "NOTSET"
+
+#===============================================================================
+[tool.coverage.run]
+branch = true
+data_file = "tmp/.coverage"
+# parallel = true
+disable_warnings = [
+  "module-not-measured" ]
+source = [
+  "partis" ]
+
+#===============================================================================
+[tool.coverage.paths]
+# Source code paths which are to be considered equivalent when combining coverage reports.
+# NOTE: the order must be from "most specific" to "least specific" so that
+# installed sub-package directories are combined to the correct source path
+partis-pyproj = [
+  "src/pyproj",
+  "*/site-packages/partis/pyproj" ]
+
+#===============================================================================
+[tool.coverage.report]
+exclude_lines = [
+  "if self.debug:",
+  "pragma: no cover",
+  "raise NotImplementedError",
+  "if __name__ == .__main__.:" ]
+
+ignore_errors = true
