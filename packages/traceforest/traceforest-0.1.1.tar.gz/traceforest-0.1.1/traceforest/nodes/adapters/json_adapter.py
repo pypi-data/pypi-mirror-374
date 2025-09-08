@@ -1,0 +1,2 @@
+class JSONAdapter:
+    pass
