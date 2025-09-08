@@ -1,0 +1,37 @@
+Metadata-Version: 2.4
+Name: tracdap-ext-http
+Version: 0.10.0.dev14
+Summary: An extension for TRAC D.A.P. that lets models connect to HTTP endpoints
+Author-email: Martin Traverse <martin@fintrac.co.uk>
+License-Expression: Apache-2.0
+Project-URL: Homepage, https://tracdap.finos.org/
+Project-URL: Documentation, https://tracdap.readthedocs.io/
+Project-URL: Source Code, https://github.com/martin-traverse/tracdap
+Project-URL: Issue Tracker, https://github.com/martin-traverse/tracdap/issues
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Framework :: Trac
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: Topic :: Office/Business
+Classifier: Topic :: Office/Business :: Financial
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# HTTP Extension for the TRAC Model Runtime
+
+An extension for TRAC D.A.P. that lets models connect to HTTP endpoints.
+The extension depends on the tracdap-runtime package with the same version.
+
+This extension is a pre-release, full documentation will be provided TRAC 0.10.
