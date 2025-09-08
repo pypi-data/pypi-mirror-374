@@ -1,0 +1,35 @@
+asyncapi: "3.0.0"
+info:
+  title: Common part of the Ping-Pong service example
+  version: 1.0.0
+
+channels:
+  ping:
+    address: /ping
+    messages:
+      ping:
+        $ref: "#/components/messages/ping"
+  pong:
+    address: null
+    messages:
+      pong:
+        $ref: "#/components/messages/pong"
+
+components:
+  messages:
+    ping:
+      title: Ping
+      payload:
+        type: object
+        properties:
+          event:
+            type: string
+            const: ping
+    pong:
+      title: Pong
+      payload:
+        type: object
+        properties:
+          event:
+            type: string
+            const: pong
