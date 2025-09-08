@@ -1,0 +1,254 @@
+Metadata-Version: 2.3
+Name: obsidianmd-parser
+Version: 0.3.1
+Summary: A Python library for parsing Obsidian Markdown (.md) files and vaults.
+License: MIT
+Keywords: obsidian,markdown,parser,dataview
+Author: paddyd
+Author-email: patduf1@gmail.com
+Requires-Python: >=3.12,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: pandas (>=2.2.3,<3.0.0)
+Requires-Dist: python-frontmatter (>=1.1.0,<2.0.0)
+Requires-Dist: pyyaml (>=6.0.2,<7.0.0)
+Requires-Dist: typing-extensions (>=4.13.2,<5.0.0)
+Project-URL: Documentation, https://codeberg.org/paddyd/obsidianmd-parser
+Project-URL: Homepage, https://codeberg.org/paddyd/obsidianmd-parser
+Project-URL: Repository, https://codeberg.org/paddyd/obsidianmd-parser
+Description-Content-Type: text/markdown
+
+# obsidianmd-parser
+
+A Python package for parsing Obsidian Markdown vaults and notes, with support for Obsidian's built-in markdown format and Dataview queries.
+
+## Features
+
+- **Complete Vault Parsing**: Load and parse entire Obsidian vaults
+- **Note Object Model**: Work with notes as Python objects with attributes and methods
+- **Obsidian Markdown Support**: 
+  - Wikilinks (`[[links]]` and `[[links|aliases]]`)
+  - Tags (`#tag`, `#nested/tag`)
+  - Task lists with status tracking
+  - Obsidian callouts
+- **Relationship Tracking**: Analyze backlinks and relationships between notes
+- **Dataview Support**: 
+  - Parse Dataview queries from notes
+  - Evaluate Dataview queries programmatically
+- **Search Capabilities**:
+  - Exact search for notes
+  - Similarity search using various algorithms
+- **Code Block Handling**: Correctly excludes parsing within code blocks
+
+## Installation
+
+```bash
+pip install obsidianmd-parser
+```
+
+## Quick Start
+
+```python
+from obsidian_parser import Vault
+
+# Load a vault
+vault = Vault("path/to/your/obsidian/vault")
+
+# Find notes by exact name
+note = vault.get_note("My Note")
+
+# Search notes by similarity
+similar_notes = vault.find_notes("machine learning", case_sensitive=False)
+
+# Access note properties
+print(note.title)
+print(note.tags)
+print(note.wikilinks)
+print(note.tasks)
+
+# Work with relationships
+backlinks = note.get_backlinks(vault=vault)
+related = note.get_forward_links(vault=vault)
+most_linked = note.get_most_linked()
+```
+
+## Core API
+
+### Vault
+
+The `Vault` class represents an entire Obsidian vault:
+
+```python
+# lazy_load = notes are parsed only when accessed (default: True)
+vault = Vault("path/to/vault", lazy_load=True)
+
+# Search and retrieval
+note = vault.get_note("Note Title")
+notes = vault.find_similar_notes("search query", threshold=0.5)
+
+# Vault analysis
+note_graph = vault.get_note_graph()                 # Produces a note graph tuple object
+dataview_usage = vault.analyze_dataview_usage()     # Get vault statistics for dataview queries
+broken_links = vault.find_broken_links()            # Finds all broken links in the vault
+```
+
+### Note
+
+The `Note` class represents an individual note:
+
+```python
+# Access note metadata
+note.title          # Note title
+note.path          # File path
+note.content       # Raw markdown content
+note.frontmatter   # Parsed YAML frontmatter
+
+# Access parsed elements
+note.tags          # List of tags in the note
+note.wikilinks     # List of wikilinks (forward)
+note.tasks         # List of tasks
+note.callouts      # List of callouts
+
+# Access raw frontmatter
+raw = note.frontmatter  # Dict-like object with raw values
+
+# Get cleaned frontmatter (removes wikilinks, formats dates)
+cleaned = note.frontmatter.clean()
+
+# Custom date formatting
+cleaned = note.frontmatter.clean(date_format='DD-MM-YYYY')
+cleaned = note.frontmatter.clean(date_format='%B %d, %Y')  # "March 24, 2025"
+
+# Relationships
+vault=Vault('path/to/vault')
+note.get_backlinks(vault)       # Notes that link to this note
+note.get_forward_links(vault)   # Notes this note links to
+note.get_related_notes()        # Related notes by various metrics
+note.get_link_context("Target") # Get the context for a piece of text in your note 
+note.get_link_context(          # E.g. context for a wikilink.
+  target=note.wikilinks[0].display_text, 
+  context_chars=40)
+```
+
+## Sections
+
+```python
+for section in note.sections:
+    print(f"Section: {section.heading}")
+    print(f"  Full path: {section.full_path}")
+    print(f"  Parent headings [(level, heading)]: {section.parent_headings}")
+    print(f"  Heading list: {section.breadcrumb}")
+    print(f"  Heading hierarchy: {section.full_path}")
+    print(f"  Has parent: {section.parent is not None}")
+```
+
+## Dataview Support
+
+Parse and evaluate Dataview queries:
+
+```python
+# Parse Dataview queries from a note
+queries = note.dataview_queries
+
+query = queries[0]
+query.evaluate(vault, note)
+
+# Evaluate a Dataview query in notes or sections
+print(note.get_evaluated_view(vault))
+
+note_section = notes.sections[10]
+
+print(note_section.get_evaluated_view(vault))
+```
+
+## Advanced Usage
+
+### Custom Search
+
+```python
+# Configure similarity search
+results = vault.search(
+    query="machine learning",
+    limit=10
+    threshold=0.6
+)
+```
+
+### Vault Analysis
+
+```python
+# Build an note index dataframe of the vault
+vault_index = vault.build_index()
+
+# Build and analyze vault graph
+graph = vault.get_note_graph()
+
+# Find broken links
+broken_links = vault.find_broken_links()
+
+# Relationship analysis
+relationship_stats = vault.analyze_relationships()          # Builds a Relationship Analyzer object
+stats_report = relationship_stats.build_statistics_report()
+df = relationship_stats.export_to_dataframe()               # Pandas dataframe object
+relationship_stats.find_hub_notes(                          # Find notes with lots of connections (default = 10)
+  min_connections=50
+) 
+orphaned_notes = relationship_stats.find_orphaned_notes()   # Find orphaned notes (no backlinks)
+```
+
+### Working with Parsed Elements
+
+```python
+# Access specific elements
+for link in note.wikilinks:
+    print(f"Link to: {link.target}, alias: {link.alias}")
+
+for task in note.tasks:
+    if task.status == " ":
+        print(f"TODO: {task.text}")
+
+for tag in note.tags:
+    print(f"Tag: #{tag.name}")
+```
+
+## Requirements
+
+- Python 3.12+ (earlier versions may be supported but not yet tested)
+- Dependencies are automatically installed with pip
+
+## Contributing
+
+Contributions are welcome! The project is hosted on Codeberg:
+
+https://codeberg.org/paddyd/obsidian-parser
+
+Please feel free to submit issues and pull requests.
+
+## License
+
+MIT
+
+## Changelog
+
+### 0.3.1 (2025-09-07)
+- Added fix to prevent '#'s in URLs being parsed as tags.
+- Added further unit tests for tag parsing.
+
+### 0.3.0 (2025-06-14)
+- Added parent heading parsing for `Sections`.
+- `Sections` now capture heading hierarchy for the whole note.
+
+### 0.2.0 (2025-06-07)
+- Added `Frontmatter.clean()` method for cleaning frontmatter values
+- Frontmatter now returns a dict-like object instead of plain dict
+- Improved wikilink parsing in frontmatter values
+
+### 0.1.0 (Initial Release)
+- Core vault and note parsing functionality
+- Obsidian markdown format support
+- Dataview query parsing and evaluation
+- Search capabilities (exact and similarity)
+- Relationship tracking and graph building
+
