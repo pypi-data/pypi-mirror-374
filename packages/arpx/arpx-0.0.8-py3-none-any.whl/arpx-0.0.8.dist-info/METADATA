@@ -1,0 +1,504 @@
+Metadata-Version: 2.4
+Name: arpx
+Version: 0.0.8
+Summary: Dynamic multi-IP LAN HTTP/HTTPS server manager with ARP visibility
+Project-URL: Homepage, https://github.com/dynapsys/dynahost
+Project-URL: Issues, https://github.com/dynapsys/dynahost/issues
+Author-email: Tom Sapletta <info@softreck.dev>
+License:                                  Apache License
+                                   Version 2.0, January 2004
+                                http://www.apache.org/licenses/
+        
+           TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+        
+           1. Definitions.
+        
+              "License" shall mean the terms and conditions for use, reproduction,
+              and distribution as defined by Sections 1 through 9 of this document.
+        
+              "Licensor" shall mean the copyright owner or entity authorized by
+              the copyright owner that is granting the License.
+        
+              "Legal Entity" shall mean the union of the acting entity and all
+              other entities that control, are controlled by, or are under common
+              control with that entity. For the purposes of this definition,
+              "control" means (i) the power, direct or indirect, to cause the
+              direction or management of such entity, whether by contract or
+              otherwise, or (ii) ownership of fifty percent (50%) or more of the
+              outstanding shares, or (iii) beneficial ownership of such entity.
+        
+              "You" (or "Your") shall mean an individual or Legal Entity
+              exercising permissions granted by this License.
+        
+              "Source" form shall mean the preferred form for making modifications,
+              including but not limited to software source code, documentation
+              source, and configuration files.
+        
+              "Object" form shall mean any form resulting from mechanical
+              transformation or translation of a Source form, including but
+              not limited to compiled object code, generated documentation,
+              and conversions to other media types.
+        
+              "Work" shall mean the work of authorship, whether in Source or
+              Object form, made available under the License, as indicated by a
+              copyright notice that is included in or attached to the work
+              (an example is provided in the Appendix below).
+        
+              "Derivative Works" shall mean any work, whether in Source or Object
+              form, that is based on (or derived from) the Work and for which the
+              editorial revisions, annotations, elaborations, or other modifications
+              represent, as a whole, an original work of authorship. For the purposes
+              of this License, Derivative Works shall not include works that remain
+              separable from, or merely link (or bind by name) to the interfaces of,
+              the Work and Derivative Works thereof.
+        
+              "Contribution" shall mean any work of authorship, including
+              the original version of the Work and any modifications or additions
+              to that Work or Derivative Works thereof, that is intentionally
+              submitted to Licensor for inclusion in the Work by the copyright owner
+              or by an individual or Legal Entity authorized to submit on behalf of
+              the copyright owner. For the purposes of this definition, "submitted"
+              means any form of electronic, verbal, or written communication sent
+              to the Licensor or its representatives, including but not limited to
+              communication on electronic mailing lists, source code control systems,
+              and issue tracking systems that are managed by, or on behalf of, the
+              Licensor for the purpose of discussing and improving the Work, but
+              excluding communication that is conspicuously marked or otherwise
+              designated in writing by the copyright owner as "Not a Contribution."
+        
+              "Contributor" shall mean Licensor and any individual or Legal Entity
+              on behalf of whom a Contribution has been received by Licensor and
+              subsequently incorporated within the Work.
+        
+           2. Grant of Copyright License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              copyright license to reproduce, prepare Derivative Works of,
+              publicly display, publicly perform, sublicense, and distribute the
+              Work and such Derivative Works in Source or Object form.
+        
+           3. Grant of Patent License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              (except as stated in this section) patent license to make, have made,
+              use, offer to sell, sell, import, and otherwise transfer the Work,
+              where such license applies only to those patent claims licensable
+              by such Contributor that are necessarily infringed by their
+              Contribution(s) alone or by combination of their Contribution(s)
+              with the Work to which such Contribution(s) was submitted. If You
+              institute patent litigation against any entity (including a
+              cross-claim or counterclaim in a lawsuit) alleging that the Work
+              or a Contribution incorporated within the Work constitutes direct
+              or contributory patent infringement, then any patent licenses
+              granted to You under this License for that Work shall terminate
+              as of the date such litigation is filed.
+        
+           4. Redistribution. You may reproduce and distribute copies of the
+              Work or Derivative Works thereof in any medium, with or without
+              modifications, and in Source or Object form, provided that You
+              meet the following conditions:
+        
+              (a) You must give any other recipients of the Work or
+                  Derivative Works a copy of this License; and
+        
+              (b) You must cause any modified files to carry prominent notices
+                  stating that You changed the files; and
+        
+              (c) You must retain, in the Source form of any Derivative Works
+                  that You distribute, all copyright, patent, trademark, and
+                  attribution notices from the Source form of the Work,
+                  excluding those notices that do not pertain to any part of
+                  the Derivative Works; and
+        
+              (d) If the Work includes a "NOTICE" text file as part of its
+                  distribution, then any Derivative Works that You distribute must
+                  include a readable copy of the attribution notices contained
+                  within such NOTICE file, excluding those notices that do not
+                  pertain to any part of the Derivative Works, in at least one
+                  of the following places: within a NOTICE text file distributed
+                  as part of the Derivative Works; within the Source form or
+                  documentation, if provided along with the Derivative Works; or,
+                  within a display generated by the Derivative Works, if and
+                  wherever such third-party notices normally appear. The contents
+                  of the NOTICE file are for informational purposes only and
+                  do not modify the License. You may add Your own attribution
+                  notices within Derivative Works that You distribute, alongside
+                  or as an addendum to the NOTICE text from the Work, provided
+                  that such additional attribution notices cannot be construed
+                  as modifying the License.
+        
+              You may add Your own copyright statement to Your modifications and
+              may provide additional or different license terms and conditions
+              for use, reproduction, or distribution of Your modifications, or
+              for any such Derivative Works as a whole, provided Your use,
+              reproduction, and distribution of the Work otherwise complies with
+              the conditions stated in this License.
+        
+           5. Submission of Contributions. Unless You explicitly state otherwise,
+              any Contribution intentionally submitted for inclusion in the Work
+              by You to the Licensor shall be under the terms and conditions of
+              this License, without any additional terms or conditions.
+              Notwithstanding the above, nothing herein shall supersede or modify
+              the terms of any separate license agreement you may have executed
+              with Licensor regarding such Contributions.
+        
+           6. Trademarks. This License does not grant permission to use the trade
+              names, trademarks, service marks, or product names of the Licensor,
+              except as required for reasonable and customary use in describing the
+              origin of the Work and reproducing the content of the NOTICE file.
+        
+           7. Disclaimer of Warranty. Unless required by applicable law or
+              agreed to in writing, Licensor provides the Work (and each
+              Contributor provides its Contributions) on an "AS IS" BASIS,
+              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+              implied, including, without limitation, any warranties or conditions
+              of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+              PARTICULAR PURPOSE. You are solely responsible for determining the
+              appropriateness of using or redistributing the Work and assume any
+              risks associated with Your exercise of permissions under this License.
+        
+           8. Limitation of Liability. In no event and under no legal theory,
+              whether in tort (including negligence), contract, or otherwise,
+              unless required by applicable law (such as deliberate and grossly
+              negligent acts) or agreed to in writing, shall any Contributor be
+              liable to You for damages, including any direct, indirect, special,
+              incidental, or consequential damages of any character arising as a
+              result of this License or out of the use or inability to use the
+              Work (including but not limited to damages for loss of goodwill,
+              work stoppage, computer failure or malfunction, or any and all
+              other commercial damages or losses), even if such Contributor
+              has been advised of the possibility of such damages.
+        
+           9. Accepting Warranty or Additional Liability. While redistributing
+              the Work or Derivative Works thereof, You may choose to offer,
+              and charge a fee for, acceptance of support, warranty, indemnity,
+              or other liability obligations and/or rights consistent with this
+              License. However, in accepting such obligations, You may act only
+              on Your own behalf and on Your sole responsibility, not on behalf
+              of any other Contributor, and only if You agree to indemnify,
+              defend, and hold each Contributor harmless for any liability
+              incurred by, or claims asserted against, such Contributor by reason
+              of your accepting any such warranty or additional liability.
+        
+           END OF TERMS AND CONDITIONS
+        
+           APPENDIX: How to apply the Apache License to your work.
+        
+              To apply the Apache License to your work, attach the following
+              boilerplate notice, with the fields enclosed by brackets "[]"
+              replaced with your own identifying information. (Don't include
+              the brackets!)  The text should be enclosed in the appropriate
+              comment syntax for the file format. We also recommend that a
+              file or class name and description of purpose be included on the
+              same "printed page" as the copyright notice for easier
+              identification within third-party archives.
+        
+           Copyright [yyyy] [name of copyright owner]
+        
+           Licensed under the Apache License, Version 2.0 (the "License");
+           you may not use this file except in compliance with the License.
+           You may obtain a copy of the License at
+        
+               http://www.apache.org/licenses/LICENSE-2.0
+        
+           Unless required by applicable law or agreed to in writing, software
+           distributed under the License is distributed on an "AS IS" BASIS,
+           WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+           See the License for the specific language governing permissions and
+           limitations under the License.
+License-File: LICENSE
+License-File: NOTICE
+Keywords: arp,certificates,http,https,lan,lets-encrypt,mkcert,network
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Internet
+Classifier: Topic :: System :: Networking
+Requires-Python: >=3.8
+Requires-Dist: cryptography>=41.0
+Provides-Extra: compose
+Requires-Dist: pyyaml>=6.0; extra == 'compose'
+Provides-Extra: le
+Requires-Dist: certbot>=2.9.0; extra == 'le'
+Provides-Extra: mdns
+Requires-Dist: zeroconf>=0.37.0; extra == 'mdns'
+Provides-Extra: test
+Requires-Dist: pytest-timeout>=2.1; extra == 'test'
+Requires-Dist: pytest>=7.0; extra == 'test'
+Description-Content-Type: text/markdown
+
+# ARPx
+
+![PyPI](https://img.shields.io/pypi/v/arpx)
+![Python Versions](https://img.shields.io/pypi/pyversions/arpx)
+![License](https://img.shields.io/github/license/dynapsys/arpx)
+![Build](https://img.shields.io/github/actions/workflow/status/dynapsys/arpx/ci.yml?branch=main)
+
+Dynamic multi-IP LAN HTTP/HTTPS server manager with ARP visibility and optional Docker/Podman Compose bridging.
+
+## arpx — Multi-IP LAN Server & Compose Bridge
+
+`arpx` is a lightweight **multi-IP LAN HTTP/HTTPS server manager** that makes local services instantly visible across your network using **ARP announcements**.
+It’s ideal for **rapid prototyping, testing, and LAN demos** where you want each service to feel like it’s running on its own host with its own IP and TLS certificate — without touching router configs or setting up complex reverse proxies.
+
+---
+
+### What makes `arpx` different?
+
+Typical local dev setups bind everything to `localhost:port`. Tools like **ngrok/localtunnel** tunnel services out to the cloud, while **Traefik/Caddy/nginx-proxy** are heavy production-grade proxies.
+
+`arpx` fills the gap:
+
+* 🌐 **LAN visibility** – Services get unique IPs visible to *all* devices on your network.
+* 🔑 **HTTPS everywhere** – Built-in cert management (self-signed, mkcert, Let’s Encrypt).
+* 🐳 **Container bridging** – Map Docker/Podman Compose services directly to LAN IPs.
+* ⚡ **Zero router hacks** – No port forwarding, no DNS server required (but dnsmasq snippets are suggested).
+* 🧩 **Lightweight & scriptable** – Simple CLI, easy integration into dev/test workflows.
+
+Think of it as giving your LAN **mini cloud-like behavior**, where each microservice can live on its own IP with real HTTPS, testable from phones, TVs, laptops, and other devices.
+
+
+ARPx allows you to:
+
+- Create multiple virtual IP addresses on a network interface and make them visible to the whole LAN via ARP announcements.
+- Run small HTTP/HTTPS servers bound to those IPs for quick testing and service simulation.
+- Generate TLS certificates:
+  - Self-signed certificates
+  - Locally-trusted certificates using mkcert
+  - Public certificates using Let's Encrypt (certbot)
+- Get suggestions for configuring local domains on your router (dnsmasq) for HTTPS on your LAN.
+- Bridge Docker/Podman Compose services into the LAN using alias IPs so other devices can connect directly.
+
+## Where this helps
+
+- Prototyping microservices reachable from other devices in the office/home LAN without changing router config.
+- QA and demos: give each service its own IP and test HTTP/HTTPS from phones, TVs, laptops.
+- Edge and lab setups where DNS is limited; use ARP visibility + local router dnsmasq snippets.
+- Junior developers and DevOps can quickly test HTTPS with self-signed or mkcert certs.
+
+> Tip for juniors: start with `--https self-signed` in a test LAN, then switch to mkcert for trusted local certs.
+
+## Requirements
+
+- Linux, root privileges for network configuration
+- Utilities: `ip`, `ping`, `arping` (package: iputils-arping), `arp` (package: net-tools)
+- Optional: `iptables` for firewall rules
+- Optional for certificates:
+  - `mkcert` for locally-trusted certs (https://github.com/FiloSottile/mkcert)
+  - `certbot` and reachable port 80 for Let's Encrypt
+
+
+
+---
+
+### Use cases
+
+* **Prototyping microservices**: spin up multiple APIs on separate IPs, test from any device.
+* **QA and demos**: showcase apps with “real” IPs instead of messy `localhost:8080`.
+* **Edge/lab setups**: where DNS is limited or unavailable, ARP makes services discoverable.
+* **Learning DevOps/networking**: juniors can explore ARP, IP aliasing, and HTTPS hands-on.
+
+---
+
+### Feature summary
+
+* Create multiple **virtual IP addresses** per interface with ARP broadcasts.
+* Run lightweight **HTTP/HTTPS servers** bound to each IP.
+* Generate **TLS certificates**:
+
+  * 🔒 Self-signed
+  * ✅ Locally-trusted (`mkcert`)
+  * 🌍 Public (`Let’s Encrypt`)
+* Bridge **Docker/Podman Compose** stacks into the LAN with alias IPs.
+* Generate **dnsmasq snippets** for local domains.
+
+---
+
+### At a glance: comparison
+
+| Tool                    | Strengths                            | Where `arpx` wins                   |
+| ----------------------- | ------------------------------------ | ----------------------------------- |
+| **ngrok / localtunnel** | Cloud tunneling, public exposure     | LAN-first, no internet needed       |
+| **Traefik / Caddy**     | Production reverse proxy, automation | Lighter, zero config, LAN ARP       |
+| **mkcert**              | Local certs                          | Adds IPs + servers + LAN vis        |
+| **docker-compose**      | Popular for dev setups               | Direct LAN access, no port juggling |
+
+---
+
+
+## ARPx Installation
+
+Using uv (from PyPI):
+
+```bash
+uv pip install arpx
+```
+
+Or with pip:
+
+```bash
+pip install arpx
+```
+
+Optional extras:
+
+```bash
+# Compose bridging (PyYAML)
+uv pip install "arpx[compose]"
+
+# Test utilities (pytest)
+uv pip install "arpx[test]"
+uv pip install "arpx[mdns]"  # mDNS broadcasting support
+```
+
+### Install CLI as a user tool (recommended for local dev)
+
+If you're developing locally from this repository, install the CLI into `~/.local/bin`:
+
+```bash
+uv tool install --force .
+```
+
+This creates an `arpx` launcher in `~/.local/bin`. If you use `sudo` to run network operations, run with an absolute path so root can find it:
+
+```bash
+sudo $(which arpx) up -n 2
+sudo $(which arpx) compose -f docker-compose.yml
+```
+
+## Quick start
+
+Create 3 virtual IPs with HTTP servers (ports starting at 8000):
+
+```bash
+sudo arpx up -n 3
+```
+
+Enable HTTPS with a self-signed certificate, include local domains and IPs in SAN:
+
+```bash
+sudo arpx up -n 2 --https self-signed --domains myapp.lan,myapp.local
+```
+
+Use mkcert (requires mkcert installed) and include the discovered IPs:
+
+```bash
+sudo arpx up -n 2 --https mkcert --domains myapp.lan
+```
+
+Use Let's Encrypt (public DNS must point to your host, and port 80 must be free):
+
+```bash
+sudo arpx up --https letsencrypt --domain myapp.example.com --email you@example.com
+```
+
+Start from a specific base IP instead of auto-discovery:
+
+```bash
+sudo arpx up -n 2 --base-ip 192.168.1.150
+```
+
+## Docker/Podman Compose bridge
+
+Make your Compose services visible on the LAN by assigning each service an alias IP and forwarding its published TCP ports:
+
+```bash
+# in your project directory with docker-compose.yml
+sudo arpx compose -f docker-compose.yml
+
+# or with a specific base IP range
+sudo arpx compose -f docker-compose.yml --base-ip 192.168.1.150
+
+# Podman: use podman-compose with the same file
+sudo arpx compose -f docker-compose.yml
+```
+
+Requirements:
+
+- Your services must publish ports to the host (e.g. `"8080:80"` or `{published: 8080, target: 80}`).
+- arpx forwards `alias_ip:host_port -> 127.0.0.1:host_port`, so services remain bound to localhost.
+- For HTTPS services inside containers, TLS still terminates in the container and works end-to-end.
+
+### mDNS broadcasting (optional)
+
+Enable mDNS so devices can discover services by name (requires `arpx[mdns]`):
+
+```bash
+sudo arpx up -n 2 --mdns --mdns-prefix myapp-
+# or for compose
+sudo arpx compose -f docker-compose.yml --mdns
+```
+
+Services will appear as `_http._tcp.local.` or `_https._tcp.local.` with instance names like `myapp-1._http._tcp.local.`
+
+## Examples
+
+- CLI: `examples/cli/run.sh`
+- API: `examples/api/simple_api.py`
+- Docker Compose: `examples/docker/docker-compose.yml` + `examples/docker/README.md`
+- Podman Compose: `examples/podman/docker-compose.yml` + `examples/podman/README.md`
+
+## Certificate utilities
+
+Generate a self-signed certificate into .arpx/certs:
+
+```bash
+arpx cert self-signed --common-name myapp.lan --names myapp.lan,192.168.1.200
+```
+
+Generate mkcert certificate:
+
+```bash
+arpx cert mkcert --names myapp.lan,192.168.1.200
+```
+
+Obtain Let's Encrypt certificate (requires root and open port 80):
+
+```bash
+sudo arpx cert letsencrypt --domain myapp.example.com --email you@example.com
+```
+
+## Local domain (router dnsmasq) suggestions
+
+Generate suggestions for configuring a local domain on a router running dnsmasq:
+
+```bash
+arpx dns --domain myapp.lan --ip 192.168.1.200 -o dnsmasq.conf
+```
+
+This prints a `hosts` entry and `dnsmasq` options (either `address=/domain/ip` or an explicit `host-record`). Apply it on your router (e.g., OpenWrt) and restart dnsmasq.
+
+See also sample configs in `docs/router/`:
+
+- `docs/router/dnsmasq.conf.example`
+- `docs/router/hosts.example`
+- `docs/router/openwrt-uci.sh`
+
+## Notes
+
+- This tool modifies network configuration (adds/removes IP aliases), announces ARP, and optionally tweaks iptables. Run it on a test machine or ensure you understand the changes.
+- Many operations require root: always `sudo` when starting servers or managing IPs.
+- For HTTPS with self-signed or mkcert, clients may require trust steps. mkcert typically installs a local CA in your OS trust store.
+
+## For DevOps and junior engineers
+
+- Start quickly with `sudo arpx up -n 2` and confirm LAN access from a phone.
+- Use `--log-level DEBUG` to see detailed logs (`arpx.*` loggers).
+- Bridge your local Compose stack to the LAN with `sudo arpx compose`.
+- Use `arpx dns` to generate dnsmasq rules for a local domain like `myapp.lan`.
+
+## Contributing
+
+PRs welcome! Check `CHANGELOG.md` and `docs/SPEC.md`. To run unit tests:
+
+```bash
+uv pip install -e .
+uv pip install pytest
+pytest -q
+```
+
+## License
+
+This project is licensed under the Apache License 2.0. See the `LICENSE` file for details. If you distribute this software, please include the license and NOTICE where appropriate.
+
