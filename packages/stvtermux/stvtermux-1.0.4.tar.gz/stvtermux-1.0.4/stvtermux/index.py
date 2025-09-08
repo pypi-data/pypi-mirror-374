@@ -1,0 +1,1 @@
+print("🎉 Xin chào! Bạn đã vào file in.py")
