@@ -1,0 +1,110 @@
+Metadata-Version: 2.4
+Name: apk_patchx
+Version: 7.9.2025.4
+Summary: Android APK manipulation toolkit with Frida gadget injection support
+Keywords: android,apk,reverse-engineering,frida,patching
+Author: APKPatcher Contributors
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Security
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Topic :: System :: Software Distribution
+License-File: LICENSE
+Requires-Dist: click>=8.0.0
+Requires-Dist: requests>=2.25.0
+Requires-Dist: tqdm>=4.60.0
+Requires-Dist: colorama>=0.4.4
+Project-URL: Homepage, https://github.com/kaifcodec/apk-patchx
+Project-URL: Issues, https://github.com/kaifcodec/apk-patchx/issues
+Project-URL: Repository, https://github.com/kaifcodec/apk-patchx.git
+
+# APK-Patchx
+
+A powerful command-line tool for Android APK manipulation, including Frida gadget injection, APK decoding/building, and package management.
+
+## Features
+
+- **APK Management**: Pull, decode, build, and sign APK files
+- **Frida Integration**: Inject Frida gadgets for runtime manipulation
+- **Split APK Support**: Automatically merge split APKs into single files
+- **Package Renaming**: Change APK package names
+- **Auto-bootstrap**: Automatically downloads and manages required tools
+
+## Installation
+
+```bash
+pip install apk_patchx
+```
+
+## Usage
+
+### Pull APK from device
+```bash
+apk_patchx pull com.example.app
+```
+
+### Decode APK
+```bash
+apk_patchx decode app.apk
+```
+
+### Build APK from source
+```bash
+apk_patchx build app_src/
+```
+
+### Patch APK with Frida gadget
+```bash
+apk_patchx patch app.apk --arch arm64
+```
+
+### Rename APK package
+```bash
+apk_patchx rename app.apk com.newpackage.name
+```
+
+### Sign APK
+```bash
+apk_patchx sign app.apk
+```
+
+## Architecture Support
+
+- ARM (`arm`)
+- ARM64 (`arm64`) 
+- x86 (`x86`)
+- x86_64 (`x86_64`)
+
+## Requirements
+
+- Python 3.8+
+- Java Runtime Environment (JRE 8+)
+- ADB (for device operations)
+
+## Tool Management
+
+APK-Patchx automatically downloads and manages required tools in `~/.apk_patchx/tools/`:
+
+- apktool
+- Android SDK build-tools
+- Platform tools (adb)
+- dexpatch
+- Frida gadgets
+
+## License
+
+MIT License - see LICENSE file for details.
+
