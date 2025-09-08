@@ -1,0 +1,26 @@
+[build-system]
+requires = ["maturin>=0.13"]
+build-backend = "maturin"
+
+[project]
+name = "box-intersect-lib-py"
+requires-python = ">=3.8"
+requires = ["numpy"]
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+]
+description = "Box intersection/overlap/density algorithms in Rust with python bindings."
+license = {file = "LICENSE.txt"}
+keywords = ["box", "algorithm", "rust", "python", "pyo3"]
+readme = "README.md"
+
+[project.urls]
+Homepage = "https://github.com/Techcyte/box-intersect-lib"
+Repository = "https://github.com/Techcyte/box-intersect-lib.git"
+
+[tool]
+
+[tool.maturin]
+manifest-path = "box-intersect-lib-py/Cargo.toml"
+
