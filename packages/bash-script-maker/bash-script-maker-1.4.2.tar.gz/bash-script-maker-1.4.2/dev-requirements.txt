@@ -1,0 +1,34 @@
+# Development dependencies for Bash-Script-Maker
+# Install with: pip install -r dev-requirements.txt
+
+# Testing
+pytest>=6.0.0
+pytest-cov>=2.10.0
+
+# Code Quality
+flake8>=3.8.0
+black>=21.0.0
+mypy>=0.800
+isort>=5.12.0
+
+# Security
+bandit>=1.7.0
+safety>=2.0.0
+
+# Build & Publish
+twine>=3.0.0
+build>=0.7.0
+setuptools>=61.0
+wheel>=0.37.0
+
+# Documentation
+pdoc3>=0.10.0
+
+# Pre-commit hooks
+pre-commit>=2.0.0
+
+# Type checking extras
+types-all
+
+# Tox for multi-environment testing
+tox>=3.20.0
