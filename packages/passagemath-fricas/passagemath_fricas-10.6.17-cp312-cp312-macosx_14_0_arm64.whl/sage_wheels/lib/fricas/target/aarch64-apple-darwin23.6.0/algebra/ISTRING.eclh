@@ -1,0 +1,94 @@
+
+#ifdef ECL_DYNAMIC_VV
+static cl_object *VV;
+#else
+static cl_object VV[VM];
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+static cl_object L1065_istring_new_nnic__1_(cl_object , cl_object , cl_object );
+static cl_object L1066_istring_empty___2_(cl_object );
+static cl_object L1067_istring_empty___b_3_(cl_object , cl_object );
+static cl_object L1068_istring____nni_4_(cl_object , cl_object );
+static cl_object L1069_istring___2_b_5_(cl_object , cl_object , cl_object );
+static cl_object L1070_istring___2_b_6_(cl_object , cl_object , cl_object );
+static cl_object L1071_istring_concat_3__7_(cl_object , cl_object , cl_object );
+static cl_object L1072_istring_copy_2__8_(cl_object , cl_object );
+static cl_object L1073_istring_insert_2_i__9_(cl_object , cl_object , cl_object , cl_object );
+static cl_object L1074_istring_coerce__of_10_(cl_object , cl_object );
+static cl_object L1075_istring_minindex__i_11_(cl_object , cl_object );
+static cl_object L1076_istring_uppercase__2__12_(cl_object , cl_object );
+static cl_object L1077_istring_lowercase__2__13_(cl_object , cl_object );
+static cl_object L1078_istring_replace__us2__14_(cl_object , cl_object , cl_object , cl_object );
+static cl_object L1079_istring_qsetelt___i2c_15_(cl_object , cl_object , cl_object , cl_object );
+static cl_object L1080_istring_setelt___i2c_16_(cl_object , cl_object , cl_object , cl_object );
+static cl_object L1081_istring_substring__2_ib_17_(cl_object , cl_object , cl_object , cl_object );
+static cl_object L1082_istring_position_2_2i_18_(cl_object , cl_object , cl_object , cl_object );
+static cl_object L1083_istring_position_c_2i_19_(cl_object , cl_object , cl_object , cl_object );
+static cl_object L1084_istring_position_cc_2i_20_(cl_object , cl_object , cl_object , cl_object );
+static cl_object L1085_istring_suffix__2_b_21_(cl_object , cl_object , cl_object );
+static cl_object L1086_istring_split__cl_22_(cl_object , cl_object , cl_object );
+static cl_object L1087_istring_split__ccl_23_(cl_object , cl_object , cl_object );
+static cl_object L1088_istring_lefttrim__cc__24_(cl_object , cl_object , cl_object );
+static cl_object L1089_istring_righttrim__cc__25_(cl_object , cl_object , cl_object );
+static cl_object L1090_istring_concat_l__26_(cl_object , cl_object );
+static cl_object L1091_istring_copyinto__2_i__27_(cl_object , cl_object , cl_object , cl_object );
+static cl_object L1092_istring_join__l__28_(cl_object , cl_object , cl_object );
+static cl_object L1093_istring_qelt__ic_29_(cl_object , cl_object , cl_object );
+static cl_object L1094_istring_elt__ic_30_(cl_object , cl_object , cl_object );
+static cl_object L1095_istring_elt__us__31_(cl_object , cl_object , cl_object );
+static cl_object L1096_istring_hashupdate__hs_hs_32_(cl_object , cl_object , cl_object );
+static cl_object L1097_istring_match__2_cb_33_(cl_object , cl_object , cl_object , cl_object );
+static cl_object L1098_indexedstring__(cl_object );
+static cl_object L1099_indexedstring_(cl_object volatile );
+static cl_object Cblock;
+#define VM 113
+#define VMtemp 101
+#define ECL_DEFINE_SETF_FUNCTIONS 
+#ifdef __cplusplus
+}
+#endif
+/*
+ * Exported Lisp functions
+ */
+#define compiler_cfuns_size 35
+static const struct ecl_cfunfixed compiler_cfuns[] = {
+ /*t,m,narg,padding,name=function-location,block=name-location,entry,entry_fixed,file,file_position*/
+{0,0,3,0,ecl_make_fixnum(59),ecl_make_fixnum(0),(cl_objectfn)L1065_istring_new_nnic__1_,NULL,ECL_NIL,ecl_make_fixnum(64)},
+{0,0,1,0,ecl_make_fixnum(60),ecl_make_fixnum(3),(cl_objectfn)L1066_istring_empty___2_,NULL,ECL_NIL,ecl_make_fixnum(277)},
+{0,0,2,0,ecl_make_fixnum(62),ecl_make_fixnum(4),(cl_objectfn)L1067_istring_empty___b_3_,NULL,ECL_NIL,ecl_make_fixnum(338)},
+{0,0,2,0,ecl_make_fixnum(63),ecl_make_fixnum(5),(cl_objectfn)L1068_istring____nni_4_,NULL,ECL_NIL,ecl_make_fixnum(471)},
+{0,0,3,0,ecl_make_fixnum(64),ecl_make_fixnum(7),(cl_objectfn)L1069_istring___2_b_5_,NULL,ECL_NIL,ecl_make_fixnum(602)},
+{0,0,3,0,ecl_make_fixnum(65),ecl_make_fixnum(8),(cl_objectfn)L1070_istring___2_b_6_,NULL,ECL_NIL,ecl_make_fixnum(765)},
+{0,0,3,0,ecl_make_fixnum(67),ecl_make_fixnum(9),(cl_objectfn)L1071_istring_concat_3__7_,NULL,ECL_NIL,ecl_make_fixnum(915)},
+{0,0,2,0,ecl_make_fixnum(68),ecl_make_fixnum(11),(cl_objectfn)L1072_istring_copy_2__8_,NULL,ECL_NIL,ecl_make_fixnum(1050)},
+{0,0,4,0,ecl_make_fixnum(69),ecl_make_fixnum(12),(cl_objectfn)L1073_istring_insert_2_i__9_,NULL,ECL_NIL,ecl_make_fixnum(1116)},
+{0,0,2,0,ecl_make_fixnum(70),ecl_make_fixnum(13),(cl_objectfn)L1074_istring_coerce__of_10_,NULL,ECL_NIL,ecl_make_fixnum(1470)},
+{0,0,2,0,ecl_make_fixnum(71),ecl_make_fixnum(14),(cl_objectfn)L1075_istring_minindex__i_11_,NULL,ECL_NIL,ecl_make_fixnum(1574)},
+{0,0,2,0,ecl_make_fixnum(72),ecl_make_fixnum(15),(cl_objectfn)L1076_istring_uppercase__2__12_,NULL,ECL_NIL,ecl_make_fixnum(1652)},
+{0,0,2,0,ecl_make_fixnum(73),ecl_make_fixnum(16),(cl_objectfn)L1077_istring_lowercase__2__13_,NULL,ECL_NIL,ecl_make_fixnum(1759)},
+{0,0,4,0,ecl_make_fixnum(74),ecl_make_fixnum(17),(cl_objectfn)L1078_istring_replace__us2__14_,NULL,ECL_NIL,ecl_make_fixnum(1866)},
+{0,0,4,0,ecl_make_fixnum(77),ecl_make_fixnum(21),(cl_objectfn)L1079_istring_qsetelt___i2c_15_,NULL,ECL_NIL,ecl_make_fixnum(4101)},
+{0,0,4,0,ecl_make_fixnum(78),ecl_make_fixnum(22),(cl_objectfn)L1080_istring_setelt___i2c_16_,NULL,ECL_NIL,ecl_make_fixnum(4259)},
+{0,0,4,0,ecl_make_fixnum(79),ecl_make_fixnum(23),(cl_objectfn)L1081_istring_substring__2_ib_17_,NULL,ECL_NIL,ecl_make_fixnum(4554)},
+{0,0,4,0,ecl_make_fixnum(80),ecl_make_fixnum(25),(cl_objectfn)L1082_istring_position_2_2i_18_,NULL,ECL_NIL,ecl_make_fixnum(6417)},
+{0,0,4,0,ecl_make_fixnum(82),ecl_make_fixnum(26),(cl_objectfn)L1083_istring_position_c_2i_19_,NULL,ECL_NIL,ecl_make_fixnum(7102)},
+{0,0,4,0,ecl_make_fixnum(83),ecl_make_fixnum(27),(cl_objectfn)L1084_istring_position_cc_2i_20_,NULL,ECL_NIL,ecl_make_fixnum(8448)},
+{0,0,3,0,ecl_make_fixnum(84),ecl_make_fixnum(28),(cl_objectfn)L1085_istring_suffix__2_b_21_,NULL,ECL_NIL,ecl_make_fixnum(9876)},
+{0,0,3,0,ecl_make_fixnum(85),ecl_make_fixnum(29),(cl_objectfn)L1086_istring_split__cl_22_,NULL,ECL_NIL,ecl_make_fixnum(10357)},
+{0,0,3,0,ecl_make_fixnum(86),ecl_make_fixnum(30),(cl_objectfn)L1087_istring_split__ccl_23_,NULL,ECL_NIL,ecl_make_fixnum(12544)},
+{0,0,3,0,ecl_make_fixnum(87),ecl_make_fixnum(31),(cl_objectfn)L1088_istring_lefttrim__cc__24_,NULL,ECL_NIL,ecl_make_fixnum(14815)},
+{0,0,3,0,ecl_make_fixnum(88),ecl_make_fixnum(32),(cl_objectfn)L1089_istring_righttrim__cc__25_,NULL,ECL_NIL,ecl_make_fixnum(15649)},
+{0,0,2,0,ecl_make_fixnum(89),ecl_make_fixnum(33),(cl_objectfn)L1090_istring_concat_l__26_,NULL,ECL_NIL,ecl_make_fixnum(16515)},
+{0,0,4,0,ecl_make_fixnum(90),ecl_make_fixnum(34),(cl_objectfn)L1091_istring_copyinto__2_i__27_,NULL,ECL_NIL,ecl_make_fixnum(17956)},
+{0,0,3,0,ecl_make_fixnum(92),ecl_make_fixnum(35),(cl_objectfn)L1092_istring_join__l__28_,NULL,ECL_NIL,ecl_make_fixnum(18496)},
+{0,0,3,0,ecl_make_fixnum(93),ecl_make_fixnum(36),(cl_objectfn)L1093_istring_qelt__ic_29_,NULL,ECL_NIL,ecl_make_fixnum(21502)},
+{0,0,3,0,ecl_make_fixnum(94),ecl_make_fixnum(37),(cl_objectfn)L1094_istring_elt__ic_30_,NULL,ECL_NIL,ecl_make_fixnum(21627)},
+{0,0,3,0,ecl_make_fixnum(95),ecl_make_fixnum(38),(cl_objectfn)L1095_istring_elt__us__31_,NULL,ECL_NIL,ecl_make_fixnum(21889)},
+{0,0,3,0,ecl_make_fixnum(97),ecl_make_fixnum(39),(cl_objectfn)L1096_istring_hashupdate__hs_hs_32_,NULL,ECL_NIL,ecl_make_fixnum(22667)},
+{0,0,4,0,ecl_make_fixnum(98),ecl_make_fixnum(41),(cl_objectfn)L1097_istring_match__2_cb_33_,NULL,ECL_NIL,ecl_make_fixnum(22805)},
+{0,0,1,0,ecl_make_fixnum(99),ecl_make_fixnum(42),(cl_objectfn)L1098_indexedstring__,NULL,ECL_NIL,ecl_make_fixnum(27552)},
+{0,0,1,0,ecl_make_fixnum(108),ecl_make_fixnum(43),(cl_objectfn)L1099_indexedstring_,NULL,ECL_NIL,ecl_make_fixnum(33190)},
+};
