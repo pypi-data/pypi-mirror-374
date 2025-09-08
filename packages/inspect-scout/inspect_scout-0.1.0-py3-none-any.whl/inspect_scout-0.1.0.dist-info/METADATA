@@ -1,0 +1,48 @@
+Metadata-Version: 2.4
+Name: inspect_scout
+Version: 0.1.0
+Summary: AI Analysis
+Project-URL: Source Code, https://github.com/meridianlabs-ai/inspect_scout
+Project-URL: Issue Tracker, https://github.com/meridianlabs-ai/inspect_scout/issues
+Author: Meridian Labs
+License: MIT License
+License-File: LICENSE
+Requires-Python: >=3.10
+Requires-Dist: typing-extensions>=4.9.0
+Provides-Extra: dev
+Requires-Dist: anthropic; extra == 'dev'
+Requires-Dist: mypy; extra == 'dev'
+Requires-Dist: openai; extra == 'dev'
+Requires-Dist: pytest; extra == 'dev'
+Requires-Dist: pytest-dotenv; extra == 'dev'
+Requires-Dist: ruff; extra == 'dev'
+Description-Content-Type: text/markdown
+
+Welcome to Inspect Scout.
+
+## Installation
+
+Latest development version:
+
+```bash
+pip install git+https://github.com/meridianlabs-ai/inspect_scout
+```
+
+## Development
+
+To work on development of Inspect Scout, clone the repository and install with the `-e` flag and `[dev]` optional dependencies:
+
+```bash
+git clone https://github.com/meridianlabs-ai/inspect_scout
+cd inspect_scout
+pip install -e ".[dev]"
+```
+
+Run linting, formatting, and tests via
+
+```bash
+make check
+make test
+```
+
+
