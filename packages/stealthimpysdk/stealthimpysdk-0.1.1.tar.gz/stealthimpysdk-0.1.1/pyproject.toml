@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stealthimpysdk"       # pip 安装名
+version = "0.1.1"             # 版本
+description = "The SDK for StealthIM"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+  { name = "Ken", email = "keniis@126.com" }
+]
+dependencies = [
+  "aiohttp>=3.12.15"
+]
+requires-python = ">=3.9"
+
+[project.urls]
+Homepage = "https://github.com/StealthIM/StealthIMPythonSDK"
