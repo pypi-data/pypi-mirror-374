@@ -1,0 +1,28 @@
+include README.md
+include LICENSE
+recursive-include viewscope *.py
+recursive-include viewscope/static *
+
+# 排除开发文件
+exclude start.bat
+exclude requirements.txt
+exclude main.py
+
+# 排除源码目录
+exclude frontend/*
+recursive-exclude frontend *
+exclude backend/*
+recursive-exclude backend *
+
+# 排除其他文档
+global-exclude README*.md
+global-exclude WEDITOR*.md
+
+# 排除临时文件
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *~
+global-exclude .DS_Store
+global-exclude __pycache__
+global-exclude .git*
+global-exclude *.log
