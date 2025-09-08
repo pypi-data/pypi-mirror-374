@@ -1,0 +1,176 @@
+Metadata-Version: 2.4
+Name: TempMailGenerator
+Version: 1.0.7
+Summary: A lightweight temporary email generator built with Flask (Python) and a modern frontend. It allows you to quickly generate disposable email addresses, view incoming messages, and refresh your inbox automatically.
+Home-page: https://github.com/jo0x01/TempMail-Generator
+Author: JoOx01
+License: MIT
+Keywords: tempmail,tmail,email,mail,temporary-email,disposable-mail
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.1
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: flask
+Requires-Dist: requests
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+<p align="center">
+  <a href="https://github.com/Jo0X01/TempMail-Generator">
+    <img src="https://raw.githubusercontent.com/Jo0X01/TempMail-Generator/refs/heads/main/TempMailGenerator.ico" alt="Temp Mail Generator" width="300" height="250">
+  </a>
+</p>
+<p align="center">
+  <a href="https://pypi.org/project/TempMailGenerator/">
+    <img src="https://img.shields.io/badge/-PyPi-blue.svg?logo=pypi&labelColor=555555&style=for-the-badge" alt="PyPi">
+  </a>
+  <a href="https://github.com/Jo0X01/TempMail-Generator">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge" alt="License: MIT">
+  </a>
+</p>
+
+
+# Temp Mail Generator
+
+A lightweight **temporary email generator** built with Flask (Python) and a modern frontend. It allows you to quickly generate disposable email addresses, view incoming messages, and refresh your inbox automatically.
+
+---
+
+## Demo
+
+You can try the live demo here:  
+**[View Demo on GitHub](https://htmlpreview.github.io/?https://github.com/Jo0X01/TempMail-Generator/blob/main/TempMailGenerator/index.html)**
+
+---
+
+## Features
+
+- **Generate temporary emails** with one click
+- **Read incoming messages** in a modern inbox interface
+- Automatic inbox refresh every 10 seconds
+- Copy email to clipboard
+- Frontend with animated gradient UI
+- Multiple API key fallback for reliability
+- CLI support with `temp-mail` command after installation
+
+---
+
+## Prerequisites
+
+- Python 3.0+
+- pip (Python package manager)
+- A [RapidAPI](https://rapidapi.com/) account with access to [Temp Mail 44 API](https://rapidapi.com/calvinloveland335703-0p6BxLYIH8f/api/temp-mail44)
+
+---
+
+## Installation
+
+### From PyPI
+```bash
+pip install TempMailGenerator
+```
+
+or
+
+```bash
+pip3 install TempMailGenerator
+```
+
+### From Source
+```bash
+git clone https://github.com/Jo0X01/TempMail-Generator.git
+cd TempMail-Generator
+pip install -r requirements.txt
+```
+
+---
+
+## Configuration
+
+To edit your API keys and endpoints:
+```bash
+temp-mail --config
+```
+*(or `python main.py --config` if running from source)*
+
+---
+
+## Usage
+
+### Start the server (recommended way)
+
+```bash
+python -m TempMailGenerator
+```
+
+### OR
+
+```bash
+temp-mail
+```
+
+### With custom options
+```bash
+temp-mail --host 0.0.0.0 --port 8080 --no-browser
+```
+
+### From source code
+```bash
+python main.py
+```
+
+---
+
+## API Endpoints
+
+### `GET /`
+Serves the frontend interface (`./index.html`).
+
+### `GET /generate`
+Generates a new temporary email.
+
+Example Response:
+```json
+{
+  "email": "example@domain.com",
+  "token": "hash_token"
+}
+```
+
+### `GET /inbox?tk=<token>`
+Fetches inbox messages for the generated email.
+
+Example Response:
+```json
+{
+  "messages": [
+    {
+      "id": "msg123",
+      "from": "sender@example.com",
+      "subject": "Welcome!",
+      "body_text": "Hello World",
+      "created_at": "2025-09-04T10:00:00Z"
+    }
+  ]
+}
+```
+
+---
+
+## License
+
+This project is licensed under the **MIT License**.
