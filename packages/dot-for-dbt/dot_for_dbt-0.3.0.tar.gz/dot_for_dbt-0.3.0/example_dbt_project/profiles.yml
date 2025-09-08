@@ -1,0 +1,12 @@
+example_dbt_project:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: C:\Users\adam\code\dot\example_dbt_project\dbt.duckdb
+      schema: dev
+      threads: 1
+    prod:
+      type: duckdb
+      path: C:\Users\adam\code\dot\example_dbt_project\dbt.duckdb
+      threads: 1
