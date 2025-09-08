@@ -1,0 +1,29 @@
+Metadata-Version: 2.4
+Name: ljobx
+Version: 0.0.4
+Summary: A powerful, asynchronous scraper for LinkedIn job postings without authentication.
+Author-email: Tushar Kumar <tusharkr1918@gmail.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/tusharkr1918/ljobx
+Project-URL: Bug Tracker, https://github.com/tusharkr1918/ljobx/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Internet :: WWW/HTTP :: Indexing/Search
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: httpx>=0.27.0
+Requires-Dist: beautifulsoup4>=4.12.3
+
+# ljobx - LinkedIn Guest Job Scraper
+
+A fast and simple command-line tool to scrape LinkedIn job postings without needing to log in.
+
+## Installation
+
+Install `ljobx` directly from PyPI:
+
+```sh
+pip install ljobx
