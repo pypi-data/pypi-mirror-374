@@ -1,0 +1,693 @@
+<!--suppress HtmlUnknownTarget, CssUnusedSymbol, HtmlDeprecatedAttribute -->
+{% extends "base.j2" %}
+{% from "components/comments.j2" import Comments %}
+{% from "components/tags.j2" import Tags %}
+{% import "components/icons.j2" as icons %}
+
+{% block title %}{{ "{} by {}".format(submission.TITLE, submission.AUTHOR) }}{% endblock %}
+
+{% block head %}
+    <style>
+        @media (min-width: 992px) {
+            #metadata {
+                min-height: 60vh;
+            }
+        }
+
+        @media (max-width: 991px) {
+            #files {
+                --files-height: 50vh
+            }
+        }
+
+        [data-file-index]:not([data-selected=true]):not(.no-hide) {
+            display: none !important;
+        }
+
+        #files {
+            position: relative;
+            height: var(--files-height, 60vh);
+            min-height: var(--files-height, 60vh);
+            max-height: var(--files-height, 60vh);
+            transition: transform 250ms, height 250ms, min-height 250ms;
+
+            > .file-container {
+                position: relative;
+                height: 100%;
+                min-height: 100%;
+                text-align: center;
+
+                > object {
+                    height: 100%;
+                    min-height: 100%;
+                    max-height: 100%;
+                }
+
+                > img {
+                    max-width: 100%;
+                    max-height: 100%;
+                    object-fit: contain;
+                    cursor: zoom-in;
+                }
+
+                > img.loading-spinner:not(.loaded) {
+                    margin-top: 40%;
+                }
+            }
+        }
+
+        #files.zoom {
+            --files-height: 75vh !important;
+        }
+
+        #files.zoom .btn.btn-zoom {
+            --bs-btn-color: var(--bs-btn-active-color);
+            --bs-btn-bg: var(--bs-btn-active-bg);
+            --bs-btn-border-color: var(--bs-btn-active-border-color);
+            --bs-btn-shadow: var(--bs-btn-active-shadow);
+        }
+
+        #files:not(.zoom) .btn-zoom {
+            --bs-btn-border-color: var(--bs-border-color);
+        }
+
+        #files.floating {
+            position: sticky;
+            top: .25rem;
+            z-index: 800;
+            transform: translateY(.25rem);
+        }
+
+        #files::before {
+            border-radius: var(--bs-border-radius);
+            background: rgba(var(--bs-body-color-rgb), 0);
+            transition: background 250ms;
+        }
+
+        #files.floating::before {
+            position: absolute;
+            z-index: -1;
+            content: "";
+            top: -.5rem;
+            right: 0;
+            bottom: -.5rem;
+            left: 0;
+            border-radius: var(--bs-border-radius);
+            background: rgba(var(--bs-body-color-rgb), .05);
+            -webkit-animation: blur 250ms forwards;
+            -o-animation: blur 250ms forwards;
+            animation: blur 250ms forwards;
+        }
+
+        #modal-image-img {
+            cursor: zoom-out;
+            max-width: 100%;
+        }
+
+        {% if files|length > 1 %}
+            .files-pagination {
+                > button {
+                    padding: .25rem 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 25%;
+                    max-width: 25%;
+                }
+
+                > button.counter {
+                    pointer-events: none !important;
+                }
+
+                > button.counter [data-selected-index]::after {
+                    content: attr(data-selected-index);
+                }
+
+                button.prev[data-index="0"],
+                button.next[data-index="0"] {
+                    pointer-events: none !important;
+                    opacity: .75;
+                }
+            }
+
+            #modal-files .file-selector {
+                height: 6rem;
+                transition: box-shadow 150ms;
+                cursor: pointer;
+
+                > .thumbnail {
+                    width: 6rem;
+                    min-width: 6rem;
+                }
+            }
+
+            #modal-files .file-selector br {
+                display: none;
+            }
+
+            #modal-files .file-selector:hover {
+                box-shadow: 0 0 0 2px rgba(var(--bs-primary-rgb), .5) !important;
+            }
+
+            #modal-files .file-selector[data-selected=true] {
+                box-shadow: 0 0 0 2px rgba(var(--bs-info-rgb), .5);
+            }
+        {% endif %}
+    </style>
+
+    {% if files or thumbnail %}
+        <script>
+            const modalImage = (img) => {
+                const modal = document.getElementById("modal-image")
+                const modalImage = document.getElementById("modal-image-img")
+                if (img?.src) {
+                    modalImage.src = img.src
+                    modal.classList.add("show")
+                    document.body.classList.add("overflow-hidden")
+                } else {
+                    modal.scrollTo({top: 0})
+                    modal.classList.remove("show")
+                    document.body.classList.remove("overflow-hidden")
+                    modalImage.src = ""
+                }
+                return !!img
+            }
+
+            const zoomFiles = () => {
+                const files = document.getElementById("files")
+                if (files.classList.contains("zoom")) files.classList.remove("zoom")
+                else files.classList.add("zoom")
+                return files.classList.contains("zoom")
+            }
+
+            const floatingFiles = () => {
+                const files = document.getElementById("files")
+                if (files.classList.contains("floating")) files.classList.remove("floating")
+                else files.classList.add("floating")
+                return files.classList.contains("floating")
+            }
+
+            {% if files|length > 1 %}
+                const modalFiles = (toggle) => {
+                    document.querySelectorAll("video").forEach(v => v.pause())
+                    const modal = document.getElementById("modal-files")
+                    if (toggle === false || modal.classList.contains("show")) {
+                        modal.scrollTo({top: 0})
+                        modal.classList.remove("show")
+                        document.body.classList.remove("overflow-hidden")
+                    } else if (toggle !== false) {
+                        modal.classList.add("show")
+                        document.body.classList.add("overflow-hidden")
+                    }
+                    return modal.classList.contains("show")
+                }
+
+                const selectFile = (index) => {
+                    document.querySelectorAll("video").forEach(v => v.pause())
+                    index = String(index)
+                    document.querySelectorAll("[data-file-index]").forEach(e => e.dataset.selected = String(e.dataset.fileIndex === index))
+                    document.querySelectorAll("[data-selected-index]").forEach(e => e.dataset.selectedIndex = String(Number(index) + 1))
+                    window.onresize(null)
+                    document.getElementById("files").classList.remove("zoom")
+                    document.getElementById("modal-files").classList.remove("show")
+                    document.querySelectorAll(".files-pagination .prev").forEach(b => b.dataset.index = String(index))
+                    document.querySelectorAll(".files-pagination .next").forEach(b => b.dataset.index = String({{ (files|length) - 1 }} - index))
+                }
+            {% endif %}
+        </script>
+        {% if "swf" in submission.FILEEXT|map("lower")|list %}
+            <!--suppress JSUnresolvedLibraryURL -->
+            <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% set search_pagination %}
+{% if search_id %}
+    <div class="btn-group btn-group-sm">
+        <a class="btn btn-primary {{ "disabled" if not search_prev }}"
+           href="/submission/{{ search_prev }}?sid={{ search_index - 1 }}.{{ search_id|urlencode }}">
+            &laquo;
+        </a>
+        <a class="btn btn-primary" href="/submissions?sid={{ search_id|urlencode }}">
+            Search
+        </a>
+        <a class="btn btn-primary {{ "disabled" if not search_next }}"
+           href="/submission/{{ search_next }}?sid={{ search_index + 1 }}.{{ search_id|urlencode }}">
+            &raquo;
+        </a>
+    </div>
+{% endif %}
+{% endset %}
+
+{% set gallery_pagination %}
+<div class="btn-group btn-group-sm">
+    <a class="btn btn-primary {{ "disabled" if not next }}" href="/submission/{{ next }}">
+        &laquo;
+    </a>
+    <a class="btn btn-primary" href="/gallery/{{ submission.AUTHOR|urlencode }}">
+        Gallery
+    </a>
+    <a class="btn btn-primary" href="/submissions/{{ submission.AUTHOR|urlencode }}">
+        All
+    </a>
+    <a class="btn btn-primary" href="/scraps/{{ submission.AUTHOR|urlencode }}">
+        Scraps
+    </a>
+    <a class="btn btn-primary {{ "disabled" if not prev }}" href="/submission/{{ prev }}">
+        &raquo;
+    </a>
+</div>
+{% endset %}
+
+{% set files_pagination %}
+<div class="btn-group btn-group-sm files-pagination">
+    <button class="btn btn-primary prev" data-selected-index="1" data-index="0"
+            onclick="selectFile(Number(this.dataset.selectedIndex) - 2)">
+        &laquo;
+    </button>
+
+    <button class="btn btn-primary counter">
+        <span><span data-selected-index="1"></span> of {{ files|length }}</span>
+    </button>
+
+    <button class="btn btn-primary" onclick="modalFiles()">
+        Files
+    </button>
+
+    <button class="btn btn-primary next" data-selected-index="1"
+            data-index="{{ (files|length) - 1 }}"
+            onclick="selectFile(Number(this.dataset.selectedIndex))">
+        &raquo;
+    </button>
+</div>
+{% endset %}
+
+{% block main %}
+    <div class="modal fade blur text-center p-2" id="modal-image" onclick="modalImage()">
+        <img id="modal-image-img" src="" alt="">
+    </div>
+
+    {% if files|length > 1 %}
+        <div class="modal fade blur" id="modal-files">
+            <div class="modal-backdrop" onclick="modalFiles()"></div>
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header p-2 p-sm-3">
+                        <h5 class="modal-title">Files</h5>
+                        <button type="button" class="btn-close" onclick="modalFiles()"></button>
+                    </div>
+                    <div class="modal-body p-2 p-sm-3">
+                        <div class="row row-gap-2">
+                            {% for file, mime, text in files %}
+                                {% set mime = mime or "" %}
+                                <div class="col col-12 col-lg-6 col-xl-4">
+                                    <div class="border rounded p-1 d-flex flex-row file-selector no-hide"
+                                         data-file-index="{{ loop.index0 }}"
+                                         data-selected="{{ "true" if loop.first else "false" }}"
+                                         onclick="selectFile(this.dataset.fileIndex); modalFiles(false)">
+                                        <div class="position-relative d-flex justify-content-center align-items-center thumbnail">
+                                            {% if mime.startswith("image/") %}
+                                                <img src="/submission/{{ submission.ID }}/file/{{ loop.index0 }}/{{ "{:010d}-{}{}?m={}".format(submission.ID, loop.index0, file.suffix, request.state.database.m_time) }}"
+                                                     alt=""
+                                                     class="loading-element loading-error-hide mh-100 mw-100 rounded"
+                                                     loading="lazy" onload="this.classList.add('loaded')"
+                                                     onerror="this.classList.add('loading-error')">
+                                                {{ icons.Image(50, 50, "loading-onerror") }}
+                                            {% elif mime.startswith("audio/") %}
+                                                {{ icons.Headphones(50, 50) }}
+                                            {% elif mime.startswith("video/") %}
+                                                {{ icons.PlayBtn(50, 50) }}
+                                            {% elif mime == "application/pdf" %}
+                                                {{ icons.FileEarmarkPDF(50, 50) }}
+                                            {% elif mime == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" %}
+                                                {{ icons.FileEarmarkRichText(50, 50) }}
+                                            {% elif mime == "application/msword" %}
+                                                {{ icons.FileEarmarkRichText(50, 50) }}
+                                            {% elif mime == "application/vnd.oasis.opendocument.text" %}
+                                                {{ icons.FileEarmarkRichText(50, 50) }}
+                                            {% elif mime == "application/rtf" %}
+                                                {{ icons.FileEarmarkRichText(50, 50) }}
+                                            {% elif mime == "application/zip" %}
+                                                {{ icons.FileEarmarkZip(50, 50) }}
+                                            {% elif text %}
+                                                {{ icons.FileEarmarkText(50, 50) }}
+                                            {% else %}
+                                                {{ icons.FileEarmark(50, 50) }}
+                                            {% endif %}
+                                        </div>
+                                        <div class="ps-2 d-flex flex-column justify-content-between overflow-hidden">
+                                            <div>File {{ loop.index }} {{ file.suffix.removeprefix(".").upper() }}</div>
+                                            {% if text %}
+                                                <div class="font-monospace text-wrap fst-italic pt-2"
+                                                     style="font-size: 75%">
+                                                    {{ text[:200]|clean_broken_tags|striptags|trim|safe }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col col-12 col-lg-7 col-xl-8" id="files">
+            {% if not files and not thumbnail %}
+                <div class="d-flex justify-content-center align-items-center">
+                    <span class="badge bg-danger">Submission has no files</span>
+                </div>
+            {% elif not files and thumbnail %}
+                <div class="file-container overflow-scroll position-relative" data-file-index="0" data-selected="true">
+                    <img src="/submission/{{ submission.ID }}/thumbnail/{{ "{:010d}-thumbnail{}?m={}".format(submission.ID, thumbnail.suffix, request.state.database.m_time) }}"
+                         alt="" class="loading-element loading-error-hide" loading="lazy"
+                         onload="this.classList.add('loaded')" onerror="this.classList.add('loading-error')"
+                         onclick="modalImage(this)" style="height: calc(100% - 2rem)">
+                    <div class="loading-spinner mt-5"></div>
+                    <div class="loading-onerror text-center mt-2">
+                        <span class="badge bg-danger">Submission has no files</span>
+                    </div>
+                    <div class="loading-onload text-center mt-2">
+                        <span class="badge bg-warning">No files available, showing thumbnail</span>
+                    </div>
+                </div>
+            {% else %}
+                {% for file, mime, text in files %}
+                    {% set name = "{:010d}-{}{}".format(submission.ID, loop.index0, file.suffix) %}
+                    {% set cache_flag = "?m={}".format(request.state.database.m_time) %}
+                    {% set name_cache = name + cache_flag %}
+                    {% set mime = mime or "" %}
+                    <div class="file-container overflow-scroll" data-file-index="{{ loop.index0 }}"
+                         data-selected="{{ "true" if loop.first else "false" }}">
+                        {% if text %}
+                            <div class="border rounded h-100 overflow-scroll p-2 pt-4 bg-body">
+                                <button class="btn btn-sm btn-dark p-1 position-absolute top-0 end-0 m-1 btn-zoom"
+                                        style="aspect-ratio: 1 / 1" onclick="zoomFiles()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                         fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5M.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5"></path>
+                                    </svg>
+                                </button>
+                                <div class="col col-12 col-xl-10 mx-auto">
+                                    <div class="text-start text-wrap font-monospace text-file"
+                                         style="font-size: smaller;">
+                                        {{ text|trim|safe }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% elif mime == "application/x-shockwave-flash" %}
+                            <div class="fit-height mx-auto flash-container loaded"
+                                 data-file="/submission/{{ submission.ID }}/file/{{ loop.index0 }}/{{ name_cache }}">
+                            </div>
+                        {% elif mime.startswith("image/") %}
+                            <img src="/submission/{{ submission.ID }}/file/{{ loop.index0 }}/{{ name_cache }}"
+                                 alt="" class="loading-element loading-error-hide" loading="lazy"
+                                 onload="this.classList.add('loaded')" onerror="this.classList.add('loading-error')"
+                                 onclick="modalImage(this)">
+                            <div class="loading-spinner mt-5"></div>
+                            <div class="loading-onerror mt-5">
+                                <span class="badge bg-danger">Image could not be loaded</span>
+                            </div>
+                        {% elif mime.startswith("audio/") %}
+                            <div class="mt-5 col-12 col-md-10 mx-auto" style="height: 3rem">
+                                <audio src="/submission/{{ submission.ID }}/file/{{ loop.index0 }}/{{ name_cache }}"
+                                       class="loading-element loading-error-hide w-100" preload="metadata"
+                                       onloadedmetadata="this.classList.add('loaded')"
+                                       onerror="this.classList.add('loading-error')" controls>
+                                </audio>
+                                <div class="loading-spinner"></div>
+                                <div class="loading-onerror">
+                                    <span class="badge bg-danger">Audio could not be loaded</span>
+                                </div>
+                            </div>
+                        {% elif mime.startswith("video/") %}
+                            <video class="loading-element loading-error-hide rounded mw-100 mh-100"
+                                   poster="/submission/{{ submission.ID }}/thumbnail{{ cache_flag }}"
+                                   preload="metadata" onloadedmetadata="this.classList.add('loaded')"
+                                   onplay="this.loop = this.duration <= 120"
+                                   playsinline controls>
+                                <source src="/submission/{{ submission.ID }}/file/{{ loop.index0 }}/{{ name_cache }}"
+                                        onerror="this.parentElement.classList.add('loading-error')"/>
+                            </video>
+                            <div class="loading-spinner mt-5"></div>
+                            <div class="loading-onerror mt-5">
+                                <span class="badge bg-danger">Video could not be loaded</span>
+                            </div>
+                        {% elif mime == "application/pdf" and not is_mobile %}
+                            <div class="h-100 overflow-hidden rounded position-relative">
+                                <iframe class="h-100 w-100"
+                                        src="/submission/{{ submission.ID }}/file/{{ loop.index0 }}/{{ name_cache }}">
+                                </iframe>
+                            </div>
+                        {% else %}
+                            <div class="d-flex align-items-center justify-content-center" style="height: 8rem">
+                                <img src="/submission/{{ submission.ID }}/thumbnail{{ cache_flag }}"
+                                     alt="" class="loading-element loading-error-hide mh-100 mw-100 rounded"
+                                     loading="lazy" onload="this.classList.add('loaded')"
+                                     onerror="this.classList.add('loading-error')">
+                                <div class="loading-spinner"></div>
+                                <div class="loading-onerror rounded bg-body-secondary"
+                                     style="height: 6rem; aspect-ratio: 1 / 1"></div>
+                            </div>
+                            <button class="btn btn-sm btn-primary position-relative mt-3">
+                                <a href="/submission/{{ submission.ID }}/file/{{ loop.index0 }}/{{ name_cache }}"
+                                   class="stretched-link" download="{{ name }}"></a>
+                                Download {{ file.suffix.upper().strip(".") or "file" }}
+                            </button>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="col col-12 col-lg-5 col-xl-4 mt-3 mt-lg-0 h-100" id="metadata">
+            <div class="properties-card d-lg-none mb-2">
+                <div class="controls">
+                    {{ gallery_pagination }}
+                </div>
+
+                {% if search_id %}
+                    <div class="controls">
+                        {{ search_pagination }}
+                    </div>
+                {% endif %}
+
+                {% if files|length > 1 %}
+                    <div class="controls">
+                        {{ files_pagination }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="properties-card">
+                <div class="title">
+                    {{ submission.TITLE }}
+                </div>
+
+                <div class="separator"></div>
+
+                <div class="property" data-key="Author">
+                    <a class="btn btn-xs btn-primary w-100 text-truncate" href="/user/{{ submission.AUTHOR }}">
+                        {{ submission.AUTHOR }}
+                    </a>
+                </div>
+                <div class="property" data-key="Date">
+                    <a class="btn btn-xs btn-primary text-truncate w-100"
+                       href="/submissions?query=%40date%20{{ submission.DATE.strftime("%Y-%m-%d")|urlencode }}">
+                        {{ submission.DATE.strftime("%Y-%m-%d %H:%M") }}
+                    </a>
+                </div>
+                <div class="property" data-key="Folder">
+                    <a class="btn btn-xs btn-primary w-100 text-truncate"
+                       href="/{{ submission.FOLDER }}/{{ submission.AUTHOR }}">
+                        {{ submission.FOLDER|title }}
+                    </a>
+                </div>
+                <div class="property" data-key="Type">
+                    <a class="btn btn-xs btn-primary w-100 text-truncate"
+                       href="/submissions?query=%40=type%20%22{{ submission.TYPE }}%22">
+                        {{ submission.TYPE|title }}
+                    </a>
+                </div>
+                <div class="property" data-key="Category">
+                    <a class="btn btn-xs btn-primary w-100 text-truncate"
+                       href="/submissions?query=%40=category%20%22{{ submission.CATEGORY }}%22">
+                        {{ submission.CATEGORY|title }}
+                    </a>
+                </div>
+                <div class="property" data-key="Species">
+                    <a class="btn btn-xs btn-primary w-100 text-truncate"
+                       href="/submissions?query=%40=species%20%22{{ submission.SPECIES }}%22">
+                        {{ submission.SPECIES|title }}
+                    </a>
+                </div>
+                <div class="property" data-key="Gender">
+                    <a class="btn btn-xs btn-primary w-100 text-truncate"
+                       href="/submissions?query=%40=gender%20%22{{ submission.GENDER }}%22">
+                        {{ (submission.GENDER or "-")|title }}
+                    </a>
+                </div>
+                <div class="property" data-key="Rating">
+                    <a class="btn btn-xs btn-primary w-100 text-truncate"
+                       href="/submissions?query=%40=rating%20%22{{ submission.RATING }}%22">
+                        {{ submission.RATING|title }}
+                    </a>
+                </div>
+                <div class="property" data-key="Tags">
+                    {{ Tags(submission.TAGS, "/search/submissions/?query=%40tags%20%22%7C{}%7C%22", "tags", "primary", "secondary") }}
+                </div>
+                <div class="property" data-key="Favorites">
+                    {{ Tags(submission.FAVORITE, "/user/{}", "favorites", "primary", "secondary") }}
+                </div>
+                <div class="property" data-key="Mentions">
+                    {{ Tags(submission.MENTIONS, "/user/{}", "mentions", "primary", "secondary") }}
+                </div>
+                <div class="property" data-key="Comments">
+                    {% if comments|length %}
+                        <button class="btn btn-xs btn-info w-100 text-truncate text-light"
+                                onclick="document.getElementById('comments')?.scrollIntoView()">
+                            {{ comments|sum(attribute="REPLIES_COUNT", start=comments|length) }}
+                        </button>
+                    {% else %}
+                        <span class="badge bg-info w-100 text-truncate">
+                            {{ comments|sum(attribute="REPLIES_COUNT", start=comments|length) }}
+                        </span>
+                    {% endif %}
+                </div>
+
+                <div class="separator"></div>
+
+                <div class="controls">
+                    <div class="btn-group btn-group-sm">
+                        <a class="btn btn-secondary disabled" disabled>Download</a>
+                        {% for file, _, __ in files %}
+                            <a class="btn btn-primary"
+                               data-file-index="{{ loop.index0 }}"
+                               data-selected="{{ "true" if loop.first else "false" }}"
+                               href="/submission/{{ submission.ID }}/file/{{ loop.index0 }}/{{ "{:010d}-{}{}".format(submission.ID, loop.index0, file.suffix) }}">
+                                File
+                            </a>
+                        {% endfor %}
+                        {% if not files and thumbnail %}
+                            <a class="btn btn-primary" data-file-index="0" data-selected="true"
+                               href="/submission/{{ submission.ID }}/thumbnail/{{ "{:010d}-thumbnail{}".format(submission.ID, thumbnail.suffix) }}">
+                                Thumbnail
+                            </a>
+                        {% endif %}
+                        <a class="btn btn-primary"
+                           href="/submission/{{ submission.ID }}/zip/{{ "{:010d}.zip".format(submission.ID) }}">
+                            ZIP
+                        </a>
+                    </div>
+                    {% if "editor" in request.auth.scopes %}
+                        <a href="/submission/{{ submission.ID }}/edit" class="btn btn-sm btn-primary">Edit</a>
+                    {% endif %}
+                    <a class="btn btn-sm btn-primary" href="https://furaffinity.net/view/{{ submission.ID }}"
+                       target="_blank">
+                        FA
+                    </a>
+                </div>
+
+                {% if files|length > 1 %}
+                    <div class="controls d-none d-lg-flex">
+                        {{ files_pagination }}
+                    </div>
+                {% endif %}
+
+                <div class="controls d-none d-lg-flex">
+                    {{ gallery_pagination }}
+                </div>
+
+                {% if search_id %}
+                    <div class="controls d-none d-lg-flex">
+                        {{ search_pagination }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col col-12 mt-3" id="description">
+            <div class="border rounded p-3">
+                <div class="row">
+                    <div class="col col-12 col-lg-9 col-xl-8 col-xxl-7 mx-auto">
+                        {% if submission.DESCRIPTION_BBCODE %}
+                            <div class="mb-2 text-end">
+                                <button class="btn btn-sm btn-outline-info py-0 px-1"
+                                        onclick="const b = document.getElementById('description_bbcode').hidden = !(document.getElementById('description_html').hidden = !document.getElementById('description_html').hidden); b ? this.classList.add('active') : this.classList.remove('active')">
+                                    BBCode
+                                </button>
+                            </div>
+                            <div id="description_bbcode" class="overflow-wrap" hidden>
+                                {{ submission.DESCRIPTION_BBCODE|safe }}
+                                {% if submission.FOOTER_BBCODE %}
+                                    <hr class="my-3"/>
+                                    {{ submission.FOOTER_BBCODE|safe }}
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        <div id="description_html" class="overflow-wrap">
+                            {{ submission.DESCRIPTION|safe }}
+                            {% if submission.FOOTER %}
+                                <hr class="my-3"/>
+                                {{ submission.FOOTER|safe }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if comments %}
+            {{ Comments(comments, "col col-12 col-lg-9 col-xl-8 col-xxl-7 mx-auto mt-4", "comments") }}
+        {% endif %}
+    </div>
+
+    {% if files or thumbnail %}
+        <div class="position-fixed bottom-0 end-0 d-flex flex-column row-gap-1 p-2" style="z-index: 900;">
+            <button class="btn btn-secondary rounded-circle" style="aspect-ratio: 1 / 1"
+                    onclick="floatingFiles() ? this.classList.add('btn-success') : this.classList.remove('btn-success')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                     viewBox="0 0 16 16">
+                    <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path>
+                    <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"></path>
+                </svg>
+            </button>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script>
+      let loadRuffle = () => null
+
+      // {{ submission.FILEEXT|tojson }}
+
+      {% if "swf" in submission.FILEEXT|map("lower")|list %}
+        window.RufflePlayer = window.RufflePlayer || {}
+        window.RufflePlayer.config = {scale: "showAll", showSwfDownload: true}
+        loadRuffle = () => {
+          console.log("Load Ruffle");
+          if (window.RufflePlayer.newest === undefined) return alert("Ruffle is not loaded")
+          document.querySelectorAll(".flash-container").forEach((container) => {
+            container.appendChild(window.RufflePlayer.newest().createPlayer())
+                     .load(`${window.location.protocol}//${window.location.hostname}:${window.location.port}${container.dataset.file}`)
+                     .then()
+                     .catch((e) => e && console.error(e))
+          })
+        }
+      {% endif %}
+
+      window.onload = () => {
+        let element
+        if (!window.location.hash.match(/^#cid:\d+$/i) || !(element = document.getElementById(window.location.hash.substring(1)))) {
+          setTimeout(() => element.classList.add("highlight"), 250)
+          setTimeout(() => element.classList.remove("highlight"), 500)
+        }
+        loadRuffle()
+      }
+    </script>
+{% endblock %}

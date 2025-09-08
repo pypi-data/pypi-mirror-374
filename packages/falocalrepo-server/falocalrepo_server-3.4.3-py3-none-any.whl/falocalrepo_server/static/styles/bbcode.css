@@ -1,0 +1,56 @@
+code.bbcode {
+    font-family: inherit !important;
+    font-style: inherit !important;
+    font-size: inherit !important;
+    word-wrap: inherit !important;
+    display: block !important;
+    color: inherit !important;
+}
+
+.bbcode.bbcode_left {
+    text-align: left;
+}
+
+.bbcode.bbcode_center {
+    text-align: center;
+}
+
+.bbcode.bbcode_right {
+    text-align: right;
+}
+
+.bbcode.bbcode_quote {
+    display: block;
+    padding-left: .5rem;
+    border-left: .125rem solid var(--color-tertiary);
+    margin-bottom: 0;
+}
+
+.bbcode.bbcode_quote .bbcode_quote_name {
+    display: block;
+    font-style: italic;
+    color: var(--color-secondary);
+}
+
+.bbcode.bbcode_spoiler {
+    color: transparent;
+    background: #000;
+    border-radius: .2rem;
+    transition: color 250ms, background-color 250ms;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.bbcode.bbcode_spoiler:hover,
+.bbcode.bbcode_spoiler:focus,
+.bbcode.bbcode_spoiler:active {
+    color: inherit;
+    background: inherit;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text
+}
