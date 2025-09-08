@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling"]   # or "setuptools"
+build-backend = "hatchling.build"
+
+[project]
+name = "test-package-meet"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.116.1",
+    "pydantic==2.12.0a1",
+    "pydantic-settings>=2.10.1",
+    "ruff>=0.12.12"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["serialization/pydantic-uv"]
