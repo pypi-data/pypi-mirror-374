@@ -1,0 +1,35 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build docker image
+        run: |
+          docker build -t framework:latest .
+
+      - name: Run Ruff (lint + format check)
+        run: |
+          docker run --rm framework:latest \
+            "uv run ruff check . && uv run ruff format --check ."
+
+      - name: Run mypy
+        run: |
+          docker run --rm framework:latest \
+            "uv run mypy --config pyproject.toml ."
+
+      - name: Run tests
+        run: |
+          docker run --rm framework:latest \
+            "uv run pytest -vvv ."
