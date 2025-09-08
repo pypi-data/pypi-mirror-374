@@ -1,0 +1,91 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Webware-for-Python"
+# must match webware.Properties.version and docs.conf.release
+version = "3.1.0"
+description = "Webware for Python is a time-tested modular, object-oriented web framework."
+authors = [
+    {name = "Christoph Zwerschke et al.", email = "cito@online.de"},
+]
+readme = "README.md"
+keywords = ["web", "framework", "servlets"]
+license = {text = "MIT"}
+# must match properties.requiredPyVersion
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://webwareforpython.github.io/w4py3/"
+Source = "https://github.com/WebwareForPython/w4py3"
+Issues = "https://github.com/WebwareForPython/w4py3/issues"
+Documentation = "https://webwareforpython.github.io/w4py3/"
+
+[project.optional-dependencies]
+dev = [
+    "Pygments>=2.19,<3",
+    "WebTest>=3,<4",
+    "waitress>=3,<4",
+    "hupper>=1.12,<2",
+]
+docs = [
+    "Sphinx>=8,<9",
+    "sphinx_rtd_theme>=3,<4",
+]
+examples = [
+    "DBUtils>=3,<4",
+    "dominate>=2.9,<3",
+    "yattag>=1.16,<2",
+    "Pillow>=11,<12",
+    "Pygments>=2.19,<3",
+]
+tests = [
+    "psutil>=7,<8",
+    "flake8>=7,<8",
+    "pylint>=3,<4",
+    "tox>=4,<5",
+    "pywin32>=300,<400; sys_platform=='win32' and implementation_name=='cpython'",
+    # include dev dependencies
+    "Pygments>=2.19,<3",
+    "WebTest>=3,<4",
+    "waitress>=3,<4",
+    "hupper>=1.12,<2",
+    # include example dependencies
+    "DBUtils>=3,<4",
+    "dominate>=2.9,<3",
+    "yattag>=1.16,<2",
+    "Pillow>=11,<12",
+]
+
+[project.scripts]
+webware = "webware.Scripts.WebwareCLI:main"
+
+[project.entry-points."webware.plugins"]
+MiscUtils = "webware.MiscUtils"
+PSP = "webware.PSP"
+TaskKit = "webware.TaskKit"
+UserKit = "webware.UserKit"
+WebUtils = "webware.WebUtils"
+
+[tool.setuptools]
+include-package-data = true

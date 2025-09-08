@@ -1,0 +1,9 @@
+[console_scripts]
+webware = webware.Scripts.WebwareCLI:main
+
+[webware.plugins]
+MiscUtils = webware.MiscUtils
+PSP = webware.PSP
+TaskKit = webware.TaskKit
+UserKit = webware.UserKit
+WebUtils = webware.WebUtils
