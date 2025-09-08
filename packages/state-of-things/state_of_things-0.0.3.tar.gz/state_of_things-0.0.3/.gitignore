@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Copyright (c) 2024 Aaron Silinskas for Mindwidgets
+#
+# SPDX-License-Identifier: MIT
+__pycache__
+.pytest_cache
+*.pyc
+.venv
+.coverage
+
+.tox
+/build
+/docs/_build
+htmlcov
+*.egg-info
+
+.idea
+.vscode
+*~
+
+*.DS_Store
