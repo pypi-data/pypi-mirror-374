@@ -1,0 +1,122 @@
+Metadata-Version: 2.4
+Name: test_genie_test
+Version: 1.0.2
+Summary: AI-powered CLI tool to auto-generate test cases for Python, C++, and Java code with both online and offline modes
+Author-email: Kushagra Wadhwa <testgenieofficial@gmail.com>
+License-Expression: MIT
+Project-URL: Homepage, https://thetestgenie.com
+Project-URL: Documentation, https://thetestgenie.com/docs
+Project-URL: Repository, https://github.com/testgenie/cli
+Project-URL: Issues, https://github.com/testgenie/cli/issues
+Project-URL: Pricing, https://thetestgenie.com/pricing
+Keywords: testing,test-generation,ai,cli,python,cpp,java,pytest,unittest,gtest,junit
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Testing
+Classifier: Topic :: Software Development :: Quality Assurance
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: click>=8.1.7
+Requires-Dist: requests>=2.31.0
+Requires-Dist: pathlib2>=2.3.7
+Requires-Dist: llama-cpp-python>=0.2.0
+Requires-Dist: fastapi>=0.100.0
+Requires-Dist: uvicorn>=0.23.0
+Requires-Dist: psutil>=5.9.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Provides-Extra: offline
+Requires-Dist: llama-cpp-python>=0.2.0; extra == "offline"
+Requires-Dist: fastapi>=0.100.0; extra == "offline"
+Requires-Dist: uvicorn>=0.23.0; extra == "offline"
+Requires-Dist: psutil>=5.9.0; extra == "offline"
+
+# 🧪 TestGenie - Instantly Generate Test Cases from Your Terminal
+
+**TestGenie** is a fast, intuitive CLI tool designed for developers who want to generate meaningful test cases from their source code - without ever leaving the terminal.
+
+No more toggling between browser tabs, writing boilerplate, or wasting hours on trivial tests. TestGenie bridges your code with AI-powered suggestions tailored for your language and logic. 
+
+*Currently, it uses online AI agents for test cases generation, but an offline mode is coming soon. Stay tuned!*
+
+---
+
+## ✨ Features
+
+- 🔍 **Language-aware test generation** (Python, C++) [more coming soon]
+- ⚡ **CLI-first experience** - stay in your flow
+- 🧠 Powered by context-aware agents
+- 🌐 Syncs with your online dashboard
+- 🔐 Lightweight auth system
+- 📊 Usage tracking (for you and your team)
+
+---
+
+## 🚀 Installation
+
+TestGenie requires Python 3.8+
+
+Install directly from PyPI:
+
+```bash
+pip install test-genie
+```
+---
+
+## 🛠 Usage
+
+Generate test cases from your CLI:
+
+```bash
+test-genie generate --path path/to/your_file.py
+```
+
+You can also specify the language explicitly:
+
+```bash
+test-genie generate -pt path/to/your_file.cpp -l cpp
+```
+
+Authenticate once:
+
+```bash
+test-genie login
+```
+
+If you don't have an account, register quickly on our website: https://thetestgenie.com
+
+---
+
+## 🌐 Dashboard
+
+Visit our dashboard (https://thetestgenie.com/dashboard) to view your usage, premium status, recent generation history, and more.
+
+---
+
+## 💡 Use Cases
+
+- Quickly bootstrap test coverage on legacy projects
+- Generate starter tests for new logic
+<!-- - Integrate with CI to flag untested critical paths -->
+- Empower junior devs with example-driven TDD
+
+---
+
+## 📦 Publishing / Contributing
+
+Want to contribute or self-host the backend? Instructions are coming soon. For now, feel free to mail me at wadhwakushagra01@gmail.com
+
+---
+
+## 📃 License
+
+MIT © 2025 TestGenie Team
