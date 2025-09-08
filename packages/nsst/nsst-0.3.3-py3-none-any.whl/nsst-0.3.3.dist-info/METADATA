@@ -1,0 +1,30 @@
+Metadata-Version: 2.4
+Name: nsst
+Version: 0.3.3
+Summary: Python library for a Not So Simple Table dynamodb table design.
+Project-URL: Homepage, https://github.com/andycaine/nsst
+Project-URL: Documentation, https://github.com/andycaine/nsst?tab=readme-ov-file#asaa
+Project-URL: Repository, https://github.com/andycaine/nsst.git
+License: MIT License
+License-File: LICENSE
+Keywords: dynamodb
+Requires-Python: >=3.10
+Requires-Dist: boto3>=1.26.0
+Requires-Dist: click>=8.0.0
+Description-Content-Type: text/markdown
+
+# nsst
+
+Python library for a Not So Simple Table dynamodb table design.
+
+## Description
+
+`nsst` is a simple library to help make working with DynamoDB a bit easier.
+
+## Getting started
+
+Install via pip (ideally in a virtualenv):
+
+```bash
+pip install nsst
+```
