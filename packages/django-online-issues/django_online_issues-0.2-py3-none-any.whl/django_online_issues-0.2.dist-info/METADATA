@@ -1,0 +1,84 @@
+Metadata-Version: 2.4
+Name: django-online-issues
+Version: 0.2
+Summary: A reusable Django app for collecting and reporting user-submitted issues (tickets). It provides a view and a form to submit tickets and forwards them to configurable backends like GitLab, GitHub, email, or simply the development console.
+Project-URL: Documentation, https://github.com/saxix/django-issues
+Project-URL: Homepage, https://github.com/saxix/django-issues
+Author-email: Stefano Apostolico <s.apostolico@gmail.com>
+License-File: LICENSE
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 4.2
+Classifier: Framework :: Django :: 5.2
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.9
+Requires-Dist: django-stubs-ext
+Requires-Dist: django>=4
+Requires-Dist: markdown>=3.8.2
+Requires-Dist: requests>=2.32.5
+Provides-Extra: github
+Requires-Dist: pygithub>=2.8; extra == 'github'
+Provides-Extra: gitlab
+Requires-Dist: python-gitlab>=6.3; extra == 'gitlab'
+Description-Content-Type: text/markdown
+
+# Django Online Issues
+
+
+[![Test](https://github.com/saxix/django-online-issues/actions/workflows/test.yml/badge.svg)](https://github.com/saxix/django-online-issues/actions/workflows/test.yml)
+[![Lint](https://github.com/saxix/django-online-issues/actions/workflows/lint.yml/badge.svg)](https://github.com/saxix/django-online-issues/actions/workflows/lint.yml)
+[![codecov](https://codecov.io/github/saxix/django-online-issues/graph/badge.svg?token=3ZmxTFfYra)](https://codecov.io/github/saxix/django-online-issues)
+[![Documentation](https://github.com/saxix/django-online-issues/actions/workflows/docs.yml/badge.svg)](https://saxix.github.io/django-online-issues/)
+[![Pypi](https://badge.fury.io/py/saxix-django-online-issues.svg)](https://badge.fury.io/py/saxix-django-online-issues)
+
+
+**Django Online Issues** is a reusable Django app for collecting and reporting user-submitted issues (tickets).
+It provides a view and a form to submithe development console.
+
+## Features
+
+-   **Easy Integration**: Seamlessly add a ticketing system to your Django project.
+-   **Multiple Backends**: Send tickets to various platforms. Built-in backends include:
+    -   Console (default)
+    -   Email
+    -   GitLab
+    -   GitHub
+    -   (Others can be easily added)
+-   **Configurable**: Customize the backend and its options through Django's settings.
+-   **Extensible**: Create your own custom backends to integrate with any issue-tracking system.
+-   **Screenshot Capture**: Users can attach a screenshot of the current page to the ticket.
+
+
+### Planned (contributions are welcome)
+
+- Jira
+- Azure Devops
+- Redmine
+- Odoo Helpdesk
+- ...
+
+## Screenshot
+
+#### In App popup (with ap screenshot)
+<img src="docs/src/images/popup.png" alt="Popup Screenshot" width="600"/>
+
+#### GitLab Ticket
+<img src="docs/src/images/gitlab.png" alt="Popup Screenshot" width="600"/>
+
+#### Github Ticket
+<img src="docs/src/images/github.png" alt="Popup Screenshot" width="600"/>
+
+
+## Note on Development Process
+
+This project has been developed with the assistance of the Gemini CLI, serving as a personal experimental exploration into the capabilities of AI in software development. While Gemini aided in various development tasks and execution, the overarching design (patterns, modularisation, naming convention) and core implementation decisions were originated and guided by human intuition and expertise.
