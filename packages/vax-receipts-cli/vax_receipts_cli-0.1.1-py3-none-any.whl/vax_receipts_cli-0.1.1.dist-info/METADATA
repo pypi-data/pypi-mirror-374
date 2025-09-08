@@ -1,0 +1,34 @@
+Metadata-Version: 2.4
+Name: vax-receipts-cli
+Version: 0.1.1
+Summary: Tiny CLI to list/open VibeAxis receipts (cornerstone posts & hubs).
+Author: VibeAxis (Jason Bann)
+License: MIT
+Keywords: vibeaxis,ai,cli,tools,receipts
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Environment :: Console
+Classifier: Topic :: Internet :: WWW/HTTP
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# vax-receipts-cli
+
+A tiny CLI to list or open **VibeAxis** receipts — cornerstone articles and hubs.
+
+## Install
+pip install vax-receipts-cli
+
+## Use
+vax-receipts list
+vax-receipts open perplexity
+vax-receipts hubs
+
+## Current receipts
+- perplexity — https://vibeaxis.com/perplexity-vs-google-find-the-source-not-the-hype/
+- memoryab — https://vibeaxis.com/a-b-test-my-memories-audit-the-recall/
+- hub-basics — https://vibeaxis.com/ai-basics/
+- hub-real — https://vibeaxis.com/ai-in-real-life/
+- home — https://vibeaxis.com/
