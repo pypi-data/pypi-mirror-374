@@ -1,0 +1,9 @@
+---
+description: "Lint / format / type‑check"
+alwaysApply: true
+---
+
+- Run **ruff** (`ruff check .`) with the *py312* target; fail on any diagnostics.
+- Auto‑format with **black** (`black --target-version py312 .`) and **isort** (`isort .`).
+- Apply **pyupgrade --py312-plus** on each commit.
+- The CI pipeline blocks merge if any of the above fail.

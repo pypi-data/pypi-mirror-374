@@ -1,0 +1,160 @@
+# Complete graph configuration example
+# This demonstrates how to define an entire graph including nodes and bricks via YAML
+
+metadata:
+  id: "text_analysis_pipeline"
+  name: "Text Analysis Pipeline"
+  description: "Analyzes text sentiment and categorizes content"
+  version: "1.0.0"
+
+# Graph-level configuration
+config:
+  max_iterations: 100
+  max_loop_count: 10
+  enable_async: true
+  debug: false
+
+  # LiteLLM configuration
+  litellm_config:
+    models:
+      - model: "gpt-3.5-turbo"
+        temperature: 0.7
+        max_tokens: 500
+        timeout: 30
+        max_retries: 3
+
+    default_model: "gpt-3.5-turbo"
+    enable_caching: true
+    cache_ttl: 3600
+    log_level: "INFO"
+
+# Define all nodes in the graph
+nodes:
+  - id: "text_analyzer"
+    name: "Text Analysis Node"
+    bricks:
+      # System prompt brick
+      - id: "system_prompt"
+        type: "bag.bricks.PromptBrick"
+        config:
+          content: "You are a text analysis expert. Analyze the given text for sentiment, key topics, and category."
+          role: "system"
+
+      # User prompt brick with template
+      - id: "user_prompt"
+        type: "bag.bricks.PromptBrick"
+        config:
+          template: |
+            Please analyze the following text:
+
+            "{text}"
+
+            Provide your analysis in JSON format with:
+            - sentiment: positive/negative/neutral
+            - confidence: 0.0-1.0
+            - key_topics: list of main topics
+            - category: technology/business/health/entertainment/other
+            - summary: brief summary (max 50 words)
+          role: "user"
+          variables:
+            text: "{{ input_text }}"  # Will be replaced at runtime
+
+      # Processor to extract JSON from LLM response
+      - id: "json_extractor"
+        type: "bag.bricks.processor.JSONExtractorBrick"
+        config:
+          extract_mode: "auto"  # Automatically find JSON in response
+          validate_schema: true
+          schema:
+            type: "object"
+            properties:
+              sentiment:
+                type: "string"
+                enum: ["positive", "negative", "neutral"]
+              confidence:
+                type: "number"
+                minimum: 0
+                maximum: 1
+              key_topics:
+                type: "array"
+                items:
+                  type: "string"
+              category:
+                type: "string"
+              summary:
+                type: "string"
+
+      # Router based on sentiment
+      - id: "sentiment_router"
+        type: "bag.bricks.router.ConditionalRouter"
+        config:
+          conditions:
+            positive_high_confidence: "sentiment == 'positive' and confidence > 0.8"
+            positive_low_confidence: "sentiment == 'positive' and confidence <= 0.8"
+            negative: "sentiment == 'negative'"
+            neutral: "sentiment == 'neutral'"
+          routes:
+            positive_high_confidence: "positive_handler"
+            positive_low_confidence: "review_handler"
+            negative: "negative_handler"
+            neutral: "neutral_handler"
+          default_route: "review_handler"
+
+  # Handler nodes
+  - id: "positive_handler"
+    name: "Positive Sentiment Handler"
+    bricks:
+      - id: "positive_action"
+        type: "bag.bricks.ActionBrick"
+        config:
+          action: "log_positive"
+          message: "Positive sentiment detected with high confidence"
+
+  - id: "negative_handler"
+    name: "Negative Sentiment Handler"
+    bricks:
+      - id: "negative_action"
+        type: "bag.bricks.ActionBrick"
+        config:
+          action: "alert_negative"
+          message: "Negative sentiment detected - requires attention"
+
+  - id: "neutral_handler"
+    name: "Neutral Sentiment Handler"
+    bricks:
+      - id: "neutral_action"
+        type: "bag.bricks.ActionBrick"
+        config:
+          action: "log_neutral"
+          message: "Neutral sentiment - no action required"
+
+  - id: "review_handler"
+    name: "Manual Review Handler"
+    bricks:
+      - id: "review_action"
+        type: "bag.bricks.ActionBrick"
+        config:
+          action: "queue_for_review"
+          message: "Low confidence or edge case - queued for manual review"
+
+# Define edges (connections between nodes)
+edges:
+  - source: "text_analyzer"
+    target: "positive_handler"
+    metadata:
+      condition: "positive_high_confidence"
+
+  - source: "text_analyzer"
+    target: "negative_handler"
+    metadata:
+      condition: "negative"
+
+  - source: "text_analyzer"
+    target: "neutral_handler"
+    metadata:
+      condition: "neutral"
+
+  - source: "text_analyzer"
+    target: "review_handler"
+    metadata:
+      condition: "default"

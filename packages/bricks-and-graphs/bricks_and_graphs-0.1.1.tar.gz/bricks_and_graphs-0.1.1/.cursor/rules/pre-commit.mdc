@@ -1,0 +1,10 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+When finished with generating the code, run the pre-commit with:
+
+uv run pre-commit run --all-files
+
+To verify if there are errors in formatting and linting and fix them.

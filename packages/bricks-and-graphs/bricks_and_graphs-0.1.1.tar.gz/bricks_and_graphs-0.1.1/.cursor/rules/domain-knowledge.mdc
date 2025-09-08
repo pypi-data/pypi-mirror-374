@@ -1,0 +1,166 @@
+# Khora Domain Knowledge
+
+## Academic Publication APIs
+
+### **arXiv** (arxiv.org)
+- **API**: `http://export.arxiv.org/api/query`
+- **No Rate Limits**: Free, no authentication required
+- **Search**: `cat:cs.AI AND ti:transformer`
+- **Coverage**: 2M+ papers in physics, math, CS, biology
+
+### **PubMed** (pubmed.ncbi.nlm.nih.gov)
+- **API**: E-utilities at `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/`
+- **Rate Limits**: 10/sec with key, 3/sec without
+- **Search**: MeSH terms, `cancer AND immunotherapy`
+- **Coverage**: 35M+ biomedical citations
+
+### **Semantic Scholar** (semanticscholar.org)
+- **API**: `https://api.semanticscholar.org/graph/v1/paper/search`
+- **Rate Limits**: 100 requests/5 minutes free tier
+- **Features**: Citation graphs, semantic similarity
+- **Coverage**: 200M+ papers across disciplines
+
+## Biomedical Domain Detection
+```python
+biomedical_indicators = {
+    "mesh_terms": ["disease", "treatment", "drug", "protein", "gene"],
+    "journals": ["nature", "cell", "science", "nejm", "lancet"],
+    "domains": ["nih.gov", "pubmed", "bioRxiv", "medRxiv"],
+    "keywords": ["clinical", "therapeutic", "genomic", "pharmaceutical"]
+}
+```
+
+## Web Scraping Intelligence
+
+### **JavaScript Detection**
+```python
+def needs_playwright(url: str, initial_content: str) -> bool:
+    js_indicators = [
+        "Loading...", "Please enable JavaScript",
+        "React", "Vue", "Angular", "SPA"
+    ]
+    return any(indicator in initial_content for indicator in js_indicators)
+```
+
+### **Content Extraction Priority**
+```python
+content_selectors = [
+    "article",           # Semantic HTML5 first
+    "[role='main']",     # ARIA roles
+    ".article-content",  # Common class names
+    "main", "#content"
+]
+```
+
+### **Rate Limiting Guidelines**
+- **News Sites**: 1-2 seconds between requests
+- **Academic Sites**: 0.5-1 second (usually generous)
+- **E-commerce**: 2-5 seconds (often aggressive)
+
+## LLM Integration Context
+
+### **Temperature Settings by Use Case**
+```python
+temperature_guide = {
+    "code_generation": 0.0,      # Deterministic
+    "analysis": 0.1,             # Slight creativity
+    "similarity_matching": 0.1   # Consistent comparisons
+}
+```
+
+### **Semantic Similarity Thresholds**
+```python
+similarity_thresholds = {
+    "auto_merge": 0.9,        # Automatically merge pipelines
+    "suggest_merge": 0.7,     # Suggest to user
+    "similar": 0.5,           # Show as related
+    "different": 0.0          # Treat as separate
+}
+
+intent_routing_thresholds = {
+    "high_confidence": 0.8,   # Route automatically
+    "medium_confidence": 0.6, # Ask for confirmation
+    "low_confidence": 0.3,    # Present options
+}
+```
+
+## Performance & Optimization
+
+### **Database Performance**
+```python
+# Frequent queries needing indexes
+frequent_queries = [
+    "pipeline_records.name",           # Pipeline lookup
+    "agent_sessions.session_id",       # Session retrieval
+    "pipeline_executions.created_at"   # Recent executions
+]
+
+# Lazy loading for large fields
+lazy_fields = ["source_data", "execution_outputs", "error_logs"]
+```
+
+### **LLM Cost Optimization**
+```python
+cache_opportunities = [
+    "source_analysis_results",    # Cache by URL hash
+    "similarity_comparisons",     # Cache by content hash
+    "intent_routing_decisions",   # Cache by query pattern
+]
+```
+
+## Common Issues & Solutions
+
+### **Pipeline Execution Problems**
+```python
+dependency_issues = {
+    "unconnected_inputs": "Check GraphDefinition dependencies",
+    "missing_ops": "Verify ops file imports and definitions",
+    "config_mismatch": "Ensure YAML config matches op signatures",
+    "type_errors": "Check Dagster type annotations"
+}
+```
+
+### **LLM Error Patterns**
+```python
+llm_error_patterns = {
+    "timeout": "Reduce context size or increase timeout",
+    "rate_limit": "Implement exponential backoff",
+    "invalid_json": "Improve output format instructions",
+    "context_overflow": "Summarize or truncate context"
+}
+```
+
+## Security Considerations
+
+### **Sensitive Information Patterns**
+```python
+sensitive_patterns = [
+    r"\b\d{3}-\d{2}-\d{4}\b",        # SSN
+    r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b",  # Email
+    r"\bpw:\s*\S+\b",                # Passwords
+]
+```
+
+### **Data Retention Policies**
+```python
+retention_policies = {
+    "agent_sessions": timedelta(days=30),
+    "execution_logs": timedelta(days=90),
+    "downloaded_content": timedelta(days=7),
+    "error_logs": timedelta(days=180)
+}
+```
+
+## Research Domain Classification
+- **Clinical Research**: Human studies, treatments, diagnostics
+- **Basic Science**: Molecular biology, genetics, biochemistry
+- **Translational**: Bench-to-bedside research
+- **Population Health**: Epidemiology, public health
+- **Drug Discovery**: Pharmacology, medicinal chemistry
+
+---
+description: Domain knowledge for understanding Khora's problem space and business context
+globs:
+  - "khora/**/*.py"
+  - "docs/**/*.md"
+alwaysApply: true

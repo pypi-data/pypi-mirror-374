@@ -1,0 +1,89 @@
+# AI Changelog
+
+- Moved Makefile into scripts/convert-diagrams/ - complete unified package
+- Updated all Makefile paths to work from convert-diagrams directory
+- All diagram conversion tools now in single self-contained directory
+- Updated README files to reflect Makefile is part of conversion package
+- Fixed architecture diagrams with proper drawing style and visible text
+- Updated diagrams to use 5-color palette on black background (drawing style)
+
+## 2025-01-13
+- Created comprehensive documentation (architecture, config, pipeline guides)
+
+## 2025-01-13
+- Renamed src/bricks_and_graphs to src/bag for brevity
+
+## 2025-01-13
+- ✅ Created Python project skeleton with uv, library, CLI, and FastAPI
+- 🧪 **ENFORCED MANDATORY TESTABILITY**: Updated Cursor rules to require 85% test coverage
+- 🚨 Made all code creation conditional on comprehensive test coverage
+- 📝 Updated code patterns for bricks-and-graphs agentic framework
+- ⚙️  Enhanced pyproject.toml with strict coverage requirements (fail_under = 85)
+- 📖 Updated README to emphasize mandatory testing requirements
+- 🔄 Renamed project from legos-and-graphs to bricks-and-graphs throughout codebase
+- ✅ Committed and pushed all project rename changes to repository
+- 🏗️ Implemented core framework: AgentBrick, AgentNode, AgentGraph classes
+- 🔄 Added networkx integration for graph analytics and management
+- 📁 Created YAML/JSON config loading with BrickRegistry pattern
+- 🔧 Fixed ruff TC->TC lint rule & updated to new ruff.lint config
+- ✅ Added comprehensive tests for core framework (91% coverage achieved)
+- 🧱 Implemented PromptBrick for template-based prompt management
+- 🔄 Created ProcessorBrick with multi-format I/O (JSON/YAML/Arrow/Pandas/Polars)
+- 🚦 Added RouterBrick with conditional, field-based, and weighted routing
+- 📦 Added dependencies: litellm, pyarrow, pandas, polars, nest-asyncio
+- 📚 Enhanced README with comprehensive API examples and documentation
+- 🔨 Installed and configured pre-commit hooks for code quality
+- 🔧 Configured mypy to focus on internal code, ignore external deps
+- 🚚 Renamed src/bricks_and_graphs to src/bag for shorter imports
+- 🔄 Updated CLI commands: bricks-and-graphs → bag, server → bag-server
+- 🐳 Added GitHub Actions workflows for testing and Docker builds
+- 📦 Created Docker image with Python 3.12, health checks, non-root user
+- 🔧 Fixed ruff lint config to use proper lint section in pyproject.toml
+- 🔄 Updated GitHub Actions to use pre-commit for consistency with local
+- 🔄 Consolidated test.yml and docker.yml into single ci.yml workflow
+- 🔧 Removed Codecov integration from CI (no account setup yet)
+- ✅ Added validation: max one router brick per node, cycles need exits
+- 🚨 Added custom exceptions: MultipleRouterBricksError, NoExitPathError
+- 🔧 Graph.execute() now validates before running, ensures safety
+- ✨ Added AgentContext for shared state across graph execution
+- 🔄 One AgentContext per AgentGraph, accessible by all nodes/bricks
+- 📝 AgentContext provides flexible key-value storage for any data type
+- 🔄 Refactored AgentContext to use properties and dict-style access
+- ✨ Added magic methods: __getitem__, __setitem__, __contains__, __len__
+- 📊 New properties: keys, values, items, is_empty, data
+- 🤖 Added LiteLLM integration at AgentGraph level
+- 📦 LiteLLMConfig & LiteLLMModelConfig for multi-model setup
+- 🔄 LiteLLM manager propagates automatically to all nodes
+- ⚙️ Each graph gets one LiteLLM instance, shared by all nodes
+- 📝 Added examples/litellm_config.yaml with GPT-4 & Claude configs
+- 🎯 Added node.run() for orchestrated brick execution flow
+- 🔄 run() executes: prompts→LLM→processors→router in sequence
+- 📊 Processors receive LLM response, pass outputs in chain
+- 🚦 Router makes decisions based on final processor output
+- 📝 Added examples/node_run_example.py demonstrating the flow
+- 📁 Organized examples into topic-based subdirectories
+- ✅ Created & tested examples: basic, litellm, node_execution, config
+- 📄 Added README files for each example directory
+- 🔧 Created complete YAML-based graph configuration example
+- 🧪 Fixed and tested all examples to ensure they work
+- 🔄 Fixed LiteLLM async issues: replaced completion() with acompletion()
+- 📦 Added tenacity>=8.2.0 dependency for LiteLLM retry functionality
+- 🐛 Fixed Anthropic system message handling for Claude models
+- 📝 Fixed Pydantic deprecation warnings: .dict() → .model_dump()
+- ✅ All advanced_llm examples now run successfully with uv
+- 🚀 Added GitHub Actions workflow for automated PyPI publishing
+- 📦 Created PyPI publishing documentation and version bump script
+- 🧪 Added workflow for testing package installation across platforms
+- 📋 Updated README with PyPI installation instructions and badge
+- 🔧 Simplified PyPI workflow to use API tokens instead of trusted publishing
+- 🗑️ Removed test-pypi-install workflow to keep setup simple
+- 🎯 Removed Test PyPI support from publish workflow for maximum simplicity
+- 🧱 Added FoundationBrick: provides foundational data to other bricks
+- 📋 FoundationBrick runs first in node execution, only one per node allowed
+- 🏗️ Added DataFoundationBrick, ContextFoundationBrick, ComputedFoundationBrick
+- ✅ Added comprehensive tests and examples for FoundationBrick (100% coverage)
+- 🍎 Added macOS .DS_Store files to .gitignore
+- 🔧 Fixed examples: added environment variable expansion to litellm config
+- 🧪 Fixed node_execution example: added handler bricks to prevent validation errors
+- 📝 Fixed Pydantic deprecation warning in litellm example (.dict() → .model_dump())
+- ✅ All examples now run successfully without errors

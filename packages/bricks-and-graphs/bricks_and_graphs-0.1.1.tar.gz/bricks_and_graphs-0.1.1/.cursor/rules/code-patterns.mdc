@@ -1,0 +1,361 @@
+# Legos and Graphs Code Patterns
+
+## 🧪 MANDATORY TESTABILITY REQUIREMENTS
+
+**CRITICAL**: Every piece of code you create MUST be accompanied by comprehensive tests. No exceptions.
+
+### Test-First Development Rules
+1. **Before writing any implementation**: Create the test structure first
+2. **All public methods/functions**: MUST have at least 2 test cases (happy path + edge case)
+3. **All classes**: MUST have a complete test class with initialization, method, and error tests
+4. **All modules**: MUST have corresponding test modules in the `tests/` directory
+5. **No merge without tests**: Code without tests will be rejected
+
+### Test Coverage Standards
+- **Minimum coverage**: 85% for all new code
+- **Branch coverage**: All conditional branches must be tested
+- **Error paths**: Every exception handler must be tested
+- **Integration points**: All external dependencies must be mocked and tested
+
+## Standard Agentic Block Implementation Pattern
+```python
+from typing import Dict, Any, Optional
+from dataclasses import dataclass
+from abc import ABC, abstractmethod
+
+@dataclass
+class BlockInput:
+    """Structured input for agent blocks."""
+    data: Dict[str, Any]
+    context: Optional[Dict[str, Any]] = None
+
+@dataclass
+class BlockOutput:
+    """Structured output from agent blocks."""
+    result: Dict[str, Any]
+    metadata: Dict[str, Any]
+    next_blocks: list[str]
+
+class AgentBlock(ABC):
+    """Base class for all agent blocks - MUST be testable."""
+
+    def __init__(self, block_id: str, config: Dict[str, Any]):
+        self.block_id = block_id
+        self.config = config
+
+    @abstractmethod
+    def process(self, input_data: BlockInput) -> BlockOutput:
+        """Process input and return output - MUST be thoroughly tested."""
+        pass
+
+    def validate_input(self, input_data: BlockInput) -> bool:
+        """Validate input data - MUST have comprehensive tests."""
+        return input_data is not None and input_data.data is not None
+```
+
+## Decision Graph Patterns (MUST BE TESTED)
+```python
+from typing import Dict, List, Any
+from dataclasses import dataclass
+
+@dataclass
+class GraphNode:
+    """Graph node - REQUIRES comprehensive testing."""
+    node_id: str
+    block: AgentBlock
+    inputs: List[str]
+    outputs: List[str]
+
+class DecisionGraph:
+    """Decision graph executor - MUST have full test coverage."""
+
+    def __init__(self, graph_config: Dict[str, Any]):
+        self.nodes: Dict[str, GraphNode] = {}
+        self.execution_order: List[str] = []
+
+    def add_node(self, node: GraphNode) -> None:
+        """Add node to graph - MUST test validation and edge cases."""
+        if not node.node_id:
+            raise ValueError("Node ID cannot be empty")
+        self.nodes[node.node_id] = node
+
+    def execute(self, initial_input: BlockInput) -> Dict[str, BlockOutput]:
+        """Execute graph - REQUIRES testing all execution paths."""
+        results = {}
+        for node_id in self.execution_order:
+            node = self.nodes[node_id]
+            # Get inputs from previous nodes or initial input
+            node_input = self._prepare_node_input(node_id, initial_input, results)
+            results[node_id] = node.block.process(node_input)
+        return results
+```
+
+## LLM Integration Patterns (TESTABILITY MANDATORY)
+```python
+from typing import Dict, Any, List, Optional
+import litellm
+
+class LLMBlock(AgentBlock):
+    """LLM-powered agent block - REQUIRES comprehensive testing with mocks."""
+
+    def __init__(self, block_id: str, config: Dict[str, Any]):
+        super().__init__(block_id, config)
+        self.model = config.get("model", "gpt-3.5-turbo")
+        self.temperature = config.get("temperature", 0.1)
+
+    def process(self, input_data: BlockInput) -> BlockOutput:
+        """Process with LLM - MUST test with mocked LLM responses."""
+        prompt = self._build_prompt(input_data)
+
+        try:
+            response = litellm.completion(
+                model=self.model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=self.temperature,
+                timeout=30.0
+            )
+
+            result = self._parse_response(response.choices[0].message.content)
+
+            return BlockOutput(
+                result={"llm_output": result},
+                metadata={"model": self.model, "tokens": response.usage.total_tokens},
+                next_blocks=self._determine_next_blocks(result)
+            )
+
+        except Exception as e:
+            # MUST test error handling thoroughly
+            return BlockOutput(
+                result={"error": str(e)},
+                metadata={"error_type": type(e).__name__},
+                next_blocks=["error_handler"]
+            )
+```
+
+## Error Handling Patterns (COMPREHENSIVE TESTING REQUIRED)
+```python
+from rich.console import Console
+from typing import Dict, Any
+
+class ErrorHandlerBlock(AgentBlock):
+    """Error handling block - MUST test all error scenarios."""
+
+    def __init__(self, block_id: str, config: Dict[str, Any]):
+        super().__init__(block_id, config)
+        self.console = Console()
+
+    def process(self, input_data: BlockInput) -> BlockOutput:
+        """Handle errors - REQUIRES testing for each error type."""
+        error_type = input_data.data.get("error_type", "UnknownError")
+        error_message = input_data.data.get("error", "Unknown error occurred")
+
+        # MUST test each branch
+        if error_type == "TimeoutError":
+            recovery_action = "retry_with_backoff"
+        elif error_type == "ValidationError":
+            recovery_action = "request_input_correction"
+        elif error_type == "LLMError":
+            recovery_action = "fallback_to_template"
+        else:
+            recovery_action = "escalate_to_human"
+
+        # Rich console logging - MUST test logging output
+        self.console.print(f"[red]Error in block {self.block_id}: {error_message}[/red]")
+
+        return BlockOutput(
+            result={
+                "recovery_action": recovery_action,
+                "error_logged": True,
+                "user_message": self._get_user_friendly_message(error_type)
+            },
+            metadata={"original_error": error_type, "handled_at": "error_handler"},
+            next_blocks=[recovery_action]
+        )
+```
+
+## Configuration Patterns (MUST BE TESTED)
+```python
+from pydantic import BaseModel, Field
+from typing import Dict, Any, List, Optional
+
+class BlockConfig(BaseModel):
+    """Block configuration - REQUIRES validation testing."""
+    block_id: str = Field(..., description="Unique block identifier")
+    block_type: str = Field(..., description="Type of block (llm, logic, io)")
+    parameters: Dict[str, Any] = Field(default_factory=dict)
+    timeout: int = Field(default=30, ge=1, le=300)
+    retry_count: int = Field(default=3, ge=0, le=10)
+
+class GraphConfig(BaseModel):
+    """Graph configuration - MUST test serialization/deserialization."""
+    graph_id: str = Field(..., description="Unique graph identifier")
+    blocks: List[BlockConfig] = Field(..., description="List of blocks")
+    connections: Dict[str, List[str]] = Field(..., description="Block connections")
+    entry_point: str = Field(..., description="Starting block ID")
+
+    def validate_connections(self) -> bool:
+        """Validate graph connectivity - REQUIRES comprehensive testing."""
+        block_ids = {block.block_id for block in self.blocks}
+
+        # Test all connection validation logic
+        for source, targets in self.connections.items():
+            if source not in block_ids:
+                raise ValueError(f"Source block '{source}' not found")
+            for target in targets:
+                if target not in block_ids:
+                    raise ValueError(f"Target block '{target}' not found")
+        return True
+```
+
+## Type Usage Patterns (TESTABLE TYPES)
+Use semantic types for better testability:
+```python
+# Type aliases for legos-and-graphs
+from typing import Dict, Any, List, TypeAlias
+
+BlockId: TypeAlias = str
+GraphId: TypeAlias = str
+BlockData: TypeAlias = Dict[str, Any]
+GraphResult: TypeAlias = Dict[BlockId, BlockOutput]
+
+def execute_graph(graph_id: GraphId, input_data: BlockData) -> GraphResult:
+    """Execute graph - MUST have comprehensive integration tests."""
+    # Implementation with full test coverage required
+    pass
+```
+
+## 🚫 ANTI-PATTERNS TO AVOID (NO UNTESTED CODE ALLOWED)
+
+### Code Without Tests - STRICTLY FORBIDDEN
+```python
+# ❌ NEVER: Code without corresponding tests
+class MyBlock(AgentBlock):  # Missing test_my_block.py
+    def process(self, input_data):  # Missing test_process_* methods
+        return "result"
+
+# ❌ NEVER: Untested error paths
+def risky_operation():
+    if condition:
+        raise ValueError("Error")  # Missing pytest.raises test
+```
+
+### Bad Testing Patterns
+```python
+# ❌ DON'T: Tests that don't actually test
+def test_block():
+    block = MyBlock("id", {})
+    assert block is not None  # Tests nothing meaningful
+
+# ❌ DON'T: Tests without mocking external dependencies
+def test_llm_block():
+    block = LLMBlock("id", {"model": "gpt-4"})
+    result = block.process(input_data)  # Calls actual LLM API!
+
+# ❌ DON'T: Hard-coded test data without edge cases
+def test_validation():
+    assert validate_input({"valid": "data"}) == True  # Only happy path
+```
+
+### Framework-Specific Anti-Patterns
+```python
+# ❌ DON'T: Blocks without proper inheritance
+class BadBlock:  # Should inherit from AgentBlock
+    pass
+
+# ❌ DON'T: Graph execution without validation
+graph.execute(input_data)  # No input validation or error handling
+
+# ❌ DON'T: Configuration without Pydantic validation
+config = {"timeout": "not_a_number"}  # Should use BlockConfig model
+```
+
+## 🧪 MANDATORY TESTING PATTERNS
+
+Every single pattern below MUST be implemented for all code:
+
+### Block Testing Template (MANDATORY)
+```python
+import pytest
+from unittest.mock import Mock, patch
+from legos_and_graphs.core import AgentBlock, BlockInput, BlockOutput
+
+class TestMyAgentBlock:
+    """REQUIRED: Complete test class for every AgentBlock."""
+
+    @pytest.fixture
+    def block_config(self):
+        """REQUIRED: Test configuration fixture."""
+        return {"param1": "value1", "timeout": 30}
+
+    @pytest.fixture
+    def sample_input(self):
+        """REQUIRED: Input data fixture."""
+        return BlockInput(data={"key": "value"}, context={})
+
+    @pytest.fixture
+    def block(self, block_config):
+        """REQUIRED: Block instance fixture."""
+        return MyAgentBlock("test_block", block_config)
+
+    def test_initialization(self, block, block_config):
+        """REQUIRED: Test block creation."""
+        assert block.block_id == "test_block"
+        assert block.config == block_config
+
+    def test_process_success(self, block, sample_input):
+        """REQUIRED: Test successful processing."""
+        result = block.process(sample_input)
+        assert isinstance(result, BlockOutput)
+        assert result.result is not None
+
+    def test_process_invalid_input(self, block):
+        """REQUIRED: Test error handling."""
+        with pytest.raises(ValueError):
+            block.process(None)
+
+    @pytest.mark.parametrize("input_data,expected", [
+        ({"key": "value"}, True),
+        ({}, False),
+        (None, False),
+    ])
+    def test_input_validation(self, block, input_data, expected):
+        """REQUIRED: Parametrized validation testing."""
+        input_obj = BlockInput(data=input_data) if input_data else None
+        assert block.validate_input(input_obj) == expected
+```
+
+### LLM Block Testing (MANDATORY MOCKING)
+```python
+class TestLLMBlock:
+    """REQUIRED: Mock all external LLM calls."""
+
+    @patch('litellm.completion')
+    def test_llm_call_success(self, mock_completion, llm_block):
+        """REQUIRED: Test with mocked LLM response."""
+        mock_completion.return_value = Mock(
+            choices=[Mock(message=Mock(content="Test response"))],
+            usage=Mock(total_tokens=100)
+        )
+
+        result = llm_block.process(sample_input)
+        assert "llm_output" in result.result
+        mock_completion.assert_called_once()
+
+    @patch('litellm.completion')
+    def test_llm_timeout(self, mock_completion, llm_block):
+        """REQUIRED: Test timeout handling."""
+        mock_completion.side_effect = TimeoutError("LLM timeout")
+
+        result = llm_block.process(sample_input)
+        assert "error" in result.result
+        assert result.next_blocks == ["error_handler"]
+```
+
+---
+description: Mandatory testability requirements for legos-and-graphs development
+globs:
+  - "src/legos_and_graphs/**/*.py"
+  - "tests/**/*.py"
+alwaysApply: true
+testingMandatory: true
+minimumCoverage: 85

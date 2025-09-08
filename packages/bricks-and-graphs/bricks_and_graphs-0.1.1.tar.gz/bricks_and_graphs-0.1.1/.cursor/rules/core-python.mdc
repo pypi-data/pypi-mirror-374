@@ -1,0 +1,13 @@
+---
+description: "Python 3.12+ core conventions"
+alwaysApply: true
+---
+
+- Target **CPython 3.12** or later; prefer:
+  - PEP 695 generic type parameter syntax (`class Box[T]`)
+  - `functools.cached_property` for lazy attrs
+  - PEP 701 debug‑f‑string (`f"{var=}"`) for temporary logging
+- All modules **must be typed**. Use `typing` & `typing_extensions` stubs where needed.
+- Favour **pattern‑matching** (`match … case`) over long `if/elif` chains when matching enums or class hierarchies.
+- Use **exception groups** for fan‑out error handling.
+- Document public APIs with Google‑style docstrings.

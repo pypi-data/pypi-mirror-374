@@ -1,0 +1,54 @@
+{
+  "output": {
+    "filePath": ".cache/repomix.md",
+    "style": "markdown",
+    "headerText": "BAG - A collaborative agentic framework for designing dynamic AI agents that can work together to resolve complex problems.",
+    "removeComments": false,
+    "removeEmptyLines": false,
+    "topFilesLength": 50,
+    "showLineNumbers": false
+  },
+  "include": ["**/*"],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "**/*.pyc",
+      "**/__pycache__/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/*.egg-info/**",
+      "**/.pytest_cache/**",
+      "**/.ruff_cache/**",
+      "**/htmlcov/**",
+      "**/.coverage",
+      "**/.mypy_cache/**",
+      "**/env/**",
+      "**/.venv/**",
+      "**/venv/**",
+      "**/.vscode/**",
+      "**/.idea/**",
+      "**/*.swp",
+      "**/*.swo",
+      "**/.DS_Store",
+      "**/Thumbs.db",
+      "**/downloads/**",
+      "**/*.pdf",
+      "**/*.docx",
+      "**/*.csv",
+      "**/*.xlsx",
+      "**/node_modules/**",
+      "**/*.log",
+      "**/logs/**",
+      "**/tmp/**",
+      "**/temp/**",
+      "repomix-output.xml",
+      "repomix-output.md",
+      ".cache/repomix.xml",
+      ".cache/repomix.md"
+    ]
+  },
+  "security": {
+    "enableSecurityCheck": true
+  }
+}

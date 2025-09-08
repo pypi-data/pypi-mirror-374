@@ -1,0 +1,12 @@
+{
+  "user": "probablyrobot",
+  "install": "uv pip install -e \".[dev]\"",
+  "start": "",
+  "terminals": [
+    {
+      "name": "dev",
+      "command": "uv run bash",
+      "description": "Activate uv-managed virtual environment."
+    }
+  ]
+}

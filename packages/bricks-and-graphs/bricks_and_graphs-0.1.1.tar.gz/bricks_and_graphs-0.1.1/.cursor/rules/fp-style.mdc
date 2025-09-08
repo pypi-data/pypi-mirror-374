@@ -1,0 +1,11 @@
+---
+description: "Functional‑programming guidelines"
+alwaysApply: true
+---
+
+- Prefer **pure functions**; avoid hidden I/O & global state.
+- Immutability first: `@dataclass(frozen=True)` or `typing.NamedTuple`.
+- Use `map`, `filter`, `itertools`, `functools`, `toolz` over explicit for‑loops when readability is preserved.
+- Treat functions as values; pass callables rather than strategy flags.
+- No side‑effects inside comprehensions.
+- Compose via `pipe = fn3 >> fn2 >> fn1` pattern or `functools.reduce`.

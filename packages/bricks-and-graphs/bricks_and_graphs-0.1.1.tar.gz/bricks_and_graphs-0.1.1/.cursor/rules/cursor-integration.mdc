@@ -1,0 +1,149 @@
+# Cursor Integration Guide for Khora
+
+## 🎯 How to Use Khora Documentation as an AI Assistant
+
+### **When User Asks About Architecture**
+1. **Reference ADRs First**: Check `docs/adr/` for architectural decisions
+2. **Explain Context**: Include why decisions were made, not just what
+3. **Show Alternatives**: Reference "Alternatives Considered" sections in ADRs
+4. **Connect to Code**: Point to actual implementation files
+
+Example response pattern:
+```
+Based on ADR-001, Khora uses a triple-agent architecture because:
+- [explain decision context]
+- [show implementation in khora/agent/]
+- [reference related patterns]
+```
+
+### **When User Asks About Implementation Patterns**
+1. **Check docs/patterns/**: Reference established patterns first
+2. **Show Examples**: Include code examples from patterns documentation
+3. **Highlight Anti-patterns**: Mention what to avoid
+4. **Connect to Types**: Reference khora/type_aliases.py for proper typing
+
+Example response pattern:
+```
+For agent implementation, follow the standard pattern from docs/patterns/agent-patterns.md:
+[show pattern code]
+This ensures [benefits], avoids [anti-patterns], and uses [proper types].
+```
+
+### **When User Asks About External APIs or Domain Logic**
+1. **Reference Domain Knowledge**: Check docs/domain-knowledge.md first
+2. **Include Rate Limits**: Always mention API limitations
+3. **Show Detection Patterns**: Include domain-specific detection logic
+4. **Reference Performance**: Mention optimization strategies
+
+Example response pattern:
+```
+For [API/domain], according to docs/domain-knowledge.md:
+- API Endpoint: [url]
+- Rate Limits: [limits]
+- Detection Pattern: [code]
+- Optimization: [strategy]
+```
+
+### **When User Asks About Code Quality or Refactoring**
+1. **Run Analysis First**: Suggest ./scripts/analyze-complexity.sh
+2. **Reference Patterns**: Check docs/patterns/ for established approaches
+3. **Use Search Commands**: Provide specific grep patterns to find examples
+4. **Show Type Usage**: Reference khora/type_aliases.py for better typing
+
+Example response pattern:
+```
+Let's analyze the current code:
+1. Run: ./scripts/analyze-complexity.sh
+2. Check pattern: docs/patterns/[relevant-pattern].md
+3. Search existing: grep -r "[pattern]" khora/
+4. Improve typing: use khora/type_aliases.py aliases
+```
+
+### **When User Asks About Testing**
+1. **Reference Test Patterns**: Point to tests/patterns/agent_test_pattern.py
+2. **Show Standard Fixtures**: Include common test setup patterns
+3. **Explain Coverage**: Reference analysis script for coverage metrics
+4. **Connect to Architecture**: Explain how tests validate ADR decisions
+
+### **When User Asks About Performance or Errors**
+1. **Check Domain Knowledge**: Reference performance and debugging sections
+2. **Show Common Issues**: Include common error patterns and solutions
+3. **Reference Metrics**: Suggest analysis script for current metrics
+4. **Connect to Patterns**: Show established error handling patterns
+
+## 🔍 Quick Reference for Common User Queries
+
+### **"How does [feature] work?"**
+→ Check ADRs for architectural context, then patterns for implementation
+
+### **"How should I implement [new feature]?"**
+→ Reference similar patterns, show type usage, include testing approach
+
+### **"Why is the code structured this way?"**
+→ Reference specific ADR that explains the decision
+
+### **"What APIs does this use?"**
+→ Reference domain knowledge for API details and limitations
+
+### **"How do I test this?"**
+→ Reference test patterns and show standard fixtures
+
+### **"Is this code complex?"**
+→ Suggest running analysis script and reference complexity metrics
+
+### **"How do I optimize this?"**
+→ Reference performance sections in domain knowledge and patterns
+
+## 📋 Standard Response Template
+
+When helping with Khora code, structure responses like this:
+
+```
+## Context
+[Reference relevant ADR/pattern/domain knowledge]
+
+## Implementation
+[Show code example from patterns]
+
+## Best Practices
+[Reference established patterns and anti-patterns]
+
+## Verification
+[Suggest analysis commands or testing approaches]
+
+## Related Documentation
+[Link to specific docs for more details]
+```
+
+## 🎯 Key Integration Points
+
+### **Always Reference Documentation**
+- Don't just provide generic advice
+- Point to specific Khora documentation
+- Explain the reasoning behind established patterns
+- Connect to actual architectural decisions
+
+### **Provide Actionable Commands**
+- Include specific grep patterns for code search
+- Suggest running analysis scripts
+- Reference exact file paths
+- Show how to use testing patterns
+
+### **Maintain Consistency**
+- Follow established Khora patterns
+- Use type aliases from khora/type_aliases.py
+- Reference semantic similarity thresholds
+- Apply standard error handling approaches
+
+### **Connect Everything**
+- Link patterns to ADR decisions
+- Connect domain knowledge to implementation
+- Show how testing validates architecture
+- Explain performance in context of business requirements
+
+---
+description: Instructions for Cursor on how to effectively use Khora documentation when assisting users
+globs:
+  - "**/*.py"
+  - "**/*.md"
+alwaysApply: true

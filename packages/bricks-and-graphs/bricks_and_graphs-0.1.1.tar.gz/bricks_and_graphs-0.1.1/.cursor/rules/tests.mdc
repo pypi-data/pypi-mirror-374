@@ -1,0 +1,136 @@
+
+# 🧪 MANDATORY TESTING STANDARDS - NO EXCEPTIONS
+
+## ⚠️  ABSOLUTE REQUIREMENT: TESTABILITY IS NON-NEGOTIABLE
+
+**Every single line of code you write must be accompanied by comprehensive tests.**
+
+This is not a suggestion - it's a hard requirement. Any code submitted without proper tests will be immediately rejected.
+
+## 🧪 MANDATORY TESTING STANDARDS - NO EXCEPTIONS
+
+### 🚨 CRITICAL REQUIREMENT: ALL CODE MUST BE TESTED
+- **ZERO TOLERANCE**: No code without corresponding tests will be accepted
+- **TEST-FIRST**: Write tests before implementation, always
+- **COMPREHENSIVE COVERAGE**: Every function, class, and branch must be tested
+
+### Test Execution (MANDATORY BEFORE ANY CODE SUBMISSION)
+- **Always run tests before committing**: Use `uv run pytest` or async equivalent
+- **Pre-commit verification**: `uv run pytest --cov --cov-branch` before major changes
+- **Quick testing**: `uv run pytest -q` for fast feedback during development
+- **BLOCKING RULE**: Any code that reduces test coverage will be rejected
+
+### Framework & Structure (STRICTLY ENFORCED)
+- **Framework**: Use **pytest** exclusively - no other testing frameworks allowed
+- **File naming**: Follow `test_*.py` pattern (already configured in pyproject.toml)
+- **Class naming**: Use `Test*` classes for grouping related tests - MANDATORY for all classes
+- **Function naming**: Use `test_*` functions with descriptive names - MANDATORY for all functions
+- **1:1 MAPPING**: Every source file MUST have corresponding test file
+
+### Coverage Requirements (NON-NEGOTIABLE)
+- **MINIMUM coverage**: **≥ 85% total coverage** for ALL new code
+- **Branch coverage**: **≥ 90% branch coverage** - every conditional path tested
+- **ABSOLUTE minimum**: 70% enforced by CI (configured in pyproject.toml)
+- **Coverage command**: `uv run pytest --cov=legos_and_graphs --cov-branch --cov-report=term-missing --cov-fail-under=85`
+
+### Test Categories & Patterns
+
+#### **Unit Tests** (`tests/unit/`)
+- **Coverage scope**: Each public function/class needs at least **one happy-path** and **one edge-case** test
+- **Mocking**: Use comprehensive mocking for external dependencies (LLM clients, databases)
+- **Isolation**: Each test should be independent and not rely on external state
+
+#### **Integration Tests** (`tests/`)
+- **Mark with**: `@pytest.mark.integration` for slower tests
+- **Database tests**: Use temporary databases with proper cleanup
+- **Real components**: Test actual component integration when feasible
+
+#### **Async Testing**
+- **Framework**: Use `pytest-asyncio` for async code testing
+- **Patterns**: Mark async tests with `@pytest.mark.asyncio`
+
+### Test Infrastructure Patterns
+
+#### **Fixtures vs Parametrization**
+- **Prefer**: `@pytest.mark.parametrize` over complex fixtures with global state
+- **Fixture usage**: Use fixtures for setup/teardown and shared resources
+- **Database fixtures**: Create temporary databases with proper table creation
+
+```python
+# ✅ Good: Parametrized test
+@pytest.mark.parametrize("input_val,expected", [
+    ("add source", "explorer"),
+    ("run pipeline", "runner"),
+])
+def test_intent_routing(input_val, expected):
+    result = router.analyze_intent(input_val)
+    assert result == expected
+
+# ✅ Good: Fixture for setup
+@pytest.fixture
+def temp_db():
+    db_service = DatabaseService(db_url)
+    Base.metadata.create_all(db_service.engine)
+    yield db_url
+    # cleanup
+```
+
+#### **Mocking Best Practices**
+- **Scope**: Mock external systems (LLM APIs, file systems, network calls)
+- **Specificity**: Use `spec=` parameter for type-safe mocks
+- **Config mocking**: Set `config_path = None` to avoid file access in tests
+
+```python
+# ✅ Good: Proper mock setup
+@pytest.fixture
+def mock_config_manager():
+    config_manager = Mock(spec=ConfigManager)
+    config_manager.config_path = None  # Prevent file access
+    return config_manager
+```
+
+#### **Database Testing Patterns**
+- **Table creation**: Use `Base.metadata.create_all()` for test databases
+- **Isolation**: Each test gets fresh temporary database
+- **Cleanup**: Automatic cleanup with proper fixture teardown
+
+### Property-Based Testing
+- **Future enhancement**: Consider **hypothesis** for pure/functional utilities
+- **Current status**: Not yet implemented but recommended for `khora/utils/functional.py`
+- **Target areas**: Mathematical functions, data transformations, parsing logic
+
+### Test Markers
+- `@pytest.mark.unit`: Fast unit tests (default)
+- `@pytest.mark.integration`: Slower integration tests
+- `@pytest.mark.e2e`: End-to-end tests (very slow)
+
+### Error Testing Patterns
+- **Exception testing**: Use `pytest.raises()` for expected failures
+- **Error handling**: Test both success and failure paths
+- **Edge cases**: Test boundary conditions, empty inputs, invalid data
+
+### Repository-Specific Patterns
+
+#### **Agent Testing**
+- **Mock LLM clients**: Always mock `LLMClient.from_config()`
+- **Session management**: Test session lifecycle (start/end)
+- **State isolation**: Mock `AgentLogger` to prevent database operations in unit tests
+
+#### **Database Model Testing**
+- **Model validation**: Test SQLAlchemy model creation and validation
+- **Relationships**: Test model relationships and foreign keys
+- **Enum testing**: Verify enum values match expected strings
+
+#### **Configuration Testing**
+- **Environment variables**: Use `@patch.dict(os.environ, {...})` for env testing
+- **Default values**: Test fallback behavior when configs are missing
+- **Path handling**: Mock file paths to prevent filesystem access
+
+### Continuous Improvement
+- **Monitor coverage trends**: Coverage should not decrease below current baseline
+- **Add tests for new features**: All new public APIs require tests
+- **Refactor test debt**: Improve test quality alongside code quality
+- **Performance testing**: Consider adding performance benchmarks for critical paths
+
+- **Refactor test debt**: Improve test quality alongside code quality
+- **Performance testing**: Consider adding performance benchmarks for critical paths

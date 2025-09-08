@@ -1,0 +1,7 @@
+---
+description: "AI change‑log protocol"
+alwaysApply: true
+---
+
+- After every accepted Inline‑Edit or Agent task, append a bullet to `docs/AI_CHANGELOG.md`:
+- Keep entries ≤ 72 chars; they serve as the single‑source for release notes.

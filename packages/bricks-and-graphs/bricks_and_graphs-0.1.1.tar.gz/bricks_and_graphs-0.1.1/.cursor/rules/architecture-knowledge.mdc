@@ -1,0 +1,97 @@
+# Khora Architecture Knowledge
+
+## Triple-Agent System (ADR-001)
+Khora uses a three-agent architecture:
+
+### **Explorer Agent** (`khora.agent.explore`)
+- **Purpose**: Source discovery and analysis
+- **Specialization**: Web scraping analysis, publication source detection, biomedical classification
+- **Outputs**: Source configurations in JSON format
+- **Database**: Stores discovered sources and analysis results
+
+### **Pipeline Builder Agent** (`khora.agent.pipeline_builder`)
+- **Purpose**: Generate custom Dagster pipeline code
+- **Specialization**: Python code generation, YAML configuration, dependency management
+- **Outputs**: `.py` (ops) and `.yaml` (graph) files per pipeline
+- **Intelligence**: Semantic duplicate detection using LLM similarity matching
+
+### **Pipeline Runner Agent** (`khora.agent.pipeline_runner`)
+- **Purpose**: Execute pipelines and manage results
+- **Specialization**: Dagster backend integration, progress tracking, error handling
+- **Intelligence**: Natural language pipeline discovery and execution tracking
+
+### **Intent Router** (`khora.agent.intent_router`)
+- **Purpose**: Route user requests to appropriate agent
+- **Intelligence**: LLM-powered semantic analysis with confidence scoring
+
+## Database-Driven Intelligence (ADR-002)
+All agents use database persistence with semantic intelligence:
+
+### **Core Models**
+```python
+class PipelineRecord(Base):
+    # Pipeline metadata with semantic descriptions for LLM matching
+
+class PipelineExecution(Base):
+    # Execution history with performance metrics
+
+class AgentSession(Base):
+    # Conversation state persistence across sessions
+
+class AgentOperation(Base):
+    # Audit trail of all agent operations
+```
+
+### **Semantic Matching**
+- **Similarity Thresholds**: 0.9 = auto-merge, 0.7 = suggest merge, 0.5 = related
+- **Intent Routing**: 0.8 = auto-route, 0.6 = confirm, 0.3 = options
+- **LLM Integration**: All similarity detection uses LLM comparison
+
+## Dagster Execution Backend (ADR-003)
+Pipeline execution uses Dagster with abstraction layer:
+
+### **Generated Code Patterns**
+```python
+# Modern approach (@job decorator)
+@op
+def extract_data(context, config: ExtractConfig) -> pd.DataFrame:
+    pass
+
+@job
+def pipeline_job():
+    result = extract_data()
+
+# Legacy support (GraphDefinition)
+graph_def = GraphDefinition(name="pipeline_graph", ...)
+```
+
+### **Backend Abstraction**
+```python
+class ExecutionBackend(ABC):
+    def execute_graph(self, graph_name: str) -> ExecutionResult
+    def execute_job(self, job_config_path: str) -> ExecutionResult
+```
+
+## Agent Communication Pattern
+All agents follow this state pattern:
+```python
+AgentState = {
+    "messages": List[BaseMessage],
+    "session_id": str,
+    "agent_specific_data": Dict[str, Any]
+}
+```
+
+## Key Architectural Principles
+1. **Separation of Concerns**: Each agent has distinct responsibilities
+2. **Database-First**: All state persisted with semantic intelligence
+3. **LLM-Powered**: Similarity detection and intent routing throughout
+4. **Backend Abstraction**: Execution layer designed for future flexibility
+5. **Session Persistence**: Conversation context maintained across restarts
+
+---
+description: Core architecture knowledge from ADRs for understanding Khora's design decisions
+globs:
+  - "khora/**/*.py"
+  - "docs/**/*.md"
+alwaysApply: true

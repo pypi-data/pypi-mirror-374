@@ -1,0 +1,10 @@
+---
+description: "Repomix usage & MCP integration"
+alwaysApply: true
+---
+
+- When the agent needs holistic context, call **@repomix-pack** (defined in scripts/) to build a compressed XML of the repo:
+  `npx -y repomix --compress -o .cache/repomix.xml`
+- Register that command as an **MCP server** in Cursor (`Settings ▶ MCP ▶ + Add ▶ name=repomix`). See Repomix docs for stdio config.
+- The agent must **load and reason** over the compressed artefact **before** proposing cross‑module refactors.
+- Ignore `*.xml` outputs via `.cursorignore`.

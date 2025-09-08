@@ -1,0 +1,176 @@
+# Khora Documentation Access Guide
+
+## 📋 Complete Documentation Structure
+
+### **Architecture Decision Records (ADRs)** 📚
+**Location**: `docs/adr/`
+- **ADR-001**: Triple-Agent Architecture (Explorer/Builder/Runner)
+- **ADR-002**: Database-Driven Intelligence (semantic matching, state persistence)
+- **ADR-003**: Dagster Execution Backend (pipeline orchestration)
+
+**When to Read**: Before making architectural changes or understanding design decisions
+
+### **Code Patterns Documentation** 🔧
+**Location**: `docs/patterns/`
+- **Agent Patterns**: Standard agent implementation patterns
+- **Database Patterns**: Query patterns, state management, error handling
+- **LLM Integration**: Prompt engineering, semantic matching
+- **Error Handling**: Comprehensive error context and recovery
+
+**When to Use**: When implementing new features or refactoring existing code
+
+### **Domain Knowledge** 🎓
+**Location**: `docs/domain-knowledge.md`
+- Academic publication APIs (arXiv, PubMed, Semantic Scholar)
+- Web scraping intelligence and rate limiting
+- Biomedical domain detection patterns
+- Performance optimization strategies
+
+**When to Reference**: When working with external APIs or domain-specific logic
+
+### **Type Definitions** 🎯
+**Location**: `khora/type_aliases.py`
+- 70+ semantic type aliases for improved readability
+- Agent, database, pipeline, and LLM types
+- Use these instead of generic Dict/List types
+
+**When to Use**: When adding type annotations or understanding data structures
+
+### **Testing Patterns** 🧪
+**Location**: `tests/patterns/agent_test_pattern.py`
+- Standard fixtures for all agent types
+- Common test scenarios (error handling, timeouts, state persistence)
+- Performance and integration testing patterns
+
+**When to Use**: When writing tests for new agents or features
+
+## 🔍 Quick Reference Commands
+
+### **Analyze Current Code**
+```bash
+# Get comprehensive code metrics and recommendations
+./scripts/analyze-complexity.sh
+
+# Get detailed analysis with complexity hotspots
+./scripts/analyze-complexity.sh --detailed
+```
+
+### **Search for Common Patterns**
+```bash
+# Agent implementations
+grep -r "class.*Agent" khora/agent/
+
+# Database operations
+grep -r "session\.query" khora/
+
+# LLM interactions
+grep -r "llm_client\.call" khora/
+
+# Error handling
+grep -r "except.*Exception" khora/
+
+# Pipeline patterns
+grep -r "@op" khora/
+```
+
+### **Check Documentation Coverage**
+```bash
+# Find undocumented functions
+grep -r "^def \|^class " khora/ | grep -v '"""'
+
+# Check for TODO/FIXME items
+grep -r "TODO\|FIXME\|XXX" khora/
+```
+
+## 🎯 Using This Documentation Effectively
+
+### **Before Code Analysis**
+1. **Read relevant ADRs** to understand architectural context
+2. **Check domain knowledge** for business context
+3. **Run analysis script** for current metrics
+4. **Review patterns** for implementation approaches
+
+### **During Development**
+1. **Follow established patterns** from `docs/patterns/`
+2. **Use type aliases** from `khora/type_aliases.py`
+3. **Reference domain knowledge** for API limits and best practices
+4. **Apply standard testing patterns** from `tests/patterns/`
+
+### **When Debugging**
+1. **Check common issues** in domain knowledge
+2. **Follow error handling patterns** for consistent recovery
+3. **Use search commands** to find similar implementations
+4. **Reference ADRs** for understanding design decisions
+
+## 💡 Development Workflow Integration
+
+### **Code Analysis Workflow**
+```bash
+# 1. Get context
+cat docs/adr/README.md              # Architecture overview
+cat docs/patterns/README.md         # Pattern guide
+
+# 2. Analyze current state
+./scripts/analyze-complexity.sh     # Code metrics
+
+# 3. Search for patterns
+grep -r "pattern_of_interest" khora/
+
+# 4. Reference documentation
+# Check relevant ADR, patterns, or domain knowledge
+```
+
+### **Feature Development Workflow**
+```bash
+# 1. Check if similar feature exists
+grep -r "similar_functionality" khora/
+
+# 2. Follow established patterns
+# Reference docs/patterns/ for implementation approach
+
+# 3. Use proper types
+# Import from khora/type_aliases.py
+
+# 4. Write tests using standard patterns
+# Follow tests/patterns/agent_test_pattern.py
+
+# 5. Verify quality
+./scripts/analyze-complexity.sh
+uv run pre-commit run --all-files
+```
+
+## 📚 Documentation Maintenance
+
+### **When Adding New Features**
+- Update relevant ADR if architectural impact
+- Add new patterns to `docs/patterns/`
+- Update domain knowledge if new external APIs
+- Add type aliases to `khora/type_aliases.py`
+- Update this guide if new documentation added
+
+### **When Refactoring**
+- Check if patterns documentation needs updates
+- Verify ADRs still reflect current architecture
+- Update analysis script if new metrics needed
+- Ensure type aliases remain accurate
+
+## 🔗 Quick Links for Common Tasks
+
+**Understanding Agent Architecture**: `docs/adr/001-triple-agent-architecture.md`
+**Database Intelligence**: `docs/adr/002-database-driven-intelligence.md`
+**Pipeline Execution**: `docs/adr/003-dagster-execution-backend.md`
+**Agent Implementation**: `docs/patterns/agent-patterns.md`
+**Academic APIs**: `docs/domain-knowledge.md#academic-publications`
+**LLM Integration**: `docs/patterns/agent-patterns.md#llm-integration-patterns`
+**Testing Approach**: `tests/patterns/agent_test_pattern.py`
+**Type Definitions**: `khora/type_aliases.py`
+**Code Quality**: `./scripts/analyze-complexity.sh`
+
+---
+description: Comprehensive guide to accessing and using all Khora documentation for effective development
+globs:
+  - "**/*.py"
+  - "**/*.md"
+  - "**/*.yaml"
+  - "**/*.yml"
+alwaysApply: true

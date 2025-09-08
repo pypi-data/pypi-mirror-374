@@ -1,0 +1,76 @@
+# Code Analysis Guidelines
+
+## Before Analyzing Code
+1. **Read ADRs First**: Check `docs/adr/` to understand architectural decisions
+2. **Review Patterns**: Read `docs/patterns/` for common code patterns
+3. **Check Domain Knowledge**: Review `docs/domain-knowledge.md` for context
+4. **Use Analysis Tools**: Run `./scripts/analyze-complexity.sh` for metrics
+
+## When Refactoring
+- Look for repeated patterns in agent implementations
+- Check for similar database query patterns
+- Identify common error handling blocks
+- Search for duplicate LLM prompt templates
+- Use type aliases from `khora/type_aliases.py` for complex types
+- Follow established patterns in `docs/patterns/`
+
+## Performance Hotspots
+- Database queries in loops
+- LLM calls without caching
+- Large file operations without streaming
+- Repeated pipeline file parsing
+- Missing database indexes (check frequent_queries in domain knowledge)
+- Unoptimized similarity comparisons
+
+## Architecture Smells
+- Circular imports between agents
+- Direct database access outside service layer
+- Hard-coded file paths or URLs
+- Missing error recovery in critical paths
+- Violation of agent patterns (check `docs/patterns/agent-patterns.md`)
+- LLM calls without timeout handling
+
+## Code Search Patterns
+Use these patterns to understand code quickly:
+
+```bash
+# Agent patterns
+grep -r "class.*Agent" khora/agent/
+grep -r "AgentState" khora/
+grep -r "session_id" khora/
+
+# Database patterns
+grep -r "session\.query" khora/
+grep -r "Base.metadata" khora/
+grep -r "with.*SessionLocal" khora/
+
+# LLM patterns
+grep -r "llm_client\.call" khora/
+grep -r "semantic.*similarity" khora/
+
+# Pipeline patterns
+grep -r "@op" khora/
+grep -r "execute_in_process" khora/
+
+# Error patterns
+grep -r "except.*Exception" khora/
+grep -r "TimeoutError" khora/
+```
+
+## Architecture Understanding
+- **Triple-Agent System**: Explorer → Builder → Runner (see ADR-001)
+- **Database-Driven Intelligence**: All state persisted with semantic matching (see ADR-002)
+- **LLM-Powered Everything**: Similarity detection, intent routing, code generation
+- **Dagster Backend**: Pipeline execution with abstraction layer (see ADR-003)
+- **Semantic Duplicate Detection**: Confidence thresholds in domain knowledge
+
+## Testing Patterns
+- Use `tests/patterns/agent_test_pattern.py` for agent testing
+- Follow standard fixtures and mocking patterns
+- Test error handling and timeout scenarios
+- Verify database state persistence
+- Check LLM interaction patterns
+description:
+globs:
+alwaysApply: false
+---
