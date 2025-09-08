@@ -1,0 +1,81 @@
+[project]
+name = "test_genie_test" 
+version = "1.0.3"
+description = "AI-powered CLI tool to auto-generate test cases for Python, C++, and Java code with both online and offline modes"
+authors = [{ name = "Kushagra Wadhwa", email = "testgenieofficial@gmail.com" }]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["testing", "test-generation", "ai", "cli", "python", "cpp", "java", "pytest", "unittest", "gtest", "junit"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = [
+    "click>=8.1.7",
+    "requests>=2.31.0",
+    "pathlib2>=2.3.7",
+    "llama-cpp-python>=0.2.0",
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
+    "psutil>=5.9.0",
+]
+
+[project.scripts]
+test-genie = "cli.main:cli"
+testgenie = "cli.main:cli"  # Alternative command name
+
+[project.urls]
+Homepage = "https://thetestgenie.com"
+Documentation = "https://thetestgenie.com/docs"
+Repository = "https://github.com/testgenie/cli"
+Issues = "https://github.com/testgenie/cli/issues"
+Pricing = "https://thetestgenie.com/pricing"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+]
+offline = [
+    "llama-cpp-python>=0.2.0",
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
+    "psutil>=5.9.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["cli*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = ''
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
