@@ -1,0 +1,18 @@
+include README.md
+include LICENSE
+include VERSION
+include requirements.txt
+include dev-requirements.txt
+include packages.txt
+include *.py
+include __version__.py
+include *.sh
+include *.desktop
+recursive-include assets *.svg *.png *.ico
+recursive-include locales *.po *.mo
+recursive-include docs *.md
+global-exclude *.pyc
+global-exclude __pycache__
+global-exclude .pytest_cache
+global-exclude .tox
+global-exclude .coverage
