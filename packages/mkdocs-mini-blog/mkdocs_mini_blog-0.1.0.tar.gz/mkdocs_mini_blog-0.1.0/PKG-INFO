@@ -1,0 +1,93 @@
+Metadata-Version: 2.3
+Name: mkdocs-mini-blog
+Version: 0.1.0
+Summary: A minimal blog theme for MkDocs, based on the MkDocs Simple Blog, by Fernando Celmer.
+Author: Fernando Celmer, Dimitrios Poulopoulos
+Author-email: Fernando Celmer <email@fernandocelmer.com>, Dimitrios Poulopoulos <dimitris.a.poulopoulos@gmail.com>
+License: MIT License
+         
+         Copyright (c) 2023 Fernando Celmer
+         Copyright (c) 2025 Dimitrios Poulopoulos
+         
+         Permission is hereby granted, free of charge, to any person obtaining a copy
+         of this software and associated documentation files (the "Software"), to deal
+         in the Software without restriction, including without limitation the rights
+         to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+         copies of the Software, and to permit persons to whom the Software is
+         furnished to do so, subject to the following conditions:
+         
+         The above copyright notice and this permission notice shall be included in all
+         copies or substantial portions of the Software.
+         
+         THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+         IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+         FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+         AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+         LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+         SOFTWARE.
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: mkdocs>=1.6.1
+Requires-Python: >=3.9
+Project-URL: Documentation, https://dpoulopoulos.github.io/mkdocs-mini-blog/
+Project-URL: Homepage, https://github.com/dpoulopoulos/mkdocs-mini-blog
+Project-URL: Issues, https://github.com/dpoulopoulos/mkdocs-mini-blog/issues
+Project-URL: Repository, https://github.com/dpoulopoulos/mkdocs-mini-blog
+Description-Content-Type: text/markdown
+
+# MkDocs Mini Blog
+
+[![Documentation](https://github.com/dpoulopoulos/mkdocs-mini-blog/actions/workflows/documentation.yml/badge.svg)](https://github.com/dpoulopoulos/mkdocs-mini-blog/actions/workflows/documentation.yml)
+[![Publish to PyPI](https://github.com/dpoulopoulos/mkdocs-mini-blog/actions/workflows/release.yml/badge.svg)](https://github.com/dpoulopoulos/mkdocs-mini-blog/actions/workflows/release.yml)
+
+
+Mini Blog is a theme for [MkDocs](https://www.mkdocs.org/), a static site generator that's geared towards building
+project documentation. Follow the instructions below to install and activate the theme. For full documentation visit the
+project's documentation site.
+
+## Install
+
+To install MkDocs, run the following command from the command line:
+
+```bash
+pip install mkdocs
+```
+
+Then, install the theme using PIP:
+
+```bash
+pip install mkdocs-mini-blog
+```
+
+## Activating theme
+
+After the theme is installed, edit your `mkdocs.yml` file and set the theme name to `mini-blog`:
+
+```yml
+theme:
+    name: mini-blog
+```
+
+## Getting Help
+
+We use GitHub issues for tracking bugs and feature requests and have limited bandwidth to address them. If you need
+anything, I ask you to please follow our templates for opening issues or discussions.
+
+- 🐛 [Bug Report](https://github.com/dpoulopoulos/mkdocs-mini-blog/issues/new)
+- 📕 [Documentation Issue](https://github.com/dpoulopoulos/mkdocs-mini-blog/issues/new)
+- 🚀 [Feature Request](https://github.com/dpoulopoulos/mkdocs-mini-blog/issues/new)
+- 💬 [General Question](https://github.com/dpoulopoulos/mkdocs-mini-blog/issues/new)
+
+## License
+![GitHub License](https://img.shields.io/github/license/dpoulopoulos/mkdocs-mini-blog)
+
+This project is licensed under the terms of the MIT License.

@@ -1,0 +1,52 @@
+[build-system]
+requires = ["uv_build>=0.8.15,<0.9.0"]
+build-backend = "uv_build"
+
+[project]
+name = "mkdocs-mini-blog"
+version = "0.1.0"
+description = "A minimal blog theme for MkDocs, based on the MkDocs Simple Blog, by Fernando Celmer."
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.9"
+authors = [
+    {name = "Fernando Celmer", email = "email@fernandocelmer.com"},
+    {name = "Dimitrios Poulopoulos", email = "dimitris.a.poulopoulos@gmail.com"},
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "mkdocs>=1.6.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/dpoulopoulos/mkdocs-mini-blog"
+Issues = "https://github.com/dpoulopoulos/mkdocs-mini-blog/issues"
+Repository = "https://github.com/dpoulopoulos/mkdocs-mini-blog"
+Documentation = "https://dpoulopoulos.github.io/mkdocs-mini-blog/"
+
+[project.entry-points."mkdocs.themes"]
+mini-blog = "mkdocs_mini_blog"
+
+[dependency-groups]
+dev = [
+    "commitizen>=4.8.3",
+]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "$version"
+version_scheme = "pep440"
+version_provider = "uv"
+update_changelog_on_bump = true
+major_version_zero = true
