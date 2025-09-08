@@ -1,0 +1,53 @@
+version: '2.2'
+
+networks:
+  default:
+    driver_opts:
+      com.docker.network.bridge.name: systemctl-mqtt
+
+#volumes:
+#  config:
+
+services:
+  broker:
+    image: docker.io/eclipse-mosquitto:latest
+    user: mosquitto
+    read_only: true
+    #ports: ['127.0.0.1:1883:1883/tcp']
+    cap_drop: [all]
+    security_opt: [no-new-privileges]
+    cpus: 0.4
+    mem_limit: 32M
+  client:
+    build: .
+    image: fphammerle/systemctl-mqtt
+    volumes:
+    #- config:/etc/systemctl-mqtt:ro
+    - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket:rw
+    command: systemctl-mqtt
+      --log-level debug
+      --poweroff-delay-seconds 60
+      --mqtt-host broker
+      --mqtt-disable-tls
+    #  --mqtt-username raspberrypi
+    #  --mqtt-password-file /etc/systemctl-mqtt/mqtt-password
+    #  --monitor-system-unit ssh.service
+    hostname: raspberrypi
+    userns_mode: host
+    # prefering explicit user specification over "USER 0" in Dockerfile
+    # to avoid accidental container startup without
+    # secure apparmor profile and dropped capabilities
+    user: '0'
+    read_only: true
+    cap_drop: [all]
+    security_opt:
+    - no-new-privileges
+    # $ sudo apparmor_parser --replace ./docker-apparmor-profile
+    # raspberrypi kernel apparmor: https://github.com/raspberrypi/linux/pull/1698#issuecomment-684989048
+    # https://github.com/raspberrypi/linux/commit/a3e07c5dfef2664fc1d900ebb4a3f91c04ab700b
+    - apparmor=systemctl-mqtt
+    # docker-compose >=2.2,<3
+    cpus: 0.4
+    mem_limit: 32M
+
+# https://docs.docker.com/compose/compose-file/compose-file-v2/
