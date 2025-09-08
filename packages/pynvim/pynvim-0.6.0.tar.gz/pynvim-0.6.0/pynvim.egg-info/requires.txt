@@ -1,0 +1,15 @@
+msgpack>=1.0.0
+
+[:platform_python_implementation != "PyPy"]
+greenlet>=3.0
+
+[:python_version < "3.12"]
+typing-extensions>=4.5
+
+[docs]
+sphinx
+sphinx-rtd-theme
+
+[test]
+pytest
+pytest_timeout
