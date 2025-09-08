@@ -1,0 +1,28 @@
+[project]
+name = "lilpipe"
+version = "0.1.0"
+description = "A tiny, typed, sequential pipeline engine for Python"
+authors = [
+    {name = "Andrew Ruba"}
+]
+license = {text = "Apache 2.0"}
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pydantic (>=2.11.7,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^4.3.0"
+black = "^25.1.0"
+ruff = "^0.12.12"
+mypy = "^1.17.1"
+pytest = "^8.4.2"
+pytest-cov = "^6.3.0"
+ipykernel = "^6.30.1"
+

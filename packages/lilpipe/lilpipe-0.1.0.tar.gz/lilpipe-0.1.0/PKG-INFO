@@ -1,0 +1,120 @@
+Metadata-Version: 2.3
+Name: lilpipe
+Version: 0.1.0
+Summary: A tiny, typed, sequential pipeline engine for Python
+License: Apache 2.0
+Author: Andrew Ruba
+Requires-Python: >=3.13
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: pydantic (>=2.11.7,<3.0.0)
+Description-Content-Type: text/markdown
+
+# lilpipe
+
+A tiny, typed, sequential pipeline engine for Python.
+
+[![PyPI](https://img.shields.io/pypi/v/lilpipe.svg)](https://pypi.org/project/lilpipe/)
+[![Python Version](https://img.shields.io/pypi/pyversions/lilpipe.svg)](https://pypi.org/project/lilpipe/)
+[![CI](https://github.com/andrewruba/lilpipe/actions/workflows/ci.yaml/badge.svg)](https://github.com/andrewruba/lilpipe/actions)
+[![Coverage](https://codecov.io/gh/andrewruba/lilpipe/branch/main/graph/badge.svg)](https://codecov.io/gh/andrewruba/lilpipe)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/your-username/lilpipe/blob/main/LICENSE)
+
+**lilpipe** is a lightweight, Pydantic-powered library for building and running sequential workflows in Python. Designed for simplicity and type safety, it’s ideal for data processing, scientific workflows (e.g., ligand-binding assays), and any task requiring a clear, linear sequence of steps. With built-in caching, retries, and composable steps, lilpipe offers a minimal yet robust solution for Python developers who want type-safe pipelines without the complexity of graph-based or distributed systems.
+
+## Features
+
+- **Sequential Workflows**: Run steps in a fixed order, perfect for linear tasks like data processing or lab assays.
+- **Pydantic-Powered**: Leverage Pydantic for type-safe, validated configuration and state, integrating seamlessly with FastAPI or data science stacks.
+- **Smart Caching**: Skip unchanged steps using fingerprint-based hashing, saving time in iterative workflows.
+- **Retries and Control**: Support re-running pipelines (`needs_rerun`) and early termination (`abort_pass`, `abort_run`) for flexible control.
+- **Composable Steps**: Nest workflows with `CompositeStep` for modular, reusable pipelines.
+- **Lightweight**: Minimal dependencies (just Pydantic), ensuring easy installation and low overhead.
+- **Bio-Inspired**: Born from ligand-binding assay (LBA) analysis, with potential for lab-specific extensions.
+- **Robust Testing**: 100% test coverage, linted with `ruff`, and typed with `mypy`.
+
+## Installation
+
+Install lilpipe via pip:
+
+```bash
+pip install lilpipe
+```
+
+Requires Python 3.13+ and Pydantic 2.11.7+.
+
+## Usage Example
+
+Below is an example showing a pipeline for processing lab data (e.g., LBA) and a generic data-cleaning pipeline, using `Step`, `CompositeStep`, and `PipelineContext`.
+
+```python
+from lilpipe import Step, CompositeStep, Pipeline, PipelineContext
+
+# Define steps for a bio-inspired pipeline
+class LoadData(Step):
+    name = "load_data"
+    def logic(self, ctx: PipelineContext) -> PipelineContext:
+        ctx.data = [1.0, 2.0, 3.0]  # Simulated assay data
+        return ctx
+
+class Calibrate(Step):
+    name = "calibrate"
+    fingerprint_keys = ("data",)
+    def logic(self, ctx: PipelineContext) -> PipelineContext:
+        ctx.calibrated = [x * 1.5 for x in ctx.data]  # Calibration factor
+        return ctx
+
+class Validate(Step):
+    name = "validate"
+    def logic(self, ctx: PipelineContext) -> PipelineContext:
+        if any(x < 0 for x in ctx.calibrated):
+            ctx.needs_rerun = True  # Trigger retry if invalid
+        return ctx
+
+# Nested steps for modularity
+composite = CompositeStep("process", children=[Calibrate(), Validate()])
+
+# Create and run the pipeline
+pipeline = Pipeline([LoadData(), composite], name="lba_pipeline", max_loops=3)
+ctx = PipelineContext()
+pipeline.run(ctx)
+
+print(ctx.calibrated)  # Output: [1.5, 3.0, 4.5]
+print(ctx.step_meta)  # Inspect timing, cache hits, etc.
+
+# Generic example: Data cleaning
+class CleanData(Step):
+    name = "clean"
+    fingerprint_keys = ("input",)
+    def logic(self, ctx: PipelineContext) -> PipelineContext:
+        ctx.output = [x for x in ctx.input if x is not None]
+        return ctx
+
+ctx = PipelineContext(input=[1, None, 3])
+CleanData().run(ctx)
+print(ctx.output)  # Output: [1, 3]
+```
+
+Try the full example in our [Jupyter notebook](examples/example.ipynb).
+
+## Why lilpipe?
+
+lilpipe is designed for users who need simple, sequential pipelines without the overhead of complex workflow libraries. Unlike other tools that focus on directed acyclic graphs (DAGs), parallel execution, or distributed systems, lilpipe prioritizes:
+
+- **Simplicity**: Linear workflows with a clear, predictable order.
+- **Type Safety**: Pydantic-based configuration for robust, validated state.
+- **Lightweight Design**: Minimal dependencies and easy setup.
+- **Bio-Friendly**: Tailored for lab workflows (e.g., LBA), but flexible for any sequential task.
+
+Choose lilpipe for type-safe, sequential pipelines in Python-centric projects, especially in data science or bio/lab applications, where graph-based or heavy orchestration tools are unnecessary.
+
+## License
+
+Licensed under the [Apache 2.0 License](LICENSE).
+
+## Contact
+
+- Author: Andrew Ruba
+- Issues: [GitHub Issues](https://github.com/andrewruba/lilpipe/issues)
+
