@@ -1,0 +1,114 @@
+# Generate-Env-Sample
+
+![PyPI version](https://img.shields.io/pypi/v/generate-env-sample?color=blue&label=PyPI&logo=pypi)  
+
+
+A simple CLI tool to generate `.env.sample` files from existing `.env` files. This tool reads your `.env` file, preserves comments and empty lines, and creates a sample file with keys but without values.
+
+## Features
+
+- Preserves comments and empty lines from the original `.env` file.
+- Generates a clean `.env.sample` with keys set to empty values.
+- Handles encoding issues, permissions, and file existence gracefully.
+- Built with Python and Typer for a smooth CLI experience.
+
+## Installation
+
+You can install using one of the following methods:
+
+- Using pipx:
+  ```sh
+  pipx install generate-env-sample
+  ```
+- Using uv:
+  ```sh
+  uv tool install generate-env-sample
+  ```
+- Run directly with pipx:
+  ```sh
+  pipx run generate-env-sample
+  ```
+- Run directly with uvx:
+  ```sh
+  uvx generate-env-sample
+  ```
+
+### Prerequisites
+- Python 3.11 or higher
+
+## Build Instructions
+
+This project uses `uv` for management. To build the project, follow these steps:
+
+1. Install `uv` by following the [uv documentation](https://docs.astral.sh/uv/getting-started/installation/).
+   
+2. Clone the repository:
+
+   ```bash
+   git clone https://github.com/heshinth/generate-env-sample.git
+   cd generate-env-sample
+   ```
+
+3. Sync the project dependencies using uv sync:
+   ```bash
+   uv sync
+   ```
+
+## Usage
+
+Run the tool from the command line:
+
+```bash
+generate-env-sample
+```
+
+### Options
+- `--file`: Specify the `.env` file to read from (default: `.env`)
+- `--sample`: Specify the output `.env.sample` file (default: `.env.sample`)
+
+### Examples
+
+1. Generate `.env.sample` from the default `.env`:
+   ```bash
+   generate-env-sample
+   ```
+
+2. Use a custom `.env` file:
+   ```bash
+   generate-env-sample --file myenv.env --sample myenv.sample
+   ```
+
+3. Get help:
+   ```bash
+   generate-env-sample --help
+   ```
+
+## Example Input/Output
+
+Given a `.env` file like:
+```
+# Database configuration
+DB_HOST=localhost
+DB_PORT=5432
+
+# API keys
+API_KEY=your_secret_key
+```
+
+The generated `.env.sample` will be:
+```
+# Database configuration
+DB_HOST=
+DB_PORT=
+
+# API keys
+API_KEY=
+```
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request on [GitHub](https://github.com/heshinth/generate-env-sample).
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
