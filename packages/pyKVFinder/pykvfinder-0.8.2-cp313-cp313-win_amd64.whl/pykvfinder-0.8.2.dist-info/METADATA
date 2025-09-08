@@ -1,0 +1,102 @@
+Metadata-Version: 2.4
+Name: pyKVFinder
+Version: 0.8.2
+Summary: Python package to detect and characterize cavities in biomolecular structures
+Author: Helder V. Ribeiro-Filho, Luiz F. G. Alves, Pablo W. A. Silva, Gabriel E. Jara, Leandro O. Bortot, José G. C. Pereira, Paulo S. Lopes-de-Oliveira
+Author-email: "João V. S. Guerra" <jvsguerra@gmail.com>
+Maintainer-email: "João V. S. Guerra" <jvsguerra@gmail.com>
+License-Expression: GPL-3.0-or-later
+Project-URL: homepage, https://github.com/LBC-LNBio/pyKVFinder/
+Project-URL: documentation, https://lbc-lnbio.github.io/pyKVFinder/
+Project-URL: issues, https://github.com/LBC-LNBio/pyKVFinder/issues
+Keywords: structural biology,proteins,biomolecules,cavity detection,cavity characterization,binding sites
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: C
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Software Development
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy<2.4.0,>=2.2.0
+Requires-Dist: matplotlib<3.11.0,>=3.10.0
+Requires-Dist: plotly<6.4.0,>=6.0.0
+Requires-Dist: tomlkit==0.13.3
+Provides-Extra: dev
+Requires-Dist: pytest==8.4.2; extra == "dev"
+Requires-Dist: pytest-cov==6.2.1; extra == "dev"
+Requires-Dist: black==25.1.0; extra == "dev"
+Requires-Dist: flake8==7.3.0; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx==8.0.2; extra == "docs"
+Requires-Dist: sphinx-rtd-theme==3.0.2; extra == "docs"
+Requires-Dist: sphinxcontrib-video==0.4.1; extra == "docs"
+Provides-Extra: plugins
+Requires-Dist: pyqt5~=5.15; extra == "plugins"
+Dynamic: license-file
+
+# pyKVFinder
+
+[![PyPI - Version](https://img.shields.io/pypi/v/pyKVFinder)](https://pypi.org/project/pyKVFinder/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyKVFinder)](https://pypi.org/project/pyKVFinder/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/pyKVFinder)](https://pypi.org/project/pyKVFinder/)
+[![Unit testing](https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/unit-testing.yml?label=unit-testing)](https://github.com/LBC-LNBio/pyKVFinder/actions/workflows/unit-testing.yml)
+[![Integration testing](https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/integration-testing.yml?label=integration-testing)](https://github.com/LBC-LNBio/pyKVFinder/actions/workflows/integration-testing.yml)
+[![Build](https://img.shields.io/github/actions/workflow/status/LBC-LNBio/pyKVFinder/deploy.yml?label=build)](https://github.com/LBC-LNBio/pyKVFinder/actions/workflows/deploy.yml)
+[![Coverage](https://raw.githubusercontent.com/LBC-LNBio/pyKVFinder/coverage/coverage.svg)](https://github.com/LBC-LNBio/pyKVFinder/blob/coverage/coverage.txt)
+
+A Python package for detecting and characterizing biomolecular cavities.
+
+See also:
+
+- [GitHub repository](https://github.com/LBC-LNBio/pyKVFinder/)
+- [Documentation and tutorial](https://lbc-lnbio.github.io/pyKVFinder/)
+- [ChimeraX plugin](https://lbc-lnbio.github.io/pyKVFinder/plugins/chimerax/index.html)
+- [PyMOL plugin](https://lbc-lnbio.github.io/pyKVFinder/plugins/pymol/index.html)
+
+## Installation
+
+To install the latest release on
+[PyPI](https://pypi.org/project/pyKVFinder), run:
+
+```bash
+pip install pyKVFinder
+```
+
+Or to install the latest developmental version, run:
+
+```bash
+git clone https://github.com/LBC-LNBio/pyKVFinder.git
+pip install -e pyKVFinder
+```
+
+## Citation
+
+If you use *pyKVFinder* package, please cite:
+
+Guerra, J. V. S., Ribeiro-Filho, H. V., Jara, G. E., Bortot, L. O., Pereira, J. G. C., & Lopes-de-Oliveira, P. S. (2021). pyKVFinder: an efficient and integrable Python package for biomolecular cavity detection and characterization in data science. BMC bioinformatics, 22(1), 607. <https://doi.org/10.1186/s12859-021-04519-4>.
+
+If you use *pyKVFinder.Molecule*, please also cite:
+
+Guerra, J. V. S., Alves, L. F. G., Bourissou, D., Lopes-de-Oliveira, P. S., & Szalóki, G. (2023). Cavity Characterization in Supramolecular Cages. Journal of chemical information and modeling, 63(12), 3772-3785. <https://doi.org/10.1021/acs.jcim.3c00328>.
+
+If you use *PyMOL pyKVFinder Tools*, please also cite:
+
+Guerra, J. V. da S., Ribeiro Filho, H. V., Bortot, L. O., Honorato, R. V., Pereira, J. G. de C., & Lopes-de-Oliveira, P. S. (2020). ParKVFinder: A thread-level parallel approach in biomolecular cavity detection. In SoftwareX (Vol. 12, p. 100606). Elsevier BV. <https://doi.org/10.1016/j.softx.2020.100606>.
+
+## License
+
+The software is licensed under the terms of the GNU General Public License version 3 (GPL3) and is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
