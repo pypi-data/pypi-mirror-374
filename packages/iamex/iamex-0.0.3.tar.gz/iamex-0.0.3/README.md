@@ -1,0 +1,253 @@
+# iamex
+
+Acceso unificado a múltiples modelos de inferencia AI
+
+## Instalación
+
+```bash
+pip install iamex
+```
+
+## Modelos Disponibles
+
+- **iam-adv-mex** - Modelo avanzado en español
+- **IAM-lite** - Modelo ligero en español
+- **IAM-advanced** - Modelo avanzado en español
+- **iam-lite-mex** - Modelo ligero en español
+
+## Uso Simple (Recomendado)
+
+La forma más fácil de usar iamex es con la función `send_prompt`. Esta función se conecta directamente al endpoint real de iam-hub:
+
+**Endpoint**: `https://iam-hub.iamexprogramers.site/api/v1/prompt-model`
+
+```python
+from iamex import send_prompt
+
+# Uso básico - necesitas prompt, api_key y model
+response = send_prompt(
+    prompt="Explica qué es la inteligencia artificial",
+    api_key="tu_api_key_aqui",
+    model="IAM-advanced"
+)
+
+# Con parámetros opcionales como max_tokens
+response = send_prompt(
+    prompt="Explica qué es la inteligencia artificial",
+    api_key="tu_api_key_aqui",
+    model="IAM-advanced",
+    max_tokens=200  # Limitar respuesta a 200 tokens
+)
+
+print(response)
+```
+
+### Con Parámetros Adicionales
+
+```python
+# Con parámetros adicionales usando kwargs
+response = send_prompt(
+    prompt="¿Cuáles son las ventajas de usar Python?",
+    api_key="tu_api_key_aqui",
+    model="IAM-advanced",
+    temperature=0.7,
+    max_tokens=200
+)
+```
+
+### Con Mensaje del Sistema
+
+```python
+# Con mensaje del sistema
+response = send_prompt(
+    prompt="Explica qué es una función lambda",
+    api_key="tu_api_key_aqui",
+    model="IAM-advanced",
+    system_prompt="Eres un asistente experto en programación Python."
+)
+```
+
+## Uso Avanzado (Cliente)
+
+Para casos más avanzados, puedes usar la clase `PromptClient`:
+
+```python
+from iamex import PromptClient
+
+# Inicializar el cliente con tu API key
+client = PromptClient(api_key="tu_api_key_aqui")
+
+# Enviar un prompt (usa modelo por defecto 'IAM-advanced')
+response = client.send_prompt(
+    prompt="Explica qué es la inteligencia artificial"
+)
+
+print(response)
+```
+
+## Uso con Modelo Específico
+
+```python
+# Especificar un modelo diferente
+response = client.send_prompt(
+    prompt="Explica qué es Python",
+    modelo="IAM-advanced"
+)
+```
+
+## Uso con Mensaje del Sistema
+
+```python
+# Incluir un mensaje del sistema para definir el comportamiento
+system_prompt = "Eres un asistente experto en programación."
+response = client.send_prompt(
+    prompt="Explica qué es una función",
+    modelo="IAM-advanced",
+    system_prompt=system_prompt
+)
+```
+
+## Parámetros Adicionales
+
+El método `send_prompt` acepta parámetros adicionales:
+
+```python
+response = client.send_prompt(
+    prompt="Tu prompt aquí",
+    modelo="IAM-advanced",
+    temperature=0.5,        # Controla la creatividad (0.0 - 1.0)
+    max_tokens=1000,        # Máximo número de tokens en la respuesta
+    top_p=0.9,             # Controla la diversidad de la respuesta
+    top_k=50,              # Limita las opciones de tokens
+    repetition_penalty=1.1, # Evita repeticiones
+    presence_penalty=0.1,   # Penaliza tokens ya presentes
+    frequency_penalty=0.1,  # Penaliza tokens frecuentes
+    stream=False            # Respuesta en streaming
+)
+```
+
+## Parámetros por Defecto
+
+Si no especificas parámetros, se usan estos valores:
+- `model`: `"IAM-advanced"`
+- `temperature`: `0.3`
+- `max_tokens`: `12000`
+- `top_p`: `0.9`
+- `top_k`: `50`
+- `repetition_penalty`: `1.1`
+- `presence_penalty`: `0.1`
+- `frequency_penalty`: `0.1`
+- `stream`: `False`
+
+## Obtener Modelos Disponibles
+
+```python
+models = client.get_models()
+print(models)
+```
+
+## Manejo de Errores
+
+```python
+try:
+    response = client.send_prompt(
+        prompt="Tu prompt aquí",
+        modelo="IAM-advanced"
+    )
+except Exception as e:
+    print(f"Error: {e}")
+```
+
+## Autenticación
+
+La librería ahora soporta autenticación por API key:
+
+```python
+# Con función simple
+response = send_prompt("Tu prompt", "tu_api_key_aqui", "tu_modelo")
+
+# Con cliente
+client = PromptClient(api_key="tu_api_key_aqui")
+```
+
+**Nota**: Si no proporcionas una API key, la librería funcionará sin autenticación (solo para desarrollo y pruebas).
+
+## Estructura del Payload
+
+La función `send_prompt` envía automáticamente este payload a la API:
+
+```json
+{
+  "apikey": "tu_api_key_aqui",
+  "model": "tu_modelo",
+  "prompt": "tu_prompt"
+}
+```
+
+**Parámetros obligatorios:**
+- `apikey`: Tu clave de API para autenticación
+- `model`: El modelo de IA a usar
+- `prompt`: El texto de tu consulta
+
+**Parámetros opcionales:**
+- `system_prompt`: Instrucciones del sistema (si se proporciona)
+- Cualquier otro parámetro que pases en `**kwargs`
+
+## Desarrollo
+
+### Instalación para Desarrollo
+
+```bash
+git clone https://github.com/IA-Mexico/iamex.git
+cd iamex
+pip install -e ".[dev]"
+```
+
+### Ejecutar Tests
+
+```bash
+pytest
+```
+
+### Formatear Código
+
+```bash
+black src/ tests/
+```
+
+## Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
+
+## Soporte
+
+- **Documentación**: [GitHub](https://github.com/IA-Mexico/iamex)
+- **Issues**: [GitHub Issues](https://github.com/IA-Mexico/iamex/issues)
+- **Email**: hostmaster@iamex.io
+## Changelog
+
+### v0.0.3
+- ✅ **ACTUALIZADO**: Versión del paquete a 0.0.3
+- ✅ **NUEVO**: Parámetro opcional `max_tokens` en función `send_prompt`
+- ✅ **MEJORADO**: Control de longitud de respuestas del modelo
+- ✅ **MEJORADO**: Endpoint real de iam-hub implementado
+- ✅ **OPTIMIZADO**: Ejemplos actualizados con nueva funcionalidad
+- ✅ **OPTIMIZADO**: Estructura de payload exacta para la API
+- ✅ **DOCUMENTACIÓN**: Guías de uso para max_tokens
+
+### v0.0.2
+- ✅ **NUEVO**: Función simple `send_prompt(prompt, api_key, model)` para uso rápido
+- ✅ **NUEVO**: Soporte completo para autenticación con API key
+- ✅ **NUEVO**: Conexión directa al endpoint real de iam-hub
+- ✅ **MEJORADO**: Estructura de payload exacta que espera la API
+- ✅ **DOCUMENTACIÓN**: Ejemplos actualizados con la nueva funcionalidad
+
+### v0.0.1
+- Versión inicial
+- Cliente básico para envío de prompts
+- Endpoint fijo para el modelo actual
+- Soporte para múltiples modelos de inferencia
+- Cliente `PromptClient` para uso avanzado
+- **Modelo por defecto**: `IAM-advanced`
+- **Parámetros optimizados** según la API
+
