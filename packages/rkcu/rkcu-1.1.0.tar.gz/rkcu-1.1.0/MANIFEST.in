@@ -1,0 +1,7 @@
+include readme.md
+include LICENSE*
+include *.json
+include *.txt
+recursive-include rkcu *.py
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]

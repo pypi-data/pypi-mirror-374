@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rkcu"
+version = "1.1.0"
+description = "Royal Kludge Config Utility - Manage profiles and per-key RGB lighting"
+readme = "readme.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+authors = [
+    {name = "Hardik Srivastava"}
+]
+maintainers = [
+    {name = "gagan16k"}
+]
+keywords = ["royal kludge", "keyboard", "rgb", "lighting", "config", "utility"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop", 
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8", 
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: System :: Hardware",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "hidapi>=0.10.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "black>=21.0.0", 
+    "flake8>=3.8.0",
+]
+
+[project.scripts]
+rkcu = "rkcu.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/gagan16k/rkcu"
+Repository = "https://github.com/gagan16k/rkcu"
+Issues = "https://github.com/gagan16k/rkcu/issues"
+
+[tool.setuptools]
+packages = ["rkcu"]
+
+[tool.black]
+line-length = 100
+target-version = ["py37"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
