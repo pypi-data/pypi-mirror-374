@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "init-service-auto"
+version = "0.1.6"
+description = "init-service-auto"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+  { name="LauLe", email="levanlau.net@email.com" }
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["init_service_auto"]
+
+[tool.setuptools.package-data]
+init_service_auto = ["*.so"]
+
+[tool.setuptools]
+include-package-data = true
+
+[project.scripts]
+init_service_auto = "init_service_auto.wrapper:run"
