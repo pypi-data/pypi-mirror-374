@@ -1,0 +1,49 @@
+
+
+[build-system]
+
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+
+dynamic = ["version", "dependencies"]
+
+name = "tracdap-ext-http"
+description = "An extension for TRAC D.A.P. that lets models connect to HTTP endpoints"
+readme = "README.md"
+
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+
+authors = [
+    {name = "Martin Traverse", email = "martin@fintrac.co.uk"}
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent"
+]
+
+requires-python = ">= 3.9, < 3.14"
+
+
+[project.urls]
+
+Homepage = "https://tracdap.finos.org/"
+Repository = "https://github.com/martin-traverse/tracdap.git"
+Documentation = "https://tracdap.readthedocs.io/"
+"Issue Tracker" = "https://github.com/finos/tracdap/issues"
+GitHub = "https://github.com/martin-traverse/tracdap"
+Source = "https://github.com/martin-traverse/tracdap"
+
+[tool.setuptools.packages.find]
+
+where = ["src"]
+namespaces = true
+
+
+[tool.setuptools.dynamic]
+
+version = { attr = "tracdap.ext.http.__version__" }
+dependencies = { file = ["requirements.txt"] }
