@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ruspy-transpiler"
+version = "0.2.1"
+description = "Транспилятор русского Python: пишите код на русском, получайте стандартный Python!"
+authors = [
+  { name="Саша Трнуов", email="shtrnv@ya.ru" }
+]
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+keywords = ["python", "transpiler", "russian", "русский python"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/c1cada3301-web/ruspy.git"
+"Bug Tracker" = "https://github.com/c1cada3301-web/ruspy/issues"
+
+[project.scripts]
+ruspy = "ruspy.cli:main"
+ruspy-transpiler = "ruspy.cli:main"
