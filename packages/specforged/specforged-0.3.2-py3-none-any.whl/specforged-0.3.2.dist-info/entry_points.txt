@@ -1,0 +1,6 @@
+[console_scripts]
+dev = smithery.cli.dev:main
+playground = smithery.cli.playground:main
+specforged = specforged.cli:specforge_mcp
+specforged-cli = specforged.cli:main
+specforged-http = specforged.cli:specforge_http
