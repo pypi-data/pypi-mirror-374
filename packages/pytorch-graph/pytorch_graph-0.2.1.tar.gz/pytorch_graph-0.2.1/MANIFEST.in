@@ -1,0 +1,16 @@
+include README.md
+include LICENSE
+include MANIFEST.in
+include setup.py
+include pyproject.toml
+
+recursive-include torch_vis *.py
+recursive-exclude torch_vis __pycache__
+recursive-exclude torch_vis *.pyc
+recursive-exclude torch_vis *.pyo
+
+prune .git
+prune .github
+prune tests
+prune docs/_build
+prune *.egg-info 

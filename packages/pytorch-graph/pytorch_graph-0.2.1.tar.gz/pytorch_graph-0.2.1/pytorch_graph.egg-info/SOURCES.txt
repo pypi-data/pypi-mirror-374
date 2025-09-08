@@ -1,0 +1,16 @@
+LICENSE
+MANIFEST.in
+README.md
+pyproject.toml
+setup.py
+docs/conf.py
+pytorch_graph/__init__.py
+pytorch_graph/core/parser.py
+pytorch_graph/core/visualizer.py
+pytorch_graph/renderers/diagram_renderer.py
+pytorch_graph/renderers/plotly_renderer.py
+pytorch_graph/utils/computational_graph.py
+pytorch_graph/utils/layer_info.py
+pytorch_graph/utils/model_analyzer.py
+pytorch_graph/utils/position_calculator.py
+pytorch_graph/utils/pytorch_hooks.py
