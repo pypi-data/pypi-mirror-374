@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "waybacksavebulk"
+authors = [{ email = "tdebize@mail.com" }]
+description = "A simple script to bulk save URLs to the archive.org Wayback Machine"
+readme = "README.md"
+requires-python = ">=3"
+keywords = ["wayback", "machine", "archive", "archive.org", "save"]
+license = "LGPL-3.0-or-later"
+classifiers = [
+    'Topic :: Security',
+    'Programming Language :: Python :: 3'
+]
+dynamic = ["version", "dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["waybacksavebulk/requirements.txt"]}
+version = {attr = "waybacksavebulk.waybacksavebulk.VERSION"}
+
+[project.urls]
+Homepage = "https://github.com/maaaaz/waybacksavebulk"
+
+[project.scripts]
+waybacksavebulk = "waybacksavebulk.waybacksavebulk:main"
