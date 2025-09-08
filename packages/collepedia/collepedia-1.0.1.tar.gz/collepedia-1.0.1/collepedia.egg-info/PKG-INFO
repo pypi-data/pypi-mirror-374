@@ -1,0 +1,36 @@
+Metadata-Version: 2.4
+Name: collepedia
+Version: 1.0.1
+Summary: A dedicated client to fetch and manage posts from Collepedia.
+Author-email: AbdulRahman Muhammad Rabie Ahmed <bedob3401@gmail.com>, Nanosoft Technologies Agency <nanosofttechcom@gmail.com>
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: requests>=2.28.0
+Requires-Dist: feedparser>=6.0.0
+
+# Collepedia
+
+A dedicated client to fetch and manage posts from Collepedia.
+
+This library provides a clean, robust, and easy-to-use interface to retrieve, filter, and manage post data.
+
+## Features
+
+-   **Dedicated Client**: Hardcoded for the Collepedia feed for simplicity and reliability.
+-   **Advanced Fetching**: Fetch posts with pagination and server-side category filtering.
+-   **Powerful Filtering**: Perform complex queries on cached data by author, category, or date range.
+-   **Robust Error Handling**: Custom exceptions for network and parsing errors.
+-   **Cache Persistence**: Save fetched data to a JSON file and load it back later.
+
+## What's New
+-   **No Date**: This was an error with the first version of the Library
+
+## Installation
+
+```bash
+pip install collepedia
+```

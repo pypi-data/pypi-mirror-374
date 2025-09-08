@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "collepedia"
+version = "1.0.1"
+authors = [
+  { name="AbdulRahman Muhammad Rabie Ahmed", email="bedob3401@gmail.com" },
+  { name="Nanosoft Technologies Agency", email="nanosofttechcom@gmail.com" },
+]
+description = "A dedicated client to fetch and manage posts from Collepedia."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "requests>=2.28.0",
+    "feedparser>=6.0.0",
+]
