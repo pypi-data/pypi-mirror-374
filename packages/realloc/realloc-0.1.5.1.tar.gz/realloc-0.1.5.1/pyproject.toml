@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "realloc"
+version = "0.1.5.1"
+description = "A modular Python library for multi-account portfolio trade allocation"
+authors = [
+    { name = "Ryeland Gongora", email = "rsgmon@gmail.com" }
+]
+requires-python = ">=3.8"
+license = "MIT"
+readme = "README.md"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["realloc*"]
+exclude = ["tests*", "docs*", "examples*"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "black",
+    "flake8",
+    "hypothesis",
+]
+
+[project.scripts]
+rebalance-cli-json = "realloc.cli.rebalance_json_input:main"
+rebalance-cli-csv = "realloc.cli.rebalance_csv_input:main"
+partial-rebalance-cli = "realloc.cli.partial_rebalance_main:main"
+list-plugins = "realloc.plugins.core.discovery:list_plugins"
+
+[project.entry-points."realloc.plugins"]
+# Exporter plugins
+csv = "realloc.plugins.exporters.csv_exporter:CSVExporter"
+
+# Account Importer Plugins
+csv_account = "realloc.plugins.importers.account.acount_csv:CSVAccountImporter"
+
+#Prices Importer Plugins
+price_csv = "realloc.plugins.importers.prices.prices_csv:PriceCSVImporter"
+
+#Allocation Importer Plugins
+allocation_csv = "realloc.plugins.importers.allocation.allocation_csv_importer:AllocationCSVImporter"
+
+# Validator plugins
+max_position = "realloc.plugins.validators.max_position:MaxPositionValidator"
+minimum_value = "realloc.plugins.validators.minimum_value:MinimumValueValidator"
+
+# Rebalancer plugins
+default = "realloc.plugins.rebalancers.default_rebalancer:DefaultRebalancer"
+

@@ -1,0 +1,14 @@
+[console_scripts]
+list-plugins = realloc.plugins.core.discovery:list_plugins
+partial-rebalance-cli = realloc.cli.partial_rebalance_main:main
+rebalance-cli-csv = realloc.cli.rebalance_csv_input:main
+rebalance-cli-json = realloc.cli.rebalance_json_input:main
+
+[realloc.plugins]
+allocation_csv = realloc.plugins.importers.allocation.allocation_csv_importer:AllocationCSVImporter
+csv = realloc.plugins.exporters.csv_exporter:CSVExporter
+csv_account = realloc.plugins.importers.account.acount_csv:CSVAccountImporter
+default = realloc.plugins.rebalancers.default_rebalancer:DefaultRebalancer
+max_position = realloc.plugins.validators.max_position:MaxPositionValidator
+minimum_value = realloc.plugins.validators.minimum_value:MinimumValueValidator
+price_csv = realloc.plugins.importers.prices.prices_csv:PriceCSVImporter
