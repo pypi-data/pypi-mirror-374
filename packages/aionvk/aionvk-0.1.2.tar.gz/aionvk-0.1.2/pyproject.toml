@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "aionvk"
+version = "0.1.2"
+description = "Asynchronous VK API framework for building bots"
+authors = ["Nikita <nikitalyschev@gmail.com>"]
+readme = "README.md"
+packages = [{include = "aionvk"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+httpx = "^0.27.0"
+pydantic = "^2.7.1"
+aiohttp = "^3.12.15"
+loguru = "^0.7.3"
+openpyxl = "^3.1.5"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.2"
+pytest-asyncio = "^0.23.7"
+ruff = "^0.4.8"
+black = "^24.4.2"
+python-dotenv = "^1.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
