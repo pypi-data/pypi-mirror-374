@@ -1,0 +1,28 @@
+[project]
+name = "handsoff"
+version = "1.1.0"
+description = "Auto file tranfer with scp command."
+readme = "README.md"
+classifiers=[
+    'Programming Language :: Python :: 3',
+    'Operating System :: OS Independent',
+]
+requires-python = ">=3.13"
+authors = [{name = "MovingJu", email = "movingju06@gmail.com"}]
+dependencies = [
+    "dotenv>=0.9.9",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["handsoff*"]
+
+[tool.setuptools.package-data]
+handsoff = ["settings.json"]
+
+[project.scripts]
+handsoff = "handsoff.main:main"
