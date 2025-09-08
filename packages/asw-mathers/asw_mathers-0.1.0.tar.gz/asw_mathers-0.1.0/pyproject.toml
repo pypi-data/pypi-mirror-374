@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "asw-mathers"            # اسم المكتبة (لازم يكون فريد في PyPI)
+version = "0.1.0"              # الإصدار الأول
+description = "A simple math helper library"
+authors = [
+  { name="Ahmed", email="your_email@example.com" }
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+
+dependencies = []  # أو تحط المكتبات اللي تعتمد عليها
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["asw_mathers*"]
