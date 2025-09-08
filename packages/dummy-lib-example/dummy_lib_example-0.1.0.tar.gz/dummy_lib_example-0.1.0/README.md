@@ -1,0 +1,1 @@
+# Dummy Lib Example\n\nA simple Python library for demo purposes.\n
