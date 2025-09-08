@@ -1,0 +1,32 @@
+{% load icons %}
+<div class="form-group" id="div_id_choices">
+<label class="form-label ">Choices</label>
+{% for choice in form.initial.choices %}
+<div class="controls choices-repeatable mb-2">
+    <div class="input-group">
+        {% if form.initial.choices_type %}
+        <span class="input-group-text">
+            <input type="checkbox"
+                value="{{forloop.counter}}"
+                name="default_choices"
+                   aria-placeholder="Default"
+                   aria-label="Default"
+                {% if forloop.counter in form.initial.default_choices %}checked="checked"{% endif %}
+                class="form-check-input repeat-value-index">
+        </span>
+        {% endif %}
+        <input type="text" value="{{choice}}" aria-label="Choice" placeholder="Choice" title="Choice"
+            name="choices"
+            class="form-control">
+
+        <button type="button" class="btn btn-danger remove-repeat" title="Remove Item">{% svg_icon "x" size="xs" %}</button>
+    </div>
+</div>
+{% endfor %}
+<div class="d-flex flex-row mb-2 repeatable-control">
+    <button type="button" name="add" title="Add choices"
+            class="btn btn-success ms-auto"
+            data-repeat-add=".choices-repeatable" >{% svg_icon "plus" size="xs" %}
+    </button>
+</div>
+</div>
