@@ -1,0 +1,93 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mySUNI"
+dynamic = ["version"]
+description = "mySUNI CDS - 데이터 과학 교육용 라이브러리"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "BAEM1N", email = "baemin.dev@gmail.com"},
+    {name = "Teddy Lee", email = "teddylee777@gmail.com"},
+]
+maintainers = [
+    {name = "BAEM1N", email = "baemin.dev@gmail.com"},
+]
+keywords = ["mySUNI", "CDS", "data science", "education", "machine learning"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Education",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+requires-python = ">=3.7"
+dependencies = [
+    "tqdm",
+    "scikit-learn",
+    "pandas",
+    "matplotlib",
+    "seaborn",
+    "jupyter",
+    "ipywidgets",
+    "requests",
+    "numpy",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "black",
+    "flake8",
+    "twine",
+    "wheel",
+    "build",
+]
+test = [
+    "pytest",
+    "pytest-cov",
+]
+
+[project.urls]
+Homepage = "https://github.com/braincrew/cds"
+Repository = "https://github.com/braincrew/cds"
+Documentation = "https://github.com/braincrew/cds/wiki"
+"Bug Reports" = "https://github.com/braincrew/cds/issues"
+
+[tool.setuptools]
+packages = ["mySUNI"]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = {attr = "mySUNI.__version__"}
+
+[tool.black]
+line-length = 88
+target-version = ['py37']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+addopts = "-v --cov=mySUNI --cov-report=html --cov-report=term-missing"
