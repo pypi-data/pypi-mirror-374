@@ -1,0 +1,61 @@
+
+# MCP Memory Server database files
+memory.db
+memory.sqlite
+memories.db
+project.db
+*.db-wal
+*.db-shm
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Secrets
+*.pem
+*.key
+*.crt
+secrets/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+uv.lock
+
+# Build outputs
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
+logs/
+
+# ACF State
+.acforge/logs
+
+# Testing
+.coverage
+.pytest_cache/
+coverage/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+sandbox/
