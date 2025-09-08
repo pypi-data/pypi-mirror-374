@@ -1,0 +1,45 @@
+Metadata-Version: 2.4
+Name: drf-crud
+Version: 0.1.0
+Summary: A Django REST Framework package for automatic CRUD generation.
+Home-page: https://github.com/codesmith-abba/drf-crud
+Author: Abdulmumin Abubakar
+Author-email: abdulmumina535@gmail.com
+Classifier: Framework :: Django
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: djangorestframework>=3.12.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# drf-crud
+
+A lightweight package that provides reusable CRUD (Create, Read, Update, Delete) views, serializers, and utilities for Django REST Framework (DRF). 
+
+Stop repeating the same boilerplate code in every project!
+
+---
+
+## ðŸš€ Features
+- Auto-generated CRUD API endpoints with minimal configuration.
+- Generic base serializers and views.
+- Easy integration with existing DRF projects.
+- Extensible for custom logic.
+
+---
+
+## ðŸ“¦ Installation
+```bash
+pip install drf-crud
