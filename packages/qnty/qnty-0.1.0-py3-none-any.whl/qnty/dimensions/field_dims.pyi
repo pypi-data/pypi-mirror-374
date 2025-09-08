@@ -1,0 +1,128 @@
+"""
+Type stubs for field_dims module.
+
+This file provides type information for the dynamically generated dimension constants.
+"""
+
+from .signature import DimensionSignature
+
+# Dimension signature constants lookup
+_SIGNATURES: dict[str, int | float]
+
+# Lazy loading cache
+_dimension_cache: dict[str, DimensionSignature]
+
+# Module attribute access function
+def __getattr__(name: str) -> DimensionSignature: ...
+
+# All dynamically generated dimension constants
+ABSORBED_DOSE: DimensionSignature
+ACCELERATION: DimensionSignature
+ACTIVATION_ENERGY: DimensionSignature
+AMOUNT_OF_SUBSTANCE: DimensionSignature
+ANGLE_PLANE: DimensionSignature
+ANGLE_SOLID: DimensionSignature
+ANGULAR_ACCELERATION: DimensionSignature
+ANGULAR_MOMENTUM: DimensionSignature
+AREA: DimensionSignature
+AREA_PER_UNIT_VOLUME: DimensionSignature
+ATOMIC_WEIGHT: DimensionSignature
+CONCENTRATION: DimensionSignature
+DIMENSIONLESS: DimensionSignature
+DYNAMIC_FLUIDITY: DimensionSignature
+ELECTRIC_CAPACITANCE: DimensionSignature
+ELECTRIC_CHARGE: DimensionSignature
+ELECTRIC_CURRENT_INTENSITY: DimensionSignature
+ELECTRIC_DIPOLE_MOMENT: DimensionSignature
+ELECTRIC_FIELD_STRENGTH: DimensionSignature
+ELECTRIC_INDUCTANCE: DimensionSignature
+ELECTRIC_POTENTIAL: DimensionSignature
+ELECTRIC_RESISTANCE: DimensionSignature
+ELECTRICAL_CONDUCTANCE: DimensionSignature
+ELECTRICAL_PERMITTIVITY: DimensionSignature
+ELECTRICAL_RESISTIVITY: DimensionSignature
+ENERGY_FLUX: DimensionSignature
+ENERGY_HEAT_WORK: DimensionSignature
+ENERGY_PER_UNIT_AREA: DimensionSignature
+FORCE: DimensionSignature
+FORCE_BODY: DimensionSignature
+FORCE_PER_UNIT_MASS: DimensionSignature
+FREQUENCY_VOLTAGE_RATIO: DimensionSignature
+FUEL_CONSUMPTION: DimensionSignature
+HEAT_OF_COMBUSTION: DimensionSignature
+HEAT_OF_FUSION: DimensionSignature
+HEAT_OF_VAPORIZATION: DimensionSignature
+HEAT_TRANSFER_COEFFICIENT: DimensionSignature
+ILLUMINANCE: DimensionSignature
+KINETIC_ENERGY_OF_TURBULENCE: DimensionSignature
+LENGTH: DimensionSignature
+LINEAR_MASS_DENSITY: DimensionSignature
+LINEAR_MOMENTUM: DimensionSignature
+LUMINANCE_SELF: DimensionSignature
+LUMINOUS_FLUX: DimensionSignature
+LUMINOUS_INTENSITY: DimensionSignature
+MAGNETIC_FIELD: DimensionSignature
+MAGNETIC_FLUX: DimensionSignature
+MAGNETIC_INDUCTION_FIELD_STRENGTH: DimensionSignature
+MAGNETIC_MOMENT: DimensionSignature
+MAGNETIC_PERMEABILITY: DimensionSignature
+MAGNETOMOTIVE_FORCE: DimensionSignature
+MASS: DimensionSignature
+MASS_DENSITY: DimensionSignature
+MASS_FLOW_RATE: DimensionSignature
+MASS_FLUX: DimensionSignature
+MASS_FRACTION_OF_I: DimensionSignature
+MASS_TRANSFER_COEFFICIENT: DimensionSignature
+MOLALITY_OF_SOLUTE_I: DimensionSignature
+MOLAR_CONCENTRATION_BY_MASS: DimensionSignature
+MOLAR_FLOW_RATE: DimensionSignature
+MOLAR_FLUX: DimensionSignature
+MOLAR_HEAT_CAPACITY: DimensionSignature
+MOLARITY_OF_I: DimensionSignature
+MOLE_FRACTION_OF_I: DimensionSignature
+MOMENT_OF_INERTIA: DimensionSignature
+MOMENTUM_FLOW_RATE: DimensionSignature
+MOMENTUM_FLUX: DimensionSignature
+NORMALITY_OF_SOLUTION: DimensionSignature
+PARTICLE_DENSITY: DimensionSignature
+PERCENT: DimensionSignature
+PERMEABILITY: DimensionSignature
+PHOTON_EMISSION_RATE: DimensionSignature
+POWER_PER_UNIT_MASS: DimensionSignature
+POWER_PER_UNIT_VOLUME: DimensionSignature
+POWER_THERMAL_DUTY: DimensionSignature
+PRESSURE: DimensionSignature
+RADIATION_DOSE_EQUIVALENT: DimensionSignature
+RADIATION_EXPOSURE: DimensionSignature
+RADIOACTIVITY: DimensionSignature
+SECOND_MOMENT_OF_AREA: DimensionSignature
+SECOND_RADIATION_CONSTANT_PLANCK: DimensionSignature
+SPECIFIC_ENTHALPY: DimensionSignature
+SPECIFIC_GRAVITY: DimensionSignature
+SPECIFIC_HEAT_CAPACITY_CONSTANT_PRESSURE: DimensionSignature
+SPECIFIC_LENGTH: DimensionSignature
+SPECIFIC_SURFACE: DimensionSignature
+SPECIFIC_VOLUME: DimensionSignature
+STRESS: DimensionSignature
+SURFACE_MASS_DENSITY: DimensionSignature
+SURFACE_TENSION: DimensionSignature
+TEMPERATURE: DimensionSignature
+THERMAL_CONDUCTIVITY: DimensionSignature
+TIME: DimensionSignature
+TORQUE: DimensionSignature
+TURBULENCE_ENERGY_DISSIPATION_RATE: DimensionSignature
+VELOCITY_ANGULAR: DimensionSignature
+VELOCITY_LINEAR: DimensionSignature
+VISCOSITY_DYNAMIC: DimensionSignature
+VISCOSITY_KINEMATIC: DimensionSignature
+VOLUME: DimensionSignature
+VOLUME_FRACTION_OF_I: DimensionSignature
+VOLUMETRIC_CALORIFIC_HEATING_VALUE: DimensionSignature
+VOLUMETRIC_COEFFICIENT_OF_EXPANSION: DimensionSignature
+VOLUMETRIC_FLOW_RATE: DimensionSignature
+VOLUMETRIC_FLUX: DimensionSignature
+VOLUMETRIC_MASS_FLOW_RATE: DimensionSignature
+WAVENUMBER: DimensionSignature
+
+# Module exports
+__all__: list[str]
