@@ -1,0 +1,91 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gunicorn-django-canonical-logs"
+dynamic = ["version"]
+description = "Canonical log lines for Django applications using Gunicorn sync workers"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "James Bradshaw", email = "james.g.bradshaw@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = ["django", "gunicorn"]
+
+[project.urls]
+Documentation = "https://github.com/bradshjg/gunicorn-django-canonical-logs#readme"
+Issues = "https://github.com/bradshjg/gunicorn-django-canonical-logs/issues"
+Source = "https://github.com/bradshjg/gunicorn-django-canonical-logs"
+
+[project.optional-dependencies]
+test = [
+  "coverage-enable-subprocess==1.0",
+  "coverage[toml]~=7.4",
+  "pytest~=8.1",
+  "pytest-django~=4.11",
+  "pytest-mock~=3.12",
+  "pytest-randomly~=3.15",
+  "pytest-rerunfailures~=14.0",
+  "pytest-xdist[psutil]~=3.5",
+  "requests",
+]
+
+[tool.hatch.version]
+path = "src/gunicorn_django_canonical_logs/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/gunicorn_django_canonical_logs tests}"
+
+[tool.hatch.envs.hatch-test]
+features = [
+  "test",
+]
+extra-args = ["-vv"]
+
+[tool.hatch.envs.dev]
+path = ".venv/dev"
+features = [
+  "test",
+]
+
+[tool.pytest.ini_options]
+django_find_project = false
+DJANGO_SETTINGS_MODULE = "settings"
+pythonpath = "tests/server"
+
+[tool.coverage.run]
+source_pkgs = ["gunicorn_django_canonical_logs", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/gunicorn_django_canonical_logs/__about__.py",
+]
+
+[tool.coverage.paths]
+gunicorn_django_canonical_logs = ["src/gunicorn_django_canonical_logs", "*/gunicorn-django-canonical-logs/src/gunicorn_django_canonical_logs"]
+tests = ["tests", "*/gunicorn-django-canonical-logs/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
