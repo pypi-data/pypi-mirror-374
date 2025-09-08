@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2024 Aaron Silinskas for Mindwidgets
+#
+# SPDX-License-Identifier: MIT
+# Read the Docs configuration file for Sphinx projects
+# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+
+# Required
+version: 2
+
+# Set the OS, Python version and other tools you might need
+build:
+  os: ubuntu-lts-latest
+  tools:
+    python: "3"
+
+python:
+  install:
+    - requirements: docs/requirements.txt
+    - requirements: requirements.txt
