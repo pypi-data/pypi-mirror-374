@@ -1,0 +1,5 @@
+[console_scripts]
+mandelbrot-viewer-cli = mandelbrot_viewer.mandelbrot_viewer_main:main
+
+[gui_scripts]
+mandelbrot-viewer = mandelbrot_viewer.mandelbrot_viewer_main:main
