@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=59.6.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wplace"
+version = "0.0.1"
+description = "Utility classes and methods for Wplace.live"
+authors = [
+    { name="Boscawinks", email="bosca.winks@gmx.de" }
+]
+dependencies = [
+    "numpy >=2.2.6",
+    "pyproj >=3.7.1",
+    "rasterio >= 1.4.3",
+]
+readme = "README.md"
+requires-python = ">=3.10.12"
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Utilities"
+]
+
+[project.urls]
+Homepage = "https://github.com/boscawinks/wplace"
+Repository = "https://github.com/boscawinks/wplace"
+Issues = "https://github.com/boscawinks/wplace/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]

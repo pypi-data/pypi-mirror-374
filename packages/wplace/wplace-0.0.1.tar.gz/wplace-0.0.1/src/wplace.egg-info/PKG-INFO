@@ -1,0 +1,32 @@
+Metadata-Version: 2.4
+Name: wplace
+Version: 0.0.1
+Summary: Utility classes and methods for Wplace.live
+Author-email: Boscawinks <bosca.winks@gmx.de>
+Project-URL: Homepage, https://github.com/boscawinks/wplace
+Project-URL: Repository, https://github.com/boscawinks/wplace
+Project-URL: Issues, https://github.com/boscawinks/wplace/issues
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Utilities
+Requires-Python: >=3.10.12
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=2.2.6
+Requires-Dist: pyproj>=3.7.1
+Requires-Dist: rasterio>=1.4.3
+
+# wplace
+
+Utility classes and methods for [Wplace.live](https://wplace.live/)
+
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/wplace?style=flat-square)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/wplace?style=flat-square)
+![PyPI](https://img.shields.io/pypi/v/wplace?style=flat-square)
+
+## Installation
+
+`wplace` is available on pypi:
+```bash
+python3 -m pip install --upgrade wplace
+```
