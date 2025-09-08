@@ -1,0 +1,51 @@
+Metadata-Version: 2.4
+Name: netmanagement
+Version: 0.1.1
+Summary: Network management demo
+Home-page: https://github.com/yourusername/netmanagement
+Author: Your Name
+Author-email: Your Name <your.email@example.com>
+License: MIT
+Project-URL: Homepage, https://github.com/yourusername/netmanagement
+Project-URL: Repository, https://github.com/yourusername/netmanagement
+Project-URL: Issues, https://github.com/yourusername/netmanagement/issues
+Keywords: http,logging,networking
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: pytest-cov>=2.0; extra == "dev"
+Requires-Dist: flake8>=3.8.0; extra == "dev"
+Requires-Dist: black>=20.8b1; extra == "dev"
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+## Installation
+
+```bash
+pip install netmanagement
+```
+
+## Usage
+
+```python
+import netmanagement
+
+response = netmanagement.get('https://httpbin.org/get')
+print(response.status_code)
+print(response.json())
+```
