@@ -1,0 +1,19 @@
+[project]
+name = "matmulbench"
+version = "0.1.5"
+description = "The idea is primarily to get me to write matmul code and compare with my own eyes the difference across languages."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Kosaksi Pasappugazh", email = "pasappugazhk@gmail.com" }]
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=2.3.2",
+]
+[build-system]
+requires = ["uv_build"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "twine>=6.2.0",
+]
