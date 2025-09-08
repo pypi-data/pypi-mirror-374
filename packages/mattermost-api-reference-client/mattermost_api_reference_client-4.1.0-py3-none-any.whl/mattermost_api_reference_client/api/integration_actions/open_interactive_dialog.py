@@ -1,0 +1,186 @@
+from http import HTTPStatus
+from typing import Any, Optional, Union
+
+import httpx
+
+from ... import errors
+from ...client import AuthenticatedClient, Client
+from ...models.app_error import AppError
+from ...models.open_interactive_dialog_body import OpenInteractiveDialogBody
+from ...models.status_ok import StatusOK
+from ...types import Response
+
+
+def _get_kwargs(
+    *,
+    body: OpenInteractiveDialogBody,
+) -> dict[str, Any]:
+    headers: dict[str, Any] = {}
+
+    _kwargs: dict[str, Any] = {
+        "method": "post",
+        "url": "/api/v4/actions/dialogs/open",
+    }
+
+    _kwargs["json"] = body.to_dict()
+
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
+    return _kwargs
+
+
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[AppError, StatusOK]]:
+    if response.status_code == 200:
+        response_200 = StatusOK.from_dict(response.json())
+
+        return response_200
+
+    if response.status_code == 400:
+        response_400 = AppError.from_dict(response.json())
+
+        return response_400
+
+    if client.raise_on_unexpected_status:
+        raise errors.UnexpectedStatus(response.status_code, response.content)
+    else:
+        return None
+
+
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[AppError, StatusOK]]:
+    return Response(
+        status_code=HTTPStatus(response.status_code),
+        content=response.content,
+        headers=response.headers,
+        parsed=_parse_response(client=client, response=response),
+    )
+
+
+def sync_detailed(
+    *,
+    client: Union[AuthenticatedClient, Client],
+    body: OpenInteractiveDialogBody,
+) -> Response[Union[AppError, StatusOK]]:
+    """Open a dialog
+
+     Open an interactive dialog using a trigger ID provided by a slash command, or some other action
+    payload. See https://docs.mattermost.com/developer/interactive-dialogs.html for more information on
+    interactive dialogs.
+    __Minimum server version: 5.6__
+
+    Args:
+        body (OpenInteractiveDialogBody):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Union[AppError, StatusOK]]
+    """
+
+    kwargs = _get_kwargs(
+        body=body,
+    )
+
+    response = client.get_httpx_client().request(
+        **kwargs,
+    )
+
+    return _build_response(client=client, response=response)
+
+
+def sync(
+    *,
+    client: Union[AuthenticatedClient, Client],
+    body: OpenInteractiveDialogBody,
+) -> Optional[Union[AppError, StatusOK]]:
+    """Open a dialog
+
+     Open an interactive dialog using a trigger ID provided by a slash command, or some other action
+    payload. See https://docs.mattermost.com/developer/interactive-dialogs.html for more information on
+    interactive dialogs.
+    __Minimum server version: 5.6__
+
+    Args:
+        body (OpenInteractiveDialogBody):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Union[AppError, StatusOK]
+    """
+
+    return sync_detailed(
+        client=client,
+        body=body,
+    ).parsed
+
+
+async def asyncio_detailed(
+    *,
+    client: Union[AuthenticatedClient, Client],
+    body: OpenInteractiveDialogBody,
+) -> Response[Union[AppError, StatusOK]]:
+    """Open a dialog
+
+     Open an interactive dialog using a trigger ID provided by a slash command, or some other action
+    payload. See https://docs.mattermost.com/developer/interactive-dialogs.html for more information on
+    interactive dialogs.
+    __Minimum server version: 5.6__
+
+    Args:
+        body (OpenInteractiveDialogBody):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Union[AppError, StatusOK]]
+    """
+
+    kwargs = _get_kwargs(
+        body=body,
+    )
+
+    response = await client.get_async_httpx_client().request(**kwargs)
+
+    return _build_response(client=client, response=response)
+
+
+async def asyncio(
+    *,
+    client: Union[AuthenticatedClient, Client],
+    body: OpenInteractiveDialogBody,
+) -> Optional[Union[AppError, StatusOK]]:
+    """Open a dialog
+
+     Open an interactive dialog using a trigger ID provided by a slash command, or some other action
+    payload. See https://docs.mattermost.com/developer/interactive-dialogs.html for more information on
+    interactive dialogs.
+    __Minimum server version: 5.6__
+
+    Args:
+        body (OpenInteractiveDialogBody):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Union[AppError, StatusOK]
+    """
+
+    return (
+        await asyncio_detailed(
+            client=client,
+            body=body,
+        )
+    ).parsed
