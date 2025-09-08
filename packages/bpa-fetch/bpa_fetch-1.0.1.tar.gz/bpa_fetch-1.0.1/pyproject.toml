@@ -1,0 +1,36 @@
+[project]
+name = "bpa-fetch"
+dynamic=["version"]
+description = "A tool to download and parse historical BPA transmission data "
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+
+requires-python = ">=3.12"
+dependencies = [
+    "beautifulsoup4",
+    "pandas",
+    "openpyxl",
+    "requests",
+    "urllib3",
+    "numpy",
+    "pyarrow",
+    "xlrd",
+]
+
+scripts = {bpa-fetch = "bpa_fetch:cli"}
+
+[project.urls]
+Home = "https://github.com/goose-den/bpa-fetch"
+
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["bpa_fetch"]
+
+[tool.setuptools.dynamic]
+version = {attr = "bpa_fetch.__version__"}
+
