@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mymol"
+version = "1.0.1"
+description = "Usefull things"
+authors = [
+    { name="Arthur Kwak", email="arthur@katak.nl" }
+]
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

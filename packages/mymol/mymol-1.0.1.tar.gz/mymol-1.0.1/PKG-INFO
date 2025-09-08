@@ -1,0 +1,27 @@
+Metadata-Version: 2.4
+Name: mymol
+Version: 1.0.1
+Summary: Usefull things
+Author-email: Arthur Kwak <arthur@katak.nl>
+License: MIT
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# mymol
+
+**mymol** is a sample Python module for demonstration purposes.
+
+## Installation
+
+```bash
+pip install mymol
+```
+## Usage
+
+```python
+from mymol.core import hello_world
+
+hello_world()
+```
