@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "python-dependency-cleaner"
+version = "0.1.0"
+description = "A tool to analyze and clean unused Python dependencies"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "Dor Mor"}]
+dependencies = []
+
+
+
+[project.scripts]
+pdc = "pdc.cli:main"
