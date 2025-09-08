@@ -1,0 +1,29 @@
+[project]
+authors = [{name="Nicolas Cedilnik", email="nicoco@nicoco.fr"}]
+name = "mattermost-api-reference-client"
+version = "0.0.0-dev"
+description = "A client library for accessing Mattermost API"
+requires-python = ">=3.9"
+readme = "README.md"
+dependencies = [
+    "httpx>=0.23.0,<0.29.0",
+    "attrs>=22.2.0",
+    "python-dateutil>=2.8.0,<3",
+]
+
+[project.urls]
+Repository = "https://git.sr.ht/~nicoco/mattermost-api-reference-client"
+
+[tool.uv.build-backend]
+module-name = "mattermost_api_reference_client"
+module-root = ""
+
+[build-system]
+requires = ["uv_build>=0.8.0,<0.9.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["F", "I", "UP"]
