@@ -1,0 +1,43 @@
+Metadata-Version: 2.3
+Name: grepshift
+Version: 1.3.0
+Summary: Find and replace all instances of a string with a new string in a directory and all its sub-directories.
+License: MIT
+Author: Steve Scholnick
+Author-email: scholnicks@gmail.com
+Requires-Python: >=3.13
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: docopt-ng (>=0.9.0,<0.10.0)
+Project-URL: Repository, https://github.com/scholnicks/grepshift
+Description-Content-Type: text/markdown
+
+# grepshift
+
+grepshift renames files in powerful ways.
+
+```
+Usage:
+    grepshift [options] <pattern> [<replacement>]
+
+Options:
+    -d, --directory=<directory>   Starting directory [default: .]
+    -e, --extension=<extension>   Only process file with this extension
+    -h, --help                    Show this help screen
+    -l, --list                    Just list the files to be changed, no actual changes
+    -r, --remove                  Removes the line, that matches pattern, from all files
+    -v, --verbose                 Verbose Mode
+    --version                     Prints the version
+```
+
+## Installation
+
+```bash
+pip install grepshift
+```
+
+## License
+
+grepshift is freeware released under the [MIT License](https://github.com/scholnicks/grepshift/blob/main/LICENSE).
+
