@@ -1,0 +1,25 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+.env
+
+# Virtual environments
+.venv
+
+.DS_Store
+*cache*
+.vscode/
+sandbox*
+test*.png
+.coverage
+uv.lock
+*.csv
+!sample.csv
+*.zip
+
+scripts/release.sh

@@ -1,0 +1,61 @@
+[project]
+name = "dayplot"
+version = "0.4.2"
+description = "Calendar heatmaps with matplotlib"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["matplotlib", "calendar", "heatmap", "github", "plot"]
+authors = [
+    { name = "Joseph Barbier", email = "joseph.barbierdarnal@gmail.com" },
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "matplotlib",
+    "narwhals>=1.0.0",
+]
+
+[project.optional-dependencies]
+data = ["requests"]
+
+[dependency-groups]
+dev = [
+    "dotenv>=0.9.9",
+    "pre-commit>=4.2.0",
+    "pytest>=8.3.5",
+    "ruff>=0.11.13",
+    "mkdocs-matplotlib>=0.10.1",
+    "mkdocs-material>=9.6.9",
+    "mkdocstrings-python>=1.16.5",
+    "coverage>=7.9.1",
+    "genbadge[coverage]>=1.1.2",
+    "polars>=1.31.0",
+    "ty>=0.0.1a20",
+    "pandas>=2.3.0",
+]
+
+[build-system]
+requires = [
+    "setuptools",
+    "setuptools-scm",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["dayplot"]
+
+[tool.setuptools.package-data]
+mypkg = ["sample.csv"]
+
+[tool.uv.sources]
+dayplot = { workspace = true }
+
+[project.urls]
+Homepage = "https://y-sunflower.github.io/dayplot/"
+Issues = "https://github.com/y-sunflower/dayplot/issues"
+Documentation = "https://y-sunflower.github.io/dayplot/reference/calendar/"
+Repository = "https://github.com/y-sunflower/dayplot"
+
+[tool.ty.src]
+include = ["dayplot"]
+exclude = ["tests"]
