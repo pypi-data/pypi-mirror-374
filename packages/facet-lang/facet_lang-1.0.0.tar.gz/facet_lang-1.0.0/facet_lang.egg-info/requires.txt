@@ -1,0 +1,16 @@
+
+[all]
+facet-lang[dev,docs]
+
+[dev]
+pytest>=7.0
+pytest-cov
+black
+isort
+flake8
+mypy
+pre-commit
+
+[docs]
+mkdocs-material
+mkdocs-mermaid2-plugin
