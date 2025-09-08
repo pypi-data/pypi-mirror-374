@@ -1,0 +1,59 @@
+<!--suppress HtmlDeprecatedAttribute -->
+{% macro Comment(comment) %}
+    <div class="comment" data-replies="{{ "true" if comment.REPLIES }}">
+        <div class="comment-body" id="cid:{{ comment.ID }}">
+            <div class="comment-header">
+                <a href="/user/{{ comment.AUTHOR }}">
+                    <img src="/user/{{ comment.AUTHOR }}/icon" alt=""
+                         class="loading-element loading-error-hide rounded fade"
+                         height="30" loading="lazy" onerror="this.classList.add('loading-error')"
+                         onload="this.classList.add('loaded')">
+                    <div class="loading-pulse rounded" style="height: 30px"></div>
+                    <div class="d-inline-block loading-onerror rounded bg-body-secondary"
+                         style="height: 30px; aspect-ratio: 1 / 1"></div>
+                </a>
+                <div class="ms-2">
+                    <a class="nav-link pointer d-block" href="/user/{{ comment.AUTHOR }}">{{ comment.AUTHOR }}</a>
+                    <span class="text-secondary" style="font-size: x-small;">{{ comment.DATE.strftime("%Y-%m-%d %H:%M") }}</span>
+                </div>
+                <a href="#cid:{{ comment.ID }}" class="text-decoration-none ms-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                         viewBox="0 0 16 16">
+                        <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"></path>
+                        <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"></path>
+                    </svg>
+                </a>
+                <div class="replies-close-toggle ms-2 nav-link" title="Hide {{ comment.REPLIES_COUNT }} replies"
+                     onclick="this.parentElement.parentElement.parentElement.classList.add('replies-closed')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor">
+                        <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8"></path>
+                    </svg>
+                </div>
+                <div class="replies-open-toggle ms-2 nav-link" title="Show {{ comment.REPLIES_COUNT }} replies"
+                     onclick="this.parentElement.parentElement.parentElement.classList.remove('replies-closed')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor">
+                        <path fill-rule="evenodd"
+                              d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"></path>
+                    </svg>
+                </div>
+            </div>
+            <div class="comment-text">{{ comment.TEXT|safe }}</div>
+        </div>
+
+        {% if comment.REPLIES %}
+            <div class="replies">
+                <div class="replies-border"></div>
+                {% for reply in comment.REPLIES %}{{ Comment(reply) }}{% endfor %}
+            </div>
+            <div class="replies-counter" data-replies="{{ comment.REPLIES_COUNT }}"
+                 onclick="this.parentElement.classList.remove('replies-closed')">
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro Comments(comments, class, id) %}
+    <div class="d-flex flex-column row-gap-2 {{ class or "" }}" {{ "id={}".format(id) if id }}>
+        {% for comment in comments %}{{ Comment(comment) }}{% endfor %}
+    </div>
+{% endmacro %}

@@ -1,0 +1,127 @@
+<!--suppress HtmlUnknownTarget -->
+{% extends "base.j2" %}
+{% from "components/comments.j2" import Comments %}
+{% from "components/tags.j2" import Tags %}
+
+{% block title %}{{ "{} by {}".format(journal.TITLE, journal.AUTHOR) }}{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-12 col-lg-7 col-xl-8">
+            <div class="border rounded p-3">
+                {% if journal.CONTENT_BBCODE %}
+                    <div class="mb-2 text-end">
+                        <button class="btn btn-sm btn-outline-info py-0 px-1"
+                                onclick="const b = document.getElementById('description_bbcode').hidden = !(document.getElementById('description_html').hidden = !document.getElementById('description_html').hidden); b ? this.classList.add('active') : this.classList.remove('active')">
+                            BBCode
+                        </button>
+                    </div>
+                    <div id="description_bbcode" class="overflow-wrap" hidden>
+                        {{ journal.CONTENT_BBCODE|safe }}
+                        {% if journal.FOOTER_BBCODE %}
+                            <hr class="my-3"/>
+                            {{ journal.FOOTER_BBCODE|safe }}
+                        {% endif %}
+                    </div>
+                {% endif %}
+                <div id="description_html" class="overflow-wrap">
+                    {{ journal.CONTENT|safe }}
+                    {% if journal.FOOTER %}
+                        <hr class="my-3"/>
+                        {{ journal.FOOTER|safe }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-5 col-xl-4 mb-3 mt-lg-0 order-first order-lg-0">
+            <div class="properties-card">
+                <div class="title">{{ journal.TITLE }}</div>
+
+                <div class="separator"></div>
+
+                <div class="property" data-key="Author">
+                    <a href="/user/{{ journal.AUTHOR }}" class="btn btn-xs btn-primary w-100 text-truncate">
+                        {{ journal.AUTHOR }}
+                    </a>
+                </div>
+                <div class="property" data-key="Date">
+                    <a class="btn btn-xs btn-primary text-truncate w-100"
+                       href="/journals?query=%40date%20{{ journal.DATE.strftime("%Y-%m-%d")|urlencode }}">
+                        {{ journal.DATE.strftime("%Y-%m-%d %H:%M") }}
+                    </a>
+                </div>
+                <div class="property" data-key="Mentions">
+                    {{ Tags(journal.MENTIONS, "/user/{}", "mentions", "primary", "secondary") }}
+                </div>
+                <div class="property" data-key="Comments">
+                    {% if comments|length %}
+                        <button class="btn btn-xs btn-info w-100 text-truncate text-light"
+                                onclick="document.getElementById('comments')?.scrollIntoView()">
+                            {{ comments|sum(attribute="REPLIES_COUNT", start=comments|length) }}
+                        </button>
+                    {% else %}
+                        <span class="badge bg-info w-100 text-truncate">
+                            {{ comments|sum(attribute="REPLIES_COUNT", start=comments|length) }}
+                        </span>
+                    {% endif %}
+                </div>
+
+                <div class="separator"></div>
+
+                {% if search_id %}
+                    <div class="controls">
+                        <div class="btn-group btn-group-sm">
+                            <a class="btn btn-primary {{ "disabled" if not search_prev }}"
+                               href="/journal/{{ search_prev }}?sid={{ search_index - 1 }}.{{ search_id|urlencode }}">
+                                «
+                            </a>
+                            <a class="btn btn-primary" href="/submissions?sid={{ search_id|urlencode }}">
+                                Search
+                            </a>
+                            <a class="btn btn-primary {{ "disabled" if not search_next }}"
+                               href="/journal/{{ search_next }}?sid={{ search_index + 1 }}.{{ search_id|urlencode }}">
+                                »
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="controls">
+                    <div class="btn-group btn-group-sm">
+                        <a class="btn btn-primary {{ "disabled" if not next }}" href="/journal/{{ next }}">
+                            «
+                        </a>
+                        <a class="btn btn-primary" href="/journals/{{ journal.AUTHOR|urlencode }}">
+                            All
+                        </a>
+                        <a class="btn btn-primary {{ "disabled" if not prev }}" href="/journal/{{ prev }}">
+                            »
+                        </a>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <div class="btn-group btn-group-sm">
+                        <a class="btn btn-secondary disabled" disabled>Download</a>
+                        <a class="btn btn-primary"
+                           href="/journal/{{ journal.ID }}/zip/{{ "{:010d}.zip".format(journal.ID) }}">
+                            ZIP
+                        </a>
+                    </div>
+                    {% if "editor" in request.auth.scopes %}
+                        <a href="/journal/{{ journal.ID }}/edit" class="btn btn-sm btn-primary">Edit</a>
+                    {% endif %}
+                    <a class="btn btn-sm btn-primary" href="https://furaffinity.net/journal/{{ journal.ID }}"
+                       target="_blank">
+                        FA
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {% if comments %}
+            {{ Comments(comments, "col col-12 col-lg-9 col-xl-8 col-xxl-7 mx-auto mt-4", "comments") }}
+        {% endif %}
+    </div>
+{% endblock %}
