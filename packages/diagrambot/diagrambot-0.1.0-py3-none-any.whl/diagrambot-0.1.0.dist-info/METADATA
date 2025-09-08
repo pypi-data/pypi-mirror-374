@@ -1,0 +1,40 @@
+Metadata-Version: 2.4
+Name: diagrambot
+Version: 0.1.0
+Summary: DiagramBot generates great diagrams for your blog posts.
+Author-email: "Audrey M. Roy Greenfeld" <audrey@feldroy.com>
+Maintainer-email: "Audrey M. Roy Greenfeld" <audrey@feldroy.com>
+License: MIT
+Project-URL: bugs, https://github.com/audreyfeldroy/diagrambot/issues
+Project-URL: changelog, https://github.com/audreyfeldroy/diagrambot/blob/master/changelog.md
+Project-URL: homepage, https://github.com/audreyfeldroy/diagrambot
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: typer
+Provides-Extra: test
+Requires-Dist: coverage; extra == "test"
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: ruff; extra == "test"
+Requires-Dist: ty; extra == "test"
+Requires-Dist: ipdb; extra == "test"
+Dynamic: license-file
+
+# DiagramBot
+
+![PyPI version](https://img.shields.io/pypi/v/diagrambot.svg)
+[![Documentation Status](https://readthedocs.org/projects/diagrambot/badge/?version=latest)](https://diagrambot.readthedocs.io/en/latest/?version=latest)
+
+DiagramBot generates great diagrams for your blog posts.
+
+* PyPI package: https://pypi.org/project/diagrambot/
+* Free software: MIT License
+* Documentation: https://diagrambot.readthedocs.io.
+
+## Features
+
+* TODO
+
+## Credits
+
+This package was created with [Cookiecutter](https://github.com/audreyfeldroy/cookiecutter) and the [audreyfeldroy/cookiecutter-pypackage](https://github.com/audreyfeldroy/cookiecutter-pypackage) project template.
