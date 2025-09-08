@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}PromptBin - Browse Prompts{% endblock %}
+
+{% block content %}
+<div class="browse-container">
+    <div class="browse-header">
+        <h2>Your Prompts</h2>
+        {% if stats %}
+        <div class="stats-summary">
+            <span>{{ stats.total_prompts }} prompts total</span>
+            {% if selected_category %}
+            <span>| {{ stats.by_category.get(selected_category, 0) }} in {{ selected_category }}</span>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Search Results Container -->
+    <div id="search-results" class="search-results" style="display: none;">
+        <!-- HTMX search results will be inserted here -->
+    </div>
+
+    <!-- Prompt Grid -->
+    <div class="prompt-grid" id="prompt-grid">
+        {% if prompts %}
+            {% for prompt in prompts %}
+            {% include 'partials/prompt_card.html' %}
+            {% endfor %}
+        {% else %}
+            <!-- Empty State -->
+            <div class="empty-state">
+                <div class="empty-icon">📝</div>
+                <h3>No Prompts Found</h3>
+                {% if selected_category %}
+                <p>No prompts found in the {{ selected_category }} category.</p>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">View All Prompts</a>
+                {% else %}
+                <p>Start by creating your first prompt to organize your AI interactions.</p>
+                {% endif %}
+                <a href="{{ url_for('create') }}" 
+                   class="btn btn-primary"
+                   hx-get="{{ url_for('create') }}"
+                   hx-push-url="true"
+                   hx-target="body"
+                   hx-swap="outerHTML">Create Your First Prompt</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Highlight template variables in prompt previews
+    document.addEventListener('DOMContentLoaded', function() {
+        const previews = document.querySelectorAll('.prompt-preview p');
+        previews.forEach(preview => {
+            preview.innerHTML = preview.innerHTML.replace(
+                /\{\{([^}]+)\}\}/g, 
+                '<span class="template-var">{' + '{$1}' + '}</span>'
+            );
+        });
+    });
+
+    // sharePrompt function is now defined globally in base.html
+
+    // Simple notification function
+    function showNotification(message) {
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.textContent = message;
+        notification.style.cssText = 
+            'position: fixed;' +
+            'top: 20px;' +
+            'right: 20px;' +
+            'background: #2563eb;' +
+            'color: white;' +
+            'padding: 1rem;' +
+            'border-radius: 0.375rem;' +
+            'z-index: 1000;';
+        document.body.appendChild(notification);
+        
+        setTimeout(function() {
+            notification.remove();
+        }, 3000);
+    }
+</script>
+{% endblock %}
