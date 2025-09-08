@@ -1,0 +1,75 @@
+/*
+	Style sheet for DBUtils documentation pages.
+*/
+
+/* First import default style for pages created with Docutils: */
+
+@import url(docutils.css);
+
+/* Customization for DBUtils goes here: */
+
+p {
+	margin-top: 6pt;
+	margin-bottom: 6pt;
+	text-align: justify;
+}
+li {
+	margin-bottom: 6pt;
+}
+h1, h2 {
+	color: #002352;
+}
+h3, h4 {
+	color: #002352;
+}
+h1 {
+	font-size: 18pt;
+}
+h2 {
+	font-size: 16pt;
+}
+h3 {
+	font-size: 14pt;
+}
+h1.title {
+	padding: 4pt;
+	margin-bottom: 12pt;
+	text-align: center;
+	border-bottom: 1pt solid #025;
+	padding-bottom: 8pt;
+}
+.contents ul {
+	list-style: none;
+	margin-bottom: 24pt;
+	padding-left: 0em;
+	margin-left: 2em;
+}
+.contents ul li {
+	font-size: 14pt;
+	margin-bottom: 2pt;
+}
+.contents ul ul {
+	list-style-type: none;
+	margin-top: 1pt;
+	margin-bottom: 1pt;
+	padding-left: 0em;
+	margin-left: 1.5em;
+}
+.contents ul ul li {
+	font-size: 13pt;
+	margin-bottom: 1pt;
+}
+.contents > p.topic-title {
+	font-size: 24pt;
+}
+.warning {
+	color: brown;
+}
+.admonition-title {
+	background-color: #F5F5DC;
+	padding: 1pt 3pt;
+}
+.admonition-title::before {
+    content: "⚠";
+    margin-right: .5em;
+}
