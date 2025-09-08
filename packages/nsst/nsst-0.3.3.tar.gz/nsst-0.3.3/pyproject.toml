@@ -1,0 +1,84 @@
+[project]
+name = "nsst"
+version = "0.3.3"
+description = "Python library for a Not So Simple Table dynamodb table design."
+dependencies = [
+  "click>=8.0.0",
+  "boto3>=1.26.0",
+]
+
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "MIT License"}
+keywords = ["dynamodb"]
+
+[project.urls]
+Homepage = "https://github.com/andycaine/nsst"
+Documentation = "https://github.com/andycaine/nsst?tab=readme-ov-file#asaa"
+Repository = "https://github.com/andycaine/nsst.git"
+
+[project.scripts]
+nsst = "nsst.cli:cli"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+  "ruff"
+]
+tests = [
+  "pytest",
+  "moto",
+  "pytest-cov",
+  "pytest-mock"
+]
+pre-commit = [
+  "pre-commit",
+  "pre-commit-uv"
+]
+typing = [
+  "mypy",
+  "pyright"
+]
+
+[tool.uv]
+default-groups = ["dev", "pre-commit", "tests", "typing"]
+
+
+[tool.mypy]
+python_version = "3.10"
+show_error_codes = true
+pretty = true
+strict = true
+
+[tool.pyright]
+pythonVersion = "3.10"
+typeCheckingMode = "basic"
+
+[tool.ruff]
+fix = true
+show-fixes = true
+output-format = "full"
+
+[tool.ruff.lint]
+select = [
+    "B",  # flake8-bugbear
+    "E",  # pycodestyle error
+    "F",  # pyflakes
+    "I",  # isort
+    "UP",  # pyupgrade
+    "W",  # pycodestyle warning
+]
+ignore = [
+    "UP038",  # keep isinstance tuple
+]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+order-by-type = false
+
+[tool.coverage.run]
+branch = true
+source = ["nsst", "tests"]
