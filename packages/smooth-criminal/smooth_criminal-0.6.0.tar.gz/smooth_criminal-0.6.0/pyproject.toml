@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smooth-criminal"
+version = "0.6.0"
+description = "Dashboard de análisis de rendimiento con decoradores inteligentes"
+readme = {file = "README.md", "content-type" = "text/markdown"}
+requires-python = ">=3.8"
+license = {file = "LICENSE.txt"}
+authors = [{name = "Adolfo González", email = "tucorreo@example.com"}]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/Alphonsus411/smooth_criminal"
+Documentation = "https://smooth-criminal.readthedocs.io/en/latest/"
+
+[project.optional-dependencies]
+tinydb = ["tinydb"]
+sqlite = []
