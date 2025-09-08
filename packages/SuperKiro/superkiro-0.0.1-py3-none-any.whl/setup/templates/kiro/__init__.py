@@ -1,0 +1,2 @@
+"""Kiro template package."""
+
