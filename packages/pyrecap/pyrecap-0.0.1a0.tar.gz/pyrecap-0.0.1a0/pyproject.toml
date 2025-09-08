@@ -1,0 +1,90 @@
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pyrecap"
+dynamic = ["version"]
+description = "Scientific framework for Reproducible Experiment Capture and Provenance"
+authors = [{ name = "Venkateswaran Shekar", email = "vshekar1@bnl.gov" }]
+requires-python = ">=3.8"
+readme = "README.rst"
+license = { text = "BSD-3-Clause" }
+dependencies = [
+    "sqlalchemy>=2.0",
+    "pydantic>=2.0",
+    "python-slugify"
+]
+
+keywords = ["experiments", "provenance", "reproducibility"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest"
+]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "recap/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["recap"]
+
+[tool.hatch.build]
+include = [
+    "recap/**",
+    "README.rst",
+    "LICENSE*"
+]
+
+[tool.black]
+line-length = 115
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+
+  # The following are specific to Black, you probably don't want those.
+  | blib2to3
+  | tests/data
+)/
+'''
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "C90"]
+ignore = ["E203", "E501"]  # Black-style formatting norms
+
+[tool.ruff.lint.per-file-ignores]
+"**/versioneer.py" = ["ALL"]
+"**/_version.py" = ["ALL"]
+"**/setup.py" = ["ALL"]
+"**/docs/**" = ["ALL"]
+
+[tool.ruff.lint.isort]
+known-first-party = []
+
