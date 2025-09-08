@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "texpass"
+version = "2.0.0"
+authors = [
+  { name="Rinceri", email="rinceri@protonmail.com" },
+]
+description = "Password manager with Textual user interface"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+keywords = ["password", "vault", "password manager", "textual"]
+license = "MIT"
+license-files = ["LICENSE.md"]
+dependencies = [
+    "textual>3.5.0",
+    "argon2-cffi",
+    "pyperclip",
+    "cryptography"
+]
+
+[project.urls]
+Homepage = "https://github.com/Rinceri/password-manager/"
+
+[project.scripts]
+texpass = "texpass.start:main"

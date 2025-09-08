@@ -1,0 +1,58 @@
+$background: #191918
+$main_background: #3D4659
+
+.first_screen {
+    background: $background
+}
+
+/* main widget */
+.first_screen_main {
+    width: auto;
+    height: auto;
+    background: $main_background;
+    padding: 0 1 0 1;
+    border: tall #677085;
+}
+
+/* use for centering */
+.centered {
+    align: center middle
+}
+
+Static {
+    content-align: center middle;
+    text-style: bold;
+}
+
+#title {
+    padding: 1 0 1 0;
+    color: #b6c1d9;
+}
+
+#additional_message {
+    color: #d6827a;
+}
+
+.elements {
+    width: 36;
+}
+
+SubmitInput {
+    border: solid #ffffff;
+    border-title-style: bold;
+    /* same as the widget background */
+    background: $main_background;
+    padding: 0 1 0 1;
+}
+
+VerticalButtons {
+    width: auto;
+    height: auto;
+    /* margined so that all widgets is margin 1 away */
+    margin: 1 0 0 0;
+}
+
+    VerticalButtons > Button {
+        margin: 0 0 1 0;
+        background: #282c36;
+    }
