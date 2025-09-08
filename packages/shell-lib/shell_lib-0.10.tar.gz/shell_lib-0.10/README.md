@@ -1,0 +1,54 @@
+### shell-lib
+
+`shell-lib` is designed to simplify common file system and command-line operations. It provides an easy to remember,  shell-like API that makes your scripts more readable.
+
+### Usage
+
+```python
+from shell_lib import sh
+
+with sh:
+    path = sh.path("my_project")
+    sh.create_dir(path)
+    with sh.cd(path):
+        sh.run("echo 'Hello, World!' > hello.txt")
+    sh.remove_dir(path)
+```
+
+### API
+
+```python
+    # File and Directory Operations
+    sh.home_dir() -> Path
+    sh.path(path: Union[str, Path]) -> Path
+
+    sh.create_dir(path: Union[str, Path], *, exist_ok: bool = False) -> None
+    sh.remove_dir(path: Union[str, Path], *, ignore_missing: bool = False) -> None
+    sh.remove_file(path: Union[str, Path], *, ignore_missing: bool = False) -> None
+    sh.copy_file(src: Union[str, Path], dst: Union[str, Path], *, overwrite: bool = False) -> None
+    sh.copy_dir(src: Union[str, Path], dst: Union[str, Path], *, overwrite: bool = False) -> None
+    sh.move_file(src: Union[str, Path], dst: Union[str, Path], *, overwrite: bool = False) -> None
+    sh.move_dir(src: Union[str, Path], dst: Union[str, Path], *, overwrite: bool = False) -> None
+    sh.rename_file(src: Union[str, Path], dst: Union[str, Path]) -> None
+    sh.rename_dir(src: Union[str, Path], dst: Union[str, Path]) -> None
+
+    sh.list_dir(path: Union[str, Path]) -> List[str]
+    sh.walk_dir(top_dir: Union[str, Path]) -> Generator[Tuple[str, str]]
+    sh.cd(path: Union[str, Path])  # Supports 'with' statement for temporary directory change
+
+    sh.get_file_info(path: Union[str, Path]) -> FileSystemEntryInfo
+    sh.exists(path: Union[str, Path]) -> bool
+    sh.is_file(path: Union[str, Path]) -> bool
+    sh.is_dir(path: Union[str, Path]) -> bool
+    sh.get_path_parts(path: Union[str, Path]) -> Tuple[str, str]
+    sh.join_path(*parts: str) -> str
+
+    # Shell Command Execution
+    sh.run(command: str, *,
+        print_output: bool = True,
+        text: bool = True,
+        fail_on_error: bool = True) -> subprocess.CompletedProcess
+
+    # Script Control
+    sh.exit(exit_code: int = 0) -> None
+```
