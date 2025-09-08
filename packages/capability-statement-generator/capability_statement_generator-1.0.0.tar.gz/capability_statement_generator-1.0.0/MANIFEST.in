@@ -1,0 +1,7 @@
+include README.md
+include LICENSE
+include requirements.txt
+include pharmatech_capability_statement.json
+recursive-include .github *
+global-exclude __pycache__
+global-exclude *.py[co]

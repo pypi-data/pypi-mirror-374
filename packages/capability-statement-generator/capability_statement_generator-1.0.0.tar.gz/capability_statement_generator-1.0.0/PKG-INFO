@@ -1,0 +1,260 @@
+Metadata-Version: 2.4
+Name: capability-statement-generator
+Version: 1.0.0
+Summary: Automated form creation and data population for company capability statements
+Home-page: https://github.com/yourusername/capability-statement-generator
+Author: Capability Statement Generator Team
+Author-email: developer@pharmatech.com
+Project-URL: Bug Reports, https://github.com/yourusername/capability-statement-generator/issues
+Project-URL: Source, https://github.com/yourusername/capability-statement-generator
+Project-URL: Documentation, https://github.com/yourusername/capability-statement-generator#readme
+Keywords: capability statement,business documents,form generator,automation,json export
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Office/Business
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Text Processing
+Classifier: Topic :: Utilities
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: requires-python
+Dynamic: summary
+
+# Capability Statement Form Generator
+
+A comprehensive Python application for generating professional capability statements with automated data population, JSON export capabilities, and clean formatting.
+
+## Features
+
+### 🏗️ Structured Data Classes
+- Uses Python dataclasses for clean, organized structure
+- Type hints for better code reliability
+- Modular design for easy customization
+
+### 📊 Pre-filled PharmaTech Data
+- Automatically populates with complete PharmaTech Innovations information
+- Includes all required sections for a professional capability statement
+- Ready-to-use example data
+
+### 📋 Complete Coverage
+The generator includes all essential capability statement sections:
+
+- **Company Information**: Contact details, addresses, company numbers
+- **Executive Summary**: Professional company overview
+- **Services Offered**: 4 main service categories with descriptions
+- **Key Differentiators**: 4 strategic competitive advantages
+- **Strengths and Commitments**: Core company values and capabilities
+- **Featured Clients**: 4 major partnership examples
+- **Certifications**: 6 industry-standard certifications
+- **Past Performances**: 2 key achievement examples
+
+### 📤 Multiple Output Formats
+- **Formatted Console Display**: Professional presentation with icons and sections
+- **JSON Export**: Portable data format for integration with other systems
+- **Template Structure**: Blank template for creating new statements
+
+### 🎨 Professional Formatting
+- Clean, organized presentation with emojis and clear sections
+- Consistent formatting throughout all outputs
+- Easy-to-read structure for both technical and business users
+
+## Installation
+
+### Prerequisites
+- Python 3.7 or higher
+- No external dependencies required (uses only Python standard library)
+
+### Setup
+1. Clone or download the repository
+2. Navigate to the project directory
+3. Run the script directly:
+
+```bash
+python capability_statement_generator.py
+```
+
+## Usage
+
+### Basic Usage
+Run the script to generate a complete PharmaTech capability statement:
+
+```bash
+python capability_statement_generator.py
+```
+
+This will:
+1. Create the capability statement with PharmaTech data
+2. Display the formatted output in the console
+3. Export the data to `pharmatech_capability_statement.json`
+4. Show the blank template structure
+
+### Programmatic Usage
+
+```python
+from capability_statement_generator import CapabilityStatementForm
+
+# Create form generator
+form_generator = CapabilityStatementForm()
+
+# Generate PharmaTech statement
+statement = form_generator.create_pharmatech_statement()
+
+# Display formatted output
+form_generator.display_form_data(statement)
+
+# Export to JSON
+form_generator.export_to_json("my_capability_statement.json")
+
+# Get blank template
+template = form_generator.get_form_template()
+```
+
+### Custom Data Population
+
+You can modify the `create_pharmatech_statement()` method or create new methods to populate with different company data:
+
+```python
+def create_custom_statement(self) -> CapabilityStatement:
+    company_info = CompanyInfo(
+        company_name="Your Company Name",
+        company_number="12345678",
+        # ... other fields
+    )
+    # ... populate other sections
+    return CapabilityStatement(...)
+```
+
+## Data Structure
+
+### Company Information
+- Company name and registration number
+- Contact information (phone, email, website)
+- Physical address details
+
+### Services
+Each service includes:
+- Service name
+- Detailed description
+
+### Certifications
+Each certification includes:
+- Certification name
+- Description of compliance standards
+
+### Clients and Past Performances
+Structured examples of:
+- Client partnerships
+- Successful project completions
+- Measurable outcomes and benefits
+
+## Output Examples
+
+### Console Output
+```
+================================================================================
+CAPABILITY STATEMENT FORM
+================================================================================
+
+📋 COMPANY INFORMATION
+----------------------------------------
+Company Name: PharmaTech Innovations Ltd.
+Company Number: 98765432
+Phone: +1(00) 000 000 0000
+Email: myownemail@pharmatech.com
+Website: pharmatechinnovations.com
+Address: 123 Street Name, City
+         21345 California
+
+📊 EXECUTIVE SUMMARY
+----------------------------------------
+PharmaTech Innovations Ltd. excels in developing cutting-edge pharmaceutical...
+```
+
+### JSON Export
+The exported JSON file contains all data in a structured format suitable for:
+- Database import
+- API integration
+- Data analysis
+- Archive storage
+
+## Use Cases
+
+### For Business Development
+- Generate capability statements for proposals
+- Maintain consistent company information across documents
+- Quick updates for different client presentations
+
+### For AI Agent Systems
+- Foundation for automated document generation
+- Template for capability statement AI agents
+- Structured data for business intelligence systems
+
+### For Document Management
+- Centralized company information storage
+- Version control for capability statements
+- Easy export for various business systems
+
+## Customization
+
+### Adding New Sections
+1. Create a new dataclass for the section
+2. Add the field to `CapabilityStatement`
+3. Update the display and template methods
+
+### Modifying Display Format
+The `display_form_data()` method can be customized to:
+- Change formatting styles
+- Add or remove sections
+- Modify the visual presentation
+
+### Export Formats
+Extend the export functionality to support:
+- PDF generation
+- Word document creation
+- HTML formatting
+- CSV for tabular data
+
+## Contributing
+
+To contribute to this project:
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## License
+
+This project is available for use and modification. Please maintain attribution to the original authors.
+
+## Support
+
+For questions or issues:
+- Review the code documentation
+- Check the example usage
+- Create an issue for bugs or feature requests
+
+---
+
+**Generated by Capability Statement Form Generator v1.0**  
+*Professional document automation for modern businesses*
