@@ -1,0 +1,117 @@
+{
+  "name": "ti-al-b-n",
+  "description":
+      "Cubic B2 structure with Ti and N. Optimization is carried out on each sublattice independently. Ti is populated (TiAl) and optimized towards ordering. The non-metal sublattice (N) is populated with N and B and optimized towards clustering.",
+  "tags": [
+    "Cubic",
+    "B1",
+    "Ti",
+    "N",
+    "split",
+    "216 at."
+  ],
+  "authors": [
+    {
+      "name": "Dominik",
+      "surname": "Gehringer",
+      "email": null,
+      "affiliations": []
+    }
+  ],
+  "config": {
+    "iterations": 1000000000,
+    "sublattice_mode": "split",
+    "structure": {
+      "supercell": [
+        3,
+        3,
+        3
+      ],
+      "species": [
+        "Ti",
+        "Ti",
+        "Ti",
+        "Ti",
+        "N",
+        "N",
+        "N",
+        "N"
+      ],
+      "lattice": [
+        [
+          4.25353400,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4.25353400,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          4.25353400
+        ]
+      ],
+      "coords": [
+        [
+          0.5,
+          0.0,
+          0.0
+        ],
+        [
+          0.5,
+          0.5,
+          0.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.5
+        ],
+        [
+          0.0,
+          0.5,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.0,
+          0.5
+        ],
+        [
+          0.5,
+          0.5,
+          0.0
+        ]
+      ]
+    },
+    "composition": [
+      {
+        "sites": "Ti",
+        "Ti": 54,
+        "Al": 54
+      },
+      {
+        "sites": "N",
+        "N": 54,
+        "B": 54
+      }
+    ],
+    "target_objective": [
+      -1,
+      1
+    ]
+  }
+}
