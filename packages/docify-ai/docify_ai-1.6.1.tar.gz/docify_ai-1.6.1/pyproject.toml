@@ -1,0 +1,59 @@
+[project]
+name = "docify-ai" 
+version = "1.6.1" 
+dynamic = ["readme"]
+authors = [
+  { name = "Shiwang Upadhyay"}, 
+  {email = "shiwangupadhyay8@gmail.com" }
+]
+description = "An AI-powered documentation generator that uses OpenAI and Gemini models to create high-quality README.md files, model cards, notebooks, tests, and boilerplate, tailored to your project’s code and structure."
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Documentation",
+]
+dependencies = [
+    "google-generativeai>=0.8.5",
+    "openai>=1.100.2"
+]
+keywords = [
+    "ai",
+    "documentation",
+    "readme-generator",
+    "tests-generator",
+    "project-structure",
+    "docker-template",
+    "cicd-workflows-template",
+    "mermaid-diagrams",
+    "openai",
+    "gemini",
+    "automation",
+    "developer-tools",
+    "cli",
+    "docstrings",
+    "notebook-generation",
+    "automatic-data-cleaning",
+    "auto-EDA",
+    "notebook-generator",
+    "model-card",
+    "model-card-generator"
+]
+
+[tool.setuptools]
+
+[tool.setuptools.dynamic]
+readme = { file = ["README.md", "CHANGELOG.md"], content-type = "text/markdown" }
+
+[project.scripts]
+docify = "docify_tool.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["docify_tool*"]
+exclude = ["tests*"]
+
+[project.urls]
+Homepage = "https://github.com/shiwangupadhyay/docify-project"
+Repository = "https://github.com/shiwangupadhyay/docify-project"
+Issues = "https://github.com/shiwangupadhyay/docify-project/issues"
