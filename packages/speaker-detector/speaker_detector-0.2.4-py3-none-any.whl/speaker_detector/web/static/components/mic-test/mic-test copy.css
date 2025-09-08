@@ -1,0 +1,130 @@
+/* Base */
+#mic-test .mic-card {
+  background: #1c1c1c;
+  color: #eee;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 14px;
+  width: min(520px, 92vw);
+  box-shadow: 0 10px 30px rgba(0,0,0,.4);
+}
+
+#mic-test .mic-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+#mic-test .mic-title { margin: 0; font-size: 1.1rem; }
+#mic-test .mic-close {
+  background: transparent;
+  border: 0;
+  color: #bbb;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+#mic-test .mic-close:hover { color: #fff; }
+
+/* Controls */
+.mic-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 10px;
+}
+.mic-label { min-width: 110px; color: #bbb; }
+#mic-selector {
+  min-width: 240px;
+  background: #222;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+#refresh-mics {
+  background: #2a2a2a;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+#action-btn {
+  width: 100%;
+  margin-top: 8px;
+  background: #2a2a2a;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+#action-btn:hover, #refresh-mics:hover { background: #333; }
+
+/* Visualizer */
+.visualizer {
+  width: 100%;
+  height: 70px;
+  background-color: #111;
+  border: 1px solid #333;
+  border-radius: 8px;
+  margin: 8px 0 10px;
+}
+
+/* Popup overlay (created by JS) */
+.mic-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  display: none;
+  z-index: 9999;
+}
+.mic-overlay.show { display: flex; }
+.mic-modal {
+  margin: auto;
+  outline: none;
+}
+
+/* Sticky launcher button (created by JS) */
+.mic-sticky-btn {
+  position: fixed;
+  top: 14px;
+  /* left: 14px; change to right:14px if you prefer right side */
+  right: 14px; 
+  left: auto; 
+  z-index: 9998;
+  background: #1f1f1f;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.mic-sticky-btn:hover { background: #2a2a2a; }
+
+/* Toasts (JS injects #toast-container) */
+#toast-container {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 10000;
+}
+.toast {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .18s ease, transform .18s ease;
+  background: #1f1f1f;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
