@@ -1,0 +1,72 @@
+# Configuration file for training/validation session in pyTorchAutoForge, V0.1 22-09-2024 by PeterC
+# Experiment setup (mlflow, torch)
+experimentSettings:
+  experiment_name: "TestModelTrainingManager"
+  seed_RNG: 42 # DEFAULT: Not specified
+  deviceInfo:
+    device: AUTO # 'cuda', 'cpu', 'AUTO'
+
+# Logging settings (mlflow, checkpoints)
+loggingSettings:
+  epoch_model_log_interval: 1 # DEFAULT: 1 (every epoch)
+  save_checkpoint: True # DEFAULT: True (enable saving of checkpoints)
+  checkpoint_savepath: "./checkpoints" # DEFAULT: "./checkpoints" (where to save checkpoints)
+  mlflow_logging: True
+  mlflowSettings:
+    tracking_uri: "http://localhost:5000" # DEFAULT: "http://localhost:5000"
+  # DEVNOTE: current version does not allow the use to customize mlflow settings (e.g. what to log, etc.)
+
+datasetSettings:
+  training_torchDataset_savepath: "" 
+  validation_torchDataset_savepath: "" # DEFAULT: None, using random_split
+  split_ratio: 0.8 # DEFAULT: 0.8
+
+  batch_size: 32 # DEFAULT: 32
+  shuffle: True # DEFAULT: True
+  num_workers: 1 # DEFAULT: 1
+  pin_memory: True # DEFAULT: True (Related to CUDA memory management)
+
+# This goes into another file
+# model:
+#  model_name: "CustomCNN"
+#  input_size: [3, 224, 224]
+#  output_size: 10
+#  num_layers: 5
+#  hidden_units: [64, 128, 256, 512]
+#  activation_function: "ReLU"
+
+trainerSettings:
+  training:
+    initial_epoch: 0 # DEFAULT: 0 --> Required to ensure correct logging and saving
+    num_of_epochs: 25 # DEFAULT: 10
+    initial_learn_rate: 0.001 # DEFAULT: 1E-4
+
+    optimizer_class: "Adam"
+    optimizerParams: # DEFAULT values set depending on the optimizer. Extra parameters N/A are ignored.
+      weight_decay: 0.0001 # DEFAULT: 0
+
+    loss_function_class: "CrossEntropyLoss"
+
+    enable_SWA: False # DEFAULT: False
+
+    keep_best: True # DEFAULT: True (keep and save best model if changed wrt previous best)
+    eval_example: False # DEFAULT: False (evaluate example input/output after each epoch)
+    
+    enable_early_stop: False # DEFAULT: True
+    early_stopping:
+      patience: 5
+      min_delta: 0.001
+
+    # TBC: depends on the scheduler --> trainer may store the opaque step object rather than the specific options
+    #schedulerClass: "StepLR"
+    #scheduler_params:
+    #  step_size: 10
+    #  gamma: 0.1
+
+  validation:
+    cross_validation: False # DEFAULT: False, not implemented yet
+
+  # Placeholder for future features
+  hparamsOptSettings:
+    optuna_study_name: "" # DEFAULT: disabled
+
