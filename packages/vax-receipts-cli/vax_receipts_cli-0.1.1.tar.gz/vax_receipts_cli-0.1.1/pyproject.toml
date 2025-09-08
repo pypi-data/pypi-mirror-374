@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vax-receipts-cli"
+version = "0.1.1"
+description = "Tiny CLI to list/open VibeAxis receipts (cornerstone posts & hubs)."
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "VibeAxis (Jason Bann)" }]
+keywords = ["vibeaxis", "ai", "cli", "tools", "receipts"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Environment :: Console",
+  "Topic :: Internet :: WWW/HTTP"
+]
+
+[project.scripts]
+vax-receipts = "vax_receipts_cli.cli:main"
