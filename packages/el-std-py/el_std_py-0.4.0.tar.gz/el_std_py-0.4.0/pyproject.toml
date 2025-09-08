@@ -1,0 +1,42 @@
+[project]
+name = "el-std-py"
+version = "0.4.0"
+authors = [
+  { name="melektron", email="matteo@elektron.work" },
+]
+description = "An assortment of useful python utilities complementing some builtin and third party python packages"
+readme = {file = "README.md", content-type = "text/markdown"}
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+[project.urls]
+Homepage = "https://github.com/melektron/el_std_py"
+Issues = "https://github.com/melektron/el_std_py/issues"
+
+
+[build-system]
+requires = [
+  "setuptools>=61.0"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-data."el.assets" = [
+    "builtin/*",
+    #"static/**/*"
+]
+
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+# https://stackoverflow.com/questions/70015634/how-to-test-async-function-using-pytest
+asyncio_mode="auto"
+asyncio_default_fixture_loop_scope="function"
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
