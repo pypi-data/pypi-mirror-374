@@ -1,0 +1,67 @@
+[project]
+name = "agent-compose-kit"
+version = "0.2.1"
+description = "Core library to compose, validate, and run ADK agent systems from YAML."
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+authors = [ { name = "DeadMeme5441" } ]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Development Status :: 3 - Alpha",
+  "Topic :: Software Development :: Libraries",
+]
+dependencies = [
+    "pydantic>=2.7",
+    "pyyaml>=6.0",
+    # The following are runtime deps for full functionality; install via uv if preferred
+    "google-adk>=0.1.0", # provides Runner, LlmAgent, core services
+    "google-adk-extras>=0.1.1", # sessions/artifacts/memory extras (redis/mongo/sql/s3/yaml)
+    "litellm>=1.76.2",
+]
+
+[project.optional-dependencies]
+tools = ["mcp>=1.2.0"]
+dev = ["pytest>=8.4.2", "ruff>=0.12.12", "build>=1.2.2", "twine>=5.1.1"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+# Keep E501 non-blocking as per project guidance
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+    "ruff>=0.12.12",
+]
+
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agent_compose_kit"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "src/agent_compose_kit",
+  "pyproject.toml",
+  "README.md",
+  "LICENSE*",
+  "templates",
+  "configs",
+]
+
+[project.urls]
+Homepage = "https://github.com/DeadMeme5441/agent-compose-kit"
+Repository = "https://github.com/DeadMeme5441/agent-compose-kit"
