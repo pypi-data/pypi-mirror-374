@@ -1,0 +1,8 @@
+pyyaml>=6
+cryptography>=41
+qrcode[pil]>=7
+
+[dev]
+pytest>=8
+ruff>=0.5
+mypy>=1.10
