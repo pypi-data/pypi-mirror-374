@@ -1,0 +1,38 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tensoneyroflow" # Имя на PyPI, должно быть УНИКАЛЬНЫМ.
+version = "0.1.0"       # Стартуйте с версии 0.1.0 или 0.0.1
+description = "A unified high-level API for TensorFlow, Keras and PyTorch" # Краткое описание
+readme = "README.md"    # Файл с описанием
+authors = [
+  { name = "mina903", email = "mina903@mail.ru" },
+]
+license = { file = "LICENSE" } # Указываем файл с лицензией
+classifiers = [
+    "License :: OSI Approved :: MIT License", # Укажите вашу лицензию
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+keywords = ["tensorflow", "pytorch", "keras", "deep learning", "wrapper"]
+dependencies = [ # Укажите ЗАВИСИМОСТИ вашего пакета
+    "tensorflow>=2.10.0",
+    "torch>=1.13.0",
+    "numpy>=1.21.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-username/tensoneyroflow" # Ссылка на репозиторий
+
+# Опционально: настройки для setuptools
+[tool.setuptools]
+package-dir = { "" = "src" }
+packages = { find = { where = ["src"] } }
