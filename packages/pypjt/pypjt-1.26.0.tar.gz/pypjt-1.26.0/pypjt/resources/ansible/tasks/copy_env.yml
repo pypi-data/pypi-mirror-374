@@ -1,0 +1,28 @@
+---
+- name: Create temporary merged env file
+  ansible.builtin.tempfile:
+    state: file
+    suffix: _merged.env
+  register: merged_env_file
+  delegate_to: localhost
+  when: (env_files | default([])) | length > 0
+
+- name: Merge env files using Python script
+  ansible.builtin.command:
+    cmd: "python3 {{ playbook_dir }}/tasks/merge_env.py {{ merged_env_file.path }} {{ env_files | map('regex_replace', '^(.*)$', project_src + '/\\1') | join(' ') }}"
+  delegate_to: localhost
+  when: (env_files | default([])) | length > 0
+
+- name: Copy merged env file to remote server
+  ansible.builtin.copy:
+    src: "{{ merged_env_file.path }}"
+    dest: "{{ deploy_dir }}/.env"
+    mode: "0644"
+  when: merged_env_file is defined
+
+- name: Remove temporary merged env file
+  ansible.builtin.file:
+    path: "{{ merged_env_file.path }}"
+    state: absent
+  delegate_to: localhost
+  when: merged_env_file is defined

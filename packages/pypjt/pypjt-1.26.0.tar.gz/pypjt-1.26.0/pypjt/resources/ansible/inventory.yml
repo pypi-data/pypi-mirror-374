@@ -1,0 +1,26 @@
+all:
+  vars:
+    project_src: "{{ playbook_dir | dirname }}"
+    deploy_dir: "/opt/deploy/{{ (playbook_dir | dirname) | basename }}"
+    env_files:
+       - ".env"
+    extra_files:
+      # - src: "secrets/private_key.pem"  # relative to project_src
+      #   dst: "/absolute/path/secrets/private_key.pem"  # absolute path on remote
+      # - src: "/absolute/path/certs"  # absolute local path
+      #   dst: "certs"  # relative to deploy_dir
+  children:
+    main_serve:
+      hosts:
+        host1:
+          ansible_host: your-server
+          ansible_user: your-user
+        # host2:
+        #   ansible_host: your-server
+        #   ansible_user: your-user
+        #   deploy_dir: "/opt/deploy/{{ (playbook_dir | dirname) | basename }}2"
+        #   env_files:
+        #     - ".env2"
+        #   extra_files:
+        #     - src: "secrets/private_key2.pem"
+        #       dst: "secrets/private_key2.pem"
