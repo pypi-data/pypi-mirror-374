@@ -1,0 +1,115 @@
+# Gridlines
+# What is it?
+Gridlines is a Python package for creating, editing and showing tables.
+Even interactive tables.
+
+# Output examples
+<img width="426" height="111" alt="image" src="https://github.com/user-attachments/assets/01774eea-f6d5-4345-b062-12135b09aab8" />
+<img width="473" height="146" alt="image" src="https://github.com/user-attachments/assets/fa986f66-1dfb-4591-833b-ea2e0ab6bad4" />
+<img width="797" height="195" alt="image" src="https://github.com/user-attachments/assets/aa41ccdf-e43b-4771-aa47-ddf30335fe68" />
+
+# Features
+## Creation/Modification
+- Set size tables
+- Expandable tables
+- Converting 2 dimensional lists into tables/writing them to tables
+- Automatic expansion
+
+## Styling
+- 5 default border themes
+- Allows custom border themes (set each used char yourself)
+- Customizable styling (color, spacing, equal width, etc.)
+- Rich styling (uses [rich](https://github.com/Textualize/rich) and [allows Console Markup](https://rich.readthedocs.io/en/stable/markup.html))
+
+## Interactive
+- Navigate table with arrow keys
+- Returns a cell's value on enter (a cell has both content and value)
+- Toolbar
+- (WIP: hotkeys)
+
+# Getting started
+To get started read further or have a look at the [examples](/examples/)
+
+## Creating a table
+To create a table simply create one with the `create_empty_table` function. It has some arguments but defaults to 1x1, resizable and not interactive. 
+Arguments:
+- **rows** (int): how many rows the table has
+- **cols** (int): how many cols the table has
+- **interactive** (bool): whether the `print_table` function should just print the table or be interactive and listen for user input
+- **resize** (bool): whether the table can change its size after creation
+- **styling** (*TableStyling*): sets the styling of the table via a TableStyling Object. Can also later on be set with `set_styling`.
+```python
+from gridlines import create_empty_table
+
+# Creates 1x1, resizable table
+new_table = create_empty_table()
+
+# Creates 4x3, not resizable table, interactive
+new_table = create_empty_table(rows=4, cols=3, interactive=True, resize=False)
+```
+```
+small_table:
+ ┏━━┓
+ ┃  ┃
+ ┗━━┛
+
+bigger_table:
+ ┏━━┳━━┳━━┓
+ ┃  ┃  ┃  ┃
+ ┠━━╋━━╋━━┫
+ ┃  ┃  ┃  ┃
+ ┠━━╋━━╋━━┫
+ ┃  ┃  ┃  ┃
+ ┠━━╋━━╋━━┫
+ ┃  ┃  ┃  ┃
+ ┗━━┻━━┻━━┛
+```
+
+## Editing a table
+### Basics
+A table is made of many *TableCell* Objects. A *TableCell* has both content (what will be displayed) and value (what will be returned if selected, also only important if your table is interactive). Content always is a string and will be converted to one by the methods and value can be anything from function or partial to a float.
+
+When calling any table operation (in this example `write_cell`) you can declare a *WriteMode*. By default it is *WriteMode.CONTENT*, so by default every operation should write to the content(s) of the cell(s). Your other options are:
+- **CONTENT**: To the content
+- **VALUE**: To the value
+- **BOTH**: To the content and value
+- **CELL**: Will replace the *TableCell* Object in the cell. Your data should be a *TableCell* Object when using this.
+
+### Methods
+#### Exact data methods
+- `write_cell`: writes to cell at the given position
+- `write_row` and `write_col`: write to the given row/column, writes over existing content. Can write with an offset, e.g. write_row(row_pos=1, starting_col=2), would write to row 1 but starts at cell in column 2.
+- `write_list`: will write the given 2 dimensional list to the table (currently only starting from the top left of the table)
+
+#### Free space methods
+These methods will only write to spots where there is not already data.
+- `write_next_row` and `write_next_col`: write to the next completely free row/column and expand if necessary and possible
+
+### Resizing
+If a table has resizing enabled most methods will automatically resize if necessary, but if you want to resize yourself you can do it with `expand`.
+
+`expand` can either extend to a total number of rows/columns or add a specified number of rows/columns, e.g. `table.expand(new_cols=2, new_rows=1)` will add 2 new columns and one new row
+
+
+## Printing / Showing a table
+To print a single table simply use `table.print_table()`. It will automatically use the correct methods for printing the table. If you enable plain it will just print the content separated by spaces and vertical bars.
+
+### Interactive tables
+`print_table` automatically works with interactive tables. It will run until the user presses enter, then it will either return the cell's value or run the value if it is a function or [partial](https://docs.python.org/3/library/functools.html#functools.partial) and then return.
+
+### Printing multiple tables side by side
+If you want to have multiple tables side by side you can use `print_tables` (separate method and not part of Table Class). Just give it all tables in a list. 
+See an [example](examples/printing/print_tables_ex.py)
+
+## Styling a table
+You can style a table by using `set_styling`. When given a TableStyling Object it will set it to the table and apply it.
+
+TableStyling arguments, all arguments are optional, as all have defaults:
+- `border_char_set`: specify a BorderCharSet Object which the table should use for printing
+- `border_char_set_name`: the name of the char set preset which you want to use. Currently there are: heavy, light, double, forms, sleek
+- `spacing`: How many spaces there should be between a cell's content and border at minimum (2 = 2 spaces before and 2 spaces after the cell's content)
+- `equal_width`: whether all columns should have the same width
+- `style`: define a [rich style](https://rich.readthedocs.io/en/latest/style.html) which will be applied to all lines
+- `highlight`: the rich style for when a cell is selected (default: "black on white")
+
+Look at the [interactive styling example!](examples/styling/interactive_style.py)

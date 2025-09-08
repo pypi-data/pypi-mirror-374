@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project]
+name = "gridlines"
+version = "1.0.0"
+description = "Package for creating, using and showing tables in the Terminal, even interactive ones"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    { name = "Matze Murek", email = "matze.murek@gmail.com" }
+]
+license = { text = "Apache-2.0" }
+keywords = ["table", "TUI", "terminal", "gridlines"]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent"
+]
+
+dependencies = [
+    "rich>=13.0.0",
+    "readchar>=4.0.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/M-Mrk/Gridlines"
+Repository = "https://github.com/M-Mrk/Gridlines"
+Issues = "https://github.com/M-Mrk/Gridlines/issues"
