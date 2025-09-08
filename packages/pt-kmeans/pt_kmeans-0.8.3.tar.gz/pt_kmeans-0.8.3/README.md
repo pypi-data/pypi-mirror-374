@@ -1,0 +1,345 @@
+# PyTorch KMeans
+
+## Introduction
+
+`pt_kmeans` is a pure PyTorch implementation of the popular K-Means clustering algorithm, designed for seamless integration into PyTorch-based machine learning pipelines.
+It offers high performance on both CPU and GPU (CUDA), along with advanced features like K-Means++ initialization, hierarchical clustering, and cluster splitting, all while maintaining full PyTorch tensor compatibility.
+
+A core design principle of `pt_kmeans` is **efficient memory management for large datasets**.
+While you can pass data already on a GPU, the library is optimized to allow your main input data (`x`) to reside on **CPU memory (typically more abundant)**.
+Computations are then performed on a specified `device` (e.g., CUDA GPU) by moving only necessary data chunks or tensors, maximizing utilization of faster hardware without exceeding its memory limits.
+Final results (cluster centers and assignments) are consistently returned on the CPU for ease of post-processing, visualization, or saving.
+
+## Features
+
+- **Pure PyTorch**: No external dependencies beyond PyTorch itself. All computations are performed using PyTorch tensors, making it ideal for integration with deep learning workflows.
+- **Self-Contained & Portable**: The entire implementation resides in a single file, allowing for easy integration by simply copying the file into your project or an existing module.
+- **CPU & GPU Support**: Explicitly control computation device (CPU or CUDA) for optimal performance and memory usage.
+- **K-Means++ Initialization**: Intelligent seeding of initial centroids for faster convergence and better clustering results.
+- **L2 and Cosine Distance**: Supports the standard Euclidean (L2) distance and Cosine distance for various data types and applications (e.g., embeddings).
+- **Chunked Distance Computations**: Enhances memory efficiency by enabling chunked processing of distance calculations directly within the `compute_distance` function. This mechanism is leveraged by both cluster assignment (`_assign_clusters`) and K-Means++ initialization (`_kmeans_plusplus_init`), allowing for handling large datasets and preventing Out-Of-Memory (OOM) errors on memory-constrained devices.
+- **Reproducibility**: Full control over randomness via `random_seed` for consistent results.
+- **Hierarchical K-Means**: Implements a bottom-up hierarchical clustering approach, useful for creating multi-level cluster structures.
+- **Resampling for Hierarchical K-Means**: Refine hierarchical cluster centers through resampling, which can lead to more robust estimations for certain datasets. Configurable with `method="resampled"`, `n_samples`, and `n_resamples` parameters.
+- **Cluster Splitting**: Provides a utility to refine existing clusters by splitting a single cluster into multiple sub-clusters.
+- **Automatic Caching**: Resume interrupted computations with the `cache_dir` parameter. Essential for long-running jobs on large datasets - caches initial centers and final results, allowing automatic recovery from failures.
+
+### Example: Hierarchical K-Means
+
+![Hierarchical K-Means](docs/img/hierarchical_kmeans.png)
+
+### Example: K-Means with Resampling
+
+This implementation follows the method described in
+[Automatic Data Curation for Self-Supervised Learning: A Clustering-Based Approach](https://arxiv.org/abs/2405.15613).
+
+![Voronoi K-Means](docs/img/voronoi_kmeans.png)
+
+## Installation
+
+`pt_kmeans` requires PyTorch (`torch>=2.4.0` recommended).
+
+First, ensure you have PyTorch installed (refer to the [official PyTorch website](https://pytorch.org/get-started/locally/) for installation instructions specific to your system and CUDA version).
+
+Then, install `pt_kmeans` directly from PyPI:
+
+```bash
+pip install pt-kmeans
+```
+
+## Quick Start & Usage Examples
+
+Here's how to get started with `pt_kmeans`.
+
+```python
+import torch
+import matplotlib.pyplot as plt
+
+from pt_kmeans import hierarchical_kmeans
+from pt_kmeans import kmeans
+from pt_kmeans import predict
+from pt_kmeans import split_cluster
+```
+
+### Basic K-Means Clustering
+
+```python
+# 1. Generate some synthetic data for demonstration
+# Three distinct clusters
+data = torch.concat([
+    torch.randn(100, 2) * 0.5 + torch.tensor([0.0, 0.0]),
+    torch.randn(100, 2) * 0.5 + torch.tensor([5.0, 5.0]),
+    torch.randn(100, 2) * 0.5 + torch.tensor([0.0, 5.0]),
+])
+
+# Define the compute device
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+n_clusters = 3
+random_seed = 0
+
+# 2. Run K-Means
+print(f"Running K-Means on {device}...")
+(centers, labels) = kmeans(
+    data,
+    n_clusters=n_clusters,
+    max_iters=100,
+    tol=1e-4,
+    distance_metric="l2",      # or "cosine"
+    init_method="kmeans++",    # or "random"
+    chunk_size=None,           # Process all at once
+    random_seed=random_seed,
+    device=device,
+)
+
+print("\nK-Means Results:")
+print(f"Final Centers Shape: {centers.shape}")
+print(f"First 5 Labels: {labels[:5]}")
+print(f"Unique Labels: {torch.unique(labels)}")
+
+# 3. (Optional) Visualize the clusters
+plt.figure(figsize=(8, 6))
+plt.scatter(data[:, 0].cpu(), data[:, 1].cpu(), c=labels.cpu(), cmap="viridis", s=10, alpha=0.7)
+plt.scatter(centers[:, 0].cpu(), centers[:, 1].cpu(), c="red", marker="X", s=200, label="Centers")
+plt.title("K-Means Clustering Result")
+plt.xlabel("Feature 1")
+plt.ylabel("Feature 2")
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+### Assigning New Data with `predict`
+
+After training, assign new data points to the learned clusters.
+
+```python
+# Use the 'centers' obtained from the basic K-Means example
+# Generate some new data
+new_data = torch.concat([
+    torch.randn(10, 2) * 0.5 + torch.tensor([0.2, 0.2]),
+    torch.randn(10, 2) * 0.5 + torch.tensor([5.2, 5.2]),
+])
+
+print(f"\nAssigning new data points using 'predict' on {device}...")
+new_labels = predict(
+    new_data,
+    centers, # Use the centers from the previous kmeans run
+    distance_metric="l2",
+    device=device,
+)
+
+print(f"New Data Shape: {new_data.shape}")
+print(f"Labels for new data: {new_labels.tolist()}")
+print(f"Unique labels for new data: {torch.unique(new_labels).tolist()}")
+
+# (Optional) Visualize new data with existing clusters
+plt.figure(figsize=(8, 6))
+plt.scatter(data[:, 0].cpu(), data[:, 1].cpu(), c=labels.cpu(), cmap="viridis", s=10, alpha=0.3, label="Training Data")
+plt.scatter(centers[:, 0].cpu(), centers[:, 1].cpu(), c="red", marker="X", s=200, label="Centers")
+plt.scatter(
+    new_data[:, 0].cpu(),
+    new_data[:, 1].cpu(),
+    c=new_labels.cpu(),
+    marker="o",
+    edgecolors="black",
+    s=100,
+    linewidth=1.5,
+    cmap="viridis",
+    label="New Data",
+)
+plt.title("Prediction on New Data")
+plt.xlabel("Feature 1")
+plt.ylabel("Feature 2")
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+### Hierarchical K-Means
+
+Build a multi-level clustering structure.
+
+```python
+# Use the 'data' generated in the previous example
+n_clusters_levels = [15, 5, 3] # Define number of clusters for each level
+
+print(f"Running Hierarchical K-Means on {device}...")
+results = hierarchical_kmeans(
+    data,
+    n_clusters=n_clusters_levels,
+    max_iters=100,
+    tol=1e-4,
+    distance_metric="l2",
+    init_method="kmeans++",
+    random_seed=random_seed,
+    device=device
+)
+
+print("\nHierarchical K-Means Results:")
+for i, level_result in enumerate(results):
+    print(f"Level {i} (n_clusters={n_clusters_levels[i]}):")
+    print(f"  Centers Shape: {level_result['centers'].shape}")
+    print(f"  Assignment Shape (original data): {level_result['assignment'].shape}")
+    print(f"  Unique Assignments: {torch.unique(level_result['assignment'])}")
+```
+
+### Hierarchical K-Means Using Resampling
+
+Build a multi-level clustering structure with enhanced center refinement using resampling.
+
+```python
+print(f"Running Hierarchical K-Means (resampled method) on {device}...")
+results_resampled_method = hierarchical_kmeans(
+    data,
+    n_clusters=n_clusters_levels,
+    max_iters=100,
+    tol=1e-4,
+    distance_metric="l2",
+    init_method="kmeans++",
+    random_seed=random_seed,
+    device=device,
+    method="resampled",
+    n_samples=[5, 3, 0],
+)
+
+print("\nHierarchical K-Means Results (resampled method):")
+for i, level_result in enumerate(results_resampled_method):
+    print(f"Level {i} (n_clusters={n_clusters_levels[i]}):")
+    print(f"  Centers Shape: {level_result['centers'].shape}")
+    print(f"  Assignment Shape (original data): {level_result['assignment'].shape}")
+    print(f"  Unique Assignments: {torch.unique(level_result['assignment'])}")
+```
+
+### Splitting an Existing Cluster
+
+Refine a specific cluster by breaking it down into sub-clusters.
+
+```python
+# First, run a basic K-Means to get initial labels and centers
+(initial_centers, initial_labels) = kmeans(
+    data, n_clusters=3, random_seed=random_seed, show_progress=False, device=device
+)
+
+cluster_to_split_id = 0  # Choose a cluster to split
+num_sub_clusters = 2
+
+print(f"Splitting Cluster {cluster_to_split_id} into {num_sub_clusters} sub-clusters, computations on {device}...")
+(new_sub_centers, updated_labels) = split_cluster(
+    data,
+    initial_labels,
+    cluster_id=cluster_to_split_id,
+    n_clusters=num_sub_clusters,
+    max_iters=50,
+    distance_metric="l2",
+    random_seed=random_seed + 1,
+    device=device
+)
+
+print("\nCluster Splitting Results:")
+print(f"New Sub-Centers Shape: {new_sub_centers.shape}")
+print(f"Updated Labels Shape: {updated_labels.shape}")
+print(f"Unique Labels in updated set: {torch.unique(updated_labels).tolist()}")
+
+# Verify that the original cluster_id is replaced by new ones or kept, and new ones are introduced
+print(f"Original unique labels: {torch.unique(initial_labels).tolist()}")
+print(f"Updated unique labels: {torch.unique(updated_labels).tolist()}")
+```
+
+### GPU Usage
+
+`pt_kmeans` is designed to be memory-efficient, allowing you to process datasets larger than your GPU's VRAM.
+The general strategy is:
+
+1. Keep your primary dataset `x` on the CPU (if very large).
+1. Specify a `device` (e.g., `"cuda"`) for computations. `pt_kmeans` will intelligently move chunks of `x` or relevant centers to this device as needed.
+
+Here's an example demonstrating this, emphasizing `chunk_size` and the `device` parameter:
+
+```python
+# Example 1: Large dataset on CPU, compute on GPU with chunking
+large_data_cpu = torch.randn(1_000_000, 128, device=torch.device("cpu"))
+n_clusters_large = 1000
+
+(centers_large, labels_large) = kmeans(
+    large_data_cpu,
+    n_clusters=n_clusters_large,
+    distance_metric="cosine",
+    chunk_size=64000,               # Important for larger datasets on GPU to manage memory
+    show_progress=True,
+    device=torch.device("cuda"),    # Tell kmeans to use the GPU for calculations
+)
+
+print(f"GPU K-Means finished. Centers on: {centers_large.device}, Labels on: {labels_large.device}")
+
+# Example 2: Data already on GPU, compute on GPU (chunking still applies for iterations)
+# Here, 'x' is already on GPU. By default, 'kmeans' will use 'x.device' for computation.
+x_gpu = torch.randn(1_000_000, 128, device=torch.device("cuda"))
+n_clusters_gpu = 100
+
+(centers_gpu, labels_gpu) = kmeans(
+    x_gpu,
+    n_clusters=n_clusters_gpu,
+    distance_metric="cosine",
+    init_method="kmeans++",
+    chunk_size=64000,              # Still important for iterative steps, especially for very large N and K
+    show_progress=True,
+    # device=torch.device("cuda"), # Not mandatory to pass 'device' here, as it defaults to x.device
+)
+print(f"GPU K-Means finished. Centers on: {centers_gpu.device}, Labels on: {labels_gpu.device}")
+```
+
+### Memory-Efficient Processing for Large Datasets
+
+`pt_kmeans` is specifically designed to handle datasets that are too large to fit entirely into RAM, leveraging `numpy.memmap` to keep data on disk while processing.
+By using `torch.from_numpy()` with a `memmap` array and specifying a `chunk_size`, `pt_kmeans` will only load chunks of data into memory (and to the specified `device`) as needed, allowing you to cluster truly massive datasets.
+
+For example, `pt_kmeans` will accept input such as:
+
+```python
+import numpy as np
+import torch
+
+x_memmap = torch.from_numpy(np.load(dataset_path, mmap_mode="r+"))
+
+# Now, you can pass x_memmap to kmeans:
+# (centers, labels) = kmeans(x_memmap, n_clusters=..., chunk_size=..., device=...)
+```
+
+### Caching for Long-Running Computations
+
+For large datasets where K-Means can take hours or days, use the `cache_dir` parameter to enable automatic checkpointing:
+
+```python
+# Basic K-Means with caching
+(centers, labels) = kmeans(
+    large_data,
+    n_clusters=10000,
+    cache_dir="./kmeans_cache",  # Will resume from here if interrupted
+    device=device,
+)
+
+# Hierarchical K-Means with caching
+# Each level gets its own cache subdirectory
+results = hierarchical_kmeans(
+    large_data,
+    n_clusters=[10000, 1000, 100],
+    method="resampled",
+    n_samples=[50, 20, 0],
+    cache_dir="./hierarchical_cache",  # Creates level_0/, level_1/, etc.
+    device=device,
+)
+```
+
+## Contributing
+
+Contributions are very welcome! If you find a bug, have a feature request, or want to contribute code, please feel free to:
+
+1. Open an issue on the [GitLab Issues page](https://gitlab.com/hassonofer/pt_kmeans/issues).
+2. Submit a Pull Request.
+
+Please ensure your code adheres to the existing style (Black, isort) and passes all tests.
+
+## License
+
+This project is licensed under the Apache-2.0 License - see the [LICENSE](https://gitlab.com/hassonofer/pt_kmeans/blob/main/LICENSE) file for details.
