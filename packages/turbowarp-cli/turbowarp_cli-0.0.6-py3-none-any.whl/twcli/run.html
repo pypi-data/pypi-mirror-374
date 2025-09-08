@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Run sb3</title>
+
+    <style>
+        #project {
+            width: 480px;
+            height: 360px;
+        }
+    </style>
+
+</head>
+<body>
+<script src="../scaffolding-with-music.js"></script>
+<div id="project"></div>
+
+<script>
+    // Then scaffolding is exported as a global variable
+    const scaffolding = new Scaffolding.Scaffolding();
+
+    scaffolding.width = 480;
+    scaffolding.height = 360;
+    scaffolding.resizeMode = 'preserve-ratio'; // or 'dynamic-resize' or 'stretch'
+    scaffolding.editableLists = false;
+    scaffolding.shouldConnectPeripherals = true;
+    scaffolding.usePackagedRuntime = false;
+
+    scaffolding.setup();
+    const elem = document.getElementById('project');
+    console.log(elem);
+    scaffolding.appendTo(elem);
+
+
+    // await scaffolding.loadProject();
+    const data = new URLSearchParams(window.location.search).get("project");
+    let bindata = atob(data.replace(/_/g, '/').replace(/-/g, '+'));
+    bindata = Uint8Array.from(bindata, c => c.charCodeAt(0));
+    const output = [];
+    let get_tw_cli_var;
+
+    (async () => {
+        await scaffolding.loadProject(bindata);
+        console.log("RUNTIME: Project loaded.");
+
+        const vm = scaffolding.vm;
+        const runtime = vm.runtime;
+        let done = false;
+        /**
+         * @param name {string}
+         * @param _default {string}
+         * @return {string}
+         */
+        get_tw_cli_var = (name, _default=undefined) => {
+            name = `TW-CLI: ${name}`;
+            const vars = runtime._stageTarget.variables;
+
+            for (let k in vars) {
+                let v = vars[k];
+                console.log(`${v.name} = ${v.value}`);
+                if (v.name === name) {
+                    console.log(`Found: ${v.value}`);
+                    return v.value;
+                }
+            }
+
+            console.log(`default: ${_default}`);
+
+            return _default.toString();  // we must always output a string.
+        }
+
+        const exit = (msg = '', __override=undefined) => {
+            if (done) {
+                return;
+            }
+
+            done = true;
+            let exitCode;
+            if (__override !== undefined) {
+                exitCode = __override;
+            } else {
+                exitCode = get_tw_cli_var("exit code", 0).toString();
+            }
+            output.push({
+                type: "exit_code",
+                content: exitCode,
+            })
+            window.alert(`RUNTIME: PROJECT DONE: ${msg}`);
+        }
+
+        // following code is from goboscript.ide by aspizu
+        vm.addAddonBlock({
+            procedureCode: "\u200B\u200Blog\u200B\u200B %s",
+            arguments: ["content"],
+            callback: ({content}, util) => {
+                output.push({
+                    type: "log",
+                    content: content,
+                    // util: util,
+                })
+            }
+        })
+        vm.addAddonBlock({
+            procedureCode: "\u200B\u200Bwarn\u200B\u200B %s",
+            arguments: ["content"],
+            callback: ({content}, util) => {
+                output.push({
+                    type: "warn",
+                    content: content,
+                    // util: util,
+                })
+            }
+        })
+        vm.addAddonBlock({
+            procedureCode: "\u200B\u200Berror\u200B\u200B %s",
+            arguments: ["content"],
+            callback: ({content}, util) => {
+                output.push({
+                    type: "error",
+                    content: content,
+                    // util: util,
+                })
+            }
+        })
+        vm.addAddonBlock({
+            procedureCode: "\u200B\u200Bbreakpoint\u200B\u200B",
+            arguments: [],
+            callback: ({}, util) => {
+                output.push({
+                    type: "breakpoint",
+                    // util: util,
+                })
+                exit("BREAKPOINT", '1');
+            }
+        })
+        vm.addAddonBlock({
+            procedureCode: "\u200B\u200Bexit\u200B\u200B %s",
+            arguments: ["content"],
+            callback: ({content}, util) => {
+                exit("EXIT", content.toString());
+            }
+        })
+        runtime.addListener('QUESTION', () => {
+            console.log(`question asked`);
+        });
+
+        runtime.addListener('SAY', (target, type, msg) => {
+            if (msg !== '') {
+                console.log(`say: ${type} - ${msg}`);
+                output.push({
+                    type: type,
+                    content: msg
+                })
+            }
+        });
+
+        runtime.addListener('PROJECT_RUN_STOP', (question) => {
+            exit("PROJECT_RUN_STOP");
+        });
+        console.log("RUNTIME: PROJECT READY");
+        scaffolding.greenFlag();
+    })();
+
+</script>
+</body>
+</html>
