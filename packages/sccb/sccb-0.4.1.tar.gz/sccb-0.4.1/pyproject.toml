@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sccb"
+version = "0.4.1"
+description = "SCCB – A customizable CLI tool for managing command shortcuts and clipboard snippets."
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+authors = [
+  { name="Ajinkya Dhamdhere", email="aj.dhamdhere@gmail.com" }
+]
+keywords = ["cli", "productivity", "shortcuts", "snippets", "developer-tools"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+  "Topic :: Utilities",
+  "Topic :: Software Development :: Build Tools"
+]
+dependencies = [
+  "typer>=0.9.0",
+  "pyperclip>=1.8.0",
+  "rich>=13.0.0"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Jinkuman/sccb"
+"Source" = "https://github.com/Jinkuman/sccb"
+"Bug Tracker" = "https://github.com/Jinkuman/sccb/issues"
+
+[project.scripts]
+sccb = "sccb.cli:app"
