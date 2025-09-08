@@ -1,0 +1,27 @@
+Библиотека создана для отправки отклика на hh.ru.
+Предоставляет возможность работы с классами геометрических фигур с соблюдением OCP(Open/Closed Principle) SOLID.
+Содержит всего лишь 3 класса. Два дефолтных: треугольник и круг 
+и класс-фабрику, который используется для регистрации класса геометрической фигуры(при его объявлении) и 
+для создания объектов класса.
+При создании своих фигур необходимо наследоваться от класса Figure.
+
+Пример:
+~~~
+from figures_super_mega_project import FigureFactory, Figure
+from typing import Union
+
+
+@FigureFactory.register("square")
+class Square(Figure):
+    def __init__(self, side: Union[float, int]) -> None:
+        self.side = side
+
+    def calculate_area(self) -> float:
+        return float(self.side**2)
+
+
+figures = [('square', {'side': 5})]
+for figure_name, figure_params in figures:
+    figure = FigureFactory.create(figure_name, figure_params)
+    print(f"{figure_name}: {figure.calculate_area()}")
+~~~
