@@ -1,0 +1,37 @@
+Metadata-Version: 2.4
+Name: ryl
+Version: 0.1.0
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Rust
+Classifier: Topic :: File Formats
+Classifier: Topic :: Text Processing :: Markup
+Classifier: Topic :: Software Development :: Quality Assurance
+Classifier: Topic :: Utilities
+License-File: LICENSE
+Summary: Fast YAML linter (Rust) packaged for PyPI
+Keywords: yaml,linter,lint,cli,rust
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+Project-URL: Homepage, https://github.com/owenlamont/ryl
+Project-URL: Repository, https://github.com/owenlamont/ryl
+Project-URL: Issues, https://github.com/owenlamont/ryl/issues
+
+# ryl
+
+ryl - the Rust Yaml Linter is intended to ultimately be a drop in replacement for
+[yamllint](https://github.com/adrienverge/yamllint). It's only just begun and isn't
+ready for use yet though. I'll update and post info as it becomes ready.
+
