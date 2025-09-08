@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "build"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stocktrading"
+version = "0.1.5"
+description = "Nothing to describe"
+readme = "README.md"
+requires-python = ">= 3.10"
+authors = [
+  { name="Tran Quoc Dat", email="dat.tq6141@gmail.com" }
+]
+license = "MIT"
+keywords = ["finance", "stock", "telegram"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "metastock2pd==1.0.2",
+    "mplfinance",
+    "TA-Lib==0.6.7",
+    "loguru==0.7.3",
+    "python-telegram-bot==22.3",
+    "dotenv"
+]
+
+[tool.setuptools.packages.find]
+include = ["stocktrading*"]
+
+[project.urls]
+"Homepage" = "https://github.com/boitrann/stocktrading"
+"Source" = "https://github.com/boitrann/stocktrading"
