@@ -1,0 +1,21 @@
+Metadata-Version: 2.3
+Name: aionvk
+Version: 0.1.0
+Summary: Asynchronous VK API framework for building bots
+Author: Nikita
+Author-email: nikitalyschev@gmail.com
+Requires-Python: >=3.11,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: aiohttp (>=3.12.15,<4.0.0)
+Requires-Dist: httpx (>=0.27.0,<0.28.0)
+Requires-Dist: loguru (>=0.7.3,<0.8.0)
+Requires-Dist: openpyxl (>=3.1.5,<4.0.0)
+Requires-Dist: pydantic (>=2.7.1,<3.0.0)
+Description-Content-Type: text/markdown
+
+# aionvk
+
+Асинхронный фреймворк для создания ботов VK.
