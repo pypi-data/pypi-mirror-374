@@ -1,0 +1,47 @@
+[project]
+name = "psycho"
+version = "2.1.5"
+description = "A tool to manage python projects and their dependencies."
+authors = [
+    { name = "Rob Blackbourn", email = "rob.blackbourn@gmail.com" }
+]
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development",
+]
+readme = "README.md"
+dependencies = [
+    "click==8.1.8",
+    "tomlkit==0.13.2",
+    "setuptools==61.0.0",
+    "packaging==24.2",
+    "build==1.2.2.post1",
+    "twine==6.1.0",
+    "click-aliases==1.0.5",
+]
+license = { text = "Apache-2.0" }
+keywords = [
+    "pyproject.toml",
+    "pip"
+]
+
+[project.scripts]
+psycho = "psycho:cli"
+
+[project.urls]
+Repository = "https://github.com/rob-blackbourn/psycho"
+Issues = "https://github.com/rob-blackbourn/psycho/issues"
+
+[tool.setuptools.package-data]
+"psycho.data" = [ "*.txt", "*.md" ]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
