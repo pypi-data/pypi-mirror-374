@@ -1,0 +1,73 @@
+Metadata-Version: 2.3
+Name: doccano-client-pydantic2
+Version: 1.2.8
+Summary: A simple client for doccano API. with pydantic2 now WTF
+License: MIT
+Author: Daniel Andreev
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Provides-Extra: al
+Provides-Extra: spacy
+Provides-Extra: whisper
+Requires-Dist: dataclasses-json (>=0.5.7,<0.6.0)
+Requires-Dist: ffmpeg-python (>=0.2.0,<0.3.0) ; extra == "whisper"
+Requires-Dist: pandas (>=1.5.1,<2.0.0) ; extra == "al"
+Requires-Dist: pydantic (==2.5.0)
+Requires-Dist: pyyaml (!=5.4.0,!=5.4.1,!=6.0.0)
+Requires-Dist: requests (>=2.28.1,<3.0.0)
+Requires-Dist: requests-toolbelt (>=0.9.1,<0.10.0)
+Requires-Dist: seqal (>=0.3.4,<0.4.0) ; extra == "al"
+Requires-Dist: spacy (>=3.4.1,<4.0.0) ; extra == "spacy" or extra == "al"
+Requires-Dist: spacy-partial-tagger (>=0.9.1,<0.10.0) ; extra == "spacy"
+Requires-Dist: tqdm (>=4.64.1,<5.0.0) ; extra == "spacy" or extra == "whisper"
+Project-URL: Homepage, https://github.com/doccano/doccano-client
+Project-URL: Repository, https://github.com/doccano/doccano-client
+Description-Content-Type: text/markdown
+
+# doccano client
+
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/cf90190126b948e09362048b63600b06)](https://www.codacy.com/gh/doccano/doccano-client/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=doccano/doccano-client&amp;utm_campaign=Badge_Grade) [![Tests](https://github.com/doccano/doccano-client/actions/workflows/ci.yml/badge.svg)](https://github.com/doccano/doccano-client/actions/workflows/ci.yml)
+
+A simple client for the doccano API.
+
+## Installation
+
+To install `doccano-client`, simply run:
+
+```bash
+pip install doccano-client
+```
+
+## Usage
+
+```python
+from doccano_client import DoccanoClient
+
+# instantiate a client and log in to a Doccano instance
+client = DoccanoClient('http://doccano.example.com')
+client.login(username='username', password='password')
+
+# get basic information about the authorized user
+user = client.get_profile()
+
+# list all projects
+projects = client.list_projects()
+```
+
+Please see the [documentation](https://doccano.github.io/doccano-client/) for further details.
+
+## Doccano API BETA Client
+
+We're introducing a newly revamped Doccano API Client that features more Pythonic interaction as well as more testing and documentation. It also adds more regulated compatibility with specific Doccano release versions.
+
+You can find the documentation on usage of the beta client [here](doccano_client/beta/README.md).
+
