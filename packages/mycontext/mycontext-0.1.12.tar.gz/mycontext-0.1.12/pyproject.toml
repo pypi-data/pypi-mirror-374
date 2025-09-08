@@ -1,0 +1,22 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mycontext"
+version = "0.1.12"
+authors = [{ name = "Martin", email = "martin.castellano89@gmail.com" }]
+description = "A tool to generate context files from multiple files and folders."
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = ["pyperclip"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+mycontext = "mycontext.cli:main"
