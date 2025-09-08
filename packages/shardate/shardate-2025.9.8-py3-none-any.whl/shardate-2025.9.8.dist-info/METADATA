@@ -1,0 +1,62 @@
+Metadata-Version: 2.4
+Name: shardate
+Version: 2025.9.8
+Summary: A lightweight Python library for efficiently reading year-month-day partitioned Parquet datasets.
+Project-URL: Homepage, https://github.com/yoichiojima-2/shardate
+Project-URL: Repository, https://github.com/yoichiojima-2/shardate
+Project-URL: Issues, https://github.com/yoichiojima-2/shardate/issues
+Author-email: Yoichi Ojima <yoichiojima@gmail.com>
+License: MIT
+License-File: LICENSE
+Keywords: data,parquet,partitioning,pyspark
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.12
+Requires-Dist: pyspark>=4.0.0
+Requires-Dist: python-dateutil>=2.9.0.post0
+Description-Content-Type: text/markdown
+
+# shardate
+
+A lightweight Python library for efficiently reading year-month-day partitioned Parquet datasets with PySpark.
+
+## Installation
+
+```bash
+pip install shardate
+```
+
+## Features
+
+- Read Parquet data partitioned by year/month/day structure
+- Efficient date-based filtering
+- Built on PySpark for scalable data processing
+- Simple and intuitive API
+
+## Quick Start
+
+```python
+from datetime import date
+from shardate import read_by_date, read_between, read_by_dates
+
+# Read data for a specific date
+df = read_by_date("/path/to/data", date(2025, 1, 15))
+
+# Read data between two dates
+df = read_between("/path/to/data", date(2025, 1, 1), date(2025, 1, 31))
+
+# Read data for specific dates
+dates = [date(2025, 1, 1), date(2025, 1, 15), date(2025, 1, 31)]
+df = read_by_dates("/path/to/data", dates)
+```
+
+## Requirements
+
+- Python 3.12+
+- PySpark 4.0+
+
+## License
+
+MIT
