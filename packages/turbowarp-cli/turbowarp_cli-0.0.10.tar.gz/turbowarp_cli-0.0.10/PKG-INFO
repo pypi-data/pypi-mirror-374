@@ -1,0 +1,58 @@
+Metadata-Version: 2.4
+Name: turbowarp-cli
+Version: 0.0.10
+Summary: Run scratch projects in your terminal using turbowarp scaffolding
+Author: faretek1
+Project-URL: Source, https://github.com/inflated-goboscript/tw-cli
+Project-URL: Documentation, https://github.com/inflated-goboscript/tw-cli
+Project-URL: Homepage, https://github.com/inflated-goboscript/tw-cli
+Keywords: goboscript,scratch,turbowarp
+Description-Content-Type: text/markdown
+Requires-Dist: playwright~=1.55.0
+Requires-Dist: rich~=14.1.0
+Dynamic: author
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: keywords
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: summary
+
+# tw-cli
+
+> Run scratch projects in the terminal
+
+- Uses playwright and turbowarp scaffolding
+- Supports the turbowarp debugger's log, warn, error and breakpoint blocks.
+- Supports exit codes with the `TW-CLI: exit code` variable **for all sprites**.
+
+## Installation
+
+`pip install turbowarp-cli`
+
+<details>
+<summary>Bleeding edge:</summary>
+1. git clone this repo
+2. `pip install -e .`
+3. to update, use `git pull`
+</details>
+
+## Usage
+
+`twcli run <Project path>`
+
+It only works on project files.
+
+---
+
+If you want to automatically supply inputs to `ask and wait` blocks, use the -i command:
+
+`twcli run .\Project.sb3 -i "hi" "there`
+
+This provides the arguments:
+- `hi`
+- `there`
+
+If you want to disable headless mode (to see the browser), use `-H`:
+
+`twcli run .\Project.sb3 -i "hi" "there" -H`
