@@ -1,0 +1,11 @@
+services:
+
+  my-service:
+    image: ${REPOSITORY}/${PROJECT_NAME}/${APPLICATION}:${VERSION:-latest}
+    container_name: my-service
+    # platform: linux/x86_64
+    build: .
+
+    tty: true
+    stdin_open: true
+    command: [ "sh", "-c", "tail -f /dev/null" ]

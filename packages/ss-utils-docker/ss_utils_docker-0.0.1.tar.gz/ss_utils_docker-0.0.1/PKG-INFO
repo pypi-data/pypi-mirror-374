@@ -1,0 +1,34 @@
+Metadata-Version: 2.4
+Name: ss-utils-docker
+Version: 0.0.1
+Summary: Simple Utilities for Docker
+Project-URL: Homepage, https://github.com/shern2/ss-utils-docker
+Project-URL: Repository, https://github.com/shern2/ss-utils-docker
+Project-URL: Issues, https://github.com/shern2/ss-utils-docker/issues
+Author: shern
+License: MIT
+Keywords: container,docker
+Requires-Python: <3.13,>=3.12
+Requires-Dist: pydantic-settings>=2.10.1
+Requires-Dist: typer>=0.17.4
+Description-Content-Type: text/markdown
+
+Simple Utilities for Docker.
+
+## Installation
+
+```bash
+uv add ss-utils-docker
+```
+
+## Usage
+
+```sh
+# [in project_dir where .env exists]
+ss-docker build
+ss-docker push
+
+# alternative: specify the environment file
+ss-docker build --pth-env .env.prod
+ss-docker push --pth-env .env.prod
+```
