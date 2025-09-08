@@ -1,0 +1,22 @@
+[project]
+name = "generate-env-sample"
+version = "0.1.0"
+description = "A simple CLI tool to generate .env.sample files from existing .env files, preserving comments and empty lines."
+readme = "README.md"
+authors = [{ name = "Heshinth P" }, { email = "heshinth@gmail.com" }]
+keywords = ["cli", "env", "sample", "python", "typer", "environment-variables"]
+
+requires-python = ">=3.11"
+dependencies = ["typer-slim>=0.17.4"]
+
+[project.urls]
+Repository = "https://github.com/heshinth/generate-env-sample.git"
+Issues = "https://github.com/heshinth/generate-env-sample/issues"
+
+
+[project.scripts]
+generate-env-sample = "generate_env_sample.main:app"
+
+[build-system]
+requires = ["uv_build>=0.8.14,<0.9.0"]
+build-backend = "uv_build"
