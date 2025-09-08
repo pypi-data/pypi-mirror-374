@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "prompt-components"
+version = "0.1.0"
+description = "A better library for prompt management."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "jinja2>=3.1.6",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+    "ruff>=0.8.0",
+    "pyright>=1.1.390",
+]
+
+[tool.setuptools]
+packages = ["prompt_components"]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["prompt_components/tests/*"]
+
+[tool.pyright]
+include = ["prompt_components"]
+exclude = ["**/__pycache__", ".venv"]
+typeCheckingMode = "strict"
+pythonVersion = "3.13"
+pythonPlatform = "All"
+reportMissingImports = true
+reportMissingTypeStubs = false
