@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deepparameters"
+version = "2.0.5"
+description = "Advanced Neural Network CPD Learning for Bayesian Networks with Configurable Parallel Execution Styles - Beta"
+readme = "README.md"
+license = "MIT"
+authors = [
+    {name = "Rudzani Mulaudzi", email = "rudzani.mulaudzi2@students.wits.ac.za"}
+]
+maintainers = [
+    {name = "Rudzani Mulaudzi", email = "rudzani.mulaudzi2@students.wits.ac.za"}
+]
+keywords = ["bayesian networks", "neural networks", "cpd learning", "deep learning", "probabilistic modeling", "parameter learning", "pgmpy", "parallel learning", "beta"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+requires-python = ">=3.8"
+dependencies = [
+    "numpy>=1.19.0,<2.0.0",
+    "scikit-learn>=1.0.0",
+    "matplotlib>=3.3.0",
+    "seaborn>=0.11.0",
+    "pandas>=1.3.0",
+    "pgmpy>=0.1.17",
+    "networkx>=2.6.0"
+]
+
+[project.optional-dependencies]
+tensorflow = ["tensorflow>=2.8.0"]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=22.0.0",
+    "isort>=5.10.0",
+    "mypy>=0.991"
+]
+
+[project.urls]
+Homepage = "https://github.com/rudzanimulaudzi/DeepParameters"
+Repository = "https://github.com/rudzanimulaudzi/DeepParameters"
+Documentation = "https://github.com/rudzanimulaudzi/DeepParameters#readme"
+"Bug Tracker" = "https://github.com/rudzanimulaudzi/DeepParameters/issues"
+"Source Code" = "https://github.com/rudzanimulaudzi/DeepParameters"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["deepparameters*"]
