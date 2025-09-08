@@ -1,0 +1,21 @@
+Metadata-Version: 2.3
+Name: matmulbench
+Version: 0.1.5
+Summary: The idea is primarily to get me to write matmul code and compare with my own eyes the difference across languages.
+Author: Kosaksi Pasappugazh
+Author-email: Kosaksi Pasappugazh <pasappugazhk@gmail.com>
+License: MIT
+Requires-Dist: numpy>=2.3.2
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+
+The goal of this project is to compare all permutations in a given list of language-library-compiler combos 
+exhaustively to identify which combination works best for a specific end device. (Changes could be there 
+due to os, hardware, gpu, library version, compiler version etc)
+
+The idea is primarily to get me to write code and compare with my own eyes the difference across languages.
+
+Another idea is to make it easier for clients to identify which combination is fastest in their local config
+without writing these benchmarks themselves
+
+Currently working on only Square Matrices(Floating point)
