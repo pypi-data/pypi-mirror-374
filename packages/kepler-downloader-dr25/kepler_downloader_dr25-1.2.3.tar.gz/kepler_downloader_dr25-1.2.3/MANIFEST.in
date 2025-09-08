@@ -1,0 +1,23 @@
+include README.md
+include LICENSE
+include CHANGELOG.md
+include QUICKSTART.md
+include SECURITY.md
+include requirements.txt
+include setup.py
+
+# Include package source files
+recursive-include kepler_downloader_dr25 *.py
+
+# Include sample data
+recursive-include input_samples *.csv
+
+# Exclude data directories and temporary files
+prune kepler_downloads
+prune build
+prune dist
+prune .git
+global-exclude __pycache__
+global-exclude *.py[co]
+global-exclude .DS_Store
+global-exclude *.egg-info
