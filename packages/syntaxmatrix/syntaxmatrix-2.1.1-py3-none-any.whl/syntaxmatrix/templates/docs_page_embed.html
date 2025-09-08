@@ -1,0 +1,20 @@
+<div id="docs-container" style="max-width:1000px;margin:0 auto;padding:16px"></div>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  :root{
+    --fg:#1b1f23;--muted:#586069;--border:#e1e4e8;--code:#f6f8fa;
+  }
+  #docs-container h1{font-size:2rem;margin-bottom:.5rem}
+  #docs-container h2{border-bottom:1px solid var(--border);padding-bottom:.25rem;margin-top:1.75rem}
+  #docs-container pre{background:var(--code);border:1px solid var(--border);padding:12px;border-radius:8px;overflow:auto}
+  #docs-container blockquote{border-left:4px solid var(--border);margin:1rem 0;padding:.25rem 1rem;color:var(--muted);background:#fafbfc}
+  #docs-container table{border-collapse:collapse}
+  #docs-container th,#docs-container td{border:1px solid var(--border);padding:6px 10px}
+</style>
+<script>
+  fetch('/static/docs.md', {cache:'no-cache'})
+    .then(r => r.text())
+    .then(md => { document.getElementById('docs-container').innerHTML = marked.parse(md); })
+    .catch(() => { document.getElementById('docs-container').innerHTML = '<p style="color:#b00">Could not load docs.md</p>'; });
+</script>
