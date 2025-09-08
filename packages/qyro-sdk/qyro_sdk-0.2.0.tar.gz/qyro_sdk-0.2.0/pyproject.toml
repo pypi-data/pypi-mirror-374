@@ -1,0 +1,18 @@
+[project]
+name = "qyro-sdk"
+version = "0.2.0"
+description = "Python SDK for Qyro assistant session + chat API"
+readme = "README.md"
+authors = [ {name = "Generated"} ]
+license = {text = "MIT"}
+requires-python = ">=3.8"
+
+
+dependencies = [
+    "requests",
+    "PyJWT"
+]
+
+[build-system]
+requires = ["setuptools>=61.0","wheel"]
+build-backend = "setuptools.build_meta"
