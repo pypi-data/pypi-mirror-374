@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "roboka"
+version = "0.0.4"
+description = "A Python wrapper for Rubika bot API"
+authors = [{name = "Ali Zolghadr", email = "tradecoinex5@gmail.com"}]
+readme = "README.md"
+license = {text = "Proprietary"}
+requires-python = ">=3.8"
+dependencies = [
+    "requests"
+]
+
+[project.urls]
+Homepage = "https://rb-chat.ir"
+Documentation = "https://rb-chat.ir"
