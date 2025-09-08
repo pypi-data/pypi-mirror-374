@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pybooklid"
+version = "1.0.0"
+description = "MacBook lid angle sensor library for Python"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+authors = [
+    {name = "tcsenpai", email = "tcsenpai@discus.sh"},
+]
+keywords = ["macbook", "lid", "angle", "sensor", "hid", "macos", "hardware"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: System :: Hardware :: Hardware Drivers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: MacOS",
+    "Environment :: MacOS X",
+]
+dependencies = [
+    "hidapi>=0.14.0",
+]
+
+[project.optional-dependencies]
+audio = [
+    "numpy>=1.20.0",
+    "sounddevice>=0.4.0",
+    "scipy>=1.7.0",
+]
+dev = [
+    "pytest>=6.0",
+    "black",
+    "flake8", 
+    "mypy",
+]
+
+[project.urls]
+Homepage = "https://github.com/tcsenpai/pybooklid"
+"Bug Reports" = "https://github.com/tcsenpai/pybooklid/issues"
+"Source Code" = "https://github.com/tcsenpai/pybooklid"
+
+[project.scripts]
+pybooklid-demo = "pybooklid.examples.simple_usage:main"
+pybooklid-monitor = "pybooklid.examples.monitor_app:main"
+
+[tool.setuptools.packages.find]
+include = ["pybooklid*"]
+
+[tool.setuptools.package-data]
+pybooklid = ["examples/*.py"]

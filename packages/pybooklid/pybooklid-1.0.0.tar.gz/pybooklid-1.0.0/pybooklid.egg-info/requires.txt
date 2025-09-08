@@ -1,0 +1,12 @@
+hidapi>=0.14.0
+
+[audio]
+numpy>=1.20.0
+sounddevice>=0.4.0
+scipy>=1.7.0
+
+[dev]
+pytest>=6.0
+black
+flake8
+mypy
