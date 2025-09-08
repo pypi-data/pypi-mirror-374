@@ -1,0 +1,15 @@
+Cython>=0.29.21
+numpy<2.0,>=1.17
+scipy>=1.5
+
+[dev]
+Cython>=0.29.21
+numpy<2.0,>=1.17
+scipy>=1.5
+filterpy>=1.4.5
+setuptools>=51.0.0
+wheel>=0.36.2
+
+[docs]
+sphinx
+sphinx-rtd-theme
