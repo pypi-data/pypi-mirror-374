@@ -1,0 +1,47 @@
+Metadata-Version: 2.4
+Name: alphabuilder_signal
+Version: 0.1.1.4
+Summary: Alpha signal library for quantitative finance research
+Home-page: https://pypi.org/project/alphabuilder-signal/
+Author: Geet Mukherjee
+Author-email: mukherjeegeet3@gmail.com
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: yfinance<0.3,>=0.2
+Requires-Dist: pandas<3.0,>=1.3
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# AlphaBuilder-Signal
+
+**AlphaBuilder-Signal** is an experimental Python package that will provide a curated library of trading signals for quantitative finance.  
+
+This package is currently in **early development** (blank scaffolding), but the vision is to offer:  
+
+- ✅ **Technical indicators** (RSI, MACD, Moving Averages, etc.)  
+- ✅ **Fundamental indicators** (valuation metrics, earnings data, etc.)  
+- ✅ **Handcrafted signals** (curated alpha factors and custom rules)  
+- ✅ **ML-based signals** (tree models, RNNs, transformers applied to time series)  
+- ✅ **Regime-aware signals** (HMMs, regime switching filters)  
+- ✅ **Backtesting utilities** (Sharpe ratio, hit ratio, performance metrics)  
+
+---
+
+## Installation
+
+Install directly from [PyPI](https://pypi.org/project/alphabuilder-signal/):
+
+```bash
+pip install alphabuilder-signal
