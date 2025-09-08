@@ -1,0 +1,77 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rt-generic"
+description = "tools to make typing more consistent in older versions of python3, and access generic variables at runtime"
+authors = [{name="Doug Sojourner", email="doug@sojournings.org"}, ]
+readme = "README.md"
+requires-python = ">=3.7,<4.0"
+license = { text = "GNU General Public License v3 (GPLv3)" }
+version = "0.2.4"
+
+dependencies = ['typing_extensions; python_version < "3.11"', ]
+
+classifiers=[
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+	"License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+	"Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+	"Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8", 
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+	"Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development",
+	"Typing :: Typed",
+]
+
+keywords = ["runtime", "generic", "typed", "typing", "run time types"]
+
+[dependency-groups]
+all = [
+	"virtualenv",
+	]
+test = [
+	"mypy>=0.942",
+	"pytest>=7.4.4",
+	"black; python_version < '3.8'",
+	"black>=24.4.0; python_version >= '3.8'",
+	]
+build = [
+	  "hatchling.build",
+	  ]
+local-source = ["simple503", "simpleindex", ]
+self = ["rt-generic==0.2.4"]
+
+[project.urls]
+repository = "https://codeberg.org/Pusher2531/rt-generic.git"
+
+[tool.hatch.build.targets.sdist]
+include = [
+		"tests/rt_generic_tests.py",
+		"rt-generic/*.py",
+		"rt-generic/py.typed",
+]
+
+[tool.mypy]
+files = "."
+ignore_missing_imports = false
+check_untyped_defs = true
+warn_unused_ignores = true
+warn_unreachable = true
+
+# siginificantly speed up pytest
+[tool.pytest.ini_options]
+testpaths = [ "tests"]
+
+[tool.black]
+line_length = 100
