@@ -1,0 +1,28 @@
+Metadata-Version: 2.4
+Name: grisera
+Version: 2.1.5
+Summary: Grisera-api package
+Author: 
+Author-email: 
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: Unix
+Classifier: Operating System :: Microsoft :: Windows
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: fastapi~=0.94.1
+Requires-Dist: uvicorn[standard]
+Requires-Dist: requests~=2.28.2
+Requires-Dist: fastapi-utils
+Requires-Dist: pydantic~=1.10.6
+Requires-Dist: starlette~=0.26.1
+Requires-Dist: pyjwt
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: summary
+
+Graph Representation Integrating Signals for Emotion Recognition and Analysis (GRISERA) framework provides a persistent model for storing integrated signals and methods for its creation.
