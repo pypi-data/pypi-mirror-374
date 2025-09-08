@@ -1,0 +1,43 @@
+Metadata-Version: 2.4
+Name: test-hatch
+Version: 0.0.1
+Project-URL: Documentation, https://github.com/Naman Goyal/test-hatch#readme
+Project-URL: Issues, https://github.com/Naman Goyal/test-hatch/issues
+Project-URL: Source, https://github.com/Naman Goyal/test-hatch
+Author-email: Naman Goyal <naman.goyal@zypp.app>
+License-Expression: MIT
+License-File: LICENSE.txt
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.8
+Requires-Dist: pandas
+Description-Content-Type: text/markdown
+
+# test_hatch
+
+[![PyPI - Version](https://img.shields.io/pypi/v/test-hatch.svg)](https://pypi.org/project/test-hatch)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/test-hatch.svg)](https://pypi.org/project/test-hatch)
+
+-----
+
+## Table of Contents
+
+- [Installation](#installation)
+- [License](#license)
+
+## Installation
+
+```console
+pip install test-hatch
+```
+
+## License
+
+`test-hatch` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
