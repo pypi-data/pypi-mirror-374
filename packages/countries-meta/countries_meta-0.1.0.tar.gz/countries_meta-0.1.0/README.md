@@ -1,0 +1,88 @@
+# countries-meta
+
+A Python module to access general countries information including name, origin name, dial code, currency, capital, timezone, and current time.
+
+## Installation
+
+```bash
+pip install countries-meta
+```
+
+## Usage
+
+```python
+from countries_meta import Countries
+
+countries = Countries()
+
+# Get country by code
+us = countries.get_by_code('US')
+us = countries.get('US')
+us = countries['US']
+print(us.name)  # United States
+
+# Get country by name
+germany = countries.get_by_name('Germany')
+print(germany.capital)  # Berlin
+
+# Get country by origin name
+fr = countries.get_by_origin_name('République française')
+print(fr.dial_code)  # +33
+
+# Get country by dial code
+canada = countries.get_by_dial_code('+1')
+print(canada.name)  # Canada
+
+# Get country by currency code
+japan = countries.get_by_currency_code('JPY')
+print(japan.capital)  # Tokyo
+
+# Filter countries by currency code
+usd_countries = countries.filter_by_currency_code('USD')
+print([c.name for c in usd_countries])
+
+# Filter countries by region
+european_countries = countries.filter_by_region('Europe')
+print([c.name for c in european_countries])
+
+# Access timezone info and current time
+print(us.timezone)  # America/Washington
+print(us.now)       # Current local time
+print(us.time_offset)  # Offset in hours from UTC
+
+# Convert to dict or JSON
+print(us.to_dict())
+print(us.to_json())
+```
+
+## Classes
+
+### `Country`
+
+* Attributes: `code`, `name`, `origin_name`, `dial_code`, `currency_code`, `currency_symbol`, `capital`, `timezone`
+* Properties:
+
+  * `tzinfo`: `ZoneInfo` object for the timezone
+  * `now`: current datetime in the country's timezone
+  * `time_offset`: UTC offset in hours
+* Methods:
+
+  * `to_dict(*keys)`: return dict representation
+  * `to_json(*keys)`: return JSON string
+
+### `Countries`
+
+* Iterable container of all countries
+* Methods to access countries:
+
+  * `get_by_code(code)`
+  * `get_by_name(name)`
+  * `get_by_origin_name(name)`
+  * `get_by_dial_code(dial_code)`
+  * `get_by_currency_code(currency_code)`
+  * `filter_by_currency_code(currency_code)`
+  * `filter_by_region(region)`
+
+## License
+
+MIT

@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "countries-meta"
+version = "0.1.0"
+description = "A Python module to access general countries information including name, origin name, dial code, currency, capital, timezone, and current time."
+readme = "README.md"
+authors = [
+    { name = "EightShift", email = "the8shift@gmail.com" }
+]
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.9"
+dependencies = [
+    "tzdata>=2023.1"
+]
+keywords = [
+    "python",
+    "countries",
+    "country-info",
+    "dial-code",
+    "currency",
+    "capital",
+    "timezone",
+    "geography",
+    "international"
+]
+
+[project.urls]
+Homepage = "https://github.com/EightShift/countries-meta"
+
+[tool.setuptools]
+packages = ["countries_meta"]
+
+[tool.setuptools.package-data]
+"countries_meta" = ["countries.csv"]
