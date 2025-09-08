@@ -1,0 +1,141 @@
+[build-system]
+# 指定构建本项目所需的工具和最低版本
+requires = ["setuptools>=61.0.0", "wheel"]  # setuptools 和 wheel 是构建工具
+build-backend = "setuptools.build_meta"     # 使用 setuptools 作为构建后端
+
+[project]
+# 项目基础元数据
+name = "syTool"
+version = "1.0.0"  # 遵循语义化版本控制 (SemVer)
+description = "A modular toolkit for database operations, HTTP clients, file processing, caching, and more."
+readme = "README.md"
+authors = [{ name = "Sawyerlsy", email = "sawyerlsy@126.com" }]
+license = { file = "LICENSE" }
+# 关键词用于在 PyPI 上被搜索
+keywords = ["toolkit", "database", "http", "file", "cache", "utility"]
+# 项目主页和源码链接
+urls = { Homepage = "https://gitee.com/sawyerlsy/syTool" }
+# 指定项目支持的 Python 版本
+requires-python = ">=3.11"
+# 核心依赖：这里为空，因为所有依赖都是可选的
+dependencies = [
+
+]
+
+# 分类器列表，帮助 PyPI 和其他工具正确索引你的项目
+classifiers = [
+    "Development Status :: 4 - Beta",          # 开发状态：测试版
+    "Intended Audience :: Developers",         # 目标受众：开发者
+    "License :: OSI Approved :: MIT License",  # 许可证：MIT
+    "Programming Language :: Python :: 3",     # 编程语言：Python 3
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",      # 操作系统：独立
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+# ！！！核心：按功能模块定义可选依赖 ！！！
+[project.optional-dependencies]
+# 依赖组名称，可自定义
+bloom = []
+# 缓存相关功能依赖
+cache-redis = [
+    "redis~=3.5.3",
+    "redis-py-cluster~=2.1.3",
+]
+
+cache-local = [              # 本地缓存可能不需要额外依赖
+    # 可以留空，或放入一些本地缓存优化库，如 "pylru>=1.0.0"
+]
+
+cache-all = [
+    "syTool[cache-redis]",
+    "syTool[cache-local]",
+]
+
+# 验证码相关功能依赖
+captcha = []
+# 加密相关功能依赖
+cypto = []
+
+# 数据库相关功能依赖
+db-mysql = [
+
+]
+db-oracle = [
+
+]
+db-sqlserver = [
+
+]
+db-all = [
+    "syTool[db-mysql]",
+    "syTool[db-oracle]",
+    "syTool[db-sqlserver]",
+]
+
+# 文件处理相关功能依赖
+file = []
+# HTTP 相关功能依赖
+http = [
+    #    "httpx>=0.23,<1.0; extra == 'http'", # HTTP 客户端，也可作为备用
+    "requests~=2.32.3",
+    "httpx[http2]>= 0.28.1",
+    "aiofiles>=24.1.0",     # 异步文件操作
+]
+# json 相关功能依赖
+json = []
+# jwt 相关功能依赖
+jwt = []
+# 日志相关功能依赖
+log = []
+# poi 相关功能依赖
+poi = []
+socket = []
+system = []
+thread = []
+time = []
+
+# 完整的“所有功能”组
+all = [
+    "syTool[bloom]",
+    "syTool[cache-all]",
+    "syTool[captcha]",
+    "syTool[cypto]",
+    "syTool[db-all]",
+    "syTool[file]",
+    "syTool[http]",
+    "syTool[json]",
+    "syTool[jwt]",
+    "syTool[log]",
+    "syTool[poi]",
+    "syTool[socket]",
+    "syTool[system]",
+    "syTool[thread]",
+    "syTool[time]",
+]
+
+[tool.setuptools]
+# 告诉 setuptools 在 src 目录下寻找包
+packages = { find = { where = ["src"] } }
+
+[tool.setuptools.package-data]
+# 包含包目录下的所有 .txt 和 .md 文件（如 README、LICENSE）
+"*" = ["*.txt", "*.md"]
+
+# 工具配置部分 (可选)
+[tool.black]                 # Black 代码格式化配置
+line-length = 88
+target-version = ['py37']
+
+[tool.isort]                 # isort 导入排序配置
+profile = "black"
+multi_line_output = 3
+
+[tool.pytest.ini_options]   # pytest 测试配置
+testpaths = ["tests"]
+python_files = "test_*.py"

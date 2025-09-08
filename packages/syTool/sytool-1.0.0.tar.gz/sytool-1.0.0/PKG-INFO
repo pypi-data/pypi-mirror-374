@@ -1,0 +1,116 @@
+Metadata-Version: 2.4
+Name: syTool
+Version: 1.0.0
+Summary: A modular toolkit for database operations, HTTP clients, file processing, caching, and more.
+Author-email: Sawyerlsy <sawyerlsy@126.com>
+Project-URL: Homepage, https://gitee.com/sawyerlsy/syTool
+Keywords: toolkit,database,http,file,cache,utility
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Provides-Extra: bloom
+Provides-Extra: cache-redis
+Requires-Dist: redis~=3.5.3; extra == "cache-redis"
+Requires-Dist: redis-py-cluster~=2.1.3; extra == "cache-redis"
+Provides-Extra: cache-local
+Provides-Extra: cache-all
+Requires-Dist: syTool[cache-redis]; extra == "cache-all"
+Requires-Dist: syTool[cache-local]; extra == "cache-all"
+Provides-Extra: captcha
+Provides-Extra: cypto
+Provides-Extra: db-mysql
+Provides-Extra: db-oracle
+Provides-Extra: db-sqlserver
+Provides-Extra: db-all
+Requires-Dist: syTool[db-mysql]; extra == "db-all"
+Requires-Dist: syTool[db-oracle]; extra == "db-all"
+Requires-Dist: syTool[db-sqlserver]; extra == "db-all"
+Provides-Extra: file
+Provides-Extra: http
+Requires-Dist: requests~=2.32.3; extra == "http"
+Requires-Dist: httpx[http2]>=0.28.1; extra == "http"
+Requires-Dist: aiofiles>=24.1.0; extra == "http"
+Provides-Extra: json
+Provides-Extra: jwt
+Provides-Extra: log
+Provides-Extra: poi
+Provides-Extra: socket
+Provides-Extra: system
+Provides-Extra: thread
+Provides-Extra: time
+Provides-Extra: all
+Requires-Dist: syTool[bloom]; extra == "all"
+Requires-Dist: syTool[cache-all]; extra == "all"
+Requires-Dist: syTool[captcha]; extra == "all"
+Requires-Dist: syTool[cypto]; extra == "all"
+Requires-Dist: syTool[db-all]; extra == "all"
+Requires-Dist: syTool[file]; extra == "all"
+Requires-Dist: syTool[http]; extra == "all"
+Requires-Dist: syTool[json]; extra == "all"
+Requires-Dist: syTool[jwt]; extra == "all"
+Requires-Dist: syTool[log]; extra == "all"
+Requires-Dist: syTool[poi]; extra == "all"
+Requires-Dist: syTool[socket]; extra == "all"
+Requires-Dist: syTool[system]; extra == "all"
+Requires-Dist: syTool[thread]; extra == "all"
+Requires-Dist: syTool[time]; extra == "all"
+
+# syTool
+
+#### 介绍
+常用工具类
+
+#### 软件架构
+软件架构说明
+
+
+#### 安装教程
+
+1.  xxxx
+2.  xxxx
+3.  xxxx
+
+#### 使用说明
+
+1.  xxxx
+2.  xxxx
+3.  xxxx
+
+#### 参与贡献
+
+1.  Fork 本仓库
+2.  新建 Feat_xxx 分支
+3.  提交代码
+4.  新建 Pull Request
+
+
+#### 发布
+1. 更新版本号​​：在 pyproject.toml中更新 version字段（例如从 0.1.0到 0.1.1）。遵循语义化版本控制
+2. 构建分发包
+```shell
+# 安装 build 工具
+pip install build
+# 在项目根目录下执行命令
+python -m build  # 生成 dist/syTool-0.1.0-py3-none-any.whl 和 .tar.gz
+```
+3. 上传到 TestPyPI（测试）
+```shell
+twine upload --repository testpypi dist/*
+# 测试安装
+pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple syTool[http]
+```
+4. 上传到 PyPI（正式）
+```shell
+twine upload dist/*
+```
