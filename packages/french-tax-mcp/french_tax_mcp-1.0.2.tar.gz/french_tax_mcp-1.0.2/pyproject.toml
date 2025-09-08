@@ -1,0 +1,137 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "french-tax-mcp"
+version = "1.0.2"
+description = "MCP server for French tax calculations and information"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Corneliu CROITORU"},
+]
+maintainers = [
+    {name = "Corneliu CROITORU"},
+]
+keywords = [
+    "mcp",
+    "model-context-protocol", 
+    "french-tax",
+    "tax-calculation",
+    "impots",
+    "france",
+    "ai-assistant",
+    "tax-scraper"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Financial :: Accounting",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+dependencies = [
+    "fastmcp>=0.1.0",
+    "beautifulsoup4>=4.12.0",
+    "httpx>=0.24.0",
+    "pydantic>=2.0.0",
+    "lxml>=4.9.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    "mypy>=1.0.0",
+    "types-beautifulsoup4>=4.12.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/cornelcroi/french-tax-mcp"
+Documentation = "https://github.com/cornelcroi/french-tax-mcp#readme"
+Repository = "https://github.com/cornelcroi/french-tax-mcp.git"
+Issues = "https://github.com/cornelcroi/french-tax-mcp/issues"
+Changelog = "https://github.com/cornelcroi/french-tax-mcp/releases"
+
+[project.scripts]
+french-tax-mcp = "french_tax_mcp.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["french_tax_mcp"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/french_tax_mcp",
+    "/tests",
+    "/README.md",
+    "/LICENSE",
+]
+
+
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = false
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = false
+disallow_untyped_decorators = false
+no_implicit_optional = true
+warn_redundant_casts = false
+warn_unused_ignores = false
+warn_no_return = false
+warn_unreachable = false
+strict_equality = false
+
+[[tool.mypy.overrides]]
+module = [
+    "fastmcp.*",
+    "mcp.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--verbose",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+[tool.coverage.run]
+source = ["french_tax_mcp"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+
