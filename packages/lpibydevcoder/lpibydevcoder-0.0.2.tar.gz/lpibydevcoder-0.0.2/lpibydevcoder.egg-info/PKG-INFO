@@ -1,0 +1,50 @@
+Metadata-Version: 2.4
+Name: lpibydevcoder
+Version: 0.0.2
+Summary: My simple and easy programming language
+Home-page: https://github.com/ZeroMurder/My-Programming-Language
+Author: DevCooder
+Author-email: zerowanlord@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-python
+Dynamic: summary
+
+LpibyDevCoder
+LpibyDevCoder — простой интерпретируемый язык программирования на Python, предназначенный для обучения и экспериментов с языковыми технологиями. Проект реализует базовый лексический и синтаксический анализатор (парсер), интерпретатор и небольшой набор встроенных функций.
+
+Основные возможности
+Арифметические операции: сложение и вычитание чисел.
+
+Вывод результата на экран: команда pr(expr) аналог функции print.
+
+Ввод с клавиатуры: команда ind() аналог функции input.
+
+Подключение стилей CSS: команда st(number) — демонстрационная функция, выводит сообщение о подключении стиля.
+
+Преобразование в строку: команда sr(expr) — преобразует значение выражения в строку (аналог str() в Python).
+
+Структура и компоненты
+Лексер (токенизатор): разбивает исходный код на лексемы (токены).
+
+Парсер: строит абстрактное синтаксическое дерево (AST) из токенов.
+
+Интерпретатор: рекурсивно вычисляет AST, выполняет операции и вызывает встроенные функции.
+
+Пример кода и использования:
+python
+pr(3 + 5 - 2)      # Вывод: 6
+user_input = ind()  # Ввод с клавиатуры
+pr(user_input)      # Вывод введенного значения
+st(1)               # Выводит сообщение о подключении стиля
+pr(sr(456 + 8))     # Выводит '464' как строку
+Цели проекта
+lpi -  служит учебной платформой для понимания фундаментальных концепций языков программирования, их парсинга, интерпретации и расширения функционала. Проект предназначен для постепенного развития: добавления переменных, управления потоками, поддержки графических интерфейсов и др.
