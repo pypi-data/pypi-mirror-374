@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "redflagdomains_scraper"
+authors = [{ email = "tdebize@mail.com" }]
+description = "A simple Python script to scrape data from red.flag.domains"
+readme = "README.md"
+requires-python = ">=3"
+keywords = ["red", "flag", "domains", "red.flag.domains", "spoofing", "spoof", "phishing"]
+license = "LGPL-3.0-or-later"
+classifiers = [
+    'Topic :: Security',
+    'Programming Language :: Python :: 3'
+]
+dynamic = ["version", "dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["redflagdomains_scraper/requirements.txt"]}
+version = {attr = "redflagdomains_scraper.redflagdomains_scraper.VERSION"}
+
+[project.urls]
+Homepage = "https://github.com/maaaaz/red.flag.domains_scraper"
+
+[project.scripts]
+redflagdomains_scraper = "redflagdomains_scraper.redflagdomains_scraper:main"
