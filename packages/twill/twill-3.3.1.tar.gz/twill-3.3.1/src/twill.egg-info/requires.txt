@@ -1,0 +1,16 @@
+lxml<7,>=6
+httpx<1,>=0.28.1
+pyparsing<4,>=3.1
+
+[docs]
+sphinx<9,>=8.2
+sphinx_rtd_theme<4,>=3
+
+[tests]
+tox<5,>=4
+pytest<9,>=8
+pytidylib<0.4,>=0.3
+flask<4,>=3.0
+
+[tidy]
+pytidylib<0.4,>=0.3

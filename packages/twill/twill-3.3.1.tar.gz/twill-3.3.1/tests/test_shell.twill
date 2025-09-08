@@ -1,0 +1,26 @@
+redirect_output 'test_shell.out'
+
+version
+help help
+help exit
+help version
+
+extend_with shell_test
+
+echo "testing extension"
+
+assert_flag_unset
+
+set_flag
+assert_flag_set
+
+unset_flag
+assert_flag_unset
+
+echo "raising errors"
+
+assert_flag_set
+set_flag
+assert_flag_unset
+
+reset_output
