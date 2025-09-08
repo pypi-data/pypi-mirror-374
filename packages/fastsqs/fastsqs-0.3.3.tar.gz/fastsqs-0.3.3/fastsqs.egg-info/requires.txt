@@ -1,0 +1,13 @@
+pydantic>=2.0.0
+
+[all]
+boto3>=1.26.0
+aioboto3>=12.0.0
+
+[dynamodb]
+boto3>=1.26.0
+aioboto3>=12.0.0
+
+[idempotency]
+boto3>=1.26.0
+aioboto3>=12.0.0
