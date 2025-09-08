@@ -1,0 +1,93 @@
+# adapted from Numpy's linux-qemu.yml file
+name: Linux Qemu tests
+
+on: [push, pull_request]
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  qemu:
+    runs-on: ubuntu-22.04
+    continue-on-error: true
+    strategy:
+      matrix:
+        BUILD_PROP:
+          - [
+              "armhf",
+              "arm-linux-gnueabihf",
+              "arm32v7/ubuntu:22.04",
+              "linux/arm/v7",
+          ]
+          - [
+              "ppc64le",
+              "powerpc64le-linux-gnu",
+              "ppc64le/ubuntu:22.04",
+              "linux/ppc64le",
+          ]
+          - [
+              "s390x",
+              "s390x-linux-gnu",
+              "s390x/ubuntu:22.04",
+              "linux/s390x",
+          ]
+          - [
+              "riscv64",
+              "riscv64-linux-gnu",
+              "riscv64/ubuntu:22.04",
+              "linux/riscv64",
+          ]
+
+    env:
+      NAME: ${{ matrix.BUILD_PROP[0] }}
+      TOOLCHAIN_NAME: ${{ matrix.BUILD_PROP[1] }}
+      DOCKER_CONTAINER: ${{ matrix.BUILD_PROP[2] }}
+      PLATFORM_NAME: ${{ matrix.BUILD_PROP[3] }}
+      TERM: xterm-256color
+
+    name: "${{ matrix.BUILD_PROP[0] }}"
+    steps:
+    - uses: actions/checkout@v5
+      with:
+        submodules: recursive
+        fetch-depth: 0
+        persist-credentials: false
+
+    - name: Initialize binfmt_misc for qemu-user-static
+      run: |
+        docker run --rm --privileged multiarch/qemu-user-static --reset -p yes 
+
+    - name: Cache docker container
+      uses: actions/cache@v4
+      id: container-cache
+      with:
+        path: ~/docker_${{ matrix.BUILD_PROP[1] }}.tar
+        key: container-${{ matrix.BUILD_PROP[1] }}
+        
+    - name: Creates new container
+      if: steps.container-cache.outputs.cache-hit != 'true'
+      run: |
+        docker run --name ${TOOLCHAIN_NAME} --platform ${PLATFORM_NAME} --interactive -v $(pwd):/gfort2py ${DOCKER_CONTAINER} /bin/bash -c "
+          apt-get update &&
+          apt-get install -y cmake git python3 python-is-python3 python3-dev python3-venv python3-pip python3-numpy automake libc6-dev linux-libc-dev gcc gfortran &&
+          git config --global --add safe.directory /gfort2py &&
+          python -m pip install --upgrade build wheel &&
+          python -m pip install --upgrade pytest dataclasses_json cpyparsing platformdirs importlib_metadata
+        "
+        docker commit ${TOOLCHAIN_NAME} ${TOOLCHAIN_NAME}
+        docker save -o ~/docker_${TOOLCHAIN_NAME}.tar ${TOOLCHAIN_NAME}
+
+    - name: Load container from cache
+      if: steps.container-cache.outputs.cache-hit == 'true'
+      run: docker load -i ~/docker_${TOOLCHAIN_NAME}.tar
+
+    - name: Build and test
+      run: |
+        docker run -v $(pwd):/gfort2py --platform ${PLATFORM_NAME} --ulimit core=0 ${TOOLCHAIN_NAME} /bin/bash -c "
+        cd /gfort2py && python -m build && python -m pip install dist/gfort2py-*.whl && python -m pytest -v"
+
+
+
+

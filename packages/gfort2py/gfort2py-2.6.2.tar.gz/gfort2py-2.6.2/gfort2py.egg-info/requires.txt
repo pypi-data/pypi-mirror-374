@@ -1,0 +1,15 @@
+numpy<2.3,>=1.13.0
+cpyparsing<=2.5,>=2.4.7
+platformdirs<=5,>=3
+dataclasses_json<=1.0,>=0.6
+importlib_metadata
+
+[dev]
+pre-commit
+black
+
+[quad]
+pyquadp
+
+[test]
+pytest
