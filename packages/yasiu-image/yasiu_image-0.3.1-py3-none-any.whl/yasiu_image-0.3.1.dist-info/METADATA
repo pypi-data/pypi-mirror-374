@@ -1,0 +1,94 @@
+Metadata-Version: 2.4
+Name: yasiu-image
+Version: 0.3.1
+Summary: Easier image processing.
+Author: Grzegorz Krug
+Author-email: kruggrzegorz@gmail.com
+Maintainer: Grzegorz Krug
+Maintainer-email: kruggrzegorz@gmail.com
+License: MIT
+Project-URL: 1. Native Package, https://pypi.org/project/yasiu-native/
+Project-URL: 2. Math Package, https://pypi.org/project/yasiu-math/
+Project-URL: 3. Image Package, https://pypi.org/project/yasiu-image/
+Project-URL: 4. Visualisation Package, https://pypi.org/project/yasiu-vis/
+Project-URL: 5. Source repo, https://github.com/GrzegorzKrug/yasiu-image
+Keywords: opencv-python,opencv,cv2,pillow,numpy,scipy,image processing,imageprocessing
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Multimedia :: Video
+Classifier: Topic :: Scientific/Engineering :: Image Processing
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: opencv-python
+Requires-Dist: numpy
+Requires-Dist: Pillow
+Requires-Dist: imageio
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: maintainer
+Dynamic: maintainer-email
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Readme of `yasiu-image`
+
+Module with useful math functions that are missing in numpy or scipy.
+
+## Installation
+
+```shell
+pip install yasiu-image
+```
+
+## Submodules
+- `common` - Read write features
+- `features` - Transform images into features and back
+- `filters` - Apply image filter and keep shape
+- `modifiers` - Modify images with different shape output
+- `quality` - Compare image quality
+
+
+## Sequence reader Generators
+
+- `read_webp_frames` - generator
+- `read_gif_frames` - generator
+- `save_image_list_to_gif` - save sequence using Pillow
+
+### Use example:
+
+```py
+from yasiu.image.common import read_gif_frames
+
+frames = list(read_gif_frames(path))
+```
+
+# All packages
+
+[1. Native Package](https://pypi.org/project/yasiu-native/)
+
+[2. Math Package](https://pypi.org/project/yasiu-math/)
+
+[3. Image Package](https://pypi.org/project/yasiu-image/)
+
+[4. Visualisation Package](https://pypi.org/project/yasiu-vis/)
