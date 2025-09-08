@@ -1,0 +1,42 @@
+Metadata-Version: 2.4
+Name: hive-messaging
+Version: 0.15.2
+Summary: Messaging layer for Hive
+Author-email: Gary Benson <gary@gbenson.net>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/gbenson/hive/tree/main/libs/messaging
+Project-URL: Source, https://github.com/gbenson/hive
+Description-Content-Type: text/markdown
+Requires-Dist: cloudevents[pydantic]
+Requires-Dist: contenttype
+Requires-Dist: hive-common>=0.1.3
+Requires-Dist: pika
+
+[![version badge]](https://pypi.org/project/hive-messaging/)
+
+[version badge]: https://img.shields.io/pypi/v/hive-messaging?color=limegreen
+
+# hive-messaging
+
+Messaging layer for Hive.
+
+## Installation
+
+### With PIP
+
+```sh
+pip install hive-messaging
+```
+
+### From source
+
+```sh
+git clone https://github.com/gbenson/hive.git
+cd hive/libs/messaging
+python3 -m venv .venv
+. .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+pip install -e .
+flake8 && pytest
+```
