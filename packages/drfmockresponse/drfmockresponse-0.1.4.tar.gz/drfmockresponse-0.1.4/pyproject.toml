@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "drfmockresponse"
+version = "0.1.4"
+description = "Middleware that can mock responses in Django Rest Framework."
+authors = ["Kostas Konstantopoulos <ntopoulos@yahoo.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+djangorestframework = "^3.16.1"
+django = "^5.2.6"
+
+[tool.poetry.dev-dependencies]
+pytest = "^8.4.2"
+coverage = "^7.10.6"
+pytest-cov = "^6.3.0"
+pytest-django = "^4.11.1"
+mock = "^5.2.0"
+pre-commit = "^4.3.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
