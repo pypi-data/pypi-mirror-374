@@ -1,0 +1,86 @@
+Metadata-Version: 2.4
+Name: Webware-for-Python
+Version: 3.0.11
+Summary: Webware for Python is a time-tested modular, object-oriented web framework.
+Home-page: https://webwareforpython.github.io/w4py3/
+Author: Christoph Zwerschke et al.
+Author-email: cito@online.de
+Project-URL: Source, https://github.com/WebwareForPython/w4py3
+Project-URL: Issues, https://github.com/WebwareForPython/w4py3/issues
+Project-URL: Documentation, https://webwareforpython.github.io/w4py3/
+Keywords: web framework servlets
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: setuptools
+Provides-Extra: dev
+Requires-Dist: Pygments<3,>=2.14; extra == "dev"
+Requires-Dist: WebTest<4,>=3; extra == "dev"
+Requires-Dist: waitress<4,>=2; extra == "dev"
+Requires-Dist: hupper<2,>=1.10; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: Sphinx<9,>=5; extra == "docs"
+Requires-Dist: sphinx_rtd_theme<4,>=1.1; extra == "docs"
+Provides-Extra: examples
+Requires-Dist: DBUtils<4,>=3; extra == "examples"
+Requires-Dist: dominate<3,>=2.7; extra == "examples"
+Requires-Dist: yattag<2,>=1.15; extra == "examples"
+Requires-Dist: Pygments<3,>=2.14; extra == "examples"
+Requires-Dist: Pillow<11,>=8; extra == "examples"
+Provides-Extra: tests
+Requires-Dist: psutil<8,>=5.9; extra == "tests"
+Requires-Dist: flake8<9,>=7; extra == "tests"
+Requires-Dist: pylint<3,>=2.16; extra == "tests"
+Requires-Dist: tox<5,>=3.28; extra == "tests"
+Requires-Dist: pywin32<400,>=300; (sys_platform == "win32" and implementation_name == "cpython") and extra == "tests"
+Requires-Dist: Pygments<3,>=2.14; extra == "tests"
+Requires-Dist: WebTest<4,>=3; extra == "tests"
+Requires-Dist: waitress<4,>=2; extra == "tests"
+Requires-Dist: hupper<2,>=1.10; extra == "tests"
+Requires-Dist: DBUtils<4,>=3; extra == "tests"
+Requires-Dist: dominate<3,>=2.7; extra == "tests"
+Requires-Dist: yattag<2,>=1.15; extra == "tests"
+Requires-Dist: Pygments<3,>=2.14; extra == "tests"
+Requires-Dist: Pillow<11,>=8; extra == "tests"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: summary
+
+# Webware for Python 3
+
+Webware for Python is a well-proven and platform-independent suite of Python packages and tools for developing object-oriented, web-based applications. The suite uses well known design patterns and includes Servlets, Python Server Pages (PSP), Task Scheduling, Session Management, and many other features. Webware is very modular and can be easily extended.
+
+Webware for Python 3 is the latest version of the suite, which has been adapted to use Python 3 instead of Python 2 and the WSGI standard instead of the custom Webware threaded application server and various adapters, but otherwise kept compatible with the legacy version.
+
+The current project **homepage** can be found here: <https://github.com/WebwareForPython/w4py3>
+
+The current **documentation** is published at: <https://webwareforpython.github.io/w4py3/>
+
+You can still find the **legacy version** of Webware for Python at: <https://webwareforpython.github.io/w4py/>
