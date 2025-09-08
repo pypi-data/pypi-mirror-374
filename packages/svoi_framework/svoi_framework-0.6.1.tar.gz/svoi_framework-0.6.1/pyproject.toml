@@ -1,0 +1,47 @@
+[project]
+name = "svoi_framework"
+
+version = "0.6.1"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "asyncpg>=0.30.0",
+    "fastapi>=0.116.1",
+    "pydantic>=2.11.7",
+    "sqlalchemy[asyncio]>=2.0.43",
+    "opentelemetry-api>=1.36.0",
+    "opentelemetry-exporter-otlp>=1.36.0",
+    "opentelemetry-instrumentation-fastapi>=0.57b0",
+    "opentelemetry-sdk>=1.36.0",
+    "prometheus-client>=0.22.1",
+    "prometheus-fastapi-instrumentator>=7.1.0",
+    "pyyaml>=6.0.2",
+    "dishka>=1.6.0",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.17.1",
+    "pytest-stub>=1.1.0",
+    "ruff>=0.12.12",
+    "types-pytz>=2025.2.0.20250809",
+    "types-pyyaml>=6.0.12.20250822",
+]
+test = [
+    "aiosqlite>=0.21.0",
+    "pytest>=8.4.2",
+    "pytest-asyncio>=1.1.0",
+]
+
+
+[tool.mypy]
+mypy_path = ["src"]
+
+[[tool.mypy.overrides]]
+module = "pytest_asyncio.*"
+ignore_missing_imports = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
