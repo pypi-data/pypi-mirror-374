@@ -1,0 +1,11 @@
+babel
+nltk
+ruff
+lxml>=4.4.1
+xsdata[cli]>=25.0
+
+[test]
+codecov
+pre-commit
+pytest
+pytest-cov
