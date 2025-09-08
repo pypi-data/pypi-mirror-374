@@ -1,0 +1,53 @@
+---
+- name: Create parent directories for extra files
+  ansible.builtin.file:
+    path: "{{ ((item.dst is match('^/')) | ternary(item.dst, deploy_dir ~ '/' ~ item.dst)) | dirname }}"
+    state: directory
+    mode: "0755"
+  loop: "{{ extra_files | default([]) }}"
+  when:
+    - (extra_files | default([])) | length > 0
+    - item.src is defined and item.dst is defined
+
+- name: Check if extra files source exists
+  ansible.builtin.stat:
+    path: "{{ (item.src is match('^/')) | ternary(item.src, project_src ~ '/' ~ item.src) }}"
+  delegate_to: localhost
+  loop: "{{ extra_files | default([]) }}"
+  register: extra_files_stats
+  when:
+    - (extra_files | default([])) | length > 0
+    - item.src is defined and item.dst is defined
+
+- name: Copy extra directories to remote server
+  ansible.posix.synchronize:
+    src: "{{ (extra_files_stats.results[item_index].stat.path) }}/"
+    dest: "{{ (item.dst is match('^/')) | ternary(item.dst, deploy_dir ~ '/' ~ item.dst) }}/"
+    rsync_opts:
+      - "--delete-after"
+  loop: "{{ extra_files | default([]) }}"
+  loop_control:
+    index_var: item_index
+  when:
+    - extra_files_stats is defined
+    - extra_files_stats.results | length > item_index
+    - extra_files_stats.results[item_index] is defined
+    - extra_files_stats.results[item_index].stat is defined
+    - extra_files_stats.results[item_index].stat.exists | default(false)
+    - extra_files_stats.results[item_index].stat.isdir | default(false)
+
+- name: Copy extra files to remote server
+  ansible.builtin.copy:
+    src: "{{ (extra_files_stats.results[item_index].stat.path) }}"
+    dest: "{{ (item.dst is match('^/')) | ternary(item.dst, deploy_dir ~ '/' ~ item.dst) }}"
+    mode: preserve
+  loop: "{{ extra_files | default([]) }}"
+  loop_control:
+    index_var: item_index
+  when:
+    - extra_files_stats is defined
+    - extra_files_stats.results | length > item_index
+    - extra_files_stats.results[item_index] is defined
+    - extra_files_stats.results[item_index].stat is defined
+    - extra_files_stats.results[item_index].stat.exists | default(false)
+    - not (extra_files_stats.results[item_index].stat.isdir | default(false))

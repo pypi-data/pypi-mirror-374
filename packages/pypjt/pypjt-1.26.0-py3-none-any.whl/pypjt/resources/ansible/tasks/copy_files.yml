@@ -1,0 +1,48 @@
+---
+- name: Ensure rsync is present
+  ansible.builtin.package:
+    name: rsync
+    state: present
+
+- name: Generate list of git-tracked files on controller
+  ansible.builtin.command:
+    cmd: git ls-files
+    chdir: "{{ project_src }}"
+  register: git_tracked_files
+  delegate_to: localhost
+
+- name: Create temporary rsync file list with random name
+  ansible.builtin.tempfile:
+    state: file
+    path: /tmp
+    suffix: _rsync_files
+  register: rsync_file_list
+  delegate_to: localhost
+
+- name: Write git-tracked files to temporary file
+  ansible.builtin.copy:
+    dest: "{{ rsync_file_list.path }}"
+    content: "{{ git_tracked_files.stdout }}"
+    mode: "0644"
+  delegate_to: localhost
+
+- name: Create deploy directory
+  ansible.builtin.file:
+    path: "{{ deploy_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Rsync git-tracked files to remote server
+  ansible.posix.synchronize:
+    src: "{{ project_src }}/"
+    dest: "{{ deploy_dir }}/"
+    rsync_opts:
+      - "--delete"
+      - "--files-from={{ rsync_file_list.path }}"
+      - "--ignore-missing-args"
+
+- name: Remove temporary rsync file list
+  ansible.builtin.file:
+    path: "{{ rsync_file_list.path }}"
+    state: absent
+  delegate_to: localhost

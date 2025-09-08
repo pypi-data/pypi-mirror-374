@@ -1,0 +1,87 @@
+services:
+  {{project_name}}:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000
+    restart: unless-stopped
+  postgres:
+    image: postgres:16
+    ports:
+      - ${DB_PORT}:5432
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4:8.7
+    ports:
+      - 80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${DB_PASSWORD}
+    restart: unless-stopped
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+  redis:
+    image: redis:7
+    ports:
+      - ${REDIS_PORT}:6379
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+  redisinsight:
+    image: redis/redisinsight:2.64
+    ports:
+      - 5540:5540
+    environment:
+      - RI_LOG_LEVEL=info
+    volumes:
+      - redisinsight_data:/data
+  mongo:
+    image: mongo:7.0.11
+    restart: unless-stopped
+    ports:
+      - ${MONGO_PORT}:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    volumes:
+      - mongo_db_data:/data/db
+      - mongo_configdb_data:/data/configdb
+  mongo-express:
+    image: mongo-express:1.0
+    restart: unless-stopped
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongo:${MONGO_PORT}/
+      ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_USER}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_PASSWORD}
+  minio:
+    image: minio/minio:RELEASE.2025-06-13T11-33-47Z
+    restart: unless-stopped
+    ports:
+      - ${S3_PORT}:9000
+      - 9001
+    environment:
+      MINIO_ROOT_USER: ${S3_USER}
+      MINIO_ROOT_PASSWORD: ${S3_PASSWORD}
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+  redis_data:
+  redisinsight_data:
+  mongo_db_data:
+  mongo_configdb_data:
+  minio_data:
