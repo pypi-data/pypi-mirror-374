@@ -1,0 +1,69 @@
+$table_background: #282c36;
+$main_focus_border: heavy #b6c1d9;
+$main_blur_border: heavy #677085;
+
+$table_blur_background: #20232B;
+
+
+TableScreen {
+    width: auto;
+}
+
+SearchInput {
+    dock: top;
+    width: 100%;
+    border: $main_focus_border;
+
+    background: $table_background;
+    padding: 0 1 0 5;
+}
+
+SearchInput:blur {
+    border: $main_blur_border;
+    background: $table_blur_background;
+}
+
+DataTable {
+    width: 100%;
+    scrollbar-color: #5b657a;
+    scrollbar-color-hover: #677085;
+    scrollbar-color-active: #7F889C;
+    scrollbar-background: $table_background;
+    scrollbar-background-active: $table_background;
+    scrollbar-background-hover: $table_background;
+
+    &:blur {
+        border: $main_blur_border;
+        background: $table_blur_background;
+        
+        & > .datatable--cursor {
+            background: #403035;
+        }
+
+        & > .datatable--header {
+            background-tint: #2f343f;
+        }
+
+        & > .datatable--header-hover {
+            background: #2f343f;
+        }
+
+    }
+
+    &:focus {
+        border: $main_focus_border;
+        background: $table_background;
+
+        & > .datatable--cursor {
+            background: #5E464D;
+        }
+
+        & > .datatable--header {
+            background: #464D5E;
+        }
+        
+        & > .datatable--header-hover {
+        background: #596277;
+        }
+    }
+}
