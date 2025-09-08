@@ -1,0 +1,56 @@
+{
+  "name": "sqllineagejs",
+  "version": "1.5.5",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@monaco-editor/react": "^4.7.0",
+    "@mui/icons-material": "^7.2.0",
+    "@mui/material": "^7.2.0",
+    "@mui/x-tree-view": "^8.7.0",
+    "@reduxjs/toolkit": "^2.8.2",
+    "cytoscape": "^3.32.0",
+    "cytoscape-dagre": "^2.3.3",
+    "react": "^19.1.0",
+    "react-cytoscapejs": "^2.0.0",
+    "react-dom": "^19.1.0",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.6.3"
+  },
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "VITE_BACKEND_API=https://sqllineage.azurewebsites.net/api/sqllineage/ vite build --base=/sqllineage/ && gh-pages -d build",
+    "lint": "eslint .",
+    "format": "prettier --write \"src/**/*.{js,jsx,json,css,md}\""
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.32.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.7.0",
+    "eslint": "^9.32.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "gh-pages": "^5.0.0",
+    "globals": "^16.3.0",
+    "prettier": "^3.6.2",
+    "vite": "^7.0.6"
+  }
+}
