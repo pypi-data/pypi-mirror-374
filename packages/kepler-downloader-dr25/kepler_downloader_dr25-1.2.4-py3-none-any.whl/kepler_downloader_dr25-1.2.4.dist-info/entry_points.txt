@@ -1,0 +1,6 @@
+[console_scripts]
+kepler-check-missing = kepler_downloader_dr25.utils.check_missing_kics:main
+kepler-download = kepler_downloader_dr25.downloader:main
+kepler-filter = kepler_downloader_dr25.filter:main
+kepler-rebuild-db = kepler_downloader_dr25.utils.rebuild_database:main
+kepler-stats = kepler_downloader_dr25.utils.generate_stats:main
