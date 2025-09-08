@@ -1,0 +1,62 @@
+[project]
+name = "inspect_wandb"
+version = "0.1.0"
+authors = [
+  { name="Daniel Polatajko", email="danielpolatajko@gmail.com" },
+  { name="Qi Guo", email="special0831qi@gmail.com"},
+  { name="Matan Shtepel", email="matan.shtepel@gmail.com" }
+]
+description = "InspectAI <-> Weights and Biases integration"
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "inspect_ai >= 0.3.130",
+  "pydantic >= 2.11, <3",
+  "pydantic-settings",
+  "wandb"
+]
+
+[project.optional-dependencies]
+weave = ["weave >= 0.52.1"]
+viz = [
+  "inspect-viz",
+  "playwright"
+]
+
+[dependency-groups]
+dev = ["pytest", "ruff", "mypy", "pre-commit", "pytest-asyncio"]
+docs-dev = [
+  "pre-commit>=4.3.0",
+  "myst-parser>=4.0.1",
+  "sphinx-rtd-theme>=3.0.2",
+  "sphinx-autobuild>=2024.10.3",
+  "mypy>=1.17.1"
+]
+
+[project.urls]
+Homepage = "https://github.com/DanielPolatajko/inspect_wandb"
+Issues = "https://github.com/DanielPolatajko/inspect_wandb/issues"
+Documentation = "https://inspect-wandb.readthedocs.io/en/latest/"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["inspect_wandb*"]
+
+[project.entry-points.inspect_ai]
+inspect_wandb = "inspect_wandb._registry"
+
+[tool.ruff]
+exclude = [
+    "inspect_wandb/_registry.py"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
