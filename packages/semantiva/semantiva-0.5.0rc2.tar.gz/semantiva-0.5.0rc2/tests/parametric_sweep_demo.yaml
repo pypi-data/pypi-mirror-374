@@ -1,0 +1,24 @@
+# Parametric sweep demonstration
+# This shows the YAML format for parametric sweeps
+pipeline:
+  nodes:
+    # Parametric sweep with configuration
+    - processor: "sweep:FloatValueDataSource:FloatDataCollection"
+      parameters:
+        num_steps: 3
+        independent_vars:
+          t: [-1, 2]
+        parametric_expressions:
+          # Complex expressions using the independent variable 't'
+          value: "2.0 * t"
+          
+    # Process the generated collection
+    - processor: "slicer:FloatCollectValueProbe:FloatDataCollection"
+      context_keyword: "sweep_results"
+    
+    # Aggregate results
+    - processor: "FloatCollectionSumOperation"
+    
+    # Store final result
+    - processor: "FloatBasicProbe"
+      context_keyword: "final_sum"
