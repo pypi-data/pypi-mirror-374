@@ -1,0 +1,104 @@
+Metadata-Version: 2.4
+Name: puffmatic
+Version: 0.1.0a3
+Summary: Quickly generate files and installer images for unattended OpenBSD installation.
+Author-email: Chris narkiewicz <hello@ezaquarii.com>
+License-Expression: BSD-3-Clause
+Project-URL: Homepage, https://github.com/ezaquarii/puffmatic/
+Project-URL: Documentation, https://github.com/ezaquarii/puffmatic/
+Project-URL: Repository, https://github.com/ezaquarii/puffmatic.git
+Project-URL: Issues, https://github.com/ezaquarii/puffmatic/issues
+Project-URL: Changelog, https://github.com/ezaquarii/puffmatic/blob/master/CHANGELOG.md
+Keywords: openbsd,autoinstall,sysutil
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: Jinja2
+Requires-Dist: PyYAML
+Provides-Extra: dev
+Requires-Dist: build; extra == "dev"
+Requires-Dist: debugpy; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Provides-Extra: pub
+Requires-Dist: twine; extra == "pub"
+Dynamic: license-file
+
+# Puffmatic - OpenBSD Autoinstall Generator
+
+This script facilitates the preparation of files for unattended
+OpenBSD installation. Refer to
+[autoinstall(8)](https://man.openbsd.org/autoinstall) for more
+details.
+
+The provided examples allow you to create auto-installable sets for
+USB and network installations. This tutorial demonstrates how to test
+these sets on a [vmd(8)](https://man.openbsd.org/vmd) virtual machine.
+
+## Installation
+
+### Installing from PyPI
+
+Puffmatic is released to PyPI, so you can install it using `pip`:
+
+```shell
+python3 -m venv venv
+. venv/bin/activate
+pip install puffmatic
+```
+
+### Running from source directory
+
+This script runs on OpenBSD and requires Python 3. All dependencies
+are in base system or are installed by `pip`.  Checkout source
+directory from git to boostrap it:
+
+```shell
+make bootstrap
+```
+
+It will create `venv` and install handful of dependencies to run, test
+and develop `puffmatic`.
+
+If you are using `envrc`, provided `.envrc` will ensure `venv` is activated,
+and `PYTHONPATH` and `PATH` are updated for seamless use.
+
+If you don't run `envrc`, you can source the shell environment
+manually to the same effect:
+
+```shell
+. .envrc
+```
+
+Test with:
+
+```shell
+python3 -m puffmatic help
+```
+
+Last but not least, you must grant access to some shell utilities in
+priviledged mode. Put this in your `/etc/doas.conf`:
+
+```
+permit nopass user cmd mount
+permit nopass user cmd umount
+permit nopass user cmd vnconfig
+permit nopass user cmd install
+```
+
+If you are concerned about elevated priviledges, create a dedicated
+user account.
+
+## example.com
+
+Once installed, you should explore the example. Go stright to
+[example.com README.md](example.com/README.md), where you will find
+further documentation and a tutorial runnable using `vmd(8)`.
+
+The example is "self documenting" in the sense that all elements are
+covered by adjacent `README.md` files scattered around.
+
+Enjoy!
